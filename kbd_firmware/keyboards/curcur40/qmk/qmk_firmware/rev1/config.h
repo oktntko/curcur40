@@ -1,0 +1,21 @@
+#pragma once
+
+#define SERIAL_USART_TX_PIN GP12
+#define USB_VBUS_PIN GP13
+
+/* SPI1 & PMW3360 Pointing Device Configuration (Right Half) */
+#define SPI_DRIVER SPID1
+#define SPI_SCK_PIN GP14
+#define SPI_MOSI_PIN GP11
+#define SPI_MISO_PIN GP8
+#define POINTING_DEVICE_CS_PIN GP6
+#define PMW33XX_CS_PIN GP6
+
+#define SPLIT_POINTING_ENABLE
+#define POINTING_DEVICE_RIGHT
+#define PMW33XX_CPI 1200
+
+/* RP2040- and hardware-specific config */
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500U
+#define PICO_XOSC_STARTUP_DELAY_MULTIPLIER 64
