@@ -293,10 +293,21 @@
 			(xyz 1 1 1)
 		)
 		(rotate
-			(xyz 0 0 0)
+			(xyz 0 0 90)
 		)
 	)
 	(model "${KIPRJMOD}/../../common/kbd/3dmodels/ckw12_wheel.stp"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 90)
+		)
+	)
+	(model "${KIPRJMOD}/../../common/kbd/3dmodels/ckw12_stem.stp"
 		(offset
 			(xyz 0 0 0)
 		)
