@@ -285,28 +285,26 @@
 		(remove_unused_layers no)
 		(uuid "c97a55f6-5211-41ae-89c2-6e761db970a5")
 	)
-	(model "D:/DIY_keyboard/kicad/my/EVQWGD001_extension/EVQWGD001_extension.step"
-		(hide yes)
+	(model "${KIPRJMOD}/../../common/kbd/3dmodels/ckw12_housing.stp"
 		(offset
-			(xyz 152.5 -101 2)
+			(xyz 0 0 0)
 		)
 		(scale
 			(xyz 1 1 1)
 		)
 		(rotate
-			(xyz 0 0 180)
+			(xyz 0 0 0)
 		)
 	)
-	(model "D:/DIY_keyboard/kicad/lib/panasonic-evqwgd001-encoder-1.snapshot.1/Encoder.step"
-		(hide yes)
+	(model "${KIPRJMOD}/../../common/kbd/3dmodels/ckw12_wheel.stp"
 		(offset
-			(xyz 7 -6 0)
+			(xyz 0 0 0)
 		)
 		(scale
 			(xyz 1 1 1)
 		)
 		(rotate
-			(xyz 0 0 -90)
+			(xyz 0 0 90)
 		)
 	)
 )
