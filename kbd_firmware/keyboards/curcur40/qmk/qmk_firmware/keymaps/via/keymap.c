@@ -1,23 +1,5 @@
 #include QMK_KEYBOARD_H
 
-#ifndef RM_TOGG
-#    define RM_TOGG RGB_TOG
-#    define RM_NEXT RGB_MOD
-#    define RM_PREV RGB_RMOD
-#    define RM_HUEU RGB_HUI
-#    define RM_HUED RGB_HUD
-#    define RM_SATU RGB_SAI
-#    define RM_SATD RGB_SAD
-#    define RM_VALU RGB_VAI
-#    define RM_VALD RGB_VAD
-#endif
-
-#ifndef MS_BTN1
-#    define MS_BTN1 KC_BTN1
-#    define MS_BTN2 KC_BTN2
-#    define MS_BTN3 KC_BTN3
-#endif
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_TAB,     KC_MUTE, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,

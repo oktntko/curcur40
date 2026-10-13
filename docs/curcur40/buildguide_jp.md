@@ -195,27 +195,43 @@ Corne Chocolate v4 準拠の筐体固定用ネジ・スペーサーと、トラ�
 
 本リポジトリの [`kbd_firmware/`](../../kbd_firmware/) ディレクトリには、**VIA（QMK）版** と **Vial 版** の両方のファームウェア定義が含まれています。トラックボール用のマウスボタンやエンコーダ設定を専用アプリから即座に変更できる **Vial 版** が特におすすめです。
 
-WSL / Linux / macOS / QMK MSYS 環境で、`kbd_firmware/` ディレクトリに移動して以下のコマンドを実行します。
+以下は WSL での手順です。`FIRMWARE` は本リポジトリ内の `kbd_firmware`、`VIAL_QMK` は Vial-QMK のチェックアウト先を指定してください。例のパスは環境に合わせて変更します。QMK/Vial-QMK の Docker ビルド環境がセットアップ済みであることを前提とします。
 
 #### A. Vial 対応ファームウェアをビルドする場合（推奨）
 ```sh
-cd kbd_firmware
-make vial-qmk-clean
-kb=curcur40 make vial-qmk-init
-kb=curcur40 kr=rev1 km=vial make vial-qmk-compile
+FIRMWARE=./curcur40/kbd_firmware
+VIAL_QMK=./vial-qmk
+
+# 基板定義とVialキーマップをVial-QMKのkeyboardツリーへコピー
+mkdir -p "$VIAL_QMK/keyboards/curcur40/rev1/keymaps/vial"
+cp -a "$FIRMWARE/keyboards/curcur40/qmk/qmk_firmware/rev1/." \
+  "$VIAL_QMK/keyboards/curcur40/rev1/"
+cp -a "$FIRMWARE/keyboards/curcur40/vial-kb/vial-qmk/keymaps/vial/." \
+  "$VIAL_QMK/keyboards/curcur40/rev1/keymaps/vial/"
+
+# Vial-QMKのDockerビルドを実行
+cd "$VIAL_QMK"
+util/docker_build.sh curcur40/rev1:vial
 ```
-ビルドが完了すると、以下のパスに `.uf2` ファイルが出力されます：
-- [`kbd_firmware/keyboards/curcur40/vial-kb/vial-qmk/.build/curcur40_rev1_vial.uf2`](../../kbd_firmware/keyboards/curcur40/vial-kb/vial-qmk/)
+ビルドが完了すると、`$VIAL_QMK/.build/curcur40_rev1_vial.uf2` に `.uf2` ファイルが出力されます。左右のメイン基板には同じファイルを書き込みます。
 
 #### B. VIA（標準 QMK）対応ファームウェアをビルドする場合
 ```sh
-cd kbd_firmware
-make qmk-clean
-kb=curcur40 make qmk-init
-kb=curcur40 kr=rev1 km=via make qmk-compile
+FIRMWARE=./curcur40/kbd_firmware
+QMK_FIRMWARE=./qmk_firmware
+
+# 基板定義とVIAキーマップをQMKのkeyboardツリーへコピー
+mkdir -p "$QMK_FIRMWARE/keyboards/curcur40/rev1/keymaps/via"
+cp -a "$FIRMWARE/keyboards/curcur40/qmk/qmk_firmware/rev1/." \
+  "$QMK_FIRMWARE/keyboards/curcur40/rev1/"
+cp -a "$FIRMWARE/keyboards/curcur40/qmk/qmk_firmware/keymaps/via/." \
+  "$QMK_FIRMWARE/keyboards/curcur40/rev1/keymaps/via/"
+
+# QMKのDockerビルドを実行（キーボードへのUSB書き込み機能は不要）
+cd "$QMK_FIRMWARE"
+SKIP_FLASHING_SUPPORT=1 util/docker_build.sh curcur40/rev1:via
 ```
-ビルドが完了すると、以下のパスに `.uf2` ファイルが出力されます：
-- [`kbd_firmware/keyboards/curcur40/qmk/qmk_firmware/.build/curcur40_rev1_via.uf2`](../../kbd_firmware/keyboards/curcur40/qmk/qmk_firmware/)
+ビルドが完了すると、`$QMK_FIRMWARE/.build/curcur40_rev1_via.uf2` に `.uf2` ファイルが出力されます。左右のメイン基板には同じファイルを書き込みます。
 
 ---
 
