@@ -68,3 +68,8 @@
   - トラックボール保持カップ: [trackball-cup.step](../cases/curcur40/trackball-cup.step) / [trackball-cup.stl](../cases/curcur40/trackball-cup.stl)
 
 これらは **FreeCAD**、**Fusion 360**、3Dプリンタ用スライサー（**Bambu Studio** / **PrusaSlicer** / **Cura**）、またはブラウザの [3dviewer.net](https://3dviewer.net/) などにドラッグ＆ドロップするだけでインタラクティブに回転・断面確認ができます。
+
+
+```
+& "$env:USERPROFILE\.local\bin\uvx.exe" --no-config --managed-python --python 3.13 --from "cadgen==0.7.21" cadgen viewer --host 127.0.0.1 --json --detach
+```
