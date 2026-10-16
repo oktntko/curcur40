@@ -13,10 +13,16 @@ import pcbnew
 KICAD_CLI = os.path.expandvars(r"$LOCALAPPDATA\Programs\KiCad\10.0\bin\kicad-cli.exe")
 
 LEFT_MOUNTING_HOLES = [
-    (-101.9175, 2.38125, 1.1),
-    (-101.9175, 21.43125, 1.1),
-    (-42.8625, -1.190625, 1.1),
-    (-42.8625, 38.10000, 1.1),
+    (-114.0, -20.0, 1.1),
+    (  -2.0, -20.0, 1.1),
+    (-116.5,  20.0, 1.1),
+    (  -2.0,  64.0, 1.1),
+]
+
+RIGHT_MOUNTING_HOLES = [
+    (114.0, -20.0, 1.1),
+    (  2.0, -20.0, 1.1),
+    (116.5,  20.0, 1.1),
 ]
 
 LEFT_SWITCHES = [
@@ -118,16 +124,31 @@ def make_rect_cutout(cx, cy, w, h, r=0.5):
     ]
     return round_Analyze_polygon_with_fillets(pts)
 
-def get_left_outer_pts():
+def get_left_outer_pts(notched_trrs=False):
     # Left Plate Plan B (+0.40mm margin from PCB edge)
-    return [
-        (   5.6625, -24.71250, 1.0),  # Top-right
-        (-119.4625, -24.71250, 1.0),  # Top-left
-        (-119.4625,  41.38125, 1.0),  # Pinky-left bottom
-        ( -82.8625,  41.38125, 1.0),  # Pinky step inner
-        ( -82.8625,  67.90000, 1.0),  # Thumb bottom-left
-        (   5.6625,  67.90000, 1.0),  # Bottom-right
-    ]
+    if not notched_trrs:
+        return [
+            (   5.6625, -24.71250, 1.0),  # Top-right
+            (-119.4625, -24.71250, 1.0),  # Top-left
+            (-119.4625,  41.38125, 1.0),  # Pinky-left bottom
+            ( -82.8625,  41.38125, 1.0),  # Pinky step inner
+            ( -82.8625,  67.90000, 1.0),  # Thumb bottom-left
+            (   5.6625,  67.90000, 1.0),  # Bottom-right
+        ]
+    else:
+        # Left Top Plate with TRRS notch opening on the right edge
+        return [
+            (   5.6625, -24.71250, 1.0),  # Top-right
+            (-119.4625, -24.71250, 1.0),  # Top-left
+            (-119.4625,  41.38125, 1.0),  # Pinky-left bottom
+            ( -82.8625,  41.38125, 1.0),  # Pinky step inner
+            ( -82.8625,  67.90000, 1.0),  # Thumb bottom-left
+            (   5.6625,  67.90000, 1.0),  # Bottom-right
+            (   5.6625,  38.30000, 1.0),  # Notch bottom-outer
+            (  -8.1425,  38.30000, 1.0),  # Notch bottom-inner
+            (  -8.1425,  31.00000, 1.0),  # Notch top-inner
+            (   5.6625,  31.00000, 1.0),  # Notch top-outer
+        ]
 
 def get_right_outer_pts(notched_trackball=False):
     # Right Plate Plan B (+0.40mm margin from PCB edge)
@@ -142,7 +163,7 @@ def get_right_outer_pts(notched_trackball=False):
             ( -5.6625,  67.90000, 1.0),  # Bottom-left
         ]
     else:
-        # Right Top Plate with notch for 25mm Trackball Cup (bay notch up to x = 24.8375, y in [37.4, 67.9])
+        # Right Top Plate with notch for 25mm Trackball Cup and TRRS (bay notch up to x = 24.8375, y in [31.0, 67.9])
         return [
             ( -5.6625, -24.71250, 1.0),  # Top-left
             (119.4625, -24.71250, 1.0),  # Top-right
@@ -150,8 +171,8 @@ def get_right_outer_pts(notched_trackball=False):
             ( 82.8625,  41.38125, 1.0),  # Pinky step inner
             ( 82.8625,  67.90000, 1.0),  # Thumb bottom-right
             ( 24.8375,  67.90000, 1.0),  # Notch bottom-right
-            ( 24.8375,  37.40000, 1.0),  # Notch top-right
-            ( -5.6625,  37.40000, 1.0),  # Notch top-left
+            ( 24.8375,  31.00000, 1.0),  # Notch top-right
+            ( -5.6625,  31.00000, 1.0),  # Notch top-left
         ]
 
 def write_plate_kicad_pcb(filepath, outer_prims, cutout_prims_list, circles):
@@ -256,13 +277,14 @@ def main():
     os.makedirs(out_zip_dir, exist_ok=True)
     os.makedirs(out_svg_dir, exist_ok=True)
 
-    right_holes = [(-x, y, r) for (x, y, r) in LEFT_MOUNTING_HOLES]
+    right_holes = RIGHT_MOUNTING_HOLES
 
     # 1. Left Top Plate
-    left_outer = round_Analyze_polygon_with_fillets(get_left_outer_pts())
+    left_outer = round_Analyze_polygon_with_fillets(get_left_outer_pts(notched_trrs=False))
+    left_outer_top = round_Analyze_polygon_with_fillets(get_left_outer_pts(notched_trrs=True))
     left_cutouts = [make_rect_cutout(cx, cy, 14.0, 14.0, 0.5) for (cx, cy) in LEFT_SWITCHES]
     p_top_left = os.path.join(out_pcb_dir, "plate-top-left.kicad_pcb")
-    write_plate_kicad_pcb(p_top_left, left_outer, left_cutouts, LEFT_MOUNTING_HOLES)
+    write_plate_kicad_pcb(p_top_left, left_outer_top, left_cutouts, LEFT_MOUNTING_HOLES)
 
     # 2. Right Top Plate
     right_outer_notched = round_Analyze_polygon_with_fillets(get_right_outer_pts(notched_trackball=True))
@@ -303,10 +325,11 @@ def main():
         print(f"Exported GERBER-{name}.zip and verified DRC.")
 
     # 5. SVGs
+    left_outer = round_Analyze_polygon_with_fillets(get_left_outer_pts(notched_trrs=False))
     write_laser_svg(
         os.path.join(out_svg_dir, "plate-curcur40.svg"),
         [
-            (left_outer, left_cutouts, LEFT_MOUNTING_HOLES, 130.0, 30.0),
+            (left_outer_top, left_cutouts, LEFT_MOUNTING_HOLES, 130.0, 30.0),
             (right_outer_notched, right_cutouts, right_holes, 140.0, 30.0),
             (left_outer, [], LEFT_MOUNTING_HOLES, 130.0, 130.0),
             (right_outer_full, right_bot_cutouts, right_bot_holes, 140.0, 130.0),
@@ -320,7 +343,7 @@ def main():
     write_laser_svg(
         os.path.join(out_svg_dir, "foam-curcur40.svg"),
         [
-            (left_outer, left_cutouts, left_foam_holes, 130.0, 35.0),
+            (left_outer_top, left_cutouts, left_foam_holes, 130.0, 35.0),
             (right_outer_notched, right_cutouts, right_foam_holes, 140.0, 35.0),
         ],
         width_mm=280.0,

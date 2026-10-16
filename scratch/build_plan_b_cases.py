@@ -91,16 +91,24 @@ def build_case(is_right=True):
     inner_solid = bd.extrude(sk_inner, amount=10.40).moved(bd.Location((0, 0, -9.40)))
     body = outer_solid - inner_solid
 
-    # 3. 4 Keyboard M2 mounting holes
-    left_holes = [
-        (-116.2050, -78.5812),
-        (-116.2050, -59.5313),
-        ( -57.1593, -55.9574),
-        ( -57.1659, -95.2499),
-    ]
-    for hx, hy in left_holes:
-        cx = -hx if is_right else hx
-        body = body - bd.Cylinder(radius=1.10, height=14.0).moved(bd.Location((cx, hy, -10.0)))
+    # 3. Perimeter M2 mounting holes
+    if is_right:
+        # Right Case: Hole 1 (top-right), Hole 2 (top-left), Hole 3 (pinky right)
+        case_holes = [
+            (114.0 + 14.2875, -(-20.0 + 57.1500)),   # (128.2875, -37.1500)
+            (  2.0 + 14.2875, -(-20.0 + 57.1500)),   # ( 16.2875, -37.1500)
+            (116.5 + 14.2875, -( 20.0 + 57.1500)),   # (130.7875, -77.1500)
+        ]
+    else:
+        # Left Case: Hole 1 (top-left), Hole 2 (top-right), Hole 3 (pinky left), Hole 4 (thumb front)
+        case_holes = [
+            (-114.0 - 14.2875, -(-20.0 + 57.1500)),  # (-128.2875, -37.1500)
+            (  -2.0 - 14.2875, -(-20.0 + 57.1500)),  # ( -16.2875, -37.1500)
+            (-116.5 - 14.2875, -( 20.0 + 57.1500)),  # (-130.7875, -77.1500)
+            (  -2.0 - 14.2875, -( 64.0 + 57.1500)),  # ( -16.2875, -121.1500)
+        ]
+    for cx, cy in case_holes:
+        body = body - bd.Cylinder(radius=1.10, height=14.0).moved(bd.Location((cx, cy, -10.0)))
 
     # 4. USB-C port cutout
     # rJ1 at x_pcb = 12.2875 -> X_case = 26.5750 mm (Right), -26.5750 mm (Left)
