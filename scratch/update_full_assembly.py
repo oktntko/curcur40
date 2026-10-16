@@ -38,10 +38,16 @@ import build_cases
 
 # Switches and mounting holes definitions (self-contained, no pcbnew dependency)
 LEFT_MOUNTING_HOLES = [
-    (-101.9175, 2.38125, 1.1),
-    (-101.9175, 21.43125, 1.1),
-    (-42.8625, -1.190625, 1.1),
-    (-42.8625, 38.10000, 1.1),
+    (-114.0, -20.0, 1.1),
+    (  -2.0, -20.0, 1.1),
+    (-116.5,  20.0, 1.1),
+    (  -2.0,  64.0, 1.1),
+]
+
+RIGHT_MOUNTING_HOLES = [
+    (114.0, -20.0, 1.1),
+    (  2.0, -20.0, 1.1),
+    (116.5,  20.0, 1.1),
 ]
 
 LEFT_SWITCHES = [
@@ -93,7 +99,7 @@ RIGHT_SWITCHES = [
 RIGHT_ENCODER = (14.2875, 0.00000)
 
 def get_left_plate_outer_pts():
-    # Left Plate Plan B (+0.40mm margin from PCB edge)
+    # Left Plate Plan B with TRRS notch
     return [
         (   5.6625, -24.71250, 1.0),
         (-119.4625, -24.71250, 1.0),
@@ -101,10 +107,14 @@ def get_left_plate_outer_pts():
         ( -82.8625,  41.38125, 1.0),
         ( -82.8625,  67.90000, 1.0),
         (   5.6625,  67.90000, 1.0),
+        (   5.6625,  38.30000, 1.0),
+        (  -8.1425,  38.30000, 1.0),
+        (  -8.1425,  31.00000, 1.0),
+        (   5.6625,  31.00000, 1.0),
     ]
 
 def get_right_plate_outer_pts():
-    # Right Plate Plan B with trackball bay notch
+    # Right Plate Plan B with trackball bay and TRRS notch
     return [
         ( -5.6625, -24.71250, 1.0),
         (119.4625, -24.71250, 1.0),
@@ -112,8 +122,8 @@ def get_right_plate_outer_pts():
         ( 82.8625,  41.38125, 1.0),
         ( 82.8625,  67.90000, 1.0),
         ( 24.8375,  67.90000, 1.0),
-        ( 24.8375,  37.40000, 1.0),
-        ( -5.6625,  37.40000, 1.0),
+        ( 24.8375,  31.00000, 1.0),
+        ( -5.6625,  31.00000, 1.0),
     ]
 
 def load_step(path):
@@ -375,7 +385,7 @@ def main():
     )
 
     right_plate_pts = [(x + 14.2875, -(y + 57.1500), r) for (x, y, r) in reversed(get_right_plate_outer_pts())]
-    right_holes = [(-x, y, radius) for (x, y, radius) in LEFT_MOUNTING_HOLES]
+    right_holes = RIGHT_MOUNTING_HOLES
     right_plate = build_plate_with_cutouts(
         right_plate_pts,
         RIGHT_SWITCHES,
