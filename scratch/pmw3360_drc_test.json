@@ -1,0 +1,3160 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-16T17:42:20",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "key": "silk_over_copper"
+        },
+        {
+            "description": "Text height out of range",
+            "key": "text_height"
+        },
+        {
+            "description": "Text thickness out of range",
+            "key": "text_thickness"
+        },
+        {
+            "description": "PTH inside courtyard",
+            "key": "pth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "key": "npth_inside_courtyard"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-pmw3360.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [V_{IO}] ( F.Cu 上、長さ: 2.3750 mm )",
+                    "pos": {
+                        "x": 152.639,
+                        "y": 87.6588
+                    },
+                    "uuid": "988a5f4f-6886-4210-b7f8-2abfc5f6361f"
+                },
+                {
+                    "description": "ビア [V_{IO}] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 81.2
+                    },
+                    "uuid": "06c779d1-b520-4e4b-9fab-ad16122a7762"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [V_{IO}] ( F.Cu 上、長さ: 0.0375 mm )",
+                    "pos": {
+                        "x": 155.0515,
+                        "y": 85.2838
+                    },
+                    "uuid": "36f58ca3-86da-46a1-8162-d465d447eb16"
+                },
+                {
+                    "description": "パッド 1 [V_{IO}] - R2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 155.0515,
+                        "y": 83.5338
+                    },
+                    "uuid": "3f31e7af-f3ef-4a44-8a45-5ab2e40b84d6"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [/MISO] ( B.Cu 上、長さ: 0.7500 mm )",
+                    "pos": {
+                        "x": 139.539,
+                        "y": 90.6838
+                    },
+                    "uuid": "5a3a4eec-e971-4aa6-b826-bd2bc5ddbf46"
+                },
+                {
+                    "description": "パッド 2 [/MISO] - R2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 153.2265,
+                        "y": 83.5338
+                    },
+                    "uuid": "c2e150e1-1bb3-4d3a-8052-f3fa2ffa6818"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 104.462
+                    },
+                    "uuid": "42d1be21-9c89-4068-a048-e2f351986994"
+                },
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 0.7000 mm )",
+                    "pos": {
+                        "x": 154.362,
+                        "y": 104.4
+                    },
+                    "uuid": "b9f36f56-cbf9-4201-b280-95217f876a8b"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "パッド 1 [V_{IN}] - C3 ( F.Cu 上)",
+                    "pos": {
+                        "x": 136.6375,
+                        "y": 103.6
+                    },
+                    "uuid": "d29e5db0-9e1e-48f7-bb82-2fcd327a5c43"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( B.Cu 上、長さ: 0.5000 mm )",
+                    "pos": {
+                        "x": 136.638,
+                        "y": 104.5
+                    },
+                    "uuid": "54ff4eb9-059e-405a-bcdb-5537ab0e681d"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 1.1500 mm )",
+                    "pos": {
+                        "x": 155.039,
+                        "y": 88.9838
+                    },
+                    "uuid": "5479cd3b-020e-4e3f-9c12-edc3b95e44ef"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.9355 mm )",
+                    "pos": {
+                        "x": 142.7,
+                        "y": 103.31
+                    },
+                    "uuid": "d3accc6c-d911-4407-bcd3-2271f7889f92"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 1.5630 mm )",
+                    "pos": {
+                        "x": 145.637,
+                        "y": 102.65
+                    },
+                    "uuid": "c4de6b48-370c-4553-a0ef-d89300b8a250"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 0.6000 mm )",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.8
+                    },
+                    "uuid": "20b343fe-6083-4ae5-a9d1-e848c609de7d"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 0.5270 mm )",
+                    "pos": {
+                        "x": 153.889,
+                        "y": 92.111
+                    },
+                    "uuid": "f07b2eec-b8ca-4f62-a3de-0a28eeafbe73"
+                },
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 0.8400 mm )",
+                    "pos": {
+                        "x": 153.049,
+                        "y": 91.5838
+                    },
+                    "uuid": "3f67d879-7dd3-43ca-85e6-8a0fa94fb473"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 0.4230 mm )",
+                    "pos": {
+                        "x": 154.139,
+                        "y": 84.861
+                    },
+                    "uuid": "cac1eef7-4cb2-4cc1-8e8e-c6ec08fb892c"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 2.1000 mm )",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 88.5338
+                    },
+                    "uuid": "188fc315-a756-4c2d-b4ae-712e47dd6c6a"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( F.Cu 上、長さ: 3.4570 mm )",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 95.826
+                    },
+                    "uuid": "7e9d2224-54ef-4a23-a1c2-d10950885310"
+                },
+                {
+                    "description": "PTHパッド 15 [Net-(U1-LED_P)] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 96.0238
+                    },
+                    "uuid": "089b445f-9945-4977-9633-4d447e28dc7f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 2.8284 mm )",
+                    "pos": {
+                        "x": 143.0,
+                        "y": 85.129
+                    },
+                    "uuid": "353c981c-360d-4fa1-b785-bb3c826ac976"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 4.0000 mm )",
+                    "pos": {
+                        "x": 139.0,
+                        "y": 85.129
+                    },
+                    "uuid": "6d105320-3706-4d47-878e-d670fbc487aa"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 7.0000 mm )",
+                    "pos": {
+                        "x": 145.0,
+                        "y": 84.5
+                    },
+                    "uuid": "82934180-8367-48b0-a81a-2581701b509f"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 1.3710 mm )",
+                    "pos": {
+                        "x": 145.0,
+                        "y": 83.129
+                    },
+                    "uuid": "a3afab9a-e047-4756-bb88-d8207875d243"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 0.3168 mm )",
+                    "pos": {
+                        "x": 145.637,
+                        "y": 101.824
+                    },
+                    "uuid": "9f68e76f-ac72-4dc0-a497-a0283e113652"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.8
+                    },
+                    "uuid": "ce9814be-779f-43da-b4ca-2a940fe38857"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 4.8000 mm )",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.2
+                    },
+                    "uuid": "1bc14cc1-9f0b-43c1-be01-e455ad7c688d"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 0.6000 mm )",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.8
+                    },
+                    "uuid": "20b343fe-6083-4ae5-a9d1-e848c609de7d"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( F.Cu 上、長さ: 3.2767 mm )",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 99.283
+                    },
+                    "uuid": "2662e1ae-9054-439e-8c88-a5411d24f0d5"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( F.Cu 上、長さ: 3.4570 mm )",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 95.826
+                    },
+                    "uuid": "7e9d2224-54ef-4a23-a1c2-d10950885310"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "フットプリント H2",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 82.9258
+                    },
+                    "uuid": "168c9cf2-2523-4a3a-87b6-b0846566198f"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "パッド 1 [VDD] - R3 ( F.Cu 上)",
+                    "pos": {
+                        "x": 145.4125,
+                        "y": 101.6
+                    },
+                    "uuid": "53a534e1-1bbe-441d-93a0-945b4ec59d80"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "パッド 2 [Net-(U1-LED_P)] - R3 ( F.Cu 上)",
+                    "pos": {
+                        "x": 143.5875,
+                        "y": 101.6
+                    },
+                    "uuid": "022fa211-8900-4cda-85a7-3d56fbd5fec4"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "フットプリント R3",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 101.6
+                    },
+                    "uuid": "5e035a4f-8d8e-4df1-b3d2-3e4d852dda58"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "フットプリント H1",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 82.9258
+                    },
+                    "uuid": "626ab523-7c29-4c17-8831-535dc348d4ea"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "H3のNPTHパッド",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "dd6ccdd9-34c4-4976-8b55-6ec2d63b6195"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "フットプリント H3",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "7a0a2c00-0413-48da-88e4-3458396523af"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "64613d00-ef9d-4247-a3d6-58463d7b8587"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域 U1)",
+            "items": [
+                {
+                    "description": "フットプリント H4",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "876ffa9b-4875-4dda-a3b8-29397fbb786e"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Tracks crossing",
+            "items": [
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 1.8000 mm )",
+                    "pos": {
+                        "x": 154.362,
+                        "y": 104.4
+                    },
+                    "uuid": "0633c356-6aee-4329-a217-f8f8e1d5d216"
+                },
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 0.7000 mm )",
+                    "pos": {
+                        "x": 154.362,
+                        "y": 104.4
+                    },
+                    "uuid": "b9f36f56-cbf9-4201-b280-95217f876a8b"
+                }
+            ],
+            "severity": "error",
+            "type": "tracks_crossing"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.1500 mm)",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 138.362,
+                        "y": 104.4
+                    },
+                    "uuid": "4200e1ec-7db1-497d-b696-032a0eb955c0"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( B.Cu 上、長さ: 5.8620 mm )",
+                    "pos": {
+                        "x": 136.638,
+                        "y": 105.0
+                    },
+                    "uuid": "6650d85b-4c3f-4e36-bba6-6f64ecb2b6b5"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.1824 mm)",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 0.8641 mm )",
+                    "pos": {
+                        "x": 154.5,
+                        "y": 93.0
+                    },
+                    "uuid": "47b917b4-5bac-48ad-8e6b-7676eee69832"
+                },
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 155.0015,
+                        "y": 93.5338
+                    },
+                    "uuid": "c733e369-c1cb-4a76-84a3-fc2ab47fb86c"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0400 mm)",
+            "items": [
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 0.9630 mm )",
+                    "pos": {
+                        "x": 143.363,
+                        "y": 103.6
+                    },
+                    "uuid": "28e235ec-fd00-4f51-be55-dc06ce26420a"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.9355 mm )",
+                    "pos": {
+                        "x": 142.7,
+                        "y": 103.31
+                    },
+                    "uuid": "d3accc6c-d911-4407-bcd3-2271f7889f92"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット Net-(U2-NC) と GND)",
+            "items": [
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 1.8000 mm )",
+                    "pos": {
+                        "x": 154.362,
+                        "y": 104.4
+                    },
+                    "uuid": "0633c356-6aee-4329-a217-f8f8e1d5d216"
+                },
+                {
+                    "description": "パッド 2 [GND] - C5 ( F.Cu 上)",
+                    "pos": {
+                        "x": 154.3625,
+                        "y": 104.4
+                    },
+                    "uuid": "6e613272-8e84-4032-be91-fa9bad59986a"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と Net-(U2-NC))",
+            "items": [
+                {
+                    "description": "パッド 2 [GND] - C5 ( F.Cu 上)",
+                    "pos": {
+                        "x": 154.3625,
+                        "y": 104.4
+                    },
+                    "uuid": "6e613272-8e84-4032-be91-fa9bad59986a"
+                },
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 1.7240 mm )",
+                    "pos": {
+                        "x": 152.638,
+                        "y": 104.4
+                    },
+                    "uuid": "e73bcc0e-36e1-4a5f-9c1a-4dd205371826"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット V_{IO} と VDD)",
+            "items": [
+                {
+                    "description": "パッド 1 [V_{IO}] - R2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 155.0515,
+                        "y": 83.5338
+                    },
+                    "uuid": "3f31e7af-f3ef-4a44-8a45-5ab2e40b84d6"
+                },
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 3.3000 mm )",
+                    "pos": {
+                        "x": 154.5,
+                        "y": 81.2
+                    },
+                    "uuid": "ac49347c-739a-46bb-898c-011e933d1666"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2500 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 4.8000 mm )",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.2
+                    },
+                    "uuid": "1bc14cc1-9f0b-43c1-be01-e455ad7c688d"
+                },
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "64613d00-ef9d-4247-a3d6-58463d7b8587"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット /RESET と /MOTION)",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 4.0000 mm )",
+                    "pos": {
+                        "x": 139.0,
+                        "y": 85.129
+                    },
+                    "uuid": "6d105320-3706-4d47-878e-d670fbc487aa"
+                },
+                {
+                    "description": "配線 [/MOTION] ( F.Cu 上、長さ: 1.8738 mm )",
+                    "pos": {
+                        "x": 138.964,
+                        "y": 86.6688
+                    },
+                    "uuid": "9dfdc317-8759-46a8-84cb-84e7ed0815fa"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0159 mm)",
+            "items": [
+                {
+                    "description": "パッド 1 [V_{IO}] - R2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 155.0515,
+                        "y": 83.5338
+                    },
+                    "uuid": "3f31e7af-f3ef-4a44-8a45-5ab2e40b84d6"
+                },
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 0.5105 mm )",
+                    "pos": {
+                        "x": 154.5,
+                        "y": 84.0
+                    },
+                    "uuid": "7fc8d2e1-1e7e-408d-b7e2-a99e2c053889"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と V_{IN})",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 142.4,
+                        "y": 103.6
+                    },
+                    "uuid": "769fb0e5-07c1-4d72-b85c-efc331818fc0"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.9355 mm )",
+                    "pos": {
+                        "x": 142.7,
+                        "y": 103.31
+                    },
+                    "uuid": "d3accc6c-d911-4407-bcd3-2271f7889f92"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と V_{IN})",
+            "items": [
+                {
+                    "description": "パッド 2 [GND] - U2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 143.3625,
+                        "y": 103.6
+                    },
+                    "uuid": "7e858594-8931-4e8b-8314-a623b27d105e"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.5800 mm )",
+                    "pos": {
+                        "x": 142.7,
+                        "y": 103.89
+                    },
+                    "uuid": "fa04aa41-8888-4089-a8cf-855880fcef4c"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と V_{IN})",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 142.4,
+                        "y": 103.6
+                    },
+                    "uuid": "769fb0e5-07c1-4d72-b85c-efc331818fc0"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.9355 mm )",
+                    "pos": {
+                        "x": 143.363,
+                        "y": 104.55
+                    },
+                    "uuid": "a3671117-83d1-4e1d-a6a9-ae1d044d27fa"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と VDD)",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 155.0015,
+                        "y": 96.7838
+                    },
+                    "uuid": "bef6ee85-ea09-46e6-9753-9db9cf1500ac"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 8.8380 mm )",
+                    "pos": {
+                        "x": 154.5,
+                        "y": 101.838
+                    },
+                    "uuid": "d7942171-1c06-43cd-9bed-ba594986a3a3"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と V_{IN})",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 142.4,
+                        "y": 103.6
+                    },
+                    "uuid": "769fb0e5-07c1-4d72-b85c-efc331818fc0"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.5800 mm )",
+                    "pos": {
+                        "x": 142.7,
+                        "y": 103.89
+                    },
+                    "uuid": "fa04aa41-8888-4089-a8cf-855880fcef4c"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント R2",
+                    "pos": {
+                        "x": 154.139,
+                        "y": 83.5338
+                    },
+                    "uuid": "1424758b-8d1d-48b7-932c-b6803b223b5e"
+                },
+                {
+                    "description": "フットプリント H2",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 82.9258
+                    },
+                    "uuid": "168c9cf2-2523-4a3a-87b6-b0846566198f"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント H2",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 82.9258
+                    },
+                    "uuid": "168c9cf2-2523-4a3a-87b6-b0846566198f"
+                },
+                {
+                    "description": "フットプリント U1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 92.5258
+                    },
+                    "uuid": "2c27e078-5cb9-42fd-9d9a-a3bc492243fd"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント H2",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 82.9258
+                    },
+                    "uuid": "168c9cf2-2523-4a3a-87b6-b0846566198f"
+                },
+                {
+                    "description": "フットプリント TP2",
+                    "pos": {
+                        "x": 147.639,
+                        "y": 81.2
+                    },
+                    "uuid": "4c89c707-5709-4bcd-8a3b-91ae35e9d952"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント J1",
+                    "pos": {
+                        "x": 135.389,
+                        "y": 101.9088
+                    },
+                    "uuid": "17472dbf-4f0a-4657-a4fc-0ebcf20c1723"
+                },
+                {
+                    "description": "フットプリント C3",
+                    "pos": {
+                        "x": 137.5,
+                        "y": 103.6
+                    },
+                    "uuid": "a4d81f4f-af64-4295-a21d-88d6ff305471"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント R4",
+                    "pos": {
+                        "x": 153.5,
+                        "y": 102.6
+                    },
+                    "uuid": "24120d18-dc1a-4480-99c2-983448e5a5f1"
+                },
+                {
+                    "description": "フットプリント U1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 92.5258
+                    },
+                    "uuid": "2c27e078-5cb9-42fd-9d9a-a3bc492243fd"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント R4",
+                    "pos": {
+                        "x": 153.5,
+                        "y": 102.6
+                    },
+                    "uuid": "24120d18-dc1a-4480-99c2-983448e5a5f1"
+                },
+                {
+                    "description": "フットプリント H4",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "876ffa9b-4875-4dda-a3b8-29397fbb786e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント U1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 92.5258
+                    },
+                    "uuid": "2c27e078-5cb9-42fd-9d9a-a3bc492243fd"
+                },
+                {
+                    "description": "フットプリント R3",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 101.6
+                    },
+                    "uuid": "5e035a4f-8d8e-4df1-b3d2-3e4d852dda58"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント U1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 92.5258
+                    },
+                    "uuid": "2c27e078-5cb9-42fd-9d9a-a3bc492243fd"
+                },
+                {
+                    "description": "フットプリント C4",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 103.6
+                    },
+                    "uuid": "60e45f89-7940-4086-a72d-6caebc1738af"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント U1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 92.5258
+                    },
+                    "uuid": "2c27e078-5cb9-42fd-9d9a-a3bc492243fd"
+                },
+                {
+                    "description": "フットプリント H1",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 82.9258
+                    },
+                    "uuid": "626ab523-7c29-4c17-8831-535dc348d4ea"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント U1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 92.5258
+                    },
+                    "uuid": "2c27e078-5cb9-42fd-9d9a-a3bc492243fd"
+                },
+                {
+                    "description": "フットプリント H3",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "7a0a2c00-0413-48da-88e4-3458396523af"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント U1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 92.5258
+                    },
+                    "uuid": "2c27e078-5cb9-42fd-9d9a-a3bc492243fd"
+                },
+                {
+                    "description": "フットプリント H4",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "876ffa9b-4875-4dda-a3b8-29397fbb786e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント U1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 92.5258
+                    },
+                    "uuid": "2c27e078-5cb9-42fd-9d9a-a3bc492243fd"
+                },
+                {
+                    "description": "フットプリント U2",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 103.6
+                    },
+                    "uuid": "d43508b7-d239-4b86-9638-f61238af939c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント TP2",
+                    "pos": {
+                        "x": 147.639,
+                        "y": 81.2
+                    },
+                    "uuid": "4c89c707-5709-4bcd-8a3b-91ae35e9d952"
+                },
+                {
+                    "description": "フットプリント TP1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 81.2
+                    },
+                    "uuid": "9307ccd8-8c0a-463d-ad3c-f994ca574347"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント R3",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 101.6
+                    },
+                    "uuid": "5e035a4f-8d8e-4df1-b3d2-3e4d852dda58"
+                },
+                {
+                    "description": "フットプリント H3",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "7a0a2c00-0413-48da-88e4-3458396523af"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント R3",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 101.6
+                    },
+                    "uuid": "5e035a4f-8d8e-4df1-b3d2-3e4d852dda58"
+                },
+                {
+                    "description": "フットプリント U2",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 103.6
+                    },
+                    "uuid": "d43508b7-d239-4b86-9638-f61238af939c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント C4",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 103.6
+                    },
+                    "uuid": "60e45f89-7940-4086-a72d-6caebc1738af"
+                },
+                {
+                    "description": "フットプリント H4",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "876ffa9b-4875-4dda-a3b8-29397fbb786e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント C4",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 103.6
+                    },
+                    "uuid": "60e45f89-7940-4086-a72d-6caebc1738af"
+                },
+                {
+                    "description": "フットプリント U2",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 103.6
+                    },
+                    "uuid": "d43508b7-d239-4b86-9638-f61238af939c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント H1",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 82.9258
+                    },
+                    "uuid": "626ab523-7c29-4c17-8831-535dc348d4ea"
+                },
+                {
+                    "description": "フットプリント TP3",
+                    "pos": {
+                        "x": 143.639,
+                        "y": 81.2
+                    },
+                    "uuid": "b794d5df-c581-452c-9623-827ece01a501"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント H3",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "7a0a2c00-0413-48da-88e4-3458396523af"
+                },
+                {
+                    "description": "フットプリント C3",
+                    "pos": {
+                        "x": 137.5,
+                        "y": 103.6
+                    },
+                    "uuid": "a4d81f4f-af64-4295-a21d-88d6ff305471"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント H3",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "7a0a2c00-0413-48da-88e4-3458396523af"
+                },
+                {
+                    "description": "フットプリント U2",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 103.6
+                    },
+                    "uuid": "d43508b7-d239-4b86-9638-f61238af939c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント C5",
+                    "pos": {
+                        "x": 153.5,
+                        "y": 104.4
+                    },
+                    "uuid": "854b8182-8a57-49ca-8c5f-1c961db14b44"
+                },
+                {
+                    "description": "フットプリント H4",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.1258
+                    },
+                    "uuid": "876ffa9b-4875-4dda-a3b8-29397fbb786e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント TP1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 81.2
+                    },
+                    "uuid": "9307ccd8-8c0a-463d-ad3c-f994ca574347"
+                },
+                {
+                    "description": "フットプリント TP3",
+                    "pos": {
+                        "x": 143.639,
+                        "y": 81.2
+                    },
+                    "uuid": "b794d5df-c581-452c-9623-827ece01a501"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 2.2627 mm )",
+                    "pos": {
+                        "x": 156.639,
+                        "y": 90.5838
+                    },
+                    "uuid": "76c3c410-329b-4d1a-801e-68ee41f92212"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 2.8284 mm )",
+                    "pos": {
+                        "x": 143.0,
+                        "y": 85.129
+                    },
+                    "uuid": "353c981c-360d-4fa1-b785-bb3c826ac976"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 4.0000 mm )",
+                    "pos": {
+                        "x": 139.0,
+                        "y": 85.129
+                    },
+                    "uuid": "6d105320-3706-4d47-878e-d670fbc487aa"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 7.0000 mm )",
+                    "pos": {
+                        "x": 145.0,
+                        "y": 84.5
+                    },
+                    "uuid": "82934180-8367-48b0-a81a-2581701b509f"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 1.3710 mm )",
+                    "pos": {
+                        "x": 145.0,
+                        "y": 83.129
+                    },
+                    "uuid": "a3afab9a-e047-4756-bb88-d8207875d243"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 1.3435 mm )",
+                    "pos": {
+                        "x": 155.189,
+                        "y": 91.5838
+                    },
+                    "uuid": "384c210b-e77c-4062-b141-b6b3efbf5d00"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 0.3168 mm )",
+                    "pos": {
+                        "x": 145.637,
+                        "y": 101.824
+                    },
+                    "uuid": "9f68e76f-ac72-4dc0-a497-a0283e113652"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 88.5338
+                    },
+                    "uuid": "005459ed-a9eb-40f4-871c-8df68d480a82"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0062 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.8
+                    },
+                    "uuid": "ce9814be-779f-43da-b4ca-2a940fe38857"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 2.1000 mm )",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 88.5338
+                    },
+                    "uuid": "188fc315-a756-4c2d-b4ae-712e47dd6c6a"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 4.8000 mm )",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.2
+                    },
+                    "uuid": "1bc14cc1-9f0b-43c1-be01-e455ad7c688d"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 1.3435 mm )",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 90.6338
+                    },
+                    "uuid": "1efce765-00e2-44be-8bad-e527f1edefae"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 0.6000 mm )",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.8
+                    },
+                    "uuid": "20b343fe-6083-4ae5-a9d1-e848c609de7d"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( F.Cu 上、長さ: 3.2767 mm )",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 99.283
+                    },
+                    "uuid": "2662e1ae-9054-439e-8c88-a5411d24f0d5"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( F.Cu 上、長さ: 3.4570 mm )",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 95.826
+                    },
+                    "uuid": "7e9d2224-54ef-4a23-a1c2-d10950885310"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "パッド 1 [VDD] - R3 ( F.Cu 上)",
+                    "pos": {
+                        "x": 145.4125,
+                        "y": 101.6
+                    },
+                    "uuid": "53a534e1-1bbe-441d-93a0-945b4ec59d80"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "パッド 2 [Net-(U1-LED_P)] - R3 ( F.Cu 上)",
+                    "pos": {
+                        "x": 143.5875,
+                        "y": 101.6
+                    },
+                    "uuid": "022fa211-8900-4cda-85a7-3d56fbd5fec4"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.9355 mm )",
+                    "pos": {
+                        "x": 143.363,
+                        "y": 104.55
+                    },
+                    "uuid": "a3671117-83d1-4e1d-a6a9-ae1d044d27fa"
+                },
+                {
+                    "description": "パッド 2 [GND] - U2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 143.3625,
+                        "y": 103.6
+                    },
+                    "uuid": "7e858594-8931-4e8b-8314-a623b27d105e"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.9355 mm )",
+                    "pos": {
+                        "x": 142.7,
+                        "y": 103.31
+                    },
+                    "uuid": "d3accc6c-d911-4407-bcd3-2271f7889f92"
+                },
+                {
+                    "description": "パッド 2 [GND] - U2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 143.3625,
+                        "y": 103.6
+                    },
+                    "uuid": "7e858594-8931-4e8b-8314-a623b27d105e"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.5800 mm )",
+                    "pos": {
+                        "x": 142.7,
+                        "y": 103.89
+                    },
+                    "uuid": "fa04aa41-8888-4089-a8cf-855880fcef4c"
+                },
+                {
+                    "description": "パッド 2 [GND] - U2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 143.3625,
+                        "y": 103.6
+                    },
+                    "uuid": "7e858594-8931-4e8b-8314-a623b27d105e"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 1.8000 mm )",
+                    "pos": {
+                        "x": 154.362,
+                        "y": 104.4
+                    },
+                    "uuid": "0633c356-6aee-4329-a217-f8f8e1d5d216"
+                },
+                {
+                    "description": "パッド 2 [GND] - C5 ( F.Cu 上)",
+                    "pos": {
+                        "x": 154.3625,
+                        "y": 104.4
+                    },
+                    "uuid": "6e613272-8e84-4032-be91-fa9bad59986a"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 3.3000 mm )",
+                    "pos": {
+                        "x": 154.5,
+                        "y": 81.2
+                    },
+                    "uuid": "ac49347c-739a-46bb-898c-011e933d1666"
+                },
+                {
+                    "description": "パッド 1 [V_{IO}] - R2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 155.0515,
+                        "y": 83.5338
+                    },
+                    "uuid": "3f31e7af-f3ef-4a44-8a45-5ab2e40b84d6"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 1.7240 mm )",
+                    "pos": {
+                        "x": 152.638,
+                        "y": 104.4
+                    },
+                    "uuid": "e73bcc0e-36e1-4a5f-9c1a-4dd205371826"
+                },
+                {
+                    "description": "パッド 2 [GND] - C5 ( F.Cu 上)",
+                    "pos": {
+                        "x": 154.3625,
+                        "y": 104.4
+                    },
+                    "uuid": "6e613272-8e84-4032-be91-fa9bad59986a"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 4.0000 mm )",
+                    "pos": {
+                        "x": 139.0,
+                        "y": 85.129
+                    },
+                    "uuid": "6d105320-3706-4d47-878e-d670fbc487aa"
+                },
+                {
+                    "description": "PTHパッド 9 [/MOTION] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 85.3438
+                    },
+                    "uuid": "fcff2066-b58c-4bd6-838f-49e12f1ad9f3"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "ビア [V_{IO}] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 81.2
+                    },
+                    "uuid": "06c779d1-b520-4e4b-9fab-ad16122a7762"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [/MISO] ( B.Cu 上、長さ: 1.2728 mm )",
+                    "pos": {
+                        "x": 138.639,
+                        "y": 89.7838
+                    },
+                    "uuid": "2ef03835-dbae-4b85-b012-574e2f6f317d"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 2.2627 mm )",
+                    "pos": {
+                        "x": 156.639,
+                        "y": 90.5838
+                    },
+                    "uuid": "76c3c410-329b-4d1a-801e-68ee41f92212"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "ビア [V_{IN}] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 136.638,
+                        "y": 104.5
+                    },
+                    "uuid": "2ee181ff-a257-4b2e-bd72-fad4a7574979"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 4.3070 mm )",
+                    "pos": {
+                        "x": 139.696,
+                        "y": 84.1288
+                    },
+                    "uuid": "8ec424cb-be3e-453a-b153-98685122b818"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 1.3435 mm )",
+                    "pos": {
+                        "x": 155.189,
+                        "y": 91.5838
+                    },
+                    "uuid": "384c210b-e77c-4062-b141-b6b3efbf5d00"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 0.5105 mm )",
+                    "pos": {
+                        "x": 154.5,
+                        "y": 84.0
+                    },
+                    "uuid": "7fc8d2e1-1e7e-408d-b7e2-a99e2c053889"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 0.4230 mm )",
+                    "pos": {
+                        "x": 154.139,
+                        "y": 84.861
+                    },
+                    "uuid": "cac1eef7-4cb2-4cc1-8e8e-c6ec08fb892c"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 88.5338
+                    },
+                    "uuid": "005459ed-a9eb-40f4-871c-8df68d480a82"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.8
+                    },
+                    "uuid": "ce9814be-779f-43da-b4ca-2a940fe38857"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 1.2572 mm )",
+                    "pos": {
+                        "x": 153.0,
+                        "y": 93.0
+                    },
+                    "uuid": "2f3904a9-6b68-45ab-90fc-eaa99f8cf480"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( F.Cu 上、長さ: 3.4570 mm )",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 95.826
+                    },
+                    "uuid": "7e9d2224-54ef-4a23-a1c2-d10950885310"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "ゾーン [GND] F.Cu と B.Cu 上, 優先度 0",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.5758
+                    },
+                    "uuid": "4bad4f2f-3393-4ffa-b607-5f158c54ba27"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "ポリゴン (F.Silkscreen 上)",
+                    "pos": {
+                        "x": 155.274833,
+                        "y": 100.573533
+                    },
+                    "uuid": "52989e92-2c1f-4f40-9c73-0c139ba61232"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.2758
+                    },
+                    "uuid": "84ad0f0a-e159-418b-9211-74f80b911e30"
+                },
+                {
+                    "description": "ポリゴン (B.Silkscreen 上)",
+                    "pos": {
+                        "x": 151.608543,
+                        "y": 79.881152
+                    },
+                    "uuid": "7bb09dd6-3882-4676-914a-c5e1f54038dd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "セグメント (B.Silkscreen 上)",
+                    "pos": {
+                        "x": 141.389,
+                        "y": 93.0338
+                    },
+                    "uuid": "d414bf0e-31af-446a-9d6e-ab72928336f2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "セグメント (B.Silkscreen 上)",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 84.2838
+                    },
+                    "uuid": "24b980e6-1ed3-4204-bf6a-5fa3d44c98e3"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "セグメント (B.Silkscreen 上)",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 101.2838
+                    },
+                    "uuid": "f1da04de-c888-4a70-aa9c-11ad1396acee"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "セグメント (B.Silkscreen 上)",
+                    "pos": {
+                        "x": 149.889,
+                        "y": 93.0338
+                    },
+                    "uuid": "b84f0683-8957-4af4-ae4e-40eb5a5f76b1"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "円弧 (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 81.7758
+                    },
+                    "uuid": "8ea3fc02-a43c-4339-b19d-c2b42d6aa6e2"
+                },
+                {
+                    "description": "基板上のテキスト 'curcur40 PMW3360 Sensor Board\nRev P.1' ( B.Silkscreen 上)",
+                    "pos": {
+                        "x": 150.289,
+                        "y": 79.2338
+                    },
+                    "uuid": "ed8bc3fe-91fe-4741-8ac8-67b0dc1e3994"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 153.639,
+                        "y": 105.7758
+                    },
+                    "uuid": "e033f3fa-efb6-4c1f-9f3c-b090251280b6"
+                },
+                {
+                    "description": "基板上のテキスト 'JP1:\n[1-2 3]V_{IO}=V_{IN}\n[1 2-3]V_{IO}=V_{DD}' ( B.Silkscreen 上)",
+                    "pos": {
+                        "x": 151.4895,
+                        "y": 105.7338
+                    },
+                    "uuid": "4e78ac26-1b29-4743-89ce-b770bab09ad1"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "R2のリファレンスフィールド",
+                    "pos": {
+                        "x": 156.389,
+                        "y": 83.2838
+                    },
+                    "uuid": "3eb49b8c-0d02-497f-a6e5-a49293f6b4c7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.2758
+                    },
+                    "uuid": "84ad0f0a-e159-418b-9211-74f80b911e30"
+                },
+                {
+                    "description": "H2のリファレンスフィールド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 79.7758
+                    },
+                    "uuid": "3e7561c2-bbef-4f78-8252-1068aa8dae92"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "円弧 (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 103.2758
+                    },
+                    "uuid": "6994019a-152b-4f9f-a558-6ccdc4ed127d"
+                },
+                {
+                    "description": "J1のリファレンスフィールド",
+                    "pos": {
+                        "x": 135.389,
+                        "y": 104.2388
+                    },
+                    "uuid": "2855e9a4-d841-44f9-8f35-1aa44c2ca6ac"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 134.389,
+                        "y": 103.2758
+                    },
+                    "uuid": "42df1ab7-ebd8-4230-a2d1-7e9d2e5bc08c"
+                },
+                {
+                    "description": "セグメント of J1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 136.719,
+                        "y": 82.7988
+                    },
+                    "uuid": "642ebbfd-7e6d-4ab2-b14f-0e8859d4abec"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 134.389,
+                        "y": 103.2758
+                    },
+                    "uuid": "42df1ab7-ebd8-4230-a2d1-7e9d2e5bc08c"
+                },
+                {
+                    "description": "セグメント of J1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 136.719,
+                        "y": 100.6388
+                    },
+                    "uuid": "24cb6f6d-aee3-4c54-ab50-e99b386ca81a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.2758
+                    },
+                    "uuid": "84ad0f0a-e159-418b-9211-74f80b911e30"
+                },
+                {
+                    "description": "TP2 のフットプリント テキスト ( V_{DD} )",
+                    "pos": {
+                        "x": 147.639,
+                        "y": 79.47335
+                    },
+                    "uuid": "343858e3-af78-48c2-8757-e73f8babac33"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "R3のリファレンスフィールド",
+                    "pos": {
+                        "x": 147.04,
+                        "y": 101.6
+                    },
+                    "uuid": "79504ae9-7750-40ba-95df-0eec9a8cc20d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "C4のリファレンスフィールド",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.31455
+                    },
+                    "uuid": "a77463a4-4078-4796-a773-45034a210a77"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.2758
+                    },
+                    "uuid": "84ad0f0a-e159-418b-9211-74f80b911e30"
+                },
+                {
+                    "description": "H1のリファレンスフィールド",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 79.7758
+                    },
+                    "uuid": "5f2e6eaf-dfdb-4138-ad0f-e78cf2f30d59"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "H3のリファレンスフィールド",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 98.9758
+                    },
+                    "uuid": "01e0c9a8-f53a-4cff-a38e-403f49099187"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "H4のリファレンスフィールド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 98.9758
+                    },
+                    "uuid": "7dc72305-2c7e-47d2-b20f-7814ffb5227a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.2758
+                    },
+                    "uuid": "84ad0f0a-e159-418b-9211-74f80b911e30"
+                },
+                {
+                    "description": "TP1 のフットプリント テキスト ( V_{IO} )",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 79.47335
+                    },
+                    "uuid": "4ec7c177-8f87-4a8e-ba7d-fe5df67f98ef"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.2758
+                    },
+                    "uuid": "84ad0f0a-e159-418b-9211-74f80b911e30"
+                },
+                {
+                    "description": "TP3 のフットプリント テキスト ( GND )",
+                    "pos": {
+                        "x": 143.639,
+                        "y": 79.62575
+                    },
+                    "uuid": "e9136365-d2ab-452d-86f3-fc89c90275f6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "C2のリファレンスフィールド",
+                    "pos": {
+                        "x": 156.389,
+                        "y": 96.2838
+                    },
+                    "uuid": "d4a1948a-2cc5-440e-b466-15887877c849"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "矩形 of U1 、Edge.Cuts 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 101.4938
+                    },
+                    "uuid": "5da99b90-e0f1-47c2-9526-48df74357ab8"
+                },
+                {
+                    "description": "U2のリファレンスフィールド",
+                    "pos": {
+                        "x": 144.3675,
+                        "y": 101.31455
+                    },
+                    "uuid": "d95a199d-12d0-436f-a5c4-9668ee896d51"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "JP1のリファレンスフィールド",
+                    "pos": {
+                        "x": 155.889,
+                        "y": 90.2838
+                    },
+                    "uuid": "417dc769-b6bc-43a0-9d16-1aece60bae66"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "C1のリファレンスフィールド",
+                    "pos": {
+                        "x": 156.389,
+                        "y": 94.0338
+                    },
+                    "uuid": "2c166fb5-4cb1-47d5-9f25-8dec2571f1d7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 156.139,
+                        "y": 81.7758
+                    },
+                    "uuid": "df211694-b60c-4f5c-8444-686b6a99b3ea"
+                },
+                {
+                    "description": "R1のリファレンスフィールド",
+                    "pos": {
+                        "x": 156.389,
+                        "y": 85.5338
+                    },
+                    "uuid": "91aa3e51-2932-4c12-a427-9f27193ced6f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "円 of TP1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 81.2
+                    },
+                    "uuid": "21d4ff87-91ea-4c4b-b943-543093ef29d3"
+                },
+                {
+                    "description": "ポリゴン (F.Silkscreen 上)",
+                    "pos": {
+                        "x": 146.139,
+                        "y": 83.0338
+                    },
+                    "uuid": "50890639-b2ec-4237-b8cb-6f8b98aabe60"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "円 of TP1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 81.2
+                    },
+                    "uuid": "21d4ff87-91ea-4c4b-b943-543093ef29d3"
+                },
+                {
+                    "description": "円 of TP2 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 147.639,
+                        "y": 81.2
+                    },
+                    "uuid": "f340c0b0-6e70-4af1-9faa-94e7a93ecdba"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "円 of TP1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 81.2
+                    },
+                    "uuid": "21d4ff87-91ea-4c4b-b943-543093ef29d3"
+                },
+                {
+                    "description": "円 of TP3 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 143.639,
+                        "y": 81.2
+                    },
+                    "uuid": "7b78b023-a401-4293-b173-ca908a0f6c21"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "TP1 のフットプリント テキスト ( V_{IO} )",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 79.47335
+                    },
+                    "uuid": "4ec7c177-8f87-4a8e-ba7d-fe5df67f98ef"
+                },
+                {
+                    "description": "TP3 のフットプリント テキスト ( GND )",
+                    "pos": {
+                        "x": 143.639,
+                        "y": 79.62575
+                    },
+                    "uuid": "e9136365-d2ab-452d-86f3-fc89c90275f6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "H3のリファレンスフィールド",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 98.9758
+                    },
+                    "uuid": "01e0c9a8-f53a-4cff-a38e-403f49099187"
+                },
+                {
+                    "description": "セグメント of U1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 140.489,
+                        "y": 102.1938
+                    },
+                    "uuid": "18ba327d-9848-4c3d-a68f-80fe131da80e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "ポリゴン (F.Silkscreen 上)",
+                    "pos": {
+                        "x": 155.274833,
+                        "y": 100.573533
+                    },
+                    "uuid": "52989e92-2c1f-4f40-9c73-0c139ba61232"
+                },
+                {
+                    "description": "R4のリファレンスフィールド",
+                    "pos": {
+                        "x": 153.5,
+                        "y": 101.203
+                    },
+                    "uuid": "577920f7-55ba-4a5c-bd81-ed25c883eadc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "ポリゴン (F.Silkscreen 上)",
+                    "pos": {
+                        "x": 155.274833,
+                        "y": 100.573533
+                    },
+                    "uuid": "52989e92-2c1f-4f40-9c73-0c139ba61232"
+                },
+                {
+                    "description": "セグメント of R4 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 153.245276,
+                        "y": 102.0775
+                    },
+                    "uuid": "c4f19c19-5ed4-45c9-b61e-5b4951b0fc55"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "J1のリファレンスフィールド",
+                    "pos": {
+                        "x": 135.389,
+                        "y": 104.2388
+                    },
+                    "uuid": "2855e9a4-d841-44f9-8f35-1aa44c2ca6ac"
+                },
+                {
+                    "description": "C3のリファレンスフィールド",
+                    "pos": {
+                        "x": 135.21455,
+                        "y": 103.6
+                    },
+                    "uuid": "b80f74c0-2c90-4d02-ac3b-90de9caac02f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "セグメント of J1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 136.719,
+                        "y": 103.2388
+                    },
+                    "uuid": "04b99a0f-055e-4d92-b880-8f5ea6671148"
+                },
+                {
+                    "description": "C3のリファレンスフィールド",
+                    "pos": {
+                        "x": 135.21455,
+                        "y": 103.6
+                    },
+                    "uuid": "b80f74c0-2c90-4d02-ac3b-90de9caac02f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "R3のリファレンスフィールド",
+                    "pos": {
+                        "x": 147.04,
+                        "y": 101.6
+                    },
+                    "uuid": "79504ae9-7750-40ba-95df-0eec9a8cc20d"
+                },
+                {
+                    "description": "C4のリファレンスフィールド",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 101.31455
+                    },
+                    "uuid": "a77463a4-4078-4796-a773-45034a210a77"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "セグメント of U1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 102.1938
+                    },
+                    "uuid": "401627b4-07e4-4789-a12c-11eed02c86f9"
+                },
+                {
+                    "description": "R3のリファレンスフィールド",
+                    "pos": {
+                        "x": 147.04,
+                        "y": 101.6
+                    },
+                    "uuid": "79504ae9-7750-40ba-95df-0eec9a8cc20d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "セグメント of U1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 102.1938
+                    },
+                    "uuid": "401627b4-07e4-4789-a12c-11eed02c86f9"
+                },
+                {
+                    "description": "セグメント of U2 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 102.04
+                    },
+                    "uuid": "a45e2969-dd65-4500-9792-55cc0bf20261"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "セグメント of U1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 102.1938
+                    },
+                    "uuid": "401627b4-07e4-4789-a12c-11eed02c86f9"
+                },
+                {
+                    "description": "セグメント of R3 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 144.754724,
+                        "y": 102.1225
+                    },
+                    "uuid": "c2236966-5d24-4d37-9fce-49f4b67edeaa"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "セグメント of U2 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 102.04
+                    },
+                    "uuid": "09335b3b-2ae2-4ab0-9e70-d2fb67359382"
+                },
+                {
+                    "description": "セグメント of U1 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 149.989,
+                        "y": 102.1938
+                    },
+                    "uuid": "401627b4-07e4-4789-a12c-11eed02c86f9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "セグメント of U2 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 102.04
+                    },
+                    "uuid": "a45e2969-dd65-4500-9792-55cc0bf20261"
+                },
+                {
+                    "description": "セグメント of R3 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 144.754724,
+                        "y": 102.1225
+                    },
+                    "uuid": "c2236966-5d24-4d37-9fce-49f4b67edeaa"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "セグメント of R3 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 144.754724,
+                        "y": 101.0775
+                    },
+                    "uuid": "7c3cf880-e2ec-4b1a-986e-cf4f242bf6b4"
+                },
+                {
+                    "description": "U2のリファレンスフィールド",
+                    "pos": {
+                        "x": 144.3675,
+                        "y": 101.31455
+                    },
+                    "uuid": "d95a199d-12d0-436f-a5c4-9668ee896d51"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "セグメント of U2 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 102.04
+                    },
+                    "uuid": "09335b3b-2ae2-4ab0-9e70-d2fb67359382"
+                },
+                {
+                    "description": "セグメント of R3 、F.Silkscreen 上",
+                    "pos": {
+                        "x": 144.754724,
+                        "y": 102.1225
+                    },
+                    "uuid": "c2236966-5d24-4d37-9fce-49f4b67edeaa"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        }
+    ]
+}
