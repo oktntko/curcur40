@@ -38,16 +38,16 @@ import build_cases
 
 # Switches and mounting holes definitions (self-contained, no pcbnew dependency)
 LEFT_MOUNTING_HOLES = [
-    (-114.0, -20.0, 1.1),
-    (  -2.0, -20.0, 1.1),
-    (-116.5,  20.0, 1.1),
-    (  -2.0,  64.0, 1.1),
+    (-100.0000, -22.5000, 1.1),
+    ( -23.8125, -22.5000, 1.1),
+    ( -98.0000,  38.0000, 1.1),
+    ( -23.8125,  64.0000, 1.1),
 ]
 
 RIGHT_MOUNTING_HOLES = [
-    (114.0, -20.0, 1.1),
-    (  2.0, -20.0, 1.1),
-    (116.5,  20.0, 1.1),
+    (100.0000, -22.5000, 1.1),
+    ( 23.8125, -22.5000, 1.1),
+    ( 98.0000,  38.0000, 1.1),
 ]
 
 LEFT_SWITCHES = [
@@ -99,7 +99,7 @@ RIGHT_SWITCHES = [
 RIGHT_ENCODER = (14.2875, 0.00000)
 
 def get_left_plate_outer_pts():
-    # Left Plate Plan B with TRRS notch
+    # Left Plate Plan B (smooth un-notched rectangle with pinky step)
     return [
         (   5.6625, -24.71250, 1.0),
         (-119.4625, -24.71250, 1.0),
@@ -107,14 +107,10 @@ def get_left_plate_outer_pts():
         ( -82.8625,  41.38125, 1.0),
         ( -82.8625,  67.90000, 1.0),
         (   5.6625,  67.90000, 1.0),
-        (   5.6625,  38.30000, 1.0),
-        (  -8.1425,  38.30000, 1.0),
-        (  -8.1425,  31.00000, 1.0),
-        (   5.6625,  31.00000, 1.0),
     ]
 
 def get_right_plate_outer_pts():
-    # Right Plate Plan B with trackball bay and TRRS notch
+    # Right Plate Plan B with trackball bay (no TRRS notch)
     return [
         ( -5.6625, -24.71250, 1.0),
         (119.4625, -24.71250, 1.0),
@@ -122,8 +118,8 @@ def get_right_plate_outer_pts():
         ( 82.8625,  41.38125, 1.0),
         ( 82.8625,  67.90000, 1.0),
         ( 24.8375,  67.90000, 1.0),
-        ( 24.8375,  31.00000, 1.0),
-        ( -5.6625,  31.00000, 1.0),
+        ( 24.8375,  37.40000, 1.0),
+        ( -5.6625,  37.40000, 1.0),
     ]
 
 def load_step(path):
