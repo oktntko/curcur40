@@ -113,23 +113,24 @@ def build_case(is_right=True):
         # Bottom counterbore (Ø 4.50 mm, depth 1.80 mm from Z = -12.60 to -10.80)
         body = body - bd.Cylinder(radius=2.25, height=1.80).moved(bd.Location((cx, cy, -12.60 + 0.90)))
 
-    # 4. USB-C port cutout
-    # rJ1 at x_pcb = 12.2875 -> X_case = 26.5750 mm (Right), -26.5750 mm (Left)
+    # 4. USB-C port cutout (Top wall at Y = -30.8375)
+    # J1/rJ1 at X_case = 26.5750 mm (Right), -26.5750 mm (Left)
+    # Z center = -4.25 mm (aligned with mid-mount PCB USB-C receptacle)
+    # Width = 11.50 mm, Height = 6.50 mm (allows full insertion of all USB-C cable overmolds), R = 1.50 mm
     usb_cx = 26.5750 if is_right else -26.5750
-    with bd.BuildSketch(bd.Plane.XZ.offset(-35.0)) as sk_usb:
-        with bd.Locations([(usb_cx, (-8.66 + -4.50) / 2.0)]):
-            bd.RectangleRounded(10.00, -4.50 - (-8.66), radius=0.8)
-    usb_solid = bd.extrude(sk_usb.sketch, amount=10.0)
-    body = body - usb_solid
+    usb_cutter = bd.Box(11.50, 15.00, 6.50).moved(bd.Location((usb_cx, -30.8375, -4.2500)))
+    edges_y = usb_cutter.edges().filter_by(lambda e: abs(e.bounding_box().size.Y - 15.00) < 0.1)
+    if len(edges_y) == 4:
+        usb_cutter = bd.fillet(edges_y, radius=1.50)
+    body = body - usb_cutter
 
-    # 5. TRRS port cutout
-    # rJ2 at X_case = 9.0300 (Right), -9.0300 (Left), Y = -91.8000, Z = -6.6500
-    trrs_x = 0.0 if is_right else -15.0
-    with bd.BuildSketch(bd.Plane.YZ.offset(trrs_x)) as sk_trrs:
-        with bd.Locations([(-91.8000, -6.6500)]):
-            bd.Circle(radius=2.75)
-    trrs_solid = bd.extrude(sk_trrs.sketch, amount=15.0)
-    body = body - trrs_solid
+    # 5. TRRS port cutout (Inner side wall at X = +7.0250 / -7.0250)
+    # J2/rJ2 at Y = -91.8000, Z center = -4.25 mm (aligned with mid-mount TRRS jack barrel)
+    # Diameter = 6.00 mm (radius 3.00 mm)
+    trrs_x = 7.0250 if is_right else -7.0250
+    trrs_cutter = bd.Cylinder(radius=3.00, height=20.0).moved(bd.Location((0, 0, 0)))
+    trrs_cutter = trrs_cutter.rotate(bd.Axis.Y, 90).moved(bd.Location((trrs_x, -91.8000, -4.2500)))
+    body = body - trrs_cutter
 
     # 6. Right Case Trackball Optical Window & 4x M2 Mounting Holes with counterbores
     if is_right:
