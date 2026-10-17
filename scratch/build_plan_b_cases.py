@@ -68,14 +68,14 @@ def build_case(is_right=True):
     side_str = "right" if is_right else "left"
     print(f"--- Building {side_str} case ---")
 
-    # 1. Outer solid (Z = -11.40 to -0.30)
+    # 1. Outer solid (Z = -12.60 to -0.30, 3.20mm solid floor)
     outer_pts = get_outer_pts(is_right)
     sk_outer = make_filleted_sketch(outer_pts)
-    outer_solid = bd.extrude(sk_outer, amount=11.10).moved(bd.Location((0, 0, -11.40)))
+    outer_solid = bd.extrude(sk_outer, amount=12.30).moved(bd.Location((0, 0, -12.60)))
 
     # Fillet outer top and bottom horizontal boundary edges (R=0.95 mm)
     top_edges = outer_solid.edges().filter_by(lambda e: abs(e.bounding_box().min.Z - (-0.30)) < 0.05 and abs(e.bounding_box().max.Z - (-0.30)) < 0.05)
-    bottom_edges = outer_solid.edges().filter_by(lambda e: abs(e.bounding_box().min.Z - (-11.40)) < 0.05 and abs(e.bounding_box().max.Z - (-11.40)) < 0.05)
+    bottom_edges = outer_solid.edges().filter_by(lambda e: abs(e.bounding_box().min.Z - (-12.60)) < 0.05 and abs(e.bounding_box().max.Z - (-12.60)) < 0.05)
     try:
         outer_solid = bd.fillet(top_edges + bottom_edges, radius=0.95)
     except Exception as e:
@@ -91,7 +91,7 @@ def build_case(is_right=True):
     inner_solid = bd.extrude(sk_inner, amount=10.40).moved(bd.Location((0, 0, -9.40)))
     body = outer_solid - inner_solid
 
-    # 3. Perimeter M2 mounting holes
+    # 3. Perimeter M2 mounting holes with bottom counterbores
     if is_right:
         # Right Case: Hole 1 (top-right), Hole 2 (top-left), Hole 3 (pinky right)
         case_holes = [
@@ -108,7 +108,10 @@ def build_case(is_right=True):
             ( -23.8125 - 14.2875, -( 64.0000 + 57.1500)),  # ( -38.1000, -121.1500)
         ]
     for cx, cy in case_holes:
-        body = body - bd.Cylinder(radius=1.10, height=14.0).moved(bd.Location((cx, cy, -10.0)))
+        # Through hole (Ø 2.20 mm)
+        body = body - bd.Cylinder(radius=1.10, height=20.0).moved(bd.Location((cx, cy, -15.0)))
+        # Bottom counterbore (Ø 4.50 mm, depth 1.80 mm from Z = -12.60 to -10.80)
+        body = body - bd.Cylinder(radius=2.25, height=1.80).moved(bd.Location((cx, cy, -12.60 + 0.90)))
 
     # 4. USB-C port cutout
     # rJ1 at x_pcb = 12.2875 -> X_case = 26.5750 mm (Right), -26.5750 mm (Left)
@@ -128,13 +131,13 @@ def build_case(is_right=True):
     trrs_solid = bd.extrude(sk_trrs.sketch, amount=15.0)
     body = body - trrs_solid
 
-    # 6. Right Case Trackball Optical Window & 4x M2 Mounting Holes
+    # 6. Right Case Trackball Optical Window & 4x M2 Mounting Holes with counterbores
     if is_right:
         tb_cx, tb_cy = 23.8125, -109.5375
-        with bd.BuildSketch(bd.Plane.XY.offset(-13.0)) as sk_opt:
+        with bd.BuildSketch(bd.Plane.XY.offset(-15.0)) as sk_opt:
             with bd.Locations([(tb_cx, tb_cy)]):
                 bd.RectangleRounded(8.00, 12.00, radius=1.50)
-        opt_solid = bd.extrude(sk_opt.sketch, amount=6.0)
+        opt_solid = bd.extrude(sk_opt.sketch, amount=8.0)
         body = body - opt_solid
 
         tb_screws = [
@@ -144,7 +147,10 @@ def build_case(is_right=True):
             (tb_cx + 4.50, tb_cy + 10.00),
         ]
         for sx, sy in tb_screws:
-            body = body - bd.Cylinder(radius=1.10, height=10.0).moved(bd.Location((sx, sy, -10.0)))
+            # Through hole (Ø 2.20 mm)
+            body = body - bd.Cylinder(radius=1.10, height=20.0).moved(bd.Location((sx, sy, -15.0)))
+            # Bottom counterbore (Ø 4.50 mm, depth 1.80 mm)
+            body = body - bd.Cylinder(radius=2.25, height=1.80).moved(bd.Location((sx, sy, -12.60 + 0.90)))
 
     solids = body.solids()
     print(f"{side_str} case: {len(solids)} solid(s), volume = {body.volume:.2f} mm^3")

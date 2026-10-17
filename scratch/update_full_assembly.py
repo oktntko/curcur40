@@ -168,18 +168,31 @@ def build_plate_with_cutouts(outer_pts, switch_centers, mounting_holes, x_offset
     if encoder:
         add_rounded_cutout(*RIGHT_ENCODER, 18.2, 18.2, 0.5)
 
-    for cx, cy, radius in mounting_holes:
-        x, y = to_step(cx, cy)
-        tool = BRepPrimAPI_MakeCylinder(
-            gp_Ax2(gp_Pnt(x, y, -2.0), gp_Dir(0, 0, 1)), radius, 2.0
-        ).Shape()
-        tools_builder.Add(tools, tool)
-
     cut = BRepAlgoAPI_Cut(plate, tools)
     cut.Build()
     if not cut.IsDone():
         raise RuntimeError("Failed to cut the top-plate openings from the assembly model.")
-    return cut.Shape()
+    plate = cut.Shape()
+
+    for cx, cy, radius in mounting_holes:
+        x, y = to_step(cx, cy)
+        # Through hole (Ø 2.20 mm)
+        c_th = BRepPrimAPI_MakeCylinder(
+            gp_Ax2(gp_Pnt(x, y, -3.0), gp_Dir(0, 0, 1)), radius, 5.0
+        ).Shape()
+        cut_th = BRepAlgoAPI_Cut(plate, c_th)
+        cut_th.Build()
+        plate = cut_th.Shape()
+
+        # Top counterbore (Ø 4.20 mm, depth 0.60 mm from Z = -0.30 down to -0.90)
+        c_cb = BRepPrimAPI_MakeCylinder(
+            gp_Ax2(gp_Pnt(x, y, -0.90), gp_Dir(0, 0, 1)), 2.10, 2.0
+        ).Shape()
+        cut_cb = BRepAlgoAPI_Cut(plate, c_cb)
+        cut_cb.Build()
+        plate = cut_cb.Shape()
+
+    return plate
 
 def make_ckw12_shape(cx, cy):
     trsf_rot = gp_Trsf()
@@ -436,10 +449,13 @@ def main():
 
     print("Rendering ISO view...")
     render_scene(tris, str(ARTIFACTS_DIR / "final_assembly_iso.png"), pitch_deg=34.0, yaw_deg=-10.0)
+    render_scene(tris, str(ARTIFACTS_DIR / "assembly_iso_counterbore_v4.png"), pitch_deg=34.0, yaw_deg=-10.0)
     print("Rendering Top view...")
     render_scene(tris, str(ARTIFACTS_DIR / "final_assembly_top.png"), pitch_deg=0.0, yaw_deg=0.0)
+    render_scene(tris, str(ARTIFACTS_DIR / "assembly_top_counterbore_v4.png"), pitch_deg=0.0, yaw_deg=0.0)
     print("Rendering Bottom view...")
     render_scene(tris, str(ARTIFACTS_DIR / "final_assembly_bottom.png"), pitch_deg=180.0, yaw_deg=0.0)
+    render_scene(tris, str(ARTIFACTS_DIR / "assembly_bottom_counterbore_v4.png"), pitch_deg=180.0, yaw_deg=0.0)
     print("All renders completed successfully!")
 
 if __name__ == "__main__":
