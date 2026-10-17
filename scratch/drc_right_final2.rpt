@@ -1,0 +1,34 @@
+** Drc report for curcur40-right.kicad_pcb **
+** Created on 2026-10-17T08:25:24 **
+** Report includes: Errors, Warnings **
+
+** Found 3 DRC violations **
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(8.7725 mm, 37.0000 mm): Track [/TX] on B.Cu, length 7.5000 mm
+    @(6.6925 mm, 38.6962 mm): Track [+5VR] on B.Cu, length 11.9050 mm
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(111.5625 mm, 36.8263 mm): Via [GNDR] on F.Cu - B.Cu
+    @(111.5625 mm, 36.8263 mm): Via [GNDR] on F.Cu - B.Cu
+[lib_footprint_issues]: フットプリント 'SOIC-8_5.23x5.23mm_P1.27mm' がライブラリ'Package_SO'に見つかりません
+    Local override; warning
+    @(63.1375 mm, 13.7863 mm): Footprint rU4
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Silkscreen clipped by solder mask
+    - Text height out of range
+    - Text thickness out of range
+    - PTH inside courtyard
+    - NPTH inside courtyard
+    - Footprint doesn't match copy in library
+
+** End of Report **
