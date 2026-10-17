@@ -8,10 +8,10 @@
 	)
 	(paper "A3")
 	(title_block
-		(title "Corne")
+		(title "curcur40 Right")
 		(date "2024-05-07")
 		(rev "4.1.0")
-		(company "foostan")
+		(company "curcur40")
 	)
 	(layers
 		(0 "F.Cu" signal)
