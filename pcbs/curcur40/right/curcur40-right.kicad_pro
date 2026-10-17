@@ -535,11 +535,11 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "corne.net",
+      "netlist": "curcur40-right.net",
       "plot": "",
       "specctra_dsn": "",
-      "step": "../../../../../../../Desktop/corne-pcb.STEP",
-      "vrml": "../../../../../../Desktop/corne.wrl"
+      "step": "",
+      "vrml": ""
     },
     "page_layout_descr_file": ""
   },

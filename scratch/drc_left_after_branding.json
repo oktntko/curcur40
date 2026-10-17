@@ -1,0 +1,576 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-17T16:17:47",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "key": "silk_over_copper"
+        },
+        {
+            "description": "Text height out of range",
+            "key": "text_height"
+        },
+        {
+            "description": "Text thickness out of range",
+            "key": "text_thickness"
+        },
+        {
+            "description": "PTH inside courtyard",
+            "key": "pth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "key": "npth_inside_courtyard"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-left.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "２つのネットを短絡するアイテム (ネット /KEY16 と Net-(U1-RUN))",
+            "items": [
+                {
+                    "description": "配線 [/KEY16] ( B.Cu 上、長さ: 2.2631 mm )",
+                    "pos": {
+                        "x": -92.0,
+                        "y": 39.75
+                    },
+                    "uuid": "9b045113-5316-45ed-aeb9-4805f95a56be"
+                },
+                {
+                    "description": "パッド 2 [Net-(U1-RUN)] - SMDSW2 ( B.Cu 上)",
+                    "pos": {
+                        "x": -91.1175,
+                        "y": 39.56625
+                    },
+                    "uuid": "9f0d1746-8e52-4261-851a-c0d4e2b1ed44"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット /KEY16 と Net-(U1-RUN))",
+            "items": [
+                {
+                    "description": "配線 [/KEY16] ( B.Cu 上、長さ: 8.0000 mm )",
+                    "pos": {
+                        "x": -100.0,
+                        "y": 39.75
+                    },
+                    "uuid": "691efebd-344a-4b7c-a792-7ff86bb07cdf"
+                },
+                {
+                    "description": "パッド 2 [Net-(U1-RUN)] - SMDSW2 ( B.Cu 上)",
+                    "pos": {
+                        "x": -91.1175,
+                        "y": 39.56625
+                    },
+                    "uuid": "9f0d1746-8e52-4261-851a-c0d4e2b1ed44"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0253 mm)",
+            "items": [
+                {
+                    "description": "ビア [Net-(R6-Pad2)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": -94.9675,
+                        "y": 39.29975
+                    },
+                    "uuid": "64b7696c-de34-4d3e-b4a5-e3f6be9fd64d"
+                },
+                {
+                    "description": "配線 [/KEY16] ( B.Cu 上、長さ: 8.0000 mm )",
+                    "pos": {
+                        "x": -100.0,
+                        "y": 39.75
+                    },
+                    "uuid": "691efebd-344a-4b7c-a792-7ff86bb07cdf"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0686 mm)",
+            "items": [
+                {
+                    "description": "配線 [/KEY17] ( B.Cu 上、長さ: 3.2854 mm )",
+                    "pos": {
+                        "x": -92.5,
+                        "y": 36.65
+                    },
+                    "uuid": "18e9b4f6-e25c-463d-9272-d5cf50b3afcd"
+                },
+                {
+                    "description": "配線 [/KEY18] ( B.Cu 上、長さ: 3.9631 mm )",
+                    "pos": {
+                        "x": -93.0,
+                        "y": 36.2
+                    },
+                    "uuid": "55c714fd-62f8-4df0-964a-7d5ce7fd69d6"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0686 mm)",
+            "items": [
+                {
+                    "description": "配線 [/KEY17] ( B.Cu 上、長さ: 8.0000 mm )",
+                    "pos": {
+                        "x": -100.5,
+                        "y": 36.65
+                    },
+                    "uuid": "26060dac-c41c-4009-a5b0-67f5ac20f910"
+                },
+                {
+                    "description": "配線 [/KEY18] ( B.Cu 上、長さ: 3.9631 mm )",
+                    "pos": {
+                        "x": -93.0,
+                        "y": 36.2
+                    },
+                    "uuid": "55c714fd-62f8-4df0-964a-7d5ce7fd69d6"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0171 mm)",
+            "items": [
+                {
+                    "description": "配線 [/KEY14] ( B.Cu 上、長さ: 9.5342 mm )",
+                    "pos": {
+                        "x": -98.52125,
+                        "y": 35.95625
+                    },
+                    "uuid": "8fdcd2c2-e6ef-41fb-9d29-babebb5b8900"
+                },
+                {
+                    "description": "配線 [/KEY18] ( B.Cu 上、長さ: 7.0000 mm )",
+                    "pos": {
+                        "x": -100.0,
+                        "y": 36.2
+                    },
+                    "uuid": "f2a844e4-33ea-4d4b-ac3b-27e917b9b215"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0171 mm)",
+            "items": [
+                {
+                    "description": "配線 [/KEY14] ( B.Cu 上、長さ: 2.4778 mm )",
+                    "pos": {
+                        "x": -100.2733,
+                        "y": 34.2042
+                    },
+                    "uuid": "166dcdda-64ca-4810-8e91-e9e2d67080a4"
+                },
+                {
+                    "description": "配線 [/KEY18] ( B.Cu 上、長さ: 7.0000 mm )",
+                    "pos": {
+                        "x": -100.0,
+                        "y": 36.2
+                    },
+                    "uuid": "f2a844e4-33ea-4d4b-ac3b-27e917b9b215"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0740 mm)",
+            "items": [
+                {
+                    "description": "配線 [/KEY17] ( B.Cu 上、長さ: 8.0000 mm )",
+                    "pos": {
+                        "x": -100.5,
+                        "y": 36.65
+                    },
+                    "uuid": "26060dac-c41c-4009-a5b0-67f5ac20f910"
+                },
+                {
+                    "description": "配線 [/KEY13] ( B.Cu 上、長さ: 9.9939 mm )",
+                    "pos": {
+                        "x": -98.81805,
+                        "y": 36.34945
+                    },
+                    "uuid": "3c4b5511-21fc-498c-9cb4-80b45c2ae88c"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0740 mm)",
+            "items": [
+                {
+                    "description": "配線 [/KEY17] ( B.Cu 上、長さ: 8.0000 mm )",
+                    "pos": {
+                        "x": -100.5,
+                        "y": 36.65
+                    },
+                    "uuid": "26060dac-c41c-4009-a5b0-67f5ac20f910"
+                },
+                {
+                    "description": "配線 [/KEY13] ( B.Cu 上、長さ: 2.6141 mm )",
+                    "pos": {
+                        "x": -100.6665,
+                        "y": 34.501
+                    },
+                    "uuid": "64b8a95c-7e80-4a93-9ec6-9c03002ada3d"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット /KEY16 と Net-(U1-RUN))",
+            "items": [
+                {
+                    "description": "配線 [/KEY16] ( B.Cu 上、長さ: 2.2631 mm )",
+                    "pos": {
+                        "x": -92.0,
+                        "y": 39.75
+                    },
+                    "uuid": "9b045113-5316-45ed-aeb9-4805f95a56be"
+                },
+                {
+                    "description": "ビア [Net-(U1-RUN)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": -91.1575,
+                        "y": 39.29975
+                    },
+                    "uuid": "b22c847b-e1db-4867-b47b-1d6e739ff8eb"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [/KEY16] ( B.Cu 上、長さ: 8.0000 mm )",
+                    "pos": {
+                        "x": -100.0,
+                        "y": 39.75
+                    },
+                    "uuid": "691efebd-344a-4b7c-a792-7ff86bb07cdf"
+                },
+                {
+                    "description": "パッド 2 [Net-(U1-RUN)] - SMDSW2 ( B.Cu 上)",
+                    "pos": {
+                        "x": -91.1175,
+                        "y": 39.56625
+                    },
+                    "uuid": "9f0d1746-8e52-4261-851a-c0d4e2b1ed44"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [/KEY16] ( B.Cu 上、長さ: 8.0000 mm )",
+                    "pos": {
+                        "x": -100.0,
+                        "y": 39.75
+                    },
+                    "uuid": "691efebd-344a-4b7c-a792-7ff86bb07cdf"
+                },
+                {
+                    "description": "パッド 2 [Net-(R6-Pad2)] - SMDSW1 ( B.Cu 上)",
+                    "pos": {
+                        "x": -94.9675,
+                        "y": 39.56625
+                    },
+                    "uuid": "57c5ef25-40d4-477e-ba7f-dc6a18584db3"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [/KEY16] ( B.Cu 上、長さ: 2.2631 mm )",
+                    "pos": {
+                        "x": -92.0,
+                        "y": 39.75
+                    },
+                    "uuid": "9b045113-5316-45ed-aeb9-4805f95a56be"
+                },
+                {
+                    "description": "パッド 2 [Net-(U1-RUN)] - SMDSW2 ( B.Cu 上)",
+                    "pos": {
+                        "x": -91.1175,
+                        "y": 39.56625
+                    },
+                    "uuid": "9f0d1746-8e52-4261-851a-c0d4e2b1ed44"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [GND] ( B.Cu 上、長さ: 2.0121 mm )",
+                    "pos": {
+                        "x": -29.11475,
+                        "y": 25.96025
+                    },
+                    "uuid": "457b7e8e-3d1c-4e6d-b480-feee933d49d7"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [+5V] ( F.Cu 上、長さ: 18.2195 mm )",
+                    "pos": {
+                        "x": -6.5425,
+                        "y": 38.62
+                    },
+                    "uuid": "65f1e2cd-90da-4f7c-a910-9d559ae83bf1"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [+5V] ( F.Cu 上、長さ: 0.6765 mm )",
+                    "pos": {
+                        "x": -39.235992,
+                        "y": 41.23995
+                    },
+                    "uuid": "7948b160-acc5-4b1d-9d8b-e5b1c2f6d66b"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [+5V] ( F.Cu 上、長さ: 18.2895 mm )",
+                    "pos": {
+                        "x": -24.832,
+                        "y": 30.596
+                    },
+                    "uuid": "c8a9f606-30ad-4058-8bb4-353dffd90861"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [Net-(D1-K)] ( F.Cu 上、長さ: 1.4511 mm )",
+                    "pos": {
+                        "x": -117.8625,
+                        "y": -14.36875
+                    },
+                    "uuid": "cd2b8868-0e90-480c-bfff-4afa63930c20"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [Net-(D1-K)] ( B.Cu 上、長さ: 0.9192 mm )",
+                    "pos": {
+                        "x": -115.6225,
+                        "y": 24.44125
+                    },
+                    "uuid": "8ab20a03-8668-4212-8c55-9e79ce186662"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [Net-(D1-K)] ( B.Cu 上、長さ: 0.6682 mm )",
+                    "pos": {
+                        "x": -114.5425,
+                        "y": 4.968751
+                    },
+                    "uuid": "f6253545-e5d1-41ec-a578-0aa082be40cc"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [Net-(EXLED1-DIN)] ( F.Cu 上、長さ: 0.8225 mm )",
+                    "pos": {
+                        "x": -112.9191,
+                        "y": -11.76285
+                    },
+                    "uuid": "da23cc49-8906-4d2d-9067-57922964cf24"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [/KEY16] ( B.Cu 上、長さ: 5.4764 mm )",
+                    "pos": {
+                        "x": -99.81919,
+                        "y": 38.70865
+                    },
+                    "uuid": "456b8959-20af-42a5-9729-ad4f2d7db2b4"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "円 (Edge.Cuts 上)",
+                    "pos": {
+                        "x": -98.0,
+                        "y": 38.0
+                    },
+                    "uuid": "a7d7c6f0-7ca4-4a85-ba9e-94f5d5c09a5b"
+                },
+                {
+                    "description": "SMDSW1のリファレンスフィールド",
+                    "pos": {
+                        "x": -96.907502,
+                        "y": 38.1862
+                    },
+                    "uuid": "a9aaa3b3-9d7f-4fbe-9387-b7f88b310037"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": -82.4625,
+                        "y": 66.5
+                    },
+                    "uuid": "6c5d7159-23f5-4c28-91a0-d705ecc594b6"
+                },
+                {
+                    "description": "セグメント of Y1 、B.Silkscreen 上",
+                    "pos": {
+                        "x": -78.55,
+                        "y": 48.75
+                    },
+                    "uuid": "1148face-9f63-4bfa-ac5b-c2eaf7070bd6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "フットプリント 'SOIC-8_5.23x5.23mm_P1.27mm' がライブラリ'Package_SO'に見つかりません",
+            "items": [
+                {
+                    "description": "フットプリント U4",
+                    "pos": {
+                        "x": -62.4925,
+                        "y": 34.64
+                    },
+                    "uuid": "7ef99180-80de-4167-9bb7-7ae42de3e283"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "C7のリファレンスフィールド",
+                    "pos": {
+                        "x": -76.972498,
+                        "y": 45.01625
+                    },
+                    "uuid": "b7b3f4f3-73a1-4989-b981-3dcb49a6f8c9"
+                },
+                {
+                    "description": "R3のリファレンスフィールド",
+                    "pos": {
+                        "x": -76.34,
+                        "y": 44.52
+                    },
+                    "uuid": "c977c530-f116-4a58-b46a-6774be2d21a6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        }
+    ]
+}
