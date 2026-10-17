@@ -1,0 +1,86 @@
+** Drc report for curcur40-right.kicad_pcb **
+** Created on 2026-10-17T08:15:54 **
+** Report includes: Errors, Warnings **
+
+** Found 16 DRC violations **
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(6.5425 mm, 30.5960 mm): Track [+5VR] on F.Cu, length 0.1502 mm
+    @(0.7425 mm, 30.7462 mm): Track [/TX] on F.Cu, length 9.2575 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(6.5425 mm, 38.5463 mm): Track [+5VR] on F.Cu, length 17.4837 mm
+    @(10.0000 mm, 38.5463 mm): Track [/TX] on F.Cu, length 9.2575 mm
+[shorting_items]: ２つのネットを短絡するアイテム (ネット /TX と +5VR)
+    Local override; error
+    @(0.7425 mm, 30.7462 mm): Track [/TX] on F.Cu, length 9.2575 mm
+    @(8.5000 mm, 30.5960 mm): Via [+5VR] on F.Cu - B.Cu
+[shorting_items]: ２つのネットを短絡するアイテム (ネット /TX と +5VR)
+    Local override; error
+    @(0.7425 mm, 30.7462 mm): Track [/TX] on B.Cu, length 9.2575 mm
+    @(8.5000 mm, 30.5960 mm): Via [+5VR] on F.Cu - B.Cu
+[shorting_items]: ２つのネットを短絡するアイテム (ネット +5VR と /TX)
+    Local override; error
+    @(8.5000 mm, 38.5463 mm): Via [+5VR] on F.Cu - B.Cu
+    @(10.0000 mm, 38.5463 mm): Track [/TX] on F.Cu, length 9.2575 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(8.5000 mm, 38.5463 mm): Track [+5VR] on B.Cu, length 1.9575 mm
+    @(10.0000 mm, 38.5463 mm): Track [/TX] on B.Cu, length 9.2575 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(0.7425 mm, 30.7462 mm): Track [/TX] on B.Cu, length 9.2575 mm
+    @(6.5425 mm, 30.5960 mm): Track [+5VR] on B.Cu, length 0.1502 mm
+[shorting_items]: ２つのネットを短絡するアイテム (ネット /TX と +5VR)
+    Local override; error
+    @(10.0000 mm, 38.5463 mm): Via [/TX] on F.Cu - B.Cu
+    @(6.5425 mm, 38.5463 mm): Track [+5VR] on F.Cu, length 17.4837 mm
+[shorting_items]: ２つのネットを短絡するアイテム (ネット /TX と +5VR)
+    Local override; error
+    @(10.0000 mm, 30.7462 mm): Via [/TX] on F.Cu - B.Cu
+    @(24.2680 mm, 30.5960 mm): Track [+5VR] on F.Cu, length 17.7255 mm
+[shorting_items]: ２つのネットを短絡するアイテム (ネット +5VR と /TX)
+    Local override; error
+    @(8.5000 mm, 38.5463 mm): Via [+5VR] on F.Cu - B.Cu
+    @(10.0000 mm, 38.5463 mm): Track [/TX] on B.Cu, length 9.2575 mm
+[hole_clearance]: 穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2500 mm; 現状 0.0000 mm)
+    Rule: 基板の設定の穴の制約; error
+    @(10.0000 mm, 42.4160 mm): Track [/TX] on B.Cu, length 13.5750 mm
+    @(14.0250 mm, 42.3875 mm): NPTH pad of rH2
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0480 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(114.0000 mm, 37.0000 mm): Circle on Edge.Cuts
+    @(112.5625 mm, 36.8263 mm): Via [GNDR] on F.Cu - B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(114.0000 mm, 37.0000 mm): Circle on Edge.Cuts
+    @(112.6375 mm, 36.8563 mm): Pad 2 [GNDR] of rSW16 on B.Cu
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(10.0000 mm, 38.5463 mm): Track [/TX] on B.Cu, length 9.2575 mm
+    @(6.5425 mm, 38.5463 mm): Pad T [+5VR] of rJ2 on B.Cu
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(0.7425 mm, 30.7462 mm): Track [/TX] on B.Cu, length 9.2575 mm
+    @(6.5425 mm, 30.7462 mm): Pad T [+5VR] of rJ2 on B.Cu
+[lib_footprint_issues]: フットプリント 'SOIC-8_5.23x5.23mm_P1.27mm' がライブラリ'Package_SO'に見つかりません
+    Local override; warning
+    @(63.1375 mm, 13.7863 mm): Footprint rU4
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Silkscreen clipped by solder mask
+    - Text height out of range
+    - Text thickness out of range
+    - PTH inside courtyard
+    - NPTH inside courtyard
+    - Footprint doesn't match copy in library
+
+** End of Report **
