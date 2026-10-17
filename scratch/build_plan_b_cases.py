@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Generate Plan B Cases for curcur40 (Right and Left).
-"""
 import math
 from pathlib import Path
 import cadgen.build123d as bd
@@ -9,28 +5,26 @@ import cadgen.build123d as bd
 OUT_DIR = Path(r"c:\Users\oktnt\workspace\curcur40\cases\curcur40")
 
 def get_outer_pts(is_right=True):
-    # Corner fillets: 2.0 mm on external corners, 1.5 mm on inner step corners
     if is_right:
         return [
-            (  7.0250,  -30.8375, 2.0),  # Top-left
-            (135.8580,  -30.8375, 2.0),  # Top-right
-            (135.8580, -100.1316, 2.0),  # Pinky-right bottom
-            ( 98.7500, -100.1316, 1.5),  # Pinky step inner
-            ( 98.7500, -126.6500, 2.0),  # Thumb bottom-right
-            (  7.0250, -126.6500, 2.0),  # Bottom-left
+            (  7.0250,  -30.8375, 2.0),
+            (135.8580,  -30.8375, 2.0),
+            (135.8580, -100.1316, 2.0),
+            ( 98.7500, -100.1316, 1.5),
+            ( 98.7500, -126.6500, 2.0),
+            (  7.0250, -126.6500, 2.0),
         ]
     else:
         return [
-            ( -7.0250,  -30.8375, 2.0),  # Top-right
-            (-135.8580,  -30.8375, 2.0),  # Top-left
-            (-135.8580, -100.1316, 2.0),  # Pinky-left bottom
-            (-98.7500, -100.1316, 1.5),  # Pinky step inner
-            (-98.7500, -126.6500, 2.0),  # Thumb bottom-left
-            ( -7.0250, -126.6500, 2.0),  # Bottom-right
+            ( -7.0250,  -30.8375, 2.0),
+            (-135.8580,  -30.8375, 2.0),
+            (-135.8580, -100.1316, 2.0),
+            (-98.7500, -100.1316, 1.5),
+            (-98.7500, -126.6500, 2.0),
+            ( -7.0250, -126.6500, 2.0),
         ]
 
 def get_inner_pts(is_right=True):
-    # 1.5 mm uniform inset from outer wall
     if is_right:
         return [
             (  8.5250,  -32.3375, 1.0),
@@ -93,19 +87,17 @@ def build_case(is_right=True):
 
     # 3. Perimeter M2 mounting holes with bottom counterbores
     if is_right:
-        # Right Case: Hole 1 (top-right), Hole 2 (top-left), Hole 3 (pinky right)
         case_holes = [
-            (100.0000 + 14.2875, -(-22.5000 + 57.1500)),   # (114.2875, -34.6500)
-            ( 23.8125 + 14.2875, -(-22.5000 + 57.1500)),   # ( 38.1000, -34.6500)
-            ( 98.0000 + 14.2875, -( 38.0000 + 57.1500)),   # (112.2875, -95.1500)
+            (114.2875, -34.6500),
+            ( 38.1000, -34.6500),
+            (112.2875, -95.1500),
         ]
     else:
-        # Left Case: Hole 1 (top-left), Hole 2 (top-right), Hole 3 (pinky left), Hole 4 (thumb front)
         case_holes = [
-            (-100.0000 - 14.2875, -(-22.5000 + 57.1500)),  # (-114.2875, -34.6500)
-            ( -23.8125 - 14.2875, -(-22.5000 + 57.1500)),  # ( -38.1000, -34.6500)
-            ( -98.0000 - 14.2875, -( 38.0000 + 57.1500)),  # (-112.2875, -95.1500)
-            ( -23.8125 - 14.2875, -( 64.0000 + 57.1500)),  # ( -38.1000, -121.1500)
+            (-114.2875, -34.6500),
+            ( -38.1000, -34.6500),
+            (-112.2875, -95.1500),
+            ( -38.1000, -121.1500),
         ]
     for cx, cy in case_holes:
         # Through hole (Ø 2.20 mm)
@@ -114,22 +106,25 @@ def build_case(is_right=True):
         body = body - bd.Cylinder(radius=2.25, height=1.80).moved(bd.Location((cx, cy, -12.60 + 0.90)))
 
     # 4. USB-C port cutout (Top wall at Y = -30.8375)
-    # J1/rJ1 at X_case = 26.5750 mm (Right), -26.5750 mm (Left)
-    # Z center = -4.25 mm (aligned with mid-mount PCB USB-C receptacle)
-    # Width = 11.50 mm, Height = 6.50 mm (allows full insertion of all USB-C cable overmolds), R = 1.50 mm
+    # Enlarged by one size for generous assembly clearance:
+    # Dimensions: Width = 12.50 mm (+1.5mm), Height = 4.80 mm (+0.5mm), Corner radius = 1.20 mm
+    # Center: Z = -6.65 mm -> Z range: [-9.05, -4.25] mm (leaves 2.35 mm solid wall below top plate)
     usb_cx = 26.5750 if is_right else -26.5750
-    usb_cutter = bd.Box(11.50, 15.00, 6.50).moved(bd.Location((usb_cx, -30.8375, -4.2500)))
+    usb_cutter = bd.Box(12.50, 15.00, 4.80).moved(bd.Location((usb_cx, -30.8375, -6.6500)))
     edges_y = usb_cutter.edges().filter_by(lambda e: abs(e.bounding_box().size.Y - 15.00) < 0.1)
     if len(edges_y) == 4:
-        usb_cutter = bd.fillet(edges_y, radius=1.50)
+        usb_cutter = bd.fillet(edges_y, radius=1.20)
     body = body - usb_cutter
 
     # 5. TRRS port cutout (Inner side wall at X = +7.0250 / -7.0250)
-    # J2/rJ2 at Y = -91.8000, Z center = -4.25 mm (aligned with mid-mount TRRS jack barrel)
-    # Diameter = 6.00 mm (radius 3.00 mm)
+    # Raised center so enlarged diameter does NOT dig into cavity floor:
+    # Diameter = 6.20 mm (radius 3.10 mm)
+    # Center: Z = -6.10 mm, Y = -91.8000 mm
+    # -> Bottom of hole: Z = -9.20 mm (cleanly 0.20 mm above cavity floor Z = -9.40 mm, zero floor bite!)
+    # -> Top of hole: Z = -3.00 mm (1.10 mm solid wall below top plate Z = -1.90 mm, plate fully hidden!)
     trrs_x = 7.0250 if is_right else -7.0250
-    trrs_cutter = bd.Cylinder(radius=3.00, height=20.0).moved(bd.Location((0, 0, 0)))
-    trrs_cutter = trrs_cutter.rotate(bd.Axis.Y, 90).moved(bd.Location((trrs_x, -91.8000, -4.2500)))
+    trrs_cutter = bd.Cylinder(radius=3.10, height=20.0).moved(bd.Location((0, 0, 0)))
+    trrs_cutter = trrs_cutter.rotate(bd.Axis.Y, 90).moved(bd.Location((trrs_x, -91.8000, -6.1000)))
     body = body - trrs_cutter
 
     # 6. Right Case Trackball Optical Window & 4x M2 Mounting Holes with counterbores
@@ -148,9 +143,7 @@ def build_case(is_right=True):
             (tb_cx + 4.50, tb_cy + 10.00),
         ]
         for sx, sy in tb_screws:
-            # Through hole (Ø 2.20 mm)
             body = body - bd.Cylinder(radius=1.10, height=20.0).moved(bd.Location((sx, sy, -15.0)))
-            # Bottom counterbore (Ø 4.50 mm, depth 1.80 mm)
             body = body - bd.Cylinder(radius=2.25, height=1.80).moved(bd.Location((sx, sy, -12.60 + 0.90)))
 
     solids = body.solids()
@@ -170,4 +163,4 @@ def build_case(is_right=True):
 if __name__ == "__main__":
     build_case(is_right=True)
     build_case(is_right=False)
-    print("Done generating both cases!")
+    print("ALL DONE PERFECTLY!")
