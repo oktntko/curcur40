@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-10-18T23:29:56",
+    "date": "2026-10-19T00:17:08",
     "ignored_checks": [],
     "included_severities": [
         "error",
@@ -543,29 +543,6 @@
             "type": "track_not_centered_on_via"
         },
         {
-            "description": "NPTH inside courtyard",
-            "items": [
-                {
-                    "description": "SW9のNPTHパッド",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": 52.3875
-                    },
-                    "uuid": "8fb654fa-7033-4353-89a1-e010b64d8a46"
-                },
-                {
-                    "description": "フットプリント LED9",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": 48.7125
-                    },
-                    "uuid": "9a5726be-6638-4874-9043-4ebcc71dd0cc"
-                }
-            ],
-            "severity": "error",
-            "type": "npth_inside_courtyard"
-        },
-        {
             "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -842,7 +819,7 @@
                     "description": "フットプリント LED8",
                     "pos": {
                         "x": -52.3875,
-                        "y": 48.3125
+                        "y": 47.65
                     },
                     "uuid": "3e550adf-aea3-4e6a-a833-cec9d9496d21"
                 }
@@ -1292,7 +1269,7 @@
                     "description": "フットプリント LED9",
                     "pos": {
                         "x": -71.4375,
-                        "y": 48.7125
+                        "y": 47.65
                     },
                     "uuid": "9a5726be-6638-4874-9043-4ebcc71dd0cc"
                 }
@@ -1712,7 +1689,7 @@
                     "description": "LED9のリファレンスフィールド",
                     "pos": {
                         "x": -71.4375,
-                        "y": 46.7625
+                        "y": 45.7
                     },
                     "uuid": "3d349aa5-8b2b-4fdc-b82a-ec12dd304729"
                 }
