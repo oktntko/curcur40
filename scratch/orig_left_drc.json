@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-10-19T00:01:39",
+    "date": "2026-10-19T00:36:51",
     "ignored_checks": [],
     "included_severities": [
         "error",
@@ -10,7 +10,7 @@
     ],
     "kicad_version": "10.0.6",
     "schematic_parity": [],
-    "source": "test_left_led_fix.kicad_pcb",
+    "source": "curcur40-left.kicad_pcb",
     "unconnected_items": [],
     "violations": [
         {
@@ -543,75 +543,6 @@
             "type": "track_not_centered_on_via"
         },
         {
-            "description": "クリアランス違反 ( クリアランス 0.1900 mm; 現状 0.0750 mm)",
-            "items": [
-                {
-                    "description": "パッド 2 [Net-(LED8-DOUT)] - LED8 ( B.Cu 上)",
-                    "pos": {
-                        "x": -55.1875,
-                        "y": 48.35
-                    },
-                    "uuid": "15fdb66a-572e-4b05-9332-c7fd655e0da8"
-                },
-                {
-                    "description": "ビア [Net-(D1-K)] (F.Cu - B.Cu 上)",
-                    "pos": {
-                        "x": -56.0,
-                        "y": 47.6125
-                    },
-                    "uuid": "e84de4ab-d9f2-435e-adf3-229269bdff77"
-                }
-            ],
-            "severity": "error",
-            "type": "clearance"
-        },
-        {
-            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2500 mm; 現状 0.1750 mm)",
-            "items": [
-                {
-                    "description": "パッド 2 [Net-(LED8-DOUT)] - LED8 ( B.Cu 上)",
-                    "pos": {
-                        "x": -55.1875,
-                        "y": 48.35
-                    },
-                    "uuid": "15fdb66a-572e-4b05-9332-c7fd655e0da8"
-                },
-                {
-                    "description": "ビア [Net-(D1-K)] (F.Cu - B.Cu 上)",
-                    "pos": {
-                        "x": -56.0,
-                        "y": 47.6125
-                    },
-                    "uuid": "e84de4ab-d9f2-435e-adf3-229269bdff77"
-                }
-            ],
-            "severity": "error",
-            "type": "hole_clearance"
-        },
-        {
-            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)",
-            "items": [
-                {
-                    "description": "セグメント of LED8 、Edge.Cuts 上",
-                    "pos": {
-                        "x": -54.1875,
-                        "y": 49.2
-                    },
-                    "uuid": "d9adf057-a71b-4738-b804-16eb2e41e169"
-                },
-                {
-                    "description": "配線 [Net-(D1-K)] ( F.Cu 上、長さ: 5.8500 mm )",
-                    "pos": {
-                        "x": -50.15,
-                        "y": 46.4625
-                    },
-                    "uuid": "0ac99ccc-04b1-4281-82ed-08b055828579"
-                }
-            ],
-            "severity": "error",
-            "type": "copper_edge_clearance"
-        },
-        {
             "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -651,6 +582,51 @@
                         "y": -14.55125
                     },
                     "uuid": "03a7adf4-be79-4ce8-80b3-8d593666d085"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW4",
+                    "pos": {
+                        "x": -33.3375,
+                        "y": -9.525
+                    },
+                    "uuid": "0400d3f9-af7f-4aed-b65a-ce47b2c485f9"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED16",
+                    "pos": {
+                        "x": -109.5375,
+                        "y": 26.21875
+                    },
+                    "uuid": "0787e81d-39fb-4af6-889e-20111fdae7df"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED3",
+                    "pos": {
+                        "x": -33.3375,
+                        "y": 4.7875
+                    },
+                    "uuid": "0c19bd7f-5032-4f9e-a86d-8046124ca77b"
                 }
             ],
             "severity": "error",
@@ -702,6 +678,36 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW9",
+                    "pos": {
+                        "x": -71.4375,
+                        "y": 52.3875
+                    },
+                    "uuid": "1d31cf9c-a53b-48aa-8af5-fc837d236cd8"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW5",
+                    "pos": {
+                        "x": -52.3875,
+                        "y": -11.90625
+                    },
+                    "uuid": "1f69d9b1-c660-40fb-b8a4-e6dc7a83f462"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -717,6 +723,21 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED17",
+                    "pos": {
+                        "x": -109.5375,
+                        "y": 7.16875
+                    },
+                    "uuid": "279c2c74-c558-4e78-96a2-8341b3f23af3"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -726,6 +747,21 @@
                         "y": 37.53495
                     },
                     "uuid": "2812a431-60b2-4dad-88a0-1ab88745b739"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED5",
+                    "pos": {
+                        "x": -52.3875,
+                        "y": -16.64375
+                    },
+                    "uuid": "2e1af5d3-d6b7-471e-9c2a-9457e5f59350"
                 }
             ],
             "severity": "error",
@@ -777,6 +813,21 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED8",
+                    "pos": {
+                        "x": -52.3875,
+                        "y": 47.65
+                    },
+                    "uuid": "3e550adf-aea3-4e6a-a833-cec9d9496d21"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'SOT-223-3_TabPin2' が、ライブラリ 'Package_TO_SOT_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -786,6 +837,66 @@
                         "y": 38.47995
                     },
                     "uuid": "3e9d86ef-f141-4d37-a448-0f56b3a1c46b"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW13",
+                    "pos": {
+                        "x": -90.4875,
+                        "y": -11.90625
+                    },
+                    "uuid": "4255be6f-7f44-4eb0-94cc-4d779f9a617d"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW11",
+                    "pos": {
+                        "x": -71.4375,
+                        "y": 4.7625
+                    },
+                    "uuid": "425fb6ac-6fa6-465c-abcf-ec6db08707d4"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED10",
+                    "pos": {
+                        "x": -71.4375,
+                        "y": 19.075
+                    },
+                    "uuid": "434c6f18-6f4d-4230-9020-1b1dec594448"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW14",
+                    "pos": {
+                        "x": -90.4875,
+                        "y": 7.14375
+                    },
+                    "uuid": "4667deac-4e8f-4190-b93f-2e63297e59ae"
                 }
             ],
             "severity": "error",
@@ -807,6 +918,36 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW8",
+                    "pos": {
+                        "x": -52.3875,
+                        "y": 52.3875
+                    },
+                    "uuid": "4a5efe58-2f90-4f8b-b8cc-a596b4d4d4e7"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED12",
+                    "pos": {
+                        "x": -71.4375,
+                        "y": -19.025
+                    },
+                    "uuid": "4b300bc9-b4b2-4713-9046-07fb26a84c61"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -816,6 +957,21 @@
                         "y": -15.31375
                     },
                     "uuid": "4e6cb23e-9e8f-49d8-899d-aecb668ce510"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW12",
+                    "pos": {
+                        "x": -71.4375,
+                        "y": -14.2875
+                    },
+                    "uuid": "4fccc145-7636-49b2-9e22-46452886e49f"
                 }
             ],
             "severity": "error",
@@ -852,6 +1008,51 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW17",
+                    "pos": {
+                        "x": -109.5375,
+                        "y": 11.90625
+                    },
+                    "uuid": "579e0e57-f81a-438e-937c-57d9f10a2525"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED15",
+                    "pos": {
+                        "x": -90.4875,
+                        "y": 21.45625
+                    },
+                    "uuid": "5a7b5735-94cb-4d3d-9068-3be44152e2ed"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED1",
+                    "pos": {
+                        "x": -33.3375,
+                        "y": 47.65
+                    },
+                    "uuid": "5c38e8af-2066-4d5d-a83c-a4456fae9428"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -867,6 +1068,81 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント EXSW3",
+                    "pos": {
+                        "x": -14.2875,
+                        "y": 52.3875
+                    },
+                    "uuid": "62ca2fc5-2ca5-466e-ac34-e1cef322b82d"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW1",
+                    "pos": {
+                        "x": -33.3375,
+                        "y": 52.3875
+                    },
+                    "uuid": "65a1f4ae-889a-4ae7-96c8-66f3d601c46e"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW7",
+                    "pos": {
+                        "x": -52.3875,
+                        "y": 26.19375
+                    },
+                    "uuid": "6d339bdb-0e8e-4be7-abd1-ac5124881ba3"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED13",
+                    "pos": {
+                        "x": -90.4875,
+                        "y": -16.64375
+                    },
+                    "uuid": "74855b29-c603-4337-843c-c9f9f9a0fc37"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント EXLED3",
+                    "pos": {
+                        "x": -14.2875,
+                        "y": 47.65
+                    },
+                    "uuid": "7d51e153-c4bb-46da-98f3-a1c1ebcdca3c"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'D_SOD-523' が、ライブラリ 'Diode_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -876,6 +1152,36 @@
                         "y": -5.735
                     },
                     "uuid": "7fd24eec-26fc-437e-a274-550e5538c3eb"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント EXSW2",
+                    "pos": {
+                        "x": -14.2875,
+                        "y": 19.05
+                    },
+                    "uuid": "83420e5a-764a-4301-8039-734132743ebb"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED7",
+                    "pos": {
+                        "x": -52.3875,
+                        "y": 21.45625
+                    },
+                    "uuid": "8464eec9-3e6c-4817-9eae-9a3ba21f4482"
                 }
             ],
             "severity": "error",
@@ -927,6 +1233,21 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント EXLED2",
+                    "pos": {
+                        "x": -14.2875,
+                        "y": 14.3125
+                    },
+                    "uuid": "93f0733f-f173-48fa-b912-c43e877bb2f7"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'Crystal_SMD_3225-4Pin_3.2x2.5mm' が、ライブラリ 'Crystal' のコピーと一致しません",
             "items": [
                 {
@@ -936,6 +1257,66 @@
                         "y": 47.1
                     },
                     "uuid": "9971ca8f-cf1c-41d9-b679-37767f665084"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED9",
+                    "pos": {
+                        "x": -71.4375,
+                        "y": 47.65
+                    },
+                    "uuid": "9a5726be-6638-4874-9043-4ebcc71dd0cc"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント EXLED1",
+                    "pos": {
+                        "x": -14.2875,
+                        "y": -4.7375
+                    },
+                    "uuid": "a5acf223-d311-4f4a-a21a-2e89acbf70fa"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED6",
+                    "pos": {
+                        "x": -52.3875,
+                        "y": 2.40625
+                    },
+                    "uuid": "a75773d0-d03d-4dde-a80b-0655cb8662fe"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW10",
+                    "pos": {
+                        "x": -71.4375,
+                        "y": 23.8125
+                    },
+                    "uuid": "ae934627-99a5-498e-b040-2af8be659c82"
                 }
             ],
             "severity": "error",
@@ -972,6 +1353,51 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW15",
+                    "pos": {
+                        "x": -90.4875,
+                        "y": 26.19375
+                    },
+                    "uuid": "bf831b20-5bc7-44a3-9786-6a4b65b95e90"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW18",
+                    "pos": {
+                        "x": -109.5375,
+                        "y": -7.14375
+                    },
+                    "uuid": "c3d98a87-b64e-49a9-b79e-aa9d2e1500e5"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED11",
+                    "pos": {
+                        "x": -71.4375,
+                        "y": 0.025
+                    },
+                    "uuid": "c7931993-a67e-483a-8efa-263e5ae8e561"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -1002,6 +1428,21 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'TYPE-C-31-M-13C' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント J1",
+                    "pos": {
+                        "x": -12.2875,
+                        "y": -23.057499
+                    },
+                    "uuid": "cee25bc0-a44d-4611-899f-01dc7f6abbb7"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -1017,6 +1458,21 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW16",
+                    "pos": {
+                        "x": -109.5375,
+                        "y": 30.95625
+                    },
+                    "uuid": "d5bfb847-1a65-4403-9433-e9c03727efed"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -1026,6 +1482,66 @@
                         "y": 34.175
                     },
                     "uuid": "de079847-5e03-4d49-8c24-5fe06e3e0742"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW2",
+                    "pos": {
+                        "x": -33.3375,
+                        "y": 28.575
+                    },
+                    "uuid": "e49a268b-55f8-4fd9-b2b8-bf898cd73887"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント EXSW1",
+                    "pos": {
+                        "x": -14.2875,
+                        "y": 0.0
+                    },
+                    "uuid": "e4b201fa-135a-4428-8170-5bc25ef88cad"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW6",
+                    "pos": {
+                        "x": -52.3875,
+                        "y": 7.14375
+                    },
+                    "uuid": "e4b4685a-17b2-485b-bf6b-b36dc57b0235"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED2",
+                    "pos": {
+                        "x": -33.3375,
+                        "y": 23.8375
+                    },
+                    "uuid": "e60e4721-324d-48f3-99a3-33e3d4ef9a8e"
                 }
             ],
             "severity": "error",
@@ -1062,6 +1578,66 @@
             "type": "lib_footprint_mismatch"
         },
         {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED14",
+                    "pos": {
+                        "x": -90.4875,
+                        "y": 2.40625
+                    },
+                    "uuid": "f13d0192-f6dc-4ebf-bd8c-496dc21b03af"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント SW3",
+                    "pos": {
+                        "x": -33.3375,
+                        "y": 9.525
+                    },
+                    "uuid": "f16d8347-7604-4756-99b4-35313287b150"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED18",
+                    "pos": {
+                        "x": -109.5375,
+                        "y": -11.88125
+                    },
+                    "uuid": "f900b116-3977-4098-92a2-7cc0247042dd"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント LED4",
+                    "pos": {
+                        "x": -33.3375,
+                        "y": -14.2625
+                    },
+                    "uuid": "f9eb335c-158d-4a6c-84bb-eea6e6c25516"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
             "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
             "items": [
                 {
@@ -1086,6 +1662,21 @@
                         "y": 37.545
                     },
                     "uuid": "ff551a38-aa38-447b-92e4-fad26dd08675"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'PJ-398A-5A_PJ-399B-6A' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント J2",
+                    "pos": {
+                        "x": 5.2575,
+                        "y": 34.64625
+                    },
+                    "uuid": "ff62f491-e609-4011-abf1-a15a3e4b5636"
                 }
             ],
             "severity": "error",
@@ -1377,29 +1968,6 @@
             "type": "text_height"
         },
         {
-            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
-            "items": [
-                {
-                    "description": "ビア [Net-(D1-K)] (F.Cu - B.Cu 上)",
-                    "pos": {
-                        "x": -56.0,
-                        "y": 47.6125
-                    },
-                    "uuid": "e84de4ab-d9f2-435e-adf3-229269bdff77"
-                },
-                {
-                    "description": "パッド 2 [Net-(LED8-DOUT)] - LED8 ( B.Cu 上)",
-                    "pos": {
-                        "x": -55.1875,
-                        "y": 48.35
-                    },
-                    "uuid": "15fdb66a-572e-4b05-9332-c7fd655e0da8"
-                }
-            ],
-            "severity": "error",
-            "type": "solder_mask_bridge"
-        },
-        {
             "description": "Track has unconnected end",
             "items": [
                 {
@@ -1520,381 +2088,6 @@
             "type": "track_dangling"
         },
         {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW4",
-                    "pos": {
-                        "x": -33.3375,
-                        "y": -9.525
-                    },
-                    "uuid": "0400d3f9-af7f-4aed-b65a-ce47b2c485f9"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED16",
-                    "pos": {
-                        "x": -109.5375,
-                        "y": 26.21875
-                    },
-                    "uuid": "0787e81d-39fb-4af6-889e-20111fdae7df"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED3",
-                    "pos": {
-                        "x": -33.3375,
-                        "y": 4.7875
-                    },
-                    "uuid": "0c19bd7f-5032-4f9e-a86d-8046124ca77b"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW9",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": 52.3875
-                    },
-                    "uuid": "1d31cf9c-a53b-48aa-8af5-fc837d236cd8"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW5",
-                    "pos": {
-                        "x": -52.3875,
-                        "y": -11.90625
-                    },
-                    "uuid": "1f69d9b1-c660-40fb-b8a4-e6dc7a83f462"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SMDSW2",
-                    "pos": {
-                        "x": -91.1175,
-                        "y": 37.34125
-                    },
-                    "uuid": "270ef7dd-c0f2-4ef6-94ac-0d2042e9952c"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED17",
-                    "pos": {
-                        "x": -109.5375,
-                        "y": 7.16875
-                    },
-                    "uuid": "279c2c74-c558-4e78-96a2-8341b3f23af3"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED5",
-                    "pos": {
-                        "x": -52.3875,
-                        "y": -16.64375
-                    },
-                    "uuid": "2e1af5d3-d6b7-471e-9c2a-9457e5f59350"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED8",
-                    "pos": {
-                        "x": -52.3875,
-                        "y": 47.65
-                    },
-                    "uuid": "3e550adf-aea3-4e6a-a833-cec9d9496d21"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW13",
-                    "pos": {
-                        "x": -90.4875,
-                        "y": -11.90625
-                    },
-                    "uuid": "4255be6f-7f44-4eb0-94cc-4d779f9a617d"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW11",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": 4.7625
-                    },
-                    "uuid": "425fb6ac-6fa6-465c-abcf-ec6db08707d4"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED10",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": 19.075
-                    },
-                    "uuid": "434c6f18-6f4d-4230-9020-1b1dec594448"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW14",
-                    "pos": {
-                        "x": -90.4875,
-                        "y": 7.14375
-                    },
-                    "uuid": "4667deac-4e8f-4190-b93f-2e63297e59ae"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW8",
-                    "pos": {
-                        "x": -52.3875,
-                        "y": 52.3875
-                    },
-                    "uuid": "4a5efe58-2f90-4f8b-b8cc-a596b4d4d4e7"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED12",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": -19.025
-                    },
-                    "uuid": "4b300bc9-b4b2-4713-9046-07fb26a84c61"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW12",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": -14.2875
-                    },
-                    "uuid": "4fccc145-7636-49b2-9e22-46452886e49f"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW17",
-                    "pos": {
-                        "x": -109.5375,
-                        "y": 11.90625
-                    },
-                    "uuid": "579e0e57-f81a-438e-937c-57d9f10a2525"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED15",
-                    "pos": {
-                        "x": -90.4875,
-                        "y": 21.45625
-                    },
-                    "uuid": "5a7b5735-94cb-4d3d-9068-3be44152e2ed"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED1",
-                    "pos": {
-                        "x": -33.3375,
-                        "y": 47.65
-                    },
-                    "uuid": "5c38e8af-2066-4d5d-a83c-a4456fae9428"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント EXSW3",
-                    "pos": {
-                        "x": -14.2875,
-                        "y": 52.3875
-                    },
-                    "uuid": "62ca2fc5-2ca5-466e-ac34-e1cef322b82d"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW1",
-                    "pos": {
-                        "x": -33.3375,
-                        "y": 52.3875
-                    },
-                    "uuid": "65a1f4ae-889a-4ae7-96c8-66f3d601c46e"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW7",
-                    "pos": {
-                        "x": -52.3875,
-                        "y": 26.19375
-                    },
-                    "uuid": "6d339bdb-0e8e-4be7-abd1-ac5124881ba3"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED13",
-                    "pos": {
-                        "x": -90.4875,
-                        "y": -16.64375
-                    },
-                    "uuid": "74855b29-c603-4337-843c-c9f9f9a0fc37"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SMDSW1",
-                    "pos": {
-                        "x": -94.9675,
-                        "y": 37.34125
-                    },
-                    "uuid": "76e41d93-c072-4c86-afd3-aa54166a8447"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント EXLED3",
-                    "pos": {
-                        "x": -14.2875,
-                        "y": 47.65
-                    },
-                    "uuid": "7d51e153-c4bb-46da-98f3-a1c1ebcdca3c"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
             "description": "フットプリント 'SOIC-8_5.23x5.23mm_P1.27mm' がライブラリ'Package_SO'に見つかりません",
             "items": [
                 {
@@ -1904,321 +2097,6 @@
                         "y": 34.64
                     },
                     "uuid": "7ef99180-80de-4167-9bb7-7ae42de3e283"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント EXSW2",
-                    "pos": {
-                        "x": -14.2875,
-                        "y": 19.05
-                    },
-                    "uuid": "83420e5a-764a-4301-8039-734132743ebb"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED7",
-                    "pos": {
-                        "x": -52.3875,
-                        "y": 21.45625
-                    },
-                    "uuid": "8464eec9-3e6c-4817-9eae-9a3ba21f4482"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント EXLED2",
-                    "pos": {
-                        "x": -14.2875,
-                        "y": 14.3125
-                    },
-                    "uuid": "93f0733f-f173-48fa-b912-c43e877bb2f7"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED9",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": 47.65
-                    },
-                    "uuid": "9a5726be-6638-4874-9043-4ebcc71dd0cc"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント EXLED1",
-                    "pos": {
-                        "x": -14.2875,
-                        "y": -4.7375
-                    },
-                    "uuid": "a5acf223-d311-4f4a-a21a-2e89acbf70fa"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED6",
-                    "pos": {
-                        "x": -52.3875,
-                        "y": 2.40625
-                    },
-                    "uuid": "a75773d0-d03d-4dde-a80b-0655cb8662fe"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW10",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": 23.8125
-                    },
-                    "uuid": "ae934627-99a5-498e-b040-2af8be659c82"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW15",
-                    "pos": {
-                        "x": -90.4875,
-                        "y": 26.19375
-                    },
-                    "uuid": "bf831b20-5bc7-44a3-9786-6a4b65b95e90"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW18",
-                    "pos": {
-                        "x": -109.5375,
-                        "y": -7.14375
-                    },
-                    "uuid": "c3d98a87-b64e-49a9-b79e-aa9d2e1500e5"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED11",
-                    "pos": {
-                        "x": -71.4375,
-                        "y": 0.025
-                    },
-                    "uuid": "c7931993-a67e-483a-8efa-263e5ae8e561"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント J1",
-                    "pos": {
-                        "x": -12.2875,
-                        "y": -23.057499
-                    },
-                    "uuid": "cee25bc0-a44d-4611-899f-01dc7f6abbb7"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW16",
-                    "pos": {
-                        "x": -109.5375,
-                        "y": 30.95625
-                    },
-                    "uuid": "d5bfb847-1a65-4403-9433-e9c03727efed"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW2",
-                    "pos": {
-                        "x": -33.3375,
-                        "y": 28.575
-                    },
-                    "uuid": "e49a268b-55f8-4fd9-b2b8-bf898cd73887"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント EXSW1",
-                    "pos": {
-                        "x": -14.2875,
-                        "y": 0.0
-                    },
-                    "uuid": "e4b201fa-135a-4428-8170-5bc25ef88cad"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW6",
-                    "pos": {
-                        "x": -52.3875,
-                        "y": 7.14375
-                    },
-                    "uuid": "e4b4685a-17b2-485b-bf6b-b36dc57b0235"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED2",
-                    "pos": {
-                        "x": -33.3375,
-                        "y": 23.8375
-                    },
-                    "uuid": "e60e4721-324d-48f3-99a3-33e3d4ef9a8e"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED14",
-                    "pos": {
-                        "x": -90.4875,
-                        "y": 2.40625
-                    },
-                    "uuid": "f13d0192-f6dc-4ebf-bd8c-496dc21b03af"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント SW3",
-                    "pos": {
-                        "x": -33.3375,
-                        "y": 9.525
-                    },
-                    "uuid": "f16d8347-7604-4756-99b4-35313287b150"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED18",
-                    "pos": {
-                        "x": -109.5375,
-                        "y": -11.88125
-                    },
-                    "uuid": "f900b116-3977-4098-92a2-7cc0247042dd"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント LED4",
-                    "pos": {
-                        "x": -33.3375,
-                        "y": -14.2625
-                    },
-                    "uuid": "f9eb335c-158d-4a6c-84bb-eea6e6c25516"
-                }
-            ],
-            "severity": "warning",
-            "type": "lib_footprint_issues"
-        },
-        {
-            "description": "現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません",
-            "items": [
-                {
-                    "description": "フットプリント J2",
-                    "pos": {
-                        "x": 5.2575,
-                        "y": 34.64625
-                    },
-                    "uuid": "ff62f491-e609-4011-abf1-a15a3e4b5636"
                 }
             ],
             "severity": "warning",
