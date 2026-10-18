@@ -1,0 +1,308 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T23:51:01",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/45d2ba16-f6c4-413f-a27a-bb6cd0965582",
+            "violations": [
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル C3 [C_Small]",
+                            "pos": {
+                                "x": 0.4953,
+                                "y": 0.762
+                            },
+                            "uuid": "3e61697c-5867-4410-b34c-dea9f981687a"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'GND' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR012 [GND]",
+                            "pos": {
+                                "x": 0.4953,
+                                "y": 0.8128
+                            },
+                            "uuid": "73acebc2-f97e-4549-9aba-50aea6b2dba8"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'GND' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR013 [GND]",
+                            "pos": {
+                                "x": 0.6604,
+                                "y": 0.8128
+                            },
+                            "uuid": "041193e7-12d4-4896-aaa3-fc77ce99c592"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル C5 [C_Small]",
+                            "pos": {
+                                "x": 0.7747,
+                                "y": 0.762
+                            },
+                            "uuid": "3696e467-4807-4909-ac9d-a4bc45889cca"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'GND' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR014 [GND]",
+                            "pos": {
+                                "x": 0.7747,
+                                "y": 0.8128
+                            },
+                            "uuid": "9e9566c7-14de-4ec6-a209-d1219f616c6c"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'VDD' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR011 [VDD]",
+                            "pos": {
+                                "x": 1.016,
+                                "y": 0.6858
+                            },
+                            "uuid": "4fcc3012-737b-4470-816d-60a7ac2e3e15"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル C4 [C_Small]",
+                            "pos": {
+                                "x": 1.016,
+                                "y": 0.762
+                            },
+                            "uuid": "27b9400d-98b1-4dd0-8676-4dd699e1bceb"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'GND' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR015 [GND]",
+                            "pos": {
+                                "x": 1.016,
+                                "y": 0.8128
+                            },
+                            "uuid": "c53dfe36-084b-487c-a9e6-6b09e499059e"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'VDD' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR03 [VDD]",
+                            "pos": {
+                                "x": 1.3843,
+                                "y": 0.6477
+                            },
+                            "uuid": "59f46cfd-9c7b-48ba-9450-77ca87e9078f"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル C1 [C_Small]",
+                            "pos": {
+                                "x": 1.3843,
+                                "y": 0.7747
+                            },
+                            "uuid": "a86a4f59-dc40-4f77-ab19-c4e9c4d90aaa"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'GND' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR05 [GND]",
+                            "pos": {
+                                "x": 1.3843,
+                                "y": 0.8255
+                            },
+                            "uuid": "774b4ea4-3046-43cc-89d6-c0d4cf42f531"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル C2 [C_Small]",
+                            "pos": {
+                                "x": 1.4351,
+                                "y": 0.7747
+                            },
+                            "uuid": "56d5b5c4-ea1f-48ae-861a-2d8c8b7a2dd8"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'VDD' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR010 [VDD]",
+                            "pos": {
+                                "x": 1.4351,
+                                "y": 1.2192
+                            },
+                            "uuid": "ed720267-7092-4b88-966e-14949d0afff2"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'SolderJumper_3_Open' が、ライブラリ 'Jumper' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル JP1 [SolderJumper_3_Open]",
+                            "pos": {
+                                "x": 1.4351,
+                                "y": 1.2827
+                            },
+                            "uuid": "9ca99c4b-8bb3-4a14-8335-051ddbe4bce1"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'PMW3360DM-T2QU' が、ライブラリ 'PMW3360_PCB' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル U1 [PMW3360DM-T2QU]",
+                            "pos": {
+                                "x": 1.6383,
+                                "y": 0.7366
+                            },
+                            "uuid": "1da5363b-9254-416a-9573-71742689f640"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'VDD' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR02 [VDD]",
+                            "pos": {
+                                "x": 1.8796,
+                                "y": 1.27
+                            },
+                            "uuid": "372eee1b-fdfa-42a6-a3b3-e6aab5aaf9a2"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'GND' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR01 [GND]",
+                            "pos": {
+                                "x": 1.8796,
+                                "y": 1.3462
+                            },
+                            "uuid": "1dd52443-cb77-435d-ae3e-6b3494a6641e"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'GND' が、ライブラリ 'power' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル #PWR04 [GND]",
+                            "pos": {
+                                "x": 2.4511,
+                                "y": 0.8128
+                            },
+                            "uuid": "3bbb38c0-d44e-48c8-9944-cbf8972df393"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                }
+            ]
+        }
+    ],
+    "source": "curcur40-pmw3360.kicad_sch"
+}

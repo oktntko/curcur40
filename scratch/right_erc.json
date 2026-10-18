@@ -1,0 +1,380 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T23:50:59",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Symbol pin or wire end off connection grid",
+            "key": "endpoint_off_grid"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e",
+            "violations": [
+                {
+                    "description": "シンボル 'USB_C_Receptacle_USB2.0' がシンボル ライブラリ 'Connector' 内に見つかりません",
+                    "items": [
+                        {
+                            "description": "シンボル rJ1 [USB_C_Receptacle_USB2.0]",
+                            "pos": {
+                                "x": 0.3048,
+                                "y": 0.4826
+                            },
+                            "uuid": "185dca7f-e4eb-4145-8b60-6111161988b9"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_issues"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC1 [C_Small]",
+                            "pos": {
+                                "x": 0.3302,
+                                "y": 1.7399
+                            },
+                            "uuid": "746d0988-da02-4a96-836b-0206524bb8e4"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC2 [C_Small]",
+                            "pos": {
+                                "x": 0.3302,
+                                "y": 1.8415
+                            },
+                            "uuid": "048a77b6-b4df-4fc1-93e7-e5d177b09659"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'Crystal_GND24_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rY1 [Crystal_GND24_Small]",
+                            "pos": {
+                                "x": 0.4318,
+                                "y": 1.7907
+                            },
+                            "uuid": "333e45c9-b5ab-4857-a5c5-31531a092be9"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC3 [C_Small]",
+                            "pos": {
+                                "x": 0.5715,
+                                "y": 1.0287
+                            },
+                            "uuid": "4145aafe-5202-45c3-b88e-c6dcd840bbdd"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC4 [C_Small]",
+                            "pos": {
+                                "x": 0.6858,
+                                "y": 1.0287
+                            },
+                            "uuid": "4d7801e7-8274-47ee-8749-a53774aa23b1"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC5 [C_Small]",
+                            "pos": {
+                                "x": 0.6858,
+                                "y": 1.1303
+                            },
+                            "uuid": "f7754ec4-c45d-4556-8d79-9a780e499197"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'RP2040' が、ライブラリ 'MCU_RaspberryPi' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rU1 [RP2040]",
+                            "pos": {
+                                "x": 0.8128,
+                                "y": 1.6637
+                            },
+                            "uuid": "ddff3856-8101-421e-bb0c-e024f6e3a157"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC6 [C_Small]",
+                            "pos": {
+                                "x": 0.9271,
+                                "y": 0.3556
+                            },
+                            "uuid": "76cc9a0e-6be2-4c02-a8af-d41f01f60453"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC7 [C_Small]",
+                            "pos": {
+                                "x": 0.9906,
+                                "y": 1.0414
+                            },
+                            "uuid": "9396216f-866a-4866-a846-539afb7de2a6"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC8 [C_Small]",
+                            "pos": {
+                                "x": 1.0033,
+                                "y": 1.1303
+                            },
+                            "uuid": "52a7987e-18ff-4fff-b16f-04aa91111bdf"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "ピンのタイプ Bidirectional と Power output が接続されています",
+                    "items": [
+                        {
+                            "description": "Symbol rU1 ピン 32 [GPIO21, Bidirectional, Line]",
+                            "pos": {
+                                "x": 1.0668,
+                                "y": 1.8161
+                            },
+                            "uuid": "4816367a-e288-450d-88cf-1c153adefce9"
+                        },
+                        {
+                            "description": "Symbol #FLG0103 ピン 1 [pwr, Power output, Line]",
+                            "pos": {
+                                "x": 2.1082,
+                                "y": 2.7559
+                            },
+                            "uuid": "a641a4e9-d69f-5dbc-917f-c8f3d8ed46c7"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC9 [C_Small]",
+                            "pos": {
+                                "x": 1.0922,
+                                "y": 1.0414
+                            },
+                            "uuid": "e364f484-7306-4a5a-84db-fb8c172dd842"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC10 [C_Small]",
+                            "pos": {
+                                "x": 1.1938,
+                                "y": 1.0414
+                            },
+                            "uuid": "70265640-c9b3-42b8-aaf3-4f2db0b63830"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC11 [C_Small]",
+                            "pos": {
+                                "x": 1.2065,
+                                "y": 0.3556
+                            },
+                            "uuid": "c9001f0a-58a3-4b0f-ac78-d48ba552134a"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC12 [C_Small]",
+                            "pos": {
+                                "x": 1.2827,
+                                "y": 1.0414
+                            },
+                            "uuid": "54a6f25e-dd4a-45ff-817b-173003425fce"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC13 [C_Small]",
+                            "pos": {
+                                "x": 1.3843,
+                                "y": 1.0414
+                            },
+                            "uuid": "ab62158f-e45f-4e0e-8063-ca388d73e368"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC14 [C_Small]",
+                            "pos": {
+                                "x": 1.4732,
+                                "y": 1.0414
+                            },
+                            "uuid": "afc6d260-6138-41fd-b46e-60b0e02017bd"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC15 [C_Small]",
+                            "pos": {
+                                "x": 1.5748,
+                                "y": 1.0414
+                            },
+                            "uuid": "a9e4be5d-a68e-4afb-891a-239599e94e8c"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "フットプリント 'SOIC-8_5.23x5.23mm_P1.27mm' がライブラリ'Package_SO'に見つかりません",
+                    "items": [
+                        {
+                            "description": "シンボル rU4 [W25Q128JVS]",
+                            "pos": {
+                                "x": 2.286,
+                                "y": 0.5588
+                            },
+                            "uuid": "d80e9b79-4fa3-488a-8bf4-f9f2bd2a3545"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "footprint_link_issues"
+                },
+                {
+                    "description": "シンボル 'W25Q128JVS' が、ライブラリ 'Memory_Flash' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rU4 [W25Q128JVS]",
+                            "pos": {
+                                "x": 2.286,
+                                "y": 0.5588
+                            },
+                            "uuid": "d80e9b79-4fa3-488a-8bf4-f9f2bd2a3545"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません",
+                    "items": [
+                        {
+                            "description": "シンボル rC16 [C_Small]",
+                            "pos": {
+                                "x": 2.3241,
+                                "y": 0.3683
+                            },
+                            "uuid": "95cd0e0a-5bd0-4828-a3a9-a580d84af332"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                }
+            ]
+        }
+    ],
+    "source": "curcur40-right.kicad_sch"
+}
