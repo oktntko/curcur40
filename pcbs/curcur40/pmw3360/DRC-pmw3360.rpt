@@ -1,0 +1,115 @@
+** Drc report for curcur40-pmw3360.kicad_pcb **
+** Created on 2026-10-19T01:02:29 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 0 DRC violations **
+
+** Found 0 unconnected pads **
+
+** Found 32 Footprint errors **
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(154.0000 mm, 94.2840 mm): Footprint C1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(154.0000 mm, 96.0340 mm): Footprint C2
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(138.0000 mm, 103.5000 mm): Footprint C3
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(147.6000 mm, 103.8000 mm): Footprint C4
+[footprint_symbol_mismatch]: フットプリントの属性がシンボルと一致しない: '未実装' の設定が異なります
+    Local override; warning
+    @(153.5000 mm, 104.2000 mm): Footprint C5
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(153.5000 mm, 104.2000 mm): Footprint C5
+[footprint_symbol_mismatch]: 値 ( H1 ) はシンボル値 ( MountingHole_2.2mm_M2 ) と一致しません
+    Local override; warning
+    @(141.1390 mm, 82.5258 mm): Footprint H1
+[footprint_symbol_mismatch]: MountingHole_2.2mm_M2 はシンボル ( MountingHole:MountingHole_3.2mm_M3_ISO14580 ) によって指定されたフットプリントと一致しません
+    Local override; warning
+    @(141.1390 mm, 82.5258 mm): Footprint H1
+[footprint_symbol_field_mismatch]: フットプリントにシンボル フィールド 'LCSC' が有りません
+    Local override; warning
+    @(141.1390 mm, 82.5258 mm): Footprint H1
+[footprint_symbol_mismatch]: 値 ( H2 ) はシンボル値 ( MountingHole_2.2mm_M2 ) と一致しません
+    Local override; warning
+    @(150.1390 mm, 82.5258 mm): Footprint H2
+[footprint_symbol_mismatch]: MountingHole_2.2mm_M2 はシンボル ( MountingHole:MountingHole_3.2mm_M3_ISO14580 ) によって指定されたフットプリントと一致しません
+    Local override; warning
+    @(150.1390 mm, 82.5258 mm): Footprint H2
+[footprint_symbol_field_mismatch]: フットプリントにシンボル フィールド 'LCSC' が有りません
+    Local override; warning
+    @(150.1390 mm, 82.5258 mm): Footprint H2
+[footprint_symbol_mismatch]: 値 ( H3 ) はシンボル値 ( MountingHole_2.2mm_M2 ) と一致しません
+    Local override; warning
+    @(141.1390 mm, 102.5258 mm): Footprint H3
+[footprint_symbol_mismatch]: MountingHole_2.2mm_M2 はシンボル ( MountingHole:MountingHole_3.2mm_M3_ISO14580 ) によって指定されたフットプリントと一致しません
+    Local override; warning
+    @(141.1390 mm, 102.5258 mm): Footprint H3
+[footprint_symbol_field_mismatch]: フットプリントにシンボル フィールド 'LCSC' が有りません
+    Local override; warning
+    @(141.1390 mm, 102.5258 mm): Footprint H3
+[footprint_symbol_mismatch]: 値 ( H4 ) はシンボル値 ( MountingHole_2.2mm_M2 ) と一致しません
+    Local override; warning
+    @(150.1390 mm, 102.5258 mm): Footprint H4
+[footprint_symbol_mismatch]: MountingHole_2.2mm_M2 はシンボル ( MountingHole:MountingHole_3.2mm_M3_ISO14580 ) によって指定されたフットプリントと一致しません
+    Local override; warning
+    @(150.1390 mm, 102.5258 mm): Footprint H4
+[footprint_symbol_field_mismatch]: フットプリントにシンボル フィールド 'LCSC' が有りません
+    Local override; warning
+    @(150.1390 mm, 102.5258 mm): Footprint H4
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Generic connector, single row, 01x08, script generated (kicad-library-utils/schlib/autogen/connector/)', 回路図: '')
+    Local override; warning
+    @(135.3890 mm, 101.9088 mm): Footprint J1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Solder Jumper, 3-pole, open', 回路図: '')
+    Local override; warning
+    @(153.8890 mm, 90.2840 mm): Footprint JP1
+[footprint_symbol_mismatch]: フットプリントの属性がシンボルと一致しない: '未実装' の設定が異なります
+    Local override; warning
+    @(154.0000 mm, 85.5000 mm): Footprint R1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor', 回路図: '')
+    Local override; warning
+    @(154.0000 mm, 85.5000 mm): Footprint R1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor', 回路図: '')
+    Local override; warning
+    @(154.0000 mm, 83.5000 mm): Footprint R2
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor', 回路図: '')
+    Local override; warning
+    @(144.0000 mm, 81.8000 mm): Footprint R3
+[footprint_symbol_mismatch]: フットプリントの属性がシンボルと一致しない: '未実装' の設定が異なります
+    Local override; warning
+    @(153.5000 mm, 102.2000 mm): Footprint R4
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor', 回路図: '')
+    Local override; warning
+    @(153.5000 mm, 102.2000 mm): Footprint R4
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'test point', 回路図: '')
+    Local override; warning
+    @(154.9120 mm, 81.0000 mm): Footprint TP1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'test point', 回路図: '')
+    Local override; warning
+    @(147.2000 mm, 81.8000 mm): Footprint TP2
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'test point', 回路図: '')
+    Local override; warning
+    @(154.9120 mm, 98.5000 mm): Footprint TP3
+[footprint_symbol_mismatch]: 値 ( U1 ) はシンボル値 ( PMW3360DM-T2QU ) と一致しません
+    Local override; warning
+    @(145.6390 mm, 92.5258 mm): Footprint U1
+[footprint_symbol_field_mismatch]: フットプリントにシンボル フィールド 'LCSC' が有りません
+    Local override; warning
+    @(145.6390 mm, 92.5258 mm): Footprint U1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'LDO Voltage Regulators 300-mA low-IQ low-dropout (LDO) voltage regulator with enable 5-SOT-23 -40 to 125', 回路図: '')
+    Local override; warning
+    @(144.5000 mm, 103.8000 mm): Footprint U2
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+    - Footprint doesn't match copy in library
+
+** End of Report **

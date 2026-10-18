@@ -1,0 +1,215 @@
+** Drc report for curcur40-right.kicad_pcb **
+** Created on 2026-10-19T00:59:37 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 2 DRC violations **
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(0.5000 mm, 39.8000 mm): Track [/NCS] on F.Cu, length 16.8910 mm
+[lib_footprint_issues]: フットプリント 'SOIC-8_5.23x5.23mm_P1.27mm' がライブラリ'Package_SO'に見つかりません
+    Local override; warning
+    @(63.1375 mm, 13.7863 mm): Footprint rU4
+
+** Found 0 unconnected pads **
+
+** Found 62 Footprint errors **
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(80.4000 mm, 44.8000 mm): Footprint rC1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(80.4000 mm, 50.2000 mm): Footprint rC2
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(67.0000 mm, 42.8000 mm): Footprint rC3
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(74.5925 mm, 32.1863 mm): Footprint rC4
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(64.9325 mm, 31.1363 mm): Footprint rC5
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(46.2125 mm, 35.6362 mm): Footprint rC6
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(65.7000 mm, 42.8000 mm): Footprint rC7
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(63.3375 mm, 31.9062 mm): Footprint rC8
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(84.5125 mm, 37.2788 mm): Footprint rC9
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(67.5175 mm, 38.2013 mm): Footprint rC10
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(56.7025 mm, 37.4550 mm): Footprint rC11
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(63.3475 mm, 34.0162 mm): Footprint rC12
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(63.3475 mm, 32.9663 mm): Footprint rC13
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(78.6875 mm, 30.9662 mm): Footprint rC14
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(68.2025 mm, 31.1363 mm): Footprint rC15
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Unpolarized capacitor, small symbol', 回路図: '')
+    Local override; warning
+    @(59.3875 mm, 10.2163 mm): Footprint rC16
+[footprint_symbol_field_mismatch]: フィールド 'Datasheet' が異なります(プリント基板図: '', 回路図: 'https://www.diodes.com/assets/Datasheets/ds30396.pdf')
+    Local override; warning
+    @(27.1475 mm, 2.8662 mm): Footprint rD1
+[footprint_symbol_mismatch]: フットプリントの属性がシンボルと一致しない: '部品表(BOM)から除外' の設定が異なります
+    Local override; warning
+    @(14.2875 mm, 0.0000 mm): Footprint rEXSW1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Rotary encoder, dual channel, incremental quadrate outputs, with switch', 回路図: '')
+    Local override; warning
+    @(14.2875 mm, 0.0000 mm): Footprint rEXSW1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(14.2875 mm, 19.0500 mm): Footprint rEXSW2
+[footprint_symbol_field_mismatch]: フィールド 'Datasheet' が異なります(プリント基板図: '', 回路図: 'https://www.usb.org/sites/default/files/documents/usb_type-c.zip')
+    Local override; warning
+    @(12.2875 mm, -23.0575 mm): Footprint rJ1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Audio Jack, 3 Poles (Stereo / TRS)', 回路図: '')
+    Local override; warning
+    @(-5.2575 mm, 34.6463 mm): Footprint rJ2
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)', 回路図: '')
+    Local override; warning
+    @(111.8475 mm, 22.4312 mm): Footprint rJ4
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor, small symbol', 回路図: '')
+    Local override; warning
+    @(5.1225 mm, -15.2750 mm): Footprint rR1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor, small symbol', 回路図: '')
+    Local override; warning
+    @(19.4225 mm, -15.2950 mm): Footprint rR2
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor', 回路図: '')
+    Local override; warning
+    @(80.4000 mm, 51.5000 mm): Footprint rR3
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor, small symbol', 回路図: '')
+    Local override; warning
+    @(67.1225 mm, 31.1262 mm): Footprint rR4
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor, small symbol', 回路図: '')
+    Local override; warning
+    @(66.0225 mm, 31.1262 mm): Footprint rR5
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor', 回路図: '')
+    Local override; warning
+    @(86.7925 mm, 37.3188 mm): Footprint rR6
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor', 回路図: '')
+    Local override; warning
+    @(85.6325 mm, 37.2888 mm): Footprint rR7
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor, small symbol', 回路図: '')
+    Local override; warning
+    @(22.8475 mm, -13.9200 mm): Footprint rR8
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Resistor, small symbol', 回路図: '')
+    Local override; warning
+    @(22.8375 mm, -15.5000 mm): Footprint rR9
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(91.0375 mm, 37.3840 mm): Footprint rSMDSW1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(95.0025 mm, 37.3813 mm): Footprint rSMDSW2
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(33.3375 mm, 52.3875 mm): Footprint rSW1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(33.3375 mm, 28.5750 mm): Footprint rSW2
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(33.3375 mm, 9.5250 mm): Footprint rSW3
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(33.3375 mm, -9.5250 mm): Footprint rSW4
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(52.3875 mm, -11.9062 mm): Footprint rSW5
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(52.3875 mm, 7.1437 mm): Footprint rSW6
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(52.3875 mm, 26.1938 mm): Footprint rSW7
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(52.3875 mm, 52.3875 mm): Footprint rSW8
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(71.4375 mm, 52.3875 mm): Footprint rSW9
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(71.4375 mm, 23.8125 mm): Footprint rSW10
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(71.4375 mm, 4.7625 mm): Footprint rSW11
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(71.4375 mm, -14.2875 mm): Footprint rSW12
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(90.4875 mm, -11.9062 mm): Footprint rSW13
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(90.4875 mm, 7.1437 mm): Footprint rSW14
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(90.4875 mm, 26.1938 mm): Footprint rSW15
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(109.5375 mm, 30.9563 mm): Footprint rSW16
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(109.5375 mm, 11.9062 mm): Footprint rSW17
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Push button switch, generic, two pins', 回路図: '')
+    Local override; warning
+    @(109.5375 mm, -7.1437 mm): Footprint rSW18
+[footprint_symbol_field_mismatch]: フィールド 'Datasheet' が異なります(プリント基板図: '', 回路図: 'https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf')
+    Local override; warning
+    @(74.6075 mm, 37.6399 mm): Footprint rU1
+[footprint_symbol_field_mismatch]: フィールド 'Datasheet' が異なります(プリント基板図: '', 回路図: 'http://www.onsemi.com/pub_link/Collateral/NCP1117-D.PDF')
+    Local override; warning
+    @(51.3825 mm, 38.1463 mm): Footprint rU2
+[footprint_symbol_field_mismatch]: フィールド 'Datasheet' が異なります(プリント基板図: '', 回路図: 'http://www.ti.com/lit/ds/symlink/tpd2eusb30a.pdf')
+    Local override; warning
+    @(22.6525 mm, -11.5100 mm): Footprint rU3
+[footprint_symbol_field_mismatch]: フィールド 'Datasheet' が異なります(プリント基板図: '', 回路図: 'http://www.winbond.com/resource-files/w25q128jv_dtr%20revc%2003272018%20plus.pdf')
+    Local override; warning
+    @(63.1375 mm, 13.7863 mm): Footprint rU4
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Four pin crystal, GND on pins 2 and 4, small symbol', 回路図: '12MHz 18pF ±20ppm SMD3225-4P Crystals ROHS')
+    Local override; warning
+    @(80.4000 mm, 47.4000 mm): Footprint rY1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'ESD Protection Diode, SOD-523', 回路図: '')
+    Local override; warning
+    @(20.9425 mm, -14.7012 mm): Footprint rZD1
+[extra_footprint]: Extra footprint
+    Local override; warning
+    @(14.0250 mm, 62.3875 mm): Footprint rH4
+[extra_footprint]: Extra footprint
+    Local override; warning
+    @(14.0250 mm, 42.3875 mm): Footprint rH2
+[extra_footprint]: Extra footprint
+    Local override; warning
+    @(5.0250 mm, 42.3875 mm): Footprint rH1
+[extra_footprint]: Extra footprint
+    Local override; warning
+    @(5.0250 mm, 62.3875 mm): Footprint rH3
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Silkscreen clipped by solder mask
+    - Text height out of range
+    - Text thickness out of range
+    - PTH inside courtyard
+    - NPTH inside courtyard
+    - Footprint doesn't match copy in library
+
+** End of Report **
