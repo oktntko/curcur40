@@ -717,7 +717,7 @@
 		)
 		(path "/610d2ade-53fa-4f5e-a3a1-1aca305beba4")
 		(sheetfile "curcur40-pmw3360.kicad_sch")
-		(attr smd)
+		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start 1.65 0.73)
@@ -2039,7 +2039,7 @@
 		)
 		(path "/3696e467-4807-4909-ac9d-a4bc45889cca")
 		(sheetfile "curcur40-pmw3360.kicad_sch")
-		(attr smd)
+		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -1.65 -0.73)
@@ -3786,7 +3786,7 @@
 		)
 		(path "/cfbe2306-8ce2-419e-ac7f-b124e00d2fc0")
 		(sheetfile "curcur40-pmw3360.kicad_sch")
-		(attr smd)
+		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start 1.65 0.73)

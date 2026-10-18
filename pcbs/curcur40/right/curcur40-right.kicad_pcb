@@ -11990,7 +11990,7 @@
 			)
 		)
 	)
-	(footprint "Package_SO:SOIC-8_5.23x5.23mm_P1.27mm"
+	(footprint "Package_SO:SOIC-8_5.3x5.3mm_P1.27mm"
 		(layer "B.Cu")
 		(uuid "9d293280-77a0-44f0-8bc9-479e176bdf26")
 		(at 63.1375 13.78625 180)
@@ -22818,14 +22818,6 @@
 		(layer "F.Cu")
 		(net "/NCS")
 		(uuid "e82a4a28-48fc-46e6-827a-d618ec4fb6f5")
-	)
-	(segment
-		(start 0.5 39.8)
-		(end 0.5 56.691)
-		(width 0.2)
-		(layer "F.Cu")
-		(net "/NCS")
-		(uuid "f1739e41-80b3-4b66-9e9b-95efcace4f59")
 	)
 	(via
 		(at 82.9075 14.81625)
