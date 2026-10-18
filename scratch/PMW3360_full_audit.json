@@ -1,0 +1,257 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-19T01:36:00",
+    "ignored_checks": [],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-pmw3360-audit.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "フットプリント 'R_0603_1608Metric_Pad0.98x0.95mm_HandSolder' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント R2",
+                    "pos": {
+                        "x": 154.0,
+                        "y": 83.5
+                    },
+                    "uuid": "1424758b-8d1d-48b7-932c-b6803b223b5e"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'PinHeader_1x08_P2.54mm_Vertical' が、ライブラリ 'Connector_PinHeader_2.54mm' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント J1",
+                    "pos": {
+                        "x": 135.389,
+                        "y": 101.9088
+                    },
+                    "uuid": "17472dbf-4f0a-4657-a4fc-0ebcf20c1723"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0603_1608Metric_Pad0.98x0.95mm_HandSolder' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント R4",
+                    "pos": {
+                        "x": 153.5,
+                        "y": 102.2
+                    },
+                    "uuid": "24120d18-dc1a-4480-99c2-983448e5a5f1"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'PMW3360DM-T2QU_16Pin' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント U1",
+                    "pos": {
+                        "x": 145.639,
+                        "y": 92.5258
+                    },
+                    "uuid": "2c27e078-5cb9-42fd-9d9a-a3bc492243fd"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'TestPoint_Pad_D1.5mm' が、ライブラリ 'TestPoint' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント TP2",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 81.8
+                    },
+                    "uuid": "4c89c707-5709-4bcd-8a3b-91ae35e9d952"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0603_1608Metric_Pad0.98x0.95mm_HandSolder' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント R3",
+                    "pos": {
+                        "x": 144.0,
+                        "y": 81.8
+                    },
+                    "uuid": "5e035a4f-8d8e-4df1-b3d2-3e4d852dda58"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0603_1608Metric_Pad1.08x0.95mm_HandSolder' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント C4",
+                    "pos": {
+                        "x": 147.6,
+                        "y": 103.8
+                    },
+                    "uuid": "60e45f89-7940-4086-a72d-6caebc1738af"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0603_1608Metric_Pad1.08x0.95mm_HandSolder' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント C5",
+                    "pos": {
+                        "x": 153.5,
+                        "y": 104.2
+                    },
+                    "uuid": "854b8182-8a57-49ca-8c5f-1c961db14b44"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'TestPoint_Pad_D1.5mm' が、ライブラリ 'TestPoint' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント TP1",
+                    "pos": {
+                        "x": 154.912,
+                        "y": 81.0
+                    },
+                    "uuid": "9307ccd8-8c0a-463d-ad3c-f994ca574347"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0603_1608Metric_Pad1.08x0.95mm_HandSolder' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント C3",
+                    "pos": {
+                        "x": 138.0,
+                        "y": 103.5
+                    },
+                    "uuid": "a4d81f4f-af64-4295-a21d-88d6ff305471"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'TestPoint_Pad_D1.5mm' が、ライブラリ 'TestPoint' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント TP3",
+                    "pos": {
+                        "x": 154.912,
+                        "y": 98.5
+                    },
+                    "uuid": "b794d5df-c581-452c-9623-827ece01a501"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0603_1608Metric_Pad1.08x0.95mm_HandSolder' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント C2",
+                    "pos": {
+                        "x": 154.0,
+                        "y": 96.034
+                    },
+                    "uuid": "c2e93c74-ceac-4a46-a555-544087b51b83"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'SOT-23-5' が、ライブラリ 'Package_TO_SOT_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント U2",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 103.8
+                    },
+                    "uuid": "d43508b7-d239-4b86-9638-f61238af939c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels' が、ライブラリ 'Jumper' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント JP1",
+                    "pos": {
+                        "x": 153.889,
+                        "y": 90.284
+                    },
+                    "uuid": "e64e0330-6fea-4260-9e7c-4205a883cbbe"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0603_1608Metric_Pad1.08x0.95mm_HandSolder' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント C1",
+                    "pos": {
+                        "x": 154.0,
+                        "y": 94.284
+                    },
+                    "uuid": "f5ab2b65-85e6-43b4-a1dd-011d84b730fc"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0603_1608Metric_Pad0.98x0.95mm_HandSolder' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント R1",
+                    "pos": {
+                        "x": 154.0,
+                        "y": 85.5
+                    },
+                    "uuid": "f8682a94-e1b9-4d6c-98b0-381c34a41777"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        }
+    ]
+}
