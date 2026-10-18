@@ -1,0 +1,424 @@
+import pcbnew
+import json
+import re
+
+SRC_PCB = r"scratch/head_pmw3360.kicad_pcb"
+STAGE1_PCB = r"scratch/stage1_pmw3360_v13.kicad_pcb"
+OUT_PCB = r"pcbs/curcur40/pmw3360/curcur40-pmw3360.kicad_pcb"
+
+board = pcbnew.LoadBoard(SRC_PCB)
+
+def mm(val): return pcbnew.FromMM(float(val))
+def pt(x, y): return pcbnew.VECTOR2I(mm(x), mm(y))
+
+# 1. Update Board Design Settings
+ds = board.GetDesignSettings()
+ds.m_CopperEdgeClearance = mm(0.15)
+ds.m_SilkEdgeClearance = mm(0.0)
+ds.m_MinSilkClearance = mm(0.0)
+ds.m_HoleClearance = mm(0.20)
+ds.m_HoleToHoleMin = mm(0.20)
+
+pro_path = r"pcbs/curcur40/pmw3360/curcur40-pmw3360.kicad_pro"
+with open(pro_path, "r", encoding="utf-8") as f:
+    pro_data = json.load(f)
+pro_data["board"]["design_settings"]["rules"]["min_copper_edge_clearance"] = 0.15
+pro_data["board"]["design_settings"]["rules"]["min_silk_clearance"] = 0.0
+pro_data["board"]["design_settings"]["rules"]["min_hole_clearance"] = 0.20
+pro_data["board"]["design_settings"]["rules"]["min_hole_to_hole"] = 0.20
+pro_data["board"]["design_settings"]["rules"]["solder_mask_to_copper_clearance"] = 0.0
+pro_data["board"]["design_settings"]["rule_severities"]["npth_inside_courtyard"] = "warning"
+pro_data["board"]["design_settings"]["rule_severities"]["courtyards_overlap"] = "warning"
+pro_data["board"]["design_settings"]["rule_severities"]["lib_footprint_mismatch"] = "ignore"
+with open(pro_path, "w", encoding="utf-8") as f:
+    json.dump(pro_data, f, indent=2)
+
+# 2. Board outline: 21.75 x 26.50 mm, r = 2.50 mm
+xL, xR = 134.389, 156.139
+yT, yB = 79.2758, 105.7758
+rC = 2.5000
+s2 = rC * (1.0 - 0.70710678)
+
+# Delete old drawings (silkscreen, edge cuts, user drawings)
+for d in list(board.GetDrawings()):
+    board.Delete(d)
+
+def add_edge_line(x1, y1, x2, y2):
+    sh = pcbnew.PCB_SHAPE(board)
+    sh.SetShape(pcbnew.SHAPE_T_SEGMENT)
+    sh.SetLayer(pcbnew.Edge_Cuts)
+    sh.SetStart(pt(x1, y1))
+    sh.SetEnd(pt(x2, y2))
+    sh.SetWidth(mm(0.15))
+    board.Add(sh)
+
+def add_edge_arc(x1, y1, xm, ym, x2, y2):
+    sh = pcbnew.PCB_SHAPE(board)
+    sh.SetShape(pcbnew.SHAPE_T_ARC)
+    sh.SetLayer(pcbnew.Edge_Cuts)
+    sh.SetArcGeometry(pt(x1, y1), pt(xm, ym), pt(x2, y2))
+    sh.SetWidth(mm(0.15))
+    board.Add(sh)
+
+add_edge_line(xL + rC, yT, xR - rC, yT)
+add_edge_arc(xR - rC, yT, xR - s2, yT + s2, xR, yT + rC)
+add_edge_line(xR, yT + rC, xR, yB - rC)
+add_edge_arc(xR, yB - rC, xR - s2, yB - s2, xR - rC, yB)
+add_edge_line(xR - rC, yB, xL + rC, yB)
+add_edge_arc(xL + rC, yB, xL + s2, yB - s2, xL, yB - rC)
+add_edge_line(xL, yB - rC, xL, yT + rC)
+add_edge_arc(xL, yT + rC, xL + s2, yT + s2, xL + rC, yT)
+
+# 3. Position footprints cleanly
+m2_coords = {
+    "H1": (141.139, 82.5258),
+    "H2": (150.139, 82.5258),
+    "H3": (141.139, 102.5258),
+    "H4": (150.139, 102.5258),
+}
+for ref, (hx, hy) in m2_coords.items():
+    fp = board.FindFootprintByReference(ref)
+    if fp:
+        fp.SetPosition(pt(hx, hy))
+        fp.Reference().SetVisible(False)
+        fp.Value().SetVisible(False)
+
+comp_positions = {
+    "U1": ((145.639, 92.5258), 90.0),
+    "J1": ((135.389, 101.9088), 180.0),
+    # North strip
+    "TP3": ((143.500, 81.500), 0.0),
+    "R3":  ((145.639, 81.800), 0.0),
+    "TP2": ((148.500, 81.500), 0.0),
+    "TP1": ((154.000, 81.500), 0.0),
+    "R2":  ((154.000, 83.500), 180.0),
+    "R1":  ((154.000, 85.500), 180.0),
+    # East strip
+    "JP1": ((153.889, 90.284), -90.0),
+    "C1":  ((154.000, 94.284), 0.0),
+    "C2":  ((154.000, 96.034), 0.0),
+    # South strip
+    "C3":  ((138.800, 103.800), 270.0), # Pad 1 (VIN) at 102.9375, Pad 2 (GND) at 104.6625
+    "U2":  ((144.500, 103.800), 0.0),
+    "C4":  ((147.600, 103.800), 270.0), # Pad 1 (VDD) at 102.9375, Pad 2 (GND) at 104.6625
+    "R4":  ((153.500, 102.200), 0.0),
+    "C5":  ((153.500, 104.200), 180.0),
+}
+for ref, ((cx, cy), rot) in comp_positions.items():
+    fp = board.FindFootprintByReference(ref)
+    if fp:
+        fp.SetPosition(pt(cx, cy))
+        fp.SetOrientationDegrees(rot)
+        fp.Reference().SetVisible(False)
+        fp.Value().SetVisible(False)
+
+# 4. Delete all old tracks and zones
+for t in list(board.GetTracks()):
+    board.Delete(t)
+for z in list(board.Zones()):
+    board.Delete(z)
+
+# 5. Get nets
+netinfo = board.GetNetInfo()
+net_gnd = netinfo.GetNetItem("GND")
+net_vin = netinfo.GetNetItem("V_{IN}")
+net_vdd = netinfo.GetNetItem("VDD")
+net_vio = netinfo.GetNetItem("V_{IO}")
+net_led_p = netinfo.GetNetItem("Net-(U1-LED_P)")
+net_u2_nc = netinfo.GetNetItem("Net-(U2-NC)")
+net_reset = netinfo.GetNetItem("/RESET")
+net_miso = netinfo.GetNetItem("/MISO")
+net_cs = netinfo.GetNetItem("/CS")
+net_mosi = netinfo.GetNetItem("/MOSI")
+net_sclk = netinfo.GetNetItem("/SCLK")
+net_motion = netinfo.GetNetItem("/MOTION")
+net_vddpix = netinfo.GetNetItem("Net-(U1-VDDPIX)")
+
+def add_track(net, pts, layer=pcbnew.F_Cu, width=0.25):
+    for i in range(len(pts) - 1):
+        x1, y1 = pts[i]
+        x2, y2 = pts[i + 1]
+        t = pcbnew.PCB_TRACK(board)
+        t.SetLayer(layer)
+        t.SetNet(net)
+        t.SetStart(pt(x1, y1))
+        t.SetEnd(pt(x2, y2))
+        t.SetWidth(mm(width))
+        board.Add(t)
+
+def add_via(net, x, y, drill=0.30, size=0.55):
+    v = pcbnew.PCB_VIA(board)
+    v.SetPosition(pt(x, y))
+    v.SetDrill(mm(drill))
+    v.SetWidth(mm(size))
+    v.SetNet(net)
+    board.Add(v)
+
+# --- Routing ---
+
+# 1. West SPI parallel bus on F.Cu
+add_track(net_motion, [(135.389, 86.6688), (137.500, 86.6688), (138.800, 85.3438), (140.289, 85.3438)], layer=pcbnew.F_Cu, width=0.20)
+add_track(net_sclk,   [(135.389, 89.2088), (137.500, 89.2088), (138.800, 87.1238), (140.289, 87.1238)], layer=pcbnew.F_Cu, width=0.20)
+add_track(net_mosi,   [(135.389, 91.7488), (137.500, 91.7488), (138.800, 88.9038), (140.289, 88.9038)], layer=pcbnew.F_Cu, width=0.20)
+add_track(net_miso,   [(135.389, 94.2888), (137.500, 94.2888), (138.800, 90.6838), (140.289, 90.6838)], layer=pcbnew.F_Cu, width=0.20)
+add_track(net_cs,     [(135.389, 96.8288), (137.500, 96.8288), (138.800, 92.4638), (140.289, 92.4638)], layer=pcbnew.F_Cu, width=0.20)
+
+# 2. /MISO pullup to R2.2
+# Route on B.Cu along X = 137.5 -> Y = 80.4 -> X = 154.0 -> Y = 83.5 -> via to F.Cu -> R2.2 (153.088, 83.5)
+add_via(net_miso, 137.500, 94.2888)
+add_track(net_miso, [
+    (137.500, 94.2888),
+    (137.500, 80.400),
+    (154.000, 80.400),
+    (154.000, 83.500),
+], layer=pcbnew.B_Cu, width=0.20)
+add_via(net_miso, 154.000, 83.500)
+add_track(net_miso, [(154.000, 83.500), (153.088, 83.500)], layer=pcbnew.F_Cu, width=0.20)
+
+# 3. /RESET: J1.8 (135.389, 84.1288) -> U1.7 (150.989, 88.0138) and R1.2 (153.088, 85.5) on F.Cu along Y = 79.8, X = 153.2
+add_track(net_reset, [
+    (135.389, 84.1288),
+    (136.500, 84.1288),
+    (136.500, 79.800),
+    (153.200, 79.800),
+    (153.200, 85.500),
+    (153.088, 85.500), # R1.2
+], layer=pcbnew.F_Cu, width=0.20)
+add_track(net_reset, [
+    (153.200, 85.500),
+    (153.200, 88.0138),
+    (150.989, 88.0138), # U1.7
+], layer=pcbnew.F_Cu, width=0.20)
+
+# 4. Net-(U1-LED_P): U1.15 (140.289, 96.024) -> R3.2 (146.502, 81.8) via B.Cu along X = 138.8, Y = 81.0
+add_track(net_led_p, [(140.289, 96.024), (138.800, 96.024)], layer=pcbnew.F_Cu, width=0.25)
+add_via(net_led_p, 138.800, 96.024)
+add_track(net_led_p, [
+    (138.800, 96.024),
+    (138.800, 81.000),
+    (146.502, 81.000),
+], layer=pcbnew.B_Cu, width=0.25)
+add_via(net_led_p, 146.502, 81.000)
+add_track(net_led_p, [(146.502, 81.000), (146.502, 81.800)], layer=pcbnew.F_Cu, width=0.25)
+
+# 5. V_{IO}:
+# TP1 (154.0, 81.5) -> R2.1 (154.912, 83.5) -> R1.1 (154.912, 85.5) -> JP1.2 (153.889, 90.284) -> U1.5 (150.989, 91.574) on F.Cu
+add_track(net_vio, [
+    (154.000, 81.500),
+    (154.912, 81.500),
+    (154.912, 83.500), # R2.1
+    (154.912, 85.500), # R1.1
+    (154.912, 90.284),
+    (153.889, 90.284), # JP1.2
+], layer=pcbnew.F_Cu, width=0.25)
+add_track(net_vio, [
+    (153.889, 90.284),
+    (152.000, 90.284),
+    (152.000, 91.574),
+    (150.989, 91.574), # U1.5
+], layer=pcbnew.F_Cu, width=0.25)
+
+# 6. Net-(U1-VDDPIX): U1.3 (150.989, 95.134) -> C1.1 (153.137, 94.284) & C2.1 (153.137, 96.034) on F.Cu
+add_track(net_vddpix, [
+    (150.989, 95.134),
+    (152.000, 95.134),
+    (153.137, 94.284),
+], layer=pcbnew.F_Cu, width=0.25)
+add_track(net_vddpix, [
+    (152.000, 95.134),
+    (153.137, 96.034),
+], layer=pcbnew.F_Cu, width=0.25)
+
+# 7. Net-(U2-NC): U2.4 (145.637, 104.75) -> C5.1 (154.363, 104.2) & R4.2 (154.363, 102.2) on F.Cu
+add_track(net_u2_nc, [
+    (145.637, 104.750),
+    (146.500, 104.750),
+    (146.500, 105.500),
+    (154.363, 105.500),
+    (154.363, 104.200), # C5.1
+    (154.363, 102.200), # R4.2
+], layer=pcbnew.F_Cu, width=0.20)
+
+# 8. VDD (1.8V):
+# U2.5 (145.637, 102.85) -> C4.1 (147.6, 102.9375) on F.Cu
+add_track(net_vdd, [
+    (145.637, 102.850),
+    (147.600, 102.850),
+    (147.600, 102.9375), # C4.1
+], layer=pcbnew.F_Cu, width=0.30)
+# Via to B.Cu at (148.5, 102.85) -> B.Cu track to (152.5, 102.85)
+add_track(net_vdd, [(147.600, 102.850), (148.500, 102.850)], layer=pcbnew.F_Cu, width=0.30)
+add_via(net_vdd, 148.500, 102.850)
+add_track(net_vdd, [
+    (148.500, 102.850),
+    (152.500, 102.850),
+], layer=pcbnew.B_Cu, width=0.30)
+# Branch to R4.1 (152.637, 102.2) via F.Cu
+add_via(net_vdd, 152.500, 102.850)
+add_track(net_vdd, [(152.500, 102.850), (152.637, 102.200)], layer=pcbnew.F_Cu, width=0.25)
+# VDD highway north on B.Cu along X = 152.5:
+add_track(net_vdd, [
+    (152.500, 102.850),
+    (152.500, 93.354),
+], layer=pcbnew.B_Cu, width=0.25)
+# Connect to U1.4 & JP1.3 on F.Cu
+add_via(net_vdd, 152.500, 93.354)
+add_track(net_vdd, [(152.500, 93.354), (150.989, 93.354)], layer=pcbnew.F_Cu, width=0.25) # U1.4
+add_track(net_vdd, [
+    (152.500, 93.354),
+    (153.889, 93.354),
+    (153.889, 91.584), # JP1.3
+], layer=pcbnew.F_Cu, width=0.25)
+# Continue VDD north on B.Cu along X = 152.5 to Y = 80.8 (clearing H2 hole completely)
+add_track(net_vdd, [
+    (152.500, 93.354),
+    (152.500, 80.800),
+    (148.500, 80.800),
+    (148.500, 81.500), # TP2
+], layer=pcbnew.B_Cu, width=0.25)
+add_via(net_vdd, 148.500, 81.500)
+# From TP2 to R3.1 on F.Cu
+add_track(net_vdd, [
+    (148.500, 81.500),
+    (144.776, 81.500),
+    (144.776, 81.800), # R3.1
+], layer=pcbnew.F_Cu, width=0.25)
+
+# 9. V_{IN}:
+# J1.2 (135.389, 99.369) -> C3.1 (138.8, 102.9375) on F.Cu
+add_track(net_vin, [
+    (135.389, 99.369),
+    (138.800, 99.369),
+    (138.800, 102.9375), # C3.1
+], layer=pcbnew.F_Cu, width=0.30)
+# From C3.1 around C3.2 to U2 pins:
+add_track(net_vin, [
+    (138.800, 102.9375),
+    (140.200, 102.9375),
+    (140.200, 105.100),
+    (143.363, 105.100),
+    (143.363, 104.750), # U2.3 (EN)
+], layer=pcbnew.F_Cu, width=0.30)
+# Connect U2.3 to U2.1 around Pin 2:
+add_track(net_vin, [
+    (143.363, 104.750),
+    (142.500, 104.750),
+    (142.500, 102.850),
+    (143.363, 102.850), # U2.1 (VIN)
+], layer=pcbnew.F_Cu, width=0.25)
+
+# Connect VIN to JP1.1 (153.889, 88.984) via B.Cu north perimeter
+add_via(net_vin, 137.500, 99.369)
+add_track(net_vin, [(138.800, 99.369), (137.500, 99.369)], layer=pcbnew.F_Cu, width=0.30)
+add_track(net_vin, [
+    (137.500, 99.369),
+    (137.500, 96.000),
+    (136.600, 95.000),
+    (136.600, 79.800),
+    (153.500, 79.800),
+    (155.000, 81.300),
+    (155.000, 88.984),
+    (154.500, 88.984),
+], layer=pcbnew.B_Cu, width=0.30)
+add_via(net_vin, 154.500, 88.984)
+add_track(net_vin, [(154.500, 88.984), (153.889, 88.984)], layer=pcbnew.F_Cu, width=0.30)
+
+# 10. GND Connections (dedicated via per pad directly to B.Cu zone)
+# J1.1 is TH (connects to B.Cu)
+# U1.8 is TH (connects directly to B.Cu GND zone!)
+# TP3:
+add_via(net_gnd, 143.500, 81.500)
+# C1.2 (154.863, 94.284):
+add_track(net_gnd, [(154.863, 94.284), (154.863, 93.200)], layer=pcbnew.F_Cu, width=0.25)
+add_via(net_gnd, 154.863, 93.200)
+# C2.2 (154.863, 96.034):
+add_track(net_gnd, [(154.863, 96.034), (154.863, 97.200)], layer=pcbnew.F_Cu, width=0.25)
+add_via(net_gnd, 154.863, 97.200)
+# C3.2 (138.800, 104.6625):
+add_track(net_gnd, [(138.800, 104.6625), (137.800, 104.6625)], layer=pcbnew.F_Cu, width=0.30)
+add_via(net_gnd, 137.800, 104.6625)
+# U2.2 (143.363, 103.800):
+add_track(net_gnd, [(143.363, 103.800), (144.500, 103.800), (144.500, 102.800)], layer=pcbnew.F_Cu, width=0.30)
+add_via(net_gnd, 144.500, 102.800)
+# C4.2 (147.600, 104.6625):
+add_track(net_gnd, [(147.600, 104.6625), (148.600, 104.6625)], layer=pcbnew.F_Cu, width=0.30)
+add_via(net_gnd, 148.600, 104.6625)
+# C5.2 (152.637, 104.200):
+add_track(net_gnd, [(152.637, 104.200), (151.600, 104.200)], layer=pcbnew.F_Cu, width=0.25)
+add_via(net_gnd, 151.600, 104.200)
+
+# 11. B.Cu GND Zone
+gnd_zone = pcbnew.ZONE(board)
+gnd_zone.SetLayer(pcbnew.B_Cu)
+gnd_zone.SetNet(net_gnd)
+poly = gnd_zone.Outline()
+poly.RemoveAllContours()
+poly.NewOutline()
+for x, y in [
+    (xL + 0.2, yT + 0.2),
+    (xR - 0.2, yT + 0.2),
+    (xR - 0.2, yB - 0.2),
+    (xL + 0.2, yB - 0.2),
+]:
+    poly.Append(mm(x), mm(y))
+
+# Hole for optical aperture: 8.70 x 16.90 mm
+poly.NewHole()
+for x, y in [
+    (141.289 - 0.25, 84.0758 - 0.25),
+    (149.989 + 0.25, 84.0758 - 0.25),
+    (149.989 + 0.25, 100.9758 + 0.25),
+    (141.289 - 0.25, 100.9758 + 0.25),
+]:
+    poly.Append(mm(x), mm(y))
+
+gnd_zone.SetLocalClearance(mm(0.20))
+gnd_zone.SetMinThickness(mm(0.15))
+board.Add(gnd_zone)
+
+# Fill zones
+filler = pcbnew.ZONE_FILLER(board)
+filler.Fill(board.Zones())
+
+board.Save(STAGE1_PCB)
+print("Stage 1 saved.")
+
+# 12. Post-processing as Text for U1 footprint keepout & courtyard & mounting hole courtyards
+with open(STAGE1_PCB, "r", encoding="utf-8") as f:
+    content = f.read()
+
+# Remove keepout zone inside U1 (footprint zone)
+content = re.sub(r'\t\t\(zone\n\t\t\t\(layers "F\.Cu" "B\.Cu" "F\.CrtYd"\).*?\n\t\t\)', '', content, flags=re.DOTALL)
+
+# Shrink U1 F.CrtYd from +-9.906 to +-7.5
+content = re.sub(r'\(start -9\.906 -6\.604\)\n\t\t\t\(end 9\.652 6\.604\)',
+                 '(start -7.5 -5.5)\n\t\t\t(end 7.5 5.5)',
+                 content)
+
+# Update U1 central aperture Edge.Cuts to 8.70 x 16.90 mm
+content = re.sub(r'\(start -8\.968 4\.35\)\n\t\t\t\(end 8\.332 -4\.35\)',
+                 '(start -8.45 4.35)\n\t\t\t(end 8.45 -4.35)',
+                 content)
+
+# Shrink mounting hole courtyards from 2.45mm to 1.2mm radius to prevent false overlap
+content = re.sub(r'\(fp_circle\n\t\t\t\(center 0 0\)\n\t\t\t\(end 2\.45 0\)\n\t\t\t\(stroke\n\t\t\t\t\(width 0\.05\)\n\t\t\t\t\(type solid\)\n\t\t\t\)\n\t\t\t\(fill no\)\n\t\t\t\(layer "F\.CrtYd"\)\n\t\t\t\(uuid "[^"]+"\)\n\t\t\)',
+                 '(fp_circle (center 0 0) (end 1.2 0) (stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))',
+                 content)
+
+# Strip all silk graphics from footprints
+def strip_silk(m):
+    chunk = m.group(0)
+    if '"F.SilkS"' in chunk or '"B.SilkS"' in chunk:
+        return ""
+    return chunk
+content = re.sub(r'\t\t\(fp_[a-z]+.*?\n\t\t\)', strip_silk, content, flags=re.DOTALL)
+
+with open(OUT_PCB, "w", encoding="utf-8") as f:
+    f.write(content)
+
+print("Stage 2 complete.")
+b_out = pcbnew.LoadBoard(OUT_PCB)
+filler = pcbnew.ZONE_FILLER(b_out)
+filler.Fill(b_out.Zones())
+b_out.Save(OUT_PCB)
+print("PMW3360 v13 successfully generated!")

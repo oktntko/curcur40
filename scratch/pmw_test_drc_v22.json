@@ -1,0 +1,334 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T22:34:36",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-pmw3360.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 0.7000 mm )",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 81.5
+                    },
+                    "uuid": "d746e335-42ce-406d-9925-362e5fa681a3"
+                },
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 2.5110 mm )",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 84.5
+                    },
+                    "uuid": "8d8e131a-24e9-4274-9932-9e5cd6fb8e62"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "Tracks crossing",
+            "items": [
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 0.8370 mm )",
+                    "pos": {
+                        "x": 154.363,
+                        "y": 104.2
+                    },
+                    "uuid": "00c563d6-c971-4eb4-8d81-bd1562de9df6"
+                },
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 2.0000 mm )",
+                    "pos": {
+                        "x": 154.412,
+                        "y": 104.2
+                    },
+                    "uuid": "831b537c-b983-4de5-85f5-3da43d68277e"
+                }
+            ],
+            "severity": "error",
+            "type": "tracks_crossing"
+        },
+        {
+            "description": "Tracks crossing",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 5.7000 mm )",
+                    "pos": {
+                        "x": 152.0,
+                        "y": 79.8
+                    },
+                    "uuid": "3a35c56f-cac8-4f99-8b81-8bb033cce61e"
+                },
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 2.5110 mm )",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 84.5
+                    },
+                    "uuid": "8d8e131a-24e9-4274-9932-9e5cd6fb8e62"
+                }
+            ],
+            "severity": "error",
+            "type": "tracks_crossing"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と V_{IN})",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 82.2
+                    },
+                    "uuid": "00962d2f-4e80-46df-926e-0bc4573e2b4a"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( B.Cu 上、長さ: 15.4000 mm )",
+                    "pos": {
+                        "x": 136.6,
+                        "y": 95.0
+                    },
+                    "uuid": "ee9d692e-9939-423c-ba98-a07815c14c6d"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と Net-(U2-NC))",
+            "items": [
+                {
+                    "description": "パッド 2 [GND] - C5 ( F.Cu 上)",
+                    "pos": {
+                        "x": 154.3625,
+                        "y": 104.2
+                    },
+                    "uuid": "6e613272-8e84-4032-be91-fa9bad59986a"
+                },
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 2.0000 mm )",
+                    "pos": {
+                        "x": 154.412,
+                        "y": 104.2
+                    },
+                    "uuid": "831b537c-b983-4de5-85f5-3da43d68277e"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と Net-(U2-NC))",
+            "items": [
+                {
+                    "description": "パッド 2 [GND] - C5 ( F.Cu 上)",
+                    "pos": {
+                        "x": 154.3625,
+                        "y": 104.2
+                    },
+                    "uuid": "6e613272-8e84-4032-be91-fa9bad59986a"
+                },
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 1.7750 mm )",
+                    "pos": {
+                        "x": 152.637,
+                        "y": 104.2
+                    },
+                    "uuid": "b525b1a4-ba70-4607-a078-5839ea4779e1"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と /RESET)",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 82.2
+                    },
+                    "uuid": "00962d2f-4e80-46df-926e-0bc4573e2b4a"
+                },
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 4.3288 mm )",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 84.1288
+                    },
+                    "uuid": "0fe1268b-e2e4-49cd-8365-928455f93a04"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "Tracks crossing",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 4.3288 mm )",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 84.1288
+                    },
+                    "uuid": "0fe1268b-e2e4-49cd-8365-928455f93a04"
+                },
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 0.7000 mm )",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 81.5
+                    },
+                    "uuid": "d746e335-42ce-406d-9925-362e5fa681a3"
+                }
+            ],
+            "severity": "error",
+            "type": "tracks_crossing"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 4.3288 mm )",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 84.1288
+                    },
+                    "uuid": "0fe1268b-e2e4-49cd-8365-928455f93a04"
+                },
+                {
+                    "description": "パッド 1 [GND] - TP3 ( F.Cu 上)",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 81.5
+                    },
+                    "uuid": "9477025b-6120-44e7-9a64-44f21d5e1f28"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 2.0000 mm )",
+                    "pos": {
+                        "x": 154.412,
+                        "y": 104.2
+                    },
+                    "uuid": "831b537c-b983-4de5-85f5-3da43d68277e"
+                },
+                {
+                    "description": "パッド 2 [GND] - C5 ( F.Cu 上)",
+                    "pos": {
+                        "x": 154.3625,
+                        "y": 104.2
+                    },
+                    "uuid": "6e613272-8e84-4032-be91-fa9bad59986a"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 1.7750 mm )",
+                    "pos": {
+                        "x": 152.637,
+                        "y": 104.2
+                    },
+                    "uuid": "b525b1a4-ba70-4607-a078-5839ea4779e1"
+                },
+                {
+                    "description": "パッド 2 [GND] - C5 ( F.Cu 上)",
+                    "pos": {
+                        "x": 154.3625,
+                        "y": 104.2
+                    },
+                    "uuid": "6e613272-8e84-4032-be91-fa9bad59986a"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 1.0000 mm )",
+                    "pos": {
+                        "x": 152.588,
+                        "y": 101.2
+                    },
+                    "uuid": "20339293-3bba-40fb-8c14-c84fc5712bfc"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント J1",
+                    "pos": {
+                        "x": 135.389,
+                        "y": 101.9088
+                    },
+                    "uuid": "17472dbf-4f0a-4657-a4fc-0ebcf20c1723"
+                },
+                {
+                    "description": "フットプリント TP3",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 81.5
+                    },
+                    "uuid": "b794d5df-c581-452c-9623-827ece01a501"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        }
+    ]
+}

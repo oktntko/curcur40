@@ -1,0 +1,181 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T23:10:03",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-pmw3360.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "ゾーン [GND] B.Cu 上, 優先度 0",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 80.2
+                    },
+                    "uuid": "3265f1cd-4576-42d3-8430-047d38286c94"
+                },
+                {
+                    "description": "ゾーン [GND] B.Cu 上, 優先度 0",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 80.2
+                    },
+                    "uuid": "3265f1cd-4576-42d3-8430-047d38286c94"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "Tracks crossing",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( B.Cu 上、長さ: 17.4000 mm )",
+                    "pos": {
+                        "x": 136.6,
+                        "y": 79.6
+                    },
+                    "uuid": "a3a4bced-ab06-4283-83dd-e41c1043a14e"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 14.1540 mm )",
+                    "pos": {
+                        "x": 152.4,
+                        "y": 93.354
+                    },
+                    "uuid": "ec6d5c94-8d7b-469a-a1f1-95db5940f6e4"
+                }
+            ],
+            "severity": "error",
+            "type": "tracks_crossing"
+        },
+        {
+            "description": "Tracks crossing",
+            "items": [
+                {
+                    "description": "配線 [/MISO] ( B.Cu 上、長さ: 15.5880 mm )",
+                    "pos": {
+                        "x": 137.5,
+                        "y": 80.2
+                    },
+                    "uuid": "c5b6f795-6b0b-4466-987e-da2812d7d5dd"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 14.1540 mm )",
+                    "pos": {
+                        "x": 152.4,
+                        "y": 93.354
+                    },
+                    "uuid": "ec6d5c94-8d7b-469a-a1f1-95db5940f6e4"
+                }
+            ],
+            "severity": "error",
+            "type": "tracks_crossing"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1500 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.2758
+                    },
+                    "uuid": "5420f5dd-d3e4-4b83-b3f5-b41df02dce57"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 5.2000 mm )",
+                    "pos": {
+                        "x": 152.4,
+                        "y": 79.2
+                    },
+                    "uuid": "39397362-e13b-4814-ba1d-2d079775b347"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1500 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.2758
+                    },
+                    "uuid": "5420f5dd-d3e4-4b83-b3f5-b41df02dce57"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 14.1540 mm )",
+                    "pos": {
+                        "x": 152.4,
+                        "y": 93.354
+                    },
+                    "uuid": "ec6d5c94-8d7b-469a-a1f1-95db5940f6e4"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1500 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "セグメント (Edge.Cuts 上)",
+                    "pos": {
+                        "x": 136.889,
+                        "y": 79.2758
+                    },
+                    "uuid": "5420f5dd-d3e4-4b83-b3f5-b41df02dce57"
+                },
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 2.6000 mm )",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 79.2
+                    },
+                    "uuid": "ed7e329a-69a0-4290-a793-053084c611c3"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        }
+    ]
+}

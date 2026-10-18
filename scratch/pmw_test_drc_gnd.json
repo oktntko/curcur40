@@ -1,0 +1,157 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T23:08:49",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-pmw3360.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Tracks crossing",
+            "items": [
+                {
+                    "description": "配線 [/MISO] ( F.Cu 上、長さ: 1.3000 mm )",
+                    "pos": {
+                        "x": 153.088,
+                        "y": 82.2
+                    },
+                    "uuid": "645c7772-e7ac-492f-a38b-52db29d3e09e"
+                },
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 5.7000 mm )",
+                    "pos": {
+                        "x": 153.088,
+                        "y": 79.8
+                    },
+                    "uuid": "c43a4562-5cc7-4615-9480-f6d4809b361f"
+                }
+            ],
+            "severity": "error",
+            "type": "tracks_crossing"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット /MISO と /RESET)",
+            "items": [
+                {
+                    "description": "ビア [/MISO] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 153.088,
+                        "y": 82.2
+                    },
+                    "uuid": "27b18ff9-3fd2-4f3f-8f97-760523ca90ab"
+                },
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 5.7000 mm )",
+                    "pos": {
+                        "x": 153.088,
+                        "y": 79.8
+                    },
+                    "uuid": "c43a4562-5cc7-4615-9480-f6d4809b361f"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット /MISO と /RESET)",
+            "items": [
+                {
+                    "description": "パッド 2 [/MISO] - R2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 153.0875,
+                        "y": 83.5
+                    },
+                    "uuid": "c2e150e1-1bb3-4d3a-8052-f3fa2ffa6818"
+                },
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 5.7000 mm )",
+                    "pos": {
+                        "x": 153.088,
+                        "y": 79.8
+                    },
+                    "uuid": "c43a4562-5cc7-4615-9480-f6d4809b361f"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "Tracks crossing",
+            "items": [
+                {
+                    "description": "配線 [/MISO] ( F.Cu 上、長さ: 1.3000 mm )",
+                    "pos": {
+                        "x": 153.088,
+                        "y": 82.2
+                    },
+                    "uuid": "645c7772-e7ac-492f-a38b-52db29d3e09e"
+                },
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 2.0000 mm )",
+                    "pos": {
+                        "x": 152.0,
+                        "y": 82.2
+                    },
+                    "uuid": "de34830e-4f53-4429-8709-293d2cbc24ee"
+                }
+            ],
+            "severity": "error",
+            "type": "tracks_crossing"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 5.7000 mm )",
+                    "pos": {
+                        "x": 153.088,
+                        "y": 79.8
+                    },
+                    "uuid": "c43a4562-5cc7-4615-9480-f6d4809b361f"
+                },
+                {
+                    "description": "パッド 2 [/MISO] - R2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 153.0875,
+                        "y": 83.5
+                    },
+                    "uuid": "c2e150e1-1bb3-4d3a-8052-f3fa2ffa6818"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        }
+    ]
+}

@@ -1,0 +1,2449 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T23:30:16",
+    "ignored_checks": [],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-right.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [/REB] ( B.Cu 上、長さ: 1.5900 mm )",
+                    "pos": {
+                        "x": 11.1975,
+                        "y": 2.91625
+                    },
+                    "uuid": "d3ac8a9f-18b3-4c7a-9411-a2cbdd49d6b5"
+                },
+                {
+                    "description": "ビア [/REB] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 11.1975,
+                        "y": 4.5062
+                    },
+                    "uuid": "0ce78780-e995-4be7-acf6-e3dd9d8d605c"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [GNDR] ( B.Cu 上、長さ: 0.7566 mm )",
+                    "pos": {
+                        "x": 75.0725,
+                        "y": 30.2475
+                    },
+                    "uuid": "579b0971-3729-42bf-911e-244664e6a39e"
+                },
+                {
+                    "description": "ビア [GNDR] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 74.5175,
+                        "y": 29.73625
+                    },
+                    "uuid": "e7227e2b-b78c-4f3f-b6df-6ae251fe62a6"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [+3V3R] ( B.Cu 上、長さ: 3.4880 mm )",
+                    "pos": {
+                        "x": 1.2,
+                        "y": 64.2
+                    },
+                    "uuid": "603afde0-727a-4e1a-a0e0-663489e32f06"
+                },
+                {
+                    "description": "ビア [+3V3R] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 1.2,
+                        "y": 60.7125
+                    },
+                    "uuid": "ec4fe989-432d-4224-a85a-1fd3a2157f51"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [/MISO] ( B.Cu 上、長さ: 57.8000 mm )",
+                    "pos": {
+                        "x": 79.6,
+                        "y": 62.362
+                    },
+                    "uuid": "cb742550-9674-4eca-aac9-b0fcab30ce0e"
+                },
+                {
+                    "description": "ビア [/MISO] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 79.6,
+                        "y": 62.3625
+                    },
+                    "uuid": "296c21da-78d2-4440-9e6d-9341e199c22c"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [/MOSI] ( B.Cu 上、長さ: 57.7500 mm )",
+                    "pos": {
+                        "x": 78.95,
+                        "y": 61.812
+                    },
+                    "uuid": "0591f3f7-a471-4463-adf3-b621685560d1"
+                },
+                {
+                    "description": "ビア [/MOSI] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 78.95,
+                        "y": 61.8125
+                    },
+                    "uuid": "796acf94-6512-4b94-b4cf-51e91be5e02e"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [/SCLK] ( B.Cu 上、長さ: 57.7000 mm )",
+                    "pos": {
+                        "x": 78.3,
+                        "y": 61.263
+                    },
+                    "uuid": "4e5aa9ba-3d3b-46fb-9e4e-eae9ff1154bb"
+                },
+                {
+                    "description": "ビア [/SCLK] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 78.3,
+                        "y": 61.2625
+                    },
+                    "uuid": "dda9939b-aeac-4e68-9ddc-9646fc594de5"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [Net-(rD1-K)] ( F.Cu 上、長さ: 0.6120 mm )",
+                    "pos": {
+                        "x": 25.941252,
+                        "y": 21.9335
+                    },
+                    "uuid": "4fb2083b-1ce9-4fc2-992a-691acb608293"
+                },
+                {
+                    "description": "ビア [Net-(rD1-K)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 25.554002,
+                        "y": 22.64625
+                    },
+                    "uuid": "4f796e9c-5afd-411b-8f89-c62b110054e8"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [Net-(rD1-K)] ( F.Cu 上、長さ: 12.1132 mm )",
+                    "pos": {
+                        "x": 25.508502,
+                        "y": 22.36625
+                    },
+                    "uuid": "678a18a8-5978-4138-b17c-93441776de26"
+                },
+                {
+                    "description": "ビア [Net-(rD1-K)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 25.554002,
+                        "y": 22.64625
+                    },
+                    "uuid": "4f796e9c-5afd-411b-8f89-c62b110054e8"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [Net-(rD1-K)] ( F.Cu 上、長さ: 0.3700 mm )",
+                    "pos": {
+                        "x": 25.508502,
+                        "y": 21.99625
+                    },
+                    "uuid": "8406a154-ded5-4a6d-8e60-33b17d0ad2df"
+                },
+                {
+                    "description": "ビア [Net-(rD1-K)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 25.554002,
+                        "y": 22.64625
+                    },
+                    "uuid": "4f796e9c-5afd-411b-8f89-c62b110054e8"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [Net-(rD1-K)] ( F.Cu 上、長さ: 8.7876 mm )",
+                    "pos": {
+                        "x": 27.1875,
+                        "y": 39.2249
+                    },
+                    "uuid": "dc4ff09f-89f5-457a-a5c8-d73559e875b3"
+                },
+                {
+                    "description": "ビア [Net-(rD1-K)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 27.1875,
+                        "y": 39.22495
+                    },
+                    "uuid": "7ca5a87e-8202-4f08-bc3a-a86210f05237"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [+5VR] ( B.Cu 上、長さ: 1.3164 mm )",
+                    "pos": {
+                        "x": 17.402,
+                        "y": 38.146
+                    },
+                    "uuid": "be9dd15c-c347-4bd8-9706-a0e0f5fd6cfd"
+                },
+                {
+                    "description": "ビア [+5VR] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 18.5975,
+                        "y": 38.6962
+                    },
+                    "uuid": "91bdf024-9f4c-4942-b7e2-a4c3bde1e939"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [/KEY16] ( B.Cu 上、長さ: 2.9144 mm )",
+                    "pos": {
+                        "x": 88.737,
+                        "y": 40.426
+                    },
+                    "uuid": "5751a7ce-0677-4b80-b7a9-8e89cc99cc62"
+                },
+                {
+                    "description": "ビア [/KEY16] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 88.7375,
+                        "y": 40.42625
+                    },
+                    "uuid": "1d267fcf-29fd-4d08-b435-5bb20430b26e"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [Net-(rLED7-DOUT)] ( F.Cu 上、長さ: 0.1983 mm )",
+                    "pos": {
+                        "x": 39.3598,
+                        "y": 39.816
+                    },
+                    "uuid": "619ddf5e-80bc-4905-abee-a10e75a9ead5"
+                },
+                {
+                    "description": "ビア [Net-(rLED7-DOUT)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 39.359843,
+                        "y": 39.81605
+                    },
+                    "uuid": "8de72340-c3dc-45a5-b946-5a5d08a696f0"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [Net-(rLED7-DOUT)] ( F.Cu 上、長さ: 6.5063 mm )",
+                    "pos": {
+                        "x": 39.5,
+                        "y": 39.9562
+                    },
+                    "uuid": "d1dceba4-6148-4922-9738-f49538dbf550"
+                },
+                {
+                    "description": "ビア [Net-(rLED7-DOUT)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 39.359843,
+                        "y": 39.81605
+                    },
+                    "uuid": "8de72340-c3dc-45a5-b946-5a5d08a696f0"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [Net-(rLED10-DIN)] ( B.Cu 上、長さ: 1.4036 mm )",
+                    "pos": {
+                        "x": 58.5075,
+                        "y": 39.892
+                    },
+                    "uuid": "e02ea46c-2c1e-4748-8348-f9786dc05736"
+                },
+                {
+                    "description": "ビア [Net-(rLED10-DIN)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 58.5075,
+                        "y": 39.89195
+                    },
+                    "uuid": "d6bcc5f4-2373-4086-aaaa-fde3e404180e"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "items": [
+                {
+                    "description": "配線 [Net-(rEXLED2-DIN)] ( B.Cu 上、長さ: 0.6784 mm )",
+                    "pos": {
+                        "x": 25.3575,
+                        "y": -17.24375
+                    },
+                    "uuid": "c1ef57dd-8629-4198-9fc1-1921a7bf3980"
+                },
+                {
+                    "description": "ビア [Net-(rEXLED2-DIN)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 25.2475,
+                        "y": -17.13375
+                    },
+                    "uuid": "69e6eb48-3f2a-4340-a358-e6a3b1a557c4"
+                }
+            ],
+            "severity": "error",
+            "type": "track_not_centered_on_via"
+        },
+        {
+            "description": "Footprint has no courtyard defined",
+            "items": [
+                {
+                    "description": "フットプリント rH4",
+                    "pos": {
+                        "x": 14.025,
+                        "y": 62.3875
+                    },
+                    "uuid": "0d1c5ba9-b99b-4338-bbdc-c80e23aac415"
+                }
+            ],
+            "severity": "error",
+            "type": "missing_courtyard"
+        },
+        {
+            "description": "Footprint has no courtyard defined",
+            "items": [
+                {
+                    "description": "フットプリント rH2",
+                    "pos": {
+                        "x": 14.025,
+                        "y": 42.3875
+                    },
+                    "uuid": "15d82a79-9883-44a5-81f9-3d84bc93ff93"
+                }
+            ],
+            "severity": "error",
+            "type": "missing_courtyard"
+        },
+        {
+            "description": "Footprint has no courtyard defined",
+            "items": [
+                {
+                    "description": "フットプリント rEXSW1",
+                    "pos": {
+                        "x": 14.2875,
+                        "y": 0.0
+                    },
+                    "uuid": "1c9ea70f-08b2-4814-b377-6b5da97d83a0"
+                }
+            ],
+            "severity": "error",
+            "type": "missing_courtyard"
+        },
+        {
+            "description": "Footprint has no courtyard defined",
+            "items": [
+                {
+                    "description": "フットプリント rH1",
+                    "pos": {
+                        "x": 5.025,
+                        "y": 42.3875
+                    },
+                    "uuid": "a925718f-e502-4b07-acde-2ab17ec9e9a1"
+                }
+            ],
+            "severity": "error",
+            "type": "missing_courtyard"
+        },
+        {
+            "description": "Footprint has no courtyard defined",
+            "items": [
+                {
+                    "description": "フットプリント rH3",
+                    "pos": {
+                        "x": 5.025,
+                        "y": 62.3875
+                    },
+                    "uuid": "be572622-2a3d-4d7c-88b0-e1f6fa7ae79e"
+                }
+            ],
+            "severity": "error",
+            "type": "missing_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "rSW1のNPTHパッド",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 52.3875
+                    },
+                    "uuid": "157af568-c06e-4ff5-8c7c-f983a0bcb489"
+                },
+                {
+                    "description": "フットプリント rLED1",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 48.7125
+                    },
+                    "uuid": "f8b1621d-7cbc-4744-9cfd-0d9aede46744"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "rSW8のNPTHパッド",
+                    "pos": {
+                        "x": 52.3875,
+                        "y": 52.3875
+                    },
+                    "uuid": "85c4580c-fbb0-4011-95ef-f402f4fd9afb"
+                },
+                {
+                    "description": "フットプリント rLED8",
+                    "pos": {
+                        "x": 52.3875,
+                        "y": 48.9625
+                    },
+                    "uuid": "691736a9-4db4-4bd2-b647-7b500a0366a8"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "rSW9のNPTHパッド",
+                    "pos": {
+                        "x": 71.4375,
+                        "y": 52.3875
+                    },
+                    "uuid": "77fcfbc2-1177-48fa-af8e-93c8ab804e65"
+                },
+                {
+                    "description": "フットプリント rLED9",
+                    "pos": {
+                        "x": 71.4375,
+                        "y": 48.7125
+                    },
+                    "uuid": "9398f250-23e3-419a-8e67-713ba1889c9f"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC1",
+                    "pos": {
+                        "x": 80.4,
+                        "y": 44.8
+                    },
+                    "uuid": "01d0392b-7077-4861-acbd-3bb1dc05dffe"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC7",
+                    "pos": {
+                        "x": 65.7,
+                        "y": 42.8
+                    },
+                    "uuid": "056c4aea-f23e-4459-9269-7d5971948f45"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW17",
+                    "pos": {
+                        "x": 109.5375,
+                        "y": 11.90625
+                    },
+                    "uuid": "0a326881-248b-4908-a659-c902df8b8280"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED16",
+                    "pos": {
+                        "x": 109.537502,
+                        "y": 26.21875
+                    },
+                    "uuid": "0a65d3ca-c014-41f7-96e9-28713af31045"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rR3",
+                    "pos": {
+                        "x": 80.4,
+                        "y": 51.5
+                    },
+                    "uuid": "0f799621-8d48-4283-a3c4-cccf7aac8585"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC9",
+                    "pos": {
+                        "x": 84.512508,
+                        "y": 37.27875
+                    },
+                    "uuid": "1030291d-7c98-4671-b7b9-4f576f5653f5"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC14",
+                    "pos": {
+                        "x": 78.6875,
+                        "y": 30.96625
+                    },
+                    "uuid": "112dfe3f-10f3-4e43-96ea-e217908cfe01"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW15",
+                    "pos": {
+                        "x": 90.4875,
+                        "y": 26.19375
+                    },
+                    "uuid": "13d26587-90b2-440c-b23c-d7ddce58c9f5"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'PJ-398A-5A_PJ-399B-6A' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rJ2",
+                    "pos": {
+                        "x": -5.2575,
+                        "y": 34.64625
+                    },
+                    "uuid": "13ea2f29-3dcf-438e-a5d9-e9d54e74d4d5"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC3",
+                    "pos": {
+                        "x": 67.0,
+                        "y": 42.8
+                    },
+                    "uuid": "19571c26-6b9d-41ef-ab48-f1a80edc2618"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC8",
+                    "pos": {
+                        "x": 63.3375,
+                        "y": 31.90625
+                    },
+                    "uuid": "1a11c079-7433-4e69-be1a-3f6f319ed54b"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'QFN-56-1EP_7x7mm_P0.4mm_EP3.2x3.2mm' が、ライブラリ 'Package_DFN_QFN' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rU1",
+                    "pos": {
+                        "x": 74.6075,
+                        "y": 37.63995
+                    },
+                    "uuid": "1d4aa2e3-1354-4ed0-b9c3-d74e02b406eb"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW10",
+                    "pos": {
+                        "x": 71.4375,
+                        "y": 23.8125
+                    },
+                    "uuid": "21fff6dc-6154-4791-9f97-364a5c52d943"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED4",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": -14.2625
+                    },
+                    "uuid": "234bce89-baff-43bf-85cf-7965183d3d95"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'TYPE-C-31-M-13C' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rJ1",
+                    "pos": {
+                        "x": 12.2875,
+                        "y": -23.057499
+                    },
+                    "uuid": "2c32e555-19f9-4ce3-a76e-b798cbdf6c49"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED6",
+                    "pos": {
+                        "x": 52.387502,
+                        "y": 2.40625
+                    },
+                    "uuid": "2dda1365-416d-44f2-93f9-659e5f1d5c7f"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW11",
+                    "pos": {
+                        "x": 71.4375,
+                        "y": 4.7625
+                    },
+                    "uuid": "38419885-a9ea-4f4c-9386-35876af4f88d"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED2",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 23.8375
+                    },
+                    "uuid": "3e507c1a-5234-48ea-bc61-dc553214342a"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW16",
+                    "pos": {
+                        "x": 109.5375,
+                        "y": 30.95625
+                    },
+                    "uuid": "3fd7ce58-4a02-4dc1-8c7b-9a13e30a2e20"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW18",
+                    "pos": {
+                        "x": 109.5375,
+                        "y": -7.14375
+                    },
+                    "uuid": "47cbcf17-76b5-4572-9121-50380728d911"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED15",
+                    "pos": {
+                        "x": 90.487502,
+                        "y": 21.45625
+                    },
+                    "uuid": "4d052f8f-7bac-4cf4-a902-61ca0306fb07"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rR2",
+                    "pos": {
+                        "x": 19.422502,
+                        "y": -15.295
+                    },
+                    "uuid": "4d55e9c5-836b-434b-b423-b4679e7bbbe5"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW4",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": -9.525
+                    },
+                    "uuid": "4d61a58a-a8d8-4fa1-9cee-0549d1ee61c7"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW6",
+                    "pos": {
+                        "x": 52.3875,
+                        "y": 7.14375
+                    },
+                    "uuid": "52d01f35-d9f0-4c03-86ca-6c119fdcda6e"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED17",
+                    "pos": {
+                        "x": 109.537502,
+                        "y": 7.16875
+                    },
+                    "uuid": "53db175f-a266-4f7c-95b3-0adf191ad741"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'USON-10_2.5x1.0mm_P0.5mm' が、ライブラリ 'Package_SON' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rU3",
+                    "pos": {
+                        "x": 22.6525,
+                        "y": -11.51005
+                    },
+                    "uuid": "54d246ac-444f-4e5a-846f-e8b6124a1568"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC11",
+                    "pos": {
+                        "x": 56.702502,
+                        "y": 37.455
+                    },
+                    "uuid": "57b7ad81-dc5c-4be0-9cd1-8f31bd83a9de"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'Crystal_SMD_3225-4Pin_3.2x2.5mm' が、ライブラリ 'Crystal' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rY1",
+                    "pos": {
+                        "x": 80.4,
+                        "y": 47.4
+                    },
+                    "uuid": "616e2f8b-7453-4b4e-bdc7-42e2dd495a37"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED5",
+                    "pos": {
+                        "x": 52.387502,
+                        "y": -16.64375
+                    },
+                    "uuid": "63008982-e1fb-4831-bd06-ad92ce800f1e"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC15",
+                    "pos": {
+                        "x": 68.2025,
+                        "y": 31.13625
+                    },
+                    "uuid": "653f0a82-ad26-4b61-b2d7-9682b776deb5"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW3",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 9.525
+                    },
+                    "uuid": "65ecf36e-8b53-4894-a354-c38bffe0e6c0"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW1",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 52.3875
+                    },
+                    "uuid": "68706fd2-b5b3-46ca-91cd-f634c0815df6"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED8",
+                    "pos": {
+                        "x": 52.3875,
+                        "y": 48.9625
+                    },
+                    "uuid": "691736a9-4db4-4bd2-b647-7b500a0366a8"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED13",
+                    "pos": {
+                        "x": 90.487502,
+                        "y": -16.64375
+                    },
+                    "uuid": "69db667c-77e7-41f7-9799-b6244e2c8525"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC5",
+                    "pos": {
+                        "x": 64.9325,
+                        "y": 31.13625
+                    },
+                    "uuid": "6f348c28-674f-4ec7-8239-1e19b5cc5f33"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC4",
+                    "pos": {
+                        "x": 74.5925,
+                        "y": 32.18625
+                    },
+                    "uuid": "6f47a478-2b78-4fc2-a3c2-99cfbf34fc83"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW13",
+                    "pos": {
+                        "x": 90.4875,
+                        "y": -11.90625
+                    },
+                    "uuid": "82953e81-5347-45e2-87de-b04b3e1cb6e4"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rR7",
+                    "pos": {
+                        "x": 85.632508,
+                        "y": 37.28875
+                    },
+                    "uuid": "867e396d-899a-4130-9e4b-b29f76d78e45"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW9",
+                    "pos": {
+                        "x": 71.4375,
+                        "y": 52.3875
+                    },
+                    "uuid": "8d53fde3-1607-40d8-b92c-f855dc2051ce"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED14",
+                    "pos": {
+                        "x": 90.487502,
+                        "y": 2.40625
+                    },
+                    "uuid": "8ecbff9a-2dd4-4eb1-8f45-846794c6a30a"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED9",
+                    "pos": {
+                        "x": 71.4375,
+                        "y": 48.7125
+                    },
+                    "uuid": "9398f250-23e3-419a-8e67-713ba1889c9f"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC10",
+                    "pos": {
+                        "x": 67.5175,
+                        "y": 38.20125
+                    },
+                    "uuid": "948d5d06-cd75-47ad-a2fd-3ed42e1a761f"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'PinHeader_1x03_P2.54mm_Vertical' が、ライブラリ 'Connector_PinHeader_2.54mm' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rJ4",
+                    "pos": {
+                        "x": 111.8475,
+                        "y": 22.43125
+                    },
+                    "uuid": "9c19134b-5227-4c3d-a27b-ead70cfc6700"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rR6",
+                    "pos": {
+                        "x": 86.792508,
+                        "y": 37.31875
+                    },
+                    "uuid": "9e48e69d-f7fa-482a-b6d6-5afc0e792480"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW2",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 28.575
+                    },
+                    "uuid": "9fc72132-0480-4d0c-921c-615aca7f4191"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC16",
+                    "pos": {
+                        "x": 59.3875,
+                        "y": 10.21625
+                    },
+                    "uuid": "a0819da5-6b54-44c5-bc03-e2811793003a"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW8",
+                    "pos": {
+                        "x": 52.3875,
+                        "y": 52.3875
+                    },
+                    "uuid": "a8a7e715-d385-497c-ba02-b0abd74aaef7"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rR5",
+                    "pos": {
+                        "x": 66.0225,
+                        "y": 31.12625
+                    },
+                    "uuid": "b2b171f2-bede-4eff-8900-9b60325e5790"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED10",
+                    "pos": {
+                        "x": 71.437502,
+                        "y": 19.075
+                    },
+                    "uuid": "b56af7c6-c161-44ce-a879-776b2c5e15d3"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED12",
+                    "pos": {
+                        "x": 71.437502,
+                        "y": -19.025
+                    },
+                    "uuid": "ba1821e8-18b0-4d65-9325-9dbdb9fed9b2"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rEXSW2",
+                    "pos": {
+                        "x": 14.2875,
+                        "y": 19.05
+                    },
+                    "uuid": "bae296a3-c28f-4704-a090-ad4cd1bd47f7"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED11",
+                    "pos": {
+                        "x": 71.437502,
+                        "y": 0.025
+                    },
+                    "uuid": "beb95f24-335b-4337-bbd1-43ba5c782f9e"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW12",
+                    "pos": {
+                        "x": 71.4375,
+                        "y": -14.2875
+                    },
+                    "uuid": "c0e1688e-5635-4fd2-8769-42c2b8b6e323"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC13",
+                    "pos": {
+                        "x": 63.3475,
+                        "y": 32.96625
+                    },
+                    "uuid": "c44d0548-015b-415b-8149-cd5b3af4b57a"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED3",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 4.7875
+                    },
+                    "uuid": "c4ce66fe-23a0-492c-b2ea-6d0b0245edc4"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rEXLED2",
+                    "pos": {
+                        "x": 14.2875,
+                        "y": 14.3125
+                    },
+                    "uuid": "c80d15d6-d8fd-45dc-a9cc-ed116d4e2a37"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW14",
+                    "pos": {
+                        "x": 90.4875,
+                        "y": 7.14375
+                    },
+                    "uuid": "d436e55a-286e-40af-8c86-dc227051e13a"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rR8",
+                    "pos": {
+                        "x": 22.8475,
+                        "y": -13.92
+                    },
+                    "uuid": "db6a96d7-1bc3-4e89-b6c0-ceaaa64d6113"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'SOT-223-3_TabPin2' が、ライブラリ 'Package_TO_SOT_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rU2",
+                    "pos": {
+                        "x": 51.3825,
+                        "y": 38.14625
+                    },
+                    "uuid": "df376dc5-e7c5-485f-85ba-a9b4e00e8bb7"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW5",
+                    "pos": {
+                        "x": 52.3875,
+                        "y": -11.90625
+                    },
+                    "uuid": "e17985a0-0603-4432-bce6-beaab57bd0c7"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rR9",
+                    "pos": {
+                        "x": 22.8375,
+                        "y": -15.5
+                    },
+                    "uuid": "e26d0b28-c383-427f-9353-60403d73ad7f"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC6",
+                    "pos": {
+                        "x": 46.2125,
+                        "y": 35.63625
+                    },
+                    "uuid": "e4a7ea19-b72c-4287-9e74-ff4914a8a66f"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rR4",
+                    "pos": {
+                        "x": 67.1225,
+                        "y": 31.12625
+                    },
+                    "uuid": "f838559b-7e9a-43dd-aa46-506d51e28c1d"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC2",
+                    "pos": {
+                        "x": 80.4,
+                        "y": 50.2
+                    },
+                    "uuid": "f864fa8f-3756-4ad5-b0aa-dd229b472744"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED1",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 48.7125
+                    },
+                    "uuid": "f8b1621d-7cbc-4744-9cfd-0d9aede46744"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rC12",
+                    "pos": {
+                        "x": 63.3475,
+                        "y": 34.01625
+                    },
+                    "uuid": "fa7fad35-97f4-46b7-89ec-6eb4b50ede01"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED7",
+                    "pos": {
+                        "x": 52.387502,
+                        "y": 21.45625
+                    },
+                    "uuid": "fafd8bff-e470-4aa8-b8ff-39deaf7e5c36"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rR1",
+                    "pos": {
+                        "x": 5.122502,
+                        "y": -15.275
+                    },
+                    "uuid": "fc831e50-b58c-4458-94f8-bd5b51b423da"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'YS-SK6812MINI-E' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rLED18",
+                    "pos": {
+                        "x": 109.537502,
+                        "y": -11.88125
+                    },
+                    "uuid": "fedde4a1-e947-4653-927a-dcddd247f855"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "フットプリント 'keyswitch_choc12_hotswap_1u' が、ライブラリ 'kbd_local' のコピーと一致しません",
+            "items": [
+                {
+                    "description": "フットプリント rSW7",
+                    "pos": {
+                        "x": 52.3875,
+                        "y": 26.19375
+                    },
+                    "uuid": "ff68511d-080b-43af-8a00-c3c58b83e50c"
+                }
+            ],
+            "severity": "error",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rC1のリファレンスフィールド",
+                    "pos": {
+                        "x": 80.419998,
+                        "y": 43.83995
+                    },
+                    "uuid": "245f9ea1-6f8f-4e8b-8755-f358fd3f82b2"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rC7のリファレンスフィールド",
+                    "pos": {
+                        "x": 65.670002,
+                        "y": 44.46005
+                    },
+                    "uuid": "486610ad-db6d-4f64-aff5-16065547efc4"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED16のリファレンスフィールド",
+                    "pos": {
+                        "x": 109.537502,
+                        "y": 24.26875
+                    },
+                    "uuid": "86b36efd-8608-439a-8231-248972fe6e8c"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rR3のリファレンスフィールド",
+                    "pos": {
+                        "x": 80.4,
+                        "y": 52.4
+                    },
+                    "uuid": "dbf472b4-598d-4039-92de-47eb18a9f129"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rC14のリファレンスフィールド",
+                    "pos": {
+                        "x": 79.7175,
+                        "y": 30.93625
+                    },
+                    "uuid": "39f46496-7435-4e84-965b-d3196e0ffe75"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rC3のリファレンスフィールド",
+                    "pos": {
+                        "x": 67.000002,
+                        "y": 44.40005
+                    },
+                    "uuid": "b0d102d1-4d6b-40e5-af7e-21f9ef5c9602"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の太さが許容範囲外 (基板の設定のシルク印刷のテキストの太さの制約 最小幅 0.0800 mm; 現状 0.0500 mm)",
+            "items": [
+                {
+                    "description": "rC8のリファレンスフィールド",
+                    "pos": {
+                        "x": 62.0775,
+                        "y": 31.93625
+                    },
+                    "uuid": "53bd904b-efc9-4b48-9d1c-232cf3ac1352"
+                }
+            ],
+            "severity": "error",
+            "type": "text_thickness"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.3000 mm)",
+            "items": [
+                {
+                    "description": "rC8のリファレンスフィールド",
+                    "pos": {
+                        "x": 62.0775,
+                        "y": 31.93625
+                    },
+                    "uuid": "53bd904b-efc9-4b48-9d1c-232cf3ac1352"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rU1のリファレンスフィールド",
+                    "pos": {
+                        "x": 74.612502,
+                        "y": 33.075
+                    },
+                    "uuid": "75cd7e6c-9c08-409d-a9b9-7e4301fe6ca6"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED4のリファレンスフィールド",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": -16.2125
+                    },
+                    "uuid": "6ce8cfc2-2d8d-4b44-a6e8-df72b9549e67"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rJ1のリファレンスフィールド",
+                    "pos": {
+                        "x": 12.2875,
+                        "y": -16.257499
+                    },
+                    "uuid": "0ae0fb34-2331-43ab-8ab6-ce0726b5a7af"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED6のリファレンスフィールド",
+                    "pos": {
+                        "x": 52.387502,
+                        "y": 0.45625
+                    },
+                    "uuid": "74e0b837-7068-473d-8d31-96b5af7a98d2"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED2のリファレンスフィールド",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 21.8875
+                    },
+                    "uuid": "87aab9de-011c-4bfd-91ec-c4fda896c8da"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED15のリファレンスフィールド",
+                    "pos": {
+                        "x": 90.487502,
+                        "y": 19.50625
+                    },
+                    "uuid": "d8743077-1715-40a9-9d62-774f96bce9e3"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rR2のリファレンスフィールド",
+                    "pos": {
+                        "x": 19.447504,
+                        "y": -13.65625
+                    },
+                    "uuid": "84246eb4-7e36-4dec-bc4f-d0812e358c21"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rD1のリファレンスフィールド",
+                    "pos": {
+                        "x": 27.1475,
+                        "y": 1.56625
+                    },
+                    "uuid": "2e90e7fa-6983-4078-87d7-61f9b0a1ae33"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED17のリファレンスフィールド",
+                    "pos": {
+                        "x": 109.537502,
+                        "y": 5.21875
+                    },
+                    "uuid": "7dfa9dd6-216d-47eb-bca5-2e553f778e60"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rU3のリファレンスフィールド",
+                    "pos": {
+                        "x": 22.802502,
+                        "y": -9.255
+                    },
+                    "uuid": "dcfa7a0d-d571-41b8-93d5-e5e6c6d597e5"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rC11のリファレンスフィールド",
+                    "pos": {
+                        "x": 56.712502,
+                        "y": 39.405
+                    },
+                    "uuid": "1743e27e-c814-4795-a36f-eeaa7e998f57"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rY1のリファレンスフィールド",
+                    "pos": {
+                        "x": 83.175,
+                        "y": 47.06875
+                    },
+                    "uuid": "906f193f-23df-4262-bef5-c0080e62dcbe"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED5のリファレンスフィールド",
+                    "pos": {
+                        "x": 52.387502,
+                        "y": -18.59375
+                    },
+                    "uuid": "f2a88a2a-846b-47a9-b0e1-98cf301602a6"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の太さが許容範囲外 (基板の設定のシルク印刷のテキストの太さの制約 最小幅 0.0800 mm; 現状 0.0500 mm)",
+            "items": [
+                {
+                    "description": "rC15のリファレンスフィールド",
+                    "pos": {
+                        "x": 68.2675,
+                        "y": 32.28625
+                    },
+                    "uuid": "cfda4d49-d5d1-4884-b29a-a8c768a88f70"
+                }
+            ],
+            "severity": "error",
+            "type": "text_thickness"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.3000 mm)",
+            "items": [
+                {
+                    "description": "rC15のリファレンスフィールド",
+                    "pos": {
+                        "x": 68.2675,
+                        "y": 32.28625
+                    },
+                    "uuid": "cfda4d49-d5d1-4884-b29a-a8c768a88f70"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED8のリファレンスフィールド",
+                    "pos": {
+                        "x": 52.3875,
+                        "y": 47.0125
+                    },
+                    "uuid": "ee92d867-4709-4bea-97b1-490091f05ce2"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED13のリファレンスフィールド",
+                    "pos": {
+                        "x": 90.487502,
+                        "y": -18.59375
+                    },
+                    "uuid": "7bdcdf91-c813-4728-8e8f-86f8e087d402"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の太さが許容範囲外 (基板の設定のシルク印刷のテキストの太さの制約 最小幅 0.0800 mm; 現状 0.0500 mm)",
+            "items": [
+                {
+                    "description": "rC5のリファレンスフィールド",
+                    "pos": {
+                        "x": 64.9475,
+                        "y": 32.29625
+                    },
+                    "uuid": "827dbb29-372c-4de9-afa4-7f2b559a6ff5"
+                }
+            ],
+            "severity": "error",
+            "type": "text_thickness"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.3000 mm)",
+            "items": [
+                {
+                    "description": "rC5のリファレンスフィールド",
+                    "pos": {
+                        "x": 64.9475,
+                        "y": 32.29625
+                    },
+                    "uuid": "827dbb29-372c-4de9-afa4-7f2b559a6ff5"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rR7のリファレンスフィールド",
+                    "pos": {
+                        "x": 85.612508,
+                        "y": 35.55875
+                    },
+                    "uuid": "7c150bc0-a8e2-4259-9b1a-239ba303bdb5"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED14のリファレンスフィールド",
+                    "pos": {
+                        "x": 90.487502,
+                        "y": 0.45625
+                    },
+                    "uuid": "e197ec5d-8121-453b-aa22-d4a22888edba"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED9のリファレンスフィールド",
+                    "pos": {
+                        "x": 71.4375,
+                        "y": 46.7625
+                    },
+                    "uuid": "87effec9-0424-4a1d-86d7-05cb5824497e"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rC10のリファレンスフィールド",
+                    "pos": {
+                        "x": 65.5375,
+                        "y": 38.20125
+                    },
+                    "uuid": "82d0627b-8945-4622-bc16-f51abe627ffe"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rJ4のリファレンスフィールド",
+                    "pos": {
+                        "x": 113.62625,
+                        "y": 22.43125
+                    },
+                    "uuid": "9445282b-d331-4ced-b990-2e9adc292991"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rU4のリファレンスフィールド",
+                    "pos": {
+                        "x": 62.9225,
+                        "y": 10.275
+                    },
+                    "uuid": "4f818b3f-4b17-4fe3-8a5b-b6d39669cf5e"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rR6のリファレンスフィールド",
+                    "pos": {
+                        "x": 86.832508,
+                        "y": 35.59875
+                    },
+                    "uuid": "c049dfb1-a857-453c-8858-d139b401c701"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rC16のリファレンスフィールド",
+                    "pos": {
+                        "x": 57.5575,
+                        "y": 10.19625
+                    },
+                    "uuid": "f94c2e51-0aab-4aed-a707-57ad599f68a4"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の太さが許容範囲外 (基板の設定のシルク印刷のテキストの太さの制約 最小幅 0.0800 mm; 現状 0.0500 mm)",
+            "items": [
+                {
+                    "description": "rR5のリファレンスフィールド",
+                    "pos": {
+                        "x": 66.0175,
+                        "y": 32.30625
+                    },
+                    "uuid": "5ea455a8-0fa6-4a8a-bd99-b0ef808e474b"
+                }
+            ],
+            "severity": "error",
+            "type": "text_thickness"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.3000 mm)",
+            "items": [
+                {
+                    "description": "rR5のリファレンスフィールド",
+                    "pos": {
+                        "x": 66.0175,
+                        "y": 32.30625
+                    },
+                    "uuid": "5ea455a8-0fa6-4a8a-bd99-b0ef808e474b"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED10のリファレンスフィールド",
+                    "pos": {
+                        "x": 71.437502,
+                        "y": 17.125
+                    },
+                    "uuid": "c22ce68c-bd39-4cf4-bbf9-70b320401dc6"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED12のリファレンスフィールド",
+                    "pos": {
+                        "x": 71.437502,
+                        "y": -20.975
+                    },
+                    "uuid": "fa0a4035-c15a-4c72-90e2-18eb2ed0ab13"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED11のリファレンスフィールド",
+                    "pos": {
+                        "x": 71.437502,
+                        "y": -1.925
+                    },
+                    "uuid": "e32ae00b-b960-479c-b65b-df3672a8a9f0"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の太さが許容範囲外 (基板の設定のシルク印刷のテキストの太さの制約 最小幅 0.0800 mm; 現状 0.0500 mm)",
+            "items": [
+                {
+                    "description": "rC13のリファレンスフィールド",
+                    "pos": {
+                        "x": 62.1075,
+                        "y": 32.91625
+                    },
+                    "uuid": "c67aff71-0552-4708-9da9-922bb00e0b8a"
+                }
+            ],
+            "severity": "error",
+            "type": "text_thickness"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.3000 mm)",
+            "items": [
+                {
+                    "description": "rC13のリファレンスフィールド",
+                    "pos": {
+                        "x": 62.1075,
+                        "y": 32.91625
+                    },
+                    "uuid": "c67aff71-0552-4708-9da9-922bb00e0b8a"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED3のリファレンスフィールド",
+                    "pos": {
+                        "x": 33.3375,
+                        "y": 2.8375
+                    },
+                    "uuid": "ea58db6b-772e-414c-bd7d-1f2745928032"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rR8のリファレンスフィールド",
+                    "pos": {
+                        "x": 24.5075,
+                        "y": -13.85
+                    },
+                    "uuid": "40491cc8-16c1-4943-bcd8-2edf0d96191a"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rU2のリファレンスフィールド",
+                    "pos": {
+                        "x": 51.3825,
+                        "y": 42.64625
+                    },
+                    "uuid": "3a63dd49-1adc-43f1-990a-ddd2129ffa01"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rR9のリファレンスフィールド",
+                    "pos": {
+                        "x": 24.5275,
+                        "y": -15.44
+                    },
+                    "uuid": "8f8cab70-5855-4862-85b2-36411ccda74d"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rC6のリファレンスフィールド",
+                    "pos": {
+                        "x": 45.0525,
+                        "y": 35.63625
+                    },
+                    "uuid": "0bfd9d52-9797-483f-9fc8-b0dd66702296"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の太さが許容範囲外 (基板の設定のシルク印刷のテキストの太さの制約 最小幅 0.0800 mm; 現状 0.0500 mm)",
+            "items": [
+                {
+                    "description": "rR4のリファレンスフィールド",
+                    "pos": {
+                        "x": 67.0975,
+                        "y": 32.30625
+                    },
+                    "uuid": "71271681-4804-4576-94f8-9b0c452f6ff3"
+                }
+            ],
+            "severity": "error",
+            "type": "text_thickness"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.3000 mm)",
+            "items": [
+                {
+                    "description": "rR4のリファレンスフィールド",
+                    "pos": {
+                        "x": 67.0975,
+                        "y": 32.30625
+                    },
+                    "uuid": "71271681-4804-4576-94f8-9b0c452f6ff3"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rC2のリファレンスフィールド",
+                    "pos": {
+                        "x": 80.4,
+                        "y": 49.3
+                    },
+                    "uuid": "7b2333d5-c59a-4175-afa9-d7eaa22db269"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED1のリファレンスフィールド",
+                    "pos": {
+                        "x": 33.169693,
+                        "y": 46.638437
+                    },
+                    "uuid": "8b84b7b1-0459-490d-b145-48766dce4d1d"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の太さが許容範囲外 (基板の設定のシルク印刷のテキストの太さの制約 最小幅 0.0800 mm; 現状 0.0500 mm)",
+            "items": [
+                {
+                    "description": "rC12のリファレンスフィールド",
+                    "pos": {
+                        "x": 62.0875,
+                        "y": 34.05625
+                    },
+                    "uuid": "65dd8f1b-1b97-45ab-ad34-36aa376d0311"
+                }
+            ],
+            "severity": "error",
+            "type": "text_thickness"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.3000 mm)",
+            "items": [
+                {
+                    "description": "rC12のリファレンスフィールド",
+                    "pos": {
+                        "x": 62.0875,
+                        "y": 34.05625
+                    },
+                    "uuid": "65dd8f1b-1b97-45ab-ad34-36aa376d0311"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED7のリファレンスフィールド",
+                    "pos": {
+                        "x": 52.387502,
+                        "y": 19.50625
+                    },
+                    "uuid": "3cb70227-4b2c-4bc3-a7c6-656b0ed64706"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rR1のリファレンスフィールド",
+                    "pos": {
+                        "x": 5.107504,
+                        "y": -13.56625
+                    },
+                    "uuid": "576832d0-ccee-4344-9bca-72e1e46dff4d"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)",
+            "items": [
+                {
+                    "description": "rLED18のリファレンスフィールド",
+                    "pos": {
+                        "x": 109.537502,
+                        "y": -13.83125
+                    },
+                    "uuid": "14a60cfa-4b5b-43ca-ab4d-b02fa0e68575"
+                }
+            ],
+            "severity": "error",
+            "type": "text_height"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [/NCS] ( F.Cu 上、長さ: 16.8910 mm )",
+                    "pos": {
+                        "x": 0.5,
+                        "y": 39.8
+                    },
+                    "uuid": "f1739e41-80b3-4b66-9e9b-95efcace4f59"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "フットプリント 'SOIC-8_5.23x5.23mm_P1.27mm' がライブラリ'Package_SO'に見つかりません",
+            "items": [
+                {
+                    "description": "フットプリント rU4",
+                    "pos": {
+                        "x": 63.1375,
+                        "y": 13.78625
+                    },
+                    "uuid": "9d293280-77a0-44f0-8bc9-479e176bdf26"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        }
+    ]
+}

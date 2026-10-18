@@ -1,0 +1,181 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T22:40:14",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-pmw3360.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "ゾーン [GND] B.Cu 上, 優先度 0",
+                    "pos": {
+                        "x": 134.513999,
+                        "y": 81.0
+                    },
+                    "uuid": "c278882d-d31a-40b9-bc34-bd23f21d1cba"
+                },
+                {
+                    "description": "ゾーン [GND] B.Cu 上, 優先度 0",
+                    "pos": {
+                        "x": 134.513999,
+                        "y": 81.0
+                    },
+                    "uuid": "c278882d-d31a-40b9-bc34-bd23f21d1cba"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1620 mm)",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 1.1370 mm )",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 102.85
+                    },
+                    "uuid": "407fcdc3-f4f9-4659-bbac-c6a79a0df5cf"
+                },
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 0.7250 mm )",
+                    "pos": {
+                        "x": 145.637,
+                        "y": 102.85
+                    },
+                    "uuid": "7f2c6984-292b-4c91-8d33-bf8b80cad82b"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( B.Cu 上、長さ: 3.5880 mm )",
+                    "pos": {
+                        "x": 139.5,
+                        "y": 101.8
+                    },
+                    "uuid": "dbca87b3-f958-42c5-b5b7-07d9d2b42647"
+                },
+                {
+                    "description": "H3のNPTHパッド",
+                    "pos": {
+                        "x": 141.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "7fad81be-a374-4793-9066-a85a012a687d"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1620 mm)",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 0.7250 mm )",
+                    "pos": {
+                        "x": 145.637,
+                        "y": 102.85
+                    },
+                    "uuid": "7f2c6984-292b-4c91-8d33-bf8b80cad82b"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 1.9000 mm )",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 104.75
+                    },
+                    "uuid": "820e2321-9cae-4aa5-a82c-45f263d2c704"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.0390 mm)",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( B.Cu 上、長さ: 5.7760 mm )",
+                    "pos": {
+                        "x": 139.5,
+                        "y": 96.024
+                    },
+                    "uuid": "5b848363-c7e0-4dfc-9d50-67f3768a4453"
+                },
+                {
+                    "description": "PTHパッド 16 [unconnected-(U1-NC-Pad16)] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 97.8038
+                    },
+                    "uuid": "da95ef93-c965-4146-adc4-4682a2549a82"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント R3",
+                    "pos": {
+                        "x": 144.0,
+                        "y": 101.8
+                    },
+                    "uuid": "5e035a4f-8d8e-4df1-b3d2-3e4d852dda58"
+                },
+                {
+                    "description": "フットプリント U2",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 103.8
+                    },
+                    "uuid": "d43508b7-d239-4b86-9638-f61238af939c"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        }
+    ]
+}
