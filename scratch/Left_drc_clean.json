@@ -1,0 +1,194 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-19T01:15:07",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "key": "silk_over_copper"
+        },
+        {
+            "description": "Text height out of range",
+            "key": "text_height"
+        },
+        {
+            "description": "Text thickness out of range",
+            "key": "text_thickness"
+        },
+        {
+            "description": "PTH inside courtyard",
+            "key": "pth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "key": "npth_inside_courtyard"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-left.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "クリアランス違反 (ゾーン クリアランス 0.5080 mm; 現状 0.3698 mm)",
+            "items": [
+                {
+                    "description": "配線 [+5V] ( F.Cu 上、長さ: 18.2901 mm )",
+                    "pos": {
+                        "x": -24.832,
+                        "y": 30.596
+                    },
+                    "uuid": "c8a9f606-30ad-4058-8bb4-353dffd90861"
+                },
+                {
+                    "description": "ゾーン [GND] F.Cu 上, 優先度 0",
+                    "pos": {
+                        "x": 8.0,
+                        "y": -25.78375
+                    },
+                    "uuid": "02030a38-0097-4837-b1aa-e7bdd90ec7c7"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 (ゾーン クリアランス 0.5080 mm; 現状 0.4405 mm)",
+            "items": [
+                {
+                    "description": "配線 [+5V] ( F.Cu 上、長さ: 18.2196 mm )",
+                    "pos": {
+                        "x": -6.5425,
+                        "y": 38.54625
+                    },
+                    "uuid": "65f1e2cd-90da-4f7c-a910-9d559ae83bf1"
+                },
+                {
+                    "description": "ゾーン [GND] F.Cu 上, 優先度 0",
+                    "pos": {
+                        "x": 8.0,
+                        "y": -25.78375
+                    },
+                    "uuid": "02030a38-0097-4837-b1aa-e7bdd90ec7c7"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [+5V] ( F.Cu 上、長さ: 18.2196 mm )",
+                    "pos": {
+                        "x": -6.5425,
+                        "y": 38.54625
+                    },
+                    "uuid": "65f1e2cd-90da-4f7c-a910-9d559ae83bf1"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "配線 [+5V] ( F.Cu 上、長さ: 18.2901 mm )",
+                    "pos": {
+                        "x": -24.832,
+                        "y": 30.596
+                    },
+                    "uuid": "c8a9f606-30ad-4058-8bb4-353dffd90861"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "ビア [Net-(D1-K)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": -114.5425,
+                        "y": 4.968751
+                    },
+                    "uuid": "78642824-387a-4796-926d-26f2361673d6"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "ビア [Net-(D1-K)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": -114.9725,
+                        "y": 23.79125
+                    },
+                    "uuid": "e6f812af-7c59-4069-beac-2f3c6a0bc235"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "ビア [Net-(EXLED1-DIN)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": -112.3375,
+                        "y": -11.18125
+                    },
+                    "uuid": "21d205c0-7f25-4551-8c7a-9f73393b24ab"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "フットプリント 'SOIC-8_5.23x5.23mm_P1.27mm' がライブラリ'Package_SO'に見つかりません",
+            "items": [
+                {
+                    "description": "フットプリント U4",
+                    "pos": {
+                        "x": -62.4925,
+                        "y": 34.64
+                    },
+                    "uuid": "7ef99180-80de-4167-9bb7-7ae42de3e283"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        }
+    ]
+}
