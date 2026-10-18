@@ -1,0 +1,1009 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T22:16:36",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-pmw3360.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 1.0000 mm )",
+                    "pos": {
+                        "x": 137.5,
+                        "y": 81.2
+                    },
+                    "uuid": "882abe48-a9ee-44a0-83ae-f323c7660583"
+                },
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 84.8
+                    },
+                    "uuid": "dc601884-fb36-4bb7-819f-516b8376943f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "ゾーン [GND] B.Cu 上, 優先度 0",
+                    "pos": {
+                        "x": 134.589,
+                        "y": 79.4758
+                    },
+                    "uuid": "241f1055-b9d7-4b20-99ac-c3f490b57ce5"
+                },
+                {
+                    "description": "ゾーン [GND] B.Cu 上, 優先度 0",
+                    "pos": {
+                        "x": 134.589,
+                        "y": 79.4758
+                    },
+                    "uuid": "241f1055-b9d7-4b20-99ac-c3f490b57ce5"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "２つのネットを短絡するアイテム (ネット Net-(U2-NC) と GND)",
+            "items": [
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 7.0000 mm )",
+                    "pos": {
+                        "x": 146.0,
+                        "y": 105.4
+                    },
+                    "uuid": "308de63c-bf19-4de2-afe7-7aa130de1fc3"
+                },
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 152.637,
+                        "y": 105.1
+                    },
+                    "uuid": "595cd5ca-4eaa-4b01-bda3-f5dad7c4f2a9"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.0250 mm)",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 146.6,
+                        "y": 104.6625
+                    },
+                    "uuid": "81df02c4-a0a3-4e4b-bfe7-698d682ffdc2"
+                },
+                {
+                    "description": "パッド 4 [Net-(U2-NC)] - U2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 145.6375,
+                        "y": 104.75
+                    },
+                    "uuid": "be7f784c-e59a-43a3-bef3-ca52176a4f82"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1375 mm)",
+            "items": [
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 1.0000 mm )",
+                    "pos": {
+                        "x": 138.8,
+                        "y": 104.6625
+                    },
+                    "uuid": "aee61884-ddea-4ab6-b26a-434e0d46e08f"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 5.5630 mm )",
+                    "pos": {
+                        "x": 137.8,
+                        "y": 105.1
+                    },
+                    "uuid": "ca98ede4-7caa-4f66-ad94-2e7633070a97"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1500 mm)",
+            "items": [
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 4.3288 mm )",
+                    "pos": {
+                        "x": 136.5,
+                        "y": 84.1288
+                    },
+                    "uuid": "90b850bb-9560-46fb-9dec-6b88195444b7"
+                },
+                {
+                    "description": "パッド 1 [GND] - TP3 ( F.Cu 上)",
+                    "pos": {
+                        "x": 137.5,
+                        "y": 81.2
+                    },
+                    "uuid": "9477025b-6120-44e7-9a64-44f21d5e1f28"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.0125 mm)",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 104.6625
+                    },
+                    "uuid": "751e0da6-09da-499b-a181-5052b5aa2883"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 5.5630 mm )",
+                    "pos": {
+                        "x": 137.8,
+                        "y": 105.1
+                    },
+                    "uuid": "ca98ede4-7caa-4f66-ad94-2e7633070a97"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.1741 mm)",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 1.3097 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "df78ff93-730e-4054-8cc5-830227f86784"
+                },
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "9adaa5c4-bba9-45f0-9efd-061c829681e7"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット GND と V_{IN})",
+            "items": [
+                {
+                    "description": "パッド 2 [GND] - U2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 143.3625,
+                        "y": 103.8
+                    },
+                    "uuid": "7e858594-8931-4e8b-8314-a623b27d105e"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 1.9000 mm )",
+                    "pos": {
+                        "x": 142.7,
+                        "y": 104.75
+                    },
+                    "uuid": "93951e09-6d22-499d-878f-87d0abd2d9a1"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.0840 mm)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 82.0
+                    },
+                    "uuid": "f9501745-ed6c-4a91-8dd2-9fa30339090c"
+                },
+                {
+                    "description": "H2のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 82.5258
+                    },
+                    "uuid": "ee007a0b-6550-4cdf-a400-04e702283123"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.0750 mm)",
+            "items": [
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 7.0000 mm )",
+                    "pos": {
+                        "x": 146.0,
+                        "y": 105.4
+                    },
+                    "uuid": "308de63c-bf19-4de2-afe7-7aa130de1fc3"
+                },
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 0.9000 mm )",
+                    "pos": {
+                        "x": 152.637,
+                        "y": 104.2
+                    },
+                    "uuid": "b2ee251c-92d6-4e88-a66e-b9c3075bde97"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 3.7000 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 82.0
+                    },
+                    "uuid": "e5ff8e77-e301-4c7c-a043-b0988b5d643a"
+                },
+                {
+                    "description": "H2のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 82.5258
+                    },
+                    "uuid": "ee007a0b-6550-4cdf-a400-04e702283123"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1110 mm)",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 11.3540 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 93.354
+                    },
+                    "uuid": "ce2d75bc-580b-42f3-859f-ae9a67045d85"
+                },
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 84.8
+                    },
+                    "uuid": "dc601884-fb36-4bb7-819f-516b8376943f"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.0840 mm)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 82.0
+                    },
+                    "uuid": "f9501745-ed6c-4a91-8dd2-9fa30339090c"
+                },
+                {
+                    "description": "H2のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 82.5258
+                    },
+                    "uuid": "ee007a0b-6550-4cdf-a400-04e702283123"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.0241 mm)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "8c91ceb3-6165-427b-8ff4-5a12c4bf7952"
+                },
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "9adaa5c4-bba9-45f0-9efd-061c829681e7"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.1491 mm)",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 1.1500 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 104.0
+                    },
+                    "uuid": "e2b361d5-8ff0-4578-8467-cff28066522a"
+                },
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "9adaa5c4-bba9-45f0-9efd-061c829681e7"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1000 mm)",
+            "items": [
+                {
+                    "description": "配線 [Net-(U2-NC)] ( F.Cu 上、長さ: 7.0000 mm )",
+                    "pos": {
+                        "x": 146.0,
+                        "y": 105.4
+                    },
+                    "uuid": "308de63c-bf19-4de2-afe7-7aa130de1fc3"
+                },
+                {
+                    "description": "パッド 2 [GND] - C4 ( F.Cu 上)",
+                    "pos": {
+                        "x": 147.6,
+                        "y": 104.6625
+                    },
+                    "uuid": "3556e13d-5986-4e66-b8bf-c82202d6dc99"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.0241 mm)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "8c91ceb3-6165-427b-8ff4-5a12c4bf7952"
+                },
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "9adaa5c4-bba9-45f0-9efd-061c829681e7"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.1360 mm)",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 11.3540 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 93.354
+                    },
+                    "uuid": "ce2d75bc-580b-42f3-859f-ae9a67045d85"
+                },
+                {
+                    "description": "H2のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 82.5258
+                    },
+                    "uuid": "ee007a0b-6550-4cdf-a400-04e702283123"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1370 mm)",
+            "items": [
+                {
+                    "description": "配線 [V_{IO}] ( F.Cu 上、長さ: 4.7840 mm )",
+                    "pos": {
+                        "x": 154.912,
+                        "y": 85.5
+                    },
+                    "uuid": "a2a0be5d-c4da-488e-8d3e-42c464264d0e"
+                },
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 0.6110 mm )",
+                    "pos": {
+                        "x": 154.5,
+                        "y": 88.984
+                    },
+                    "uuid": "d0a02be0-470a-4a01-9af6-46deac91b870"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.1360 mm)",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 9.4960 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "c04d6f5e-f3e9-4875-9e68-c0ead744c708"
+                },
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "9adaa5c4-bba9-45f0-9efd-061c829681e7"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット /MISO と GND)",
+            "items": [
+                {
+                    "description": "配線 [/MISO] ( B.Cu 上、長さ: 13.8888 mm )",
+                    "pos": {
+                        "x": 137.5,
+                        "y": 94.2888
+                    },
+                    "uuid": "bfef8af3-4c91-4e55-87c9-f190feedbd5f"
+                },
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 137.5,
+                        "y": 82.2
+                    },
+                    "uuid": "d9497832-58c6-4e32-b348-b9279f80e2f6"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット Net-(U1-LED_P) と VDD)",
+            "items": [
+                {
+                    "description": "ビア [Net-(U1-LED_P)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 145.363,
+                        "y": 81.0
+                    },
+                    "uuid": "ab2b5aa1-4b7a-4800-bb01-dcfb05c6e709"
+                },
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 4.1630 mm )",
+                    "pos": {
+                        "x": 147.8,
+                        "y": 80.8
+                    },
+                    "uuid": "e4fcae95-754a-45a8-90ca-64e393029dbd"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット Net-(U1-LED_P) と VDD)",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( F.Cu 上、長さ: 0.8000 mm )",
+                    "pos": {
+                        "x": 145.363,
+                        "y": 81.0
+                    },
+                    "uuid": "15f1b70f-b5a6-4261-8588-3aa75f15ac3e"
+                },
+                {
+                    "description": "配線 [VDD] ( F.Cu 上、長さ: 4.1630 mm )",
+                    "pos": {
+                        "x": 147.8,
+                        "y": 80.8
+                    },
+                    "uuid": "e4fcae95-754a-45a8-90ca-64e393029dbd"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1500 mm)",
+            "items": [
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 1.0000 mm )",
+                    "pos": {
+                        "x": 147.6,
+                        "y": 104.6625
+                    },
+                    "uuid": "209ff473-c74b-45bb-b9b4-eb9acca68dd8"
+                },
+                {
+                    "description": "パッド 4 [Net-(U2-NC)] - U2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 145.6375,
+                        "y": 104.75
+                    },
+                    "uuid": "be7f784c-e59a-43a3-bef3-ca52176a4f82"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.1491 mm)",
+            "items": [
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "9adaa5c4-bba9-45f0-9efd-061c829681e7"
+                },
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "8c91ceb3-6165-427b-8ff4-5a12c4bf7952"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.1491 mm)",
+            "items": [
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "9adaa5c4-bba9-45f0-9efd-061c829681e7"
+                },
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "8c91ceb3-6165-427b-8ff4-5a12c4bf7952"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "穴のクリアランス違反 (基板の設定の穴の制約 クリアランス 0.2000 mm; 現状 0.1500 mm)",
+            "items": [
+                {
+                    "description": "パッド 4 [Net-(U2-NC)] - U2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 145.6375,
+                        "y": 104.75
+                    },
+                    "uuid": "be7f784c-e59a-43a3-bef3-ca52176a4f82"
+                },
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 146.6,
+                        "y": 104.6625
+                    },
+                    "uuid": "81df02c4-a0a3-4e4b-bfe7-698d682ffdc2"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 1.9000 mm )",
+                    "pos": {
+                        "x": 142.7,
+                        "y": 104.75
+                    },
+                    "uuid": "93951e09-6d22-499d-878f-87d0abd2d9a1"
+                },
+                {
+                    "description": "パッド 2 [GND] - U2 ( F.Cu 上)",
+                    "pos": {
+                        "x": 143.3625,
+                        "y": 103.8
+                    },
+                    "uuid": "7e858594-8931-4e8b-8314-a623b27d105e"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 11.3540 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 93.354
+                    },
+                    "uuid": "ce2d75bc-580b-42f3-859f-ae9a67045d85"
+                },
+                {
+                    "description": "PTHパッド 8 [GND] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 86.2338
+                    },
+                    "uuid": "2a1ea247-6981-463b-b32b-ad769f533dbc"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 11.3540 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 93.354
+                    },
+                    "uuid": "ce2d75bc-580b-42f3-859f-ae9a67045d85"
+                },
+                {
+                    "description": "PTHパッド 5 [V_{IO}] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 91.5738
+                    },
+                    "uuid": "a1005604-4cbb-4d70-a6a1-c23afec2b76b"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 11.3540 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 93.354
+                    },
+                    "uuid": "ce2d75bc-580b-42f3-859f-ae9a67045d85"
+                },
+                {
+                    "description": "PTHパッド 6 [unconnected-(U1-NC-Pad6)] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 89.7938
+                    },
+                    "uuid": "bc2aa4ae-ee6e-4ae2-88dc-e1f3dfdb3a0b"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 11.3540 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 93.354
+                    },
+                    "uuid": "ce2d75bc-580b-42f3-859f-ae9a67045d85"
+                },
+                {
+                    "description": "PTHパッド 7 [/RESET] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 88.0138
+                    },
+                    "uuid": "07764745-122e-45e9-bff1-3011019f3d10"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( F.Cu 上、長さ: 5.5630 mm )",
+                    "pos": {
+                        "x": 137.8,
+                        "y": 105.1
+                    },
+                    "uuid": "ca98ede4-7caa-4f66-ad94-2e7633070a97"
+                },
+                {
+                    "description": "パッド 2 [GND] - C3 ( F.Cu 上)",
+                    "pos": {
+                        "x": 138.8,
+                        "y": 104.6625
+                    },
+                    "uuid": "5e65b3b6-26d7-4e2c-9f94-253dd0ba9e9e"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 9.4960 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "c04d6f5e-f3e9-4875-9e68-c0ead744c708"
+                },
+                {
+                    "description": "PTHパッド 1 [unconnected-(U1-NC-Pad1)] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 98.6938
+                    },
+                    "uuid": "1c38ea12-9db4-4d99-9ac9-7580754bf030"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 9.4960 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "c04d6f5e-f3e9-4875-9e68-c0ead744c708"
+                },
+                {
+                    "description": "PTHパッド 2 [unconnected-(U1-NC-Pad2)] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 96.9138
+                    },
+                    "uuid": "cae1a365-1554-4611-a24f-9ca7f4396959"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 9.4960 mm )",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "c04d6f5e-f3e9-4875-9e68-c0ead744c708"
+                },
+                {
+                    "description": "PTHパッド 3 [Net-(U1-VDDPIX)] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 95.1338
+                    },
+                    "uuid": "d2340b11-5744-4e61-b341-3a2fca5541db"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント J1",
+                    "pos": {
+                        "x": 135.389,
+                        "y": 101.9088
+                    },
+                    "uuid": "17472dbf-4f0a-4657-a4fc-0ebcf20c1723"
+                },
+                {
+                    "description": "フットプリント TP3",
+                    "pos": {
+                        "x": 137.5,
+                        "y": 81.2
+                    },
+                    "uuid": "b794d5df-c581-452c-9623-827ece01a501"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "ドリル穴と他の穴が近過ぎる (基板の設定の制約 最小 0.2000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 93.354
+                    },
+                    "uuid": "1a0cf3bd-474d-4114-b337-df631ed1875a"
+                },
+                {
+                    "description": "PTHパッド 4 [VDD] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 93.3538
+                    },
+                    "uuid": "fcfd2920-9430-48fb-ab73-19d7fe71b70d"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        },
+        {
+            "description": "ドリル穴と他の穴が近過ぎる (基板の設定の制約 最小 0.2000 mm; 現状 0.1491 mm)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "8c91ceb3-6165-427b-8ff4-5a12c4bf7952"
+                },
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "9adaa5c4-bba9-45f0-9efd-061c829681e7"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        },
+        {
+            "description": "ドリル穴と他の穴が近過ぎる (基板の設定の制約 最小 0.2000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 93.354
+                    },
+                    "uuid": "1a0cf3bd-474d-4114-b337-df631ed1875a"
+                },
+                {
+                    "description": "PTHパッド 4 [VDD] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 93.3538
+                    },
+                    "uuid": "fcfd2920-9430-48fb-ab73-19d7fe71b70d"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        },
+        {
+            "description": "ドリル穴と他の穴が近過ぎる (基板の設定の制約 最小 0.2000 mm; 現状 0.1491 mm)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 102.85
+                    },
+                    "uuid": "8c91ceb3-6165-427b-8ff4-5a12c4bf7952"
+                },
+                {
+                    "description": "H4のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 102.5258
+                    },
+                    "uuid": "9adaa5c4-bba9-45f0-9efd-061c829681e7"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        }
+    ]
+}

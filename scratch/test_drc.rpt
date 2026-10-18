@@ -1,0 +1,1894 @@
+** Drc report for test_left_drc.kicad_pcb **
+** Created on 2026-10-18T20:58:38 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 495 DRC violations **
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-81.2468 mm, 33.6487 mm): Via [GND] on F.Cu - B.Cu
+    @(-81.8379 mm, 34.1683 mm): Track [/KEY5] on B.Cu, length 3.6854 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-68.2729 mm, 35.0754 mm): Via [GND] on F.Cu - B.Cu
+    @(-68.7443 mm, 35.4400 mm): Track [/KEY4] on B.Cu, length 2.4838 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.2434 mm, 39.8914 mm): Track [/SWD] on F.Cu, length 0.7087 mm
+    @(-98.8742 mm, 40.2846 mm): Track [/SWCLK] on F.Cu, length 22.5095 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-98.7074 mm, 39.8914 mm): Track [/SWD] on F.Cu, length 3.9849 mm
+    @(-98.8742 mm, 40.2846 mm): Track [/SWCLK] on F.Cu, length 22.5095 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-23.7275 mm, -5.9897 mm): Track [/USB_VBUS_PIN] on F.Cu, length 0.5095 mm
+    @(-24.3425 mm, -5.7350 mm): Via [+5V] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-68.7443 mm, 35.4400 mm): Track [/KEY4] on B.Cu, length 2.4838 mm
+    @(-67.1509 mm, 37.5894 mm): Track [/KEY6] on B.Cu, length 3.0418 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-21.3522 mm, -11.5028 mm): Via [GND] on F.Cu - B.Cu
+    @(-21.1830 mm, -10.9116 mm): Track [/D-] on B.Cu, length 0.9861 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-80.8072 mm, -18.7688 mm): Track [Net-(LED12-DOUT)] on F.Cu, length 2.4098 mm
+    @(-80.9788 mm, -19.3687 mm): Track [Net-(D1-K)] on F.Cu, length 11.8837 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-103.0925 mm, 25.1913 mm): Track [Net-(LED15-DOUT)] on F.Cu, length 2.6916 mm
+    @(-103.7209 mm, 23.7913 mm): Track [Net-(D1-K)] on F.Cu, length 1.2083 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.3159 mm, 39.6365 mm): Track [Net-(U1-RUN)] on B.Cu, length 1.2847 mm
+    @(-76.7248 mm, 39.6716 mm): Track [/SWD] on B.Cu, length 1.0144 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1951 mm)
+    Local override; error
+    @(-19.1853 mm, -8.2517 mm): Via [/D-] on F.Cu - B.Cu
+    @(-18.8225 mm, -7.6550 mm): Track [GND] on F.Cu, length 1.3582 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-44.8578 mm, -18.5688 mm): Track [Net-(LED4-DOUT)] on F.Cu, length 4.0031 mm
+    @(-37.1175 mm, -16.5688 mm): Track [Net-(D1-K)] on F.Cu, length 4.9687 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-19.9741 mm, -8.2850 mm): Via [/D+] on F.Cu - B.Cu
+    @(-20.1807 mm, -7.6550 mm): Track [GND] on F.Cu, length 1.6567 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-103.9469 mm, 24.3368 mm): Track [Net-(LED15-DOUT)] on F.Cu, length 1.2083 mm
+    @(-111.8825 mm, 23.7913 mm): Track [Net-(D1-K)] on F.Cu, length 8.1616 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-80.8072 mm, -18.7688 mm): Track [Net-(LED12-DOUT)] on F.Cu, length 2.4098 mm
+    @(-78.7788 mm, -21.5688 mm): Track [Net-(D1-K)] on F.Cu, length 3.1113 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-20.0225 mm, -4.6915 mm): Via [Net-(EXLED1-DIN)] on F.Cu - B.Cu
+    @(-22.7063 mm, -5.4350 mm): Track [Net-(D1-K)] on F.Cu, length 5.6162 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-44.8578 mm, -18.5688 mm): Track [Net-(LED4-DOUT)] on F.Cu, length 4.0031 mm
+    @(-42.0862 mm, -16.5688 mm): Track [Net-(D1-K)] on F.Cu, length 3.6770 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-103.0925 mm, 25.1913 mm): Track [Net-(LED15-DOUT)] on F.Cu, length 2.6916 mm
+    @(-102.8665 mm, 24.6456 mm): Track [Net-(D1-K)] on F.Cu, length 1.9896 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-93.2875 mm, 20.7563 mm): Via [Net-(D1-K)] on F.Cu - B.Cu
+    @(-93.8791 mm, 20.3746 mm): Track [Net-(LED15-DOUT)] on F.Cu, length 1.1900 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-100.8769 mm, 24.6456 mm): Track [Net-(D1-K)] on F.Cu, length 7.6995 mm
+    @(-103.0925 mm, 25.1913 mm): Track [Net-(LED15-DOUT)] on F.Cu, length 2.6916 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-64.2720 mm, 37.1962 mm): Track [/KEY4] on B.Cu, length 1.5317 mm
+    @(-67.1509 mm, 37.5894 mm): Track [/KEY6] on B.Cu, length 3.0418 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-60.1525 mm, -2.6350 mm): Track [/KEY4] on B.Cu, length 13.5100 mm
+    @(-44.4543 mm, -5.4572 mm): Track [/D+] on B.Cu, length 3.4351 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-60.3154 mm, -3.0282 mm): Track [/D+] on B.Cu, length 4.6198 mm
+    @(-63.1889 mm, 36.1132 mm): Track [/KEY4] on B.Cu, length 35.7118 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-116.4014 mm, -14.3788 mm): Via [Net-(D1-K)] on F.Cu - B.Cu
+    @(-116.9925 mm, -11.6237 mm): Track [Net-(EXLED1-DIN)] on B.Cu, length 4.6000 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-46.8833 mm, -3.0282 mm): Track [/D+] on B.Cu, length 13.4321 mm
+    @(-63.1889 mm, 0.4014 mm): Track [/KEY4] on B.Cu, length 4.2941 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-70.9575 mm, 35.0399 mm): Track [+3V3] on B.Cu, length 0.9758 mm
+    @(-71.1700 mm, 35.4400 mm): Track [/KEY4] on B.Cu, length 2.4257 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-66.9880 mm, 37.1962 mm): Track [/KEY4] on B.Cu, length 2.7161 mm
+    @(-67.1509 mm, 37.5894 mm): Track [/KEY6] on B.Cu, length 3.0418 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-75.6075 mm, 33.1853 mm): Track [Net-(U1-USB_DP)] on B.Cu, length 1.0171 mm
+    @(-75.2075 mm, 33.3550 mm): Track [+3V3] on B.Cu, length 0.3257 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1928 mm)
+    Local override; error
+    @(-78.0450 mm, 35.4400 mm): Track [/KEY5] on B.Cu, length 0.5775 mm
+    @(-78.7825 mm, 35.8400 mm): Track [/KEY10] on B.Cu, length 0.7944 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-81.2841 mm, 35.2782 mm): Track [/KEY10] on B.Cu, length 1.3392 mm
+    @(-79.1775 mm, 34.8850 mm): Track [/KEY5] on B.Cu, length 1.9437 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-75.1654 mm, 29.9118 mm): Track [/D-] on B.Cu, length 1.4765 mm
+    @(-76.0212 mm, 30.3050 mm): Track [/D+] on B.Cu, length 1.0059 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1928 mm)
+    Local override; error
+    @(-78.6225 mm, 35.4400 mm): Track [/KEY5] on B.Cu, length 0.7848 mm
+    @(-78.7825 mm, 35.8400 mm): Track [/KEY10] on B.Cu, length 0.7944 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1987 mm)
+    Local override; error
+    @(-20.6346 mm, -12.5032 mm): Track [/D-] on B.Cu, length 1.6261 mm
+    @(-22.1762 mm, -12.1014 mm): Track [/D+] on B.Cu, length 0.1292 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1896 mm)
+    Local override; error
+    @(-23.9064 mm, -11.1751 mm): Via [/D-] on F.Cu - B.Cu
+    @(-24.0675 mm, -10.5000 mm): Track [/D+] on B.Cu, length 0.6081 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-24.8964 mm, -17.2850 mm): Track [/D-] on B.Cu, length 18.0321 mm
+    @(-42.7657 mm, -16.8919 mm): Track [/D+] on B.Cu, length 2.3880 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-97.4197 mm, 23.6884 mm): Track [/KEY13] on B.Cu, length 4.5917 mm
+    @(-97.0265 mm, 19.1872 mm): Track [/KEY14] on B.Cu, length 4.6780 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.3159 mm, 39.2485 mm): Track [Net-(U1-RUN)] on B.Cu, length 0.3881 mm
+    @(-78.0450 mm, 39.4400 mm): Pad 31 [/KEY18] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-97.4197 mm, 19.3580 mm): Track [/KEY13] on B.Cu, length 4.3305 mm
+    @(-97.0265 mm, 19.1872 mm): Track [/KEY14] on B.Cu, length 4.6780 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-54.2391 mm, 29.2323 mm): Track [Net-(LED7-DOUT)] on F.Cu, length 1.6736 mm
+    @(-54.7025 mm, 33.6249 mm): Track [Net-(LED10-DIN)] on F.Cu, length 4.2999 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(-98.0560 mm, 34.4000 mm): Track [/KEY14] on B.Cu, length 2.2005 mm
+    @(-100.1670 mm, 35.0000 mm): Track [/KEY13] on B.Cu, length 2.9180 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-97.0265 mm, 23.8652 mm): Track [/KEY14] on B.Cu, length 4.5917 mm
+    @(-100.6665 mm, 26.9352 mm): Track [/KEY13] on B.Cu, length 7.5658 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-82.6243 mm, 34.4941 mm): Track [/KEY11] on B.Cu, length 22.9448 mm
+    @(-82.2311 mm, 30.2061 mm): Track [/KEY10] on B.Cu, length 3.8093 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-81.9513 mm, 36.8510 mm): Track [/KEY14] on B.Cu, length 1.9555 mm
+    @(-83.9944 mm, 35.3640 mm): Track [/KEY13] on B.Cu, length 2.6591 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-83.0175 mm, 34.6569 mm): Track [/KEY12] on B.Cu, length 41.7644 mm
+    @(-81.4470 mm, 35.6714 mm): Track [/KEY11] on B.Cu, length 1.6650 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-97.5725 mm, 9.8287 mm): Track [/KEY14] on B.Cu, length 3.8195 mm
+    @(-100.6665 mm, 6.5152 mm): Track [/KEY13] on B.Cu, length 9.5959 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-78.9386 mm, 36.2400 mm): Track [/KEY11] on B.Cu, length 0.8041 mm
+    @(-78.7825 mm, 35.8400 mm): Track [/KEY10] on B.Cu, length 0.7944 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-78.0518 mm, 37.8332 mm): Track [/KEY13] on B.Cu, length 0.0096 mm
+    @(-79.4068 mm, 37.4400 mm): Track [/KEY14] on B.Cu, length 1.3618 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-79.5697 mm, 37.8332 mm): Track [/KEY13] on B.Cu, length 1.5179 mm
+    @(-79.9958 mm, 36.8510 mm): Track [/KEY14] on B.Cu, length 0.8329 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-82.6243 mm, 11.5493 mm): Track [/KEY11] on B.Cu, length 4.3654 mm
+    @(-83.0175 mm, 34.6569 mm): Track [/KEY12] on B.Cu, length 41.7644 mm
+[shorting_items]: ２つのネットを短絡するアイテム (ネット /KEY14 と /KEY13)
+    Local override; error
+    @(-98.0560 mm, 34.4000 mm): Track [/KEY14] on B.Cu, length 2.2005 mm
+    @(-97.2490 mm, 35.0000 mm): Track [/KEY13] on B.Cu, length 1.9078 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-78.0450 mm, 36.2400 mm): Track [/KEY11] on B.Cu, length 0.8936 mm
+    @(-78.7825 mm, 35.8400 mm): Track [/KEY10] on B.Cu, length 0.7944 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-87.8387 mm, 35.3640 mm): Track [/KEY13] on B.Cu, length 3.8443 mm
+    @(-83.8316 mm, 34.9708 mm): Track [/KEY14] on B.Cu, length 2.6591 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-97.0265 mm, 19.1872 mm): Track [/KEY14] on B.Cu, length 4.6780 mm
+    @(-100.6665 mm, 16.1112 mm): Track [/KEY13] on B.Cu, length 4.5917 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-79.5072 mm, 35.6714 mm): Track [/KEY11] on B.Cu, length 1.9398 mm
+    @(-81.6098 mm, 36.0646 mm): Track [/KEY12] on B.Cu, length 1.9907 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-82.1142 mm, 37.2442 mm): Track [/KEY13] on B.Cu, length 1.9555 mm
+    @(-81.9513 mm, 36.8510 mm): Track [/KEY14] on B.Cu, length 1.9555 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-44.4543 mm, -5.4572 mm): Track [/D+] on B.Cu, length 3.4351 mm
+    @(-44.8475 mm, -15.3661 mm): Track [/D-] on B.Cu, length 9.7461 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1898 mm)
+    Local override; error
+    @(-95.9000 mm, 36.3490 mm): Track [/KEY13] on B.Cu, length 7.0760 mm
+    @(-88.9870 mm, 35.9560 mm): Track [/KEY14] on B.Cu, length 1.3930 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-54.7025 mm, 29.3250 mm): Track [Net-(LED10-DIN)] on F.Cu, length 1.8526 mm
+    @(-55.4225 mm, 28.0489 mm): Track [Net-(LED7-DOUT)] on F.Cu, length 5.6539 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1964 mm)
+    Local override; error
+    @(-72.8075 mm, 40.5500 mm): Track [/KEY9] on B.Cu, length 1.0006 mm
+    @(-72.4075 mm, 41.0774 mm): Pad 16 [/USB_VBUS_PIN] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-78.0450 mm, 37.0399 mm): Track [/KEY15] on B.Cu, length 0.0096 mm
+    @(-79.4068 mm, 37.4400 mm): Track [/KEY14] on B.Cu, length 1.3618 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-81.7884 mm, 36.4578 mm): Track [/KEY15] on B.Cu, length 2.6591 mm
+    @(-88.0016 mm, 34.9708 mm): Track [/KEY14] on B.Cu, length 4.1700 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-80.1586 mm, 37.2442 mm): Track [/KEY13] on B.Cu, length 0.8329 mm
+    @(-81.9513 mm, 36.8510 mm): Track [/KEY14] on B.Cu, length 1.9555 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-79.8329 mm, 36.4578 mm): Track [/KEY15] on B.Cu, length 1.9555 mm
+    @(-79.9958 mm, 36.8510 mm): Track [/KEY14] on B.Cu, length 0.8329 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-88.8240 mm, 36.3490 mm): Track [/KEY13] on B.Cu, length 1.3930 mm
+    @(-88.0016 mm, 34.9708 mm): Track [/KEY14] on B.Cu, length 4.1700 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-79.8329 mm, 36.4578 mm): Track [/KEY15] on B.Cu, length 1.9555 mm
+    @(-83.8316 mm, 34.9708 mm): Track [/KEY14] on B.Cu, length 2.6591 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1903 mm)
+    Local override; error
+    @(-83.6687 mm, 34.5776 mm): Track [/KEY15] on B.Cu, length 4.4957 mm
+    @(-88.9870 mm, 35.9560 mm): Track [/KEY14] on B.Cu, length 1.3930 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-19.4175 mm, -10.2801 mm): Track [Net-(J1-CC1)] on B.Cu, length 4.5237 mm
+    @(-19.8107 mm, -11.6793 mm): Track [/D-] on B.Cu, length 1.1652 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-79.8329 mm, 36.4578 mm): Track [/KEY15] on B.Cu, length 1.9555 mm
+    @(-81.9513 mm, 36.8510 mm): Track [/KEY14] on B.Cu, length 1.9555 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-79.8329 mm, 36.4578 mm): Track [/KEY15] on B.Cu, length 1.9555 mm
+    @(-79.0947 mm, 36.6399 mm): Track [/KEY12] on B.Cu, length 0.8137 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-18.9725 mm, -9.2790 mm): Track [/D-] on B.Cu, length 1.1854 mm
+    @(-19.4175 mm, -10.2801 mm): Track [Net-(J1-CC1)] on B.Cu, length 4.5237 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-79.8329 mm, 36.4578 mm): Track [/KEY15] on B.Cu, length 1.9555 mm
+    @(-79.6700 mm, 36.0646 mm): Track [/KEY12] on B.Cu, length 1.9398 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-13.5375 mm, -9.8400 mm): Track [Net-(J1-CC1)] on B.Cu, length 0.2374 mm
+    @(-13.3746 mm, -9.2790 mm): Track [/D-] on B.Cu, length 5.5978 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-78.0450 mm, 37.0399 mm): Track [/KEY15] on B.Cu, length 0.0096 mm
+    @(-78.0450 mm, 36.6399 mm): Track [/KEY12] on B.Cu, length 1.0497 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-19.8107 mm, -10.1172 mm): Track [/D-] on B.Cu, length 1.5621 mm
+    @(-19.4175 mm, -10.2801 mm): Track [Net-(J1-CC1)] on B.Cu, length 4.5237 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-19.8107 mm, -10.1172 mm): Track [/D-] on B.Cu, length 1.5621 mm
+    @(-20.2039 mm, -11.5165 mm): Track [/D+] on B.Cu, length 0.8272 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-42.9286 mm, -17.2850 mm): Track [/D-] on B.Cu, length 2.7138 mm
+    @(-44.4543 mm, -15.2032 mm): Track [/D+] on B.Cu, length 9.7461 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-72.5354 mm, 27.2818 mm): Track [/D-] on B.Cu, length 3.7194 mm
+    @(-72.3725 mm, 27.6750 mm): Track [/D+] on B.Cu, length 3.7194 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-78.0450 mm, 39.8400 mm): Pad 30 [unconnected-(U1-GPIO19-Pad30)] of U1 on B.Cu
+    @(-79.2657 mm, 40.2400 mm): Track [/KEY17] on B.Cu, length 1.2207 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1860 mm)
+    Local override; error
+    @(-94.9675 mm, 39.5662 mm): Pad 2 [Net-(R6-Pad2)] of SMDSW1 on B.Cu
+    @(-97.2000 mm, 39.9200 mm): Track [/KEY17] on B.Cu, length 2.7572 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.3125 mm, 32.6611 mm): Track [Net-(U1-USB_DM)] on B.Cu, length 0.6247 mm
+    @(-76.5250 mm, 32.2679 mm): Track [Net-(U1-USB_DP)] on B.Cu, length 1.2975 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-72.4075 mm, 33.6200 mm): Track [/QSPI_SD1] on B.Cu, length 0.4137 mm
+    @(-72.8075 mm, 34.2024 mm): Track [/QSPI_SD2] on B.Cu, length 0.7386 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-24.8964 mm, -17.2850 mm): Track [/D-] on B.Cu, length 18.0321 mm
+    @(-25.3925 mm, -17.8761 mm): Via [Net-(EXLED1-DIN)] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-72.1150 mm, 33.3274 mm): Track [/QSPI_SD1] on B.Cu, length 4.0749 mm
+    @(-72.8075 mm, 33.4639 mm): Track [/QSPI_SD2] on B.Cu, length 0.7490 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-73.2075 mm, 33.3078 mm): Track [/QSPI_SD0] on B.Cu, length 0.8946 mm
+    @(-72.8075 mm, 34.2024 mm): Pad 54 [/QSPI_SD2] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-73.2075 mm, 33.3078 mm): Track [/QSPI_SD0] on B.Cu, length 0.8946 mm
+    @(-72.8075 mm, 33.4639 mm): Track [/QSPI_SD2] on B.Cu, length 0.7490 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-72.8075 mm, 34.2024 mm): Track [/QSPI_SD2] on B.Cu, length 0.7386 mm
+    @(-72.4163 mm, 32.5166 mm): Track [/QSPI_SD0] on B.Cu, length 1.1189 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-67.8772 mm, 32.9342 mm): Track [/QSPI_SD2] on B.Cu, length 1.5143 mm
+    @(-68.0400 mm, 33.3274 mm): Track [/QSPI_SD1] on B.Cu, length 1.0996 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-72.8075 mm, 34.2024 mm): Pad 54 [/QSPI_SD2] of U1 on B.Cu
+    @(-72.4075 mm, 34.2024 mm): Track [/QSPI_SD1] on B.Cu, length 0.5825 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-13.0375 mm, -10.6137 mm): Track [/D-] on B.Cu, length 0.9977 mm
+    @(-12.5275 mm, -9.5700 mm): Track [/D+] on B.Cu, length 0.9677 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-63.7833 mm, 38.3758 mm): Track [/KEY7] on B.Cu, length 2.5089 mm
+    @(-67.6934 mm, 38.7691 mm): Track [/KEYEX1] on B.Cu, length 9.5569 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-62.4025 mm, 36.4389 mm): Track [/KEY3] on B.Cu, length 16.6339 mm
+    @(-62.0093 mm, 36.6018 mm): Track [/KEY7] on B.Cu, length 5.1863 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-62.4025 mm, 36.4389 mm): Track [/KEY3] on B.Cu, length 16.6339 mm
+    @(-62.0093 mm, 31.4155 mm): Track [/KEY7] on B.Cu, length 3.5876 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-67.4766 mm, 38.3758 mm): Track [/KEY7] on B.Cu, length 3.6933 mm
+    @(-67.6934 mm, 38.7691 mm): Track [/KEYEX1] on B.Cu, length 9.5569 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-69.2157 mm, 36.6367 mm): Track [/KEY7] on B.Cu, length 2.4595 mm
+    @(-67.6934 mm, 38.7691 mm): Track [/KEYEX1] on B.Cu, length 9.5569 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-71.1700 mm, 37.0399 mm): Track [/KEYEX1] on B.Cu, length 1.7475 mm
+    @(-71.1700 mm, 36.6399 mm): Track [/KEY7] on B.Cu, length 0.0045 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-68.1440 mm, 31.5871 mm): Via [/QSPI_SD0] on F.Cu - B.Cu
+    @(-68.9332 mm, 31.5657 mm): Via [/QSPI_SCLK] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-69.4909 mm, 32.1234 mm): Track [/QSPI_SCLK] on B.Cu, length 3.1300 mm
+    @(-68.8975 mm, 32.5166 mm): Track [/QSPI_SD0] on B.Cu, length 3.5188 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-65.9141 mm, 34.8550 mm): Track [/QSPI_SCLK] on F.Cu, length 6.1716 mm
+    @(-69.8025 mm, 31.5323 mm): Track [/QSPI_SD3] on F.Cu, length 5.3212 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-68.9332 mm, 31.5657 mm): Track [/QSPI_SCLK] on B.Cu, length 0.7888 mm
+    @(-68.8975 mm, 32.5166 mm): Track [/QSPI_SD0] on B.Cu, length 3.5188 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-73.6075 mm, 33.1100 mm): Track [/QSPI_SCLK] on B.Cu, length 1.0925 mm
+    @(-74.0075 mm, 32.9100 mm): Track [/QSPI_SD3] on B.Cu, length 1.2925 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-68.9332 mm, 31.8360 mm): Track [/QSPI_SCLK] on F.Cu, length 4.2696 mm
+    @(-69.8025 mm, 31.5323 mm): Track [/QSPI_SD3] on F.Cu, length 5.3212 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-68.1440 mm, 31.5871 mm): Via [/QSPI_SD0] on F.Cu - B.Cu
+    @(-68.9332 mm, 31.5657 mm): Via [/QSPI_SCLK] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-72.6210 mm, 32.1234 mm): Track [/QSPI_SCLK] on B.Cu, length 1.3952 mm
+    @(-70.1417 mm, 31.7302 mm): Track [/QSPI_SD3] on B.Cu, length 2.6860 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-72.4075 mm, 34.2024 mm): Pad 55 [/QSPI_SD1] of U1 on B.Cu
+    @(-72.8075 mm, 34.2024 mm): Track [/QSPI_SD2] on B.Cu, length 0.7386 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1916 mm)
+    Local override; error
+    @(-56.0493 mm, 37.7933 mm): Track [/KEYEX2] on B.Cu, length 1.5802 mm
+    @(-54.1467 mm, 34.9592 mm): Track [/KEY2] on B.Cu, length 2.1346 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-73.6075 mm, 34.2024 mm): Pad 52 [/QSPI_SCLK] of U1 on B.Cu
+    @(-74.0075 mm, 32.9100 mm): Track [/QSPI_SD3] on B.Cu, length 1.2925 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-68.9332 mm, 31.5657 mm): Track [/QSPI_SCLK] on F.Cu, length 0.2703 mm
+    @(-69.8025 mm, 31.5323 mm): Track [/QSPI_SD3] on F.Cu, length 5.3212 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-40.9225 mm, 18.3450 mm): Track [/KEYEX1] on B.Cu, length 14.0852 mm
+    @(-17.4945 mm, 9.5582 mm): Track [/KEYEX3] on B.Cu, length 12.9825 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1940 mm)
+    Local override; error
+    @(-69.3910 mm, 39.9490 mm): Track [/KEY2] on B.Cu, length 11.7430 mm
+    @(-69.1849 mm, 39.5550 mm): Track [/KEYEX2] on B.Cu, length 11.3739 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-68.9332 mm, 31.5657 mm): Via [/QSPI_SCLK] on F.Cu - B.Cu
+    @(-69.8025 mm, 31.5323 mm): Track [/QSPI_SD3] on F.Cu, length 5.3212 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-54.4022 mm, 34.5660 mm): Track [/KEYEX2] on B.Cu, length 9.1387 mm
+    @(-54.1467 mm, 34.9592 mm): Track [/KEY2] on B.Cu, length 2.1346 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-69.5786 mm, 37.4400 mm): Track [/KEYEX3] on B.Cu, length 1.5914 mm
+    @(-71.1700 mm, 37.8400 mm): Pad 8 [unconnected-(U1-GPIO6-Pad8)] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-57.6457 mm, 33.1682 mm): Track [/KEYEX1] on B.Cu, length 5.5624 mm
+    @(-46.9157 mm, 29.6282 mm): Track [/KEYEX3] on B.Cu, length 6.6339 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-69.0565 mm, 36.2400 mm): Track [/KEY3] on B.Cu, length 2.4645 mm
+    @(-71.1668 mm, 36.6367 mm): Track [/KEY7] on B.Cu, length 1.9511 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-78.0450 mm, 35.8400 mm): Track [/KEY10] on B.Cu, length 0.7375 mm
+    @(-78.0450 mm, 35.4400 mm): Pad 41 [/KEY5] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-75.6075 mm, 33.1853 mm): Track [Net-(U1-USB_DP)] on B.Cu, length 1.0171 mm
+    @(-75.2075 mm, 34.2024 mm): Pad 48 [+3V3] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-67.8772 mm, 32.9342 mm): Track [/QSPI_SD2] on B.Cu, length 1.5143 mm
+    @(-67.2625 mm, 34.1050 mm): Track [/QSPI_SD1] on B.Cu, length 0.5700 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1940 mm)
+    Local override; error
+    @(-69.7000 mm, 39.0399 mm): Track [/KEYEX2] on B.Cu, length 0.7285 mm
+    @(-69.3910 mm, 39.9490 mm): Track [/KEY2] on B.Cu, length 11.7430 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1916 mm)
+    Local override; error
+    @(-78.0450 mm, 36.6399 mm): Pad 38 [/KEY12] of U1 on B.Cu
+    @(-78.0518 mm, 37.0331 mm): Track [/KEY15] on B.Cu, length 1.2058 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1940 mm)
+    Local override; error
+    @(-69.3910 mm, 39.9490 mm): Track [/KEY2] on B.Cu, length 11.7430 mm
+    @(-57.8110 mm, 39.5550 mm): Track [/KEYEX2] on B.Cu, length 2.4914 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1928 mm)
+    Local override; error
+    @(-44.3935 mm, 27.1060 mm): Track [/KEYEX3] on B.Cu, length 3.5669 mm
+    @(-53.7125 mm, 29.2350 mm): Track [/KEYEX1] on B.Cu, length 6.6300 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1911 mm)
+    Local override; error
+    @(-67.8563 mm, 39.1623 mm): Track [/KEYEX3] on B.Cu, length 2.4357 mm
+    @(-69.1849 mm, 39.5550 mm): Track [/KEYEX2] on B.Cu, length 11.3739 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-45.2635 mm, 34.5660 mm): Track [/KEYEX2] on B.Cu, length 3.1763 mm
+    @(-45.0467 mm, 34.9592 mm): Track [/KEY2] on B.Cu, length 9.1000 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1916 mm)
+    Local override; error
+    @(-17.4945 mm, 9.5582 mm): Track [/KEYEX3] on B.Cu, length 6.9197 mm
+    @(-26.8373 mm, 18.3450 mm): Track [/KEYEX1] on B.Cu, length 12.9825 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-40.9225 mm, 18.3450 mm): Track [/KEYEX1] on B.Cu, length 14.0852 mm
+    @(-26.6745 mm, 18.7382 mm): Track [/KEYEX3] on B.Cu, length 14.0495 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-40.9225 mm, 18.3450 mm): Track [/KEYEX1] on B.Cu, length 14.0852 mm
+    @(-40.7240 mm, 18.7382 mm): Track [/KEYEX3] on B.Cu, length 5.1895 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-57.6457 mm, 38.2782 mm): Track [/KEYEX1] on B.Cu, length 5.1100 mm
+    @(-57.2525 mm, 33.3311 mm): Track [/KEYEX3] on B.Cu, length 5.1100 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-53.5496 mm, 29.6282 mm): Track [/KEYEX3] on B.Cu, length 5.2366 mm
+    @(-57.6457 mm, 38.2782 mm): Track [/KEYEX1] on B.Cu, length 5.1100 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-76.0075 mm, 33.3414 mm): Track [Net-(U1-USB_DM)] on B.Cu, length 0.8611 mm
+    @(-75.6075 mm, 33.1853 mm): Track [Net-(U1-USB_DP)] on B.Cu, length 1.0171 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-75.6075 mm, 33.1853 mm): Track [Net-(U1-USB_DP)] on B.Cu, length 1.0171 mm
+    @(-76.6878 mm, 32.6611 mm): Track [Net-(U1-USB_DM)] on B.Cu, length 0.9621 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-79.8329 mm, 36.4578 mm): Track [/KEY15] on B.Cu, length 1.9555 mm
+    @(-81.6098 mm, 36.0646 mm): Track [/KEY12] on B.Cu, length 1.9907 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-19.8107 mm, -10.1172 mm): Track [/D-] on B.Cu, length 1.5621 mm
+    @(-19.1353 mm, -8.8857 mm): Track [/D+] on B.Cu, length 1.5112 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-63.5821 mm, 25.6167 mm): Track [/D+] on B.Cu, length 2.9108 mm
+    @(-63.9753 mm, 25.4539 mm): Track [/D-] on B.Cu, length 2.5851 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-20.5971 mm, -10.3257 mm): Track [/D-] on B.Cu, length 0.8286 mm
+    @(-21.3375 mm, -10.5100 mm): Track [/D+] on B.Cu, length 0.9300 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-13.2118 mm, -8.8857 mm): Track [/D+] on B.Cu, length 5.9236 mm
+    @(-18.9725 mm, -9.2790 mm): Track [/D-] on B.Cu, length 1.1854 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-19.8107 mm, -10.1172 mm): Track [/D-] on B.Cu, length 1.5621 mm
+    @(-20.2039 mm, -9.9543 mm): Track [/D+] on B.Cu, length 1.5621 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-20.5971 mm, -9.7696 mm): Track [/D-] on B.Cu, length 0.5561 mm
+    @(-20.9903 mm, -10.1629 mm): Track [/D+] on B.Cu, length 0.4910 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-46.8833 mm, -3.0282 mm): Track [/D+] on B.Cu, length 13.4321 mm
+    @(-60.4647 mm, -3.4350 mm): Track [/D-] on B.Cu, length 4.9648 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1911 mm)
+    Local override; error
+    @(-57.2525 mm, 38.4411 mm): Track [/KEYEX3] on B.Cu, length 1.0199 mm
+    @(-69.1849 mm, 39.5550 mm): Track [/KEYEX2] on B.Cu, length 11.3739 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-23.9675 mm, -16.3561 mm): Track [/D-] on B.Cu, length 1.3137 mm
+    @(-24.4975 mm, -12.4750 mm): Track [/D+] on B.Cu, length 3.8550 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-24.8964 mm, -17.2850 mm): Track [/D-] on B.Cu, length 18.0321 mm
+    @(-25.0593 mm, -16.8919 mm): Track [/D+] on B.Cu, length 17.7064 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1987 mm)
+    Local override; error
+    @(-20.6346 mm, -12.5032 mm): Track [/D-] on B.Cu, length 1.6261 mm
+    @(-20.7888 mm, -12.1014 mm): Track [/D+] on B.Cu, length 1.3873 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1993 mm)
+    Local override; error
+    @(-11.0836 mm, -9.4048 mm): Track [/D+] on B.Cu, length 0.6419 mm
+    @(-11.9425 mm, -9.4139 mm): Via [/D-] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-75.0025 mm, 30.3050 mm): Track [/D+] on B.Cu, length 1.0187 mm
+    @(-72.5354 mm, 27.2818 mm): Track [/D-] on B.Cu, length 3.7194 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-24.4975 mm, -10.9301 mm): Track [/D+] on B.Cu, length 0.6450 mm
+    @(-23.9064 mm, -11.1751 mm): Via [/D-] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-65.6404 mm, 27.6750 mm): Track [/D+] on B.Cu, length 6.7321 mm
+    @(-63.9753 mm, 25.4539 mm): Track [/D-] on B.Cu, length 2.5851 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-19.9741 mm, -8.2850 mm): Via [/D+] on F.Cu - B.Cu
+    @(-19.1853 mm, -8.2517 mm): Via [/D-] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1993 mm)
+    Local override; error
+    @(-11.9425 mm, -9.4139 mm): Via [/D-] on F.Cu - B.Cu
+    @(-11.0836 mm, -9.4048 mm): Track [/D+] on F.Cu, length 0.8488 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-11.9425 mm, -9.4139 mm): Via [/D-] on F.Cu - B.Cu
+    @(-11.6837 mm, -10.0050 mm): Track [/D+] on F.Cu, length 6.8231 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-19.9741 mm, -8.2850 mm): Via [/D+] on F.Cu - B.Cu
+    @(-19.1853 mm, -8.2517 mm): Via [/D-] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1916 mm)
+    Local override; error
+    @(-22.3875 mm, 14.4512 mm): Track [/KEYEX3] on B.Cu, length 6.0488 mm
+    @(-26.8373 mm, 18.3450 mm): Track [/KEYEX1] on B.Cu, length 12.9825 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1911 mm)
+    Local override; error
+    @(-57.9737 mm, 39.1623 mm): Track [/KEYEX3] on B.Cu, length 9.8826 mm
+    @(-69.1849 mm, 39.5550 mm): Track [/KEYEX2] on B.Cu, length 11.3739 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-60.3154 mm, -3.0282 mm): Track [/D+] on B.Cu, length 4.6198 mm
+    @(-60.4647 mm, -3.4350 mm): Track [/D-] on B.Cu, length 4.9648 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-76.4075 mm, 40.5450 mm): Track [Net-(U1-RUN)] on B.Cu, length 0.5325 mm
+    @(-76.8075 mm, 41.0774 mm): Track [/KEY16] on B.Cu, length 0.6225 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.3159 mm, 36.1999 mm): Track [Net-(U1-RUN)] on B.Cu, length 3.0316 mm
+    @(-78.0450 mm, 37.0399 mm): Pad 37 [/KEY15] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.0295 mm, 35.9135 mm): Track [Net-(U1-RUN)] on B.Cu, length 0.4050 mm
+    @(-78.0450 mm, 36.2400 mm): Pad 39 [/KEY11] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-77.3159 mm, 39.6365 mm): Track [Net-(U1-RUN)] on B.Cu, length 1.2847 mm
+    @(-76.8075 mm, 41.0774 mm): Pad 27 [/KEY16] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.0593 mm, 41.9517 mm): Track [/KEY16] on B.Cu, length 0.5848 mm
+    @(-77.4812 mm, 42.3449 mm): Track [+1V1] on B.Cu, length 0.8928 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-76.4075 mm, 41.0774 mm): Pad 26 [Net-(U1-RUN)] of U1 on B.Cu
+    @(-76.8075 mm, 41.0774 mm): Track [/KEY16] on B.Cu, length 0.6225 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-76.0075 mm, 33.3414 mm): Track [Net-(U1-USB_DM)] on B.Cu, length 0.8611 mm
+    @(-76.4075 mm, 33.4975 mm): Track [+1V1] on B.Cu, length 0.7050 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-20.5971 mm, -9.7696 mm): Track [/D-] on B.Cu, length 0.5561 mm
+    @(-20.9903 mm, -9.3012 mm): Track [/D+] on B.Cu, length 0.8617 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.0593 mm, 41.9517 mm): Track [/KEY16] on B.Cu, length 0.5848 mm
+    @(-75.9544 mm, 42.3449 mm): Track [+1V1] on B.Cu, length 1.5268 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-74.0075 mm, 32.9100 mm): Track [/QSPI_SD3] on B.Cu, length 1.2925 mm
+    @(-74.6475 mm, 32.8575 mm): Track [+1V1] on B.Cu, length 0.3394 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-75.2075 mm, 41.0774 mm): Track [+1V1] on B.Cu, length 0.5206 mm
+    @(-75.6075 mm, 41.0774 mm): Pad 24 [/SWCLK] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-78.0450 mm, 39.8400 mm): Pad 30 [unconnected-(U1-GPIO19-Pad30)] of U1 on B.Cu
+    @(-78.9536 mm, 39.4400 mm): Track [/KEY18] on B.Cu, length 0.9086 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-78.0450 mm, 37.0399 mm): Track [/KEY15] on B.Cu, length 0.0096 mm
+    @(-78.0450 mm, 37.4400 mm): Pad 36 [/KEY14] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-74.4075 mm, 33.0975 mm): Track [+1V1] on B.Cu, length 1.1050 mm
+    @(-74.0075 mm, 32.9100 mm): Track [/QSPI_SD3] on B.Cu, length 1.2925 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-63.5821 mm, 0.2385 mm): Track [/D+] on B.Cu, length 25.3783 mm
+    @(-60.4647 mm, -3.4350 mm): Track [/D-] on B.Cu, length 4.9648 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-76.0075 mm, 33.3414 mm): Track [Net-(U1-USB_DM)] on B.Cu, length 0.8611 mm
+    @(-76.8507 mm, 33.0543 mm): Track [+1V1] on B.Cu, length 0.6268 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-24.8964 mm, -17.2850 mm): Track [/D-] on B.Cu, length 18.0321 mm
+    @(-24.4975 mm, -16.3301 mm): Track [/D+] on B.Cu, length 0.7945 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-65.9661 mm, 26.8886 mm): Track [/KEY5] on B.Cu, length 2.2593 mm
+    @(-63.9753 mm, 25.4539 mm): Track [/D-] on B.Cu, length 2.5851 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-75.3282 mm, 29.5186 mm): Track [/KEY5] on B.Cu, length 3.7194 mm
+    @(-72.5354 mm, 27.2818 mm): Track [/D-] on B.Cu, length 3.7194 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-72.6982 mm, 26.8886 mm): Track [/KEY5] on B.Cu, length 6.7321 mm
+    @(-63.9753 mm, 25.4539 mm): Track [/D-] on B.Cu, length 2.5851 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-80.8736 mm, 29.5186 mm): Track [/KEY5] on B.Cu, length 5.5454 mm
+    @(-72.5354 mm, 27.2818 mm): Track [/D-] on B.Cu, length 3.7194 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1994 mm)
+    Local override; error
+    @(-74.6475 mm, 32.8109 mm): Via [+1V1] on F.Cu - B.Cu
+    @(-75.2075 mm, 33.3550 mm): Track [+3V3] on B.Cu, length 0.3257 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-81.8379 mm, 34.1683 mm): Track [/KEY5] on B.Cu, length 3.6854 mm
+    @(-81.2841 mm, 35.2782 mm): Track [/KEY10] on B.Cu, length 1.3392 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-75.2075 mm, 41.5980 mm): Track [+1V1] on B.Cu, length 1.0563 mm
+    @(-75.6075 mm, 41.0774 mm): Pad 24 [/SWCLK] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-81.8379 mm, 30.4829 mm): Track [/KEY5] on B.Cu, length 1.3637 mm
+    @(-82.2311 mm, 34.3312 mm): Track [/KEY10] on B.Cu, length 4.1251 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-81.1212 mm, 34.8850 mm): Track [/KEY5] on B.Cu, length 1.0135 mm
+    @(-81.2841 mm, 35.2782 mm): Track [/KEY10] on B.Cu, length 1.3392 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-64.3685 mm, 25.2910 mm): Track [/KEY5] on B.Cu, length 29.6163 mm
+    @(-60.4647 mm, -3.4350 mm): Track [/D-] on B.Cu, length 4.9648 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-62.7957 mm, 36.2761 mm): Track [/KEY6] on B.Cu, length 23.1241 mm
+    @(-62.4025 mm, 19.8050 mm): Track [/KEY3] on B.Cu, length 4.2568 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-68.9004 mm, 35.8400 mm): Track [/KEY6] on B.Cu, length 2.4742 mm
+    @(-67.3138 mm, 37.9826 mm): Track [/KEY3] on B.Cu, length 3.3676 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.9539 mm, 32.8563 mm): Via [+1V1] on F.Cu - B.Cu
+    @(-77.7975 mm, 32.1761 mm): Track [Net-(U1-USB_DM)] on B.Cu, length 0.6858 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-64.1091 mm, 37.5894 mm): Track [/KEY6] on B.Cu, length 1.8574 mm
+    @(-67.3138 mm, 37.9826 mm): Track [/KEY3] on B.Cu, length 3.3676 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-67.1509 mm, 37.5894 mm): Track [/KEY6] on B.Cu, length 3.0418 mm
+    @(-67.3138 mm, 37.9826 mm): Track [/KEY3] on B.Cu, length 3.3676 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-71.1700 mm, 35.4400 mm): Pad 2 [/KEY4] of U1 on B.Cu
+    @(-71.1700 mm, 35.8400 mm): Track [/KEY6] on B.Cu, length 2.2696 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-67.2625 mm, 34.1050 mm): Track [/QSPI_SD1] on B.Cu, length 0.5700 mm
+    @(-67.6557 mm, 34.2679 mm): Track [/QSPI_SS] on B.Cu, length 0.9152 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-67.2625 mm, 34.1050 mm): Track [/QSPI_SD1] on B.Cu, length 0.5700 mm
+    @(-68.2029 mm, 33.7206 mm): Track [/QSPI_SS] on B.Cu, length 0.7739 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-75.2075 mm, 41.0774 mm): Track [+1V1] on B.Cu, length 0.3825 mm
+    @(-75.6075 mm, 41.0774 mm): Pad 24 [/SWCLK] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-76.6878 mm, 32.6611 mm): Track [Net-(U1-USB_DM)] on B.Cu, length 0.9621 mm
+    @(-77.7560 mm, 33.0543 mm): Track [+1V1] on B.Cu, length 0.9053 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-71.1700 mm, 37.0399 mm): Track [/KEYEX1] on B.Cu, length 1.7475 mm
+    @(-71.1700 mm, 37.4400 mm): Pad 7 [/KEYEX3] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-72.4075 mm, 34.2024 mm): Pad 55 [/QSPI_SD1] of U1 on B.Cu
+    @(-72.3294 mm, 35.0450 mm): Track [/QSPI_SS] on B.Cu, length 0.4552 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-72.4075 mm, 34.2024 mm): Pad 55 [/QSPI_SD1] of U1 on B.Cu
+    @(-72.0075 mm, 34.2024 mm): Track [/QSPI_SS] on B.Cu, length 0.6814 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-68.0400 mm, 33.3274 mm): Track [/QSPI_SD1] on B.Cu, length 1.0996 mm
+    @(-71.5257 mm, 33.7206 mm): Track [/QSPI_SS] on B.Cu, length 3.3228 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-72.4075 mm, 34.2024 mm): Pad 55 [/QSPI_SD1] of U1 on B.Cu
+    @(-72.0075 mm, 34.7230 mm): Track [/QSPI_SS] on B.Cu, length 0.5206 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-90.4764 mm, 39.0251 mm): Track [Net-(U1-RUN)] on F.Cu, length 11.0137 mm
+    @(-85.6875 mm, 37.9100 mm): Track [/QSPI_SS] on F.Cu, length 1.0211 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-71.1700 mm, 35.8400 mm): Pad 3 [/KEY6] of U1 on B.Cu
+    @(-71.1700 mm, 36.2400 mm): Track [/KEY3] on B.Cu, length 2.1135 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-90.4764 mm, 39.0251 mm): Track [Net-(U1-RUN)] on F.Cu, length 11.0137 mm
+    @(-79.8495 mm, 38.6320 mm): Track [/QSPI_SS] on F.Cu, length 1.4467 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1903 mm)
+    Local override; error
+    @(-77.1157 mm, 35.1278 mm): Via [/QSPI_SS] on F.Cu - B.Cu
+    @(-77.0295 mm, 35.9135 mm): Via [Net-(U1-RUN)] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-84.9655 mm, 38.6320 mm): Track [/QSPI_SS] on F.Cu, length 5.1160 mm
+    @(-90.4764 mm, 39.0251 mm): Track [Net-(U1-RUN)] on F.Cu, length 11.0137 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-76.8507 mm, 33.0543 mm): Track [+1V1] on B.Cu, length 0.6268 mm
+    @(-77.0048 mm, 33.4562 mm): Track [+3V3] on B.Cu, length 0.2790 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-78.8265 mm, 37.6090 mm): Track [/QSPI_SS] on F.Cu, length 1.5700 mm
+    @(-78.4333 mm, 37.9958 mm): Track [Net-(U1-RUN)] on F.Cu, length 1.6400 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-25.3975 mm, -5.1738 mm): Track [+5V] on F.Cu, length 35.0587 mm
+    @(-24.6540 mm, 29.5113 mm): Via [/USB_VBUS_PIN] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-75.6075 mm, 33.1853 mm): Track [Net-(U1-USB_DP)] on B.Cu, length 1.0171 mm
+    @(-75.2075 mm, 33.0292 mm): Track [+3V3] on B.Cu, length 0.6505 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-76.8507 mm, 33.0543 mm): Track [+1V1] on B.Cu, length 0.6268 mm
+    @(-76.8075 mm, 33.6535 mm): Track [+3V3] on B.Cu, length 0.5489 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-74.4075 mm, 33.0975 mm): Track [+1V1] on B.Cu, length 1.1050 mm
+    @(-74.8075 mm, 34.2024 mm): Track [+3V3] on B.Cu, length 0.4475 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-71.1700 mm, 35.4400 mm): Pad 2 [/KEY4] of U1 on B.Cu
+    @(-71.1700 mm, 35.0399 mm): Track [+3V3] on B.Cu, length 0.2125 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-80.4844 mm, 38.0306 mm): Track [+3V3] on B.Cu, length 0.8486 mm
+    @(-87.5225 mm, 38.7612 mm): Track [/KEY18] on B.Cu, length 7.2127 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-74.8075 mm, 41.0774 mm): Track [+3V3] on B.Cu, length 0.8726 mm
+    @(-75.2075 mm, 41.0774 mm): Track [+1V1] on B.Cu, length 0.3825 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-78.7975 mm, 39.0399 mm): Track [+3V3] on B.Cu, length 0.5419 mm
+    @(-79.3697 mm, 39.0239 mm): Track [/KEY18] on B.Cu, length 0.5885 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1931 mm)
+    Local override; error
+    @(-77.1157 mm, 35.1278 mm): Via [/QSPI_SS] on F.Cu - B.Cu
+    @(-78.0450 mm, 35.0399 mm): Pad 42 [+3V3] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-75.6675 mm, 32.5692 mm): Track [+3V3] on B.Cu, length 0.5730 mm
+    @(-76.5250 mm, 32.2679 mm): Track [Net-(U1-USB_DP)] on B.Cu, length 1.2975 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-78.0450 mm, 39.0399 mm): Track [+3V3] on B.Cu, length 0.7525 mm
+    @(-79.3697 mm, 39.0239 mm): Track [/KEY18] on B.Cu, length 0.5885 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-74.8075 mm, 33.7550 mm): Track [+3V3] on B.Cu, length 0.5657 mm
+    @(-74.4075 mm, 33.0975 mm): Track [+1V1] on B.Cu, length 1.1050 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-74.8075 mm, 41.0774 mm): Track [+3V3] on B.Cu, length 0.5199 mm
+    @(-75.2075 mm, 41.0774 mm): Track [+1V1] on B.Cu, length 0.3825 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1911 mm)
+    Local override; error
+    @(-74.8075 mm, 40.5575 mm): Track [+3V3] on B.Cu, length 0.8591 mm
+    @(-74.4075 mm, 41.0774 mm): Pad 21 [Net-(U1-XOUT)] of U1 on B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1988 mm)
+    Local override; error
+    @(-78.5862 mm, 33.4562 mm): Track [+3V3] on B.Cu, length 1.5814 mm
+    @(-77.9539 mm, 32.8563 mm): Track [+1V1] on B.Cu, length 0.2799 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1984 mm)
+    Local override; error
+    @(-71.1700 mm, 35.4400 mm): Pad 2 [/KEY4] of U1 on B.Cu
+    @(-70.9575 mm, 35.0399 mm): Track [+3V3] on B.Cu, length 0.9758 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-69.7675 mm, 34.8488 mm): Via [+3V3] on F.Cu - B.Cu
+    @(-71.1700 mm, 35.4400 mm): Track [/KEY4] on B.Cu, length 2.4257 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-79.8843 mm, 38.6307 mm): Track [+3V3] on B.Cu, length 0.6911 mm
+    @(-79.3697 mm, 39.0239 mm): Track [/KEY18] on B.Cu, length 0.5885 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-75.6075 mm, 33.1853 mm): Track [Net-(U1-USB_DP)] on B.Cu, length 1.0171 mm
+    @(-75.2075 mm, 33.0292 mm): Track [+3V3] on B.Cu, length 1.1732 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1905 mm)
+    Local override; error
+    @(-78.0450 mm, 38.2400 mm): Pad 34 [unconnected-(U1-GPIO22-Pad34)] of U1 on B.Cu
+    @(-78.0518 mm, 38.6331 mm): Track [+3V3] on B.Cu, length 0.8961 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1916 mm)
+    Local override; error
+    @(-78.0450 mm, 38.2400 mm): Pad 34 [unconnected-(U1-GPIO22-Pad34)] of U1 on B.Cu
+    @(-78.0450 mm, 38.6399 mm): Track [+3V3] on B.Cu, length 0.0096 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-78.0450 mm, 34.7400 mm): Track [+3V3] on B.Cu, length 0.3000 mm
+    @(-78.0450 mm, 35.4400 mm): Track [/KEY5] on B.Cu, length 0.5775 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-40.3225 mm, 20.0050 mm): Track [/KEYEX2] on B.Cu, length 14.1213 mm
+    @(-37.6425 mm, 20.5961 mm): Via [Net-(LED2-DOUT)] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1960 mm)
+    Local override; error
+    @(-25.3975 mm, -5.1738 mm): Track [+5V] on F.Cu, length 35.0587 mm
+    @(-24.8225 mm, 29.5113 mm): Track [/USB_VBUS_PIN] on F.Cu, length 0.2121 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-24.8385 mm, -6.9988 mm): Track [/USB_VBUS_PIN] on F.Cu, length 0.1020 mm
+    @(-25.4075 mm, -14.2438 mm): Track [+5V] on F.Cu, length 8.0287 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-77.3159 mm, 39.6365 mm): Track [Net-(U1-RUN)] on B.Cu, length 1.2847 mm
+    @(-76.7248 mm, 39.3902 mm): Track [/SWD] on B.Cu, length 0.2814 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-77.3159 mm, 39.6365 mm): Track [Net-(U1-RUN)] on B.Cu, length 1.2847 mm
+    @(-76.0075 mm, 40.3889 mm): Track [/SWD] on B.Cu, length 0.6886 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-103.9575 mm, 28.7013 mm): Track [/SWD] on F.Cu, length 2.1142 mm
+    @(-104.7925 mm, 28.9802 mm): Track [/SWCLK] on F.Cu, length 1.4894 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-91.1575 mm, 39.2998 mm): Via [Net-(U1-RUN)] on F.Cu - B.Cu
+    @(-91.4025 mm, 39.8914 mm): Track [/SWD] on F.Cu, length 14.1592 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1905 mm)
+    Local override; error
+    @(-77.3159 mm, 39.6365 mm): Track [Net-(U1-RUN)] on B.Cu, length 1.2847 mm
+    @(-76.7248 mm, 39.3902 mm): Via [/SWD] on F.Cu - B.Cu
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1928 mm)
+    Local override; error
+    @(-105.8457 mm, 33.3130 mm): Track [/SWCLK] on F.Cu, length 9.8592 mm
+    @(-105.4525 mm, 33.1463 mm): Track [/SWD] on F.Cu, length 9.5390 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1928 mm)
+    Local override; error
+    @(-105.4525 mm, 30.1962 mm): Track [/SWD] on F.Cu, length 2.9500 mm
+    @(-105.8457 mm, 33.3130 mm): Track [/SWCLK] on F.Cu, length 9.8592 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1951 mm)
+    Local override; error
+    @(-94.7174 mm, 39.8862 mm): Track [/SWD] on F.Cu, length 3.3097 mm
+    @(-98.8742 mm, 40.2846 mm): Track [/SWCLK] on F.Cu, length 22.5095 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-102.8825 mm, 27.2723 mm): Track [/SWD] on B.Cu, length 0.2911 mm
+    @(-104.7925 mm, 28.6262 mm): Track [/SWCLK] on B.Cu, length 2.1451 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1968 mm)
+    Local override; error
+    @(-76.7248 mm, 39.6716 mm): Track [/SWD] on B.Cu, length 1.0144 mm
+    @(-75.6075 mm, 41.0774 mm): Track [/SWCLK] on B.Cu, length 1.1245 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-102.8793 mm, 26.9780 mm): Track [/SWD] on B.Cu, length 2.2736 mm
+    @(-103.2725 mm, 24.9812 mm): Track [/SWCLK] on B.Cu, length 3.6840 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-103.2725 mm, 26.8152 mm): Track [/SWCLK] on B.Cu, length 1.8339 mm
+    @(-102.8793 mm, 26.9780 mm): Track [/SWD] on B.Cu, length 2.2736 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-105.4525 mm, 33.1463 mm): Track [/SWD] on F.Cu, length 9.5390 mm
+    @(-105.8457 mm, 30.0334 mm): Track [/SWCLK] on F.Cu, length 3.2797 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-102.8825 mm, 27.2723 mm): Track [/SWD] on B.Cu, length 0.2911 mm
+    @(-103.2757 mm, 27.1094 mm): Track [/SWCLK] on B.Cu, length 0.2911 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-103.2757 mm, 26.8184 mm): Track [/SWCLK] on B.Cu, length 0.0045 mm
+    @(-102.8793 mm, 26.9780 mm): Track [/SWD] on B.Cu, length 2.2736 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1900 mm)
+    Local override; error
+    @(-24.2625 mm, -15.3887 mm): Track [+5V] on F.Cu, length 1.6193 mm
+    @(-23.2925 mm, -14.5988 mm): Track [/USB_VBUS_PIN] on F.Cu, length 0.9553 mm
+[clearance]: クリアランス違反 ( クリアランス 0.2000 mm; 現状 0.1895 mm)
+    Local override; error
+    @(-76.7248 mm, 39.6716 mm): Track [/SWD] on B.Cu, length 1.0144 mm
+    @(-75.8203 mm, 39.7401 mm): Via [/SWCLK] on F.Cu - B.Cu
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; error
+    @(-71.4375 mm, 52.3875 mm): NPTH pad of SW9
+    @(-71.4375 mm, 48.7125 mm): Footprint LED9
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3960 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-107.7375 mm, 5.6188 mm): Segment of LED17 on Edge.Cuts
+    @(-111.7925 mm, 4.9688 mm): Track [Net-(D1-K)] on F.Cu, length 8.1300 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2000 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 46.7625 mm): Segment of LED8 on Edge.Cuts
+    @(-50.1500 mm, 46.4625 mm): Track [Net-(D1-K)] on F.Cu, length 5.8500 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4610 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, 19.9062 mm): Segment of LED15 on Edge.Cuts
+    @(-76.8225 mm, 19.1913 mm): Track [Net-(D1-K)] on F.Cu, length 15.9050 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3436 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 22.2875 mm): Segment of LED2 on Edge.Cuts
+    @(-35.5025 mm, 21.6899 mm): Track [Net-(D1-K)] on F.Cu, length 8.8400 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4814 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 0.8562 mm): Segment of LED6 on Edge.Cuts
+    @(-55.1575 mm, 0.7862 mm): Track [Net-(D1-K)] on F.Cu, length 0.7849 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4462 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 22.2875 mm): Segment of LED2 on Edge.Cuts
+    @(-36.7012 mm, 21.6899 mm): Track [Net-(D1-K)] on F.Cu, length 1.1987 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4000 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 50.2625 mm): Segment of LED9 on Edge.Cuts
+    @(-74.3500 mm, 48.6250 mm): Track [Net-(D1-K)] on F.Cu, length 0.8662 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4962 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 0.8562 mm): Segment of LED6 on Edge.Cuts
+    @(-54.6025 mm, 0.2313 mm): Track [Net-(D1-K)] on F.Cu, length 0.5850 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3710 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, 0.8562 mm): Segment of LED14 on Edge.Cuts
+    @(-82.6175 mm, 0.2313 mm): Track [Net-(D1-K)] on F.Cu, length 10.1250 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4310 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 19.9062 mm): Segment of LED7 on Edge.Cuts
+    @(-44.5262 mm, 19.2213 mm): Track [Net-(D1-K)] on F.Cu, length 10.1663 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3710 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 0.8562 mm): Segment of LED6 on Edge.Cuts
+    @(-46.2825 mm, 0.2313 mm): Track [Net-(D1-K)] on F.Cu, length 8.3200 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4462 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 22.2875 mm): Segment of LED2 on Edge.Cuts
+    @(-35.6412 mm, 21.6899 mm): Track [Net-(D1-K)] on F.Cu, length 0.1387 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1800 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 17.5250 mm): Segment of LED10 on Edge.Cuts
+    @(-74.7013 mm, 18.3750 mm): Track [Net-(D1-K)] on F.Cu, length 2.8903 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3897 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, -1.5250 mm): Segment of LED11 on Edge.Cuts
+    @(-63.3562 mm, -2.1688 mm): Track [Net-(D1-K)] on F.Cu, length 10.3763 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4305 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 46.7625 mm): Segment of LED8 on Edge.Cuts
+    @(-48.5000 mm, 48.1125 mm): Track [Net-(D1-K)] on F.Cu, length 2.3335 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 50.2625 mm): Segment of LED9 on Edge.Cuts
+    @(-73.7375 mm, 48.0125 mm): Via [Net-(D1-K)] on F.Cu - B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4000 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 50.2625 mm): Segment of LED9 on Edge.Cuts
+    @(-74.3000 mm, 49.4125 mm): Track [Net-(LED10-DIN)] on B.Cu, length 0.5625 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2534 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-12.4875 mm, -6.2875 mm): Segment of EXLED1 on Edge.Cuts
+    @(-12.1325 mm, -4.7925 mm): Track [Net-(EXLED1-DIN)] on F.Cu, length 0.9122 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2534 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-12.4875 mm, -6.2875 mm): Segment of EXLED1 on Edge.Cuts
+    @(-12.1325 mm, -3.2138 mm): Track [Net-(EXLED1-DIN)] on F.Cu, length 1.5788 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1309 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, -3.1875 mm): Segment of EXLED1 on Edge.Cuts
+    @(-16.3038 mm, -2.9550 mm): Track [Net-(EXLED1-DIN)] on F.Cu, length 3.9125 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2157 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, -3.1875 mm): Segment of EXLED1 on Edge.Cuts
+    @(-18.0403 mm, -4.6915 mm): Track [Net-(EXLED1-DIN)] on F.Cu, length 2.4558 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1309 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-12.4875 mm, -6.2875 mm): Segment of EXLED1 on Edge.Cuts
+    @(-12.3912 mm, -2.9550 mm): Track [Net-(EXLED1-DIN)] on F.Cu, length 0.3659 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2784 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-98.0000 mm, 38.0000 mm): Circle on Edge.Cuts
+    @(-101.4530 mm, 39.4800 mm): Track [/KEY18] on B.Cu, length 4.0530 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2155 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-98.0000 mm, 38.0000 mm): Circle on Edge.Cuts
+    @(-97.4000 mm, 39.4800 mm): Track [/KEY18] on B.Cu, length 3.0813 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3796 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-83.4625 mm, 40.9813 mm): Segment on Edge.Cuts
+    @(-103.6920 mm, 40.5000 mm): Track [/KEY16] on B.Cu, length 15.1590 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3796 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-83.4625 mm, 40.9813 mm): Segment on Edge.Cuts
+    @(-103.6920 mm, 34.8360 mm): Track [/KEY16] on B.Cu, length 5.6640 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3796 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-83.4625 mm, 40.9813 mm): Segment on Edge.Cuts
+    @(-88.5330 mm, 40.5000 mm): Track [/KEY16] on B.Cu, length 0.2348 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-111.3375 mm, 24.6687 mm): Segment of LED16 on Edge.Cuts
+    @(-112.3375 mm, 25.5188 mm): Pad 1 [Net-(D1-K)] of LED16 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-111.3375 mm, 27.7688 mm): Segment of LED16 on Edge.Cuts
+    @(-112.3375 mm, 26.9187 mm): Pad 2 [Net-(LED16-DOUT)] of LED16 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-107.7375 mm, 24.6687 mm): Segment of LED16 on Edge.Cuts
+    @(-106.7375 mm, 26.9187 mm): Pad 3 [GND] of LED16 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-111.3375 mm, 24.6687 mm): Segment of LED16 on Edge.Cuts
+    @(-106.7375 mm, 25.5188 mm): Pad 4 [Net-(LED15-DOUT)] of LED16 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 3.2375 mm): Segment of LED3 on Edge.Cuts
+    @(-36.1375 mm, 4.0875 mm): Pad 1 [Net-(D1-K)] of LED3 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 6.3375 mm): Segment of LED3 on Edge.Cuts
+    @(-36.1375 mm, 5.4875 mm): Pad 2 [Net-(LED3-DOUT)] of LED3 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-31.5375 mm, 3.2375 mm): Segment of LED3 on Edge.Cuts
+    @(-30.5375 mm, 5.4875 mm): Pad 3 [GND] of LED3 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 3.2375 mm): Segment of LED3 on Edge.Cuts
+    @(-30.5375 mm, 4.0875 mm): Pad 4 [Net-(LED2-DOUT)] of LED3 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-111.3375 mm, 5.6188 mm): Segment of LED17 on Edge.Cuts
+    @(-112.3375 mm, 6.4688 mm): Pad 1 [Net-(D1-K)] of LED17 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-111.3375 mm, 8.7188 mm): Segment of LED17 on Edge.Cuts
+    @(-112.3375 mm, 7.8688 mm): Pad 2 [Net-(LED17-DOUT)] of LED17 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-107.7375 mm, 5.6188 mm): Segment of LED17 on Edge.Cuts
+    @(-106.7375 mm, 7.8688 mm): Pad 3 [GND] of LED17 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-107.7375 mm, 5.6188 mm): Segment of LED17 on Edge.Cuts
+    @(-106.7375 mm, 6.4688 mm): Pad 4 [Net-(LED16-DOUT)] of LED17 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, -18.1938 mm): Segment of LED5 on Edge.Cuts
+    @(-55.1875 mm, -17.3438 mm): Pad 1 [Net-(D1-K)] of LED5 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, -15.0938 mm): Segment of LED5 on Edge.Cuts
+    @(-55.1875 mm, -15.9437 mm): Pad 2 [Net-(LED5-DOUT)] of LED5 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-50.5875 mm, -18.1938 mm): Segment of LED5 on Edge.Cuts
+    @(-49.5875 mm, -15.9437 mm): Pad 3 [GND] of LED5 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, -18.1938 mm): Segment of LED5 on Edge.Cuts
+    @(-49.5875 mm, -17.3438 mm): Pad 4 [Net-(LED4-DOUT)] of LED5 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 46.7625 mm): Segment of LED8 on Edge.Cuts
+    @(-55.1875 mm, 47.6125 mm): Pad 1 [Net-(D1-K)] of LED8 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 49.8625 mm): Segment of LED8 on Edge.Cuts
+    @(-55.1875 mm, 49.0125 mm): Pad 2 [Net-(LED8-DOUT)] of LED8 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-50.5875 mm, 46.7625 mm): Segment of LED8 on Edge.Cuts
+    @(-49.5875 mm, 49.0125 mm): Pad 3 [GND] of LED8 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 46.7625 mm): Segment of LED8 on Edge.Cuts
+    @(-49.5875 mm, 47.6125 mm): Pad 4 [Net-(LED7-DOUT)] of LED8 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 17.5250 mm): Segment of LED10 on Edge.Cuts
+    @(-74.2375 mm, 18.3750 mm): Pad 1 [Net-(D1-K)] of LED10 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 20.6250 mm): Segment of LED10 on Edge.Cuts
+    @(-74.2375 mm, 19.7750 mm): Pad 2 [Net-(LED10-DOUT)] of LED10 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-69.6375 mm, 17.5250 mm): Segment of LED10 on Edge.Cuts
+    @(-68.6375 mm, 19.7750 mm): Pad 3 [GND] of LED10 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 17.5250 mm): Segment of LED10 on Edge.Cuts
+    @(-68.6375 mm, 18.3750 mm): Pad 4 [Net-(LED10-DIN)] of LED10 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, -20.5750 mm): Segment of LED12 on Edge.Cuts
+    @(-74.2375 mm, -19.7250 mm): Pad 1 [Net-(D1-K)] of LED12 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-69.6375 mm, -17.4750 mm): Segment of LED12 on Edge.Cuts
+    @(-74.2375 mm, -18.3250 mm): Pad 2 [Net-(LED12-DOUT)] of LED12 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-69.6375 mm, -17.4750 mm): Segment of LED12 on Edge.Cuts
+    @(-68.6375 mm, -18.3250 mm): Pad 3 [GND] of LED12 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, -20.5750 mm): Segment of LED12 on Edge.Cuts
+    @(-68.6375 mm, -19.7250 mm): Pad 4 [Net-(LED11-DOUT)] of LED12 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2750 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-119.0625 mm, 39.9813 mm): Segment on Edge.Cuts
+    @(-117.6375 mm, 15.6062 mm): Pad 1 [/KEY17] of SW17 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, 19.9062 mm): Segment of LED15 on Edge.Cuts
+    @(-93.2875 mm, 20.7563 mm): Pad 1 [Net-(D1-K)] of LED15 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, 23.0063 mm): Segment of LED15 on Edge.Cuts
+    @(-93.2875 mm, 22.1562 mm): Pad 2 [Net-(LED15-DOUT)] of LED15 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-88.6875 mm, 23.0063 mm): Segment of LED15 on Edge.Cuts
+    @(-87.6875 mm, 22.1562 mm): Pad 3 [GND] of LED15 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, 19.9062 mm): Segment of LED15 on Edge.Cuts
+    @(-87.6875 mm, 20.7563 mm): Pad 4 [Net-(LED14-DOUT)] of LED15 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 46.1000 mm): Segment of LED1 on Edge.Cuts
+    @(-36.1375 mm, 46.9500 mm): Pad 1 [Net-(D1-K)] of LED1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 49.2000 mm): Segment of LED1 on Edge.Cuts
+    @(-36.1375 mm, 48.3500 mm): Pad 2 [Net-(LED1-DOUT)] of LED1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-31.5375 mm, 46.1000 mm): Segment of LED1 on Edge.Cuts
+    @(-30.5375 mm, 48.3500 mm): Pad 3 [GND] of LED1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 46.1000 mm): Segment of LED1 on Edge.Cuts
+    @(-30.5375 mm, 46.9500 mm): Pad 4 [/LED] of LED1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, -18.1938 mm): Segment of LED13 on Edge.Cuts
+    @(-93.2875 mm, -17.3438 mm): Pad 1 [Net-(D1-K)] of LED13 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, -15.0938 mm): Segment of LED13 on Edge.Cuts
+    @(-93.2875 mm, -15.9437 mm): Pad 2 [Net-(LED13-DOUT)] of LED13 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-88.6875 mm, -18.1938 mm): Segment of LED13 on Edge.Cuts
+    @(-87.6875 mm, -15.9437 mm): Pad 3 [GND] of LED13 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, -18.1938 mm): Segment of LED13 on Edge.Cuts
+    @(-87.6875 mm, -17.3438 mm): Pad 4 [Net-(LED12-DOUT)] of LED13 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, 46.1000 mm): Segment of EXLED3 on Edge.Cuts
+    @(-17.0875 mm, 46.9500 mm): Pad 1 [Net-(D1-K)] of EXLED3 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, 49.2000 mm): Segment of EXLED3 on Edge.Cuts
+    @(-17.0875 mm, 48.3500 mm): Pad 2 [unconnected-(EXLED3-DOUT-Pad2)] of EXLED3 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-12.4875 mm, 46.1000 mm): Segment of EXLED3 on Edge.Cuts
+    @(-11.4875 mm, 48.3500 mm): Pad 3 [GND] of EXLED3 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, 46.1000 mm): Segment of EXLED3 on Edge.Cuts
+    @(-11.4875 mm, 46.9500 mm): Pad 4 [Net-(EXLED2-DOUT)] of EXLED3 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 19.9062 mm): Segment of LED7 on Edge.Cuts
+    @(-55.1875 mm, 20.7563 mm): Pad 1 [Net-(D1-K)] of LED7 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 23.0063 mm): Segment of LED7 on Edge.Cuts
+    @(-55.1875 mm, 22.1562 mm): Pad 2 [Net-(LED7-DOUT)] of LED7 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-50.5875 mm, 19.9062 mm): Segment of LED7 on Edge.Cuts
+    @(-49.5875 mm, 22.1562 mm): Pad 3 [GND] of LED7 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 19.9062 mm): Segment of LED7 on Edge.Cuts
+    @(-49.5875 mm, 20.7563 mm): Pad 4 [Net-(LED6-DOUT)] of LED7 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, 12.7625 mm): Segment of EXLED2 on Edge.Cuts
+    @(-17.0875 mm, 13.6125 mm): Pad 1 [Net-(D1-K)] of EXLED2 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, 15.8625 mm): Segment of EXLED2 on Edge.Cuts
+    @(-17.0875 mm, 15.0125 mm): Pad 2 [Net-(EXLED2-DOUT)] of EXLED2 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-12.4875 mm, 12.7625 mm): Segment of EXLED2 on Edge.Cuts
+    @(-11.4875 mm, 15.0125 mm): Pad 3 [GND] of EXLED2 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, 12.7625 mm): Segment of EXLED2 on Edge.Cuts
+    @(-11.4875 mm, 13.6125 mm): Pad 4 [Net-(EXLED1-DOUT)] of EXLED2 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1125 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-82.4625 mm, 66.5000 mm): Segment on Edge.Cuts
+    @(-81.6500 mm, 47.9500 mm): Pad 2 [GND] of Y1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1125 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-82.4625 mm, 66.5000 mm): Segment on Edge.Cuts
+    @(-81.6500 mm, 46.2500 mm): Pad 3 [Net-(C2-Pad1)] of Y1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 50.2625 mm): Segment of LED9 on Edge.Cuts
+    @(-73.7375 mm, 48.0125 mm): Pad 1 [Net-(D1-K)] of LED9 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 50.2625 mm): Segment of LED9 on Edge.Cuts
+    @(-73.7375 mm, 49.4125 mm): Pad 2 [Net-(LED10-DIN)] of LED9 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-69.6375 mm, 47.1625 mm): Segment of LED9 on Edge.Cuts
+    @(-68.6375 mm, 49.4125 mm): Pad 3 [GND] of LED9 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 47.1625 mm): Segment of LED9 on Edge.Cuts
+    @(-68.6375 mm, 48.0125 mm): Pad 4 [Net-(LED8-DOUT)] of LED9 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, -6.2875 mm): Segment of EXLED1 on Edge.Cuts
+    @(-17.0875 mm, -5.4375 mm): Pad 1 [Net-(D1-K)] of EXLED1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, -3.1875 mm): Segment of EXLED1 on Edge.Cuts
+    @(-17.0875 mm, -4.0375 mm): Pad 2 [Net-(EXLED1-DOUT)] of EXLED1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-12.4875 mm, -6.2875 mm): Segment of EXLED1 on Edge.Cuts
+    @(-11.4875 mm, -4.0375 mm): Pad 3 [GND] of EXLED1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.0875 mm, -6.2875 mm): Segment of EXLED1 on Edge.Cuts
+    @(-11.4875 mm, -5.4375 mm): Pad 4 [Net-(EXLED1-DIN)] of EXLED1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 0.8562 mm): Segment of LED6 on Edge.Cuts
+    @(-55.1875 mm, 1.7063 mm): Pad 1 [Net-(D1-K)] of LED6 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 3.9562 mm): Segment of LED6 on Edge.Cuts
+    @(-55.1875 mm, 3.1063 mm): Pad 2 [Net-(LED6-DOUT)] of LED6 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-50.5875 mm, 0.8562 mm): Segment of LED6 on Edge.Cuts
+    @(-49.5875 mm, 3.1063 mm): Pad 3 [GND] of LED6 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-54.1875 mm, 0.8562 mm): Segment of LED6 on Edge.Cuts
+    @(-49.5875 mm, 1.7063 mm): Pad 4 [Net-(LED5-DOUT)] of LED6 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2750 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-119.0625 mm, 39.9813 mm): Segment on Edge.Cuts
+    @(-117.6375 mm, -3.4438 mm): Pad 1 [/KEY18] of SW18 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, -1.5250 mm): Segment of LED11 on Edge.Cuts
+    @(-74.2375 mm, -0.6750 mm): Pad 1 [Net-(D1-K)] of LED11 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, 1.5750 mm): Segment of LED11 on Edge.Cuts
+    @(-74.2375 mm, 0.7250 mm): Pad 2 [Net-(LED11-DOUT)] of LED11 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-69.6375 mm, -1.5250 mm): Segment of LED11 on Edge.Cuts
+    @(-68.6375 mm, 0.7250 mm): Pad 3 [GND] of LED11 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-73.2375 mm, -1.5250 mm): Segment of LED11 on Edge.Cuts
+    @(-68.6375 mm, -0.6750 mm): Pad 4 [Net-(LED10-DOUT)] of LED11 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-15.5375 mm, -17.7075 mm): Pad A1 [GND] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-14.7375 mm, -17.7075 mm): Pad A4 [VBUS] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-13.5375 mm, -17.7075 mm): Pad A5 [Net-(J1-CC1)] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-12.5375 mm, -17.7075 mm): Pad A6 [/D+] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-12.0375 mm, -17.7075 mm): Pad A7 [/D-] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-11.0375 mm, -17.7075 mm): Pad A8 [unconnected-(J1-SBU1-PadA8)] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-9.8375 mm, -17.7075 mm): Pad A9 [VBUS] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-9.0375 mm, -17.7075 mm): Pad A12 [GND] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-9.0375 mm, -17.7075 mm): Pad B1 [GND] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-9.8375 mm, -17.7075 mm): Pad B4 [VBUS] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-10.5375 mm, -17.7075 mm): Pad B5 [Net-(J1-CC2)] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-11.5375 mm, -17.7075 mm): Pad B6 [/D+] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-13.0375 mm, -17.7075 mm): Pad B7 [/D-] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-14.0375 mm, -17.7075 mm): Pad B8 [unconnected-(J1-SBU2-PadB8)] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-14.7375 mm, -17.7075 mm): Pad B9 [VBUS] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1525 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-15.5375 mm, -17.7075 mm): Pad B12 [GND] of J1 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2050 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-118.0625 mm, -24.3125 mm): Segment on Edge.Cuts
+    @(-17.9075 mm, -23.0575 mm): PTH pad S1 [GND] of J1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2050 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-7.6175 mm, -24.3125 mm): Segment on Edge.Cuts
+    @(-6.6675 mm, -23.0575 mm): PTH pad S1 [GND] of J1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4114 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-16.8575 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(-6.6675 mm, -19.0575 mm): PTH pad S1 [GND] of J1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.2750 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-119.0625 mm, 39.9813 mm): Segment on Edge.Cuts
+    @(-117.6375 mm, 34.6562 mm): Pad 1 [/KEY16] of SW16 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 22.2875 mm): Segment of LED2 on Edge.Cuts
+    @(-36.1375 mm, 23.1375 mm): Pad 1 [Net-(D1-K)] of LED2 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 25.3875 mm): Segment of LED2 on Edge.Cuts
+    @(-36.1375 mm, 24.5375 mm): Pad 2 [Net-(LED2-DOUT)] of LED2 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-31.5375 mm, 22.2875 mm): Segment of LED2 on Edge.Cuts
+    @(-30.5375 mm, 24.5375 mm): Pad 3 [GND] of LED2 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, 22.2875 mm): Segment of LED2 on Edge.Cuts
+    @(-30.5375 mm, 23.1375 mm): Pad 4 [Net-(LED1-DOUT)] of LED2 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, 0.8562 mm): Segment of LED14 on Edge.Cuts
+    @(-93.2875 mm, 1.7063 mm): Pad 1 [Net-(D1-K)] of LED14 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, 3.9562 mm): Segment of LED14 on Edge.Cuts
+    @(-93.2875 mm, 3.1063 mm): Pad 2 [Net-(LED14-DOUT)] of LED14 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-88.6875 mm, 0.8562 mm): Segment of LED14 on Edge.Cuts
+    @(-87.6875 mm, 3.1063 mm): Pad 3 [GND] of LED14 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-92.2875 mm, 0.8562 mm): Segment of LED14 on Edge.Cuts
+    @(-87.6875 mm, 1.7063 mm): Pad 4 [Net-(LED13-DOUT)] of LED14 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-111.3375 mm, -13.4313 mm): Segment of LED18 on Edge.Cuts
+    @(-112.3375 mm, -12.5813 mm): Pad 1 [Net-(D1-K)] of LED18 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-111.3375 mm, -10.3313 mm): Segment of LED18 on Edge.Cuts
+    @(-112.3375 mm, -11.1813 mm): Pad 2 [Net-(EXLED1-DIN)] of LED18 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-107.7375 mm, -13.4313 mm): Segment of LED18 on Edge.Cuts
+    @(-106.7375 mm, -11.1813 mm): Pad 3 [GND] of LED18 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-111.3375 mm, -13.4313 mm): Segment of LED18 on Edge.Cuts
+    @(-106.7375 mm, -12.5813 mm): Pad 4 [Net-(LED17-DOUT)] of LED18 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, -15.8125 mm): Segment of LED4 on Edge.Cuts
+    @(-36.1375 mm, -14.9625 mm): Pad 1 [Net-(D1-K)] of LED4 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, -12.7125 mm): Segment of LED4 on Edge.Cuts
+    @(-36.1375 mm, -13.5625 mm): Pad 2 [Net-(LED4-DOUT)] of LED4 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1500 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-31.5375 mm, -15.8125 mm): Segment of LED4 on Edge.Cuts
+    @(-30.5375 mm, -13.5625 mm): Pad 3 [GND] of LED4 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4625 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-35.1375 mm, -15.8125 mm): Segment of LED4 on Edge.Cuts
+    @(-30.5375 mm, -14.9625 mm): Pad 4 [Net-(LED3-DOUT)] of LED4 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1462 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-7.7425 mm, 37.8000 mm): Segment on Edge.Cuts
+    @(-0.7425 mm, 38.5463 mm): PTH pad R [/TX] of J2
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1537 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(5.2625 mm, 31.5000 mm): Segment on Edge.Cuts
+    @(-0.7425 mm, 30.7462 mm): PTH pad R [/TX] of J2
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1462 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-7.7425 mm, 37.8000 mm): Segment on Edge.Cuts
+    @(2.4575 mm, 38.5463 mm): PTH pad S [GND] of J2
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1537 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(5.2625 mm, 31.5000 mm): Segment on Edge.Cuts
+    @(2.4575 mm, 30.7462 mm): PTH pad S [GND] of J2
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.1462 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-7.7425 mm, 37.8000 mm): Segment on Edge.Cuts
+    @(-6.5425 mm, 38.5463 mm): Pad T [+5V] of J2 on B.Cu
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3371 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(-7.7425 mm, 31.5000 mm): Segment on Edge.Cuts
+    @(-6.5425 mm, 30.7462 mm): Pad T [+5V] of J2 on B.Cu
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(-97.2000 mm, 39.9200 mm): Track [/KEY17] on B.Cu, length 2.7572 mm
+    @(-94.9675 mm, 39.5662 mm): Pad 2 [Net-(R6-Pad2)] of SMDSW1 on B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-29.1148 mm, 25.9602 mm): Track [GND] on B.Cu, length 2.0121 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-6.5425 mm, 38.6200 mm): Track [+5V] on F.Cu, length 18.2195 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-39.2360 mm, 41.2400 mm): Track [+5V] on F.Cu, length 0.6765 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-24.8320 mm, 30.5960 mm): Track [+5V] on F.Cu, length 18.2895 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-117.8625 mm, -14.3688 mm): Track [Net-(D1-K)] on F.Cu, length 1.4511 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-115.6225 mm, 24.4413 mm): Track [Net-(D1-K)] on B.Cu, length 0.9192 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-114.5425 mm, 4.9688 mm): Track [Net-(D1-K)] on B.Cu, length 0.6682 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-112.9191 mm, -11.7629 mm): Track [Net-(EXLED1-DIN)] on F.Cu, length 0.8225 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-89.5000 mm, 37.1360 mm): Track [/KEY18] on B.Cu, length 2.2988 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(-87.5225 mm, 38.7612 mm): Track [/KEY18] on B.Cu, length 7.2127 mm
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-80.5500 mm, 49.3000 mm): Footprint C1
+[lib_footprint_mismatch]: フットプリント 'PinHeader_1x03_P2.54mm_Vertical' が、ライブラリ 'Connector_PinHeader_2.54mm' のコピーと一致しません
+    Local override; warning
+    @(-106.8675 mm, 22.3762 mm): Footprint J4
+[lib_footprint_mismatch]: フットプリント 'D_SOD-523' が、ライブラリ 'Diode_SMD' のコピーと一致しません
+    Local override; warning
+    @(-20.9675 mm, -14.5512 mm): Footprint ZD1
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-33.3375 mm, -9.5250 mm): Footprint SW4
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-109.5375 mm, 26.2188 mm): Footprint LED16
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-33.3375 mm, 4.7875 mm): Footprint LED3
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-59.3625 mm, 37.9650 mm): Footprint C16
+[lib_footprint_mismatch]: フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-22.7825 mm, -13.7788 mm): Footprint R8
+[lib_footprint_mismatch]: フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-85.7175 mm, 37.5450 mm): Footprint R7
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-71.4375 mm, 52.3875 mm): Footprint SW9
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-52.3875 mm, -11.9062 mm): Footprint SW5
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-74.6425 mm, 31.5162 mm): Footprint C4
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-91.1175 mm, 37.3413 mm): Footprint SMDSW2
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-109.5375 mm, 7.1688 mm): Footprint LED17
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-84.6075 mm, 37.5350 mm): Footprint C10
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-52.3875 mm, -16.6438 mm): Footprint LED5
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-78.8575 mm, 31.5063 mm): Footprint C5
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-75.6675 mm, 31.5162 mm): Footprint C15
+[lib_footprint_mismatch]: フットプリント 'USON-10_2.5x1.0mm_P0.5mm' が、ライブラリ 'Package_SON' のコピーと一致しません
+    Local override; warning
+    @(-22.6525 mm, -11.5100 mm): Footprint U3
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-52.3875 mm, 48.3125 mm): Footprint LED8
+[lib_footprint_mismatch]: フットプリント 'SOT-223-3_TabPin2' が、ライブラリ 'Package_TO_SOT_SMD' のコピーと一致しません
+    Local override; warning
+    @(-49.8475 mm, 38.4800 mm): Footprint U2
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-90.4875 mm, -11.9062 mm): Footprint SW13
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-71.4375 mm, 4.7625 mm): Footprint SW11
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-71.4375 mm, 19.0750 mm): Footprint LED10
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-90.4875 mm, 7.1437 mm): Footprint SW14
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-54.8575 mm, 37.9950 mm): Footprint C11
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-52.3875 mm, 52.3875 mm): Footprint SW8
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-71.4375 mm, -19.0250 mm): Footprint LED12
+[lib_footprint_mismatch]: フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-19.4175 mm, -15.3138 mm): Footprint R1
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-71.4375 mm, -14.2875 mm): Footprint SW12
+[lib_footprint_mismatch]: フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-76.3000 mm, 45.3500 mm): Footprint R3
+[lib_footprint_mismatch]: フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-77.7975 mm, 31.5263 mm): Footprint R5
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-109.5375 mm, 11.9062 mm): Footprint SW17
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-90.4875 mm, 21.4563 mm): Footprint LED15
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-33.3375 mm, 47.6500 mm): Footprint LED1
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-67.0125 mm, 40.6163 mm): Footprint C9
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-14.2875 mm, 52.3875 mm): Footprint EXSW3
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-33.3375 mm, 52.3875 mm): Footprint SW1
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-52.3875 mm, 26.1938 mm): Footprint SW7
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-90.4875 mm, -16.6438 mm): Footprint LED13
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-94.9675 mm, 37.3413 mm): Footprint SMDSW1
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-14.2875 mm, 47.6500 mm): Footprint EXLED3
+[lib_footprint_issues]: フットプリント 'SOIC-8_5.23x5.23mm_P1.27mm' がライブラリ'Package_SO'に見つかりません
+    Local override; warning
+    @(-62.4925 mm, 34.6400 mm): Footprint U4
+[lib_footprint_mismatch]: フットプリント 'D_SOD-523' が、ライブラリ 'Diode_SMD' のコピーと一致しません
+    Local override; warning
+    @(-25.7625 mm, -5.7350 mm): Footprint D1
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-14.2875 mm, 19.0500 mm): Footprint EXSW2
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-52.3875 mm, 21.4563 mm): Footprint LED7
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-79.8975 mm, 31.5063 mm): Footprint C8
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-80.3575 mm, 33.1050 mm): Footprint C13
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-81.1000 mm, 43.9500 mm): Footprint C2
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-14.2875 mm, 14.3125 mm): Footprint EXLED2
+[lib_footprint_mismatch]: フットプリント 'Crystal_SMD_3225-4Pin_3.2x2.5mm' が、ライブラリ 'Crystal' のコピーと一致しません
+    Local override; warning
+    @(-80.5500 mm, 47.1000 mm): Footprint Y1
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-71.4375 mm, 48.7125 mm): Footprint LED9
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-14.2875 mm, -4.7375 mm): Footprint EXLED1
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-52.3875 mm, 2.4062 mm): Footprint LED6
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-71.4375 mm, 23.8125 mm): Footprint SW10
+[lib_footprint_mismatch]: フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-76.7325 mm, 31.5263 mm): Footprint R4
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-78.1125 mm, 43.4562 mm): Footprint C3
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-90.4875 mm, 26.1938 mm): Footprint SW15
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-109.5375 mm, -7.1437 mm): Footprint SW18
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-71.4375 mm, 0.0250 mm): Footprint LED11
+[lib_footprint_mismatch]: フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-22.8225 mm, -15.4187 mm): Footprint R9
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-69.2875 mm, 34.3800 mm): Footprint C14
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-12.2875 mm, -23.0575 mm): Footprint J1
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-39.9175 mm, 40.7550 mm): Footprint C6
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-109.5375 mm, 30.9563 mm): Footprint SW16
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-80.3575 mm, 34.1750 mm): Footprint C12
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-33.3375 mm, 28.5750 mm): Footprint SW2
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-14.2875 mm, 0.0000 mm): Footprint EXSW1
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-52.3875 mm, 7.1437 mm): Footprint SW6
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-33.3375 mm, 23.8375 mm): Footprint LED2
+[lib_footprint_mismatch]: フットプリント 'QFN-56-1EP_7x7mm_P0.4mm_EP3.2x3.2mm' が、ライブラリ 'Package_DFN_QFN' のコピーと一致しません
+    Local override; warning
+    @(-74.6075 mm, 37.6399 mm): Footprint U1
+[lib_footprint_mismatch]: フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-5.1275 mm, -15.2737 mm): Footprint R2
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-90.4875 mm, 2.4062 mm): Footprint LED14
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-33.3375 mm, 9.5250 mm): Footprint SW3
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-109.5375 mm, -11.8812 mm): Footprint LED18
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(-33.3375 mm, -14.2625 mm): Footprint LED4
+[lib_footprint_mismatch]: フットプリント 'C_0402_1005Metric' が、ライブラリ 'Capacitor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-76.9625 mm, 43.4562 mm): Footprint C7
+[lib_footprint_mismatch]: フットプリント 'R_0402_1005Metric' が、ライブラリ 'Resistor_SMD' のコピーと一致しません
+    Local override; warning
+    @(-86.8175 mm, 37.5450 mm): Footprint R6
+[lib_footprint_issues]: 現在の構成にはフットプリント ライブラリ 'kbd_local' が含まれていません
+    Local override; warning
+    @(5.2575 mm, 34.6463 mm): Footprint J2
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-71.4375 mm, 46.7625 mm): Reference field of LED9
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-14.2875 mm, -6.6875 mm): Reference field of EXLED1
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-52.3875 mm, 0.4562 mm): Reference field of LED6
+[text_thickness]: 文字の太さが許容範囲外 (基板の設定のシルク印刷のテキストの太さの制約 最小幅 0.0800 mm; 現状 0.0500 mm)
+    Rule: 基板の設定のシルク印刷のテキストの太さの制約; warning
+    @(-76.7325 mm, 30.3200 mm): Reference field of R4
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.3000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-76.7325 mm, 30.3200 mm): Reference field of R4
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-78.1225 mm, 45.0262 mm): Reference field of C3
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-71.4375 mm, -1.9250 mm): Reference field of LED11
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-24.3425 mm, -15.3887 mm): Reference field of R9
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-69.3275 mm, 33.5100 mm): Reference field of C14
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-12.8025 mm, -16.2275 mm): Reference field of J1
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-38.7575 mm, 40.7550 mm): Reference field of C6
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-82.0975 mm, 34.1750 mm): Reference field of C12
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-33.3375 mm, 21.8875 mm): Reference field of LED2
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-70.6775 mm, 41.8274 mm): Reference field of U1
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-5.1275 mm, -13.8238 mm): Reference field of R2
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-90.4875 mm, 0.4562 mm): Reference field of LED14
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-109.5375 mm, -13.8313 mm): Reference field of LED18
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-33.3375 mm, -16.2125 mm): Reference field of LED4
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(-86.7975 mm, 35.9950 mm): Reference field of R6
+
+** Found 1 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(-87.5225 mm, 38.7612 mm): Track [/KEY18] on B.Cu, length 7.2127 mm
+    @(-89.5000 mm, 37.1360 mm): Track [/KEY18] on B.Cu, length 2.2988 mm
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

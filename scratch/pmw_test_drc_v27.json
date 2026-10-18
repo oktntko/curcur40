@@ -1,0 +1,529 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T22:45:11",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "curcur40-pmw3360.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "パッド 1 [GND] - TP3 ( F.Cu 上)",
+                    "pos": {
+                        "x": 138.5,
+                        "y": 81.5
+                    },
+                    "uuid": "9477025b-6120-44e7-9a64-44f21d5e1f28"
+                },
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 2.5110 mm )",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 84.5
+                    },
+                    "uuid": "096848c0-b1d8-4fd9-83a5-161124dec7dd"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [/MISO] ( B.Cu 上、長さ: 14.0888 mm )",
+                    "pos": {
+                        "x": 137.5,
+                        "y": 94.2888
+                    },
+                    "uuid": "ce496a36-2587-45d9-9573-f3a56b6bb9e3"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域)",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 138.5,
+                        "y": 81.5
+                    },
+                    "uuid": "baeee63e-5f48-4170-8bae-d94fbca12d11"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [V_{IN}] ( B.Cu 上、長さ: 15.4000 mm )",
+                    "pos": {
+                        "x": 136.6,
+                        "y": 95.0
+                    },
+                    "uuid": "d54e3025-4575-469f-afe7-0849f1e3893d"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域)",
+            "items": [
+                {
+                    "description": "ビア [VDD] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 152.4,
+                        "y": 93.354
+                    },
+                    "uuid": "3560421d-c6a2-4dd7-ae4b-66f011a90e00"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 7.0460 mm )",
+                    "pos": {
+                        "x": 152.4,
+                        "y": 100.4
+                    },
+                    "uuid": "2377c67c-8a2d-428d-90f9-9214eeda7a27"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 1.4110 mm )",
+                    "pos": {
+                        "x": 152.4,
+                        "y": 93.354
+                    },
+                    "uuid": "dddeb8cf-37bd-4fad-9505-a1c392b504e3"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Items not allowed",
+            "items": [
+                {
+                    "description": "配線 [VDD] ( B.Cu 上、長さ: 12.5540 mm )",
+                    "pos": {
+                        "x": 152.4,
+                        "y": 93.354
+                    },
+                    "uuid": "eed867cf-e92c-4078-a925-19b686ae1dad"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域)",
+            "items": [
+                {
+                    "description": "H2のNPTHパッド",
+                    "pos": {
+                        "x": 150.139,
+                        "y": 82.5258
+                    },
+                    "uuid": "ee007a0b-6550-4cdf-a400-04e702283123"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域)",
+            "items": [
+                {
+                    "description": "PTHパッド 4 [VDD] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 93.3538
+                    },
+                    "uuid": "fcfd2920-9430-48fb-ab73-19d7fe71b70d"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域)",
+            "items": [
+                {
+                    "description": "PTHパッド 5 [V_{IO}] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 91.5738
+                    },
+                    "uuid": "a1005604-4cbb-4d70-a6a1-c23afec2b76b"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域)",
+            "items": [
+                {
+                    "description": "PTHパッド 6 [unconnected-(U1-NC-Pad6)] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 89.7938
+                    },
+                    "uuid": "bc2aa4ae-ee6e-4ae2-88dc-e1f3dfdb3a0b"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域)",
+            "items": [
+                {
+                    "description": "PTHパッド 7 [/RESET] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 88.0138
+                    },
+                    "uuid": "07764745-122e-45e9-bff1-3011019f3d10"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "アイテム禁止 (禁止領域)",
+            "items": [
+                {
+                    "description": "PTHパッド 8 [GND] (U1)",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 86.2338
+                    },
+                    "uuid": "2a1ea247-6981-463b-b32b-ad769f533dbc"
+                }
+            ],
+            "severity": "error",
+            "type": "items_not_allowed"
+        },
+        {
+            "description": "Tracks crossing",
+            "items": [
+                {
+                    "description": "配線 [GND] ( F.Cu 上、長さ: 2.5110 mm )",
+                    "pos": {
+                        "x": 150.989,
+                        "y": 84.5
+                    },
+                    "uuid": "096848c0-b1d8-4fd9-83a5-161124dec7dd"
+                },
+                {
+                    "description": "配線 [/RESET] ( F.Cu 上、長さ: 5.7000 mm )",
+                    "pos": {
+                        "x": 152.0,
+                        "y": 79.8
+                    },
+                    "uuid": "a4af9a3e-ef21-417d-bb57-1c8f674e9e2c"
+                }
+            ],
+            "severity": "error",
+            "type": "tracks_crossing"
+        },
+        {
+            "description": "２つのネットを短絡するアイテム (ネット /MISO と Net-(U1-LED_P))",
+            "items": [
+                {
+                    "description": "PTHパッド 12 [/MISO] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 90.6838
+                    },
+                    "uuid": "86047e4b-0413-4ac5-bd85-75e182b8c2d4"
+                },
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( B.Cu 上、長さ: 15.0240 mm )",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 96.024
+                    },
+                    "uuid": "8e772801-8cb9-4486-85e7-1dcc44e6e012"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( B.Cu 上、長さ: 15.0240 mm )",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 96.024
+                    },
+                    "uuid": "8e772801-8cb9-4486-85e7-1dcc44e6e012"
+                },
+                {
+                    "description": "PTHパッド 11 [/MOSI] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 88.9038
+                    },
+                    "uuid": "98fda91c-f88e-4ed8-adaf-1432b9c38c74"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( B.Cu 上、長さ: 15.0240 mm )",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 96.024
+                    },
+                    "uuid": "8e772801-8cb9-4486-85e7-1dcc44e6e012"
+                },
+                {
+                    "description": "PTHパッド 12 [/MISO] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 90.6838
+                    },
+                    "uuid": "86047e4b-0413-4ac5-bd85-75e182b8c2d4"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( B.Cu 上、長さ: 15.0240 mm )",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 96.024
+                    },
+                    "uuid": "8e772801-8cb9-4486-85e7-1dcc44e6e012"
+                },
+                {
+                    "description": "PTHパッド 9 [/MOTION] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 85.3438
+                    },
+                    "uuid": "fcff2066-b58c-4bd6-838f-49e12f1ad9f3"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( B.Cu 上、長さ: 15.0240 mm )",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 96.024
+                    },
+                    "uuid": "8e772801-8cb9-4486-85e7-1dcc44e6e012"
+                },
+                {
+                    "description": "PTHパッド 10 [/SCLK] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 87.1238
+                    },
+                    "uuid": "1f20d2e3-3dba-49eb-975a-4318cd78e54b"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( B.Cu 上、長さ: 15.0240 mm )",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 96.024
+                    },
+                    "uuid": "8e772801-8cb9-4486-85e7-1dcc44e6e012"
+                },
+                {
+                    "description": "PTHパッド 13 [/CS] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 92.4638
+                    },
+                    "uuid": "fac2269a-8764-4d54-aab7-d77c480d9be6"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている",
+            "items": [
+                {
+                    "description": "配線 [Net-(U1-LED_P)] ( B.Cu 上、長さ: 15.0240 mm )",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 96.024
+                    },
+                    "uuid": "8e772801-8cb9-4486-85e7-1dcc44e6e012"
+                },
+                {
+                    "description": "PTHパッド 14 [unconnected-(U1-NC-Pad14)] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 94.2438
+                    },
+                    "uuid": "7eb5d202-6a7c-4a5a-9686-c70644ce82bb"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "ビア [GND] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 138.5,
+                        "y": 81.5
+                    },
+                    "uuid": "baeee63e-5f48-4170-8bae-d94fbca12d11"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "フットプリント TP2",
+                    "pos": {
+                        "x": 147.2,
+                        "y": 81.8
+                    },
+                    "uuid": "4c89c707-5709-4bcd-8a3b-91ae35e9d952"
+                },
+                {
+                    "description": "フットプリント R3",
+                    "pos": {
+                        "x": 144.5,
+                        "y": 81.8
+                    },
+                    "uuid": "5e035a4f-8d8e-4df1-b3d2-3e4d852dda58"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "ドリル穴と他の穴が近過ぎる (基板の設定の制約 最小 0.2000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "PTHパッド 15 [Net-(U1-LED_P)] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 96.0238
+                    },
+                    "uuid": "089b445f-9945-4977-9633-4d447e28dc7f"
+                },
+                {
+                    "description": "ビア [Net-(U1-LED_P)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 96.024
+                    },
+                    "uuid": "47400d80-4aa2-4ac3-9dd4-3eba6680d0b3"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        },
+        {
+            "description": "ドリル穴と他の穴が近過ぎる (基板の設定の制約 最小 0.2000 mm; 現状 0.0000 mm)",
+            "items": [
+                {
+                    "description": "PTHパッド 15 [Net-(U1-LED_P)] (U1)",
+                    "pos": {
+                        "x": 140.289,
+                        "y": 96.0238
+                    },
+                    "uuid": "089b445f-9945-4977-9633-4d447e28dc7f"
+                },
+                {
+                    "description": "ビア [Net-(U1-LED_P)] (F.Cu - B.Cu 上)",
+                    "pos": {
+                        "x": 139.8,
+                        "y": 96.024
+                    },
+                    "uuid": "47400d80-4aa2-4ac3-9dd4-3eba6680d0b3"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        }
+    ]
+}
