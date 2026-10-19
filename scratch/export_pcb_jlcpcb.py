@@ -140,12 +140,13 @@ def export_pmw3360_pcb(pcb_path, proj_name):
     aux = board.GetDesignSettings().GetAuxOrigin()
     ox, oy = pcbnew.ToMM(aux.x), pcbnew.ToMM(aux.y)
 
-    # SMD components populated by JLCPCB PCBA on curcur40-pmw3360 (R1, R4, C5 are DNP; U1 and J1 are hand-soldered)
+    # SMD components populated by JLCPCB PCBA on curcur40-pmw3360 (R4, C5 are DNP; U1 and J1 are hand-soldered)
     pmw_parts = {
         "C1": ("4.7uF/10V", "C_0603_1608Metric", "C19666"),
         "C2": ("100nF", "C_0603_1608Metric", "C14663"),
         "C3": ("1uF", "C_0603_1608Metric", "C15849"),
         "C4": ("1uF", "C_0603_1608Metric", "C15849"),
+        "R1": ("10k", "R_0603_1608Metric", "C25804"),
         "R2": ("10k", "R_0603_1608Metric", "C25804"),
         "R3": ("39R", "R_0603_1608Metric", "C23154"),
         "U2": ("TLV74318PDBVR", "SOT-23-5", "C485152"),
@@ -189,3 +190,4 @@ if __name__ == "__main__":
     export_main_pcb("pcbs/curcur40/left/curcur40-left.kicad_pcb", "curcur40-left")
     export_main_pcb("pcbs/curcur40/right/curcur40-right.kicad_pcb", "curcur40-right")
     export_pmw3360_pcb("pcbs/curcur40/pmw3360/curcur40-pmw3360.kicad_pcb", "curcur40-pmw3360")
+
