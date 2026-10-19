@@ -302,10 +302,10 @@ def main():
     right_outer_full = round_Analyze_polygon_with_fillets(get_right_outer_pts(notched_trackball=False))
     right_bot_cutouts = [make_rect_cutout(9.5250, 52.3875, 8.0, 12.0, 1.5)]
     right_bot_holes = right_holes + [
-        (9.5250 - 4.80, 52.3875 - 11.30, 1.1),
-        (9.5250 + 4.80, 52.3875 - 11.30, 1.1),
-        (9.5250 - 4.80, 52.3875 + 11.30, 1.1),
-        (9.5250 + 4.80, 52.3875 + 11.30, 1.1),
+        (9.5250 - 12.00, 52.3875 - 11.30, 1.1),
+        (9.5250 + 12.00, 52.3875 - 11.30, 1.1),
+        (9.5250 - 12.00, 52.3875 + 11.30, 1.1),
+        (9.5250 + 12.00, 52.3875 + 11.30, 1.1),
     ]
     p_bot_right = os.path.join(out_pcb_dir, "plate-bottom-right.kicad_pcb")
     write_plate_kicad_pcb(p_bot_right, right_outer_full, right_bot_cutouts, right_bot_holes)

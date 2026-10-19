@@ -17,9 +17,12 @@ from pathlib import Path
 
 WORKSPACE = Path(r"c:\Users\oktnt\workspace\curcur40")
 CASES_DIR = WORKSPACE / "cases" / "curcur40"
-ARTIFACTS_DIR = Path(r"C:\Users\oktnt\.gemini\antigravity\brain\dab819aa-2c9f-4dd2-be5e-39a298725eca")
+ARTIFACTS_DIR = Path(r"C:\Users\oktnt\.gemini\antigravity\brain\86c4b6c7-3e68-48fa-956a-9d1b47163c48")
+PREV_ARTIFACTS_DIR = Path(r"C:\Users\oktnt\.gemini\antigravity\brain\dab819aa-2c9f-4dd2-be5e-39a298725eca")
 
 sys.path.insert(0, str(ARTIFACTS_DIR / "scratch"))
+sys.path.insert(0, str(PREV_ARTIFACTS_DIR / "scratch"))
+sys.path.insert(0, str(WORKSPACE / "scratch"))
 
 from OCP.gp import gp_Pnt, gp_Dir, gp_Vec, gp_Ax1, gp_Ax2, gp_Trsf
 from OCP.BRepBuilderAPI import BRepBuilderAPI_Transform
