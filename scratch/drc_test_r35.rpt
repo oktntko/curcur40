@@ -1,0 +1,43 @@
+** Drc report for curcur40-right.kicad_pcb **
+** Created on 2026-10-19T22:07:50 **
+** Report includes: Errors **
+
+** Found 6 DRC violations **
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状)
+    Local override; error
+    @(16.8575 mm, -24.3125 mm): Segment on Edge.Cuts
+    @(16.8575 mm, -24.3125 mm): Segment on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状) (1.8875 mm ギャップ)
+    Local override; error
+    @(-5.2625 mm, 37.8000 mm): Segment on Edge.Cuts
+    @(4.0000 mm, 43.2875 mm): Arc on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状) (6.2000 mm ギャップ)
+    Local override; error
+    @(7.7425 mm, 31.5000 mm): Segment on Edge.Cuts
+    @(-5.2625 mm, 37.8000 mm): Segment on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状) (5.7025 mm ギャップ)
+    Local override; error
+    @(7.6175 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(16.8575 mm, -24.3125 mm): Segment on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状)
+    Local override; error
+    @(14.8250 mm, 61.4875 mm): Arc on Edge.Cuts
+    @(15.0500 mm, 61.4875 mm): Arc on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状) (0.1250 mm ギャップ)
+    Local override; error
+    @(4.2250 mm, 61.4875 mm): Arc on Edge.Cuts
+    @(0.5000 mm, 61.4875 mm): Segment on Edge.Cuts
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Text height out of range
+    - PTH inside courtyard
+    - NPTH inside courtyard
+    - Footprint doesn't match copy in library
+
+** End of Report **

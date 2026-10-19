@@ -1,0 +1,47 @@
+** Drc report for curcur40-right.kicad_pcb **
+** Created on 2026-10-19T22:07:09 **
+** Report includes: Errors **
+
+** Found 7 DRC violations **
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.1000 mm; 現状 0.0000 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(16.3000 mm, 42.2000 mm): Arc on Edge.Cuts
+    @(16.4000 mm, 39.2000 mm): Track [/TX] on B.Cu, length 3.9598 mm
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状) (6.2000 mm ギャップ)
+    Local override; error
+    @(7.7425 mm, 31.5000 mm): Segment on Edge.Cuts
+    @(-5.2625 mm, 37.8000 mm): Segment on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状) (5.7025 mm ギャップ)
+    Local override; error
+    @(7.6175 mm, -18.5100 mm): Segment on Edge.Cuts
+    @(16.8575 mm, -24.3125 mm): Segment on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状)
+    Local override; error
+    @(16.8575 mm, -24.3125 mm): Segment on Edge.Cuts
+    @(16.8575 mm, -24.3125 mm): Segment on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状) (1.9000 mm ギャップ)
+    Local override; error
+    @(-5.2625 mm, 37.8000 mm): Segment on Edge.Cuts
+    @(2.9000 mm, 42.2000 mm): Arc on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状)
+    Local override; error
+    @(14.8250 mm, 61.4875 mm): Arc on Edge.Cuts
+    @(16.3000 mm, 62.4000 mm): Arc on Edge.Cuts
+[invalid_outline]: 基板外形が異常な形状 (閉じていない形状)
+    Local override; error
+    @(4.2250 mm, 61.4875 mm): Arc on Edge.Cuts
+    @(2.9000 mm, 62.4000 mm): Arc on Edge.Cuts
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Text height out of range
+    - PTH inside courtyard
+    - NPTH inside courtyard
+    - Footprint doesn't match copy in library
+
+** End of Report **
