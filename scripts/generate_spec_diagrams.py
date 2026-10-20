@@ -4,6 +4,8 @@ Generate engineering specification diagrams for curcur40 case documentation.
 Outputs high-resolution diagrams to docs/curcur40/assets/
 """
 from pathlib import Path
+import math
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
@@ -420,10 +422,322 @@ def generate_trackball_cup_fastening_diagram():
     plt.close()
     print(f"Saved: {out_file}")
 
+def generate_trackball_cup_detail_drawing():
+    """
+    Generate comprehensive engineering drawing of the trackball cup:
+    - Left Panel: Front / Side Cross-Section (X-Z View) with Mounting Ears (Z=0 to 2.4mm, hole Ø3.5mm),
+                  Ball (Ø25mm, center Z=18.30), Claws (Z=22.80), Bearings (Z=7.66), and Lens Pocket (Z=3.40).
+    - Middle Panel: Top Plan View (X-Y View) with all 4 Mounting Ears (NE, NW, SW, SE at X=±12, Y=±11.3),
+                    3 Claws (N 90°, E 0°, W 180°), South Open (270°), and 3 Bearings.
+    - Right Panel: Side Elevation (Y-Z View) showing North Claw (Z=22.80) vs South Open Low Rim (Z<=12.0)
+                   and South/North Mounting Ears (Y=±11.3).
+    """
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(22, 10.5), dpi=200)
+    fig.patch.set_facecolor('#ffffff')
+
+    # =========================================================================
+    # PANEL 1: X-Z Cross Section & Front View (側面断面図 / 正面図)
+    # =========================================================================
+    ax1.set_facecolor('#fcfcfc')
+    ax1.set_xlim(-26, 26)
+    ax1.set_ylim(-6, 36)
+    ax1.set_aspect('equal')
+
+    # Center axis
+    ax1.plot([0, 0], [-5, 35], linestyle='-.', color='#888888', lw=1.0)
+    ax1.text(0, 35.2, "CL (X=0)", ha='center', va='bottom', fontsize=8, color='#666666')
+
+    # Main PCB at Z = -1.6 to 0.0
+    pcb_xz = patches.Rectangle((-24, -1.6), 48, 1.6, linewidth=1.2, edgecolor='#1b4332', facecolor='#52b788', alpha=0.75, zorder=2)
+    ax1.add_patch(pcb_xz)
+    ax1.text(-19, -0.8, "Main PCB (1.6mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=3)
+
+    # 4 Mounting Ears: X-Z cross section shows Left Ear (X=-12) and Right Ear (X=+12)
+    # Left Ear: body X in [-15.25, -8.75], Z in [0, 2.4]
+    ear_l_solid1 = patches.Rectangle((-15.25, 0.0), 1.50, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
+    ear_l_solid2 = patches.Rectangle((-10.25, 0.0), 1.50, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
+    ear_l_hole = patches.Rectangle((-13.75, 0.0), 3.50, 2.4, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=4)
+    ax1.add_patch(ear_l_solid1)
+    ax1.add_patch(ear_l_solid2)
+    ax1.add_patch(ear_l_hole)
+
+    # Right Ear: body X in [8.75, 15.25], Z in [0, 2.4]
+    ear_r_solid1 = patches.Rectangle((8.75, 0.0), 1.50, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
+    ear_r_solid2 = patches.Rectangle((13.75, 0.0), 1.50, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
+    ear_r_hole = patches.Rectangle((10.25, 0.0), 3.50, 2.4, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=4)
+    ax1.add_patch(ear_r_solid1)
+    ax1.add_patch(ear_r_solid2)
+    ax1.add_patch(ear_r_hole)
+
+    # Cup Body Profile (X-Z)
+    cup_wall_left = patches.Polygon([
+        (-14.0, 0.0), (-14.0, 20.5), (-14.5, 20.5), (-12.5, 22.8), (-11.2, 22.8),
+        (-11.5, 20.5), (-12.0, 14.0), (-8.0, 5.8), (-5.5, 5.8), (-5.5, 3.4), (-10.5, 3.4), (-10.5, 0.0)
+    ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
+    ax1.add_patch(cup_wall_left)
+
+    cup_wall_right = patches.Polygon([
+        (14.0, 0.0), (14.0, 20.5), (14.5, 20.5), (12.5, 22.8), (11.2, 22.8),
+        (11.5, 20.5), (12.0, 14.0), (8.0, 5.8), (5.5, 5.8), (5.5, 3.4), (10.5, 3.4), (10.5, 0.0)
+    ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
+    ax1.add_patch(cup_wall_right)
+
+    # Claws highlight (West 180° and East 0°)
+    claw_w = patches.Polygon([(-14.5, 20.5), (-12.5, 22.8), (-11.2, 22.8), (-11.5, 20.5), (-14.0, 20.5)],
+                             closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
+    claw_e = patches.Polygon([(14.5, 20.5), (12.5, 22.8), (11.2, 22.8), (11.5, 20.5), (14.0, 20.5)],
+                             closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
+    ax1.add_patch(claw_w)
+    ax1.add_patch(claw_e)
+    ax1.text(-13.0, 23.5, "West Claw (180°)\nTip Z=+22.80", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#1d3557')
+    ax1.text(13.0, 23.5, "East Claw (0°)\nTip Z=+22.80", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#1d3557')
+
+    # LM19 Lens body in pocket
+    lens_rect = patches.Rectangle((-10.5, 0.0), 21.0, 3.4, linewidth=1.2, edgecolor='#e76f51', facecolor='#f4a261', alpha=0.9, zorder=3)
+    ax1.add_patch(lens_rect)
+    ax1.text(0, 1.7, "LM19 Lens Body (Flange Z=+3.40mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=4)
+
+    # 25mm Trackball Sphere
+    ball_xz = patches.Circle((0, 18.30), 12.50, linewidth=1.5, edgecolor='#0077b6', facecolor='#caf0f8', alpha=0.45, zorder=4)
+    ax1.add_patch(ball_xz)
+    # Ball center mark
+    ax1.plot([0], [18.30], marker='+', markersize=10, color='#03045e', mew=1.5, zorder=5)
+    ax1.text(0.5, 18.5, "Ball Center\nZ = +18.30 mm", ha='left', va='bottom', fontsize=8.5, fontweight='bold', color='#03045e')
+
+    # Equator line
+    ax1.plot([-13, 13], [18.30, 18.30], linestyle=':', color='#0077b6', lw=1.2, zorder=4)
+
+    # Ceramic Bearings at Z = 7.66
+    brg_l = patches.Circle((-7.20, 7.66), 1.0, linewidth=1.2, edgecolor='#6a040f', facecolor='#d90429', zorder=6)
+    brg_r = patches.Circle((7.20, 7.66), 1.0, linewidth=1.2, edgecolor='#6a040f', facecolor='#d90429', zorder=6)
+    ax1.add_patch(brg_l)
+    ax1.add_patch(brg_r)
+    ax1.text(7.5, 7.0, "Ø2.0mm Bearing\n(Z=+7.66mm)", ha='left', va='top', fontsize=7.5, fontweight='bold', color='#d90429')
+
+    # Dimensions on Left (Vertical Stackup)
+    def dim_v(z1, z2, label, x, col='#2b2d42', fs=8):
+        ax1.annotate('', xy=(x, z1), xytext=(x, z2),
+                     arrowprops=dict(arrowstyle='<->', color=col, lw=1.0))
+        ax1.text(x - 0.4, (z1 + z2) / 2, label, ha='right', va='center', fontsize=fs, fontweight='bold', color=col,
+                 bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec=col, lw=0.6, alpha=0.9))
+
+    dim_v(2.4, 0.0, "Ear: 2.40mm", -16.0, '#1d3557', 7.5)
+    dim_v(3.4, 0.0, "Lens: 3.40mm", -19.0, '#e76f51', 7.5)
+    dim_v(5.8, 0.0, "PCB to Ball:\n5.80mm", -22.0, '#0077b6', 7.5)
+    dim_v(18.30, 0.0, "Center: 18.30mm", -24.5, '#03045e', 7.5)
+    dim_v(22.80, 18.30, "Claw Tip:\n+4.50mm", 16.5, '#1d3557', 7.5)
+    dim_v(30.80, 0.0, "Ball Top:\n30.80mm", 20.5, '#0077b6', 7.5)
+
+    # Horizontal Ear pitch dimension
+    ax1.annotate('', xy=(-12.0, -3.2), xytext=(12.0, -3.2),
+                 arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
+    ax1.text(0, -3.6, "Ear Pitch X: 24.00 mm", ha='center', va='top', fontsize=8.5, fontweight='bold', color='#1d3557')
+
+    # Ear Hole dimension callout
+    ax1.annotate('Ear Hole: Ø 3.50 mm\n(Ear Thickness: 2.40 mm)',
+                 xy=(-12.0, 1.2), xytext=(-22.0, 8.5),
+                 arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=4),
+                 fontsize=8, fontweight='bold', color='#1d3557',
+                 bbox=dict(boxstyle="round,pad=0.2", fc="#e0f2fe", ec="#1d3557", lw=0.8))
+
+    ax1.set_title("1. Trackball Cup Cross-Section (X-Z View)\n[側面断面・正面図: 西/東爪・耳厚み・光学系]", fontsize=11, fontweight='bold', pad=12)
+    ax1.axis('off')
+
+    # =========================================================================
+    # PANEL 2: X-Y Top Plan View (天井からの平面図)
+    # =========================================================================
+    ax2.set_facecolor('#fcfcfc')
+    ax2.set_xlim(-28, 28)
+    ax2.set_ylim(-28, 28)
+    ax2.set_aspect('equal')
+
+    # Centerlines
+    ax2.plot([0, 0], [-27, 27], linestyle='-.', color='#888888', lw=1.0)
+    ax2.plot([-27, 27], [0, 0], linestyle='-.', color='#888888', lw=1.0)
+    ax2.text(0, 27.2, "CL-Y (North 90°)", ha='center', va='bottom', fontsize=8, color='#666666', fontweight='bold')
+    ax2.text(27.2, 0, "CL-X (East 0°)", ha='left', va='center', fontsize=8, color='#666666', fontweight='bold')
+
+    # 4 Mounting Ears at NE (+12, +11.3), NW (-12, +11.3), SW (-12, -11.3), SE (+12, -11.3)
+    ear_coords = [
+        (12.0, 11.3, "NE (#1)"),
+        (-12.0, 11.3, "NW (#2)"),
+        (-12.0, -11.3, "SW (#3)"),
+        (12.0, -11.3, "SE (#4)")
+    ]
+
+    for ex, ey, elab in ear_coords:
+        boss = patches.Circle((ex, ey), 3.25, linewidth=1.5, edgecolor='#1d3557', facecolor='#457b9d', zorder=2)
+        ax2.add_patch(boss)
+        ang = np.arctan2(ey, ex)
+        dx = 3.25 * np.sin(ang)
+        dy = -3.25 * np.cos(ang)
+        p_ear = [(ex + dx, ey + dy), (ex - dx, ey - dy),
+                 (13.5 * np.cos(ang - 0.25), 13.5 * np.sin(ang - 0.25)),
+                 (13.5 * np.cos(ang + 0.25), 13.5 * np.sin(ang + 0.25))]
+        bridge = patches.Polygon(p_ear, closed=True, edgecolor='#1d3557', facecolor='#457b9d', zorder=1)
+        ax2.add_patch(bridge)
+
+        seat = patches.Circle((ex, ey), 2.0, linewidth=1.0, edgecolor='#adb5bd', facecolor='#6c757d', linestyle=':', zorder=3)
+        ax2.add_patch(seat)
+        hole = patches.Circle((ex, ey), 1.75, linewidth=1.2, edgecolor='#d90429', facecolor='#ffffff', zorder=4)
+        ax2.add_patch(hole)
+        ha_align = 'left' if ex > 0 else 'right'
+        va_align = 'bottom' if ey > 0 else 'top'
+        ax2.text(ex + (1.6 if ex > 0 else -1.6), ey + (1.6 if ey > 0 else -1.6),
+                 f"{elab}\n({ex:+.1f}, {ey:+.1f})", ha=ha_align, va=va_align, fontsize=7.5, fontweight='bold', color='#1d3557',
+                 bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#1d3557", lw=0.6, alpha=0.9))
+
+    # Main Cup Outer Cylinder Ø28.0mm (R=14.0mm)
+    cup_out = patches.Circle((0, 0), 14.0, linewidth=2.0, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.55, zorder=5)
+    ax2.add_patch(cup_out)
+
+    # Cup Inner Bowl Rim Ø25.7mm (R=12.85mm)
+    cup_in = patches.Circle((0, 0), 12.85, linewidth=1.5, edgecolor='#0077b6', facecolor='#e0f2fe', alpha=0.7, zorder=6)
+    ax2.add_patch(cup_in)
+
+    # Ball Equator Profile Ø25.0mm (R=12.50mm)
+    ball_top = patches.Circle((0, 0), 12.50, linewidth=1.5, edgecolor='#023e8a', facecolor='#caf0f8', alpha=0.5, linestyle='--', zorder=7)
+    ax2.add_patch(ball_top)
+    ax2.text(0, 0, "Ø25.0 mm Trackball\nNavigation Center", ha='center', va='center', fontsize=8, fontweight='bold', color='#03045e', zorder=8)
+
+    # Optical Peephole at Bottom (11 x 8 mm)
+    peep = patches.Rectangle((-5.5, -4.0), 11.0, 8.0, linewidth=1.2, edgecolor='#e76f51', facecolor='#fcbf49', alpha=0.85, zorder=7)
+    ax2.add_patch(peep)
+
+    # 3 Retention Claws (T-shape orthogonal: N 90°, E 0°, W 180°)
+    claw_n = patches.Rectangle((-2.25, 12.0), 4.5, 3.8, linewidth=1.5, edgecolor='#03045e', facecolor='#1d3557', zorder=9)
+    lip_n = patches.Rectangle((-2.0, 11.3), 4.0, 0.8, linewidth=1.0, edgecolor='#03045e', facecolor='#023e8a', zorder=9)
+    ax2.add_patch(claw_n)
+    ax2.add_patch(lip_n)
+    ax2.text(0, 16.2, "North Claw (90°)\n[Width: 4.50mm]", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#03045e')
+
+    claw_e_top = patches.Rectangle((12.0, -2.25), 3.8, 4.5, linewidth=1.5, edgecolor='#03045e', facecolor='#1d3557', zorder=9)
+    lip_e = patches.Rectangle((11.3, -2.0), 0.8, 4.0, linewidth=1.0, edgecolor='#03045e', facecolor='#023e8a', zorder=9)
+    ax2.add_patch(claw_e_top)
+    ax2.add_patch(lip_e)
+    ax2.text(16.5, 0, "East Claw\n(0° / 360°)", ha='left', va='center', fontsize=8, fontweight='bold', color='#03045e')
+
+    claw_w_top = patches.Rectangle((-15.8, -2.25), 3.8, 4.5, linewidth=1.5, edgecolor='#03045e', facecolor='#1d3557', zorder=9)
+    lip_w = patches.Rectangle((-12.1, -2.0), 0.8, 4.0, linewidth=1.0, edgecolor='#03045e', facecolor='#023e8a', zorder=9)
+    ax2.add_patch(claw_w_top)
+    ax2.add_patch(lip_w)
+    ax2.text(-16.5, 0, "West Claw\n(180°)", ha='right', va='center', fontsize=8, fontweight='bold', color='#03045e')
+
+    # South Open Low-Rim Thumb Area (270°)
+    south_arc = patches.Arc((0, 0), 28.0, 28.0, theta1=210, theta2=330, linewidth=2.5, color='#d90429', linestyle='--', zorder=9)
+    ax2.add_patch(south_arc)
+    ax2.annotate('South OPEN (270°)\n[Thumb Accessibility Area / Low Rim Z<=12mm]',
+                 xy=(0, -14.0), xytext=(0, -21.5),
+                 arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1.2, headwidth=5),
+                 fontsize=8.5, fontweight='bold', color='#d90429', ha='center',
+                 bbox=dict(boxstyle="round,pad=0.25", fc="#ffe3e0", ec="#d90429", lw=1), zorder=10)
+
+    # 3 Ceramic Bearing Balls (30°, 150°, 270°) at R = 8.31mm
+    brg_coords = [(7.20, 4.16, "#1 (30°)"), (-7.20, 4.16, "#2 (150°)"), (0.00, -8.31, "#3 (270°)")]
+    orbit_c = patches.Circle((0, 0), 8.31, linewidth=0.8, edgecolor='#b7094c', facecolor='none', linestyle=':', zorder=8)
+    ax2.add_patch(orbit_c)
+    for bx, by, blab in brg_coords:
+        b_dot = patches.Circle((bx, by), 1.0, linewidth=1.2, edgecolor='#6a040f', facecolor='#d90429', zorder=10)
+        ax2.add_patch(b_dot)
+        ax2.text(bx + (1.2 if bx >= 0 else -1.2), by + (1.0 if by > -5 else -1.5),
+                 f"Brg {blab}", ha='left' if bx >= 0 else 'right', va='center', fontsize=7.5, fontweight='bold', color='#9d0208',
+                 bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#9d0208", lw=0.6, alpha=0.9), zorder=11)
+
+    # Pitch Dimensions placed with ample margin to prevent overlap
+    ax2.annotate('', xy=(-12.0, 21.0), xytext=(12.0, 21.0),
+                 arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
+    ax2.text(0, 21.6, "Pitch X: 24.00 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#1d3557',
+             bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#1d3557", lw=0.6))
+
+    ax2.annotate('', xy=(23.5, -11.3), xytext=(23.5, 11.3),
+                 arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
+    ax2.text(24.2, 0, "Pitch Y:\n22.60 mm", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#1d3557',
+             bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#1d3557", lw=0.6))
+
+    ax2.set_title("2. Trackball Cup Top Plan View (X-Y View)\n[天井からの平面図: 4耳・3保持爪・南開口・3支玉]", fontsize=11, fontweight='bold', pad=12)
+    ax2.axis('off')
+
+    # =========================================================================
+    # PANEL 3: Y-Z Side Elevation View (South to North / 側面立面図)
+    # =========================================================================
+    ax3.set_facecolor('#fcfcfc')
+    ax3.set_xlim(-26, 26)
+    ax3.set_ylim(-6, 36)
+    ax3.set_aspect('equal')
+
+    # Center axis
+    ax3.plot([0, 0], [-5, 35], linestyle='-.', color='#888888', lw=1.0)
+    ax3.text(0, 35.2, "CL (Y=0)", ha='center', va='bottom', fontsize=8, color='#666666')
+
+    # PCB at Z = -1.6 to 0.0
+    pcb_yz = patches.Rectangle((-24, -1.6), 48, 1.6, linewidth=1.2, edgecolor='#1b4332', facecolor='#52b788', alpha=0.75, zorder=2)
+    ax3.add_patch(pcb_yz)
+    ax3.text(0, -0.8, "Main PCB (1.6mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=3)
+
+    # South Ear (Y = -11.3) and North Ear (Y = +11.3)
+    ear_s = patches.Rectangle((-14.55, 0.0), 6.5, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
+    ear_s_h = patches.Rectangle((-13.05, 0.0), 3.5, 2.4, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=5)
+    ax3.add_patch(ear_s)
+    ax3.add_patch(ear_s_h)
+
+    ear_n = patches.Rectangle((8.05, 0.0), 6.5, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
+    ear_n_h = patches.Rectangle((9.55, 0.0), 3.5, 2.4, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=5)
+    ax3.add_patch(ear_n)
+    ax3.add_patch(ear_n_h)
+
+    # Cup Body Profile in Y-Z:
+    # Solid body sitting on PCB (Z=0) from Y=-14 to +14
+    # With South rim trimmed to Z=11.5mm, North claw rising to Z=22.80mm
+    cup_yz_poly = patches.Polygon([
+        (-14.0, 0.0), (-14.0, 11.5), (-11.5, 11.5), (-11.8, 13.0),
+        # Inner bowl profile
+        (-8.0, 5.8), (-5.5, 3.4), (5.5, 3.4), (8.0, 5.8),
+        # North high claw side
+        (11.8, 14.0), (11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.5, 20.5), (14.0, 0.0)
+    ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
+    ax3.add_patch(cup_yz_poly)
+
+    # North Claw highlight
+    claw_n_yz = patches.Polygon([(11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.5, 20.5), (14.0, 20.5)],
+                                closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
+    ax3.add_patch(claw_n_yz)
+    ax3.text(13.0, 23.5, "North Claw (90°)\nTip Z=+22.80mm", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#03045e')
+
+    # Ball in Y-Z
+    ball_yz = patches.Circle((0, 18.30), 12.50, linewidth=1.5, edgecolor='#0077b6', facecolor='#caf0f8', alpha=0.45, zorder=4)
+    ax3.add_patch(ball_yz)
+    ax3.plot([0], [18.30], marker='+', markersize=10, color='#03045e', mew=1.5, zorder=5)
+
+    # South Open Thumb Cutout Callout
+    ax3.annotate('South OPEN (270°)\nLow Rim Z = 11.5mm\n(Thumb Accessible!)',
+                 xy=(-12.5, 11.5), xytext=(-22.0, 18.0),
+                 arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1.2, headwidth=5),
+                 fontsize=8, fontweight='bold', color='#d90429',
+                 bbox=dict(boxstyle="round,pad=0.25", fc="#ffe3e0", ec="#d90429", lw=1), zorder=10)
+
+    # Y Pitch Dimension at bottom
+    ax3.annotate('', xy=(-11.3, -3.2), xytext=(11.3, -3.2),
+                 arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
+    ax3.text(0, -3.6, "Ear Pitch Y: 22.60 mm", ha='center', va='top', fontsize=8.5, fontweight='bold', color='#1d3557')
+
+    ax3.text(-11.3, 3.2, "South Ear", ha='center', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
+    ax3.text(11.3, 3.2, "North Ear", ha='center', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
+
+    ax3.set_title("3. Longitudinal Elevation (Y-Z View)\n[側面立面図: 南側開口 vs 北側保持爪]", fontsize=11, fontweight='bold', pad=12)
+    ax3.axis('off')
+
+    plt.tight_layout()
+    out_file = ASSETS_DIR / "trackball_cup_detail_drawing.png"
+    plt.savefig(out_file, bbox_inches='tight')
+    plt.close()
+    print(f"Saved: {out_file}")
+
 if __name__ == "__main__":
     generate_vertical_stackup_diagram()
     generate_ports_and_screws_diagram()
     generate_trackball_optical_diagram()
     generate_trackball_cup_fastening_diagram()
+    generate_trackball_cup_detail_drawing()
     print("All specification diagram images updated successfully!")
+
 
