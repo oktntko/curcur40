@@ -29,8 +29,7 @@ def build_trackball_cup() -> bd.Solid:
     - 3 Retention Claws (T-shape orthogonal):
         - North 90.0 deg, West 180.0 deg, East 0.0 deg
         - Width = 4.50 mm
-        - Tip height = Z = +22.80 mm (+4.50 mm above Equator)
-        - Rounded dome tips & inward retention snap nubs
+        - Rounded dome tips & smooth spherical wrap retention (no local nubs needed)
     - South 270.0 deg: Claw-free, uniform rim at Z = 14.00 mm (no low-rim cutout needed)
     - 3 Ceramic Bearing Balls (Ø 2.00 mm):
         - Elevation = 52.0 deg down from horizontal (Z = 7.66 mm, R_xy = 8.31 mm)
@@ -77,12 +76,14 @@ def build_trackball_cup() -> bd.Solid:
         bd.extrude(amount=z_ear)
     cup = cup + ears_bp.part
 
-    # 3. Add 3 SLIM claw pillars with NON-CONTACT retention snap nubs
-    # Angles: North (90.0 deg), West (180.0 deg), East (0.0 deg)
-    # Pillars rise from Z = 13.00 to 22.80 mm.
-    # Snap nubs: center R = 12.95 mm, Z = 19.80 mm, radius r = 0.50 mm -> Tip at R = 12.45 mm.
-    # Seated clearance (air gap) = +0.040 mm (ZERO contact during ball rotation).
-    # Catch opening on lift = Ø 24.90 mm (vs Ø 25.00 mm equator -> 0.10 mm positive retention catch).
+    # 3. Add 3 SLIM claw pillars (North 90°, West 180°, East 0°)
+    # Claws rise from uniform rim (Z = 13.00 mm) up to Z = 22.80 mm (+4.50 mm above equator).
+    # Retention is achieved naturally by the spherical inner surface (Step 7) curving inward over
+    # the ball's northern hemisphere:
+    # - Equator (Z = 18.30 mm): Opening Ø = 25.30 mm (+0.30 mm clearance)
+    # - Throat (Z = 21.40 mm): Opening Ø = 24.59 mm (narrows down below Ø 25.00 mm equator!)
+    # - Seated clearance = +0.35 mm uniform across the entire ball (ZERO contact during operation).
+    # - Catch on lift = Ø 24.59 mm throat blocks Ø 25.00 mm equator, preventing drop-out without localized nubs.
     r_claw_mid = 12.80  # outer edge at 12.80 + 1.20 = 14.00 mm
     claw_angles = (90.0, 180.0, 0.0)
     for th_deg in claw_angles:
@@ -94,10 +95,6 @@ def build_trackball_cup() -> bd.Solid:
                 with bd.Locations([(cx, cy)]):
                     bd.Rectangle(th_claw, w_claw, rotation=th_deg)
             bd.extrude(amount=z_claw_top - 13.00)
-            # Integrate retention snap nub into claw solid
-            nx = 12.95 * math.cos(th_rad)
-            ny = 12.95 * math.sin(th_rad)
-            bd.Sphere(radius=0.50).moved(bd.Location((nx, ny, 19.80)))
         cup = cup + claw_bp.part
 
     # 4. Cut bottom LM19 lens flange pocket (Z = -0.50 to 3.40 mm)
