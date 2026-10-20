@@ -185,6 +185,19 @@ def build_trackball_cup() -> bd.Solid:
     cup_solid.label = "Trackball_Cup"
     return cup_solid
 
+def build_trackball_assembly() -> bd.Compound:
+    """
+    Assembly of Trackball Cup with 25mm Trackball centered at (0, 0, 18.30 mm).
+    Allows visual inspection of claw retention, equator coverage, and clearances.
+    """
+    cup = build_trackball_cup()
+    ball = bd.Sphere(radius=12.50).moved(bd.Location((0, 0, 18.30)))
+    ball_solid = ball.solids()[0]
+    ball_solid.label = "Trackball_25mm"
+    
+    assembly = bd.Compound([cup, ball_solid])
+    return assembly
+
 if __name__ == "__main__":
     t0 = time.time()
     print("Building curcur40 Trackball Cup per case_spec.md Section 4...")
@@ -201,3 +214,14 @@ if __name__ == "__main__":
     print(f"Successfully generated:")
     print(f" - {out_step}")
     print(f" - {out_stl}")
+
+    # Build and export Trackball Cup + 25mm Ball Assembly
+    print("\nBuilding Trackball Cup with 25mm Ball Assembly...")
+    assembly = build_trackball_assembly()
+    out_assembly_step = CASES_DIR / "trackball-cup-with-ball.step"
+    out_assembly_stl = CASES_DIR / "trackball-cup-with-ball.stl"
+    bd.export_step(assembly, str(out_assembly_step))
+    bd.export_stl(assembly, str(out_assembly_stl))
+    print(f"Successfully generated Assembly:")
+    print(f" - {out_assembly_step}")
+    print(f" - {out_assembly_stl}")
