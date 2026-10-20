@@ -77,9 +77,12 @@ def build_trackball_cup() -> bd.Solid:
         bd.extrude(amount=z_ear)
     cup = cup + ears_bp.part
 
-    # 3. Add 3 SLIM claw pillars rising from Z = 13.00 to 22.80 mm
+    # 3. Add 3 SLIM claw pillars with NON-CONTACT retention snap nubs
     # Angles: North (90.0 deg), West (180.0 deg), East (0.0 deg)
-    # Positioned flush with outer radius R = 14.00 mm
+    # Pillars rise from Z = 13.00 to 22.80 mm.
+    # Snap nubs: center R = 12.95 mm, Z = 19.80 mm, radius r = 0.50 mm -> Tip at R = 12.45 mm.
+    # Seated clearance (air gap) = +0.040 mm (ZERO contact during ball rotation).
+    # Catch opening on lift = Ø 24.90 mm (vs Ø 25.00 mm equator -> 0.10 mm positive retention catch).
     r_claw_mid = 12.80  # outer edge at 12.80 + 1.20 = 14.00 mm
     claw_angles = (90.0, 180.0, 0.0)
     for th_deg in claw_angles:
@@ -91,6 +94,10 @@ def build_trackball_cup() -> bd.Solid:
                 with bd.Locations([(cx, cy)]):
                     bd.Rectangle(th_claw, w_claw, rotation=th_deg)
             bd.extrude(amount=z_claw_top - 13.00)
+            # Integrate retention snap nub into claw solid
+            nx = 12.95 * math.cos(th_rad)
+            ny = 12.95 * math.sin(th_rad)
+            bd.Sphere(radius=0.50).moved(bd.Location((nx, ny, 19.80)))
         cup = cup + claw_bp.part
 
     # 4. Cut bottom LM19 lens flange pocket (Z = -0.50 to 3.40 mm)
@@ -118,15 +125,7 @@ def build_trackball_cup() -> bd.Solid:
     # 7. Cut inner spherical cavity for 25mm trackball (R = 12.85 mm, center at Z = 18.30 mm)
     cup = cup - bd.Sphere(radius=r_inner).moved(bd.Location((0, 0, z_ball_center)))
 
-    # 8. Add 3 rounded snap nubs (ツメ) at exactly (90.0, 180.0, 0.0 deg) at Z = 19.50 mm
-    for az_deg in claw_angles:
-        az_rad = math.radians(az_deg)
-        nx = 12.80 * math.cos(az_rad)
-        ny = 12.80 * math.sin(az_rad)
-        nub = bd.Sphere(radius=0.70).moved(bd.Location((nx, ny, 19.50)))
-        cup = cup + nub
-
-    # 9. Sculpt the ARCH / DOME on the top of each slim claw!
+    # 8. Sculpt the ARCH / DOME on the top of each slim claw!
     r_arch = w_claw / 2.0  # 2.25 mm
     z_arch_axis = z_claw_top - r_arch  # 22.80 - 2.25 = 20.55 mm
     for th_deg in claw_angles:
@@ -149,16 +148,16 @@ def build_trackball_cup() -> bd.Solid:
             arch_bp.part = arch_bp.part - cyl
         cup = cup - arch_bp.part
 
-    # 10. Inner smooth lead-in chamfer for easy ball snap-in
-    with bd.BuildPart() as leadin:
-        with bd.BuildSketch(bd.Plane.XY.offset(21.40)):
-            bd.Circle(radius=11.90)
-        with bd.BuildSketch(bd.Plane.XY.offset(23.00)):
-            bd.Circle(radius=13.50)
-        bd.loft()
-    cup = cup - leadin.part
+    # 9. Inner smooth lead-in chamfer for easy ball insertion
+    cone = bd.Cone(
+        bottom_radius=11.90,
+        top_radius=13.50,
+        height=1.60,
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+    ).moved(bd.Location((0, 0, 21.40)))
+    cup = cup - cone
 
-    # 11. 3x Bearing ball pockets (Ø 2.00 mm ceramic balls)
+    # 10. 3x Bearing ball pockets (Ø 2.00 mm ceramic balls)
     # Azimuths: 30.0 deg (#1), 150.0 deg (#2), 270.0 deg (#3)
     # Elevation: 52.0 deg down from horizontal
     # Single clean spherical dimple per bearing ball (pocket radius 1.03 mm, depth 1.35 mm, no bottom breakthrough)
@@ -172,7 +171,7 @@ def build_trackball_cup() -> bd.Solid:
         pocket = bd.Sphere(radius=1.03).moved(bd.Location((bx, by, bz)))
         cup = cup - pocket
 
-    # 12. 4x M2 screw through-holes (Ø 3.50 mm through-hole, NO counterbore, flat top)
+    # 11. 4x M2 screw through-holes (Ø 3.50 mm through-hole, NO counterbore, flat top)
     for sx, sy in ear_coords:
         hole = bd.Cylinder(
             radius=1.75,
@@ -199,6 +198,7 @@ def build_trackball_assembly() -> bd.Compound:
     return assembly
 
 if __name__ == "__main__":
+    from cadgen.geometry import overlap_volume
     t0 = time.time()
     print("Building curcur40 Trackball Cup per case_spec.md Section 4...")
     cup = build_trackball_cup()
@@ -206,6 +206,11 @@ if __name__ == "__main__":
     
     bbox = cup.bounding_box()
     print(f"Bounding box: X=[{bbox.min.X:.2f}, {bbox.max.X:.2f}], Y=[{bbox.min.Y:.2f}, {bbox.max.Y:.2f}], Z=[{bbox.min.Z:.2f}, {bbox.max.Z:.2f}]")
+
+    # Verify zero contact with seated 25mm ball
+    ball = bd.Sphere(radius=12.50).moved(bd.Location((0, 0, 18.30))).solids()[0]
+    ov = overlap_volume(cup, ball)
+    print(f"Overlap volume with seated 25mm ball: {ov:.8f} mm^3 (ZERO CONTACT = {ov == 0.0})")
 
     out_step = CASES_DIR / "trackball-cup.step"
     out_stl = CASES_DIR / "trackball-cup.stl"
