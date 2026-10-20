@@ -623,14 +623,12 @@ def generate_trackball_cup_detail_drawing():
     ax2.add_patch(lip_w)
     ax2.text(-16.5, 0, "West Claw\n(180°)", ha='right', va='center', fontsize=8, fontweight='bold', color='#03045e')
 
-    # South Open Low-Rim Thumb Area (270°)
-    south_arc = patches.Arc((0, 0), 28.0, 28.0, theta1=210, theta2=330, linewidth=2.5, color='#d90429', linestyle='--', zorder=9)
-    ax2.add_patch(south_arc)
-    ax2.annotate('South OPEN (270°)\n[Thumb Accessibility Area / Low Rim Z<=12mm]',
-                 xy=(0, -14.0), xytext=(0, -21.5),
-                 arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1.2, headwidth=5),
-                 fontsize=8.5, fontweight='bold', color='#d90429', ha='center',
-                 bbox=dict(boxstyle="round,pad=0.25", fc="#ffe3e0", ec="#d90429", lw=1), zorder=10)
+    # South side (270°): No claw needed, cup body naturally sits below equator all around
+    ax2.annotate('South (270°): Claw-Free (爪なし)\n• Cup body rim is below equator all around\n• Ball is naturally accessible (低リム不要・全周均一)',
+                 xy=(0, -14.0), xytext=(0, -21.0),
+                 arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=4),
+                 fontsize=8, fontweight='bold', color='#1d3557', ha='center',
+                 bbox=dict(boxstyle="round,pad=0.25", fc="#f1faee", ec="#1d3557", lw=0.8), zorder=10)
 
     # 3 Ceramic Bearing Balls (30°, 150°, 270°) at R = 8.31mm
     brg_coords = [(7.20, 4.16, "#1 (30°)"), (-7.20, 4.16, "#2 (150°)"), (0.00, -8.31, "#3 (270°)")]
@@ -654,7 +652,7 @@ def generate_trackball_cup_detail_drawing():
     ax2.text(24.2, 0, "Pitch Y:\n22.60 mm", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#1d3557',
              bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#1d3557", lw=0.6))
 
-    ax2.set_title("2. Trackball Cup Top Plan View (X-Y View)\n[天井からの平面図: 4耳・3保持爪・南開口・3支玉]", fontsize=11, fontweight='bold', pad=12)
+    ax2.set_title("2. Trackball Cup Top Plan View (X-Y View)\n[天井からの平面図: 4耳・3保持爪・南側爪なし・3支玉]", fontsize=11, fontweight='bold', pad=12)
     ax2.axis('off')
 
     # =========================================================================
@@ -686,19 +684,24 @@ def generate_trackball_cup_detail_drawing():
     ax3.add_patch(ear_n_h)
 
     # Cup Body Profile in Y-Z:
-    # Solid body sitting on PCB (Z=0) from Y=-14 to +14
-    # With South rim trimmed to Z=11.5mm, North claw rising to Z=22.80mm
+    # Cup body has UNIFORM rim height Z = 14.0 mm all around (below Equator Z = 18.30 mm)
+    # North side (+Y) has North Claw rising from Z = 14.0 to Z = 22.80 mm
+    # South side (-Y) stops cleanly at Z = 14.0 mm (No claw!)
     cup_yz_poly = patches.Polygon([
-        (-14.0, 0.0), (-14.0, 11.5), (-11.5, 11.5), (-11.8, 13.0),
+        # South uniform rim (Z = 14.0)
+        (-14.0, 0.0), (-14.0, 14.0), (-11.8, 14.0),
         # Inner bowl profile
         (-8.0, 5.8), (-5.5, 3.4), (5.5, 3.4), (8.0, 5.8),
-        # North high claw side
-        (11.8, 14.0), (11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.5, 20.5), (14.0, 0.0)
+        # North side: uniform rim at 14.0, then claw rises to 22.80
+        (11.8, 14.0), (11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.5, 20.5), (14.0, 14.0), (14.0, 0.0)
     ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
     ax3.add_patch(cup_yz_poly)
 
+    # Uniform rim dashed indicator across cup
+    ax3.plot([-14.0, 14.0], [14.0, 14.0], linestyle=':', color='#1d3557', lw=1.0, zorder=4)
+
     # North Claw highlight
-    claw_n_yz = patches.Polygon([(11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.5, 20.5), (14.0, 20.5)],
+    claw_n_yz = patches.Polygon([(11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.5, 20.5), (14.0, 14.0), (11.8, 14.0)],
                                 closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
     ax3.add_patch(claw_n_yz)
     ax3.text(13.0, 23.5, "North Claw (90°)\nTip Z=+22.80mm", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#03045e')
@@ -708,12 +711,21 @@ def generate_trackball_cup_detail_drawing():
     ax3.add_patch(ball_yz)
     ax3.plot([0], [18.30], marker='+', markersize=10, color='#03045e', mew=1.5, zorder=5)
 
-    # South Open Thumb Cutout Callout
-    ax3.annotate('South OPEN (270°)\nLow Rim Z = 11.5mm\n(Thumb Accessible!)',
-                 xy=(-12.5, 11.5), xytext=(-22.0, 18.0),
-                 arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1.2, headwidth=5),
-                 fontsize=8, fontweight='bold', color='#d90429',
-                 bbox=dict(boxstyle="round,pad=0.25", fc="#ffe3e0", ec="#d90429", lw=1), zorder=10)
+    # Equator line in Y-Z
+    ax3.plot([-13, 13], [18.30, 18.30], linestyle=':', color='#0077b6', lw=1.2, zorder=4)
+
+    # South Claw-Free callout
+    ax3.annotate('South Side (270°): No Claw (爪なし)\n• Uniform rim height: Z = +14.00 mm\n• Entire cup is below Equator (Z = +18.30 mm)\n• Low-rim cutout NOT needed (低リム不要)',
+                 xy=(-13.0, 14.0), xytext=(-24.5, 20.0),
+                 arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=4),
+                 fontsize=7.5, fontweight='bold', color='#1d3557',
+                 bbox=dict(boxstyle="round,pad=0.25", fc="#e0f2fe", ec="#1d3557", lw=0.8), zorder=10)
+
+    # Rim height dimension on Y-Z
+    ax3.annotate('', xy=(-17.0, 14.0), xytext=(-17.0, 0.0),
+                 arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.0))
+    ax3.text(-17.4, 7.0, "Uniform Rim:\n14.00 mm", ha='right', va='center', fontsize=7.5, fontweight='bold', color='#1d3557',
+             bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#1d3557", lw=0.6, alpha=0.9))
 
     # Y Pitch Dimension at bottom
     ax3.annotate('', xy=(-11.3, -3.2), xytext=(11.3, -3.2),
@@ -723,7 +735,7 @@ def generate_trackball_cup_detail_drawing():
     ax3.text(-11.3, 3.2, "South Ear", ha='center', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
     ax3.text(11.3, 3.2, "North Ear", ha='center', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
 
-    ax3.set_title("3. Longitudinal Elevation (Y-Z View)\n[側面立面図: 南側開口 vs 北側保持爪]", fontsize=11, fontweight='bold', pad=12)
+    ax3.set_title("3. Longitudinal Elevation (Y-Z View)\n[側面立面図: 南側爪なし vs 北側保持爪]", fontsize=11, fontweight='bold', pad=12)
     ax3.axis('off')
 
     plt.tight_layout()
