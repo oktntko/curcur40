@@ -167,52 +167,79 @@ def generate_ports_and_screws_diagram():
     print(f"Saved: {out_file}")
 
 def generate_trackball_optical_diagram():
-    fig, ax = plt.subplots(figsize=(11, 7), dpi=200)
+    fig, ax = plt.subplots(figsize=(12, 7.5), dpi=200)
     ax.set_xlim(-26, 26)
-    ax.set_ylim(-16, 25)
+    ax.set_ylim(-16, 24)
     ax.set_facecolor('#f8f9fa')
     fig.patch.set_facecolor('#ffffff')
 
-    ball_center = (0, 7.0)
-    ball = patches.Circle(ball_center, 17.0, linewidth=1.5, edgecolor='#0077b6', facecolor='#90e0ef', alpha=0.35)
+    # Ø 25.0 mm Trackball Sphere (Radius = 12.50 mm)
+    # Ball center at (0, 8.0), bottom of ball at Z = 8.0 - 12.5 = -4.5 mm
+    ball_center = (0, 8.0)
+    ball = patches.Circle(ball_center, 12.50, linewidth=1.5, edgecolor='#0077b6', facecolor='#90e0ef', alpha=0.35)
     ax.add_patch(ball)
-    ax.text(0, 11.0, "Ø 34 mm Trackball Sphere", ha='center', va='center', fontsize=12, fontweight='bold', color='#03045e')
+    ax.text(0, 8.0, "Ø 25 mm Trackball Sphere\n(Radius = 12.50 mm)", ha='center', va='center', fontsize=11, fontweight='bold', color='#03045e')
 
-    # Cup profile (U-shaped arc)
-    cup_outline = patches.Arc((0, 7.0), 38.0, 38.0, theta1=205, theta2=335, linewidth=3, color='#023e8a')
+    # Cup profile (U-shaped arc for 25mm ball)
+    cup_outline = patches.Arc(ball_center, 29.0, 29.0, theta1=205, theta2=335, linewidth=3, color='#023e8a')
     ax.add_patch(cup_outline)
-    ax.text(-17, 3.5, "Trackball Cup Body\n(120° Claws on top)", ha='center', va='center', fontsize=9.5, fontweight='bold', color='#023e8a')
+    ax.text(-18, 5.0, "Trackball Cup Body\n(Claws: N 90°, E 0°, W 180°)", ha='center', va='center', fontsize=9.5, fontweight='bold', color='#023e8a')
 
-    # Lens LM19 on F.Cu
-    lens = patches.Rectangle((-10, -2.5), 20, 2.5, linewidth=1.5, edgecolor='#f77f00', facecolor='#fcbf49', alpha=0.85)
-    ax.add_patch(lens)
-    ax.text(0, -1.25, "LM19 Optical Lens (F.Cu side)", ha='center', va='center', fontsize=9.5, fontweight='bold', color='#7f4f24')
+    # LM19-LSI Optical Lens (sits on F.Cu at Z in [-0.53, 0.0] or above PCB)
+    # Flange: 21.15 x 18.85 mm, Flange thickness 0.53mm
+    lens_flange = patches.Rectangle((-10.5, 0.0), 21.0, 1.4, linewidth=1.5, edgecolor='#f77f00', facecolor='#fcbf49', alpha=0.85)
+    ax.add_patch(lens_flange)
+    ax.text(0, 0.7, "LM19 Optical Lens Flange (F.Cu side)", ha='center', va='center', fontsize=9, fontweight='bold', color='#7f4f24')
 
-    # PCB
-    pcb_left = patches.Rectangle((-24, -4.1), 15.5, 1.6, linewidth=1.5, edgecolor='#2d6a4f', facecolor='#52b788', alpha=0.85)
-    pcb_right = patches.Rectangle((8.5, -4.1), 15.5, 1.6, linewidth=1.5, edgecolor='#2d6a4f', facecolor='#52b788', alpha=0.85)
+    # 4 Lens Positioning Legs extending DOWN through PCB cutout
+    # 2 round pins (dia 0.9mm) + 2 rectangular ribs
+    leg_left = patches.Rectangle((-4.5, -3.35), 1.2, 3.35, linewidth=1.2, edgecolor='#d48b00', facecolor='#ffb703')
+    leg_right = patches.Rectangle((3.3, -3.35), 1.2, 3.35, linewidth=1.2, edgecolor='#d48b00', facecolor='#ffb703')
+    ax.add_patch(leg_left)
+    ax.add_patch(leg_right)
+    ax.annotate('4 Lens Legs extend DOWN\nthrough PCB cutout into IC pockets',
+                xy=(4.5, -2.5), xytext=(12, -0.5),
+                arrowprops=dict(facecolor='#d48b00', shrink=0.05, width=1, headwidth=4),
+                fontsize=8, fontweight='bold', color='#d48b00',
+                bbox=dict(boxstyle="round,pad=0.2", fc="#fff3cd", ec="#d48b00", lw=0.8))
+
+    # PCB (FR-4, thickness 1.6mm: Z from -1.6 to 0.0)
+    pcb_left = patches.Rectangle((-24, -1.6), 15.25, 1.6, linewidth=1.5, edgecolor='#2d6a4f', facecolor='#52b788', alpha=0.85)
+    pcb_right = patches.Rectangle((8.75, -1.6), 15.25, 1.6, linewidth=1.5, edgecolor='#2d6a4f', facecolor='#52b788', alpha=0.85)
     ax.add_patch(pcb_left)
     ax.add_patch(pcb_right)
-    ax.text(-16, -3.3, "Main PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
-    ax.text(16, -3.3, "Main PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
-    ax.text(0, -3.3, "PCB Cutout\n16.9 x 8.7 mm", ha='center', va='center', fontsize=8, fontweight='bold', color='#1b4332')
+    ax.text(-16, -0.8, "Main PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
+    ax.text(16, -0.8, "Main PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
+    ax.text(0, -0.8, "PCB Cutout (16.9 x 8.7 mm)\n(Lens legs & light pass through)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#1b4332')
 
-    # PMW3360 on B.Cu
-    pmw_body = patches.Rectangle((-7.1, -6.5), 14.2, 2.4, linewidth=1.5, edgecolor='#14213d', facecolor='#2b2d42', alpha=0.95)
+    # PMW3360DM-T2QU Sensor Package (Mounted on B.Cu, Z from -4.01 to -1.60)
+    # Solid package (NO holes in IC!)
+    pmw_body = patches.Rectangle((-8.1, -4.01), 16.2, 2.41, linewidth=1.5, edgecolor='#14213d', facecolor='#2b2d42', alpha=0.95)
     ax.add_patch(pmw_body)
-    ax.text(0, -5.3, "PMW3360 Sensor Body\n(Mounted on B.Cu, Facing Up)", ha='center', va='center', fontsize=8.5, fontweight='bold', color='#ffffff')
+    ax.text(0, -3.0, "PMW3360 IC Solid Body (2.41mm)\n[NO THROUGH-HOLE IN SENSOR]", ha='center', va='center', fontsize=8.5, fontweight='bold', color='#ffffff')
 
-    # Flat Case Floor
-    floor = patches.Rectangle((-24, -11.0), 48, 2.8, linewidth=2, edgecolor='#495057', facecolor='#ced4da', alpha=0.7)
+    # 16 Sensor Metal Pins emerging from IC sides and extending UP through PCB
+    # Left pins
+    ax.plot([-8.1, -9.2, -9.2], [-2.3, -2.3, 0.6], color='#ffd166', lw=2.5)
+    # Right pins
+    ax.plot([8.1, 9.2, 9.2], [-2.3, -2.3, 0.6], color='#ffd166', lw=2.5)
+    ax.annotate('16 Pins emerge from IC sides,\nextend UP through PCB to F.Cu',
+                xy=(-9.2, 0.2), xytext=(-23, 2.0),
+                arrowprops=dict(facecolor='#cca000', shrink=0.05, width=1, headwidth=4),
+                fontsize=8, fontweight='bold', color='#cca000',
+                bbox=dict(boxstyle="round,pad=0.2", fc="#fff9db", ec="#cca000", lw=0.8))
+
+    # Flat Case Interior Floor (Z = -7.21 or -8.4 mm)
+    floor = patches.Rectangle((-24, -9.0), 48, 2.6, linewidth=2, edgecolor='#495057', facecolor='#ced4da', alpha=0.7)
     ax.add_patch(floor)
-    ax.text(0, -9.6, "Flat Case Interior Floor (Z = -8.4 mm)\nZero Cutout Needed!", ha='center', va='center', fontsize=10, fontweight='bold', color='#212529')
+    ax.text(0, -7.7, "Flat Case Interior Floor\n(Zero Through-Hole or Sensor Pocket Needed!)", ha='center', va='center', fontsize=10, fontweight='bold', color='#212529')
 
     # Clearance arrow
-    ax.annotate('', xy=(12, -6.5), xytext=(12, -8.2),
+    ax.annotate('', xy=(12, -4.01), xytext=(12, -6.4),
                 arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.8))
-    ax.text(13.5, -7.35, "Clearance: 1.70 mm\n(Completely safe)", ha='left', va='center', fontsize=9, fontweight='bold', color='#d90429')
+    ax.text(13.5, -5.2, "Clearance: > 1.5mm\n(Completely safe)", ha='left', va='center', fontsize=9, fontweight='bold', color='#d90429')
 
-    ax.set_title("Trackball & Optical Sensor Stackup Alignment", fontsize=14, fontweight='bold', pad=15)
+    ax.set_title("Trackball & Optical Sensor Stackup (pmw3360-lens-pcb-assembly)", fontsize=13, fontweight='bold', pad=15)
     ax.axis('off')
 
     plt.tight_layout()
