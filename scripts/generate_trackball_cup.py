@@ -158,9 +158,10 @@ def build_trackball_cup() -> bd.Solid:
         bd.loft()
     cup = cup - leadin.part
 
-    # 11. 3x Bearing ball pockets (Ø 2.00 mm ceramic balls) & clean push-out holes
+    # 11. 3x Bearing ball pockets (Ø 2.00 mm ceramic balls)
     # Azimuths: 30.0 deg (#1), 150.0 deg (#2), 270.0 deg (#3)
     # Elevation: 52.0 deg down from horizontal
+    # Single clean spherical dimple per bearing ball (pocket radius 1.03 mm, depth 1.35 mm, no bottom breakthrough)
     r_orbit = 13.50
     elev_rad = math.radians(52.0)
     for az_deg in (30.0, 150.0, 270.0):
@@ -170,14 +171,6 @@ def build_trackball_cup() -> bd.Solid:
         bz = z_ball_center - r_orbit * math.sin(elev_rad)  # 7.66 mm
         pocket = bd.Sphere(radius=1.03).moved(bd.Location((bx, by, bz)))
         cup = cup - pocket
-        
-        # Clean push-out hole Ø 1.20 mm going downward
-        push_hole = bd.Cylinder(
-            radius=0.60,
-            height=10.0,
-            align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)
-        ).moved(bd.Location((bx, by, bz - 3.0)))
-        cup = cup - push_hole
 
     # 12. 4x M2 screw through-holes (Ø 3.50 mm through-hole, NO counterbore, flat top)
     for sx, sy in ear_coords:
