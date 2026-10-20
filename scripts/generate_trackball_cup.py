@@ -24,7 +24,7 @@ def build_trackball_cup() -> bd.Solid:
     - Inner spherical bowl radius: R = 12.85 mm (0.35 mm ball gap)
     - 4 Mounting Ears at (+/-12.00, +/-11.30 mm):
         - Thickness = 2.40 mm (Z = 0.00 to 2.40 mm)
-        - Through-hole = Ø 3.50 mm (no counterbore, flat top)
+        - Through-hole = Ø 3.60 mm (no counterbore, flat top)
         - Outer boss radius = 3.25 mm (Ø 6.50 mm)
     - 3 Retention Claws (T-shape orthogonal):
         - North 90.0 deg, West 180.0 deg, East 0.0 deg
@@ -174,10 +174,10 @@ def build_trackball_cup() -> bd.Solid:
         pocket = bd.Sphere(radius=1.03).moved(bd.Location((bx, by, bz)))
         cup = cup - pocket
 
-    # 10. 4x M2 screw through-holes (Ø 3.50 mm through-hole, NO counterbore, flat top)
+    # 10. 4x M2 screw through-holes (Ø 3.60 mm through-hole, NO counterbore, flat top)
     for sx, sy in ear_coords:
         hole = bd.Cylinder(
-            radius=1.75,
+            radius=1.80,
             height=10.0,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)
         ).moved(bd.Location((sx, sy, z_ear / 2)))
