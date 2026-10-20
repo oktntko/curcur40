@@ -29,16 +29,17 @@ def build_trackball_cup() -> bd.Solid:
     - 3 Retention Claws (T-shape orthogonal):
         - North 90.0 deg, West 180.0 deg, East 0.0 deg
         - Width = 4.50 mm
+        - Outer back face: Perfectly cylindrical matching R = 14.00 mm body (seamless, zero step)
         - Rounded dome tips & smooth spherical wrap retention (no local nubs needed)
     - South 270.0 deg: Claw-free, uniform rim at Z = 14.00 mm (no low-rim cutout needed)
     - 3 Ceramic Bearing Balls (Ø 2.00 mm):
         - Elevation = 52.0 deg down from horizontal (Z = 7.66 mm, R_xy = 8.31 mm)
         - Azimuth = 30.0 deg, 150.0 deg, 270.0 deg
         - Pocket radius = 1.03 mm, with Ø 1.20 mm clean push-out holes
-    - LM19 Lens Pocket:
-        - Flange seating step at Z = +3.40 mm (Optical distance 2.40 mm)
-        - Central dome ceiling at Z = +4.85 mm
-        - Peephole aperture vertical wall = 1.84 mm (Z = 4.85 to 6.69 mm)
+    - LM19 Lens Pocket (2-Stage Design, Zero Collision):
+        - Main lens chamber (19.60 x 22.20 mm): Z = 0.00 to +4.85 mm (accommodates 18.85 x 21.15 mm flange)
+        - Flange bottom at Z = +3.40 mm ensures exact 2.40 mm optical tracking distance to ball bottom (Z = +5.80 mm)
+        - Central peephole (8.00 x 11.00 mm): Z = +4.85 to 6.69 mm (optical path)
     """
     z_base = 0.00
     z_ear = 2.40
@@ -76,16 +77,23 @@ def build_trackball_cup() -> bd.Solid:
         bd.extrude(amount=z_ear)
     cup = cup + ears_bp.part
 
-    # 3. Add 3 SLIM claw pillars (North 90°, West 180°, East 0°)
+    # 3. Add 3 SLIM claw pillars with CYLINDRICAL outer back face (North 90°, West 180°, East 0°)
+    # Outer back face trimmed to match the cup's outer cylinder (R = 14.00 mm, Ø 28.00 mm) perfectly.
     # Claws rise from uniform rim (Z = 13.00 mm) up to Z = 22.80 mm (+4.50 mm above equator).
-    # Retention is achieved naturally by the spherical inner surface (Step 7) curving inward over
+    # Retention is achieved naturally by the spherical inner surface (Step 6) curving inward over
     # the ball's northern hemisphere:
     # - Equator (Z = 18.30 mm): Opening Ø = 25.30 mm (+0.30 mm clearance)
     # - Throat (Z = 21.40 mm): Opening Ø = 24.59 mm (narrows down below Ø 25.00 mm equator!)
     # - Seated clearance = +0.35 mm uniform across the entire ball (ZERO contact during operation).
-    # - Catch on lift = Ø 24.59 mm throat blocks Ø 25.00 mm equator, preventing drop-out without localized nubs.
-    r_claw_mid = 12.80  # outer edge at 12.80 + 1.20 = 14.00 mm
+    # - Catch on lift = Ø 24.59 mm throat blocks Ø 25.00 mm equator, preventing drop-out.
+    r_claw_mid = 12.80
     claw_angles = (90.0, 180.0, 0.0)
+    claw_trim_cyl = bd.Cylinder(
+        radius=r_outer,
+        height=z_claw_top - 13.00,
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+    ).moved(bd.Location((0, 0, 13.00)))
+
     for th_deg in claw_angles:
         th_rad = math.radians(th_deg)
         cx = r_claw_mid * math.cos(th_rad)
@@ -93,25 +101,23 @@ def build_trackball_cup() -> bd.Solid:
         with bd.BuildPart() as claw_bp:
             with bd.BuildSketch(bd.Plane.XY.offset(13.00)):
                 with bd.Locations([(cx, cy)]):
-                    bd.Rectangle(th_claw, w_claw, rotation=th_deg)
+                    # Width = 4.50 mm, radial thickness extended slightly outward so cylinder trimming
+                    # creates an exact, seamless continuation of the R = 14.00 mm cup outer wall
+                    bd.Rectangle(th_claw + 0.60, w_claw, rotation=th_deg)
             bd.extrude(amount=z_claw_top - 13.00)
-        cup = cup + claw_bp.part
+        trimmed_claw = claw_bp.part.intersect(claw_trim_cyl)
+        cup = cup + trimmed_claw
 
-    # 4. Cut bottom LM19 lens flange pocket (Z = -0.50 to 3.40 mm)
+    # 4. Cut bottom LM19 lens pocket (Z = -0.50 to 4.85 mm, 2-Stage Design)
+    # Perfectly accommodates the LM19 lens flange (18.85 x 21.15 mm, Z = 3.40 to 4.80 mm)
+    # with zero collision, ensuring exact 2.40 mm optical tracking distance!
     with bd.BuildPart() as lens_pocket_bp:
         with bd.BuildSketch(bd.Plane.XY.offset(-0.50)):
             bd.RectangleRounded(19.60, 22.20, 4.00)
-        bd.extrude(amount=3.90)  # Reaches Z = +3.40 mm
+        bd.extrude(amount=5.35)  # Reaches Z = +4.85 mm
     cup = cup - lens_pocket_bp.part
 
-    # 5. Cut central lens dome recess (Z = 3.40 to 4.85 mm)
-    with bd.BuildPart() as dome_bp:
-        with bd.BuildSketch(bd.Plane.XY.offset(3.30)):
-            bd.RectangleRounded(14.00, 16.00, 3.00)
-        bd.extrude(amount=1.55)  # Reaches Z = +4.85 mm
-    cup = cup - dome_bp.part
-
-    # 6. Cut central optical peephole (Z = 4.80 to 9.80 mm)
+    # 5. Cut central optical peephole (Z = 4.80 to 9.80 mm)
     # Opening: 8.00 x 11.00 mm (Y = +/- 5.50 mm)
     with bd.BuildPart() as peephole_bp:
         with bd.BuildSketch(bd.Plane.XY.offset(4.80)):
@@ -119,10 +125,10 @@ def build_trackball_cup() -> bd.Solid:
         bd.extrude(amount=5.00)
     cup = cup - peephole_bp.part
 
-    # 7. Cut inner spherical cavity for 25mm trackball (R = 12.85 mm, center at Z = 18.30 mm)
+    # 6. Cut inner spherical cavity for 25mm trackball (R = 12.85 mm, center at Z = 18.30 mm)
     cup = cup - bd.Sphere(radius=r_inner).moved(bd.Location((0, 0, z_ball_center)))
 
-    # 8. Sculpt the ARCH / DOME on the top of each slim claw!
+    # 7. Sculpt the ARCH / DOME on the top of each slim claw!
     r_arch = w_claw / 2.0  # 2.25 mm
     z_arch_axis = z_claw_top - r_arch  # 22.80 - 2.25 = 20.55 mm
     for th_deg in claw_angles:
@@ -145,7 +151,7 @@ def build_trackball_cup() -> bd.Solid:
             arch_bp.part = arch_bp.part - cyl
         cup = cup - arch_bp.part
 
-    # 9. Inner smooth lead-in chamfer for easy ball insertion
+    # 8. Inner smooth lead-in chamfer for easy ball insertion
     cone = bd.Cone(
         bottom_radius=11.90,
         top_radius=13.50,
@@ -154,7 +160,7 @@ def build_trackball_cup() -> bd.Solid:
     ).moved(bd.Location((0, 0, 21.40)))
     cup = cup - cone
 
-    # 10. 3x Bearing ball pockets (Ø 2.00 mm ceramic balls)
+    # 9. 3x Bearing ball pockets (Ø 2.00 mm ceramic balls)
     # Azimuths: 30.0 deg (#1), 150.0 deg (#2), 270.0 deg (#3)
     # Elevation: 52.0 deg down from horizontal
     # Single clean spherical dimple per bearing ball (pocket radius 1.03 mm, depth 1.35 mm, no bottom breakthrough)
@@ -168,7 +174,7 @@ def build_trackball_cup() -> bd.Solid:
         pocket = bd.Sphere(radius=1.03).moved(bd.Location((bx, by, bz)))
         cup = cup - pocket
 
-    # 11. 4x M2 screw through-holes (Ø 3.50 mm through-hole, NO counterbore, flat top)
+    # 10. 4x M2 screw through-holes (Ø 3.50 mm through-hole, NO counterbore, flat top)
     for sx, sy in ear_coords:
         hole = bd.Cylinder(
             radius=1.75,
@@ -208,6 +214,14 @@ if __name__ == "__main__":
     ball = bd.Sphere(radius=12.50).moved(bd.Location((0, 0, 18.30))).solids()[0]
     ov = overlap_volume(cup, ball)
     print(f"Overlap volume with seated 25mm ball: {ov:.8f} mm^3 (ZERO CONTACT = {ov == 0.0})")
+
+    # Verify zero collision with LM19 optical lens
+    lens_step = CASES_DIR / "pmw3360-lens-pcb-assembly.step"
+    if lens_step.exists():
+        assy = bd.import_step(str(lens_step))
+        lens = assy.solids()[2]
+        ov_lens = overlap_volume(cup, lens)
+        print(f"Overlap volume with LM19 lens: {ov_lens:.8f} mm^3 (ZERO COLLISION = {ov_lens == 0.0})")
 
     out_step = CASES_DIR / "trackball-cup.step"
     out_stl = CASES_DIR / "trackball-cup.stl"
