@@ -374,6 +374,19 @@ RIGHT_HOLES = [
 for h in RIGHT_HOLES:
     add_edge_circle(board, h, radius_mm=1.80)
 
+# Add "curcur40" F.Silkscreen text to Right PCB thumb space at (52.3875, 64.0000)
+for d in list(board.GetDrawings()):
+    if hasattr(d, "GetText") and d.GetText() == "curcur40":
+        board.Delete(d)
+
+txt_r = pcbnew.PCB_TEXT(board)
+txt_r.SetText("curcur40")
+txt_r.SetLayer(pcbnew.F_SilkS)
+txt_r.SetPosition(pcbnew.VECTOR2I_MM(52.3875, 64.0000))
+txt_r.SetTextSize(pcbnew.VECTOR2I_MM(1.6, 1.6))
+txt_r.SetTextThickness(pcbnew.FromMM(0.32))
+board.Add(txt_r)
+
 filler = pcbnew.ZONE_FILLER(board)
 filler.Fill(board.Zones())
 board.Save(RIGHT_PCB)
@@ -386,6 +399,8 @@ LEFT_PCB = "pcbs/curcur40/left/curcur40-left.kicad_pcb"
 board_l = pcbnew.LoadBoard(LEFT_PCB)
 
 for d in list(board_l.GetDrawings()):
+    if hasattr(d, "GetText") and d.GetText() == "curcur40":
+        d.SetPosition(pcbnew.VECTOR2I_MM(-52.3875, 64.0000))
     if d.GetLayer() == pcbnew.Edge_Cuts:
         if d.GetShape() == pcbnew.SHAPE_T_CIRCLE:
             board_l.Delete(d)
