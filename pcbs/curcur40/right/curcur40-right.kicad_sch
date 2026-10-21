@@ -22617,7 +22617,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a4b02471-a02a-4299-b2e1-6333c2639ce0")
-		(property "Reference" "#PWR067ac"
+		(property "Reference" "#PWR0203"
 			(at 306.91 181.20 0)
 			(hide yes)
 			(show_name no)
@@ -22632,7 +22632,7 @@
 		(instances
 			(project "curcur40-right"
 				(path "/0115cc2d-c18d-4edb-8f5f-50be3fd57ab2"
-					(reference "#PWR067ac")
+					(reference "#PWR0203")
 					(unit 1)
 				)
 			)
@@ -22650,7 +22650,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cbf55b16-21bb-42c5-9164-6c5a39eb7b07")
-		(property "Reference" "#PWR02cc9"
+		(property "Reference" "#PWR0204"
 			(at 385.00 191.36 0)
 			(hide yes)
 			(show_name no)
@@ -22665,7 +22665,7 @@
 		(instances
 			(project "curcur40-right"
 				(path "/65bee44d-151d-40f5-ad32-2864ef3739e4"
-					(reference "#PWR02cc9")
+					(reference "#PWR0204")
 					(unit 1)
 				)
 			)
@@ -22683,7 +22683,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "460d68dc-b5bd-4b8a-a0a0-7dc9bbbf57ee")
-		(property "Reference" "#PWR06d85"
+		(property "Reference" "#PWR0205"
 			(at 308.43 113.90 0)
 			(hide yes)
 			(show_name no)
@@ -22698,7 +22698,7 @@
 		(instances
 			(project "curcur40-right"
 				(path "/c4c3422c-266b-49f9-b8e0-c518230433ea"
-					(reference "#PWR06d85")
+					(reference "#PWR0205")
 					(unit 1)
 				)
 			)
@@ -22716,7 +22716,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "69db05c8-892e-42f8-87fb-85fe8a2d258b")
-		(property "Reference" "#PWR04d32"
+		(property "Reference" "#PWR0206"
 			(at 314.53 192.63 0)
 			(hide yes)
 			(show_name no)
@@ -22731,7 +22731,7 @@
 		(instances
 			(project "curcur40-right"
 				(path "/647626c5-1f57-4ddd-885d-0ed95f970120"
-					(reference "#PWR04d32")
+					(reference "#PWR0206")
 					(unit 1)
 				)
 			)
@@ -22749,7 +22749,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a3b036a9-3144-4ec1-b9cf-10ca3c1042b2")
-		(property "Reference" "#PWR03f79"
+		(property "Reference" "#PWR0201"
 			(at 331.04 192.63 0)
 			(hide yes)
 			(show_name no)
@@ -22764,7 +22764,7 @@
 		(instances
 			(project "curcur40-right"
 				(path "/2f123fd1-6fb1-4474-93cf-484f89a46386"
-					(reference "#PWR03f79")
+					(reference "#PWR0201")
 					(unit 1)
 				)
 			)
@@ -22782,7 +22782,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4a27c1c0-0d62-498d-ad1a-301259d20f59")
-		(property "Reference" "#PWR03ca2"
+		(property "Reference" "#PWR0202"
 			(at 342.47 192.63 0)
 			(hide yes)
 			(show_name no)
@@ -22797,7 +22797,7 @@
 		(instances
 			(project "curcur40-right"
 				(path "/509a9613-3585-450b-904a-bba5e5a14e06"
-					(reference "#PWR03ca2")
+					(reference "#PWR0202")
 					(unit 1)
 				)
 			)
@@ -22815,7 +22815,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cd0e6449-1ded-44ed-9ed3-d66bdf75fdad")
-		(property "Reference" "#PWR0a950"
+		(property "Reference" "#PWR0207"
 			(at 366.60 192.63 0)
 			(hide yes)
 			(show_name no)
@@ -22830,7 +22830,7 @@
 		(instances
 			(project "curcur40-right"
 				(path "/d4dbc4ff-9717-4f39-9d9b-74874c79bff2"
-					(reference "#PWR0a950")
+					(reference "#PWR0207")
 					(unit 1)
 				)
 			)
