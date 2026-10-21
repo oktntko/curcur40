@@ -18879,7 +18879,7 @@
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "53630c1a-ac32-46b6-a5f3-2d9f75be2e8a")
+		(uuid "36d9ff26-0f26-4b23-af12-b6c0c6b6c383")
 	)
 	(gr_arc
 		(start -118.0625 40.98125)
@@ -18901,7 +18901,7 @@
 		)
 		(fill no)
 		(layer "Edge.Cuts")
-		(uuid "74d4405b-93ad-4056-95e8-4de8ed797faa")
+		(uuid "4facb8f7-eb6c-40cd-b7f8-0a46a3cbeb35")
 	)
 	(gr_circle
 		(center -98 38)
@@ -18912,7 +18912,7 @@
 		)
 		(fill no)
 		(layer "Edge.Cuts")
-		(uuid "469c69cf-454d-4830-91a4-29d66f768940")
+		(uuid "f6030863-201c-4acb-a42e-c4f16dff53f2")
 	)
 	(gr_line
 		(start -83.4625 40.98125)
@@ -18965,7 +18965,7 @@
 		)
 		(fill no)
 		(layer "Edge.Cuts")
-		(uuid "5d02122d-ba06-4916-b070-9edf3cd051be")
+		(uuid "d571385d-1169-49fa-a9ca-ecd3da2ea434")
 	)
 	(gr_line
 		(start -16.8575 -24.3125)
@@ -19036,7 +19036,7 @@
 		)
 		(fill no)
 		(layer "Edge.Cuts")
-		(uuid "5720c3f9-a5ad-47d1-8c7d-7db411412179")
+		(uuid "c98ae395-8aa9-4db8-a467-fdbe574d82f6")
 	)
 	(gr_circle
 		(center 0 25)
@@ -19047,7 +19047,7 @@
 		)
 		(fill no)
 		(layer "Edge.Cuts")
-		(uuid "c3c8550d-e402-4374-a93e-a47326c873ec")
+		(uuid "1cc6ffe1-d7e0-4297-ba13-53887cda1606")
 	)
 	(gr_arc
 		(start 4.2625 -24.3125)
@@ -19112,7 +19112,7 @@
 		(uuid "ca8508c1-784e-4e6a-8c69-1b9f40022580")
 	)
 	(gr_text "curcur40"
-		(at -90.4875 38.98125 0)
+		(at -52.3875 64 0)
 		(layer "F.SilkS")
 		(uuid "e01c354b-db63-48ba-8004-9af42de14c02")
 		(effects
