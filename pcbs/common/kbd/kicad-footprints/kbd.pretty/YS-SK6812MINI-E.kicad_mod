@@ -1,45 +1,186 @@
-(footprint "YS-SK6812MINI-E" (version 20221018) (generator pcbnew)
-  (layer "F.Cu")
-  (attr smd)
-  (fp_text reference "REF**" (at 0 -1.95) (layer "F.SilkS")
-      (effects (font (size 0.5 0.5) (thickness 0.1)))
-    (tstamp 1efcc3df-967a-4089-a9fe-c9cb2a0ceeec)
-  )
-  (fp_text value "YS-SK6812MINI-E" (at 0 -2.2) (layer "F.Fab") hide
-      (effects (font (size 0.6 0.6) (thickness 0.1) bold))
-    (tstamp cc2166d7-1e26-41bd-8719-2eb48cc11b09)
-  )
-  (fp_poly
-    (pts
-      (xy -4.05 0.35)
-      (xy -4.05 1.5)
-      (xy -2.8 1.5)
-    )
-
-    (stroke (width 0.05) (type solid)) (fill solid) (layer "F.SilkS") (tstamp cbd1e984-a2e9-4069-8ba5-4584ab786f8b))
-  (fp_line (start -1.8 -1.55) (end -1.8 1.55)
-    (stroke (width 0.1) (type solid)) (layer "Edge.Cuts") (tstamp 86679f64-2704-46d4-b615-038af76c5e27))
-  (fp_line (start -1.8 1.55) (end 1.8 1.55)
-    (stroke (width 0.1) (type solid)) (layer "Edge.Cuts") (tstamp da1845c9-22b3-4380-bd55-202868172741))
-  (fp_line (start 1.8 -1.55) (end -1.8 -1.55)
-    (stroke (width 0.1) (type solid)) (layer "Edge.Cuts") (tstamp 2fd7ed7b-d0a7-4d25-b31e-7e8d934ecbc6))
-  (fp_line (start 1.8 1.55) (end 1.8 -1.55)
-    (stroke (width 0.1) (type solid)) (layer "Edge.Cuts") (tstamp 24e6c68e-494d-485d-9372-b6e2e671c1f7))
-  (fp_line (start -1.6 -1.4) (end -1.6 1.4)
-    (stroke (width 0.1) (type solid)) (layer "F.CrtYd") (tstamp 7e8cbf52-d829-4dfc-aa22-c6a3091f4ad2))
-  (fp_line (start -1.6 -1.4) (end 1.6 -1.4)
-    (stroke (width 0.1) (type solid)) (layer "F.CrtYd") (tstamp 075c8bdb-bd18-4ae2-bba4-5f09e1b6871e))
-  (fp_line (start -1.6 1.4) (end 1.6 1.4)
-    (stroke (width 0.1) (type solid)) (layer "F.CrtYd") (tstamp b64a0f1f-7da4-492e-9852-2e36c344c509))
-  (fp_line (start 1.6 -1.4) (end 1.6 1.4)
-    (stroke (width 0.1) (type solid)) (layer "F.CrtYd") (tstamp c2be0e83-a733-48b5-8e87-f2893784b6df))
-  (pad "1" smd rect (at 2.8 -0.7) (size 1.7 0.825) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 2bfd92eb-16d7-4433-a18e-2bf04d6a9751))
-  (pad "2" smd rect (at 2.8 0.7) (size 1.7 0.825) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 942f848b-0c8d-4db1-b76f-5a52fab02801))
-  (pad "3" smd rect (at -2.8 0.7) (size 1.7 0.825) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp a1c56f25-35f6-45b6-9a3c-b0ea3d32422f))
-  (pad "4" smd rect (at -2.8 -0.7) (size 1.7 0.825) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp d01e975a-7550-40b5-96af-03cbb2d3d70b))
-  (model "${KIPRJMOD}/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
-    (offset (xyz 0 0 0.15))
-    (scale (xyz 1 1 1))
-    (rotate (xyz 180 0 180))
-  )
+(footprint "YS-SK6812MINI-E"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "LED16"
+		(at 0 -1.95 180)
+		(layer "F.SilkS")
+		(uuid "4b9026f9-250c-4c9b-a1ff-132f8c869c25")
+		(effects
+			(font
+				(size 0.5 0.5)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "YS-SK6812MINI-E"
+		(at 0 -2.2 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "e244a8b4-2216-4aad-a76d-c327deba0e48")
+		(effects
+			(font
+				(size 0.6 0.6)
+				(thickness 0.1)
+				(bold yes)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 180)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "011d7c82-ff40-4064-b183-f669f5f6bd35")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 180)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "eec9b0f2-1590-4895-82c7-33dfe1f86fa0")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify mirror)
+		)
+	)
+	(sheetname "left")
+	(sheetfile "../../common/left.kicad_sch")
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_poly
+		(pts
+			(xy -4.05 0.35) (xy -4.05 1.5) (xy -3.8 1.5)
+		)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.SilkS")
+		(uuid "152c5400-0560-4cb5-9a8f-ecb603fcc928")
+	)
+	(fp_line
+		(start -1.8 -1.55)
+		(end -1.8 1.55)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "a6fc3cdd-0267-45d1-a997-4023a4de5510")
+	)
+	(fp_line
+		(start -1.8 1.55)
+		(end 1.8 1.55)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "c603a56b-15ca-40db-885a-bd22393692d6")
+	)
+	(fp_line
+		(start 1.8 -1.55)
+		(end -1.8 -1.55)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "562e9d3c-c640-463d-8779-1b55dc79a212")
+	)
+	(fp_line
+		(start 1.8 1.55)
+		(end 1.8 -1.55)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "cc9e444b-1d5e-482c-84e3-723f3ae6c3df")
+	)
+	(fp_line
+		(start -1.6 -1.4)
+		(end -1.6 1.4)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "feb78e73-923a-44a5-96eb-07a30d33d9bf")
+	)
+	(fp_line
+		(start -1.6 -1.4)
+		(end 1.6 -1.4)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "3343c38d-ceee-430b-bd5c-8b197241bf6e")
+	)
+	(fp_line
+		(start -1.6 1.4)
+		(end 1.6 1.4)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "b6cd57ea-4291-40cc-bdc6-e08c6e61d246")
+	)
+	(fp_line
+		(start 1.6 -1.4)
+		(end 1.6 1.4)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "c5a36273-d76b-4294-b278-b6cb010f81f3")
+	)
+	(pad "1" smd rect
+		(at 2.8 -0.7)
+		(size 1.7 0.825)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "15939ce6-5c55-4780-a6f2-ba62b021fee6")
+	)
+	(pad "2" smd rect
+		(at 2.8 0.7)
+		(size 1.7 0.825)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "18828707-9ab1-4481-99ff-9b4b96b43665")
+	)
+	(pad "3" smd rect
+		(at -2.8 0.7)
+		(size 1.7 0.825)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "78d69072-9a77-4bf5-b9ab-e095418d1533")
+	)
+	(pad "4" smd rect
+		(at -2.8 -0.7)
+		(size 1.7 0.825)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "b391fa5c-839e-4765-a88e-c94d5c99084f")
+	)
+	(embedded_fonts no)
+	(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(offset
+			(xyz 0 0 0.15)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 180 0 180)
+		)
+	)
 )
