@@ -156,3 +156,5 @@ def export_main_pcb(pcb_path, proj_name, is_right=False):
 
 if __name__ == "__main__":
     export_main_pcb("pcbs/curcur40/right/curcur40-right.kicad_pcb", "curcur40-right", is_right=True)
+    export_main_pcb("pcbs/curcur40/left/curcur40-left.kicad_pcb", "curcur40-left", is_right=False)
+
