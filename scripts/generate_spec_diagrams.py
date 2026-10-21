@@ -96,72 +96,131 @@ def generate_vertical_stackup_diagram():
     print(f"Saved: {out_file}")
 
 def generate_ports_and_screws_diagram():
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5), dpi=200)
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5.5), dpi=200)
     fig.patch.set_facecolor('#ffffff')
 
-    # AX1: TRRS Hole
-    ax1.set_xlim(-2, 16)
+    # AX1: TRRS Hole (Section View)
+    ax1.set_xlim(-3, 17)
     ax1.set_ylim(-1, 11)
     ax1.set_aspect('equal')
     ax1.set_facecolor('#f8f9fa')
-    ax1.set_title("TRRS Jack Side Wall Port (Section View)", fontsize=12, fontweight='bold')
+    ax1.set_title("1. TRRS Jack Port (Thumb Side Wall)", fontsize=12, fontweight='bold')
 
-    wall = patches.Rectangle((3, 1), 6, 8, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
+    # Wall thickness 6mm, floor below
+    wall = patches.Rectangle((3, 1), 6, 8.5, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
     ax1.add_patch(wall)
 
-    center_y = 5.0
-    hole_inner = patches.Rectangle((3, center_y - 2.75), 3.5, 5.5, linewidth=1.2, edgecolor='#d90429', facecolor='#ffffff')
+    center_y = 5.25
+    # Inner through-hole Ø 6.50mm
+    hole_inner = patches.Rectangle((3, center_y - 3.25), 3.5, 6.5, linewidth=1.2, edgecolor='#d90429', facecolor='#ffffff')
     ax1.add_patch(hole_inner)
 
-    hole_outer = patches.Rectangle((6.5, center_y - 3.75), 2.5, 7.5, linewidth=1.2, edgecolor='#1d3557', facecolor='#ffffff')
+    # Outer counterbore Ø 9.00mm, depth 2.5mm
+    hole_outer = patches.Rectangle((6.5, center_y - 4.50), 2.5, 9.0, linewidth=1.2, edgecolor='#1d3557', facecolor='#ffffff')
     ax1.add_patch(hole_outer)
 
-    ax1.annotate('', xy=(2.2, center_y - 2.75), xytext=(2.2, center_y + 2.75),
+    # Interior floor line at Z = -8.40 (here at y = 1.25)
+    floor_y = center_y - 4.00  # -4.40 - (-8.40) = 4.00mm from center
+    ax1.plot([0.5, 6.5], [floor_y, floor_y], linestyle='--', color='#2d6a4f', lw=1.5)
+    ax1.text(0.5, floor_y + 0.15, "Interior Floor\n(Z = -8.40mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+
+    # Floor clearance annotation (+0.75mm above floor)
+    ax1.annotate('', xy=(3.5, floor_y), xytext=(3.5, center_y - 3.25),
+                 arrowprops=dict(arrowstyle='<->', color='#2d6a4f', lw=1.2))
+    ax1.text(4.0, (floor_y + center_y - 3.25) / 2, "Safe Clearance\n+0.75 mm (No Gouging!)", ha='left', va='center', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+
+    ax1.annotate('', xy=(2.2, center_y - 3.25), xytext=(2.2, center_y + 3.25),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax1.text(1.7, center_y, "Through-Hole\nØ 5.50 mm", ha='right', va='center', fontsize=9, fontweight='bold', color='#d90429')
+    ax1.text(1.7, center_y, "Through-Hole\nØ 6.50 mm", ha='right', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
 
-    ax1.annotate('', xy=(9.8, center_y - 3.75), xytext=(9.8, center_y + 3.75),
+    ax1.annotate('', xy=(9.8, center_y - 4.50), xytext=(9.8, center_y + 4.50),
                  arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
-    ax1.text(10.3, center_y, "Plug Counterbore\nØ 7.50 mm", ha='left', va='center', fontsize=9, fontweight='bold', color='#1d3557')
+    ax1.text(10.3, center_y, "Plug Counterbore\nØ 9.00 mm\n(Depth 2.5~3.0mm)", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#1d3557')
 
-    ax1.plot([2.5, 9.5], [center_y, center_y], linestyle='-.', color='#888888', lw=1)
-    ax1.text(2.6, center_y + 0.3, "CL", ha='left', va='bottom', fontsize=8, color='#666666')
+    ax1.plot([2.0, 9.8], [center_y, center_y], linestyle='-.', color='#888888', lw=1)
+    ax1.text(2.1, center_y + 0.3, "CL (Z = -4.40)", ha='left', va='bottom', fontsize=8, color='#666666')
     ax1.axis('off')
 
-    # AX2: Screw Counterbore
-    ax2.set_xlim(-2, 16)
+    # AX2: USB-C North Wall Opening (Front View)
+    ax2.set_xlim(-2, 18)
     ax2.set_ylim(-1, 11)
     ax2.set_aspect('equal')
     ax2.set_facecolor('#f8f9fa')
-    ax2.set_title("Bottom M2 Screw Counterbore (Section View)", fontsize=12, fontweight='bold')
+    ax2.set_title("2. USB-C Port Cutout (North Wall Front View)", fontsize=12, fontweight='bold')
+
+    # Case wall representation
+    wall2 = patches.Rectangle((0, 0.5), 16, 9.5, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
+    ax2.add_patch(wall2)
+
+    cx2 = 8.0
+    cy2 = 5.25
+    w2 = 14.0
+    h2 = 6.8
+    # USB-C cutout rounded rectangle (14.0 x 6.8 mm, R = 1.5mm)
+    cutout = patches.FancyBboxPatch((cx2 - w2/2, cy2 - h2/2), w2, h2,
+                                    boxstyle="round,pad=0,rounding_size=1.5",
+                                    linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
+    ax2.add_patch(cutout)
+
+    # Receptacle silhouette inside (8.94 x 3.16 mm)
+    rec = patches.FancyBboxPatch((cx2 - 8.94/2, cy2 - 3.16/2), 8.94, 3.16,
+                                 boxstyle="round,pad=0,rounding_size=1.0",
+                                 linewidth=1.2, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85)
+    ax2.add_patch(rec)
+    ax2.text(cx2, cy2, "Type-C Receptacle\n(8.94 x 3.16 mm)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#1d3557')
+
+    # Width dimension
+    ax2.annotate('', xy=(cx2 - w2/2, cy2 + h2/2 + 0.8), xytext=(cx2 + w2/2, cy2 + h2/2 + 0.8),
+                 arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
+    ax2.text(cx2, cy2 + h2/2 + 1.1, "Width: 14.00 mm (Ample Cable Margin)", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
+
+    # Height dimension
+    ax2.annotate('', xy=(cx2 + w2/2 + 0.8, cy2 - h2/2), xytext=(cx2 + w2/2 + 0.8, cy2 + h2/2),
+                 arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
+    ax2.text(cx2 + w2/2 + 1.2, cy2, "Height:\n6.80 mm", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
+
+    # Interior floor level indicator (Z = -8.40)
+    fl_y2 = cy2 - 4.00
+    ax2.plot([0, 16], [fl_y2, fl_y2], linestyle='--', color='#2d6a4f', lw=1.5)
+    ax2.text(0.5, fl_y2 + 0.15, "Interior Floor (Z = -8.40mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+    ax2.text(15.5, fl_y2 + 0.15, "+0.60mm Clearance", ha='right', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+
+    ax2.axis('off')
+
+    # AX3: Screw Counterbore (Section View)
+    ax3.set_xlim(-2, 16)
+    ax3.set_ylim(-1, 11)
+    ax3.set_aspect('equal')
+    ax3.set_facecolor('#f8f9fa')
+    ax3.set_title("3. Bottom M2 Screw Counterbore (Section View)", fontsize=12, fontweight='bold')
 
     floor = patches.Rectangle((2, 3), 10, 6, linewidth=1.5, edgecolor='#333333', facecolor='#dee2e6')
-    ax2.add_patch(floor)
+    ax3.add_patch(floor)
 
     th_hole = patches.Rectangle((7 - 1.2, 3.9), 2.4, 5.1, linewidth=1.2, edgecolor='#d90429', facecolor='#ffffff')
-    ax2.add_patch(th_hole)
+    ax3.add_patch(th_hole)
 
     cb_hole = patches.Rectangle((7 - 2.3, 3), 4.6, 0.9, linewidth=1.2, edgecolor='#1d3557', facecolor='#ffffff')
-    ax2.add_patch(cb_hole)
+    ax3.add_patch(cb_hole)
 
     screw_head = patches.Rectangle((7 - 2.0, 3.1), 4.0, 0.8, linewidth=1.2, edgecolor='#495057', facecolor='#adb5bd')
     screw_shaft = patches.Rectangle((7 - 1.0, 3.9), 2.0, 4.0, linewidth=1.2, edgecolor='#495057', facecolor='#ced4da')
-    ax2.add_patch(screw_head)
-    ax2.add_patch(screw_shaft)
+    ax3.add_patch(screw_head)
+    ax3.add_patch(screw_shaft)
 
-    ax2.annotate('', xy=(3.8, 3.0), xytext=(3.8, 3.9),
+    ax3.annotate('', xy=(3.8, 3.0), xytext=(3.8, 3.9),
                  arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
-    ax2.text(3.4, 3.45, "Depth: 0.90 mm\n(Recessed 0.1mm)", ha='right', va='center', fontsize=8.5, fontweight='bold', color='#1d3557')
+    ax3.text(3.4, 3.45, "Depth: 0.90 mm\n(Recessed 0.1mm)", ha='right', va='center', fontsize=8.5, fontweight='bold', color='#1d3557')
 
-    ax2.annotate('', xy=(7 - 2.3, 2.3), xytext=(7 + 2.3, 2.3),
+    ax3.annotate('', xy=(7 - 2.3, 2.3), xytext=(7 + 2.3, 2.3),
                  arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
-    ax2.text(7.0, 1.8, "Counterbore: Ø 4.60 mm\n(Screw Head Ø 4.0mm)", ha='center', va='top', fontsize=8.5, fontweight='bold', color='#1d3557')
+    ax3.text(7.0, 1.8, "Counterbore: Ø 4.60 mm\n(Screw Head Ø 4.0mm)", ha='center', va='top', fontsize=8.5, fontweight='bold', color='#1d3557')
 
-    ax2.annotate('', xy=(7 - 1.2, 9.3), xytext=(7 + 1.2, 9.3),
+    ax3.annotate('', xy=(7 - 1.2, 9.3), xytext=(7 + 1.2, 9.3),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax2.text(7.0, 9.7, "Through Hole: Ø 2.40 mm\nSolid Floor: 2.30 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax3.text(7.0, 9.7, "Through Hole: Ø 2.40 mm\nSolid Floor: 2.30 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
 
-    ax2.axis('off')
+    ax3.axis('off')
 
     plt.tight_layout()
     out_file = ASSETS_DIR / "ports_and_fasteners_diagram.png"
