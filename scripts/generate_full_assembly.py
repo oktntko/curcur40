@@ -246,6 +246,26 @@ def make_keycap_solid(sx, sy, label="Keycap") -> bd.Solid:
     return cap
 
 
+def make_ckw12_solids(ex, ey):
+    """
+    Loads the official CKW12 rotary encoder 3D models (housing, wheel, stem),
+    rotates -90 deg around Z to match rEXSW1 orientation, and places at (ex, ey, Z = -5.20 mm).
+    """
+    models_dir = WORKSPACE / "pcbs" / "common" / "kbd" / "3dmodels"
+    solids = []
+    for fname, label in [
+        ("ckw12_housing.stp", "CKW12_Housing"),
+        ("ckw12_wheel.stp", "CKW12_Wheel"),
+        ("ckw12_stem.stp", "CKW12_Stem"),
+    ]:
+        part = bd.import_step(str(models_dir / fname))
+        placed = part.rotate(bd.Axis.Z, -90.0).moved(bd.Location((ex, ey, -5.20)))
+        for idx, s in enumerate(placed.solids()):
+            s.label = label if len(placed.solids()) == 1 else f"{label}_{idx+1}"
+            solids.append(s)
+    return solids
+
+
 def main():
     print("=== Building & Verifying curcur40 Full Assembly (assembly-full.step) ===")
 
@@ -286,6 +306,10 @@ def main():
     sensor_global.label = "PMW3360_Sensor"
     lens_global = lens_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
     lens_global.label = "LM19_Lens"
+
+    # CKW12 Rotary Encoder at rEXSW1 (14.2875, 0.0000)
+    enc_x, enc_y = to_step_right(*RIGHT_ENCODER)
+    ckw12_solids = make_ckw12_solids(enc_x, enc_y)
 
     # Create all 13x M2 5.50mm Standoffs (OD = 3.00 mm -> radius 1.50 mm, Z = -9.10 to -3.60 mm)
     left_holes_step = [to_step_left(x, y) for x, y in LEFT_PERIMETER_HOLES_PCB]
@@ -368,6 +392,9 @@ def main():
     ov_rpcb_case = overlap_volume(right_pcb, right_case)
     ov_lpcb_case = overlap_volume(left_pcb, left_case)
 
+    ov_ckw12_plate = max(overlap_volume(s, right_plate) for s in ckw12_solids)
+    ov_ckw12_screws = max(overlap_volume(s, t_scr) for s in ckw12_solids for t_scr in top_screws)
+
     print(f"Cup vs Right Case:     {ov_cup_case:.8f} mm^3")
     print(f"Cup vs Right Plate:    {ov_cup_plate:.8f} mm^3")
     print(f"Cup vs 25mm Ball:      {ov_cup_ball:.8f} mm^3")
@@ -375,6 +402,8 @@ def main():
     print(f"Sensor vs Right Case:  {ov_sensor_case:.8f} mm^3")
     print(f"Right PCB vs Case:     {ov_rpcb_case:.8f} mm^3")
     print(f"Left PCB vs Case:      {ov_lpcb_case:.8f} mm^3")
+    print(f"CKW12 vs Right Plate:  {ov_ckw12_plate:.8f} mm^3")
+    print(f"CKW12 vs Top Screws:   {ov_ckw12_screws:.8f} mm^3")
 
     max_so_ov = 0.0
     for so in standoffs:
@@ -401,6 +430,8 @@ def main():
     assert ov_sensor_case == 0.0
     assert ov_rpcb_case == 0.0
     assert ov_lpcb_case == 0.0
+    assert ov_ckw12_plate == 0.0
+    assert ov_ckw12_screws == 0.0
     assert max_so_ov == 0.0
     assert max_cap_screw_ov == 0.0
 
@@ -417,6 +448,7 @@ def main():
             lens_global,
             sensor_global,
         ]
+        + ckw12_solids
         + standoffs
         + bottom_screws
         + top_screws
@@ -433,3 +465,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
