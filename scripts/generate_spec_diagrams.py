@@ -20,7 +20,7 @@ plt.rcParams['axes.linewidth'] = 0.8
 def generate_vertical_stackup_diagram():
     fig, ax = plt.subplots(figsize=(12, 7.5), dpi=200)
     ax.set_xlim(-20, 160)
-    ax.set_ylim(-14, 2)
+    ax.set_ylim(-15, 2)
     ax.set_facecolor('#fcfcfc')
     fig.patch.set_facecolor('#ffffff')
 
@@ -28,8 +28,8 @@ def generate_vertical_stackup_diagram():
         ("Top Plate (FR4)", 0.0, -1.6, '#3a7ca5', 0.85, '#16425b'),
         ("Switch Gap (Kailh Choc v2)", -1.6, -3.6, '#e0e1dd', 0.4, '#778da9'),
         ("Main PCB (FR4)", -3.6, -5.2, '#2a9d8f', 0.85, '#1b4332'),
-        ("Component Cavity (Air Gap)", -5.2, -8.4, '#f4f1de', 0.4, '#e07a5f'),
-        ("Case Floor (3D Print Solid)", -8.4, -11.6, '#495057', 0.85, '#212529'),
+        ("Component Cavity (Air Gap)", -5.2, -9.1, '#f4f1de', 0.4, '#e07a5f'),
+        ("Case Floor (3D Print Solid)", -9.1, -12.3, '#495057', 0.85, '#212529'),
     ]
 
     for name, z_top, z_bot, col, a, ec in layers:
@@ -54,15 +54,15 @@ def generate_vertical_stackup_diagram():
     ax.add_patch(pmw)
     ax.text(79, -6.3, "PMW3360 IC\n(2.2mm)", ha='center', va='center', fontsize=8, color='white', fontweight='bold')
 
-    # Standoff Representation
-    standoff = patches.Rectangle((108, -8.7), 6, 5.1, linewidth=1.5, edgecolor='#d4a373', facecolor='#faedcd', hatch='//')
+    # Standoff Representation (5.5mm standoff stands on floor Z=-9.1, reaches Z=-3.6 flush with PCB top!)
+    standoff = patches.Rectangle((108, -9.1), 6, 5.5, linewidth=1.5, edgecolor='#d4a373', facecolor='#faedcd', hatch='//')
     ax.add_patch(standoff)
-    ax.text(111, -6.15, "M2\n5.5mm\nSpacer", ha='center', va='center', fontsize=8, fontweight='bold', color='#6b705c')
+    ax.text(111, -6.35, "M2\n5.5mm\nSpacer\n(Flush!)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#6b705c')
 
     # Case Floor Counterbore
-    cb = patches.Rectangle((40, -11.6), 10, 0.9, linewidth=1.2, edgecolor='#e63946', facecolor='#ffffff', linestyle='--')
+    cb = patches.Rectangle((40, -12.3), 10, 0.9, linewidth=1.2, edgecolor='#e63946', facecolor='#ffffff', linestyle='--')
     ax.add_patch(cb)
-    ax.text(45, -11.6 + 0.45, "Counterbore Ø4.6 x 0.9", ha='center', va='center', fontsize=7.5, color='#e63946', fontweight='bold')
+    ax.text(45, -12.3 + 0.45, "Counterbore Ø4.6 x 0.9", ha='center', va='center', fontsize=7.5, color='#e63946', fontweight='bold')
 
     def draw_dim(x, z1, z2, label, offset_text=0):
         ax.annotate('', xy=(x, z1), xytext=(x, z2),
@@ -72,21 +72,22 @@ def generate_vertical_stackup_diagram():
     draw_dim(15, 0.0, -1.6, "1.60 mm")
     draw_dim(15, -1.6, -3.6, "2.00 mm")
     draw_dim(15, -3.6, -5.2, "1.60 mm")
-    draw_dim(15, -5.2, -8.4, "3.20 mm")
-    draw_dim(15, -8.4, -11.6, "3.20 mm")
+    draw_dim(15, -5.2, -9.1, "3.90 mm")
+    draw_dim(15, -9.1, -12.3, "3.20 mm")
 
-    draw_dim(5, 0.0, -11.6, "TOTAL: 11.60 mm", offset_text=-1)
+    draw_dim(5, 0.0, -12.3, "TOTAL: 12.30 mm", offset_text=-1)
+    draw_dim(122, 0.0, -9.1, "Wall: 9.10 mm", offset_text=16)
 
-    ax.annotate('Safe Clearance: 0.90 mm\n(Floor Z=-8.4 to Max Part Z=-7.5)',
-                xy=(79, -7.4), xytext=(115, -7.8),
+    ax.annotate('Safe Clearance: 1.60 mm\n(Floor Z=-9.1 to Max Part Z=-7.5)',
+                xy=(79, -7.4), xytext=(115, -8.0),
                 arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1, headwidth=5),
                 fontsize=8.5, fontweight='bold', color='#d90429',
                 bbox=dict(boxstyle="round,pad=0.3", fc="#ffe3e0", ec="#d90429", lw=1))
 
     ax.set_title("curcur40 Vertical Z-Stackup Architecture (Standard Specs)", fontsize=14, fontweight='bold', pad=15)
     ax.set_xticks([])
-    ax.set_yticks([0, -1.6, -3.6, -5.2, -8.4, -11.6])
-    ax.set_yticklabels(['Z=0.0 (Plate Top)', 'Z=-1.6 (Plate Bot)', 'Z=-3.6 (PCB Top)', 'Z=-5.2 (PCB Bot)', 'Z=-8.4 (Floor)', 'Z=-11.6 (Case Bot)'])
+    ax.set_yticks([0, -1.6, -3.6, -5.2, -9.1, -12.3])
+    ax.set_yticklabels(['Z=0.0 (Plate Top)', 'Z=-1.6 (Plate Bot)', 'Z=-3.6 (PCB Top)', 'Z=-5.2 (PCB Bot)', 'Z=-9.1 (Floor)', 'Z=-12.3 (Case Bot)'])
     ax.grid(axis='y', linestyle=':', alpha=0.6, color='#888888')
 
     plt.tight_layout()
@@ -106,39 +107,37 @@ def generate_ports_and_screws_diagram():
     ax1.set_facecolor('#f8f9fa')
     ax1.set_title("1. TRRS Jack Port (Thumb Side Wall)", fontsize=12, fontweight='bold')
 
-    # Wall thickness 6mm, floor below
-    wall = patches.Rectangle((3, 1), 6, 8.5, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
+    # Wall thickness 6mm (X in [3, 9]), floor below (y <= 1.5)
+    wall = patches.Rectangle((3, 0), 6, 9.5, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
     ax1.add_patch(wall)
 
-    center_y = 5.25
-    # Inner through-hole Ø 6.50mm
-    hole_inner = patches.Rectangle((3, center_y - 3.25), 3.5, 6.5, linewidth=1.2, edgecolor='#d90429', facecolor='#ffffff')
-    ax1.add_patch(hole_inner)
+    # Interior floor line at Z = -9.10 (at y = 1.50)
+    floor_y = 1.50
+    ax1.plot([0.5, 9.5], [floor_y, floor_y], linestyle='--', color='#2d6a4f', lw=1.5)
+    ax1.text(0.5, floor_y + 0.15, "Interior Floor\n(Z = -9.10mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
 
-    # Outer counterbore Ø 9.00mm, depth 2.5mm
-    hole_outer = patches.Rectangle((6.5, center_y - 4.50), 2.5, 9.0, linewidth=1.2, edgecolor='#1d3557', facecolor='#ffffff')
-    ax1.add_patch(hole_outer)
+    # TRRS Straight Through-Hole Ø 7.50mm (NO counterbore needed!)
+    # Bottom touches floor exactly (y = 1.50, distance 0.00 mm), top reaches y = 9.00
+    center_y = floor_y + 3.75  # 5.25 (Z = -5.35mm)
+    hole_straight = patches.Rectangle((3, floor_y), 6.0, 7.50, linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
+    ax1.add_patch(hole_straight)
 
-    # Interior floor line at Z = -8.40 (here at y = 1.25)
-    floor_y = center_y - 4.00  # -4.40 - (-8.40) = 4.00mm from center
-    ax1.plot([0.5, 6.5], [floor_y, floor_y], linestyle='--', color='#2d6a4f', lw=1.5)
-    ax1.text(0.5, floor_y + 0.15, "Interior Floor\n(Z = -8.40mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+    # Jack silhouette inside
+    jack_barrel = patches.Rectangle((1.0, center_y - 2.50), 3.0, 5.0, linewidth=1.2, edgecolor='#6a040f', facecolor='#9d0208', alpha=0.85)
+    ax1.add_patch(jack_barrel)
+    ax1.text(2.5, center_y, "TRRS\nJack", ha='center', va='center', fontsize=7.5, color='white', fontweight='bold')
 
-    # Floor clearance annotation (+0.75mm above floor)
-    ax1.annotate('', xy=(3.5, floor_y), xytext=(3.5, center_y - 3.25),
-                 arrowprops=dict(arrowstyle='<->', color='#2d6a4f', lw=1.2))
-    ax1.text(4.0, (floor_y + center_y - 3.25) / 2, "Safe Clearance\n+0.75 mm (No Gouging!)", ha='left', va='center', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+    # Floor contact annotation (0.00mm)
+    ax1.text(6.0, floor_y + 0.4, "Bottom touches Floor\n(Distance = 0.00 mm)", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#2d6a4f',
+             bbox=dict(boxstyle="round,pad=0.2", fc="#d8f3dc", ec="#2d6a4f", lw=0.8))
 
-    ax1.annotate('', xy=(2.2, center_y - 3.25), xytext=(2.2, center_y + 3.25),
+    # Diameter dimension
+    ax1.annotate('', xy=(9.8, floor_y), xytext=(9.8, floor_y + 7.50),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax1.text(1.7, center_y, "Through-Hole\nØ 6.50 mm", ha='right', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
-
-    ax1.annotate('', xy=(9.8, center_y - 4.50), xytext=(9.8, center_y + 4.50),
-                 arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
-    ax1.text(10.3, center_y, "Plug Counterbore\nØ 9.00 mm\n(Depth 2.5~3.0mm)", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#1d3557')
+    ax1.text(10.3, center_y, "Straight Through-Hole\nØ 7.50 mm (R = 3.75mm)\n[No Counterbore Needed]", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
 
     ax1.plot([2.0, 9.8], [center_y, center_y], linestyle='-.', color='#888888', lw=1)
-    ax1.text(2.1, center_y + 0.3, "CL (Z = -4.40)", ha='left', va='bottom', fontsize=8, color='#666666')
+    ax1.text(9.5, center_y + 0.3, "CL (Z = -5.35)", ha='right', va='bottom', fontsize=8, color='#666666')
     ax1.axis('off')
 
     # AX2: USB-C North Wall Opening (Front View)
@@ -149,15 +148,22 @@ def generate_ports_and_screws_diagram():
     ax2.set_title("2. USB-C Port Cutout (North Wall Front View)", fontsize=12, fontweight='bold')
 
     # Case wall representation
-    wall2 = patches.Rectangle((0, 0.5), 16, 9.5, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
+    wall2 = patches.Rectangle((0, 0), 16, 9.5, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
     ax2.add_patch(wall2)
 
     cx2 = 8.0
-    cy2 = 5.25
-    w2 = 14.0
-    h2 = 6.8
-    # USB-C cutout rounded rectangle (14.0 x 6.8 mm, R = 1.5mm)
-    cutout = patches.FancyBboxPatch((cx2 - w2/2, cy2 - h2/2), w2, h2,
+    w2 = 12.50
+    h2 = 6.80
+    # Interior floor line at y = 1.50 (Z = -9.10)
+    fl_y2 = 1.50
+    ax2.plot([0, 16], [fl_y2, fl_y2], linestyle='--', color='#2d6a4f', lw=1.5)
+    ax2.text(0.5, fl_y2 + 0.15, "Interior Floor (Z = -9.10mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+
+    # Cutout bottom at y = 1.50 + 0.60 = 2.10
+    cutout_bot_y = fl_y2 + 0.60
+    cy2 = cutout_bot_y + h2 / 2  # 5.50 (Z = -5.10mm)
+    # USB-C cutout rounded rectangle (12.5 x 6.8 mm, R = 1.5mm)
+    cutout = patches.FancyBboxPatch((cx2 - w2/2, cutout_bot_y), w2, h2,
                                     boxstyle="round,pad=0,rounding_size=1.5",
                                     linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
     ax2.add_patch(cutout)
@@ -172,18 +178,17 @@ def generate_ports_and_screws_diagram():
     # Width dimension
     ax2.annotate('', xy=(cx2 - w2/2, cy2 + h2/2 + 0.8), xytext=(cx2 + w2/2, cy2 + h2/2 + 0.8),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax2.text(cx2, cy2 + h2/2 + 1.1, "Width: 14.00 mm (Ample Cable Margin)", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax2.text(cx2, cy2 + h2/2 + 1.1, "Width: 12.50 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
 
     # Height dimension
-    ax2.annotate('', xy=(cx2 + w2/2 + 0.8, cy2 - h2/2), xytext=(cx2 + w2/2 + 0.8, cy2 + h2/2),
+    ax2.annotate('', xy=(cx2 + w2/2 + 0.8, cutout_bot_y), xytext=(cx2 + w2/2 + 0.8, cutout_bot_y + h2),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
     ax2.text(cx2 + w2/2 + 1.2, cy2, "Height:\n6.80 mm", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
 
-    # Interior floor level indicator (Z = -8.40)
-    fl_y2 = cy2 - 4.00
-    ax2.plot([0, 16], [fl_y2, fl_y2], linestyle='--', color='#2d6a4f', lw=1.5)
-    ax2.text(0.5, fl_y2 + 0.15, "Interior Floor (Z = -8.40mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
-    ax2.text(15.5, fl_y2 + 0.15, "+0.60mm Clearance", ha='right', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+    # Clearance from floor annotation (+0.60mm)
+    ax2.annotate('', xy=(cx2, fl_y2), xytext=(cx2, cutout_bot_y),
+                 arrowprops=dict(arrowstyle='<->', color='#2d6a4f', lw=1.2))
+    ax2.text(cx2 - 1.0, (fl_y2 + cutout_bot_y) / 2, "0.60 mm Clearance", ha='right', va='center', fontsize=7.5, fontweight='bold', color='#2d6a4f')
 
     ax2.axis('off')
 
@@ -322,15 +327,15 @@ def generate_trackball_cup_fastening_diagram():
     ax.text(0, 4.7, "Center Line (CL)", ha='center', va='bottom', fontsize=9, color='#666666', fontweight='bold')
 
     # -------------------------------------------------------------
-    # Layer 4: Case Floor (Z = -8.0 to -4.8, Total thickness 3.2 mm)
+    # Layer 4: Case Floor (Z = -8.7 to -5.5, Total thickness 3.2 mm)
     # -------------------------------------------------------------
     # Left solid floor
-    floor_left = patches.Rectangle((-14, -8.0), 11.7, 3.2, linewidth=1.5, edgecolor='#343a40', facecolor='#adb5bd', alpha=0.9, zorder=2)
+    floor_left = patches.Rectangle((-14, -8.7), 11.7, 3.2, linewidth=1.5, edgecolor='#343a40', facecolor='#adb5bd', alpha=0.9, zorder=2)
     # Right solid floor
-    floor_right = patches.Rectangle((2.3, -8.0), 11.7, 3.2, linewidth=1.5, edgecolor='#343a40', facecolor='#adb5bd', alpha=0.9, zorder=2)
-    # Solid floor shelf above counterbore (from X=-2.3 to -1.2, and 1.2 to 2.3, Z = -7.1 to -4.8, thickness 2.30 mm)
-    shelf_l = patches.Rectangle((-2.3, -7.1), 1.1, 2.3, linewidth=1.5, edgecolor='#343a40', facecolor='#adb5bd', alpha=0.9, zorder=2)
-    shelf_r = patches.Rectangle((1.2, -7.1), 1.1, 2.3, linewidth=1.5, edgecolor='#343a40', facecolor='#adb5bd', alpha=0.9, zorder=2)
+    floor_right = patches.Rectangle((2.3, -8.7), 11.7, 3.2, linewidth=1.5, edgecolor='#343a40', facecolor='#adb5bd', alpha=0.9, zorder=2)
+    # Solid floor shelf above counterbore (from X=-2.3 to -1.2, and 1.2 to 2.3, Z = -7.8 to -5.5, thickness 2.30 mm)
+    shelf_l = patches.Rectangle((-2.3, -7.8), 1.1, 2.3, linewidth=1.5, edgecolor='#343a40', facecolor='#adb5bd', alpha=0.9, zorder=2)
+    shelf_r = patches.Rectangle((1.2, -7.8), 1.1, 2.3, linewidth=1.5, edgecolor='#343a40', facecolor='#adb5bd', alpha=0.9, zorder=2)
     ax.add_patch(floor_left)
     ax.add_patch(floor_right)
     ax.add_patch(shelf_l)
@@ -356,18 +361,18 @@ def generate_trackball_cup_fastening_diagram():
 
     # -------------------------------------------------------------
     # Spacer (M2 5.5 mm female-female standoff)
-    # Spans from Case Floor (Z = -4.8) UP THROUGH PCB to Z = +0.7 (into Cup Ear!)
+    # Spans from Case Floor (Z = -5.5) UP THROUGH PCB to Z = 0.0 (EXACTLY FLUSH WITH PCB TOP!)
     # Outer width: X = -1.5 to +1.5 (Ø 3.0 mm)
     # -------------------------------------------------------------
-    spacer_body = patches.Rectangle((-1.5, -4.8), 3.0, 5.5, linewidth=1.8, edgecolor='#b08968', facecolor='#eddcd2', hatch='///', zorder=3)
+    spacer_body = patches.Rectangle((-1.5, -5.5), 3.0, 5.5, linewidth=1.8, edgecolor='#b08968', facecolor='#eddcd2', hatch='///', zorder=3)
     ax.add_patch(spacer_body)
     # Thread core visualization
-    thread_core = patches.Rectangle((-1.0, -4.8), 2.0, 5.5, linewidth=1.0, edgecolor='#7f5539', facecolor='#ffffff', alpha=0.85, zorder=4)
+    thread_core = patches.Rectangle((-1.0, -5.5), 2.0, 5.5, linewidth=1.0, edgecolor='#7f5539', facecolor='#ffffff', alpha=0.85, zorder=4)
     ax.add_patch(thread_core)
 
     # -------------------------------------------------------------
     # Top Screw: M2 x 4mm (Head Ø 4.0, Shaft Ø 2.0 x 4.0mm)
-    # Head rests at Z = 2.4 (top of ear), shaft reaches Z = -1.6 (bottom of PCB)
+    # Head rests at Z = 2.4 (top of ear), shaft reaches Z = -1.6 (into spacer by 1.6mm)
     # -------------------------------------------------------------
     top_head = patches.Rectangle((-2.0, 2.4), 4.0, 0.8, linewidth=1.5, edgecolor='#212529', facecolor='#6c757d', zorder=5)
     top_shaft = patches.Rectangle((-1.0, -1.6), 2.0, 4.0, linewidth=1.5, edgecolor='#212529', facecolor='#495057', zorder=5)
@@ -378,21 +383,21 @@ def generate_trackball_cup_fastening_diagram():
 
     # -------------------------------------------------------------
     # Bottom Screw: M2 x 4mm (Head Ø 4.0, Shaft Ø 2.0 x 4.0mm)
-    # Head rests at Z = -7.1 (recessed in 0.9mm counterbore), shaft reaches Z = -3.1
+    # Head rests at Z = -7.8 (recessed in 0.9mm counterbore), shaft reaches Z = -3.8
     # -------------------------------------------------------------
-    bot_head = patches.Rectangle((-2.0, -7.9), 4.0, 0.8, linewidth=1.5, edgecolor='#212529', facecolor='#6c757d', zorder=5)
-    bot_shaft = patches.Rectangle((-1.0, -7.1), 2.0, 4.0, linewidth=1.5, edgecolor='#212529', facecolor='#495057', zorder=5)
+    bot_head = patches.Rectangle((-2.0, -8.6), 4.0, 0.8, linewidth=1.5, edgecolor='#212529', facecolor='#6c757d', zorder=5)
+    bot_shaft = patches.Rectangle((-1.0, -7.8), 2.0, 4.0, linewidth=1.5, edgecolor='#212529', facecolor='#495057', zorder=5)
     ax.add_patch(bot_head)
     ax.add_patch(bot_shaft)
     # Screw drive groove
-    ax.plot([0, 0], [-7.7, -7.1], color='#ffffff', lw=1.5, zorder=6)
+    ax.plot([0, 0], [-8.4, -7.8], color='#ffffff', lw=1.5, zorder=6)
 
     # -------------------------------------------------------------
-    # Thread safety gap inside spacer (Z = -3.1 to -1.6, gap = 1.5 mm)
+    # Thread safety gap inside spacer (Z = -3.8 to -1.6, gap = 2.2 mm)
     # -------------------------------------------------------------
-    ax.annotate('', xy=(0, -1.6), xytext=(0, -3.1),
-                arrowprops=dict(arrowstyle='<->', color='#2b9348', lw=2.2), zorder=7)
-    ax.text(0.3, -2.35, "1.5 mm\nSafety Gap", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#2b9348',
+    ax.annotate('', xy=(0, -1.6), xytext=(0, -3.8),
+                 arrowprops=dict(arrowstyle='<->', color='#2b9348', lw=2.2), zorder=7)
+    ax.text(0.3, -2.7, "2.2 mm\nSafety Gap", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#2b9348',
             bbox=dict(boxstyle="round,pad=0.2", fc="#d8f3dc", ec="#2b9348", lw=0.8), zorder=7)
 
     # -------------------------------------------------------------
@@ -405,57 +410,58 @@ def generate_trackball_cup_fastening_diagram():
 
     dim_left(2.4, 0.0, "1. Cup Ear:\n2.40 mm", -11.0, '#1d3557')
     dim_left(0.0, -1.6, "2. Main PCB:\n1.60 mm", -11.0, '#1b4332')
-    dim_left(-1.6, -4.8, "3. Under-PCB Cavity:\n3.20 mm", -11.0, '#b08968')
-    dim_left(-4.8, -7.1, "4a. Solid Floor:\n2.30 mm", -11.0, '#343a40')
-    dim_left(-7.1, -8.0, "4b. Counterbore:\n0.90 mm", -11.0, '#d90429')
+    dim_left(-1.6, -5.5, "3. Under-PCB Cavity:\n3.90 mm", -11.0, '#b08968')
+    dim_left(-5.5, -7.8, "4a. Solid Floor:\n2.30 mm", -11.0, '#343a40')
+    dim_left(-7.8, -8.7, "4b. Counterbore:\n0.90 mm", -11.0, '#d90429')
 
     # Total case floor thickness
-    dim_left(-4.8, -8.0, "Case Floor\nTotal 3.20 mm", -14.5, '#212529')
+    dim_left(-5.5, -8.7, "Case Floor\nTotal 3.20 mm", -14.5, '#212529')
 
     # -------------------------------------------------------------
     # Right Annotations: Detailed Explanations
     # -------------------------------------------------------------
     # 1. Top screw callout
-    ax.annotate('Top M2 x 4mm Screw (Head Ø4.0 x 0.8mm)\n• Passes through Cup Ear (2.4mm)\n• Engages 2.3mm thread into Spacer (5.75 threads!)',
+    ax.annotate('Top M2 x 4mm Screw (Head Ø4.0 x 0.8mm)\n• Passes through Cup Ear (2.4mm)\n• Engages 1.6mm thread into Spacer (4.0 threads)',
                 xy=(1.5, 2.0), xytext=(8.5, 2.8),
-                arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.2, headwidth=5),
-                fontsize=8.5, fontweight='bold', color='#1d3557',
-                bbox=dict(boxstyle="round,pad=0.3", fc="#e0f2fe", ec="#1d3557", lw=1))
-
-    # 2. Cup Ear sizing & tolerance callout
-    ax.annotate('Cup Ear Hole: Ø 3.60 mm (Dowel Pin Alignment)\n• Spacer tip (Ø3.0mm) penetrates 0.70mm inside!\n• Serves as physical alignment pin (横ズレ防止)\n• M2 Screw Head (Ø4.0mm) catches securely on top',
-                xy=(4.5, 1.2), xytext=(8.5, 1.1),
-                arrowprops=dict(facecolor='#457b9d', shrink=0.05, width=1, headwidth=4),
-                fontsize=8, fontweight='bold', color='#1d3557',
-                bbox=dict(boxstyle="round,pad=0.25", fc="#f1faee", ec="#457b9d", lw=0.8))
-
-    # 3. PCB through-hole & spacer penetration callout
-    ax.annotate('Main PCB Spacer Through-Hole: Ø 3.60 mm\n• Spacer completely PENETRATES through the PCB!\n• Top of Spacer reaches Z = +0.70mm into Cup Ear',
-                xy=(1.8, -0.8), xytext=(8.5, -0.6),
-                arrowprops=dict(facecolor='#1b4332', shrink=0.05, width=1.2, headwidth=5),
-                fontsize=8.5, fontweight='bold', color='#1b4332',
-                bbox=dict(boxstyle="round,pad=0.3", fc="#d8f3dc", ec="#1b4332", lw=1))
-
-    # 4. Spacer Length & Placement callout
-    ax.annotate('M2 5.50 mm Female-Female Spacer (OD Ø3.0mm)\n• Unified standard for entire keyboard!\n• Spans Cavity (3.2mm) + PCB (1.6mm) + Ear (0.7mm)\n• Sits directly on FLAT case floor (Z = -4.8mm)',
-                xy=(1.8, -3.8), xytext=(8.5, -2.4),
-                arrowprops=dict(facecolor='#b08968', shrink=0.05, width=1.2, headwidth=5),
-                fontsize=8.5, fontweight='bold', color='#6b705c',
-                bbox=dict(boxstyle="round,pad=0.3", fc="#faedcd", ec="#b08968", lw=1))
-
-    # 5. Flat Case Interior Floor & NO BOSS callout
-    ax.annotate('Flat Case Interior Floor (Z = -4.80 mm)\n• ★ ZERO CASE BOSSES NEEDED! (ボス不要・完全平坦)\n• Spacer stands firmly on the flat bottom floor',
-                xy=(-3.5, -4.8), xytext=(8.5, -4.3),
-                arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1.4, headwidth=5),
-                fontsize=9, fontweight='bold', color='#d90429',
-                bbox=dict(boxstyle="round,pad=0.3", fc="#ffe3e0", ec="#d90429", lw=1.2))
-
-    # 6. Bottom Screw & Counterbore callout
-    ax.annotate('Bottom M2 x 4mm Screw & Counterbore\n• Counterbore: Ø 4.60 mm x Depth 0.90 mm\n• Solid floor thickness: 2.30 mm\n• Screw engages 1.70 mm thread into bottom of Spacer\n• Head recessed 0.10mm inside counterbore (flush with desk)',
-                xy=(2.0, -7.4), xytext=(8.5, -6.8),
                 arrowprops=dict(facecolor='#212529', shrink=0.05, width=1.2, headwidth=5),
                 fontsize=8.5, fontweight='bold', color='#212529',
-                bbox=dict(boxstyle="round,pad=0.3", fc="#e9ecef", ec="#495057", lw=1))
+                bbox=dict(boxstyle="round,pad=0.25", fc="#e9ecef", ec="#212529", lw=0.8))
+
+    # 2. Cup Ear callout
+    ax.annotate('Trackball Cup Mounting Ear (Thickness: 2.40 mm)\n• Through-hole Ø 3.60 mm (Flat top, NO counterbore)\n• Sits flatly on flush PCB top & spacer top',
+                xy=(3.5, 1.2), xytext=(8.5, 0.7),
+                arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.2, headwidth=5),
+                fontsize=8.5, fontweight='bold', color='#1d3557',
+                bbox=dict(boxstyle="round,pad=0.25", fc="#e0f2fe", ec="#1d3557", lw=0.8))
+
+    # 3. PCB through-hole & flush spacer callout
+    ax.annotate('Main PCB Spacer Through-Hole: Ø 3.60 mm\n• Spacer completely PENETRATES through the PCB!\n• Top of Spacer reaches Z = 0.00mm (EXACTLY FLUSH!)',
+                xy=(1.8, -0.8), xytext=(8.5, -1.2),
+                arrowprops=dict(facecolor='#1b4332', shrink=0.05, width=1.2, headwidth=5),
+                fontsize=8.5, fontweight='bold', color='#1b4332',
+                bbox=dict(boxstyle="round,pad=0.25", fc="#d8f3dc", ec="#1b4332", lw=0.8))
+
+    # 4. Spacer callout
+    ax.annotate('M2 5.50 mm Female-Female Spacer (OD Ø3.0mm)\n• Unified standard for entire keyboard!\n• Spans Cavity (3.9mm) + PCB (1.6mm) = 5.50 mm exactly\n• Sits directly on FLAT case floor (Z = -5.5mm)',
+                xy=(1.5, -3.5), xytext=(8.5, -3.2),
+                arrowprops=dict(facecolor='#b08968', shrink=0.05, width=1.2, headwidth=5),
+                fontsize=8.5, fontweight='bold', color='#7f5539',
+                bbox=dict(boxstyle="round,pad=0.25", fc="#eddcd2", ec="#7f5539", lw=0.8))
+
+    # 5. Flat Case Interior Floor & NO BOSS callout
+    ax.annotate('Flat Case Interior Floor (Z = -5.50 mm)\n• ZERO CASE BOSSES NEEDED! (ボス不要・完全平坦)\n• Spacer stands firmly on the flat bottom floor',
+                xy=(-3.5, -5.5), xytext=(8.5, -5.0),
+                arrowprops=dict(facecolor='#495057', shrink=0.05, width=1.2, headwidth=5),
+                fontsize=8.5, fontweight='bold', color='#212529',
+                bbox=dict(boxstyle="round,pad=0.25", fc="#e9ecef", ec="#495057", lw=0.8))
+
+    # 6. Bottom Screw callout
+    ax.annotate('Bottom M2 x 4mm Screw (Head Ø4.0 x 0.8mm)\n• Recessed 0.10mm inside Ø4.6 x 0.9mm counterbore\n• Passes through 2.30mm solid floor\n• Engages 1.70mm thread into Spacer (4.25 threads)',
+                xy=(1.5, -7.5), xytext=(8.5, -7.2),
+                arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1.2, headwidth=5),
+                fontsize=8.5, fontweight='bold', color='#d90429',
+                bbox=dict(boxstyle="round,pad=0.25", fc="#ffe3e0", ec="#d90429", lw=0.8))
+
 
     # Horizontal Diameters
     # Screw head Ø4.0
