@@ -1,0 +1,101 @@
+ERC report (2026-10-21T14:58:40, Encoding UTF8)
+Report includes: Errors, Warnings, Exclusions
+
+***** Sheet /
+[lib_symbol_issues]: シンボル 'USB_C_Receptacle_USB2.0' がシンボル ライブラリ 'Connector' 内に見つかりません
+    ; warning
+    @(30.48 mm, 48.26 mm): Symbol rJ1 [USB_C_Receptacle_USB2.0]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(33.02 mm, 173.99 mm): Symbol rC1 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(33.02 mm, 184.15 mm): Symbol rC2 [C_Small]
+[lib_symbol_mismatch]: シンボル 'Crystal_GND24_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(43.18 mm, 179.07 mm): Symbol rY1 [Crystal_GND24_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(57.15 mm, 102.87 mm): Symbol rC3 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(68.58 mm, 102.87 mm): Symbol rC4 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(68.58 mm, 113.03 mm): Symbol rC5 [C_Small]
+[lib_symbol_mismatch]: シンボル 'RP2040' が、ライブラリ 'MCU_RaspberryPi' のコピーと一致しません
+    ; warning
+    @(81.28 mm, 166.37 mm): Symbol rU1 [RP2040]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(92.71 mm, 35.56 mm): Symbol rC6 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(99.06 mm, 104.14 mm): Symbol rC7 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(100.33 mm, 113.03 mm): Symbol rC8 [C_Small]
+[pin_to_pin]: ピンのタイプ Bidirectional と Power output が接続されています
+    ; warning
+    @(106.68 mm, 181.61 mm): Symbol rU1 Pin 32 [GPIO21, Bidirectional, Line]
+    @(210.82 mm, 275.59 mm): Symbol #FLG0103 Pin 1 [pwr, Power output, Line]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(109.22 mm, 104.14 mm): Symbol rC9 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(119.38 mm, 104.14 mm): Symbol rC10 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(120.65 mm, 35.56 mm): Symbol rC11 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(128.27 mm, 104.14 mm): Symbol rC12 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(138.43 mm, 104.14 mm): Symbol rC13 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(147.32 mm, 104.14 mm): Symbol rC14 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(157.48 mm, 104.14 mm): Symbol rC15 [C_Small]
+[lib_symbol_mismatch]: シンボル 'W25Q128JVS' が、ライブラリ 'Memory_Flash' のコピーと一致しません
+    ; warning
+    @(228.60 mm, 55.88 mm): Symbol rU4 [W25Q128JVS]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(232.41 mm, 36.83 mm): Symbol rC16 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(308.43 mm, 102.47 mm): Symbol C1 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(313.51 mm, 102.47 mm): Symbol C2 [C_Small]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(314.53 mm, 181.20 mm): Symbol C3 [C_Small]
+[lib_symbol_mismatch]: シンボル 'PMW3360DM-T2QU' が、ライブラリ 'PMW3360_PCB' のコピーと一致しません
+    ; warning
+    @(333.83 mm, 98.66 mm): Symbol U1 [PMW3360DM-T2QU]
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(342.47 mm, 181.20 mm): Symbol C5 [C_Small]
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(359.23 mm, 93.58 mm): Label 'MOTION'
+[lib_symbol_mismatch]: シンボル 'C_Small' が、ライブラリ 'Device' のコピーと一致しません
+    ; warning
+    @(366.60 mm, 181.20 mm): Symbol C4 [C_Small]
+[lib_symbol_mismatch]: シンボル 'SolderJumper_3_Open' が、ライブラリ 'Jumper' のコピーと一致しません
+    ; warning
+    @(385.00 mm, 177.39 mm): Symbol JP1 [SolderJumper_3_Open]
+
+ ** ERC messages: 29  Errors 0  Warnings 29
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - Symbol pin or wire end off connection grid
+    - Four connection points are joined together
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters
