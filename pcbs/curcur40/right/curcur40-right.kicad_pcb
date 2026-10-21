@@ -11329,6 +11329,7 @@
 		)
 		(path "/9ca99c4b-8bb3-4a14-8335-051ddbe4bce1")
 		(sheetfile "curcur40-right.kicad_sch")
+		(solder_mask_margin 0.05)
 		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -13082,6 +13083,7 @@
 		)
 		(path "/1dccb600-526d-4c83-9440-1b931e9b4020")
 		(sheetfile "curcur40-right.kicad_sch")
+		(solder_mask_margin 0.05)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line

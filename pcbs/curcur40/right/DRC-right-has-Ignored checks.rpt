@@ -1,24 +1,8 @@
 ** Drc report for curcur40-right.kicad_pcb **
-** Created on 2026-10-21T21:10:19 **
+** Created on 2026-10-21T21:21:47 **
 ** Report includes: Errors, Warnings, Exclusions **
 
-** Found 21 DRC violations **
-[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
-    Rule: 基板セットアップのハンダマスクの最小幅; error
-    @(17.7750 mm, 48.8457 mm): Pad 1 [+3V3R] of JP1 on B.Cu
-    @(17.7750 mm, 50.1457 mm): Pad 2 [V_{IO}] of JP1 on B.Cu
-[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
-    Rule: 基板セットアップのハンダマスクの最小幅; error
-    @(17.7750 mm, 50.1457 mm): Pad 2 [V_{IO}] of JP1 on B.Cu
-    @(17.7750 mm, 51.4457 mm): Pad 3 [+1V8_PMW] of JP1 on B.Cu
-[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
-    Rule: 基板セットアップのハンダマスクの最小幅; error
-    @(9.5235 mm, 62.7117 mm): Pad 1 [+3V3R] of U2 on B.Cu
-    @(9.5235 mm, 63.6617 mm): Pad 2 [GNDR] of U2 on B.Cu
-[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
-    Rule: 基板セットアップのハンダマスクの最小幅; error
-    @(9.5235 mm, 63.6617 mm): Pad 2 [GNDR] of U2 on B.Cu
-    @(9.5235 mm, 64.6117 mm): Pad 3 [+3V3R] of U2 on B.Cu
+** Found 17 DRC violations **
 [track_not_centered_on_via]: Track endpoint not centered on via
     Local override; warning
     @(11.1975 mm, 2.9162 mm): Track [/REB] on B.Cu, length 1.5900 mm
