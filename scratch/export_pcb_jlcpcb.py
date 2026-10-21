@@ -46,19 +46,42 @@ LCSC_MAP_MAIN = {
     "Y1": ("12MHz 18pF", "Crystal_SMD_3225-4Pin_3.2x2.5mm", "C91749"),
 }
 
+PMW_PARTS = {
+    "C1": ("4.7uF/10V", "C_0603_1608Metric", "C19666"),
+    "C2": ("100nF", "C_0603_1608Metric", "C14663"),
+    "C3": ("1uF", "C_0603_1608Metric", "C15849"),
+    "C4": ("1uF", "C_0603_1608Metric", "C15849"),
+    "R1": ("10k", "R_0603_1608Metric", "C25804"),
+    "R2": ("10k", "R_0603_1608Metric", "C25804"),
+    "R3": ("39R", "R_0603_1608Metric", "C23154"),
+    "U2": ("TLV74318PDBVR", "SOT-23-5", "C485152"),
+}
 
-def get_main_part_info(ref):
-    base = ref[1:] if ref.startswith("r") else ref
-    if base in LCSC_MAP_MAIN:
-        return LCSC_MAP_MAIN[base]
-    if base.startswith("LED") or base.startswith("EXLED"):
-        return ("YS-SK6812MINI-E", "YS-SK6812MINI-E", "C5149201")
-    if base.startswith("SW") or base.startswith("EXSW"):
-        # Note: rEXSW1 on Right PCB is CKW12 (hand-soldered, not JLCPCB hotswap socket)
-        if ref == "rEXSW1":
+def get_part_info(ref, is_right=False):
+    if is_right:
+        if ref.startswith("r"):
+            base = ref[1:]
+            if base in LCSC_MAP_MAIN:
+                return LCSC_MAP_MAIN[base]
+            if base.startswith("LED") or base.startswith("EXLED"):
+                return ("YS-SK6812MINI-E", "YS-SK6812MINI-E", "C5149201")
+            if base.startswith("SW") or base.startswith("EXSW"):
+                if ref == "rEXSW1":
+                    return None
+                return ("SW_Push", "keyswitch_choc12_hotswap_1u", "C5333465")
             return None
-        return ("SW_Push", "keyswitch_choc12_hotswap_1u", "C5333465")
-    return None
+        elif ref in PMW_PARTS:
+            return PMW_PARTS[ref]
+        return None
+    else:
+        base = ref
+        if base in LCSC_MAP_MAIN:
+            return LCSC_MAP_MAIN[base]
+        if base.startswith("LED") or base.startswith("EXLED"):
+            return ("YS-SK6812MINI-E", "YS-SK6812MINI-E", "C5149201")
+        if base.startswith("SW") or base.startswith("EXSW"):
+            return ("SW_Push", "keyswitch_choc12_hotswap_1u", "C5333465")
+        return None
 
 
 def export_gerber_zip(pcb_path, zip_path):
@@ -86,7 +109,7 @@ def export_gerber_zip(pcb_path, zip_path):
     shutil.rmtree(tmp_dir)
 
 
-def export_main_pcb(pcb_path, proj_name):
+def export_main_pcb(pcb_path, proj_name, is_right=False):
     out_dir = os.path.join(os.path.dirname(pcb_path), "jlcpcb", "production_files")
     os.makedirs(out_dir, exist_ok=True)
     export_gerber_zip(pcb_path, os.path.join(out_dir, f"GERBER-{proj_name}.zip"))
@@ -100,7 +123,7 @@ def export_main_pcb(pcb_path, proj_name):
 
     for fp in sorted(board.GetFootprints(), key=lambda f: f.GetReference()):
         ref = fp.GetReference()
-        info = get_main_part_info(ref)
+        info = get_part_info(ref, is_right=is_right)
         if not info:
             continue
         comment, pkg, lcsc = info
@@ -131,63 +154,5 @@ def export_main_pcb(pcb_path, proj_name):
     print(f"Exported {proj_name}: {len(cpl_rows)} CPL items, {len(bom_groups)} BOM groups")
 
 
-def export_pmw3360_pcb(pcb_path, proj_name):
-    out_dir = os.path.join(os.path.dirname(pcb_path), "jlcpcb", "production_files")
-    os.makedirs(out_dir, exist_ok=True)
-    export_gerber_zip(pcb_path, os.path.join(out_dir, f"GERBER-{proj_name}.zip"))
-
-    board = pcbnew.LoadBoard(pcb_path)
-    aux = board.GetDesignSettings().GetAuxOrigin()
-    ox, oy = pcbnew.ToMM(aux.x), pcbnew.ToMM(aux.y)
-
-    # SMD components populated by JLCPCB PCBA on curcur40-pmw3360 (R4, C5 are DNP; U1 and J1 are hand-soldered)
-    pmw_parts = {
-        "C1": ("4.7uF/10V", "C_0603_1608Metric", "C19666"),
-        "C2": ("100nF", "C_0603_1608Metric", "C14663"),
-        "C3": ("1uF", "C_0603_1608Metric", "C15849"),
-        "C4": ("1uF", "C_0603_1608Metric", "C15849"),
-        "R1": ("10k", "R_0603_1608Metric", "C25804"),
-        "R2": ("10k", "R_0603_1608Metric", "C25804"),
-        "R3": ("39R", "R_0603_1608Metric", "C23154"),
-        "U2": ("TLV74318PDBVR", "SOT-23-5", "C485152"),
-    }
-
-    bom_groups = {}
-    cpl_rows = []
-    for fp in sorted(board.GetFootprints(), key=lambda f: f.GetReference()):
-        ref = fp.GetReference()
-        if ref not in pmw_parts:
-            continue
-        comment, pkg, lcsc = pmw_parts[ref]
-        bom_groups.setdefault((comment, pkg, lcsc), []).append(ref)
-
-        pos = fp.GetPosition()
-        x_mm = round(pcbnew.ToMM(pos.x) - ox, 6)
-        y_mm = round(oy - pcbnew.ToMM(pos.y), 6)
-        krot = fp.GetOrientationDegrees()
-        crot = round(krot % 360.0, 2)
-        layer = "top" if fp.GetLayer() == pcbnew.F_Cu else "bottom"
-        cpl_rows.append([ref, comment, pkg, x_mm, y_mm, crot, layer])
-
-    bom_path = os.path.join(out_dir, f"BOM-{proj_name}.csv")
-    with open(bom_path, "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(["Comment", "Designator", "Footprint", "LCSC"])
-        for (comment, pkg, lcsc), refs in sorted(bom_groups.items(), key=lambda x: x[0][2]):
-            w.writerow([comment, ",".join(refs), pkg, lcsc])
-
-    cpl_path = os.path.join(out_dir, f"CPL-{proj_name}.csv")
-    with open(cpl_path, "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(["Designator", "Val", "Package", "Mid X", "Mid Y", "Rotation", "Layer"])
-        for row in cpl_rows:
-            w.writerow(row)
-
-    print(f"Exported {proj_name}: {len(cpl_rows)} CPL items, {len(bom_groups)} BOM groups")
-
-
 if __name__ == "__main__":
-    export_main_pcb("pcbs/curcur40/left/curcur40-left.kicad_pcb", "curcur40-left")
-    export_main_pcb("pcbs/curcur40/right/curcur40-right.kicad_pcb", "curcur40-right")
-    export_pmw3360_pcb("pcbs/curcur40/pmw3360/curcur40-pmw3360.kicad_pcb", "curcur40-pmw3360")
-
+    export_main_pcb("pcbs/curcur40/right/curcur40-right.kicad_pcb", "curcur40-right", is_right=True)
