@@ -86,7 +86,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "USB*C*Receptacle*"
+			(property "ki_fp_filters" "USB*C*Receptacle* *TYPE-C*"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -796,7 +796,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "Jack*"
+			(property "ki_fp_filters" "Jack* *PJ-398A*"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -2339,7 +2339,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "RotaryEncoder*Switch*"
+			(property "ki_fp_filters" "RotaryEncoder*Switch* *CKW12*"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3886,7 +3886,7 @@
 						)
 					)
 				)
-				(pin bidirectional line
+				(pin passive line
 					(at 25.4 -15.24 180)
 					(length 3.81)
 					(name "GPIO21"
@@ -4530,7 +4530,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "SOIC*5.23x5.23mm*P1.27mm*"
+			(property "ki_fp_filters" "SOIC*5.23x5.23mm*P1.27mm* SOIC*5.3x5.3mm*P1.27mm*"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -6969,7 +6969,7 @@
 								)
 							)
 						)
-						(pin power_out line
+						(pin power_in line
 							(at -11.43 0 0)
 							(length 2.54)
 							(name "VDDPIX"
@@ -10462,7 +10462,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 33.02 184.15 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10694,7 +10694,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 236.22 123.19 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10773,7 +10773,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 248.92 107.95 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10994,7 +10994,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "http://www.onsemi.com/pub_link/Collateral/NCP1117-D.PDF"
+		(property "Datasheet" ""
 			(at 109.22 39.37 0)
 			(hide yes)
 			(show_name no)
@@ -11005,7 +11005,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "1A Low drop-out regulator, Fixed Output 3.3V, SOT-223"
 			(at 106.68 33.02 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11326,7 +11326,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.usb.org/sites/default/files/documents/usb_type-c.zip"
+		(property "Datasheet" ""
 			(at 34.29 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -11337,7 +11337,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "USB 2.0-only Type-C Receptacle connector"
 			(at 30.48 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11703,7 +11703,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 236.22 107.95 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11867,7 +11867,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 198.12 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12339,7 +12339,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 210.82 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12417,7 +12417,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor, small symbol"
 			(at 48.26 40.64 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12487,7 +12487,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/ds30396.pdf"
+		(property "Datasheet" ""
 			(at 210.82 181.61 0)
 			(hide yes)
 			(show_name no)
@@ -12498,7 +12498,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "75V 0.15A Fast switching Diode, SOD-523"
 			(at 210.82 181.61 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12587,7 +12587,7 @@
 				)
 			)
 		)
-		(property "Description" "12MHz 18pF ±20ppm SMD3225-4P Crystals ROHS"
+		(property "Description" "Four pin crystal, GND on pins 2 and 4, small symbol"
 			(at 43.18 179.07 90)
 			(hide yes)
 			(show_name no)
@@ -12758,7 +12758,7 @@
 				)
 			)
 		)
-		(property "Footprint" "kbd_local:keyswitch_choc12_hotswap_1u"
+		(property "Footprint" "kbd_local:keyswitch_choc12_hotswap_1.5u"
 			(at 248.92 148.59 0)
 			(hide yes)
 			(show_name no)
@@ -12780,7 +12780,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 248.92 153.67 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13013,7 +13013,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 57.15 102.87 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13332,7 +13332,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor, small symbol"
 			(at 62.865 38.735 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13412,7 +13412,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 68.58 102.87 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13818,7 +13818,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 100.33 113.03 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13896,7 +13896,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 198.12 123.19 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13976,7 +13976,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 128.27 104.14 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14515,7 +14515,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 223.52 153.67 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14595,7 +14595,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 119.38 104.14 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14674,7 +14674,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Audio Jack, 3 Poles (Stereo / TRS)"
 			(at 269.24 36.195 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14834,7 +14834,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/tpd2eusb30a.pdf"
+		(property "Datasheet" ""
 			(at 151.13 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -14845,7 +14845,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "4-Channel ESD Protection for Super-Speed USB 3.0 Interface, USON-10"
 			(at 151.13 38.1 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14960,7 +14960,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 33.02 173.99 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15068,9 +15068,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "75751b4a-a991-4b22-9dd5-2f1e42eac390")
 		(property "Reference" "rEXSW1"
@@ -15115,7 +15115,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Rotary encoder, dual channel, incremental quadrate outputs, with switch"
 			(at 267.335 113.03 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15202,7 +15202,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 248.92 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15282,7 +15282,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 92.71 35.56 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15360,7 +15360,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 210.82 107.95 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15517,7 +15517,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 50.8 184.15 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15597,7 +15597,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 207.01 44.45 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15655,7 +15655,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "kbd_local:YS-SK6812MINI-E"
+		(property "Footprint" "kbd_local:YS-SK6812MINI-E_rLED9"
 			(at 240.03 260.35 0)
 			(hide yes)
 			(show_name no)
@@ -15761,7 +15761,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 236.22 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15993,7 +15993,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 50.8 128.27 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16082,7 +16082,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 210.82 123.19 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16325,7 +16325,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 99.06 104.14 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16405,7 +16405,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 232.41 36.83 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16791,7 +16791,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor, small symbol"
 			(at 53.34 135.89 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16947,7 +16947,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 157.48 104.14 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17104,7 +17104,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 138.43 104.14 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17182,7 +17182,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 261.62 148.59 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17260,7 +17260,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 248.92 123.19 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17338,7 +17338,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor, small symbol"
 			(at 53.34 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17418,7 +17418,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 147.32 104.14 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18141,7 +18141,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 223.52 123.19 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18220,7 +18220,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 190.5 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18387,7 +18387,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 198.12 107.95 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18465,7 +18465,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 236.22 153.67 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18545,7 +18545,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 120.65 35.56 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19036,7 +19036,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 323.85 41.91 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19194,7 +19194,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 223.52 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19272,7 +19272,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Push button switch, generic, two pins"
 			(at 223.52 107.95 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19341,7 +19341,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "http://www.winbond.com/resource-files/w25q128jv_dtr%20revc%2003272018%20plus.pdf"
+		(property "Datasheet" ""
 			(at 228.6 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -19352,7 +19352,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "128Mb Serial Flash Memory, Standard/Dual/Quad SPI, SOIC-8"
 			(at 228.6 55.88 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19605,7 +19605,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf"
+		(property "Datasheet" ""
 			(at 81.28 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -19616,7 +19616,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "A microcontroller by Raspberry Pi"
 			(at 81.28 166.37 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20026,7 +20026,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 109.22 104.14 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20268,7 +20268,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "ESD Protection Diode, SOD-523"
 			(at 73.66 33.02 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20598,7 +20598,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor, small symbol"
 			(at 62.865 45.72 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20753,7 +20753,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor, small symbol"
 			(at 48.26 38.1 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20986,7 +20986,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 68.58 113.03 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21066,7 +21066,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 199.39 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21352,7 +21352,7 @@
 				)
 			)
 		)
-		(property "Value" "PMW3360"
+		(property "Value" "PMW3360DM-T2QU"
 			(at 333.83 113.90 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21373,7 +21373,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.pixart.com/products-detail/tw/10/PMW3360DM-T2QU"
+		(property "Datasheet" ""
 			(at 330.02 118.98 0)
 			(hide yes)
 			(show_name no)
@@ -21384,30 +21384,8 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Optical mouse sensor"
 			(at 333.83 98.66 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" ""
-			(at 333.83 98.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mfr. #" "PMW3360DM-T2QU + LM19-LSI"
-			(at 333.83 98.66 0)
-			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -21466,7 +21444,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/1da5363b-9254-416a-9573-71742689f640"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "U1")
 					(unit 1)
 				)
@@ -21526,7 +21504,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "LDO Voltage Regulators 300-mA low-IQ low-dropout (LDO) voltage regulator with enable 5-SOT-23 -40 to 125"
 			(at 331.04 177.39 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21575,7 +21553,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/1dccb600-526d-4c83-9440-1b931e9b4020"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "U2")
 					(unit 1)
 				)
@@ -21638,7 +21616,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 366.60 181.20 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21678,7 +21656,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/27b9400d-98b1-4dd0-8676-4dd699e1bceb"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "C4")
 					(unit 1)
 				)
@@ -21741,7 +21719,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 342.47 181.20 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21781,7 +21759,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/3696e467-4807-4909-ac9d-a4bc45889cca"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "C5")
 					(unit 1)
 				)
@@ -21843,7 +21821,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 314.53 181.20 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21883,7 +21861,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/3e61697c-5867-4410-b34c-dea9f981687a"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "C3")
 					(unit 1)
 				)
@@ -21945,7 +21923,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 313.51 102.47 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21985,7 +21963,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/56d5b5c4-ea1f-48ae-861a-2d8c8b7a2dd8"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "C2")
 					(unit 1)
 				)
@@ -22047,7 +22025,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 364.31 80.88 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22087,7 +22065,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/5787d4fd-e2e9-4d4d-87e6-72bdd196a639"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "R2")
 					(unit 1)
 				)
@@ -22147,7 +22125,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 356.44 177.39 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22187,7 +22165,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/610d2ade-53fa-4f5e-a3a1-1aca305beba4"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "R4")
 					(unit 1)
 				)
@@ -22202,7 +22180,7 @@
 		(exclude_from_sim no)
 		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "9ca99c4b-8bb3-4a14-8335-051ddbe4bce1")
 		(property "Reference" "JP1"
@@ -22249,7 +22227,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Solder Jumper, 3-pole, open"
 			(at 385.00 177.39 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22292,7 +22270,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/9ca99c4b-8bb3-4a14-8335-051ddbe4bce1"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "JP1")
 					(unit 1)
 				)
@@ -22354,7 +22332,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 312.24 96.12 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22394,7 +22372,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/a4d7b811-2256-4b90-a4a7-d5bbebcec36e"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "R3")
 					(unit 1)
 				)
@@ -22456,7 +22434,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 308.43 102.47 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22496,7 +22474,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/a86a4f59-dc40-4f77-ab19-c4e9c4d90aaa"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "C1")
 					(unit 1)
 				)
@@ -22558,7 +22536,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 350.34 80.88 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22598,7 +22576,7 @@
 		)
 		(instances
 			(project "curcur40-right"
-				(path "/cfbe2306-8ce2-419e-ac7f-b124e00d2fc0"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "R1")
 					(unit 1)
 				)
@@ -22631,7 +22609,7 @@
 		(pin "1" (uuid "37e1ad85-64b4-46e1-84d2-befb94f572a9"))
 		(instances
 			(project "curcur40-right"
-				(path "/0115cc2d-c18d-4edb-8f5f-50be3fd57ab2"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "#PWR0203")
 					(unit 1)
 				)
@@ -22664,7 +22642,7 @@
 		(pin "1" (uuid "0fd8eeb6-6a15-490b-9270-3b1adca510d3"))
 		(instances
 			(project "curcur40-right"
-				(path "/65bee44d-151d-40f5-ad32-2864ef3739e4"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "#PWR0204")
 					(unit 1)
 				)
@@ -22697,7 +22675,7 @@
 		(pin "1" (uuid "b793f253-e8a6-4201-8889-dd0824809235"))
 		(instances
 			(project "curcur40-right"
-				(path "/c4c3422c-266b-49f9-b8e0-c518230433ea"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "#PWR0205")
 					(unit 1)
 				)
@@ -22730,7 +22708,7 @@
 		(pin "1" (uuid "fa1910c3-4d33-43e6-a642-ada353395d89"))
 		(instances
 			(project "curcur40-right"
-				(path "/647626c5-1f57-4ddd-885d-0ed95f970120"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "#PWR0206")
 					(unit 1)
 				)
@@ -22763,7 +22741,7 @@
 		(pin "1" (uuid "a1efc0e4-b7ce-4ac2-b25e-f917cab76a03"))
 		(instances
 			(project "curcur40-right"
-				(path "/2f123fd1-6fb1-4474-93cf-484f89a46386"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "#PWR0201")
 					(unit 1)
 				)
@@ -22796,7 +22774,7 @@
 		(pin "1" (uuid "66dca996-ebdd-48fb-8529-496143e59a80"))
 		(instances
 			(project "curcur40-right"
-				(path "/509a9613-3585-450b-904a-bba5e5a14e06"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "#PWR0202")
 					(unit 1)
 				)
@@ -22829,7 +22807,7 @@
 		(pin "1" (uuid "4f9fee0d-325f-4856-82f2-f487519a482a"))
 		(instances
 			(project "curcur40-right"
-				(path "/d4dbc4ff-9717-4f39-9d9b-74874c79bff2"
+				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "#PWR0207")
 					(unit 1)
 				)
@@ -23424,9 +23402,8 @@
 		(effects (font (size 1.27 1.27)) (justify left bottom))
 		(uuid "cb644be6-a099-4155-b2a2-1e34d9de3527")
 	)
-	(label "MOTION"
-		(at 359.23 93.58 0)
-		(effects (font (size 1.27 1.27)) (justify left bottom))
+	(no_connect
+		(at 359.23 93.58)
 		(uuid "b5c6e3ad-56b8-4067-b5a6-3b4424daa205")
 	)
 	(label "V_{IO}"
@@ -23438,6 +23415,11 @@
 		(at 321.13 93.58 0)
 		(effects (font (size 1.27 1.27)) (justify left bottom))
 		(uuid "d48a4f4e-111d-426c-997c-6aefb3c46cf5")
+	)
+	(label "+1V8_PMW"
+		(at 313.51 98.66 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "d1962955-6fa0-4a1b-9c58-8d2f9f6dbce4")
 	)
 	(label "+1V8_PMW"
 		(at 308.43 89.77 0)

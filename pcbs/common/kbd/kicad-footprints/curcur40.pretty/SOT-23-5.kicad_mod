@@ -1,0 +1,230 @@
+(footprint "SOT-23-5"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "SOT, 5 Pin (https://www.jedec.org/sites/default/files/docs/Mo-178c.PDF variant AA), generated with kicad-footprint-generator ipc_gullwing_generator.py")
+	(tags "SOT TO_SOT_SMD")
+	(property "Reference" "REF**"
+		(at -0.1325 -2.28545 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "25d215f9-b81a-4acf-8119-82babf441088")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "SOT-23-5"
+		(at 0 2.4 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "fafd85e7-2cdb-4331-b003-a3f1393caa27")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "fe424e7c-a657-4681-8ccf-d92211f86c60")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" "LDO Voltage Regulators 300-mA low-IQ low-dropout (LDO) voltage regulator with enable 5-SOT-23 -40 to 125"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "a1d4148c-9303-44ad-b9db-3d6b811ec34c")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "LCSC" "C485152"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "8d731845-6689-41ac-a580-e4deec5d07ee")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Mfr. #" "TLV74318PDBVR"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "5d0433cb-ee40-40d3-b106-ce69be42ee65")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(sheetfile "curcur40-right.kicad_sch")
+	(solder_mask_margin 0.05)
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -2.05 -1.7)
+		(end -2.05 1.7)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "719f522a-22b2-4f32-879a-a3dea2557059")
+	)
+	(fp_line
+		(start -2.05 1.7)
+		(end 2.05 1.7)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "a7f1edb1-f6fc-42f9-85ae-0ebe9342557e")
+	)
+	(fp_line
+		(start 2.05 -1.7)
+		(end -2.05 -1.7)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "c7f113fc-250f-429b-8b2a-5e48ce905109")
+	)
+	(fp_line
+		(start 2.05 1.7)
+		(end 2.05 -1.7)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "2ccece89-fa43-445a-ac40-69a973e032eb")
+	)
+	(fp_line
+		(start -0.8 -1.05)
+		(end -0.4 -1.45)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "22445807-a98b-493f-a0aa-3871e1703289")
+	)
+	(fp_line
+		(start -0.8 1.45)
+		(end -0.8 -1.05)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "48fdda46-e167-4578-aba9-28a362002ca6")
+	)
+	(fp_line
+		(start -0.4 -1.45)
+		(end 0.8 -1.45)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "c52f0c5e-089c-4830-b9b8-57246663838b")
+	)
+	(fp_line
+		(start 0.8 -1.45)
+		(end 0.8 1.45)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "80f9e28a-63e3-43ca-9b4e-24a9b77cd8a9")
+	)
+	(fp_line
+		(start 0.8 1.45)
+		(end -0.8 1.45)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "86582f47-4c2e-430d-88e2-26e0eb627d66")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "0343d831-9a01-4e7c-b422-4e6c840a9cde")
+		(effects
+			(font
+				(size 0.4 0.4)
+				(thickness 0.06)
+			)
+		)
+	)
+	(pad "1" smd roundrect
+		(at -1.1375 -0.95)
+		(size 1.325 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "c5a3ed23-0440-4308-a316-2352787d502d")
+	)
+	(pad "2" smd roundrect
+		(at -1.1375 0)
+		(size 1.325 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "13f6aaf2-87a2-4adf-8e2c-d05e3fae79ee")
+	)
+	(pad "3" smd roundrect
+		(at -1.1375 0.95)
+		(size 1.325 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "5627cbec-d852-4b93-aa7c-9835cbdd7b3e")
+	)
+	(pad "4" smd roundrect
+		(at 1.1375 0.95)
+		(size 1.325 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "2b8d6466-3831-464f-bbed-ef2971979c9d")
+	)
+	(pad "5" smd roundrect
+		(at 1.1375 -0.95)
+		(size 1.325 0.6)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "67ffd4eb-c182-4b59-ba58-298732c8ddd4")
+	)
+	(embedded_fonts no)
+	(model "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)
