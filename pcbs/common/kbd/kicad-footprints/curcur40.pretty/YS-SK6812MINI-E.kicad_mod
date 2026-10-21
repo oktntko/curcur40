@@ -1,0 +1,187 @@
+(footprint "YS-SK6812MINI-E"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 -1.95 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "4946d9a5-4e73-4f5f-98bf-366c3b79ae1c")
+		(effects
+			(font
+				(size 0.5 0.5)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "YS-SK6812MINI-E"
+		(at 0 -2.2 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "a0457f92-ea83-45da-95da-06c21bef6f6c")
+		(effects
+			(font
+				(size 0.6 0.6)
+				(thickness 0.1)
+				(bold yes)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "a9f0f18a-f1b9-483e-b894-d298af68f38b")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "58357903-1e76-4dc3-9c6e-86922b9881b3")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify mirror)
+		)
+	)
+	(sheetname "right")
+	(sheetfile "../../common/right.kicad_sch")
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_poly
+		(pts
+			(xy -4.05 0.35) (xy -4.05 1.5) (xy -3.8 1.5)
+		)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.SilkS")
+		(uuid "d2727ad0-a344-4c4f-ba08-fc2b0861bf0c")
+	)
+	(fp_line
+		(start -1.8 -1.55)
+		(end -1.8 1.55)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "4608dd4c-2ab0-4918-aa2c-0bb688a7c5cf")
+	)
+	(fp_line
+		(start -1.8 1.55)
+		(end 1.8 1.55)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "a5ff8239-6c6d-49ad-b042-839dfc8d20dd")
+	)
+	(fp_line
+		(start 1.8 -1.55)
+		(end -1.8 -1.55)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "5bcdc2de-8f13-4492-bf26-2cb7bc927ef6")
+	)
+	(fp_line
+		(start 1.8 1.55)
+		(end 1.8 -1.55)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "4721faa9-3a14-4933-bd30-fc9ed64a79d5")
+	)
+	(fp_line
+		(start -1.6 -1.4)
+		(end -1.6 1.4)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "1bd52402-a613-49f9-9a3b-89824760a76d")
+	)
+	(fp_line
+		(start -1.6 -1.4)
+		(end 1.6 -1.4)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "dd79bcae-35f7-4943-a816-9070a4d5954d")
+	)
+	(fp_line
+		(start -1.6 1.4)
+		(end 1.6 1.4)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "a7bfbaf1-7eae-460a-ac96-0790942d751a")
+	)
+	(fp_line
+		(start 1.6 -1.4)
+		(end 1.6 1.4)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "f0b7935e-9376-429e-9574-9e07a9e77f54")
+	)
+	(pad "1" smd rect
+		(at 2.8 -0.7)
+		(size 1.7 0.825)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "de68c5e1-ea4c-45dc-aaf7-b7f05969fda2")
+	)
+	(pad "2" smd rect
+		(at 2.8 0.7)
+		(size 1.7 0.825)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "c7eba574-647d-4c01-863c-95def84fc867")
+	)
+	(pad "3" smd rect
+		(at -2.8 0.7)
+		(size 1.7 0.825)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "e8a3f697-fab7-4602-80ac-c3187cef3082")
+	)
+	(pad "4" smd rect
+		(at -2.8 -0.7)
+		(size 1.7 0.825)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "19c31272-b097-4c09-809f-c8add7bac2be")
+	)
+	(embedded_fonts no)
+	(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(offset
+			(xyz 0 0 0.15)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 180 0 180)
+		)
+	)
+)
