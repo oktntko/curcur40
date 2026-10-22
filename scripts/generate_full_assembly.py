@@ -265,8 +265,8 @@ def make_keycap_solid(sx, sy, label="Keycap") -> bd.Solid:
 def make_ckw12_solids(ex, ey):
     """
     Loads the official CKW12 rotary encoder 3D models (housing, wheel, stem),
-    aligned with rEXSW1 orientation (0 deg in STEP), and places on F.Cu + 0.50 mm
-    conthrough height (Z = -4.20 + 0.50 = -3.70 mm).
+    rotates -90 deg around Z (matching original footprint 3D orientation), and
+    places on F.Cu + 0.50 mm conthrough height (Z = -4.20 + 0.50 = -3.70 mm).
     """
     models_dir = WORKSPACE / "pcbs" / "common" / "kbd" / "3dmodels"
     solids = []
@@ -276,7 +276,7 @@ def make_ckw12_solids(ex, ey):
         ("ckw12_stem.stp", "CKW12_Stem"),
     ]:
         part = bd.import_step(str(models_dir / fname))
-        placed = part.moved(bd.Location((ex, ey, -3.70)))
+        placed = part.moved(bd.Location((ex, ey, -3.70), (0, 0, -90)))
         for idx, s in enumerate(placed.solids()):
             s.label = label if len(placed.solids()) == 1 else f"{label}_{idx+1}"
             solids.append(s)
