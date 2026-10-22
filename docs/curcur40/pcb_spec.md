@@ -36,22 +36,31 @@
 | **`PMW3360_PCB`** | シンボル | [pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym](../../pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym) | 光学センサー（`PMW3360DM-T2QU`）、1.8V LDO（`TLV74318PDBVR`） |
 | **`kbd`** | フットプリント | [pcbs/common/kbd/kicad-footprints/kbd.pretty](../../pcbs/common/kbd/kicad-footprints/kbd.pretty) | 下記 **1.3節** の計7種類のカスタムフットプリントのみ使用 |
 
-### 1.3 `curcur40` で使用するプロジェクト固有カスタム部品の詳細と入手元
+### 1.3 `curcur40` で使用するプロジェクト固有ライブラリデータの入手元と改変履歴
 
-`pcbs/common/kbd/` 配下のうち、`curcur40` で実際に使用しているカスタム部品（計7種類）の仕様・回路図シンボルとの対応・入手元は以下の通りです。
+`pcbs/common/kbd/` 配下のうち、`curcur40` で実際に使用している**回路図シンボル（2ファイル）**および**フットプリント（7ファイル）**のデータ入手元（公開リポジトリ）と、KiCad 10.0 対応時のローカル調整内容は以下の通りです。
 
-| 部品名称 / 用途 | 回路図シンボル | PCBフットプリント (`kbd:`) | 実部品型番 / メーカー | 仕様・ピン数詳細 | LCSC番号 / 主な入手元 |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Choc ホットスワップソケット (1u)** | `Switch:SW_Push` | `keyswitch_choc12_hotswap_1u` | Kailh **`CPG135001S30`** | Kailh Choc V1 / V2 兼用SMDソケット（全キー 1u = $19.05 \times 19.05 \, \text{mm}$ ガイド枠に統一） | **LCSC: `C5333465`**（JLCPCB PCBA実装可 / 遊舎工房・TalpKeyboard・AliExpress） |
-| **USB Type-C レセプタクル** | `Connector:USB_C_Receptacle_USB2.0_16P` | `USB_C_Receptacle_TYPE-C-31-M-13C` | HRO Electronics **`TYPE-C-31-M-13C`** | **USB 2.0 16ピン**（信号・電源16ピン `A1/A4〜A9/A12, B1/B4〜B9/B12` ＋ シールド固定脚 `SH` ×4）ミッドマウント型 | **LCSC: `C2848620`**（JLCPCB PCBA実装可 / LCSC） |
-| **TRRS (TRS) 3.5mm ジャック** | `Connector_Audio:AudioJack3` | `Jack_PJ-398A-5A_PJ-399B-6A` | XKB / 汎用 **`PJ-398A-5A`**（または `PJ-399B-6A`） | 3.5mm ミニジャック（スルーホール実装、外装抜け穴 $\varnothing 7.50 \, \text{mm}$ 対応） | **LCSC: `C128994`**（JLCPCB / LCSC / AliExpress） |
-| **逆付け RGB LED** | `kbd:YS-SK6812MINI-E` | `YS-SK6812MINI-E` | OPSCO / Ys **`YS-SK6812MINI-E`**（`SK6812MINI-E` 互換） | 3228サイズ 側面ガルウィング4ピン（基板裏面から表面側へ発光するリバースマウント型アドレッサブルLED） | **LCSC: `C5149201`**（JLCPCB PCBA実装可 / 遊舎工房・AliExpress） |
-| **SMD タクトスイッチ（RESET / BOOT）** | `Switch:SW_Push` | `TS-1088R-02026` | XKB Connectivity **`TS-1088R-02026`** | $3.0 \times 2.5 \, \text{mm}$ 超小型2ピン表面実装タクトスイッチ（高さ $0.6 \, \text{mm}$） | **LCSC: `C455280`**（JLCPCB PCBA実装可 / LCSC） |
-| **薄型ホイールエンコーダ（右のみ）** | `Device:RotaryEncoder_Switch` | `RotaryEncoder_Switch_CKW12` | Kailh **`CKW12`**（`CEN981812R02`） | マウスホイール風ロータリーエンコーダ（回転A/B/C相 ＋ クリックプッシュSW S1/S2、計5端子＋固定ボス穴） | **遊舎工房 / TalpKeyboard / AliExpress**（手付けはんだ実装部品） |
-| **トラックボール光学センサー（右のみ）** | `PMW3360_PCB:PMW3360DM-T2QU` | `PMW3360DM-T2QU_16Pin` | PixArt **`PMW3360DM-T2QU`** ＋ **`LM19-LSI`** レンズ | 16ピン千鳥DIPスルーホール光学センサー（2列×8ピン）。基板角穴（$16.90 \times 8.70 \, \text{mm}$）越しにレンズを装着 | **AliExpress / 遊舎工房**（手付けはんだ実装部品） |
+#### ① 回路図シンボルライブラリ（`.kicad_sym`）
+
+| ライブラリ / シンボル名 | ファイルパス | データ入手元（公開リポジトリ） | ローカルでの生成・改変内容 |
+| :--- | :--- | :--- | :--- |
+| **`kbd`**<br>(`+1V1R`, `+3V3R`, `+5VR`, `GNDR`, `VBUSR`, `YS-SK6812MINI-E`) | [kbd.kicad_sym](../../pcbs/common/kbd/kicad-symbols/kbd.kicad_sym) | **foostan/kbd**<br>(`https://github.com/foostan/kbd` — Corne v4 公式 KiCad ライブラリ、MIT License。`git subtree` で取得) | `YS-SK6812MINI-E` の Pin 3 (`DOUT`) が元データで `power_in` になっていたため、KiCad 10.0 ERC 対応としてデータシート通り `output` にローカル修正 |
+| **`PMW3360_PCB`**<br>(`PMW3360DM-T2QU`, `TLV74318PDBVR`) | [pmw3360_pcb.kicad_sym](../../pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym) | **SideraKB/PMW3360_PCB**<br>(`https://github.com/SideraKB/PMW3360_PCB` — PMW3360 ブレイクアウト基板 OSS、CERN-OHL-P v2) | `PMW3360DM-T2QU` の Pin 3 (`VDDPIX`) が元データで `power_in` になっていたため、内部レギュレータ出力仕様に合わせて `power_out` にローカル修正 |
+
+#### ② フットプリントライブラリ（`kbd.pretty/*.kicad_mod`）および 3Dモデル
+
+| フットプリント名 (`kbd:`) | 対象部品 / 回路図シンボル | データ入手元（公開リポジトリ） | ローカルでの生成・改変内容 |
+| :--- | :--- | :--- | :--- |
+| **[`keyswitch_choc12_hotswap_1u.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/keyswitch_choc12_hotswap_1u.kicad_mod)** | Kailh Choc ソケット (`CPG135001S30`)<br>`Switch:SW_Push` | **foostan/kbd**<br>(`keyswitch_choc12_hotswap_1u.kicad_mod` ＋ `kailh_choc_socket.step`) | 元データをそのまま使用（KiCad 10.0 DRC 対応として NPTH 穴の `solder_mask_margin` のみ `-0.2 mm` にローカル調整） |
+| **[`YS-SK6812MINI-E.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/YS-SK6812MINI-E.kicad_mod)** | 逆付け RGB LED (`YS-SK6812MINI-E`)<br>`kbd:YS-SK6812MINI-E` | **foostan/kbd**<br>(`YS-SK6812MINI-E.kicad_mod` ＋ `YS-SK6812MINI-E.step`) | 元データをベースに、KiCad 10.0 DRC の基板角穴（`Edge.Cuts`）対パッドクリアランス（`0.25 mm`）およびシルク重なり回避の微調整をローカル実施 |
+| **[`TS-1088R-02026.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/TS-1088R-02026.kicad_mod)** | SMD タクトSW (`TS-1088R-02026`)<br>`Switch:SW_Push` | **foostan/kbd**<br>(`TS-1088R-02026.kicad_mod` ＋ `TS-1088R-02026.step`) | 元データをそのまま使用（KiCad 10.0 フォーマット保存のみ） |
+| **[`USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod)** | USB-C 16ピン (`TYPE-C-31-M-13C`)<br>`Connector:USB_C_Receptacle_USB2.0_16P` | **foostan/kbd** の [`TYPE-C-31-M-13C.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/TYPE-C-31-M-13C.kicad_mod)（＋ `TYPE-C-31-M-13C.step`）が元データ | 標準シンボル `USB_C_Receptacle_USB2.0_16P` のフィルタ（`USB*C*Receptacle*`）に適合するよう**ローカルでリネーム複製**し、`A8`/`B8`（SBU）およびシールド脚 `SH` のピン名を標準シンボルに整合 |
+| **[`Jack_PJ-398A-5A_PJ-399B-6A.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/Jack_PJ-398A-5A_PJ-399B-6A.kicad_mod)** | 3.5mm ジャック (`PJ-398A-5A`)<br>`Connector_Audio:AudioJack3` | **foostan/kbd** の [`PJ-398A-5A_PJ-399B-6A.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/PJ-398A-5A_PJ-399B-6A.kicad_mod)（＋ `PJ-398A-5A.step`）が元データ | 標準シンボル `AudioJack3` のフィルタ（`Jack*`）に適合するよう**ローカルでリネーム複製**し、パッド番号を `1/2/3` から `T/R/S` にローカル変更 |
+| **[`RotaryEncoder_Switch_CKW12.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/RotaryEncoder_Switch_CKW12.kicad_mod)** | ホイールエンコーダ (`CKW12`)<br>`Device:RotaryEncoder_Switch` | **kumakey/roBa**<br>(`https://github.com/kumakey/roBa` の `roBa:SW_MX_EC12` フットプリントとして [`CKW12.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/CKW12.kicad_mod) に取得 ＋ `3dmodels/ckw12_*.stp`) | 標準シンボル `RotaryEncoder_Switch` のフィルタ（`RotaryEncoder*Switch*`）に適合するよう `CKW12.kicad_mod` から**ローカルでリネーム複製**し、位置決めNPTH穴径・マスクマージンを微調整 |
+| **[`PMW3360DM-T2QU_16Pin.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/PMW3360DM-T2QU_16Pin.kicad_mod)** | 光学センサー (`PMW3360DM-T2QU`)<br>`PMW3360_PCB:PMW3360DM-T2QU` | **SideraKB/PMW3360_PCB**<br>(`https://github.com/SideraKB/PMW3360_PCB` の `PMW3360DM-T2QU_16Pin.kicad_mod`) | 元データをベースに、KiCad 10.0 でスルーホールパッドの銅箔定義欠落エラーを防ぐため `(layers "*.Cu" "*.Mask")` をローカル補完 |
 
 > **【補足：`SW1` / `rSW1` のソケットフットプリント統一について】**
-> 派生元の Corne Chocolate では内側親指キー（`SW1` / `rSW1`）に 1.5u キーキャップ用のガイド枠を持つ `keyswitch_choc12_hotswap_1.5u` が割り当てられていましたが、物理的なホットスワップソケット部品（`CPG135001S30`、LCSC `C5333465`）および銅箔パッド・穴径は `1u` と完全に同一であり、かつ `curcur40` では全キーが **1u キーキャップ構成** であるため、回路図・PCBともに全キーを `kbd:keyswitch_choc12_hotswap_1u` に統一しています。
+> 派生元の Corne Chocolate では内側親指キー（`SW1` / `rSW1`）に 1.5u キーキャップ用のガイド枠を持つ `keyswitch_choc12_hotswap_1.5u` が割り当てられていましたが、物理的なホットスワップソケット部品および銅箔パッド・穴径は `1u` と完全に同一であり、かつ `curcur40` では全キーが **1u キーキャップ構成** であるため、回路図・PCBともに全キーを `kbd:keyswitch_choc12_hotswap_1u` に統一しています。
 
 ---
 
@@ -236,45 +245,31 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 
 ---
 
-## 7. 実装部品表・入手元一覧 (BOM & Sourcing Summary)
+## 7. 実装部品表 (BOM Summary)
 
-左右基板で使用する全実装部品の型番・フットプリント・数量・LCSC部品番号（[BOM-curcur40-left.csv](../../pcbs/curcur40/left/jlcpcb/production_files/BOM-curcur40-left.csv) / [BOM-curcur40-right.csv](../../pcbs/curcur40/right/jlcpcb/production_files/BOM-curcur40-right.csv) 準拠）および入手元の一覧です。
-
-| カテゴリ | リファレンス (左) | リファレンス (右) | 型番 / 値 | パッケージ / フットプリント | 実装面 | 左数量 | 右数量 | LCSC番号 / 主な入手元・実装方法 |
-| :--- | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
-| **MCU** | `U1` | `rU1` | `RP2040` | `Package_DFN_QFN:QFN-56-1EP_7x7mm_P0.4mm_EP3.2x3.2mm` | `B.Cu` | 1 | 1 | **`C2040`**（JLCPCB PCBA / LCSC） |
-| **QSPI Flash** | `U4` | `rU4` | `W25Q128JVSIQ` | `Package_SO:SOIC-8_5.3x5.3mm_P1.27mm` | `B.Cu` | 1 | 1 | **`C113767`**（JLCPCB PCBA / LCSC） |
-| **3.3V LDO** | `U2` | `rU2` | `NCP1117LPST33T3G` | `Package_TO_SOT_SMD:SOT-223-3_TabPin2` | `B.Cu` | 1 | 1 | **`C146799`**（JLCPCB PCBA / LCSC） |
-| **ESD 保護 IC** | `U3` | `rU3` | `TPD4E05U06DQAR` | `Package_SON:USON-10_2.5x1.0mm_P0.5mm` | `B.Cu` | 1 | 1 | **`C138714`**（JLCPCB PCBA / LCSC） |
-| **水晶振動子** | `Y1` | `rY1` | `12MHz 18pF` | `Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm` | `B.Cu` | 1 | 1 | **`C91749`**（JLCPCB PCBA / LCSC） |
-| **ショットキーD** | `ZD1` | `rZD1` | `RB521S30T1G` | `Diode_SMD:D_SOD-523` | `B.Cu` | 1 | 1 | **`C145179`**（JLCPCB PCBA / LCSC） |
-| **スイッチングD** | `D1` | `rD1` | `1N4148WT` | `Diode_SMD:D_SOD-523` | `B.Cu` | 1 | 1 | **`C232841`**（JLCPCB PCBA / LCSC） |
-| **コンデンサ (0402)** | `C3, C4, C7, C9, C10, C12〜15` | `rC3, rC4, rC7, rC9, rC10, rC12〜15` | `100nF` | `Capacitor_SMD:C_0402_1005Metric` | `B.Cu` | 9 | 9 | **`C1525`**（JLCPCB PCBA Basic / LCSC） |
-| **コンデンサ (0402)** | `C5, C8, C16` | `rC5, rC8, rC16` | `1uF` | `Capacitor_SMD:C_0402_1005Metric` | `B.Cu` | 3 | 3 | **`C52923`**（JLCPCB PCBA Basic / LCSC） |
-| **コンデンサ (0402)** | `C6, C11` | `rC6, rC11` | `10uF` | `Capacitor_SMD:C_0402_1005Metric` | `B.Cu` | 2 | 2 | **`C15525`**（JLCPCB PCBA / LCSC） |
-| **コンデンサ (0402)** | `C1, C2` | `rC1, rC2` | `27pF` | `Capacitor_SMD:C_0402_1005Metric` | `B.Cu` | 2 | 2 | **`C1557`**（JLCPCB PCBA / LCSC） |
-| **抵抗 (0402)** | `R4, R5` | `rR4, rR5` | `27Ω` | `Resistor_SMD:R_0402_1005Metric` | `B.Cu` | 2 | 2 | **`C2909343`**（JLCPCB PCBA / LCSC） |
-| **抵抗 (0402)** | `R3, R6` | `rR3, rR6` | `1kΩ` | `Resistor_SMD:R_0402_1005Metric` | `B.Cu` | 2 | 2 | **`C11702`**（JLCPCB PCBA Basic / LCSC） |
-| **抵抗 (0402)** | `R1, R2` | `rR1, rR2` | `5.1kΩ` | `Resistor_SMD:R_0402_1005Metric` | `B.Cu` | 2 | 2 | **`C25905`**（JLCPCB PCBA Basic / LCSC） |
-| **抵抗 (0402)** | `R8` | `rR8` | `5.6kΩ` | `Resistor_SMD:R_0402_1005Metric` | `B.Cu` | 1 | 1 | **`C25908`**（JLCPCB PCBA / LCSC） |
-| **抵抗 (0402)** | `R7, R9` | `rR7, rR9` | `10kΩ` | `Resistor_SMD:R_0402_1005Metric` | `B.Cu` | 2 | 2 | **`C25744`**（JLCPCB PCBA Basic / LCSC） |
-| **USB-C (16ピン)** | `J1` | `rJ1` | `TYPE-C-31-M-13C` | `kbd:USB_C_Receptacle_TYPE-C-31-M-13C` | `B.Cu` | 1 | 1 | **`C2848620`**（JLCPCB PCBA / LCSC） |
-| **TRRS ジャック** | `J2` | `rJ2` | `PJ-398A-5A` | `kbd:Jack_PJ-398A-5A_PJ-399B-6A` | `B.Cu` | 1 | 1 | **`C128994`**（JLCPCB / LCSC / AliExpress） |
-| **タクトSW** | `SMDSW1, SMDSW2` | `rSMDSW1, rSMDSW2` | `TS-1088R-02026` | `kbd:TS-1088R-02026` | `B.Cu` | 2 | 2 | **`C455280`**（JLCPCB PCBA / LCSC） |
-| **逆付け RGB LED** | `LED1`〜`18`, `EXLED1`〜`3` | `rLED1`〜`18`, `rEXLED2` | `YS-SK6812MINI-E` | `kbd:YS-SK6812MINI-E` | `B.Cu` | 21 | 19 | **`C5149201`**（JLCPCB PCBA / 遊舎工房・AliExpress） |
-| **Choc ソケット (1u)** | `SW1`〜`18`, `EXSW1`〜`3` | `rSW1`〜`18`, `rEXSW2` | `CPG135001S30` | `kbd:keyswitch_choc12_hotswap_1u` | `B.Cu` | 21 | 19 | **`C5333465`**（JLCPCB PCBA / 遊舎工房・TalpKeyboard・AliExpress） |
-| **ホイールエンコーダ** | ― | `rEXSW1` | `CKW12` | `kbd:RotaryEncoder_Switch_CKW12` | `F.Cu` | 0 | 1 | **遊舎工房 / TalpKeyboard / AliExpress**（手付けはんだ） |
-| **光学センサー** | ― | `U1` | `PMW3360DM-T2QU` | `kbd:PMW3360DM-T2QU_16Pin` | `B.Cu` | 0 | 1 | **AliExpress / 遊舎工房**（手付けはんだ、LM19レンズ付） |
-| **1.8V LDO** | ― | `U2` | `TLV74318PDBVR` | `Package_TO_SOT_SMD:SOT-23-5` | `B.Cu` | 0 | 1 | **`C485152`**（JLCPCB PCBA / LCSC） |
-| **コンデンサ (0603)** | ― | `C1` | `4.7uF/10V` | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 1 | **`C19666`**（JLCPCB PCBA Basic / LCSC） |
-| **コンデンサ (0603)** | ― | `C3, C4` | `1uF` | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 2 | **`C15849`**（JLCPCB PCBA Basic / LCSC） |
-| **コンデンサ (0603)** | ― | `C2` | `100nF` | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 1 | **`C14663`**（JLCPCB PCBA Basic / LCSC） |
-| **コンデンサ (0603)** | ― | `C5` | `22nF` (`DNP`可) | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 1 | **`C21122`**（LCSC / リセット遅延用オプション） |
-| **抵抗 (0603)** | ― | `R1, R2` | `10kΩ` | `Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder` | `B.Cu` | 0 | 2 | **`C25804`**（JLCPCB PCBA Basic / LCSC） |
-| **抵抗 (0603)** | ― | `R3` | `39Ω` | `Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder` | `B.Cu` | 0 | 1 | **`C23154`**（JLCPCB PCBA / LCSC） |
-| **抵抗 (0603)** | ― | `R4` | `28kΩ` (`DNP`可) | `Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder` | `B.Cu` | 0 | 1 | **`C22970`**（LCSC / 外部プルアップ予備） |
-| **電圧選択ジャンパ** | ― | `JP1` | `SolderJumper_3_Open` | `Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels` | `B.Cu` | 0 | 1 | 基板銅箔パターン（組立時にはんだブリッジ） |
-| **SWD デバッグ端子** | `J4` (`DNP`) | `rJ4` (`DNP`) | `Conn_01x03` | `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` | `B.Cu` | 0 | 0 | **未実装 (`DNP`)**（空きスルーホールランドのみ） |
+| カテゴリ | リファレンス (左) | リファレンス (右) | 型番 / 値 | パッケージ / フットプリント | 実装面 | 左数量 | 右数量 |
+| :--- | :--- | :--- | :--- | :--- | :---: | :---: | :---: |
+| **MCU** | `U1` | `rU1` | `RP2040` | `Package_DFN_QFN:QFN-56-1EP_7x7mm_P0.4mm_EP3.2x3.2mm` | `B.Cu` | 1 | 1 |
+| **QSPI Flash** | `U4` | `rU4` | `W25Q128JVSIQ` | `Package_SO:SOIC-8_5.3x5.3mm_P1.27mm` | `B.Cu` | 1 | 1 |
+| **3.3V LDO** | `U2` | `rU2` | `NCP1117LPST33T3G` | `Package_TO_SOT_SMD:SOT-223-3_TabPin2` | `B.Cu` | 1 | 1 |
+| **ESD 保護 IC** | `U3` | `rU3` | `TPD4E05U06DQAR` | `Package_SON:USON-10_2.5x1.0mm_P0.5mm` | `B.Cu` | 1 | 1 |
+| **水晶振動子** | `Y1` | `rY1` | `12MHz 18pF` | `Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm` | `B.Cu` | 1 | 1 |
+| **ショットキーD** | `ZD1` | `rZD1` | `RB521S30T1G` | `Diode_SMD:D_SOD-523` | `B.Cu` | 1 | 1 |
+| **スイッチングD** | `D1` | `rD1` | `1N4148WT` | `Diode_SMD:D_SOD-523` | `B.Cu` | 1 | 1 |
+| **コンデンサ (0402)** | `C1`〜`C16` | `rC1`〜`rC16` | `100n`(9), `1u`(3), `10u`(2), `27p`(2) | `Capacitor_SMD:C_0402_1005Metric` | `B.Cu` | 16 | 16 |
+| **抵抗 (0402)** | `R1`〜`R9` | `rR1`〜`rR9` | `27`(2), `1k`(2), `5.1k`(2), `5.6k`(1), `10k`(2) | `Resistor_SMD:R_0402_1005Metric` | `B.Cu` | 9 | 9 |
+| **USB-C (16ピン)** | `J1` | `rJ1` | `TYPE-C-31-M-13C` | `kbd:USB_C_Receptacle_TYPE-C-31-M-13C` | `B.Cu` | 1 | 1 |
+| **TRRS ジャック** | `J2` | `rJ2` | `PJ-398A-5A` | `kbd:Jack_PJ-398A-5A_PJ-399B-6A` | `B.Cu` | 1 | 1 |
+| **タクトSW** | `SMDSW1, SMDSW2` | `rSMDSW1, rSMDSW2` | `TS-1088R-02026` | `kbd:TS-1088R-02026` | `B.Cu` | 2 | 2 |
+| **逆付け RGB LED** | `LED1`〜`18`, `EXLED1`〜`3` | `rLED1`〜`18`, `rEXLED2` | `YS-SK6812MINI-E` | `kbd:YS-SK6812MINI-E` | `B.Cu` | 21 | 19 |
+| **Choc ソケット (1u)** | `SW1`〜`18`, `EXSW1`〜`3` | `rSW1`〜`18`, `rEXSW2` | `CPG135001S30` | `kbd:keyswitch_choc12_hotswap_1u` | `B.Cu` | 21 | 19 |
+| **ホイールエンコーダ** | ― | `rEXSW1` | `CKW12` | `kbd:RotaryEncoder_Switch_CKW12` | `F.Cu` | 0 | 1 |
+| **光学センサー** | ― | `U1` | `PMW3360DM-T2QU` | `kbd:PMW3360DM-T2QU_16Pin` | `B.Cu` | 0 | 1 |
+| **1.8V LDO** | ― | `U2` | `TLV74318PDBVR` | `Package_TO_SOT_SMD:SOT-23-5` | `B.Cu` | 0 | 1 |
+| **コンデンサ (0603)** | ― | `C1`〜`C5` | `4.7uF`(1), `1uF`(2), `100nF`(1), `22nF`(1) | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 5 |
+| **抵抗 (0603)** | ― | `R1`〜`R4` | `10k`(2), `39R`(1), `28k`(1) | `Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder` | `B.Cu` | 0 | 4 |
+| **電圧選択ジャンパ** | ― | `JP1` | `SolderJumper_3_Open` | `Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels` | `B.Cu` | 0 | 1 |
+| **SWD デバッグ端子** | `J4` (`DNP`) | `rJ4` (`DNP`) | `Conn_01x03` | `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` | `B.Cu` | 0 (未実装) | 0 (未実装) |
 
 ---
 
