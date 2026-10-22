@@ -10,8 +10,10 @@ import csv
 import tempfile
 import zipfile
 import subprocess
+from pathlib import Path
 import pcbnew
 
+WORKSPACE = Path(__file__).resolve().parent.parent
 KICAD_CLI = os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe")
 
 LCSC_MAP_MAIN = {
@@ -192,7 +194,7 @@ def export_main_pcb(pcb_path, proj_name, is_right=False):
 
 
 def export_top_plates():
-    plate_dir = r"plates\pcb"
+    plate_dir = str(WORKSPACE / "plates" / "pcb")
     out_dir = os.path.join(plate_dir, "jlcpcb", "production_files")
     os.makedirs(out_dir, exist_ok=True)
     for name in ("plate-top-left", "plate-top-right"):
@@ -204,12 +206,12 @@ def export_top_plates():
 
 if __name__ == "__main__":
     export_main_pcb(
-        "pcbs/right/curcur40-right.kicad_pcb",
+        str(WORKSPACE / "pcbs" / "right" / "curcur40-right.kicad_pcb"),
         "curcur40-right",
         is_right=True,
     )
     export_main_pcb(
-        "pcbs/left/curcur40-left.kicad_pcb",
+        str(WORKSPACE / "pcbs" / "left" / "curcur40-left.kicad_pcb"),
         "curcur40-left",
         is_right=False,
     )

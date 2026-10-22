@@ -9,7 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-ASSETS_DIR = Path(r"c:\Users\oktnt\workspace\curcur40\docs\assets")
+WORKSPACE = Path(__file__).resolve().parent.parent
+ASSETS_DIR = WORKSPACE / "docs" / "assets"
 ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
 plt.rcParams['font.sans-serif'] = ['Meiryo', 'Yu Gothic', 'MS Gothic', 'DejaVu Sans', 'Arial', 'Helvetica']

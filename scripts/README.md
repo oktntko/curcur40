@@ -10,7 +10,9 @@
    - 設計仕様書（[`docs/case_spec.md`](../docs/case_spec.md), [`docs/pcb_spec.md`](../docs/pcb_spec.md)）のパラメータ変更時に再実行するジェネレータ・エクスポータのみを本ディレクトリで管理します。
 2. **一時ファイル・使い捨てスクリプトを残さない**:
    - 1回限りの調査スクリプトや DRC/ERC の一時レポートファイル（`.rpt`, `.net`, `.bak`, `.kicad_prl`）、および作業用の `scratch/`・`tmp/` ディレクトリは、作業完了時に削除しリポジトリ内に残しません（スクリプト内で DRC 検証等を行う場合は Python 標準の `tempfile.TemporaryDirectory` を使用します）。
-3. **出力先ディレクトリ**:
+3. **環境非依存の相対パス記述（フルパス直書きの禁止）**:
+   - スクリプト内のワークスペースパスや入出力先パスには `c:\Users\...` 等の環境依存フルパスをハードコードせず、必ずスクリプト自身の位置からの相対解決（`WORKSPACE = Path(__file__).resolve().parent.parent`）を起点として記述します（カレントディレクトリに依存せずどこからでも実行可能）。
+4. **出力先ディレクトリ**:
    - **3D CAD (STEP / STL)**: [`cases/`](../cases/)
    - **トッププレート PCB / SVG**: [`plates/pcb/`](../plates/pcb/), [`plates/svg/`](../plates/svg/)
    - **JLCPCB 発注用データ**:

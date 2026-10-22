@@ -9,7 +9,7 @@ from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import is_sound
 
-WORKSPACE = Path(r"c:\Users\oktnt\workspace\curcur40")
+WORKSPACE = Path(__file__).resolve().parent.parent
 CASES_DIR = WORKSPACE / "cases"
 CASES_DIR.mkdir(parents=True, exist_ok=True)
 

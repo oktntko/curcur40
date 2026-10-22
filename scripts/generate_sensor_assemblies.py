@@ -12,7 +12,7 @@ from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import overlap_volume, closest_points
 
-WORKSPACE = Path(r"c:\Users\oktnt\workspace\curcur40")
+WORKSPACE = Path(__file__).resolve().parent.parent
 CASES_DIR = WORKSPACE / "cases"
 OUT_SENSOR_PCB_STEP = CASES_DIR / "pmw3360-lens-pcb-assembly.step"
 OUT_TRACKBALL_SENSOR_STEP = CASES_DIR / "trackball-sensor-assembly.step"
