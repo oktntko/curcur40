@@ -133,35 +133,35 @@ def make_rect_cutout(cx, cy, w, h, r=0.5):
 
 def get_left_outer_pts():
     return [
-        (   5.6625, -24.71250, 1.0),  # Top-right
-        (-119.4625, -24.71250, 1.0),  # Top-left
-        (-119.4625,  41.38125, 1.0),  # Pinky-left bottom
-        ( -82.8625,  41.38125, 1.0),  # Pinky step inner
-        ( -82.8625,  67.90000, 1.0),  # Thumb bottom-left
-        (   5.6625,  67.90000, 1.0),  # Bottom-right
+        (   5.4625, -24.51250, 1.0),  # Top-right (+0.20 mm from Main PCB, 0.30 mm clearance to Case inner wall)
+        (-119.2625, -24.51250, 1.0),  # Top-left
+        (-119.2625,  41.18125, 1.0),  # Pinky-left bottom
+        ( -82.6625,  41.18125, 1.0),  # Pinky step inner
+        ( -82.6625,  67.70000, 1.0),  # Thumb bottom-left
+        (   5.4625,  67.70000, 1.0),  # Bottom-right
     ]
 
 
 def get_right_outer_pts(notched_trackball=False):
     if not notched_trackball:
         return [
-            ( -5.6625, -24.71250, 1.0),  # Top-left
-            (119.4625, -24.71250, 1.0),  # Top-right
-            (119.4625,  41.38125, 1.0),  # Pinky-right bottom
-            ( 82.8625,  41.38125, 1.0),  # Pinky step inner
-            ( 82.8625,  67.90000, 1.0),  # Thumb bottom-right
-            ( -5.6625,  67.90000, 1.0),  # Bottom-left
+            ( -5.4625, -24.51250, 1.0),  # Top-left
+            (119.2625, -24.51250, 1.0),  # Top-right
+            (119.2625,  41.18125, 1.0),  # Pinky-right bottom
+            ( 82.6625,  41.18125, 1.0),  # Pinky step inner
+            ( 82.6625,  67.70000, 1.0),  # Thumb bottom-right
+            ( -5.4625,  67.70000, 1.0),  # Bottom-left
         ]
     else:
         return [
-            ( -5.6625, -24.71250, 1.0),  # Top-left
-            (119.4625, -24.71250, 1.0),  # Top-right
-            (119.4625,  41.38125, 1.0),  # Pinky-right bottom
-            ( 82.8625,  41.38125, 1.0),  # Pinky step inner
-            ( 82.8625,  67.90000, 1.0),  # Thumb bottom-right
-            ( 24.8375,  67.90000, 1.0),  # Notch bottom-right
+            ( -5.4625, -24.51250, 1.0),  # Top-left (+0.20 mm from Main PCB, 0.30 mm clearance to Case inner wall)
+            (119.2625, -24.51250, 1.0),  # Top-right
+            (119.2625,  41.18125, 1.0),  # Pinky-right bottom
+            ( 82.6625,  41.18125, 1.0),  # Pinky step inner
+            ( 82.6625,  67.70000, 1.0),  # Thumb bottom-right
+            ( 24.8375,  67.70000, 1.0),  # Notch bottom-right (0.3125 mm clearance to Trackball Cup ear)
             ( 24.8375,  37.40000, 1.0),  # Notch top-right
-            ( -5.6625,  37.40000, 1.0),  # Notch top-left
+            ( -5.4625,  37.40000, 1.0),  # Notch top-left
         ]
 
 

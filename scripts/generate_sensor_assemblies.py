@@ -41,23 +41,26 @@ def build_sensor_pcb_parts():
     """
     # 1. Customer Supplied PCB (1.60 mm FR-4, Z in [-1.60, 0.00] mm)
     pcb_w, pcb_d, pcb_th = 32.0, 32.0, 1.60
-    pin_xs = [(i - 3.5) * 1.78 for i in range(8)]
+    # Staggered 16-pin coordinates matching PMW3360DM-T2QU_16Pin.kicad_mod
+    top_pin_xs = [-6.168 + i * 1.78 for i in range(8)]     # Pads 1..8 at Y = +5.35
+    bot_pin_xs = [-5.278 + i * 1.78 for i in range(8)]     # Pads 16..9 at Y = -5.35
+    pin_coords = [(px, 5.35, 1) for px in top_pin_xs] + [(px, -5.35, -1) for px in bot_pin_xs]
     with bd.BuildPart() as pcb_bp:
         with bd.BuildSketch(bd.Plane.XY.offset(-pcb_th)):
             bd.RectangleRounded(pcb_w, pcb_d, 2.0)
         bd.extrude(amount=pcb_th)
 
-        # Central optical + lens-leg cutout
+        # Central optical + lens-leg cutout (exact 16.90 x 8.70 mm matching PMW3360DM-T2QU_16Pin.kicad_mod)
         with bd.BuildSketch(bd.Plane.XY.offset(-pcb_th - 0.5)):
             with bd.Locations([(0.0, 0.0)]):
-                bd.RectangleRounded(17.50, 8.80, 0.50)
+                bd.Rectangle(16.90, 8.70)
         bd.extrude(amount=pcb_th + 1.0, mode=bd.Mode.SUBTRACT)
 
-        # 16 Pin Through-Holes (row pitch 10.70 mm, pin pitch 1.78 mm)
+        # 16 Pin Through-Holes (row pitch 10.70 mm, pin pitch 1.78 mm, staggered X)
         with bd.BuildSketch(bd.Plane.XY.offset(-pcb_th - 0.5)):
-            for px in pin_xs:
-                with bd.Locations([(px, 5.35), (px, -5.35)]):
-                    bd.Circle(radius=0.40)
+            for px, py, _ in pin_coords:
+                with bd.Locations([(px, py)]):
+                    bd.Circle(radius=0.375)
         bd.extrude(amount=pcb_th + 1.0, mode=bd.Mode.SUBTRACT)
 
     pcb_solid = pcb_bp.part.rotate(bd.Axis.Z, 90).solids()[0]
@@ -75,31 +78,30 @@ def build_sensor_pcb_parts():
             bd.Circle(radius=1.50)
         bd.extrude(amount=1.05, mode=bd.Mode.SUBTRACT)
 
-        # 2 Guide sockets for lens round guide posts
+        # 2 Guide sockets for lens round guide posts (matching (-7.10, 3.30) and (6.70, -3.40) in footprint)
         with bd.BuildSketch(bd.Plane.XY.offset(-1.60 - 1.80)):
-            with bd.Locations([(-8.25, -3.415), (8.25, 3.415)]):
+            with bd.Locations([(-7.10, 3.30), (6.70, -3.40)]):
                 bd.Circle(radius=0.50)
         bd.extrude(amount=1.85, mode=bd.Mode.SUBTRACT)
 
         # 2 Rectangular alignment pockets for lens rectangular legs
         with bd.BuildSketch(bd.Plane.XY.offset(-1.60 - 0.80)):
-            with bd.Locations([(-6.77, 3.415), (6.77, -3.415)]):
+            with bd.Locations([(-6.77, -3.415), (6.77, 3.415)]):
                 bd.RectangleRounded(1.80, 1.20, 0.30)
         bd.extrude(amount=0.85, mode=bd.Mode.SUBTRACT)
 
         # 16 Metal Leads extending up through PCB to F.Cu
-        for px in pin_xs:
-            for py_sign, py_val in [(1, 5.35), (-1, -5.35)]:
-                y_body_edge = py_sign * 4.55
-                with bd.BuildSketch(bd.Plane.XZ.offset(min(y_body_edge, py_val))):
-                    with bd.Locations([(px, -2.31)]):
-                        bd.Rectangle(0.50, 0.25)
-                bd.extrude(amount=abs(py_val - y_body_edge), mode=bd.Mode.ADD)
+        for px, py_val, py_sign in pin_coords:
+            y_body_edge = py_sign * 4.55
+            with bd.BuildSketch(bd.Plane.XZ.offset(-min(y_body_edge, py_val))):
+                with bd.Locations([(px, -2.31)]):
+                    bd.Rectangle(0.50, 0.25)
+            bd.extrude(amount=-abs(py_val - y_body_edge), mode=bd.Mode.ADD)
 
-                with bd.BuildSketch(bd.Plane.XY.offset(-2.31)):
-                    with bd.Locations([(px, py_val)]):
-                        bd.Circle(radius=0.25)
-                bd.extrude(amount=3.11, mode=bd.Mode.ADD)
+            with bd.BuildSketch(bd.Plane.XY.offset(-2.31)):
+                with bd.Locations([(px, py_val)]):
+                    bd.Circle(radius=0.25)
+            bd.extrude(amount=3.11, mode=bd.Mode.ADD)
 
     sensor_solid = sensor_bp.part.rotate(bd.Axis.Z, 90).solids()[0]
     sensor_solid.label = "PMW3360DM_T2QU_Sensor"
@@ -121,15 +123,15 @@ def build_sensor_pcb_parts():
             bd.RectangleRounded(6.0, 4.0, 1.5)
         bd.extrude(amount=0.50, mode=bd.Mode.ADD)
 
-        # 2 Round Guide Posts extending down to Z = -3.35 mm
+        # 2 Round Guide Posts extending down to Z = -3.35 mm (at (-7.10, 3.30) and (6.70, -3.40))
         with bd.BuildSketch(bd.Plane.XY.offset(-3.35)):
-            with bd.Locations([(-8.25, -3.415), (8.25, 3.415)]):
+            with bd.Locations([(-7.10, 3.30), (6.70, -3.40)]):
                 bd.Circle(radius=0.45)
         bd.extrude(amount=3.35, mode=bd.Mode.ADD)
 
         # 2 Rectangular Alignment Legs extending down to Z = -2.35 mm
         with bd.BuildSketch(bd.Plane.XY.offset(-2.35)):
-            with bd.Locations([(-6.77, 3.415), (6.77, -3.415)]):
+            with bd.Locations([(-6.77, -3.415), (6.77, 3.415)]):
                 bd.RectangleRounded(1.50, 1.00, 0.20)
         bd.extrude(amount=2.35, mode=bd.Mode.ADD)
 
