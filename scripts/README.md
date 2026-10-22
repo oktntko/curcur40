@@ -18,6 +18,7 @@
    - **JLCPCB 発注用データ**:
      - 左メイン基板: [`pcbs/left/jlcpcb/production_files/`](../pcbs/left/jlcpcb/production_files/)
      - 右メイン基板: [`pcbs/right/jlcpcb/production_files/`](../pcbs/right/jlcpcb/production_files/)
+     - センサーサブ基板: [`pcbs/pmw3360/jlcpcb/production_files/`](../pcbs/pmw3360/jlcpcb/production_files/)
      - トッププレート: [`plates/pcb/jlcpcb/production_files/`](../plates/pcb/jlcpcb/production_files/)
    - **ドキュメント・プレビュー画像**: [`docs/`](../docs/), [`docs/assets/`](../docs/assets/)
 

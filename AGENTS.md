@@ -47,14 +47,14 @@
 3. **`pcbnew` Python API の注意事項**:
    - KiCad 10.0 では `PCB_VIA` オブジェクトに対してレイヤー引数なしで `GetWidth()` を呼び出したり `GetEnd()` を呼ぶと C++ アサーション（`assert "false" failed in GetWidth()`）で停止する。
    - `board.GetTracks()` を走査する際は必ず `if t.GetClass() == "PCB_TRACK":` と `elif t.GetClass() == "PCB_VIA":` を分岐させ、ビアには `t.GetWidth(pcbnew.F_Cu)` および `t.GetPosition()` を使用すること。
-4. **右手基板 (`curcur40-right`) の固有仕様**:
-   - シングルボード統合設計（別基板 `curcur40-pmw3360` や6ピンヘッダ `rJ3`/`J1` は存在しない）。
+4. **右手基板 (`curcur40-right`) および トラックボールセンサーサブ基板 (`curcur40-pmw3360`) の固有仕様**:
+   - トラックボールカップ開口面をトッププレート天面（$Z = -2.00\text{ mm}$）と同じ高さに揃える低プロファイル設計のため、PMW3360 センサー回路は独立サブ基板 [`pcbs/pmw3360/curcur40-pmw3360.kicad_pcb`](pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（$Z = -17.60 \sim -16.00\text{ mm}$）に分離し、右メイン基板 `rJ3` とセンサー基板 `J1` を **JST SH 1.0mm ピッチ 6ピン横向き SMD コネクタ（`SM06B-SRSS-TB(LF)(SN)`, LCSC `C160404`）** で接続する。
    - `U1` (`PMW3360DM-T2QU`) の Pin 3 (`VDDPIX`) は内部レギュレータ出力（`power_out`）であるため、外部 1.8V 電源（`/+1V8_PMW`）とショートさせず `C1`/`C2` のみの独立ネット（`Net-(U1-VDDPIX)`）に保つこと。
    - `JP1` は `Jumper:SolderJumper_3_Bridged12`（`SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels`：Pad 1 `+3V3R` – Pad 2 `/V_{IO}` 基板内銅箔直結）を維持すること。
    - `R4` (28kΩ)、`C5` (22nF)、および左右のデバッグ端子 `J4` / `rJ4` は `DNP`（BOM/CPL/3Dモデル除外）を維持すること。
 5. **DRC / ERC 合格基準**:
-   - `kicad-cli pcb drc --schematic-parity`: 左右とも **違反 0件・未接続 0件・回路図不一致 0件**。
-   - `kicad-cli sch erc`: 左右とも **エラー 0件、警告 1件**（`RP2040` Pin 32 `GPIO21` と `+3V3` / `GNDR` の左右判定ピン直結による正当な `pin_to_pin` 警告 1件のみを意図的に保持）。
+   - `kicad-cli pcb drc --schematic-parity`: 3基板（`left`, `right`, `pmw3360`）すべて **違反 0件・未接続 0件・回路図不一致 0件**。
+   - `kicad-cli sch erc`: 左右メイン基板は **エラー 0件、警告 1件**（`RP2040` Pin 32 `GPIO21` と `+3V3` / `GNDR` の左右判定ピン直結による正当な `pin_to_pin` 警告 1件のみを意図的に保持）、センサーサブ基板 `curcur40-pmw3360` は **エラー 0件、警告 0件**。
 
 ---
 
@@ -63,13 +63,13 @@
 1. **実行環境**:
    - `& "$env:USERPROFILE\.local\bin\uvx.exe" --no-config --managed-python --python 3.13 --from "cadgen==0.7.21" python`
 2. **光学距離基準点 (`Lens_Optical_Ref_Point`) の維持**:
-   - 以下の4つの STEP モデルには、GUI（CAD Viewer 等）で直接選択して 25mm ボール（`Trackball_25mm`, 最下面 $Z_{\text{rel}} = +5.80\text{ mm}$ / フルアセンブリ $Z = +1.6000\text{ mm}$）との距離（設計値 **$2.40\text{ mm}$**）を計測できるよう、光軸中心のレンズフランジ着座面（$Z_{\text{rel}} = +3.4000\text{ mm}$ / フルアセンブリ $Z = -0.8000\text{ mm}$）に独立した名前付きオブジェクト **`Lens_Optical_Ref_Point`** を `bd.Compound(children=[...])` の子要素として必ず含めること：
+   - 以下の4つの STEP モデルには、GUI（CAD Viewer 等）で直接選択して 25mm ボール（`Trackball_25mm`, 最下面 $Z_{\text{rel}} = +5.80\text{ mm}$ / フルアセンブリ $Z = -10.2000\text{ mm}$）との距離（設計値 **$2.40\text{ mm}$**）を計測できるよう、光軸中心のレンズフランジ着座面（$Z_{\text{rel}} = +3.4000\text{ mm}$ / フルアセンブリ $Z = -12.6000\text{ mm}$）に独立した名前付きオブジェクト **`Lens_Optical_Ref_Point`** を `bd.Compound(children=[...])` の子要素として必ず含めること：
      - `cases/pmw3360-lens-pcb-assembly.step`
      - `cases/trackball-sensor-assembly.step`
      - `cases/trackball-cup-with-ball.step`
      - `cases/assembly-full.step`
-3. **13箇所 M2 スペーサー締結構造と干渉ゼロ検証**:
-   - 左手外周 5箇所 ＋ 右手外周 4箇所 ＝ 計 9箇所を M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、基板 $\varnothing 3.25\text{ mm}$ 貫通穴を通ってトッププレート下面 $Z = -3.60\text{ mm}$ を直接支持）、トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`）を M2 6.0〜7.0mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、基板 $\varnothing 3.25\text{ mm}$ 穴を貫通してカップ耳 $\varnothing 3.60\text{ mm}$ 穴内部へ進入）と上下 M2 × 4.0mm ネジ（計 26本、ケース底面ザグリ $\varnothing 4.60 \times 0.90\text{ mm}$、トッププレート $\varnothing 2.40\text{ mm}$ ストレート穴）で締結する仕様を維持すること。
+3. **14箇所 M2 スペーサー締結構造・ビルトインテンティングケース・干渉ゼロ検証**:
+   - 左手外周 5箇所（`L1`〜`L5`）＋ 右手外周 5箇所（`R1`〜`R5`、親指側 `L5`/`R5` は $(\pm 33.3375, 64.3000)$ で完全左右対称）＝ 計 10箇所を M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、基板 $\varnothing 3.25\text{ mm}$ 貫通穴を通ってトッププレート下面 $Z = -3.60\text{ mm}$ を直接支持）、トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`）を M2 6.0〜7.0mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、センサー基板 $\varnothing 3.25\text{ mm}$ 穴を貫通してカップ耳 $\varnothing 3.60\text{ mm}$ 穴内部へ進入）と上下 M2 × 4.0mm ネジ（計 28本）で締結する仕様を維持すること。
    - モデル更新時は `scripts/generate_full_assembly.py` を実行し、全パーツ間の干渉体積（`overlap_volume`）が `0.00000000 mm³` であることを確認すること。
 
 ---

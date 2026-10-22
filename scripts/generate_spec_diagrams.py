@@ -282,8 +282,8 @@ def generate_trackball_optical_diagram():
     pcb_right = patches.Rectangle((8.45, -1.6), 15.55, 1.6, linewidth=1.5, edgecolor='#2d6a4f', facecolor='#52b788', alpha=0.85)
     ax.add_patch(pcb_left)
     ax.add_patch(pcb_right)
-    ax.text(-16, -0.8, "Main PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
-    ax.text(16, -0.8, "Main PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
+    ax.text(-16, -0.8, "Sensor PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
+    ax.text(16, -0.8, "Sensor PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
     ax.text(0, -0.8, "PCB Cutout (16.9 x 8.7 mm)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#1b4332')
 
     # PMW3360DM-T2QU Sensor Package (Mounted on B.Cu, Z_rel from -4.01 to -1.60)
@@ -303,7 +303,7 @@ def generate_trackball_optical_diagram():
     # Flat Case Interior Floor (Z_rel = -4.90 mm, 3.30 mm below B.Cu)
     floor = patches.Rectangle((-24, -8.1), 48, 3.2, linewidth=2, edgecolor='#495057', facecolor='#ced4da', alpha=0.7)
     ax.add_patch(floor)
-    ax.text(0, -6.5, "Flat Case Interior Floor (Z_rel = -4.90 mm / Global Z = -9.10 mm)\n(Zero Through-Hole or Sensor Pocket Needed!)", ha='center', va='center', fontsize=9.5, fontweight='bold', color='#212529')
+    ax.text(0, -6.5, "Sunk Sensor Bay Floor (Z_rel = -4.90 mm / Global Z = -20.90 mm)\n(Zero Through-Hole or Sensor Pocket Needed!)", ha='center', va='center', fontsize=9.5, fontweight='bold', color='#212529')
 
     # Clearance arrow
     ax.annotate('', xy=(12, -4.01), xytext=(12, -4.90),
@@ -413,7 +413,7 @@ def generate_trackball_cup_fastening_diagram():
         ax.text(x - 0.5, (z1 + z2) / 2, label, ha='right', va='center', fontsize=9, fontweight='bold', color=color)
 
     dim_left(2.4, 0.0, "1. Cup Ear:\n2.40 mm", -11.0, '#1d3557')
-    dim_left(0.0, -1.6, "2. Main PCB:\n1.60 mm", -11.0, '#1b4332')
+    dim_left(0.0, -1.6, "2. Sensor PCB:\n1.60 mm", -11.0, '#1b4332')
     dim_left(-1.6, -4.9, "3. Under-PCB Cavity:\n3.30 mm", -11.0, '#b08968')
     dim_left(-4.9, -7.2, "4a. Solid Floor:\n2.30 mm", -11.0, '#343a40')
     dim_left(-7.2, -8.1, "4b. Counterbore:\n0.90 mm", -11.0, '#d90429')
@@ -432,14 +432,14 @@ def generate_trackball_cup_fastening_diagram():
                 bbox=dict(boxstyle="round,pad=0.25", fc="#e9ecef", ec="#212529", lw=0.8))
 
     # 2. Cup Ear callout
-    ax.annotate('Trackball Cup Mounting Ear (Thickness: 2.40 mm)\n• Through-hole Ø 3.60 mm (Spacer enters hole)\n• Sits flatly on Main PCB F.Cu (Z_rel = 0.00 mm)',
+    ax.annotate('Trackball Cup Mounting Ear (Thickness: 2.40 mm)\n• Through-hole Ø 3.60 mm (Spacer enters hole)\n• Sits flatly on Sensor PCB F.Cu (Z_rel = 0.00 / Z = -16.00 mm)',
                 xy=(3.5, 1.2), xytext=(8.5, 0.7),
                 arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.2, headwidth=5),
                 fontsize=8.5, fontweight='bold', color='#1d3557',
                 bbox=dict(boxstyle="round,pad=0.25", fc="#e0f2fe", ec="#1d3557", lw=0.8))
 
     # 3. PCB through-hole callout
-    ax.annotate('Main PCB Spacer Through-Hole: Ø 3.25 mm\n• Spacer (OD Ø3.0mm) passes through PCB\n• Enters Cup Ear Ø3.60mm hole above F.Cu',
+    ax.annotate('Sensor PCB Spacer Through-Hole: Ø 3.25 mm\n• Spacer (OD Ø3.0mm) passes through Sensor PCB\n• Enters Cup Ear Ø3.60mm hole above F.Cu',
                 xy=(1.625, -0.8), xytext=(8.5, -1.2),
                 arrowprops=dict(facecolor='#1b4332', shrink=0.05, width=1.2, headwidth=5),
                 fontsize=8.5, fontweight='bold', color='#1b4332',
@@ -519,7 +519,7 @@ def generate_trackball_cup_detail_drawing():
     # Main PCB at Z = -1.6 to 0.0
     pcb_xz = patches.Rectangle((-24, -1.6), 48, 1.6, linewidth=1.2, edgecolor='#1b4332', facecolor='#52b788', alpha=0.75, zorder=2)
     ax1.add_patch(pcb_xz)
-    ax1.text(-19, -0.8, "Main PCB (1.6mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=3)
+    ax1.text(-19, -0.8, "Sensor PCB (1.6mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=3)
 
     # 4 Mounting Ears: X-Z cross section shows Left Ear (X=-12) and Right Ear (X=+12)
     # Left Ear: body X in [-15.25, -8.75], Z in [0, 2.4]
@@ -733,7 +733,7 @@ def generate_trackball_cup_detail_drawing():
     # PCB at Z = -1.6 to 0.0
     pcb_yz = patches.Rectangle((-24, -1.6), 48, 1.6, linewidth=1.2, edgecolor='#1b4332', facecolor='#52b788', alpha=0.75, zorder=2)
     ax3.add_patch(pcb_yz)
-    ax3.text(0, -0.8, "Main PCB (1.6mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=3)
+    ax3.text(0, -0.8, "Sensor PCB (1.6mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=3)
 
     # South Ear (Y = -11.3) and North Ear (Y = +11.3)
     ear_s = patches.Rectangle((-14.55, 0.0), 6.5, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
