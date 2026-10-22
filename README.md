@@ -145,11 +145,10 @@ curcur40/
 
 本プロジェクトは、以下のオープンソースハードウェア／ソフトウェアプロジェクトの成果をベースに派生・統合して作成されています。各オリジナル作者の皆様に深く感謝いたします。
 
-- **基板・回路・ケース・ドキュメント (`pcbs/`, `plates/`, `cases/`, `docs/`, `scripts/`)**:
-  - [MIT License](./LICENSE_MIT) および [CC BY 4.0](./LICENSE_CC) のデュアルライセンスで公開しています（原著作者: Kosuke Adachi / `foostan` 氏の [crkbd](https://github.com/foostan/crkbd) および [kbd](https://github.com/foostan/kbd) をフォーク・改変）。
-- **PMW3360 センサー回路・ライブラリ (`pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym` 等)**:
-  - [SideraKB/PMW3360_PCB](https://github.com/SideraKB/PMW3360_PCB)（[CERN-OHL-P v2](https://ohwr.org/project/cernohl/wikis/Documents/CERN-OHL-version-2) — Permissive）および [monkeypad/pmw3360-breakout](https://github.com/monkeypad/pmw3360-breakout)（MIT License）をベースにシングルボード統合・改変しています。
-- **CKW12 水平ローラーエンコーダ 3Dモデル (`pcbs/common/kbd/3dmodels/ckw12_*.stp`)**:
-  - [kumamuk-git/CKW12](https://github.com/kumamuk-git/CKW12) / [kumakey/roBa](https://github.com/kumakey/roBa) にて公開されているモデルを使用しています。
-- **ファームウェア (`kbd_firmware/keyboards/curcur40/`)**:
-  - [QMK Firmware](https://github.com/qmk/qmk_firmware) / [Vial-QMK](https://github.com/vial-kb/vial-qmk) に準拠し、**GPL-2.0-or-later** ライセンスの下で提供されます。
+| 対象領域 / ファイル | 派生元リポジトリ・原著作者 | 適用ライセンス | 改変履歴・表示事項（CC BY 4.0 Sec. 3(a) / CERN-OHL-P v2 Sec. 3.3 準拠） |
+| :--- | :--- | :--- | :--- |
+| **基板・プレート・ケース・ドキュメント・スクリプト**<br>(`pcbs/left/`, `pcbs/right/`, `plates/`, `cases/`, `docs/`, `scripts/`) | **[foostan/crkbd](https://github.com/foostan/crkbd)**<br>(Original Author: `foostan` / Kosuke Adachi) | **[MIT License](./LICENSE_MIT)** ＆<br>**[CC BY 4.0](./LICENSE_CC)** | Corne v4 (`corne-chocolate`) をベースに、40キー配列化・親指クラスタ再配置・右手 PMW3360 トラックボール＆CKW12 エンコーダ統合・KiCad 10.0 対応・3Dプリントケース＆トラックボールカップ新規設計を実施（`2026-10`） |
+| **プロジェクト固有 KiCad ライブラリ（Corne 由来）**<br>(`pcbs/common/kbd/kicad-symbols/kbd.kicad_sym`, `kbd.pretty/`, `kbd.3dshapes/`) | **[foostan/kbd](https://github.com/foostan/kbd)**<br>(Original Author: `foostan`) | **[MIT License](./pcbs/common/kbd/LICENSE)** | `2026-10-22`: 未使用シンボル・フットプリント・3Dモデルを整理し、KiCad 10.0 標準シンボルとのピン名・フィルタ整合、`YS-SK6812MINI-E` `DOUT` ピン電気タイプ修正、環境非依存の3Dモデル相対パス化を実施 |
+| **PMW3360 回路図シンボル・フットプリント**<br>(`pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym`, `PMW3360DM-T2QU_16Pin.kicad_mod`) | **[siderakb/pmw3360-pcb](https://github.com/siderakb/pmw3360-pcb)**<br>(Original Author: `siderakb` / `ziteh`) | **[CERN-OHL-P v2](./LICENSE_CERN_OHL_P_V2)**<br>(Permissive) | `2026-10-22`: 未使用の `TXS0108E-QPWRQ1` シンボルを削除、`PMW3360DM-T2QU` Pin 3 (`VDDPIX`) を `power_out` に変更、および `PMW3360DM-T2QU_16Pin.kicad_mod` のスルーホールパッド層定義を KiCad 10.0 向けに補完し右手メイン基板へシングルボード統合 |
+| **CKW12 水平ローラーエンコーダ フットプリント・3Dモデル**<br>(`RotaryEncoder_Switch_CKW12.kicad_mod`, `pcbs/common/kbd/3dmodels/ckw12_*.stp`) | **[kumamuk-git/CKW12](https://github.com/kumamuk-git/CKW12)** ＆<br>**[kumamuk-git/roBa](https://github.com/kumamuk-git/roBa)**<br>(Original Author: `kumamuk-git`) | **GPL-3.0**<br>([kumamuk-git/roBa LICENSE](https://github.com/kumamuk-git/roBa/blob/main/LICENSE)) | `2026-10-22`: `CKW12.kicad_mod`（`roBa:SW_MX_EC12`）を KiCad 10.0 標準 `Device:RotaryEncoder_Switch` シンボルフィルタに合わせて `RotaryEncoder_Switch_CKW12.kicad_mod` へリネームし、3Dモデル参照パスを設定 |
+| **ファームウェア定義 (`kbd_firmware/`)**<br>(`kbd_firmware/keyboards/curcur40/`) | **[foostan/kbd_firmware](https://github.com/foostan/kbd_firmware)**<br>**[QMK Firmware](https://github.com/qmk/qmk_firmware)** / **[Vial-QMK](https://github.com/vial-kb/vial-qmk)** | **GPL-2.0-or-later**<br>(`SPDX-License-Identifier: GPL-2.0-or-later`) | `crkbd/rev4_1/mini` の設定をベースに、40キーマトリックス、CKW12 エンコーダ、SPI1 PMW3360 トラックボール（1200 CPI・角度補正）対応ファームウェアとして改変 |

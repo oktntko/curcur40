@@ -1,3 +1,7 @@
+// Copyright 2024 foostan
+// Copyright 2026 oktntko
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #include QMK_KEYBOARD_H
 
 #ifndef RM_TOGG
