@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1160" role="img" aria-labelledby="title desc">
-  <title id="title">PMW3360センサー基板の組み立て手順</title>
-  <desc id="desc">基板表面のJP1ブリッジ、PMW3360本体の向きと挿入、裏面の16ピンはんだ付け、レンズの取り付けを4段階で示す図。</desc>
+  <title id="title">右手メイン基板（curcur40-right）PMW3360センサー＆レンズの実装手順</title>
+  <desc id="desc">右手一体型基板におけるJP1（Pad 1-2基板内直結済み）の確認、裏面（B.Cu）からのPMW3360挿入、表面（F.Cu）での16ピンはんだ付け、表面（F.Cu）からのLM19-LSIレンズ装着を4段階で示す図。</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
       <path d="M0 0 10 5 0 10Z" fill="#475569"/>
@@ -20,81 +20,80 @@
   </defs>
 
   <rect width="1440" height="1160" fill="#f1f5f9"/>
-  <text x="48" y="58" class="title">PMW3360 センサー基板の組み立て</text>
-  <text x="50" y="91" class="body" fill="#475569">基板の表面と裏面を見分けながら、JP1 → センサーIC → 裏面のハンダ → レンズの順で作業します。</text>
+  <text x="48" y="58" class="title">右手メイン基板（curcur40-right）PMW3360 光学センサー部の実装</text>
+  <text x="50" y="91" class="body" fill="#475569">シングルボード統合設計：JP1確認（配線直結済） → 裏面（B.Cu）からIC挿入 → 表面（F.Cu）ではんだ付け → 表面からレンズ装着の順で作業します。</text>
 
-  <!-- Step 1: Top side and the voltage-select solder bridge. -->
+  <!-- Step 1: Back side JP1 pre-bridged check -->
   <rect x="40" y="125" width="660" height="465" rx="18" class="panel"/>
   <circle cx="78" cy="166" r="22" fill="#f97316"/>
   <text x="78" y="173" class="label" text-anchor="middle" fill="#fff">1</text>
-  <text x="114" y="174" class="heading">表面：JP1 の 1–2 をブリッジ</text>
-  <text x="70" y="210" class="small" fill="#64748b">部品面（F.Cu）の向きは基板レンダーと同じです。</text>
+  <text x="114" y="174" class="heading">裏面（B.Cu）：JP1（1–2直結済）の確認</text>
+  <text x="70" y="210" class="small" fill="#64748b">JP1 は基板パターンで Pad 1–2 間が最初から直結されています（はんだ付け不要）。</text>
 
   <rect x="90" y="235" width="260" height="310" rx="25" class="board"/>
   <rect x="168" y="293" width="104" height="186" fill="#0f172a" stroke="#f8fafc" stroke-width="4"/>
-  <text x="220" y="389" class="small" text-anchor="middle" fill="#fff">U1 の開口</text>
+  <text x="220" y="380" class="small" text-anchor="middle" fill="#fff">光学開口</text>
+  <text x="220" y="402" class="small" text-anchor="middle" fill="#cbd5e1">8.7×16.9mm</text>
   <rect x="293" y="365" width="30" height="75" rx="14" fill="#064e3b" stroke="#e2e8f0" stroke-width="3"/>
   <circle cx="308" cy="376" r="7" class="pad"/>
   <circle cx="308" cy="402" r="7" class="pad"/>
   <circle cx="308" cy="428" r="7" class="pad"/>
-  <text x="333" y="380" class="small">3</text>
-  <text x="333" y="406" class="small">2</text>
-  <text x="333" y="432" class="small">1</text>
-  <text x="307" y="462" class="small" text-anchor="middle" fill="#fff">JP1</text>
-  <text x="125" y="520" class="small" fill="#fff">J1 ヘッダー</text>
+  <text x="333" y="380" class="small" fill="#fff">3</text>
+  <text x="333" y="406" class="small" fill="#fff">2</text>
+  <text x="333" y="432" class="small" fill="#fff">1</text>
+  <text x="307" y="462" class="small" text-anchor="middle" fill="#fff">JP1 (B.Cu)</text>
   <path d="M322 404 C389 398 408 354 448 337" class="leader"/>
 
-  <text x="430" y="253" class="label">JP1 パッド番号</text>
-  <text x="430" y="280" class="small" fill="#64748b">番号を示す拡大図（向きは別）</text>
+  <text x="430" y="253" class="label">JP1 銅箔ブリッジ構造</text>
+  <text x="430" y="280" class="small" fill="#64748b">SolderJumper_3_Bridged12</text>
   <rect x="452" y="304" width="60" height="62" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
   <rect x="520" y="304" width="60" height="62" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
   <rect x="588" y="304" width="60" height="62" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
   <text x="482" y="342" class="label" text-anchor="middle">1</text>
   <text x="550" y="342" class="label" text-anchor="middle">2</text>
   <text x="618" y="342" class="label" text-anchor="middle">3</text>
-  <path d="M505 335 H527" stroke="#dc2626" stroke-width="9" stroke-linecap="round"/>
-  <path d="M590 383 H645" stroke="#dc2626" stroke-width="3"/>
-  <text x="430" y="408" class="body">1（V_IN）と中央2（V_IO）</text>
-  <text x="430" y="435" class="body">だけをハンダでつなぐ</text>
-  <text x="430" y="478" class="small" fill="#b91c1c">3（VDD）には触れない</text>
-  <text x="70" y="570" class="small">JP1 はF.Cu側。1–2を短絡し、3番パッドとの間は離しておきます。</text>
+  <path d="M505 335 H527" stroke="#16a34a" stroke-width="9" stroke-linecap="round"/>
+  <text x="430" y="408" class="body">Pad 1（+3V3R）と Pad 2（/V_IO）</text>
+  <text x="430" y="435" class="body">は銅箔パターンで直結済み</text>
+  <text x="430" y="478" class="small" fill="#16a34a">※追加のはんだブリッジは不要（Pad 3 は開放）</text>
+  <text x="70" y="570" class="small">※R4 (28kΩ)・C5 (22nF) は LDO TLV74318 採用に伴い未実装（DNP）です。</text>
 
-  <!-- Step 2: Insert the sensor from the component side. -->
+  <!-- Step 2: Insert the sensor from B.Cu side -->
   <rect x="740" y="125" width="660" height="465" rx="18" class="panel"/>
   <circle cx="778" cy="166" r="22" fill="#2563eb"/>
   <text x="778" y="173" class="label" text-anchor="middle" fill="#fff">2</text>
-  <text x="814" y="174" class="heading">表面からセンサーICを挿入</text>
-  <text x="770" y="210" class="small" fill="#64748b">ICの光学突起を基板中央の開口に通します。</text>
+  <text x="814" y="174" class="heading">裏面（B.Cu）から PMW3360 IC を挿入</text>
+  <text x="770" y="210" class="small" fill="#64748b">ICの光学窓が基板開口（F.Cu側）を向くように裏面から差し込みます。</text>
 
-  <text x="790" y="260" class="label">上から見た向き合わせ</text>
+  <text x="790" y="260" class="label">裏面（B.Cu）から見た1番ピン位置合わせ</text>
   <rect x="802" y="281" width="294" height="190" rx="14" class="board"/>
   <rect x="892" y="324" width="112" height="105" fill="#0f172a" stroke="#e2e8f0" stroke-width="4"/>
   <rect x="873" y="306" width="18" height="18" fill="#facc15" stroke="#fff" stroke-width="3"/>
-  <text x="898" y="381" class="small" text-anchor="middle" fill="#fff">中央の開口</text>
-  <text x="845" y="303" class="small" fill="#fff">四角ランド</text>
+  <text x="948" y="381" class="small" text-anchor="middle" fill="#fff">中央の開口</text>
+  <text x="840" y="303" class="small" fill="#fff">Pin 1 角ランド</text>
   <path d="M873 310 L859 292" stroke="#fff" stroke-width="2"/>
   <rect x="850" y="475" width="198" height="50" rx="8" fill="#334155" stroke="#0f172a" stroke-width="3"/>
   <path d="M886 475 L901 432 H997 L1012 475Z" fill="#111827" stroke="#64748b" stroke-width="2"/>
-  <text x="949" y="507" class="small" text-anchor="middle" fill="#fff">PMW3360 本体</text>
+  <text x="949" y="507" class="small" text-anchor="middle" fill="#fff">PMW3360DM-T2QU (U1)</text>
   <circle cx="867" cy="470" r="8" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
-  <text x="1030" y="457" class="small">光学突起</text>
+  <text x="1030" y="457" class="small">光学窓（F.Cu側へ）</text>
   <path d="M1026 462 L1002 446" class="leader"/>
   <path d="M1150 390 H1097" class="leader"/>
   <text x="1155" y="369" class="body">ICの1番ピン印</text>
   <text x="1155" y="396" class="body">と基板の四角ランド</text>
-  <text x="1155" y="423" class="body">を合わせる</text>
-  <text x="770" y="555" class="small">斜めカット／丸印を確認。ICを傾けず、全ての足が穴に入った状態で裏返します。</text>
+  <text x="1155" y="423" class="body">を一致させる</text>
+  <text x="770" y="555" class="small">ICパッケージ上面が基板裏面（B.Cu、Z = -1.60mm）に密着するまで全16ピンを差し込みます。</text>
 
-  <!-- Step 3: Back side through-hole pins. -->
+  <!-- Step 3: Solder 16 pins on F.Cu side -->
   <rect x="40" y="620" width="660" height="465" rx="18" class="panel"/>
   <circle cx="78" cy="661" r="22" fill="#7c3aed"/>
   <text x="78" y="668" class="label" text-anchor="middle" fill="#fff">3</text>
-  <text x="114" y="669" class="heading">裏面：16本の足をハンダ付け</text>
-  <text x="70" y="705" class="small" fill="#64748b">基板を裏返し、ICが浮いていないことを確認します。</text>
+  <text x="114" y="669" class="heading">表面（F.Cu）：16本の足をハンダ付け</text>
+  <text x="70" y="705" class="small" fill="#64748b">基板を表返し（トラックボール側）、ICが裏面から浮いていないことを確認します。</text>
 
   <rect x="110" y="748" width="470" height="188" rx="16" class="board"/>
-  <rect x="244" y="785" width="198" height="116" rx="14" fill="#334155" stroke="#0f172a" stroke-width="3"/>
-  <text x="343" y="849" class="label" text-anchor="middle" fill="#fff">U1</text>
+  <rect x="244" y="785" width="198" height="116" rx="14" fill="#0f172a" stroke="#f8fafc" stroke-width="3"/>
+  <text x="343" y="849" class="label" text-anchor="middle" fill="#fff">U1 開口 (F.Cu)</text>
   <g fill="#facc15" stroke="#a16207" stroke-width="1.5">
     <circle cx="260" cy="773" r="7"/><circle cx="286" cy="773" r="7"/><circle cx="312" cy="773" r="7"/><circle cx="338" cy="773" r="7"/>
     <circle cx="364" cy="773" r="7"/><circle cx="390" cy="773" r="7"/><circle cx="416" cy="773" r="7"/><circle cx="442" cy="773" r="7"/>
@@ -105,40 +104,38 @@
     <path d="M260 766 V744 M286 766 V744 M312 766 V744 M338 766 V744 M364 766 V744 M390 766 V744 M416 766 V744 M442 766 V744"/>
     <path d="M260 920 V942 M286 920 V942 M312 920 V942 M338 920 V942 M364 920 V942 M390 920 V942 M416 920 V942 M442 920 V942"/>
   </g>
-  <text x="343" y="970" class="small" text-anchor="middle">上側8本 ＋ 下側8本 ＝ 合計16本</text>
+  <text x="343" y="970" class="small" text-anchor="middle">左右2列 × 各8ピン ＝ 合計16ピン（1.78mmピッチ）</text>
   <path d="M535 760 L488 787" class="leader"/>
-  <text x="450" y="737" class="small">足16本すべてをハンダ付け</text>
+  <text x="440" y="737" class="small">表面（F.Cu）で16ピンをハンダ付け</text>
   <rect x="70" y="1000" width="594" height="54" rx="10" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
-  <text x="88" y="1034" class="body">コツ：1か所を仮止め → 表面で浮きを確認 → 残りを順にハンダ付け。</text>
+  <text x="88" y="1034" class="body">コツ：対角2ピンを仮止め → 裏面密着を確認 → 残り14ピンを順にハンダ付け。</text>
 
-  <!-- Step 4: Remove protective film, flip, and install the lens. -->
+  <!-- Step 4: Remove protective film and install LM19-LSI lens from F.Cu -->
   <rect x="740" y="620" width="660" height="465" rx="18" class="panel"/>
   <circle cx="778" cy="661" r="22" fill="#16a34a"/>
   <text x="778" y="668" class="label" text-anchor="middle" fill="#fff">4</text>
-  <text x="814" y="669" class="heading">裏面：窓を開けてレンズを装着</text>
-  <text x="770" y="705" class="small" fill="#64748b">ハンダ付け後、光学窓側から作業します。</text>
+  <text x="814" y="669" class="heading">表面（F.Cu）：保護テープを剥がしレンズ装着</text>
+  <text x="770" y="705" class="small" fill="#64748b">表面（F.Cu）の開口から LM19-LSI レンズの4本脚をセンサーへ差し込みます。</text>
 
-  <rect x="790" y="768" width="260" height="34" rx="5" class="board"/>
-  <rect x="856" y="802" width="128" height="43" fill="#111827" stroke="#475569" stroke-width="2"/>
-  <path d="M872 844 L883 822 H957 L968 844" fill="#bfdbfe" stroke="#2563eb" stroke-width="3"/>
-  <circle cx="872" cy="812" r="7" fill="#facc15" stroke="#a16207" stroke-width="2"/>
-  <circle cx="968" cy="812" r="7" fill="#facc15" stroke="#a16207" stroke-width="2"/>
+  <rect x="790" y="802" width="260" height="34" rx="5" class="board"/>
+  <rect x="856" y="836" width="128" height="43" fill="#111827" stroke="#475569" stroke-width="2"/>
+  <circle cx="872" cy="836" r="7" fill="#facc15" stroke="#a16207" stroke-width="2"/>
+  <circle cx="968" cy="836" r="7" fill="#facc15" stroke="#a16207" stroke-width="2"/>
   <path d="M840 835 C816 842 812 861 832 871" fill="none" stroke="#f59e0b" stroke-width="5" marker-end="url(#arrow)"/>
-  <text x="787" y="898" class="small">保護テープを剥がす</text>
-  <text x="845" y="757" class="small">基板裏面（B.Cu）</text>
-  <text x="870" y="878" class="small">2本のガイドピン</text>
+  <text x="787" y="905" class="small">カプトン保護テープを剥がす</text>
+  <text x="835" y="790" class="small">基板表面（F.Cu, Z=0.00mm）</text>
+  <text x="862" y="905" class="small">センサーガイド穴 (B.Cu側)</text>
 
   <path d="M1070 823 H1117" class="leader"/>
-  <path d="M1130 768 H1300 V802 H1130Z" fill="#bfdbfe" stroke="#2563eb" stroke-width="3"/>
-  <path d="M1150 802 V830 M1280 802 V830" stroke="#334155" stroke-width="5"/>
-  <rect x="1142" y="830" width="146" height="50" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
-  <path d="M1175 830 V814 M1255 830 V814" stroke="#334155" stroke-width="3"/>
-  <text x="1215" y="788" class="small" text-anchor="middle">LM19-LSI レンズ</text>
-  <text x="1215" y="908" class="small" text-anchor="middle">穴をガイドピンに合わせて押し込む</text>
+  <rect x="1142" y="758" width="146" height="40" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <path d="M1130 798 H1300 V832 H1130Z" fill="#bfdbfe" stroke="#2563eb" stroke-width="3"/>
+  <path d="M1155 832 V872 M1275 832 V872" stroke="#334155" stroke-width="5"/>
+  <text x="1215" y="784" class="small" text-anchor="middle">LM19-LSI レンズ</text>
+  <text x="1215" y="908" class="small" text-anchor="middle">表面（F.Cu）からガイド脚を押し込む</text>
   <rect x="770" y="955" width="600" height="98" rx="10" fill="#f0fdf4" stroke="#4ade80" stroke-width="2"/>
-  <text x="790" y="989" class="body">光学窓の保護テープは装着直前に剥がし、窓に触れたり</text>
-  <text x="790" y="1017" class="body">ホコリを付けたりしないようにします。レンズは奥まで装着。</text>
-  <text x="790" y="1041" class="small" fill="#475569">レンズのガタつきが気になる場合は、本文の固定方法を参照してください。</text>
+  <text x="790" y="989" class="body">レンズ中央胴部が基板表面（Z = 0.00mm）に着座し、フランジ下面が</text>
+  <text x="790" y="1017" class="body">Z = +3.40mm（ボール底面 Z = +5.80mm から光学距離 2.40mm）に決まります。</text>
+  <text x="790" y="1041" class="small" fill="#475569">※この上からトラックボールカップを被せ、4箇所のM2スペーサーへ共締め固定します。</text>
 
-  <text x="48" y="1127" class="small" fill="#64748b">図は基板の表裏と部品の位置関係を説明する模式図です。細部・寸法は実物と異なります。</text>
+  <text x="48" y="1127" class="small" fill="#64748b">図は右手メイン基板（curcur40-right）の表裏と光学部品の位置関係を示す模式図です。</text>
 </svg>

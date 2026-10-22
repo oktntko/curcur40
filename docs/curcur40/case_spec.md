@@ -341,17 +341,29 @@ LM19レンズ（$21.15 \times 18.85 \, \text{mm}$）およびPMW3360センサー
 | **#3** | 南西 (SW) | **$-12.00 \, \text{mm}$** | **$-11.30 \, \text{mm}$** | $\varnothing 3.60 \, \text{mm}$ | $\varnothing 3.60 \, \text{mm}$ | $\varnothing 2.40$ / ザグリ $\varnothing 4.60 \times 0.90$ | レンズ外周逃げ確認済み |
 | **#4** | 南東 (SE) | **$+12.00 \, \text{mm}$** | **$-11.30 \, \text{mm}$** | $\varnothing 3.60 \, \text{mm}$ | $\varnothing 3.60 \, \text{mm}$ | $\varnothing 2.40$ / ザグリ $\varnothing 4.60 \times 0.90$ | センサーピン外周逃げ確認済み |
 
+### 4.6 3Dモデルにおけるレンズ側光学距離基準点（`Lens_Optical_Ref_Point`）のプロット仕様
+
+GUI（CAD Viewer 等）の計測ツール（`📏 Measure`）で、25mm トラックボール球（`Trackball_25mm`, 最下面 $Z_{\text{rel}} = +5.80 \, \text{mm}$ / グローバル $Z = +2.20 \, \text{mm}$）とレンズ側光学距離基準点（フランジ下面 $Z_{\text{rel}} = +3.40 \, \text{mm}$ / グローバル $Z = -0.20 \, \text{mm}$）の間の光学距離（設計値 **$2.40 \, \text{mm}$**）を直接クリック選択して検証できるよう、以下の4つの STEP モデルに独立した名前付きオブジェクト **`Lens_Optical_Ref_Point`**（光軸中心に配置した厚みゼロ・直径 $\varnothing 0.70 \, \text{mm}$ の円形基準面）をプロットしています。
+
+| STEP モデルファイル | 生成スクリプト | `Lens_Optical_Ref_Point` 座標 $(X, Y, Z)$ | `Trackball_25mm` との計測距離 |
+| :--- | :--- | :---: | :---: |
+| **[`pmw3360-lens-pcb-assembly.step`](../../cases/curcur40/pmw3360-lens-pcb-assembly.step)** | [`scripts/generate_sensor_assemblies.py`](../../scripts/generate_sensor_assemblies.py) | $(0.0000, 0.0000, +3.4000) \, \text{mm}$ | ―（単体光学モジュール） |
+| **[`trackball-sensor-assembly.step`](../../cases/curcur40/trackball-sensor-assembly.step)** | [`scripts/generate_sensor_assemblies.py`](../../scripts/generate_sensor_assemblies.py) | $(0.0000, 0.0000, +3.4000) \, \text{mm}$ | **$2.4000 \, \text{mm}$** |
+| **[`trackball-cup-with-ball.step`](../../cases/curcur40/trackball-cup-with-ball.step)** | [`scripts/generate_trackball_cup.py`](../../scripts/generate_trackball_cup.py) | $(0.0000, 0.0000, +3.4000) \, \text{mm}$ | **$2.4000 \, \text{mm}$** |
+| **[`assembly-full.step`](../../cases/curcur40/assembly-full.step)** | [`scripts/generate_full_assembly.py`](../../scripts/generate_full_assembly.py) | $(23.8125, -109.5375, -0.2000) \, \text{mm}$ | **$2.4000 \, \text{mm}$** |
+
 ---
 
-## 5. 設計レビューと変更反映のフロー
+## 5. 設計レビュー・変更反映のフローとスクリプト管理ルール
 
-ユーザー様が数値を変更したい場合は、以下の手順で行います：
+ユーザー様が数値を変更したい場合は、以下の手順で行います（ディレクトリ構成および [`scripts/`](../../scripts) 配下の公式生成スクリプト一覧については [pcb_spec.md 第9節](./pcb_spec.md#9-リポジトリのフォルダ構成生成スクリプト格納ルール-directory--script-rules) もあわせて参照してください）：
 
 ```mermaid
 flowchart TD
     A["ユーザー様による本書 (case_spec.md) の確認・修正"] --> B{"寸法・仕様の合意 (OK)"}
     B -- "修正あり" --> A
-    B -- "承認 (OK)" --> C["ワークスペース内スクリプトへの自動反映"]
-    C --> D["CADモデル (STEP / STL) の再生成"]
+    B -- "承認 (OK)" --> C["scripts/ 配下の公式生成スクリプトへ反映"]
+    C --> D["CADモデル (STEP / STL) ・プレートの再生成"]
     D --> E["実測・干渉検証 (3Dビュワー確認)"]
 ```
+

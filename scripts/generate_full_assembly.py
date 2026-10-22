@@ -307,6 +307,11 @@ def main():
     lens_global = lens_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
     lens_global.label = "LM19_Lens"
 
+    # Optical Distance Reference Point in global coordinates:
+    # PCB F.Cu Z = -3.60 mm + 3.40 mm = -0.20 mm (2.40 mm below ball bottom Z = +2.20 mm)
+    ref_point_global = bd.Pos(tb_cx, tb_cy, tb_cz + 3.40) * bd.Circle(0.35).face()
+    ref_point_global.label = "Lens_Optical_Ref_Point"
+
     # CKW12 Rotary Encoder at rEXSW1 (14.2875, 0.0000)
     enc_x, enc_y = to_step_right(*RIGHT_ENCODER)
     ckw12_solids = make_ckw12_solids(enc_x, enc_y)
@@ -447,6 +452,7 @@ def main():
             ball_global,
             lens_global,
             sensor_global,
+            ref_point_global,
         ]
         + ckw12_solids
         + standoffs
@@ -455,11 +461,12 @@ def main():
         + keycaps
     )
 
-    asm_full = bd.Compound(all_parts)
+    asm_full = bd.Compound(children=all_parts)
+    asm_full.label = "curcur40_Full_Assembly"
     out_step = CASES_DIR / "assembly-full.step"
     bd.export_step(asm_full, str(out_step))
     print(
-        f"\nSuccessfully exported {out_step} ({len(all_parts)} solids, valid={asm_full.is_valid})"
+        f"\nSuccessfully exported {out_step} ({len(all_parts)} items, valid={asm_full.is_valid})"
     )
 
 

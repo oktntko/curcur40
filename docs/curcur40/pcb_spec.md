@@ -143,16 +143,19 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | ネット名 | 接続ピン・部品 | 役割・仕様 |
 | :--- | :--- | :--- |
 | **`Net-(U1-VDDPIX)`** | `U1` Pin 3 (`VDDPIX`), `C1` Pad 1 (`4.7uF`), `C2` Pad 1 (`100nF`) | 内部ピクセル電源のデカップリング専用独立ネット。他の電源へは一切接続しない |
-| **`/+1V8_PMW`** | `U2` Pin 5 (`OUT`), `C4` Pad 1 (`1uF`), `U1` Pin 4 (`VDD`), `R3` Pad 1 (`39Ω`), `R4` Pad 1 (`28kΩ`), `JP1` Pad 3 | 1.8V LDO (`TLV74318PDBVR`) 出力。センサーコア電源 (`VDD`) および内部LED電流供給 (`R3` 経由 `LED_P`) |
-| **`/V_{IO}`** | `JP1` Pad 2, `U1` Pin 5 (`VDDIO`), `R1` Pad 1 (`10kΩ` `/RESET` プルアップ), `R2` Pad 1 (`10kΩ` `/MISO` プルアップ) | センサー I/O 電圧ライン。`JP1` のはんだジャンパーで選択 |
+| **`/+1V8_PMW`** | `U2` Pin 5 (`OUT`), `C4` Pad 1 (`1uF`), `U1` Pin 4 (`VDD`), `R3` Pad 1 (`39Ω`), `R4` Pad 1 (`28kΩ`, `DNP`), `JP1` Pad 3 | 1.8V LDO (`TLV74318PDBVR`) 出力。センサーコア電源 (`VDD`) および内部LED電流供給 (`R3` 経由 `LED_P`) |
+| **`/V_{IO}`** | `JP1` Pad 2 (Pad 1 `+3V3R` と基板内銅箔直結), `U1` Pin 5 (`VDDIO`), `R1` Pad 1 (`10kΩ` `/RESET` プルアップ), `R2` Pad 1 (`10kΩ` `/MISO` プルアップ) | センサー I/O 電圧ライン。`JP1` の内蔵銅箔ブリッジにより `+3V3R` (3.3V) が供給される |
 
-#### ② 電圧選択ソルダージャンパー `JP1` の仕様
-* `JP1` (`SolderJumper_3_Open`) は基板裏面（`B.Cu`）の `(17.775, 50.1457)` に配置されています：
-  * **Pad 1**: `+3V3R`
-  * **Pad 2**: `/V_{IO}` (`U1` Pin 5 `VDDIO`)
-  * **Pad 3**: `/+1V8_PMW`
-* **組み立て時のジャンパー設定**:
-  * 通常（1.8V 単一電源モード、または 3.3V I/O モード）に応じて、**Pad 1–2 間** または **Pad 2–3 間** のいずれか一方をはんだブリッジして使用します（回路図・未実装基板上ではオープンであるため、DRC/ERC 上も `+3V3R` と `/+1V8_PMW` は分離されています）。
+#### ② 電圧選択ソルダージャンパー `JP1`（Pad 1–2 基板内直結仕様）および `R4` / `C5`（DNP）
+* **`JP1` (`Jumper:SolderJumper_3_Bridged12` / `Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels`)**:
+  * 基板裏面（`B.Cu`）の `(17.775, 50.1457)` に配置されています：
+    * **Pad 1**: `+3V3R`
+    * **Pad 2**: `/V_{IO}` (`U1` Pin 5 `VDDIO`)
+    * **Pad 3**: `/+1V8_PMW`
+  * はんだブリッジ忘れや逆ブリッジ（Pad 2–3 短絡）による動作不良を防ぐため、KiCad 10.0 標準のブリッジ済みフットプリント（`(net_tie_pad_groups "1, 2")` により **Pad 1–2 間が `B.Cu` 銅箔ポリゴンで最初から直結**、Pad 3 は開放）を採用しています。組み立て時の手作業によるジャンパはんだ付けは不要です。
+* **`R4` (`28kΩ`) および `C5` (`22nF`) の DNP（未実装）化**:
+  * 派生元回路（可変出力または別型番 LDO 使用時）の名残であり、現在の固定 1.8V LDO `U2` (`TLV74318PDBVR`) では Pin 4 が `NC`（未接続）であるため機能しません。
+  * パターン・フットプリントは基板上に残しつつ、回路図および PCB の双方で **未実装（`DNP`）・部品表（BOM）除外・実装座標（CPL/Pos）除外・3Dモデル非表示** に設定しています。
 
 ### 4.4 右手専用：ロータリーエンコーダ `CKW12` (`rEXSW1`)
 * 遊舎工房 CKW12（薄型ホイールエンコーダ＋プッシュスイッチ）を右手内側上部 `(14.2875, 0.0)` の表面（`F.Cu`）に配置。
@@ -263,19 +266,19 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **タクトSW** | `SMDSW1, SMDSW2` | `rSMDSW1, rSMDSW2` | `TS-1088R-02026` | `kbd:TS-1088R-02026` | `B.Cu` | 2 | 2 |
 | **逆付け RGB LED** | `LED1`〜`18`, `EXLED1`〜`3` | `rLED1`〜`18`, `rEXLED2` | `YS-SK6812MINI-E` | `kbd:YS-SK6812MINI-E` | `B.Cu` | 21 | 19 |
 | **Choc ソケット (1u)** | `SW1`〜`18`, `EXSW1`〜`3` | `rSW1`〜`18`, `rEXSW2` | `CPG135001S30` | `kbd:keyswitch_choc12_hotswap_1u` | `B.Cu` | 21 | 19 |
-| **ホイールエンコーダ** | ― | `rEXSW1` | `CKW12` | `kbd:RotaryEncoder_Switch_CKW12` | `F.Cu` | 0 | 1 |
-| **光学センサー** | ― | `U1` | `PMW3360DM-T2QU` | `kbd:PMW3360DM-T2QU_16Pin` | `B.Cu` | 0 | 1 |
+| **ホイールエンコーダ** | ― | `rEXSW1` (手ハンダ) | `CKW12` | `kbd:RotaryEncoder_Switch_CKW12` | `F.Cu` | 0 | 1 |
+| **光学センサー** | ― | `U1` (手ハンダ) | `PMW3360DM-T2QU` | `kbd:PMW3360DM-T2QU_16Pin` | `B.Cu` | 0 | 1 |
 | **1.8V LDO** | ― | `U2` | `TLV74318PDBVR` | `Package_TO_SOT_SMD:SOT-23-5` | `B.Cu` | 0 | 1 |
-| **コンデンサ (0603)** | ― | `C1`〜`C5` | `4.7uF`(1), `1uF`(2), `100nF`(1), `22nF`(1) | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 5 |
-| **抵抗 (0603)** | ― | `R1`〜`R4` | `10k`(2), `39R`(1), `28k`(1) | `Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder` | `B.Cu` | 0 | 4 |
-| **電圧選択ジャンパ** | ― | `JP1` | `SolderJumper_3_Open` | `Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels` | `B.Cu` | 0 | 1 |
-| **SWD デバッグ端子** | `J4` (`DNP`) | `rJ4` (`DNP`) | `Conn_01x03` | `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` | `B.Cu` | 0 (未実装) | 0 (未実装) |
+| **コンデンサ (0603)** | ― | `C1`〜`C4` (`C5` は `DNP`) | `4.7uF`(1), `1uF`(2), `100nF`(1) | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 4 (実装) + 1 (`DNP`) |
+| **抵抗 (0603)** | ― | `R1`〜`R3` (`R4` は `DNP`) | `10k`(2), `39R`(1) | `Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder` | `B.Cu` | 0 | 3 (実装) + 1 (`DNP`) |
+| **電圧選択ジャンパ** | ― | `JP1` (Pad 1–2 基板直結) | `SolderJumper_3_Bridged12` | `Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels` | `B.Cu` | 0 | 0 (銅箔パターン) |
+| **SWD デバッグ端子** | `J4` (`DNP`) | `rJ4` (`DNP`) | `Conn_01x03` | `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` | `B.Cu` | 0 (`DNP`) | 0 (`DNP`) |
 
 ---
 
 ## 8. 品質検証基準 (DRC / ERC Verification Criteria)
 
-回路図またはPCBを編集した際は、以下のコマンドで検証を行い、すべての基準を満たしていることを確認します（Gerber ファイルの出力は最終製造データ確定段階でのみ実施します）。
+回路図またはPCBを編集した際は、以下のコマンドで検証を行い、すべての基準を満たしていることを確認します。
 
 ### 8.1 検証コマンド
 ```powershell
@@ -300,3 +303,28 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 ### 8.3 KiCad 10.0 `pcbnew` Python スクリプト操作時の注意事項
 * KiCad 10.0 (Windows版) の `pcbnew` Python API では、`PCB_VIA` オブジェクトに対してレイヤー引数なしで `t.GetWidth()` を呼び出したり、`t.GetEnd()` を呼び出すと、C++ 内部アサーションダイアログ（`assert "false" failed in GetWidth(): Warning: PCB_VIA::GetWidth called without a layer argument`）が発生してプロセスが停止します。
 * スクリプトで `board.GetTracks()` を走査する際は、必ず `if t.GetClass() == "PCB_TRACK":` と `elif t.GetClass() == "PCB_VIA":` を先に分岐させ、ビアの幅取得には `t.GetWidth(pcbnew.F_Cu)`、座標取得には `t.GetPosition()` を使用してください。
+
+---
+
+## 9. リポジトリのフォルダ構成・生成スクリプト格納ルール (Directory & Script Rules)
+
+リポジトリ内の一時ファイル散乱や仕様不整合を防ぐため、ディレクトリ役割と生成スクリプトの格納ルールを以下の通り定めます。
+
+| ディレクトリ | 格納対象・役割 | 運用ルール |
+| :--- | :--- | :--- |
+| **[`docs/curcur40/`](../../docs/curcur40)** | 設計仕様書（`case_spec.md`, `pcb_spec.md`）、ビルドガイド（`buildguide_jp.md`）、3Dプレビューギャラリー（`preview.md`）、および図版資産（`assets/`） | すべてのドキュメント・画像アセットをこの配下に一元管理する（ルート直下に `preview/` 等を作らない） |
+| **[`pcbs/curcur40/`](../../pcbs/curcur40)** | 左右メイン基板の KiCad プロジェクト（`left/`, `right/`）および JLCPCB 発注データ（`*/jlcpcb/production_files/`） | `.rpt`, `.net`, `.bak`, `.kicad_prl` 等の一時ファイルや廃止された旧子基板ディレクトリを残さない |
+| **[`plates/curcur40/`](../../plates/curcur40)** | FR-4 トッププレート基板（`pcb/plate-top-{left,right}.kicad_pcb`）、JLCPCB Gerber（`pcb/jlcpcb/production_files/`）、レーザーカット用 SVG（`svg/`） | ボトムプレートはトレイ型ケースに統合済みのため作成・保持しない |
+| **[`cases/curcur40/`](../../cases/curcur40)** | 左右ボトムケース（`left.step/.stl`, `right.step/.stl`）、トラックボールカップ（`trackball-cup.step/.stl`）、および4種の3D検証アセンブリ STEP | すべて [`scripts/`](../../scripts) 配下のジェネレータから再現可能に生成する |
+| **[`scripts/`](../../scripts)** | 恒久的に使用する公式生成・出力スクリプト群（下記一覧参照） | 1回限りのデバッグ用・調査用スクリプトや一時レポート（`scratch/`, `tmp/`）は作業完了後に削除し、リポジトリに残さない |
+
+### `scripts/` 配下の公式スクリプト一覧
+1. **[`scripts/generate_cases.py`](../../scripts/generate_cases.py)**: 左右 3D プリントボトムケース（`left.step/.stl`, `right.step/.stl`）を生成
+2. **[`scripts/generate_trackball_cup.py`](../../scripts/generate_trackball_cup.py)**: トラックボールカップ（`trackball-cup.step/.stl`）および `trackball-cup-with-ball.step/.stl`（光学基準点 `Lens_Optical_Ref_Point` 含む）を生成
+3. **[`scripts/generate_sensor_assemblies.py`](../../scripts/generate_sensor_assemblies.py)**: 光学センサー検証アセンブリ（`pmw3360-lens-pcb-assembly.step`, `trackball-sensor-assembly.step`、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成
+4. **[`scripts/generate_full_assembly.py`](../../scripts/generate_full_assembly.py)**: フルアセンブリ（`assembly-full.step`、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成し、全パーツ間の干渉ゼロ（`0.00000000 mm³`）を検証
+5. **[`scripts/generate_plates.py`](../../scripts/generate_plates.py)**: 左右トッププレート（`plate-top-left.kicad_pcb`, `plate-top-right.kicad_pcb`）およびレーザーカット用 SVG（`plate-curcur40.svg`, `foam-curcur40.svg`）を生成・DRC検証
+6. **[`scripts/export_jlcpcb.py`](../../scripts/export_jlcpcb.py)**: 左右メイン基板および左右トッププレートの JLCPCB 発注用データ（`GERBER-*.zip`, `BOM-*.csv`, `CPL-*.csv`）を一括出力
+7. **[`scripts/generate_spec_diagrams.py`](../../scripts/generate_spec_diagrams.py)**: `docs/curcur40/assets/` 内の設計図解 PNG を生成
+8. **[`scripts/render_previews.py`](../../scripts/render_previews.py)**: `docs/curcur40/assets/render_*.png` の 3D プレビュー画像を一括レンダリング
+
