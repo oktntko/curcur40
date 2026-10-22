@@ -28,6 +28,7 @@
    - スクリプト内で DRC/ERC レポートや Gerber 一時ファイルを出力する場合は、Python 標準の `tempfile.TemporaryDirectory` を使用して自動削除すること。
 2. **公式生成スクリプトの一元管理 (`scripts/`)**:
    - 3Dモデル・プレート・発注データ・図版・プレビュー画像の生成は [`scripts/`](scripts/) 配下の8本の公式スクリプト（詳細は [`scripts/README.md`](scripts/README.md) 参照）に集約し、1回限りの調査・デバッグ用スクリプトを `scripts/` に残さないこと。
+   - スクリプト内でワークスペースや入出力パスを参照する際は、`c:\Users\...` 等の環境依存フルパスをハードコードせず、必ずスクリプト自身の位置からの相対解決（`WORKSPACE = Path(__file__).resolve().parent.parent`）で記述すること。
 3. **ボトムプレートの作成禁止**:
    - ボトムプレートは 3D プリント製トレイ型ボトムケース（`cases/left.step`, `right.step`）に統合済みのため、生成・出力しないこと。
 4. **ドキュメント・画像アセットの一元管理 (`docs/`)**:

@@ -9,7 +9,7 @@ import os
 import subprocess
 from pathlib import Path
 
-WORKSPACE = Path(r"c:\Users\oktnt\workspace\curcur40")
+WORKSPACE = Path(__file__).resolve().parent.parent
 ASSETS_DIR = WORKSPACE / "docs" / "assets"
 KICAD_CLI = Path(os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe"))
 UVX_EXE = Path(os.path.expandvars(r"%USERPROFILE%\.local\bin\uvx.exe"))

@@ -38,3 +38,5 @@ gerber/
 # Order files
 order/
 .idea/
+__pycache__/
+.mypy_cache/

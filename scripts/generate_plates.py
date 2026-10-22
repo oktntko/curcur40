@@ -6,8 +6,10 @@ Note: Gerber ZIP generation is omitted by default per user workflow (only genera
 import os
 import math
 import subprocess
+from pathlib import Path
 import pcbnew
 
+WORKSPACE = Path(__file__).resolve().parent.parent
 KICAD_CLI = os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe")
 
 # Left perimeter mounting holes (5 holes, Ø 2.40 mm -> radius 1.20 mm)
@@ -255,8 +257,8 @@ def write_laser_svg(svg_path, items, width_mm, height_mm):
 def main():
     import tempfile
 
-    out_pcb_dir = r"c:\Users\oktnt\workspace\curcur40\plates\pcb"
-    out_svg_dir = r"c:\Users\oktnt\workspace\curcur40\plates\svg"
+    out_pcb_dir = str(WORKSPACE / "plates" / "pcb")
+    out_svg_dir = str(WORKSPACE / "plates" / "svg")
     os.makedirs(out_pcb_dir, exist_ok=True)
     os.makedirs(out_svg_dir, exist_ok=True)
 
