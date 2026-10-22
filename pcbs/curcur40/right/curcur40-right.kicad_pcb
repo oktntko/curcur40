@@ -75,7 +75,7 @@
 			(copper_finish "None")
 			(dielectric_constraints no)
 		)
-		(pad_to_mask_clearance 0.2)
+		(pad_to_mask_clearance 0)
 		(allow_soldermask_bridges_in_footprints no)
 		(tenting
 			(front yes)
@@ -734,7 +734,7 @@
 			(uuid "236904fd-2161-43ef-8975-eac2b4f2962d")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -931,7 +931,7 @@
 			(uuid "913ef7b1-c302-4904-894a-cc962e6d611e")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -1879,7 +1879,7 @@
 			(uuid "1395ca2c-2cc8-4c04-aaa9-bc45f894fe1d")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -2158,7 +2158,7 @@
 			(uuid "0a5a4efb-c764-400f-bcdf-c699c60649db")
 		)
 		(embedded_fonts no)
-		(model "${KBD_DIR}/kicad-packages3D/kbd.3dshapes/PJ-399B-6A.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/PJ-398A-5A.step"
 			(offset
 				(xyz 0 2.5 -2.1)
 			)
@@ -2736,7 +2736,7 @@
 			(uuid "73f38546-4c46-47d4-a22c-576b3952fc99")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -2933,7 +2933,7 @@
 			(uuid "bb4f6e86-76c4-4911-8c77-e518353124ca")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -3167,7 +3167,6 @@
 				)
 			)
 		)
-		(solder_mask_margin 0.09)
 		(clearance 0.15)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -3975,7 +3974,7 @@
 			(uuid "cb96ab1c-f663-4b66-af83-1bb4c3557e70")
 		)
 		(embedded_fonts no)
-		(model "${KICAD_KBD_DIR}/kicad-packages3D/kbd.3dshapes/TYPE-C-31-M-13C.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/TYPE-C-31-M-13C.step"
 			(offset
 				(xyz 0 4.5 -1.6)
 			)
@@ -4350,7 +4349,7 @@
 			(uuid "da8cb216-018d-454e-b5de-833012e08814")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -4458,7 +4457,6 @@
 				)
 			)
 		)
-		(solder_mask_margin 0.05)
 		(zone_connect 1)
 		(attr exclude_from_pos_files exclude_from_bom allow_soldermask_bridges)
 		(duplicate_pad_numbers_are_jumpers no)
@@ -4960,7 +4958,7 @@
 			(uuid "f12f926c-8099-46e2-a813-896c95b6da61")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -5592,7 +5590,7 @@
 			(uuid "755958e9-297c-4fc3-9588-25d64831965a")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -5866,7 +5864,7 @@
 			(uuid "f8405e79-63d0-486d-9621-358c44635fc8")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -6140,7 +6138,7 @@
 			(uuid "2e6f8391-cf79-4405-b39c-4207a1c39ff9")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -6337,7 +6335,7 @@
 			(uuid "0c3619d2-2f86-44aa-a666-c5395ce32a1f")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -6611,7 +6609,7 @@
 			(uuid "f3ea9de2-f4f9-45cb-9371-3c603e2d45ec")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -7037,7 +7035,7 @@
 			(uuid "80943e2f-2209-47c0-8cc6-86dc4d6d7b9e")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -7179,7 +7177,7 @@
 			(uuid "2f4b13f4-381c-4ba4-ae40-fa5a18552b3a")
 		)
 		(embedded_fonts no)
-		(model "${KICAD_KBD_DIR}/kicad-packages3D/kbd.3dshapes/TS-1088R-02026.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/TS-1088R-02026.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -7376,7 +7374,7 @@
 			(uuid "607e0a94-0bdb-4744-8471-c80d991cec01")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -7467,7 +7465,6 @@
 				)
 			)
 		)
-		(solder_mask_margin 0.09)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -8469,7 +8466,7 @@
 			(uuid "6570e80e-7f92-44c0-a6b4-085123a98b81")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -8743,7 +8740,7 @@
 			(uuid "24600a02-8d22-4a2c-b10f-451120e99de5")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -9347,7 +9344,7 @@
 			(uuid "edae2b55-b9f9-4f7d-a1c5-b17255e7a631")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -9544,7 +9541,7 @@
 			(uuid "637862c9-477b-4454-b172-97f059e9a304")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -9741,7 +9738,7 @@
 			(uuid "536e2f7a-41a8-45af-9694-5c6033495fd4")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -10151,8 +10148,6 @@
 				(justify mirror)
 			)
 		)
-		(solder_mask_margin 0.19)
-		(clearance 0.19)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -10690,7 +10685,7 @@
 			(uuid "eb8c004e-0164-4264-b069-40f1087373db")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -11142,7 +11137,7 @@
 			(uuid "b71dfa70-7cda-4461-8ce9-7100d5e8deef")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -11339,7 +11334,7 @@
 			(uuid "093b4ae9-6fac-470c-bdff-512e037cfc1f")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -11955,7 +11950,7 @@
 			(uuid "3bae9aca-ab4c-4e98-8604-5738cc01efb5")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -12460,7 +12455,7 @@
 			(uuid "b997bee1-02af-4456-9ccc-cc9833b94921")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -12602,7 +12597,7 @@
 			(uuid "5828fdf3-c502-43ba-b12e-5403280fcfe0")
 		)
 		(embedded_fonts no)
-		(model "${KICAD_KBD_DIR}/kicad-packages3D/kbd.3dshapes/TS-1088R-02026.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/TS-1088R-02026.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -12951,7 +12946,7 @@
 			(uuid "5fa28179-86d7-41bc-b1ee-3511699098b6")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -13148,7 +13143,7 @@
 			(uuid "d5965de3-e895-49bb-9484-658e3c25cf57")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -13422,7 +13417,7 @@
 			(uuid "90d60b6d-d4e6-4f21-8263-b1918042dec7")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -13619,7 +13614,7 @@
 			(uuid "42f4c84f-d011-4050-897b-21d145c3decb")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -14177,7 +14172,7 @@
 			(uuid "19a69318-e6e5-4e53-a59a-5349fbc19566")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -15019,7 +15014,7 @@
 			(uuid "c663ad1e-d230-4e94-864b-d70cf1a90011")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -15369,7 +15364,7 @@
 			(uuid "1b2016cc-cbf4-4482-a87a-1bb45cca61f0")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -16465,7 +16460,7 @@
 			(uuid "2794dc7c-4915-4d9d-9f41-f0c2f150b892")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -17221,7 +17216,7 @@
 			(uuid "bab0e2cf-e7a5-4800-a295-13a54325fdda")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
@@ -17714,7 +17709,7 @@
 			(uuid "5c55f417-5671-4413-98a5-7900d452f3c9")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -17911,7 +17906,7 @@
 			(uuid "a2ea0d46-d37f-4092-bc07-51496283d92c")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -18168,7 +18163,6 @@
 				)
 			)
 		)
-		(solder_mask_margin 0.05)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -18675,7 +18669,7 @@
 			(uuid "047a8e1e-743b-46f0-89f7-500b3298a12b")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -19481,7 +19475,7 @@
 			(uuid "389522d7-8b24-44fb-b71a-be9dfebb4d6a")
 		)
 		(embedded_fonts no)
-		(model "/Users/foostan/go/src/github.com/foostan/kbd/kicad-packages3D/kbd.3dshapes/ys-sk6812mini-e.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 			(offset
 				(xyz 0 0 0.15)
 			)
@@ -19755,7 +19749,7 @@
 			(uuid "0ca0ce69-890b-46ba-b56a-9a9c38f58b54")
 		)
 		(embedded_fonts no)
-		(model ":KICAD_KBD_DIR:kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+		(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 			(offset
 				(xyz 0 0 1.6)
 			)
