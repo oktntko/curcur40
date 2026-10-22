@@ -297,12 +297,16 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **左手 PCB DRC** | **0 件** | **0 件** | **0 件 / 0 件** | **なし (0 件)** | なし（完全ゼロ） |
 | **右手 PCB DRC** | **0 件** | **0 件** | **0 件 / 0 件** | **なし (0 件)** | なし（完全ゼロ） |
-| **左手 回路図 ERC** | **0 件** | **1 件** | ― | グリッド・4点接続のみ | `[pin_to_pin]` `U1` Pin 32 (`GPIO21`) と `+3V3` の直結（左右判定ピン） |
-| **右手 回路図 ERC** | **0 件** | **1 件** | ― | グリッド・4点接続のみ | `[pin_to_pin]` `rU1` Pin 32 (`GPIO21`) と `GNDR` の直結（左右判定ピン） |
+| **左手 回路図 ERC** | **0 件** | **1 件** | ― | **なし (0 件)** | `[pin_to_pin]` `U1` Pin 32 (`GPIO21`) と `+3V3` の直結（左右判定ピン） |
+| **右手 回路図 ERC** | **0 件** | **1 件** | ― | **なし (0 件)** | `[pin_to_pin]` `rU1` Pin 32 (`GPIO21`) と `GNDR` の直結（左右判定ピン） |
+
+* **ERC グリッド整合・ジャンクション規約**: `endpoint_off_grid` および `four_way_junction` を含む全 ERC ルールを有効化（`Ignored checks: None`）した状態で検証します。すべてのシンボルピン・ワイヤー端点は `50 mil` (`1.27 mm`) グリッド上に配置し、RGB LED マトリックスの電源・GND バス接続は偶数列を `1.27 mm` オフセット配置した3方向 T 字接続（`junction`）とすることで 4方向十字接続（`four_way_junction`）をゼロに保ちます。
+* **DRC 回路図等価性（Schematic Parity）規約**: PCB 上の全フットプリントに回路図シンボルの UUID 参照（`(path "/<symbol-uuid>")`）を保持し、フットプリント名・Value・Description・属性（`DNP` / `exclude_from_bom` / `exclude_from_pos_files`）を回路図と完全一致させます。外部スクリプト等でファイルを更新した後に KiCad GUI 上で DRC/ERC を実行する場合は、メモリ上の古いキャッシュによる不一致警告（旧 `JP1` Open ジャンパや `R4`/`C5`/`R1` 属性の差分など）を防ぐため、必ず KiCad でプロジェクトを再読み込みしてから実行してください。
 
 ### 8.3 KiCad 10.0 `pcbnew` Python スクリプト操作時の注意事項
 * KiCad 10.0 (Windows版) の `pcbnew` Python API では、`PCB_VIA` オブジェクトに対してレイヤー引数なしで `t.GetWidth()` を呼び出したり、`t.GetEnd()` を呼び出すと、C++ 内部アサーションダイアログ（`assert "false" failed in GetWidth(): Warning: PCB_VIA::GetWidth called without a layer argument`）が発生してプロセスが停止します。
 * スクリプトで `board.GetTracks()` を走査する際は、必ず `if t.GetClass() == "PCB_TRACK":` と `elif t.GetClass() == "PCB_VIA":` を先に分岐させ、ビアの幅取得には `t.GetWidth(pcbnew.F_Cu)`、座標取得には `t.GetPosition()` を使用してください。
+* また、`pcbnew.LoadBoard()` / `pcbnew.SaveBoard()` を単体で呼び出すとフットプリントの `(path "/<symbol-uuid>")` が消去される場合があるため、保存時は回路図シンボル UUID とのリンク（`(path ...)`）が維持されていることを確認してください。
 
 ---
 

@@ -134,6 +134,7 @@
 		(layer "F.Cu")
 		(uuid "1c9ea70f-08b2-4814-b377-6b5da97d83a0")
 		(at 14.2875 0 180)
+		(path "/75751b4a-a991-4b22-9dd5-2f1e42eac390")
 		(property "Reference" "rEXSW1"
 			(at 0 -0.5 180)
 			(unlocked yes)
@@ -476,6 +477,7 @@
 		(layer "B.Cu")
 		(uuid "0a326881-248b-4908-a659-c902df8b8280")
 		(at 109.5375 11.90625 180)
+		(path "/533a36eb-7c0e-4b01-b105-4d73f1a504f9")
 		(property "Reference" "rSW17"
 			(at 4.725 -6.715 0)
 			(layer "B.SilkS")
@@ -750,6 +752,7 @@
 		(layer "B.Cu")
 		(uuid "0a65d3ca-c014-41f7-96e9-28713af31045")
 		(at 109.537502 26.21875 180)
+		(path "/b7dff9f8-4449-4d21-ab61-fa7191097cc7")
 		(property "Reference" "rLED16"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -947,6 +950,7 @@
 		(layer "B.Cu")
 		(uuid "0a9bfd1b-2f74-4e61-b544-4f18394fb50e")
 		(at 1.886 63.3617 90)
+		(path "/3e61697c-5867-4410-b34c-dea9f981687a")
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor handsolder")
 		(property "Reference" "C3"
@@ -1125,6 +1129,7 @@
 		(layer "B.Cu")
 		(uuid "0ed1ad2b-0425-41b5-99cd-8814662cb0e7")
 		(at 67.5175 38.20125 180)
+		(path "/70265640-c9b3-42b8-aaf3-4f2db0b63830")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC10"
@@ -1277,6 +1282,7 @@
 		(layer "B.Cu")
 		(uuid "11c7c5d4-7e44-4c5d-9ef2-f682ae373c10")
 		(at 80.15 47.4)
+		(path "/333e45c9-b5ab-4857-a5c5-31531a092be9")
 		(descr "SMD3225/4, Crystal, 3.2x2.5mm package, SMD, http://www.txccrystal.com/images/pdf/7m-accuracy.pdf")
 		(property "Reference" "rY1"
 			(at -3.35 0 180)
@@ -1469,6 +1475,7 @@
 		(layer "B.Cu")
 		(uuid "126da5dc-830b-48c1-ac10-7c9c45b4ae58")
 		(at 85.632508 37.28875 -90)
+		(path "/84ef9d91-f3b5-4f20-b124-a2551271a2a7")
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "rR7"
@@ -1621,6 +1628,7 @@
 		(layer "B.Cu")
 		(uuid "13d26587-90b2-440c-b23c-d7ddce58c9f5")
 		(at 90.4875 26.19375 180)
+		(path "/2c9cb870-ead5-4cbb-8aaf-0bea074650f0")
 		(property "Reference" "rSW15"
 			(at 4.845 -6.8975 0)
 			(layer "B.SilkS")
@@ -1895,6 +1903,7 @@
 		(layer "B.Cu")
 		(uuid "13ea2f29-3dcf-438e-a5d9-e9d54e74d4d5")
 		(at -5.2575 34.64625 -90)
+		(path "/70db14b3-1c57-44d2-bda1-82d6e0714721")
 		(tags "usb usb-c 2.0 pd")
 		(property "Reference" "rJ2"
 			(at 0 -14.65 90)
@@ -2174,6 +2183,7 @@
 		(layer "B.Cu")
 		(uuid "161760bc-119c-4cb9-aedc-0fe94e0e7a60")
 		(at 67.1225 31.12625 -90)
+		(path "/a86aaa1a-fa80-4fed-9595-afcfb4db1d64")
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "rR4"
@@ -2326,6 +2336,7 @@
 		(layer "B.Cu")
 		(uuid "1f8bd45c-f833-4f1c-afe1-892144b66fe6")
 		(at 65.7 42.8 -90)
+		(path "/9396216f-866a-4866-a846-539afb7de2a6")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC7"
@@ -2478,6 +2489,7 @@
 		(layer "B.Cu")
 		(uuid "21fff6dc-6154-4791-9f97-364a5c52d943")
 		(at 71.4375 23.8125 180)
+		(path "/d3c18c21-5711-435c-b44c-a95ad88844a1")
 		(property "Reference" "rSW10"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -2752,6 +2764,7 @@
 		(layer "B.Cu")
 		(uuid "234bce89-baff-43bf-85cf-7965183d3d95")
 		(at 33.3375 -14.2625 180)
+		(path "/515f3523-c949-4181-8c0a-a592450fa9d9")
 		(property "Reference" "rLED4"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -2949,6 +2962,7 @@
 		(layer "B.Cu")
 		(uuid "265fc0dc-597b-4f0a-be06-63fc3e893d4e")
 		(at 86.792508 37.31875 -90)
+		(path "/f8a5ccca-e5d2-4573-89b2-0aded81c4193")
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "rR6"
@@ -3101,6 +3115,7 @@
 		(layer "B.Cu")
 		(uuid "2b9a981c-95c6-47c3-823a-068b3ebf765c")
 		(at 22.6525 -11.51005 180)
+		(path "/72981e07-995f-48c4-8462-bfb06170b64a")
 		(descr "USON-10 2.5x1.0mm_ Pitch 0.5mm http://www.ti.com/lit/ds/symlink/tpd4e02b04.pdf")
 		(tags "USON-10 2.5x1.0mm Pitch 0.5mm")
 		(property "Reference" "rU3"
@@ -3401,6 +3416,7 @@
 		(layer "B.Cu")
 		(uuid "2ba578f9-823e-4306-90ef-5f81195c4dda")
 		(at 17.886 45.3617)
+		(path "/cfbe2306-8ce2-419e-ac7f-b124e00d2fc0")
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor handsolder")
 		(property "Reference" "R1"
@@ -3579,6 +3595,7 @@
 		(layer "B.Cu")
 		(uuid "2c32e555-19f9-4ce3-a76e-b798cbdf6c49")
 		(at 12.2875 -23.057499)
+		(path "/185dca7f-e4eb-4145-8b60-6111161988b9")
 		(descr "USB Type-C receptacle for USB 2.0 and PD, http://www.krhro.com/uploads/soft/180320/1-1P320120243.pdf")
 		(tags "usb usb-c 2.0 pd")
 		(property "Reference" "rJ1"
@@ -3978,6 +3995,7 @@
 		(layer "B.Cu")
 		(uuid "2d413f53-d52b-488a-a977-411667a3f351")
 		(at 17.886 54.1457 180)
+		(path "/a86a4f59-dc40-4f77-ab19-c4e9c4d90aaa")
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor handsolder")
 		(property "Reference" "C1"
@@ -4156,6 +4174,7 @@
 		(layer "B.Cu")
 		(uuid "2dda1365-416d-44f2-93f9-659e5f1d5c7f")
 		(at 52.387502 2.40625 180)
+		(path "/e3aa5bf8-71ad-4a28-9877-4ba720bb3249")
 		(property "Reference" "rLED6"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -4353,6 +4372,7 @@
 		(layer "B.Cu")
 		(uuid "315a45c1-e273-4540-8517-7b4802a4df39")
 		(at 17.775 50.1457 -90)
+		(path "/9ca99c4b-8bb3-4a14-8335-051ddbe4bce1")
 		(descr "SMD Solder 3-pad Jumper, 1x1.5mm rounded Pads, 0.3mm gap, pads 1-2 bridged with 1 copper strip, labeled with numbers")
 		(tags "net tie solder jumper bridged")
 		(property "Reference" "JP1"
@@ -4701,6 +4721,7 @@
 		(layer "B.Cu")
 		(uuid "38419885-a9ea-4f4c-9386-35876af4f88d")
 		(at 71.4375 4.7625 180)
+		(path "/c04c0667-668c-4229-929e-478d9cf0e039")
 		(property "Reference" "rSW11"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -4975,6 +4996,7 @@
 		(layer "B.Cu")
 		(uuid "3cfb420a-a11c-4497-b288-e9703afc9456")
 		(at 22.8375 -15.5 180)
+		(path "/ef91f8ff-2f66-41be-a60d-a32d39725fee")
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "rR9"
@@ -5127,6 +5149,7 @@
 		(layer "B.Cu")
 		(uuid "3d659694-e3a5-46df-b68a-d56c5bfd78a6")
 		(at 27.1475 2.86625 180)
+		(path "/2dec3d61-5c00-47ec-a283-39c6f3185f26")
 		(descr "http://www.diodes.com/datasheets/ap02001.pdf p.144")
 		(tags "Diode SOD523")
 		(property "Reference" "rD1"
@@ -5410,6 +5433,7 @@
 		(layer "B.Cu")
 		(uuid "3e507c1a-5234-48ea-bc61-dc553214342a")
 		(at 33.3375 23.8375 180)
+		(path "/8f83475f-d58c-4173-953a-3d1b4d61376d")
 		(property "Reference" "rLED2"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -5607,6 +5631,7 @@
 		(layer "B.Cu")
 		(uuid "3fd7ce58-4a02-4dc1-8c7b-9a13e30a2e20")
 		(at 109.5375 30.95625 180)
+		(path "/2190235b-4719-4bac-890f-6ac80491a1d6")
 		(property "Reference" "rSW16"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -5881,6 +5906,7 @@
 		(layer "B.Cu")
 		(uuid "47cbcf17-76b5-4572-9121-50380728d911")
 		(at 109.5375 -7.14375 180)
+		(path "/c7e7aa05-ffbe-4396-b944-0d63c098a66b")
 		(property "Reference" "rSW18"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -6155,6 +6181,7 @@
 		(layer "B.Cu")
 		(uuid "4d052f8f-7bac-4cf4-a902-61ca0306fb07")
 		(at 90.487502 21.45625 180)
+		(path "/e6234e9a-3f01-49c7-bb9e-5327f6a85107")
 		(property "Reference" "rLED15"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -6352,6 +6379,7 @@
 		(layer "B.Cu")
 		(uuid "4d61a58a-a8d8-4fa1-9cee-0549d1ee61c7")
 		(at 33.3375 -9.525 180)
+		(path "/0718ee63-d41b-4e85-b3cd-57f3e5bb00b8")
 		(property "Reference" "rSW4"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -6626,6 +6654,7 @@
 		(layer "B.Cu")
 		(uuid "51b1e020-db9e-4aa8-9a78-d8d418ec3956")
 		(at 19.422502 -15.295 -90)
+		(path "/2d737b2a-d501-4462-a67a-14b5d98c39f6")
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "rR2"
@@ -6778,6 +6807,7 @@
 		(layer "B.Cu")
 		(uuid "52d01f35-d9f0-4c03-86ca-6c119fdcda6e")
 		(at 52.3875 7.14375 180)
+		(path "/06ce21b8-0366-4cba-a5bb-52eefd2bbd5d")
 		(property "Reference" "rSW6"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -7052,6 +7082,7 @@
 		(layer "B.Cu")
 		(uuid "5328e65d-3688-4505-ad0d-36004256b0d3")
 		(at 95.0025 37.38125 -90)
+		(path "/8df20b7d-0aa7-4485-9e1c-32ccbaa5c96f")
 		(tags "usb usb-c 2.0 pd")
 		(property "Reference" "rSMDSW2"
 			(at 1.01 1.925 90)
@@ -7194,6 +7225,7 @@
 		(layer "B.Cu")
 		(uuid "53db175f-a266-4f7c-95b3-0adf191ad741")
 		(at 109.537502 7.16875 180)
+		(path "/cb440ae6-2084-4a1f-b9e8-172cc80fb198")
 		(property "Reference" "rLED17"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -7391,6 +7423,7 @@
 		(layer "B.Cu")
 		(uuid "54aa4bf9-ed44-456f-ba3a-31294aeb170c")
 		(at 74.6075 37.63995 180)
+		(path "/ddff3856-8101-421e-bb0c-e024f6e3a157")
 		(descr "QFN, 56 Pin (https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf#page=607)")
 		(tags "QFN NoLead")
 		(property "Reference" "rU1"
@@ -8286,6 +8319,7 @@
 		(layer "B.Cu")
 		(uuid "63008982-e1fb-4831-bd06-ad92ce800f1e")
 		(at 52.387502 -16.64375 180)
+		(path "/0ed0b852-3aed-47f7-bc43-a919ee4a3e0b")
 		(property "Reference" "rLED5"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -8483,6 +8517,7 @@
 		(layer "B.Cu")
 		(uuid "65ecf36e-8b53-4894-a354-c38bffe0e6c0")
 		(at 33.3375 9.525 180)
+		(path "/ad63564d-68f4-4b73-838f-e6cb096f55c1")
 		(property "Reference" "rSW3"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -8757,6 +8792,7 @@
 		(layer "B.Cu")
 		(uuid "66cf41b5-64fc-4ed6-b1d5-bc2776b311f4")
 		(at 17.886 55.8957 180)
+		(path "/56d5b5c4-ea1f-48ae-861a-2d8c8b7a2dd8")
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor handsolder")
 		(property "Reference" "C2"
@@ -8935,6 +8971,7 @@
 		(layer "B.Cu")
 		(uuid "6837eb19-10e6-4249-82b5-d1fd7fe7d53e")
 		(at 46.2125 35.63625 -90)
+		(path "/76cc9a0e-6be2-4c02-a8af-d41f01f60453")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC6"
@@ -9087,6 +9124,7 @@
 		(layer "B.Cu")
 		(uuid "68706fd2-b5b3-46ca-91cd-f634c0815df6")
 		(at 33.3375 52.3875 180)
+		(path "/3794c42c-5d98-442b-bcb6-2c03c15fe8eb")
 		(property "Reference" "rSW1"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -9361,6 +9399,7 @@
 		(layer "B.Cu")
 		(uuid "691736a9-4db4-4bd2-b647-7b500a0366a8")
 		(at 52.3875 47.65 180)
+		(path "/48cb2ba9-bb8e-40f9-99b6-fea550b0b3c6")
 		(property "Reference" "rLED8"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -9558,6 +9597,7 @@
 		(layer "B.Cu")
 		(uuid "69db667c-77e7-41f7-9799-b6244e2c8525")
 		(at 90.487502 -16.64375 180)
+		(path "/b52d5c93-e74e-44ca-b3fb-aa1c0cba338b")
 		(property "Reference" "rLED13"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -9755,6 +9795,7 @@
 		(layer "B.Cu")
 		(uuid "72297c9e-7f3a-4a70-8071-6dc548b743f9")
 		(at 11.486 63.6617 -90)
+		(path "/27b9400d-98b1-4dd0-8676-4dd699e1bceb")
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor handsolder")
 		(property "Reference" "C4"
@@ -9933,6 +9974,7 @@
 		(layer "B.Cu")
 		(uuid "74d5d988-c3f9-46b1-b6a5-f14760a1f62a")
 		(at 64.9325 31.13625 90)
+		(path "/f7754ec4-c45d-4556-8d79-9a780e499197")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC5"
@@ -10085,6 +10127,7 @@
 		(layer "B.Cu")
 		(uuid "7aea91bc-c3e8-4423-b29d-c1c5789efe61")
 		(at 74.5925 32.18625)
+		(path "/4d7801e7-8274-47ee-8749-a53774aa23b1")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC4"
@@ -10238,6 +10281,7 @@
 		(layer "B.Cu")
 		(uuid "7b166131-2f94-4a88-bf03-e1ed774438e5")
 		(at 17.386 64.0617 180)
+		(path "/3696e467-4807-4909-ac9d-a4bc45889cca")
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor handsolder")
 		(property "Reference" "C5"
@@ -10417,6 +10461,7 @@
 		(layer "B.Cu")
 		(uuid "82953e81-5347-45e2-87de-b04b3e1cb6e4")
 		(at 90.4875 -11.90625 180)
+		(path "/77b7df8c-d855-4658-8165-2898fb5a34b9")
 		(property "Reference" "rSW13"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -10691,6 +10736,7 @@
 		(layer "B.Cu")
 		(uuid "8ba549ba-8e72-43ee-aa1b-a880174c24d8")
 		(at 7.886 41.6617 180)
+		(path "/a4d7b811-2256-4b90-a4a7-d5bbebcec36e")
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor handsolder")
 		(property "Reference" "R3"
@@ -10869,6 +10915,7 @@
 		(layer "B.Cu")
 		(uuid "8d53fde3-1607-40d8-b92c-f855dc2051ce")
 		(at 71.4375 52.3875 180)
+		(path "/69d28473-ae2a-455e-a126-601dcc311eb7")
 		(property "Reference" "rSW9"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -11143,6 +11190,7 @@
 		(layer "B.Cu")
 		(uuid "8ecbff9a-2dd4-4eb1-8f45-846794c6a30a")
 		(at 90.487502 2.40625 180)
+		(path "/fe828219-e318-4fd2-8969-bbb66b743d1a")
 		(property "Reference" "rLED14"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -11340,6 +11388,7 @@
 		(layer "B.Cu")
 		(uuid "924402c9-b01c-47b1-9af0-d921381a4b28")
 		(at 78.6875 30.96625 90)
+		(path "/afc6d260-6138-41fd-b46e-60b0e02017bd")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC14"
@@ -11492,6 +11541,7 @@
 		(layer "B.Cu")
 		(uuid "9dc5187d-ab1a-4689-a9ad-54cb564a62a5")
 		(at 17.386 62.0617)
+		(path "/610d2ade-53fa-4f5e-a3a1-1aca305beba4")
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor handsolder")
 		(property "Reference" "R4"
@@ -11671,6 +11721,7 @@
 		(layer "B.Cu")
 		(uuid "9fc72132-0480-4d0c-921c-615aca7f4191")
 		(at 33.3375 28.575 180)
+		(path "/7585795b-7796-4923-a91b-f30d1b179e60")
 		(property "Reference" "rSW2"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -11945,6 +11996,7 @@
 		(layer "B.Cu")
 		(uuid "9fc9f239-e26c-4570-a416-876aad0ea9ec")
 		(at 111.8475 22.43125 90)
+		(path "/d17dd2a7-08a9-4b5b-b744-3a93363c13ec")
 		(descr "Through hole straight pin header, 1x03, 2.54mm pitch, single row")
 		(tags "Through hole pin header THT 1x03 2.54mm single row")
 		(property "Reference" "rJ4"
@@ -12176,6 +12228,7 @@
 		(layer "B.Cu")
 		(uuid "a8a7e715-d385-497c-ba02-b0abd74aaef7")
 		(at 52.3875 52.3875 180)
+		(path "/c8506d02-dd17-4e43-93a2-0bfae92a9ffd")
 		(property "Reference" "rSW8"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -12450,6 +12503,7 @@
 		(layer "B.Cu")
 		(uuid "a9de673b-f5bf-441b-9c42-add6dc97d937")
 		(at 91.0375 37.384 -90)
+		(path "/c1f4fc6c-b37f-4bc8-a3af-6c2d0dbaa6ae")
 		(tags "usb usb-c 2.0 pd")
 		(property "Reference" "rSMDSW1"
 			(at 1.02725 2.005 90)
@@ -12592,6 +12646,7 @@
 		(layer "B.Cu")
 		(uuid "ad7a1d86-3ea4-42a3-ba1b-eabfca25544e")
 		(at 63.3475 34.01625 180)
+		(path "/54a6f25e-dd4a-45ff-817b-173003425fce")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC12"
@@ -12744,6 +12799,7 @@
 		(layer "B.Cu")
 		(uuid "b56af7c6-c161-44ce-a879-776b2c5e15d3")
 		(at 71.437502 19.075 180)
+		(path "/035a3b21-e7d9-45b9-9e46-772cc35a5d8b")
 		(property "Reference" "rLED10"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -12941,6 +12997,7 @@
 		(layer "B.Cu")
 		(uuid "ba1821e8-18b0-4d65-9325-9dbdb9fed9b2")
 		(at 71.437502 -19.025 180)
+		(path "/4fcce249-e2f4-42c7-9919-f035af72dc70")
 		(property "Reference" "rLED12"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -13138,6 +13195,7 @@
 		(layer "B.Cu")
 		(uuid "bae296a3-c28f-4704-a090-ad4cd1bd47f7")
 		(at 14.2875 19.05 180)
+		(path "/abac2eb3-6e7c-5198-9dd7-a2c9da47a408")
 		(property "Reference" "rEXSW2"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -13412,6 +13470,7 @@
 		(layer "B.Cu")
 		(uuid "beb95f24-335b-4337-bbd1-43ba5c782f9e")
 		(at 71.437502 0.025 180)
+		(path "/24ccdb8b-ebf5-4c96-a5d4-dae1d3738e7c")
 		(property "Reference" "rLED11"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -13609,6 +13668,7 @@
 		(layer "B.Cu")
 		(uuid "bfa1d679-8199-475a-b2b9-a0aba7486810")
 		(at 20.942508 -14.70125 -90)
+		(path "/e5e25013-53a9-4b00-a39f-44d22886460e")
 		(descr "http://www.diodes.com/datasheets/ap02001.pdf p.144")
 		(tags "Diode SOD523")
 		(property "Reference" "rZD1"
@@ -13893,6 +13953,7 @@
 		(layer "B.Cu")
 		(uuid "c0e1688e-5635-4fd2-8769-42c2b8b6e323")
 		(at 71.4375 -14.2875 180)
+		(path "/d4c9d4df-c137-4bf0-9b26-e066898c4cfd")
 		(property "Reference" "rSW12"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -14167,6 +14228,7 @@
 		(layer "B.Cu")
 		(uuid "c336df53-594f-44af-82be-72410b65c073")
 		(at 63.1375 13.94625 180)
+		(path "/d80e9b79-4fa3-488a-8bf4-f9f2bd2a3545")
 		(descr "SOIC, 8 Pin (JEITA/EIAJ ED-7311-19 variation 08-001-BBA and Atmel/Microchip, 208 mils width, https://www.jeita.or.jp/japanese/standard/book/ED-7311-19/#target/page_no=21, https://ww1.microchip.com/downloads/en/DeviceDoc/20005045C.pdf#page=23, https://ww1.microchip.com/downloads/en/DeviceDoc/doc2535.pdf#page=162)")
 		(tags "SOIC SO P-SOP SOP SOP-8 SO SO-8 8S2 S2AE/F K04-056 CASE-751BE SO8W 8-Pin-SOIC PSA W8-2 W8-4 W8MS-1 FPT-8P-M08")
 		(property "Reference" "rU4"
@@ -14541,6 +14603,7 @@
 		(layer "B.Cu")
 		(uuid "c3498a51-8404-454d-8fef-757eca29c5a4")
 		(at 51.3825 38.14625)
+		(path "/0b473194-0a43-4bb6-be5c-e28c00449e27")
 		(descr "module CMS SOT223 4 pins")
 		(tags "CMS SOT")
 		(property "Reference" "rU2"
@@ -14812,6 +14875,7 @@
 		(layer "B.Cu")
 		(uuid "c4ce66fe-23a0-492c-b2ea-6d0b0245edc4")
 		(at 33.3375 4.7875 180)
+		(path "/c97edfdb-060a-4f3c-a54a-55e317e337bb")
 		(property "Reference" "rLED3"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -15009,6 +15073,7 @@
 		(layer "B.Cu")
 		(uuid "c6c49d70-fe3e-444f-abd3-9628138a967c")
 		(at 59.3875 10.21625)
+		(path "/95cd0e0a-5bd0-4828-a3a9-a580d84af332")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC16"
@@ -15161,6 +15226,7 @@
 		(layer "B.Cu")
 		(uuid "c80d15d6-d8fd-45dc-a9cc-ed116d4e2a37")
 		(at 14.2875 14.3125 180)
+		(path "/ba8b9923-c190-5b38-b4df-c3342e632b92")
 		(property "Reference" "rEXLED2"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -15359,6 +15425,7 @@
 		(layer "B.Cu")
 		(uuid "cc03a39f-bb91-44a0-99c5-fc5ee343a9fb")
 		(at 80.4 44.8)
+		(path "/746d0988-da02-4a96-836b-0206524bb8e4")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC1"
@@ -15512,6 +15579,7 @@
 		(layer "B.Cu")
 		(uuid "cc064d6d-cc74-47ef-89a5-87283edc6306")
 		(at 9.525 52.3875 90)
+		(path "/1da5363b-9254-416a-9573-71742689f640")
 		(descr "PMW3360DM-T2QU special 16pin molded lead-frame DIP")
 		(property "Reference" "U1"
 			(at -9.652 -6.125 0)
@@ -15877,6 +15945,7 @@
 		(layer "B.Cu")
 		(uuid "d2825f15-6523-4510-a73f-d8f1dce9ad53")
 		(at 22.8475 -13.92)
+		(path "/4cc04ab4-e03b-49b8-a667-0e54068cf50c")
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "rR8"
@@ -16029,6 +16098,7 @@
 		(layer "B.Cu")
 		(uuid "d2a3bfbc-e847-4387-8627-e4fc6f7103d2")
 		(at 80.4 51.5 180)
+		(path "/800129b3-2180-477f-8ccb-367823978993")
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "rR3"
@@ -16181,6 +16251,7 @@
 		(layer "B.Cu")
 		(uuid "d436e55a-286e-40af-8c86-dc227051e13a")
 		(at 90.4875 7.14375 180)
+		(path "/8e42b370-b927-426d-afaf-f64b5dbe6f44")
 		(property "Reference" "rSW14"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -16455,6 +16526,7 @@
 		(layer "B.Cu")
 		(uuid "daa6ffa3-8e7a-49d8-a879-93ce4efd3ed6")
 		(at 17.886 43.3617)
+		(path "/5787d4fd-e2e9-4d4d-87e6-72bdd196a639")
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor handsolder")
 		(property "Reference" "R2"
@@ -16633,6 +16705,7 @@
 		(layer "B.Cu")
 		(uuid "dd9660e3-4f62-4e96-b18d-7635eac4abb8")
 		(at 63.3375 31.90625 180)
+		(path "/52a7987e-18ff-4fff-b16f-04aa91111bdf")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC8"
@@ -16785,6 +16858,7 @@
 		(layer "B.Cu")
 		(uuid "de9609c8-2957-46aa-b3ba-e3fe005a5ece")
 		(at 5.122502 -15.275 -90)
+		(path "/f18c3f3b-cff6-4404-9cd5-0d29ae3d5b3f")
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "rR1"
@@ -16937,6 +17011,7 @@
 		(layer "B.Cu")
 		(uuid "e17985a0-0603-4432-bce6-beaab57bd0c7")
 		(at 52.3875 -11.90625 180)
+		(path "/1f24a632-b44a-4f84-943b-43e78f588e6e")
 		(property "Reference" "rSW5"
 			(at 0 -8.8 0)
 			(layer "B.SilkS")
@@ -17211,6 +17286,7 @@
 		(layer "B.Cu")
 		(uuid "e301fe0a-cc2e-4c8d-9891-ff41ed5c6d4f")
 		(at 66.0225 31.12625 90)
+		(path "/ae8df65e-051b-4aa1-82e2-e2dbbc1a3fca")
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "rR5"
@@ -17363,6 +17439,7 @@
 		(layer "B.Cu")
 		(uuid "f0b1dde2-ed10-4bdb-86c4-98f5bba951d9")
 		(at 56.702502 37.455 -90)
+		(path "/c9001f0a-58a3-4b0f-ac78-d48ba552134a")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC11"
@@ -17515,6 +17592,7 @@
 		(layer "B.Cu")
 		(uuid "f1da2ca9-4b22-4a41-ae4f-c16db50be98d")
 		(at 71.4375 47.65 180)
+		(path "/870444a5-3839-4b5f-be28-e759c5f39dbd")
 		(property "Reference" "rLED9"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -17704,6 +17782,7 @@
 		(layer "B.Cu")
 		(uuid "f8b1621d-7cbc-4744-9cfd-0d9aede46744")
 		(at 33.3375 47.65 180)
+		(path "/caa0d0ee-9604-401c-aa17-952be5114750")
 		(property "Reference" "rLED1"
 			(at 0.167807 2.074063 180)
 			(layer "B.SilkS")
@@ -17901,6 +17980,7 @@
 		(layer "B.Cu")
 		(uuid "f9e109da-4e41-4157-ae85-271064226bd8")
 		(at 80.4 50.2 180)
+		(path "/048a77b6-b4df-4fc1-93e7-e5d177b09659")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC2"
@@ -18053,6 +18133,7 @@
 		(layer "B.Cu")
 		(uuid "f9ead76e-33c4-4d51-9d41-5e495e55eaa3")
 		(at 8.386 63.6617 180)
+		(path "/1dccb600-526d-4c83-9440-1b931e9b4020")
 		(descr "SOT, 5 Pin (JEDEC MO-178 Var AA https://www.jedec.org/document_search?search_api_views_fulltext=MO-178)")
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "U2"
@@ -18467,6 +18548,7 @@
 		(layer "B.Cu")
 		(uuid "fafd8bff-e470-4aa8-b8ff-39deaf7e5c36")
 		(at 52.387502 21.45625 180)
+		(path "/3779f83a-43b3-48e1-80b1-238789fc7907")
 		(property "Reference" "rLED7"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -18664,6 +18746,7 @@
 		(layer "B.Cu")
 		(uuid "fb16e037-c84c-44e6-a191-70b41f406a00")
 		(at 84.512508 37.27875 90)
+		(path "/e364f484-7306-4a5a-84db-fb8c172dd842")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC9"
@@ -18817,6 +18900,7 @@
 		(layer "B.Cu")
 		(uuid "fb6923bf-4eec-40b5-a193-b4583f6092dc")
 		(at 68.2025 31.13625 90)
+		(path "/a9e4be5d-a68e-4afb-891a-239599e94e8c")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC15"
@@ -18969,6 +19053,7 @@
 		(layer "B.Cu")
 		(uuid "fb8c9fa2-3d60-4de5-90e3-8da5b7607eef")
 		(at 63.3475 32.96625 180)
+		(path "/ab62158f-e45f-4e0e-8063-ca388d73e368")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC13"
@@ -19121,6 +19206,7 @@
 		(layer "B.Cu")
 		(uuid "fbc3fe84-fc97-4b67-8499-043d251f5f65")
 		(at 67 42.8 -90)
+		(path "/4145aafe-5202-45c3-b88e-c6dcd840bbdd")
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "rC3"
@@ -19273,6 +19359,7 @@
 		(layer "B.Cu")
 		(uuid "fedde4a1-e947-4653-927a-dcddd247f855")
 		(at 109.537502 -11.88125 180)
+		(path "/217bec43-dc9d-4255-84e8-d8a222fa27ac")
 		(property "Reference" "rLED18"
 			(at 0 1.95 0)
 			(layer "B.SilkS")
@@ -19470,6 +19557,7 @@
 		(layer "B.Cu")
 		(uuid "ff68511d-080b-43af-8a00-c3c58b83e50c")
 		(at 52.3875 26.19375 180)
+		(path "/8ac22dd0-7df3-405a-8822-0b0e489622dc")
 		(property "Reference" "rSW7"
 			(at 4.675 -6.9075 0)
 			(layer "B.SilkS")
