@@ -21665,9 +21665,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "1da5363b-9254-416a-9573-71742689f640")
 		(property "Reference" "U1"

@@ -198,24 +198,13 @@
 		(size 1.9 1.9)
 		(drill 1.9)
 		(layers)
-		(solder_mask_margin -0.2)
 		(uuid "39f4575d-c9bd-4cb3-b2eb-fbcd7c0e2d43")
-	)
-	(pad "" np_thru_hole circle
-		(at -5 -5.15)
-		(size 0.4 0.4)
-		(drill 0.4)
-		(layers)
-		(solder_mask_margin -0.2)
-		(thermal_bridge_angle 90)
-		(uuid "6d153797-e768-4f80-be8c-52c32e95327e")
 	)
 	(pad "" np_thru_hole circle
 		(at 0 0 270)
 		(size 5 5)
 		(drill 5)
 		(layers)
-		(solder_mask_margin -0.2)
 		(uuid "78927524-7552-4d75-a9d3-3a7900685895")
 	)
 	(pad "" np_thru_hole circle
@@ -223,7 +212,6 @@
 		(size 3 3)
 		(drill 3)
 		(layers)
-		(solder_mask_margin -0.2)
 		(uuid "35fedff0-82b3-46f9-b267-7001287cffa8")
 	)
 	(pad "" np_thru_hole circle
@@ -231,7 +219,6 @@
 		(size 3 3)
 		(drill 3)
 		(layers)
-		(solder_mask_margin -0.2)
 		(uuid "3464dcc3-9114-4fb0-a70a-d421d5e35bea")
 	)
 	(pad "" np_thru_hole circle
@@ -239,7 +226,6 @@
 		(size 1.9 1.9)
 		(drill 1.9)
 		(layers)
-		(solder_mask_margin -0.2)
 		(uuid "ddc11fa3-08f2-4ac6-93d8-856d04364a6d")
 	)
 	(pad "1" smd rect
