@@ -3,14 +3,15 @@
 Generate curcur40 Full Assembly STEP (cases/assembly-full.step)
 and verify zero interference across all components per docs/case_spec.md:
 - Left & Right 3D-printed Tray Bottom Cases (Z = -12.30 to 0.00 mm, inner floor Z = -9.10 mm)
-- Left & Right Main PCBs (Z = -5.20 to -3.60 mm, with Ø 3.60 mm spacer through-holes & PMW3360 optical cutout)
-- Left & Right FR-4 Top Plates (Z = -1.60 to 0.00 mm, with Ø 2.40 mm screw holes & switch cutouts)
-- Trackball Cup placed on Right Main PCB F.Cu at (23.8125, -109.5375, -3.60 mm)
-- 25mm Trackball Sphere at (23.8125, -109.5375, +14.70 mm)
+- Left & Right Main PCBs (Z = -5.80 to -4.20 mm, with Ø 3.25 mm spacer through-holes & PMW3360 optical cutout)
+- Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, with Ø 2.40 mm screw holes & switch cutouts)
+- Trackball Cup placed on Right Main PCB F.Cu at (23.8125, -109.5375, -4.20 mm)
+- 25mm Trackball Sphere at (23.8125, -109.5375, +14.10 mm)
 - PMW3360 Sensor IC & LM19-LSI Optical Lens
-- 13x M2 5.50mm Female-Female Standoffs (5 Left + 8 Right, Z = -9.10 to -3.60 mm, flush with PCB F.Cu)
+- 9x Perimeter M2 5.50mm Female-Female Standoffs (5 Left + 4 Right, Z = -9.10 to -3.60 mm, seated under Top Plate)
+- 4x Trackball Cup M2 6.00mm Female-Female Standoffs (TB1-TB4, Z = -9.10 to -3.10 mm, penetrating 1.10 mm into Cup Ear Ø 3.60 mm holes)
 - 13x Bottom M2x4mm Screws (head in bottom counterbore Z = -12.20 to -11.40 mm, shank Z = -11.40 to -7.40 mm)
-- 13x Top M2x4mm Screws (4 on Trackball Cup ears Z = -1.20 mm, 9 on Top Plates Z = 0.00 mm)
+- 13x Top M2x4mm Screws (4 on Trackball Cup ears Z = -1.80 mm, 9 on Top Plates Z = -2.00 mm)
 - Keycaps (Choc v2 low-profile) & CKW12 Rotary Encoder
 """
 import math
@@ -154,17 +155,18 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
         holes_step = [to_step_left(x, y) for x, y in LEFT_PERIMETER_HOLES_PCB]
 
     sk = make_filleted_sketch(pts_step)
-    pcb = bd.extrude(sk, amount=1.60).moved(bd.Location((0, 0, -5.20)))
+    pcb = bd.extrude(sk, amount=1.60).moved(bd.Location((0, 0, -5.80)))
 
-    # Cut Ø 3.60 mm (radius 1.80 mm) spacer through-holes
+    # Cut Ø 3.25 mm (radius 1.625 mm) spacer through-holes
     for hx, hy in holes_step:
         pcb = pcb - bd.Cylinder(
-            radius=1.80,
+            radius=1.625,
             height=4.0,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
-        ).moved(bd.Location((hx, hy, -6.0)))
+        ).moved(bd.Location((hx, hy, -6.5)))
 
     # On Right PCB: cut the PMW3360 optical + lens leg rectangular cutout (8.70 x 16.90 mm at (9.525, 52.3875))
+    # and the 16 staggered pin through-holes (Ø 0.75 mm)
     if is_right:
         tb_cx, tb_cy = to_step_right(9.5250, 52.3875)
         pcb = pcb - bd.Box(
@@ -172,7 +174,21 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
             16.90,
             4.0,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
-        ).moved(bd.Location((tb_cx, tb_cy, -6.0)))
+        ).moved(bd.Location((tb_cx, tb_cy, -6.5)))
+        top_pin_xs = [-6.168 + i * 1.78 for i in range(8)]
+        bot_pin_xs = [-5.278 + i * 1.78 for i in range(8)]
+        for px in top_pin_xs:
+            pcb = pcb - bd.Cylinder(
+                radius=0.375,
+                height=4.0,
+                align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+            ).moved(bd.Location((tb_cx - 5.35, tb_cy + px, -6.5)))
+        for px in bot_pin_xs:
+            pcb = pcb - bd.Cylinder(
+                radius=0.375,
+                height=4.0,
+                align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+            ).moved(bd.Location((tb_cx + 5.35, tb_cy + px, -6.5)))
 
     solid = pcb.solids()[0]
     solid.label = "Right_Main_PCB" if is_right else "Left_Main_PCB"
@@ -181,40 +197,40 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
 
 def build_top_plate_solid(is_right=True) -> bd.Solid:
     """
-    Constructs the FR-4 Top Plate solid (Z = -1.60 to 0.00 mm, thickness 1.60 mm)
+    Constructs the FR-4 Top Plate solid (Z = -3.60 to -2.00 mm, thickness 1.60 mm)
     with switch cutouts and Ø 2.40 mm through-holes (no counterbores).
     """
     if is_right:
         pts_plate = [
-            ( -5.6625, -24.71250, 1.0),
-            (119.4625, -24.71250, 1.0),
-            (119.4625,  41.38125, 1.0),
-            ( 82.8625,  41.38125, 1.0),
-            ( 82.8625,  67.90000, 1.0),
-            ( 24.8375,  67.90000, 1.0),
+            ( -5.4625, -24.51250, 1.0),
+            (119.2625, -24.51250, 1.0),
+            (119.2625,  41.18125, 1.0),
+            ( 82.6625,  41.18125, 1.0),
+            ( 82.6625,  67.70000, 1.0),
+            ( 24.8375,  67.70000, 1.0),
             ( 24.8375,  37.40000, 1.0),
-            ( -5.6625,  37.40000, 1.0),
+            ( -5.4625,  37.40000, 1.0),
         ]
         pts_step = [(*to_step_right(x, y), r) for x, y, r in pts_plate]
         sw_step = [to_step_right(x, y) for x, y in RIGHT_SWITCHES]
         holes_step = [to_step_right(x, y) for x, y in RIGHT_PERIMETER_HOLES_PCB]
     else:
         pts_plate = [
-            (   5.6625, -24.71250, 1.0),
-            (-119.4625, -24.71250, 1.0),
-            (-119.4625,  41.38125, 1.0),
-            ( -82.8625,  41.38125, 1.0),
-            ( -82.8625,  67.90000, 1.0),
-            (   5.6625,  67.90000, 1.0),
+            (   5.4625, -24.51250, 1.0),
+            (-119.2625, -24.51250, 1.0),
+            (-119.2625,  41.18125, 1.0),
+            ( -82.6625,  41.18125, 1.0),
+            ( -82.6625,  67.70000, 1.0),
+            (   5.4625,  67.70000, 1.0),
         ]
         pts_step = [(*to_step_left(x, y), r) for x, y, r in pts_plate]
         sw_step = [to_step_left(x, y) for x, y in LEFT_SWITCHES]
         holes_step = [to_step_left(x, y) for x, y in LEFT_PERIMETER_HOLES_PCB]
 
     sk = make_filleted_sketch(pts_step)
-    plate = bd.extrude(sk, amount=1.60).moved(bd.Location((0, 0, -1.60)))
+    plate = bd.extrude(sk, amount=1.60).moved(bd.Location((0, 0, -3.60)))
 
-    with bd.BuildSketch(bd.Plane.XY.offset(-2.0)) as sk_cuts:
+    with bd.BuildSketch(bd.Plane.XY.offset(-4.0)) as sk_cuts:
         for sx, sy in sw_step:
             with bd.Locations([(sx, sy)]):
                 bd.RectangleRounded(14.0, 14.0, 0.5)
@@ -230,7 +246,7 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
             radius=1.20,
             height=4.0,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
-        ).moved(bd.Location((hx, hy, -2.5)))
+        ).moved(bd.Location((hx, hy, -4.5)))
 
     solid = plate.solids()[0]
     solid.label = "Right_Top_Plate" if is_right else "Left_Top_Plate"
@@ -238,7 +254,7 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
 
 
 def make_keycap_solid(sx, sy, label="Keycap") -> bd.Solid:
-    with bd.BuildSketch(bd.Plane.XY.offset(1.20)) as sk:
+    with bd.BuildSketch(bd.Plane.XY.offset(-0.80)) as sk:
         with bd.Locations([(sx, sy)]):
             bd.RectangleRounded(17.2, 16.2, 1.5)
     cap = bd.extrude(sk.sketch, amount=4.40).solids()[0]
@@ -249,7 +265,8 @@ def make_keycap_solid(sx, sy, label="Keycap") -> bd.Solid:
 def make_ckw12_solids(ex, ey):
     """
     Loads the official CKW12 rotary encoder 3D models (housing, wheel, stem),
-    rotates -90 deg around Z to match rEXSW1 orientation, and places at (ex, ey, Z = -5.20 mm).
+    aligned with rEXSW1 orientation (0 deg in STEP), and places on F.Cu + 0.50 mm
+    conthrough height (Z = -4.20 + 0.50 = -3.70 mm).
     """
     models_dir = WORKSPACE / "pcbs" / "common" / "kbd" / "3dmodels"
     solids = []
@@ -259,7 +276,7 @@ def make_ckw12_solids(ex, ey):
         ("ckw12_stem.stp", "CKW12_Stem"),
     ]:
         part = bd.import_step(str(models_dir / fname))
-        placed = part.rotate(bd.Axis.Z, -90.0).moved(bd.Location((ex, ey, -5.20)))
+        placed = part.moved(bd.Location((ex, ey, -3.70)))
         for idx, s in enumerate(placed.solids()):
             s.label = label if len(placed.solids()) == 1 else f"{label}_{idx+1}"
             solids.append(s)
@@ -280,8 +297,8 @@ def main():
     left_plate = build_top_plate_solid(is_right=False)
     right_plate = build_top_plate_solid(is_right=True)
 
-    # Trackball Cup placed on Right Main PCB F.Cu (Z = -3.60 mm) at (23.8125, -109.5375)
-    tb_cx, tb_cy, tb_cz = 23.8125, -109.5375, -3.6000
+    # Trackball Cup placed on Right Main PCB F.Cu (Z = -4.20 mm) at (23.8125, -109.5375)
+    tb_cx, tb_cy, tb_cz = 23.8125, -109.5375, -4.2000
     cup_local = bd.import_step(str(CASES_DIR / "trackball-cup.step"))
     cup_global = cup_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
     cup_global.label = "Trackball_Cup"
@@ -308,7 +325,7 @@ def main():
     lens_global.label = "LM19_Lens"
 
     # Optical Distance Reference Point in global coordinates:
-    # PCB F.Cu Z = -3.60 mm + 3.40 mm = -0.20 mm (2.40 mm below ball bottom Z = +2.20 mm)
+    # PCB F.Cu Z = -4.20 mm + 3.40 mm = -0.80 mm (2.40 mm below ball bottom Z = +1.60 mm)
     ref_point_global = bd.Pos(tb_cx, tb_cy, tb_cz + 3.40) * bd.Circle(0.35).face()
     ref_point_global.label = "Lens_Optical_Ref_Point"
 
@@ -316,7 +333,7 @@ def main():
     enc_x, enc_y = to_step_right(*RIGHT_ENCODER)
     ckw12_solids = make_ckw12_solids(enc_x, enc_y)
 
-    # Create all 13x M2 5.50mm Standoffs (OD = 3.00 mm -> radius 1.50 mm, Z = -9.10 to -3.60 mm)
+    # Create all 13x Standoffs (9x 5.50mm perimeter, 4x 6.00mm trackball cup)
     left_holes_step = [to_step_left(x, y) for x, y in LEFT_PERIMETER_HOLES_PCB]
     right_perim_step = [to_step_right(x, y) for x, y in RIGHT_PERIMETER_HOLES_PCB]
     right_tb_step = [to_step_right(x, y) for x, y in RIGHT_TB_HOLES_PCB]
@@ -326,20 +343,20 @@ def main():
     top_screws = []
 
     all_holes = (
-        [(x, y, "L_Perim", 0.00) for x, y in left_holes_step]
-        + [(x, y, "R_Perim", 0.00) for x, y in right_perim_step]
-        + [(x, y, "R_TB", -1.20) for x, y in right_tb_step]
+        [(x, y, "L_Perim", -2.00, 5.50) for x, y in left_holes_step]
+        + [(x, y, "R_Perim", -2.00, 5.50) for x, y in right_perim_step]
+        + [(x, y, "R_TB", -1.80, 6.00) for x, y in right_tb_step]
     )
 
-    for i, (sx, sy, tag, z_top_seat) in enumerate(all_holes):
-        # M2 5.50mm standoff (OD 3.0mm, ID 1.7mm, Z = -9.10 to -3.60 mm)
+    for i, (sx, sy, tag, z_top_seat, so_height) in enumerate(all_holes):
+        # M2 standoff (OD 3.0mm, ID 1.7mm, Z = -9.10 to -9.10 + so_height)
         so = bd.Cylinder(
             radius=1.50,
-            height=5.50,
+            height=so_height,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((sx, sy, -9.10))) - bd.Cylinder(
             radius=0.85,
-            height=6.00,
+            height=so_height + 0.50,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(
             bd.Location((sx, sy, -9.35))
@@ -363,7 +380,7 @@ def main():
         b_scr.label = f"Bottom_Screw_{tag}_{i+1}"
         bottom_screws.append(b_scr)
 
-        # Top M2x4mm screw (head seated at z_top_seat: 0.00 mm on Top Plate or -1.20 mm on Cup Ear)
+        # Top M2x4mm screw (head seated at z_top_seat: -2.00 mm on Top Plate or -1.80 mm on Cup Ear)
         t_head = bd.Cylinder(
             radius=2.00,
             height=0.80,
@@ -394,10 +411,13 @@ def main():
     ov_cup_ball = overlap_volume(cup_global, ball_global)
     ov_cup_lens = overlap_volume(cup_global, lens_global)
     ov_sensor_case = overlap_volume(sensor_global, right_case)
+    ov_sensor_pcb = overlap_volume(sensor_global, right_pcb)
+    ov_lens_pcb = overlap_volume(lens_global, right_pcb)
     ov_rpcb_case = overlap_volume(right_pcb, right_case)
     ov_lpcb_case = overlap_volume(left_pcb, left_case)
 
     ov_ckw12_plate = max(overlap_volume(s, right_plate) for s in ckw12_solids)
+    ov_ckw12_pcb = max(overlap_volume(s, right_pcb) for s in ckw12_solids)
     ov_ckw12_screws = max(overlap_volume(s, t_scr) for s in ckw12_solids for t_scr in top_screws)
 
     print(f"Cup vs Right Case:     {ov_cup_case:.8f} mm^3")
@@ -405,9 +425,12 @@ def main():
     print(f"Cup vs 25mm Ball:      {ov_cup_ball:.8f} mm^3")
     print(f"Cup vs LM19 Lens:      {ov_cup_lens:.8f} mm^3")
     print(f"Sensor vs Right Case:  {ov_sensor_case:.8f} mm^3")
+    print(f"Sensor vs Right PCB:   {ov_sensor_pcb:.8f} mm^3")
+    print(f"LM19 Lens vs Right PCB:{ov_lens_pcb:.8f} mm^3")
     print(f"Right PCB vs Case:     {ov_rpcb_case:.8f} mm^3")
     print(f"Left PCB vs Case:      {ov_lpcb_case:.8f} mm^3")
     print(f"CKW12 vs Right Plate:  {ov_ckw12_plate:.8f} mm^3")
+    print(f"CKW12 vs Right PCB:    {ov_ckw12_pcb:.8f} mm^3")
     print(f"CKW12 vs Top Screws:   {ov_ckw12_screws:.8f} mm^3")
 
     max_so_ov = 0.0
@@ -418,9 +441,11 @@ def main():
             overlap_volume(so, left_case),
             overlap_volume(so, right_pcb),
             overlap_volume(so, left_pcb),
+            overlap_volume(so, right_plate),
+            overlap_volume(so, left_plate),
             overlap_volume(so, cup_global),
         )
-    print(f"Max Standoff Overlap (vs Cases, PCBs, Cup): {max_so_ov:.8f} mm^3")
+    print(f"Max Standoff Overlap (vs Cases, PCBs, Plates, Cup): {max_so_ov:.8f} mm^3")
 
     max_cap_screw_ov = 0.0
     for t_scr in top_screws:
@@ -433,9 +458,12 @@ def main():
     assert ov_cup_ball == 0.0
     assert ov_cup_lens == 0.0
     assert ov_sensor_case == 0.0
+    assert ov_sensor_pcb == 0.0
+    assert ov_lens_pcb == 0.0
     assert ov_rpcb_case == 0.0
     assert ov_lpcb_case == 0.0
     assert ov_ckw12_plate == 0.0
+    assert ov_ckw12_pcb == 0.0
     assert ov_ckw12_screws == 0.0
     assert max_so_ov == 0.0
     assert max_cap_screw_ov == 0.0

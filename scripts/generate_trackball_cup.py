@@ -25,7 +25,7 @@ def build_trackball_cup() -> bd.Solid:
     - 4 Mounting Ears at (+/-12.00, +/-11.30 mm):
         - Thickness = 2.40 mm (Z = 0.00 to 2.40 mm)
         - Through-hole = Ø 3.60 mm (no counterbore, flat top)
-        - Outer boss radius = 3.25 mm (Ø 6.50 mm)
+        - Outer boss radius = 3.00 mm (Ø 6.00 mm)
     - 3 Retention Claws (T-shape orthogonal):
         - North 90.0 deg, West 180.0 deg, East 0.0 deg
         - Width = 4.50 mm
@@ -35,7 +35,7 @@ def build_trackball_cup() -> bd.Solid:
     - 3 Ceramic Bearing Balls (Ø 2.00 mm):
         - Elevation = 52.0 deg down from horizontal (Z = 7.66 mm, R_xy = 8.31 mm)
         - Azimuth = 30.0 deg, 150.0 deg, 270.0 deg
-        - Pocket radius = 1.03 mm, with Ø 1.20 mm clean push-out holes
+        - Pocket radius = 1.03 mm, with Ø 1.95 mm entrance throat (blind bottom, no push-out hole)
     - LM19 Lens Pocket (2-Stage Design, Zero Collision):
         - Main lens chamber (19.60 x 22.20 mm): Z = 0.00 to +4.85 mm (accommodates 18.85 x 21.15 mm flange)
         - Flange bottom at Z = +3.40 mm ensures exact 2.40 mm optical tracking distance to ball bottom (Z = +5.80 mm)
@@ -70,10 +70,10 @@ def build_trackball_cup() -> bd.Solid:
             bd.Circle(radius=r_outer)
             for sx, sy in ear_coords:
                 with bd.Locations([(sx, sy)]):
-                    bd.Circle(radius=3.25)
+                    bd.Circle(radius=3.00)
                 with bd.Locations([(sx / 2, sy / 2)]):
                     ang = math.degrees(math.atan2(sy, sx))
-                    bd.Rectangle(math.hypot(sx, sy), 6.50, rotation=ang)
+                    bd.Rectangle(math.hypot(sx, sy), 6.00, rotation=ang)
         bd.extrude(amount=z_ear)
     cup = cup + ears_bp.part
 
@@ -163,16 +163,23 @@ def build_trackball_cup() -> bd.Solid:
     # 9. 3x Bearing ball pockets (Ø 2.00 mm ceramic balls)
     # Azimuths: 30.0 deg (#1), 150.0 deg (#2), 270.0 deg (#3)
     # Elevation: 52.0 deg down from horizontal
-    # Single clean spherical dimple per bearing ball (pocket radius 1.03 mm, depth 1.35 mm, no bottom breakthrough)
+    # Spherical dimple (radius 1.03 mm, blind bottom) + Ø 1.95 mm (radius 0.975 mm) entrance throat
+    # extending inward toward the ball center (0, 0, z_ball_center) for crack-free snap-in assembly
     r_orbit = 13.50
     elev_rad = math.radians(52.0)
     for az_deg in (30.0, 150.0, 270.0):
         az_rad = math.radians(az_deg)
-        bx = r_orbit * math.cos(elev_rad) * math.cos(az_rad)
-        by = r_orbit * math.cos(elev_rad) * math.sin(az_rad)
-        bz = z_ball_center - r_orbit * math.sin(elev_rad)  # 7.66 mm
+        ux = math.cos(elev_rad) * math.cos(az_rad)
+        uy = math.cos(elev_rad) * math.sin(az_rad)
+        uz = -math.sin(elev_rad)
+        bx = r_orbit * ux
+        by = r_orbit * uy
+        bz = z_ball_center + r_orbit * uz  # 7.66 mm
         pocket = bd.Sphere(radius=1.03).moved(bd.Location((bx, by, bz)))
-        cup = cup - pocket
+        inward_dir = bd.Vector(-ux, -uy, -uz)
+        throat_plane = bd.Plane(origin=(bx, by, bz), z_dir=inward_dir)
+        throat = bd.extrude(throat_plane * bd.Circle(radius=0.975), amount=2.50)
+        cup = cup - pocket - throat
 
     # 10. 4x M2 screw through-holes (Ø 3.60 mm through-hole, NO counterbore, flat top)
     for sx, sy in ear_coords:
