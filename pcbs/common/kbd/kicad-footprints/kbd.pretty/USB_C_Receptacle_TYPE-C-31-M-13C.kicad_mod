@@ -325,7 +325,7 @@
 		(uuid "f010804d-54b9-4282-8861-f4f38e75c7bb")
 	)
 	(embedded_fonts no)
-	(model "${KICAD_KBD_DIR}/kicad-packages3D/kbd.3dshapes/TYPE-C-31-M-13C.step"
+	(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/TYPE-C-31-M-13C.step"
 		(offset
 			(xyz 0 4.5 -1.6)
 		)

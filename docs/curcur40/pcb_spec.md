@@ -51,12 +51,12 @@
 
 | フットプリント名 (`kbd:`) | 対象部品 / 回路図シンボル | データ入手元（公開リポジトリ） | ローカルでの生成・改変内容 |
 | :--- | :--- | :--- | :--- |
-| **[`keyswitch_choc12_hotswap_1u.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/keyswitch_choc12_hotswap_1u.kicad_mod)** | Kailh Choc ソケット (`CPG135001S30`)<br>`Switch:SW_Push` | **foostan/kbd**<br>(`keyswitch_choc12_hotswap_1u.kicad_mod` ＋ `kailh_choc_socket.step`) | 元データをそのまま使用（KiCad 10.0 DRC 対応として NPTH 穴の `solder_mask_margin` のみ `-0.2 mm` にローカル調整） |
-| **[`YS-SK6812MINI-E.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/YS-SK6812MINI-E.kicad_mod)** | 逆付け RGB LED (`YS-SK6812MINI-E`)<br>`kbd:YS-SK6812MINI-E` | **foostan/kbd**<br>(`YS-SK6812MINI-E.kicad_mod` ＋ `YS-SK6812MINI-E.step`) | 元データをベースに、KiCad 10.0 DRC の基板角穴（`Edge.Cuts`）対パッドクリアランス（`0.25 mm`）およびシルク重なり回避の微調整をローカル実施 |
-| **[`TS-1088R-02026.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/TS-1088R-02026.kicad_mod)** | SMD タクトSW (`TS-1088R-02026`)<br>`Switch:SW_Push` | **foostan/kbd**<br>(`TS-1088R-02026.kicad_mod` ＋ `TS-1088R-02026.step`) | 元データをそのまま使用（KiCad 10.0 フォーマット保存のみ） |
-| **[`USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod)** | USB-C 16ピン (`TYPE-C-31-M-13C`)<br>`Connector:USB_C_Receptacle_USB2.0_16P` | **foostan/kbd** の [`TYPE-C-31-M-13C.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/TYPE-C-31-M-13C.kicad_mod)（＋ `TYPE-C-31-M-13C.step`）が元データ | 標準シンボル `USB_C_Receptacle_USB2.0_16P` のフィルタ（`USB*C*Receptacle*`）に適合するよう**ローカルでリネーム複製**し、`A8`/`B8`（SBU）およびシールド脚 `SH` のピン名を標準シンボルに整合 |
-| **[`Jack_PJ-398A-5A_PJ-399B-6A.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/Jack_PJ-398A-5A_PJ-399B-6A.kicad_mod)** | 3.5mm ジャック (`PJ-398A-5A`)<br>`Connector_Audio:AudioJack3` | **foostan/kbd** の [`PJ-398A-5A_PJ-399B-6A.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/PJ-398A-5A_PJ-399B-6A.kicad_mod)（＋ `PJ-398A-5A.step`）が元データ | 標準シンボル `AudioJack3` のフィルタ（`Jack*`）に適合するよう**ローカルでリネーム複製**し、パッド番号を `1/2/3` から `T/R/S` にローカル変更 |
-| **[`RotaryEncoder_Switch_CKW12.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/RotaryEncoder_Switch_CKW12.kicad_mod)** | ホイールエンコーダ (`CKW12`)<br>`Device:RotaryEncoder_Switch` | **kumakey/roBa**<br>(`https://github.com/kumakey/roBa` の `roBa:SW_MX_EC12` フットプリントとして [`CKW12.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/CKW12.kicad_mod) に取得 ＋ `3dmodels/ckw12_*.stp`) | 標準シンボル `RotaryEncoder_Switch` のフィルタ（`RotaryEncoder*Switch*`）に適合するよう `CKW12.kicad_mod` から**ローカルでリネーム複製**し、位置決めNPTH穴径・マスクマージンを微調整 |
+| **[`keyswitch_choc12_hotswap_1u.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/keyswitch_choc12_hotswap_1u.kicad_mod)** | Kailh Choc ソケット (`CPG135001S30`)<br>`Switch:SW_Push` | **foostan/kbd**<br>(`keyswitch_choc12_hotswap_1u.kicad_mod` ＋ `kailh_choc_socket.step`) | NPTH 穴の `solder_mask_margin`（`-0.2 mm`）統一、および 3D モデル参照パスを環境非依存の `${KIPRJMOD}/../../common/kbd/...` に修正 |
+| **[`YS-SK6812MINI-E.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/YS-SK6812MINI-E.kicad_mod)** | 逆付け RGB LED (`YS-SK6812MINI-E`)<br>`kbd:YS-SK6812MINI-E` | **foostan/kbd**<br>(`YS-SK6812MINI-E.kicad_mod` ＋ `YS-SK6812MINI-E.step`) | パッド上のシルク重なり回避微調整、および 3D モデル参照パス（元データの `/Users/foostan/...`）を `${KIPRJMOD}/../../common/kbd/...` に修正 |
+| **[`TS-1088R-02026.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/TS-1088R-02026.kicad_mod)** | SMD タクトSW (`TS-1088R-02026`)<br>`Switch:SW_Push` | **foostan/kbd**<br>(`TS-1088R-02026.kicad_mod` ＋ `TS-1088R-02026.step`) | 形状変更なし。3D モデル参照パスを環境非依存の `${KIPRJMOD}/../../common/kbd/...` に修正 |
+| **[`USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod)** | USB-C 16ピン (`TYPE-C-31-M-13C`)<br>`Connector:USB_C_Receptacle_USB2.0_16P` | **foostan/kbd** の [`TYPE-C-31-M-13C.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/TYPE-C-31-M-13C.kicad_mod)（＋ `TYPE-C-31-M-13C.step`）が元データ | 標準シンボル `USB_C_Receptacle_USB2.0_16P` のフィルタ（`USB*C*Receptacle*`）に適合するよう**ローカルでリネーム複製**し、シールド脚 `SH` のピン名整合・3D モデルパス修正を実施 |
+| **[`Jack_PJ-398A-5A_PJ-399B-6A.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/Jack_PJ-398A-5A_PJ-399B-6A.kicad_mod)** | 3.5mm ジャック (`PJ-398A-5A`)<br>`Connector_Audio:AudioJack3` | **foostan/kbd** の [`PJ-398A-5A_PJ-399B-6A.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/PJ-398A-5A_PJ-399B-6A.kicad_mod)（＋ `PJ-398A-5A.step`）が元データ | 標準シンボル `AudioJack3` のフィルタ（`Jack*`）に適合するよう**ローカルでリネーム複製**し、パッド番号を `1/2/3` から `T/R/S` に変更・3D モデルパス修正を実施 |
+| **[`RotaryEncoder_Switch_CKW12.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/RotaryEncoder_Switch_CKW12.kicad_mod)** | ホイールエンコーダ (`CKW12`)<br>`Device:RotaryEncoder_Switch` | **kumakey/roBa**<br>(`https://github.com/kumakey/roBa` の `roBa:SW_MX_EC12` フットプリントとして [`CKW12.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/CKW12.kicad_mod) に取得 ＋ `3dmodels/ckw12_*.stp`) | 標準シンボル `RotaryEncoder_Switch` のフィルタ（`RotaryEncoder*Switch*`）に適合するよう `CKW12.kicad_mod` から**ローカルでリネーム複製** |
 | **[`PMW3360DM-T2QU_16Pin.kicad_mod`](../../pcbs/common/kbd/kicad-footprints/kbd.pretty/PMW3360DM-T2QU_16Pin.kicad_mod)** | 光学センサー (`PMW3360DM-T2QU`)<br>`PMW3360_PCB:PMW3360DM-T2QU` | **SideraKB/PMW3360_PCB**<br>(`https://github.com/SideraKB/PMW3360_PCB` の `PMW3360DM-T2QU_16Pin.kicad_mod`) | 元データをベースに、KiCad 10.0 でスルーホールパッドの銅箔定義欠落エラーを防ぐため `(layers "*.Cu" "*.Mask")` をローカル補完 |
 
 > **【補足：`SW1` / `rSW1` のソケットフットプリント統一について】**
@@ -83,10 +83,10 @@
 
 JLCPCB 等の標準 2層基板製造プロセスで追加料金なく高い歩留まりを確保できるルールを設定しています。
 
-* **最小クリアランス**: `0.19 mm`（一部ネットクラス `0.20 mm`）
+* **最小クリアランス**: `0.19 mm`（一部ネットクラス `0.20 mm`、0.5mmピッチ ESD保護IC `U3`/`rU3` のみ差動ペア通過部で `0.15 mm`）
 * **最小配線幅**: `0.20 mm`（信号線標準 `0.20 mm` / `0.2032 mm`、電源ライン `0.25 mm` 〜 `0.508 mm`）
 * **標準ビア寸法**: 外径 `0.50 mm` / ドリル径 `0.30 mm`（一部電源・信号ビアは外径 `0.60 mm` / ドリル径 `0.30 mm`）
-* **ハンダマスク最小ブリッジ幅 / クリアランス**: 標準設定（USON-10 等の狭ピッチESD保護IC `U3`/`rU3` のみローカルマスクマージン `0.09 mm` を適用）
+* **ハンダマスク拡張 (`pad_to_mask_clearance`)**: **`0 mm`**（KiCad 10.0 標準の NSMD 設定。フットプリント個別のハンダマスクマージン上書きは一切使用しない）
 * **銅箔ゾーン (` GND ` / ` GNDR `)**:
   * 表裏両面（`F.Cu` / `B.Cu`）全面ベタGNDプレーン配置。
   * サーマルリリーフ最小スポーク数: `2本`（すべてのGNDスルーホール・SMDパッドで2本以上のスポーク接続を確保）。
