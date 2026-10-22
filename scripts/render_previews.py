@@ -97,6 +97,11 @@ def main():
         right_pcb, ASSETS_DIR / "render_right_iso.png", side="top", rotate="-35,0,-25", width=1600, height=1200
     )
 
+    # 3b. PMW3360 Sensor Sub-PCB Renders
+    pmw_pcb = WORKSPACE / "pcbs" / "pmw3360" / "curcur40-pmw3360.kicad_pcb"
+    render_kicad_pcb(pmw_pcb, ASSETS_DIR / "render_pmw3360_top.png", side="top", width=1000, height=1000)
+    render_kicad_pcb(pmw_pcb, ASSETS_DIR / "render_pmw3360_bottom.png", side="bottom", width=1000, height=1000)
+
     # 4. Top Plate Renders
     left_plate = WORKSPACE / "plates" / "pcb" / "plate-top-left.kicad_pcb"
     right_plate = WORKSPACE / "plates" / "pcb" / "plate-top-right.kicad_pcb"

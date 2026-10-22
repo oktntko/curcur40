@@ -54,8 +54,9 @@ JLCPCB（[https://jlcpcb.com/](https://jlcpcb.com/)）には、**PCBA 付きメ�
 | :--- | :---: | :---: | :--- | :--- | :--- |
 | **① 左メイン基板**<br>(`curcur40-left`) | **PCB + PCBA**<br>（裏面 `B.Cu` 実装） | 5枚<br>（PCBAは2枚〜可） | [GERBER-curcur40-left.zip](../pcbs/left/jlcpcb/production_files/GERBER-curcur40-left.zip) | [BOM-curcur40-left.csv](../pcbs/left/jlcpcb/production_files/BOM-curcur40-left.csv) | [CPL-curcur40-left.csv](../pcbs/left/jlcpcb/production_files/CPL-curcur40-left.csv) |
 | **② 右メイン基板**<br>(`curcur40-right`) | **PCB + PCBA**<br>（裏面 `B.Cu` 実装） | 5枚<br>（PCBAは2枚〜可） | [GERBER-curcur40-right.zip](../pcbs/right/jlcpcb/production_files/GERBER-curcur40-right.zip) | [BOM-curcur40-right.csv](../pcbs/right/jlcpcb/production_files/BOM-curcur40-right.csv) | [CPL-curcur40-right.csv](../pcbs/right/jlcpcb/production_files/CPL-curcur40-right.csv) |
-| **③ 左トッププレート**<br>(`plate-top-left`) | **PCB のみ**<br>（FR-4 1.6mm） | 5枚 | [GERBER-plate-top-left.zip](../plates/pcb/jlcpcb/production_files/GERBER-plate-top-left.zip) | 不要（PCBAなし） | 不要（PCBAなし） |
-| **④ 右トッププレート**<br>(`plate-top-right`) | **PCB のみ**<br>（FR-4 1.6mm） | 5枚 | [GERBER-plate-top-right.zip](../plates/pcb/jlcpcb/production_files/GERBER-plate-top-right.zip) | 不要（PCBAなし） | 不要（PCBAなし） |
+| **③ センサーサブ基板**<br>(`curcur40-pmw3360`) | **PCB + PCBA**<br>（裏面 `B.Cu` 実装） | 5枚<br>（PCBAは2枚〜可） | [GERBER-curcur40-pmw3360.zip](../pcbs/pmw3360/jlcpcb/production_files/GERBER-curcur40-pmw3360.zip) | [BOM-curcur40-pmw3360.csv](../pcbs/pmw3360/jlcpcb/production_files/BOM-curcur40-pmw3360.csv) | [CPL-curcur40-pmw3360.csv](../pcbs/pmw3360/jlcpcb/production_files/CPL-curcur40-pmw3360.csv) |
+| **④ 左トッププレート**<br>(`plate-top-left`) | **PCB のみ**<br>（FR-4 1.6mm） | 5枚 | [GERBER-plate-top-left.zip](../plates/pcb/jlcpcb/production_files/GERBER-plate-top-left.zip) | 不要（PCBAなし） | 不要（PCBAなし） |
+| **⑤ 右トッププレート**<br>(`plate-top-right`) | **PCB のみ**<br>（FR-4 1.6mm） | 5枚 | [GERBER-plate-top-right.zip](../plates/pcb/jlcpcb/production_files/GERBER-plate-top-right.zip) | 不要（PCBAなし） | 不要（PCBAなし） |
 
 > **補足（トッププレートおよびレーザーカット用 SVG について）**:
 > - **トッププレートの仕様**:
@@ -73,7 +74,8 @@ JLCPCB（[https://jlcpcb.com/](https://jlcpcb.com/)）には、**PCBA 付きメ�
 - **Remove Order Number**: **`Specify a location`** または **`Yes`（有料オプション）** ※特にトッププレートは表面に製造番号が入らないよう `Remove Order Number: Yes` を推奨します。
 - **PCBA Assembly Side**:
   - 左メイン基板 (`curcur40-left`)：**`Bottom Side`**（78点実装 / 21 BOMグループ）
-  - 右メイン基板 (`curcur40-right`)：**`Bottom Side`**（82点実装 / 27 BOMグループ）
+  - 右メイン基板 (`curcur40-right`)：**`Bottom Side`**（75点実装 / 22 BOMグループ、JST SH 6ピンコネクタ `rJ3` 含む）
+  - センサーサブ基板 (`curcur40-pmw3360`)：**`Bottom Side`**（9点実装 / 7 BOMグループ、1.8V LDO `U2`・受動部品 `C1`〜`C4`, `R1`〜`R3`・JST SH 6ピンコネクタ `J1` 含む）
 - **PCBA 実装内容と未実装（DNP / 手ハンダ）部品の確認**:
   - 左右メイン基板には RP2040 マイコン、Flash メモリ、水晶振動子、3.3V LDO、Kailh Choc ホットスワップソケット（左21個・右19個）、ダイオード、RGB LED、USB Type-C コネクタ、TRRS ジャック、RESET/BOOT タクトスイッチ（`SMDSW1`/`SMDSW2`, `rSMDSW1`/`rSMDSW2`）、および右手 PMW3360 回路の 1.8V LDO（`U2`: TLV74318PDBVR）と受動部品（`C1`〜`C4`, `R1`〜`R3`）がすべて実装されます。
   - 以下の部品は意図的に PCBA（BOM/CPL）から除外されています（JLCPCB のプレビュー画面で Unplaced となっても正常です）：
@@ -143,17 +145,18 @@ JLCPCB / JLC3DP 以外で、キーボードショップ・電子部品通販・A
 | :--- | :---: | :--- | :--- |
 | **25mm トラックボール球** | **1個** | 直径 **25mm** のトラックボール交換球。<br>定番は **Perixx（ペリックス）PERIPRO-303 25mm**、または Keyball / killerwhale 用 25mm 球。 | Amazon（Perixx公式）/ 遊舎工房 / Booth |
 | **直径 2.0mm（$\varnothing 2.0\text{ mm}$）支持球** | **3個** | `trackball-cup` 内部の3つのくぼみ（入口スロート径 $\varnothing 1.95\text{ mm}$）にスナップイン圧入してトラックボールを滑らかに支えるベアリング球。<br>**$\varnothing 2.0\text{ mm}$ セラミック球（$\text{ZrO}_2$ ジルコニア または $\text{Si}_3\text{N}_4$ 窒化ケイ素）** または高精密ステンレス球。 | Amazon / モノタロウ / AliExpress / Booth |
-| **PMW3360DM-T2QU センサーIC ＋ レンズ（LM19-LSI）** | **1セット** | 光学センサー IC 本体（16-pin DIP）と専用レンズ（`LM19-LSI`）のセット。右メイン基板（`curcur40-right`）の `U1` に直接実装します。<br>※旧設計で必要だった6ピンヘッダや `JP1` のハンダブリッジは、シングルボード統合＆基板内パターン直結化により**不要**になりました。 | AliExpress / Tindie / Booth |
+| **PMW3360DM-T2QU センサーIC ＋ レンズ（LM19-LSI）** | **1セット** | 光学センサー IC 本体（16-pin DIP）と専用レンズ（`LM19-LSI`）のセット。センサーサブ基板（`curcur40-pmw3360`）の `U1` に実装します。 | AliExpress / Tindie / Booth |
+| **JST SH 1.0mmピッチ 6ピン両端コネクタ付ケーブル** | **1本** | 長さ **5cm〜10cm** 程度（ストレート結線 / 同方向 `1-1, 2-2, ..., 6-6`）。右メイン基板の裏面コネクタ `rJ3` とセンサーサブ基板の裏面コネクタ `J1`（ともに `SM06B-SRSS-TB` は PCBA 実装済み）をワンタッチで接続します。 | Amazon / 秋月電子 / 千石電商 / AliExpress |
 
 ### ネジ・スペーサー・ゴム足・ケーブル類
 
-curcur40 は **外周 9箇所（左手 5箇所 ＋ 右手外周 4箇所）に M2 5.50mm メス-メス スペーサー**、**トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`）に M2 6.0〜7.0mm メス-メス スペーサー** と **M2 × 4.0mm ネジ（計 26本）** を使用する締結構造を採用しています。
+curcur40 は **外周 10箇所（左手 5箇所 `L1`〜`L5` ＋ 右手外周 5箇所 `R1`〜`R5`、左右対称）に M2 5.50mm メス-メス スペーサー**、**トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`）に M2 6.0〜7.0mm メス-メス スペーサー** と **M2 × 4.0mm ネジ（計 28本）** を使用する締結構造を採用しています。
 
 | 品名 | 必要数 | 仕様・備考 | 主な入手先 |
 | :--- | :---: | :--- | :--- |
-| **M2 メス-メス スペーサー（長さ 5.50mm）** | **9個** | **左手外周 5個（`L1`〜`L5`）＋ 右手外周 4個（`R1`〜`R4`）＝ 計 9個**。<br>外径 $\varnothing 3.0\text{ mm}$（丸型中空スペーサー推奨）。ケース内底面（$Z = -9.10\text{ mm}$）に立ち、メイン基板の $\varnothing 3.25\text{ mm}$ 貫通穴を通ってトッププレート下面（$Z = -3.60\text{ mm}$）を直接支持します。 | 遊舎工房 / Hirosugi-Net（廣杉計器）/ Amazon / AliExpress |
-| **M2 メス-メス スペーサー（長さ 6.0〜7.0mm）** | **4個** | **右手トラックボールカップ部 4個（`TB1`〜`TB4`）**。<br>外径 $\varnothing 3.0\text{ mm}$（丸型中空スペーサー推奨）。ケース内底面からメイン基板（底面空間 $3.30\text{ mm}$＋基板厚 $1.60\text{ mm} = 4.90\text{ mm}$）を貫通し、カップ固定耳の $\varnothing 3.60\text{ mm}$ 穴内部へ進入します。 | 遊舎工房 / Hirosugi-Net（廣杉計器）/ Amazon / AliExpress |
-| **M2 × 4.0mm ネジ** | **26本** | **底面側 13本 ＋ 上面側 13本 ＝ 計 26本**（頭径 $\varnothing 4.0\text{ mm}$ 以下の精密低頭ネジまたはなべ頭ネジ、頭厚 $0.80\text{ mm}$ 以下推奨）。<br>・底面側 13本：ケース底面ザグリ穴（残肉厚 $2.30\text{ mm}$）を通ってスペーサー下端に $1.70\text{ mm}$ 噛み合います。<br>・上面側 9本（外周）：トッププレート（$1.60\text{ mm}$）を通って直下の $5.50\text{ mm}$ スペーサー上端に **$2.40\text{ mm}$** 噛み合います。<br>・上面側 4本（カップ耳）：カップ固定耳（厚さ $2.40\text{ mm}$）の上から $6.0\sim 7.0\text{ mm}$ スペーサー上端へ噛み合います。 | 遊舎工房 / Amazon / モノタロウ / 秋月電子 |
+| **M2 メス-メス スペーサー（長さ 5.50mm）** | **10個** | **左手外周 5個（`L1`〜`L5`）＋ 右手外周 5個（`R1`〜`R5`）＝ 計 10個**。<br>外径 $\varnothing 3.0\text{ mm}$（丸型中空スペーサー推奨）。ケース内底面（$Z = -9.10\text{ mm}$）に立ち、メイン基板の $\varnothing 3.25\text{ mm}$ 貫通穴を通ってトッププレート下面（$Z = -3.60\text{ mm}$）を直接支持します。 | 遊舎工房 / Hirosugi-Net（廣杉計器）/ Amazon / AliExpress |
+| **M2 メス-メス スペーサー（長さ 6.0〜7.0mm）** | **4個** | **右手トラックボールカップ部 4個（`TB1`〜`TB4`）**。<br>外径 $\varnothing 3.0\text{ mm}$（丸型中空スペーサー推奨）。ケース下段のセンサーキャビティ底面（$Z = -20.90\text{ mm}$）からセンサーサブ基板（底面空間 $3.30\text{ mm}$＋基板厚 $1.60\text{ mm} = 4.90\text{ mm}$）を貫通し、カップ固定耳の $\varnothing 3.60\text{ mm}$ 穴内部へ進入します。 | 遊舎工房 / Hirosugi-Net（廣杉計器）/ Amazon / AliExpress |
+| **M2 × 4.0mm ネジ** | **28本** | **底面側 14本 ＋ 上面側 14本 ＝ 計 28本**（頭径 $\varnothing 4.0\text{ mm}$ 以下の精密低頭ネジまたはなべ頭ネジ、頭厚 $0.80\text{ mm}$ 以下推奨）。 | 遊舎工房 / Amazon / モノタロウ / 秋月電子 |
 | **ゴム足（クッションゴム）** | **8〜10個** | 直径 6mm〜8mm、厚み 1.5mm〜2mm 程度の貼り付け式ゴム足（左右ケース底面の四隅＋トラックボール下部に貼付）。 | Amazon / 100円ショップ / ホームセンター |
 | **TRRS / TRS ケーブル（3.5mm ミニプラグ）** | **1本** | 左右分割キーボード間を接続するケーブル（基板上のジャック `PJ-398A-5A` は Tip=`+5V`, Ring=`/TX`, Sleeve=`GND` の3極接続のため、**4極 TRRS ケーブル・3極 TRS ケーブルのどちらも使用可能**です）。<br>⚠️ **通電中の抜き差し（活線挿抜）は `+5V` と `GND` がショートするため厳禁です。** | 遊舎工房 / Amazon |
 | **USB Type-C ケーブル** | **1本** | PC との接続用（データ通信対応のもの）。 | Amazon / 家電量販店 |

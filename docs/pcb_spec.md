@@ -18,13 +18,13 @@
 
 ### 1.1 プロジェクトファイル一覧
 
-| 区分 | 左手用 (Left) | 右手用 (Right) | 役割 |
-| :--- | :--- | :--- | :--- |
-| **プロジェクト設定** | [curcur40-left.kicad_pro](../pcbs/left/curcur40-left.kicad_pro) | [curcur40-right.kicad_pro](../pcbs/right/curcur40-right.kicad_pro) | デザインルール・DRC/ERC設定 |
-| **回路図 (Schematic)** | [curcur40-left.kicad_sch](../pcbs/left/curcur40-left.kicad_sch) | [curcur40-right.kicad_sch](../pcbs/right/curcur40-right.kicad_sch) | 回路論理・シンボル定義 |
-| **基板レイアウト (PCB)** | [curcur40-left.kicad_pcb](../pcbs/left/curcur40-left.kicad_pcb) | [curcur40-right.kicad_pcb](../pcbs/right/curcur40-right.kicad_pcb) | パターン配線・外形・シルク |
-| **シンボルテーブル** | [left/sym-lib-table](../pcbs/left/sym-lib-table) | [right/sym-lib-table](../pcbs/right/sym-lib-table) | カスタムシンボル登録 |
-| **フットプリントテーブル** | [left/fp-lib-table](../pcbs/left/fp-lib-table) | [right/fp-lib-table](../pcbs/right/fp-lib-table) | カスタムフットプリント登録 |
+| 区分 | 左手用 (`curcur40-left`) | 右手メイン (`curcur40-right`) | トラックボールセンサー (`curcur40-pmw3360`) | 役割 |
+| :--- | :--- | :--- | :--- | :--- |
+| **プロジェクト設定** | [curcur40-left.kicad_pro](../pcbs/left/curcur40-left.kicad_pro) | [curcur40-right.kicad_pro](../pcbs/right/curcur40-right.kicad_pro) | [curcur40-pmw3360.kicad_pro](../pcbs/pmw3360/curcur40-pmw3360.kicad_pro) | デザインルール・DRC/ERC設定 |
+| **回路図 (Schematic)** | [curcur40-left.kicad_sch](../pcbs/left/curcur40-left.kicad_sch) | [curcur40-right.kicad_sch](../pcbs/right/curcur40-right.kicad_sch) | [curcur40-pmw3360.kicad_sch](../pcbs/pmw3360/curcur40-pmw3360.kicad_sch) | 回路論理・シンボル定義 |
+| **基板レイアウト (PCB)** | [curcur40-left.kicad_pcb](../pcbs/left/curcur40-left.kicad_pcb) | [curcur40-right.kicad_pcb](../pcbs/right/curcur40-right.kicad_pcb) | [curcur40-pmw3360.kicad_pcb](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb) | パターン配線・外形・シルク |
+| **シンボルテーブル** | [left/sym-lib-table](../pcbs/left/sym-lib-table) | [right/sym-lib-table](../pcbs/right/sym-lib-table) | [pmw3360/sym-lib-table](../pcbs/pmw3360/sym-lib-table) | カスタムシンボル登録 |
+| **フットプリントテーブル** | [left/fp-lib-table](../pcbs/left/fp-lib-table) | [right/fp-lib-table](../pcbs/right/fp-lib-table) | [pmw3360/fp-lib-table](../pcbs/pmw3360/fp-lib-table) | カスタムフットプリント登録 |
 
 ### 1.2 ライブラリ管理ポリシー
 
@@ -68,16 +68,16 @@
 
 ### 2.1 基板外形・層構成
 
-| 項目 | 左手 PCB (`curcur40-left`) | 右手 PCB (`curcur40-right`) | 備考 |
-| :--- | :---: | :---: | :--- |
-| **基材・層数** | FR-4 / 両面 2層 (`F.Cu`, `B.Cu`) | FR-4 / 両面 2層 (`F.Cu`, `B.Cu`) | 銅箔厚 1 oz (35 µm) 標準 |
-| **基板板厚** | **1.60 mm** | **1.60 mm** | [case_spec.md](./case_spec.md) 第1節と完全同期 |
-| **外形バウンディングボックス** | 幅 **124.425 mm** × 高さ **91.9125 mm** | 幅 **124.425 mm** × 高さ **91.9125 mm** | 左右対称外形 |
-| **PCB座標範囲 ($X$)** | $-119.1125 \sim +5.3125 \, \text{mm}$ | $-5.3125 \sim +119.1125 \, \text{mm}$ | |
-| **PCB座標範囲 ($Y$)** | $-24.3625 \sim +67.5500 \, \text{mm}$ | $-24.3625 \sim +67.5500 \, \text{mm}$ | |
-| **内部切り欠き穴** | なし | **$16.90 \times 8.70 \, \text{mm}$ 角穴** | 右手親指部：PMW3360/LM19 光学レンズ穴（中心 $(9.525, 52.3875)$） |
-| **総フットプリント数** | 79 点 | 88 点 | |
-| **総ネット数** | 78 ネット | 88 ネット | |
+| 項目 | 左手 PCB (`curcur40-left`) | 右手メイン PCB (`curcur40-right`) | センサーサブ PCB (`curcur40-pmw3360`) | 備考 |
+| :--- | :---: | :---: | :---: | :--- |
+| **基材・層数** | FR-4 / 両面 2層 (`F.Cu`, `B.Cu`) | FR-4 / 両面 2層 (`F.Cu`, `B.Cu`) | FR-4 / 両面 2層 (`F.Cu`, `B.Cu`) | 銅箔厚 1 oz (35 µm) 標準 |
+| **基板板厚** | **1.60 mm** | **1.60 mm** | **1.60 mm** | [case_spec.md](./case_spec.md) 第1節と完全同期 |
+| **外形バウンディングボックス** | 幅 **124.325 mm** × 高さ **91.8125 mm** | 幅 **124.325 mm** × 高さ **91.8125 mm** | 幅 **29.575 mm** × 高さ **29.200 mm** | 右メイン基板は親指トラックボール領域を切欠き分離 |
+| **PCB座標範囲 ($X$)** | $-119.0625 \sim +5.2625 \, \text{mm}$ | $-5.2625 \sim +119.0625 \, \text{mm}$ | $-5.2625 \sim +24.3125 \, \text{mm}$ | |
+| **PCB座標範囲 ($Y$)** | $-24.3125 \sim +67.5000 \, \text{mm}$ | $-24.3125 \sim +67.5000 \, \text{mm}$ | $+38.3000 \sim +67.5000 \, \text{mm}$ | |
+| **内部切り欠き穴** | なし | なし（親指内側は L字ノッチ切欠き） | **$8.70 \times 16.90 \, \text{mm}$ 角穴** | センサーサブ基板中央 $(9.525, 52.3875)$ に PMW3360/LM19 光学角穴 |
+| **総フットプリント数** | 79 点 | 77 点 | 12 点 | |
+| **総ネット数** | 78 ネット | 85 ネット | 10 ネット | |
 
 ### 2.2 DRC デザインルール（製造制約）
 
@@ -105,10 +105,10 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **キースイッチ数 (Choc)** | **21 キー**（すべて 1u） | **19 キー**（すべて 1u） | ダイレクトピン接続（マトリクスダイオード不要） |
 | **RGB LED (SK6812MINI-E)** | **21 個** (`LED1`〜`18`, `EXLED1`〜`3`) | **19 個** (`rLED1`〜`18`, `rEXLED2`) | 各キースイッチ直下に配置（右親指トラックボール位置はLEDなし） |
 | **ロータリーエンコーダ** | なし（通常キースイッチ `EXSW1`） | **CKW12 ホイール** (`rEXSW1`) | 右手内側上部に配置（A/B相回転 ＋ プッシュスイッチ `/KEYEX1`） |
-| **トラックボールセンサー** | なし（親指4キー構成） | **PMW3360DM-T2QU** (`U1`) ＋ **1.8V LDO** (`U2`) | 右手親指部に配置（SPI接続） |
+| **トラックボールセンサー** | なし（親指4キー構成） | **JST SH 6ピンコネクタ (`rJ3`)** 経由で独立サブ基板 [`curcur40-pmw3360`](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（`U1`: `PMW3360DM-T2QU` ＋ `U2`: `1.8V LDO` ＋ `J1`）と接続 | トラックボールカップ開口面をトッププレート天面（$Z = -2.00\,\text{mm}$）とフラッシュに沈み込ませるため、センサー基板を $-11.80\,\text{mm}$ 下段（$Z = -16.00\,\text{mm}$）へ分離配置 |
 | **SWD デバッグ端子** | `J4` (`1x03` 2.54mm スルーホール) | `rJ4` (`1x03` 2.54mm スルーホール) | `/SWCLK`, `GND`, `/SWD`。**未実装 (`DNP`)**・BOM/Pos/3Dモデル非表示 |
 | **左右判定ピン (`GPIO21`)** | **`+3V3` (HIGH) に直結** | **`GNDR` (LOW) に直結** | QMK `split.handedness.pin = GP21` による自動左右認識 |
-| **M2 スペーサー貫通穴** | **5 箇所**（外周5） | **8 箇所**（外周4 ＋ トラックボール周囲4） | すべて **$\varnothing 3.25 \, \text{mm}$** 非スルーホール（NPTH相当のEdge.Cuts円穴） |
+| **M2 スペーサー貫通穴** | **5 箇所**（外周 `L1`〜`L5`） | **右メイン 5 箇所**（外周 `R1`〜`R5`、左手と完全対称）＋ **センサー基板 4 箇所**（`TB1`〜`TB4`） | すべて **$\varnothing 3.25 \, \text{mm}$** 非スルーホール（NPTH相当のEdge.Cuts円穴） |
 
 ---
 
@@ -132,9 +132,24 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
   * KiCad 10.0 純正の `MCU_RaspberryPi:RP2040` シンボルでは Pin 32 (`GPIO21`) が `Bidirectional` 属性であり、電源出力（`Power output`）である `+3V3` / `GNDR`（`PWR_FLAG` 付）と直結されるため、ERC 実行時に `[pin_to_pin]: ピンのタイプ Bidirectional と Power output が接続されています` という警告が左右それぞれ **1件のみ** 出力されます。
   * この警告を消すために標準シンボルを改変したり ERC の `pin_to_pin` チェック自体を無効化すると、他のピンでの意図しない電源ショートを見落とすリスクが生じるため、**標準シンボルを維持したままこの正当な警告 1件のみを残す** のを curcur40 の正式仕様とします。
 
-### 4.3 右手専用：光学トラックボールセンサー回路 (`PMW3360DM-T2QU`)
+### 4.3 右手専用：光学トラックボールセンサー基板 (`curcur40-pmw3360`) と JST SH 6ピン接続 (`rJ3` / `J1`)
 
-右手親指部に配置される光学センサー `U1` (`PMW3360DM-T2QU`) とその周辺回路は、PixArt 社データシートのリファレンス回路に厳密に準拠しています。
+トラックボールカップの円形リム天面をトッププレート表面（$Z = -2.00\,\text{mm}$）と同じ高さまで $-11.80\,\text{mm}$ 沈み込ませる低プロファイル設計に伴い、光学センサー `U1` (`PMW3360DM-T2QU`) とその周辺回路は独立したセンサーサブ基板 **[`pcbs/pmw3360/curcur40-pmw3360.kicad_pcb`](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)**（配置高さ $Z = -17.60 \sim -16.00\,\text{mm}$）に分離し、右手メイン基板（$Z = -5.80 \sim -4.20\,\text{mm}$）と **JST SH 1.0mm ピッチ 6ピン横向き SMD コネクタ（`SM06B-SRSS-TB(LF)(SN)`, LCSC `C160404`）および 6ピン両端ハーネス** で接続します。
+
+#### ⓪ 基板間コネクタ `rJ3`（右メイン基板）↔ `J1`（センサーサブ基板）のピンアサイン
+* **回路図シンボル**: `Connector_Generic_MountingPin:Conn_01x06_MountingPin`
+* **フットプリント**: `Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal`
+* **配置座標**:
+  * 右メイン基板 `rJ3`: `B.Cu` $(45.0000, 63.4750)\,\text{mm}$, 回転 $0^\circ$（ケーブル挿入口は北向き $-Y$）
+  * センサーサブ基板 `J1`: `B.Cu` $(20.2000, 52.3875)\,\text{mm}$, 回転 $-90^\circ$（ケーブル挿入口は東向き $+X$、メイン基板側キャビティへ向かう配置）
+* **ピン割り当て**:
+  * **Pin 1**: `+3V3R`（3.3V 電源）
+  * **Pin 2**: `GNDR`（グラウンド）
+  * **Pin 3**: `/SCLK`（SPI クロック、`rU1` `GPIO14`）
+  * **Pin 4**: `/MOSI`（SPI MOSI、`rU1` `GPIO11`）
+  * **Pin 5**: `/MISO`（SPI MISO、`rU1` `GPIO8`）
+  * **Pin 6**: `/NCS`（SPI チップセレクト、`rU1` `GPIO6`）
+  * **Pin MP (補強タブ)**: `GNDR`
 
 #### ① `VDDPIX`（内部ピクセルアレイ電源）と `/+1V8_PMW`（1.8V供給電源）の完全分離
 > **【重要設計ルール】**
@@ -232,22 +247,23 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **L2** | 内側下（TRRS上） | $(0.0000, 25.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
 | **L3** | 小指側上 | $(-109.5375, -20.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
 | **L4** | 小指側下 | $(-98.0000, 38.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **L5** | 親指側下 | $(-21.5250, 63.6875)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴（右手 `TB4` と左右対称） |
+| **L5** | 親指側下（`SW1` 南側） | $(-33.3375, 64.3000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴（右手 `R5` と完全左右対称） |
 
-### 6.2 右手 PCB (`curcur40-right.kicad_pcb`) — 計8箇所
+### 6.2 右手メイン PCB (`curcur40-right.kicad_pcb`) — 計5箇所（左手と完全対称）および センサーサブ PCB (`curcur40-pmw3360.kicad_pcb`) — 計4箇所
 
-右手親指側はトラックボールカップ周囲の4本（`TB1`〜`TB4`）で強固に締結されるため、`L5` 相当の親指外周穴は設けません。
+右手メイン基板は親指トラックボール領域が分離されているため、`rSW1` 南側の $(33.3375, 64.3000)$ に親指外周穴 **`R5`**（左手 `L5` と完全対称）を配置して親指キー領域のたわみを防止します。分離されたセンサーサブ基板（`curcur40-pmw3360`）は `TB1`〜`TB4` の4箇所でケース下段ボスへ締結されます。
 
-| 穴番号 | 配置箇所 | PCB座標 $(x_{\text{pcb}}, y_{\text{pcb}})$ | 穴径 (`Edge.Cuts`) | 備考 |
-| :---: | :--- | :---: | :---: | :--- |
-| **R1** | 外周・内側上（USB-C横） | $(0.0000, -15.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **R2** | 外周・内側下（TRRS上） | $(0.0000, 25.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **R3** | 外周・小指側上 | $(109.5375, -20.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **R4** | 外周・小指側下 | $(98.0000, 38.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **TB1** | トラックボール北西 (NW) | $(-2.4750, 41.0875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, -11.3)$ |
-| **TB2** | トラックボール北東 (NE) | $(21.5250, 41.0875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, -11.3)$ |
-| **TB3** | トラックボール南西 (SW) | $(-2.4750, 63.6875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, +11.3)$ |
-| **TB4** | トラックボール南東 (SE) | $(21.5250, 63.6875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, +11.3)$ |
+| 基板 | 穴番号 | 配置箇所 | PCB座標 $(x_{\text{pcb}}, y_{\text{pcb}})$ | 穴径 (`Edge.Cuts`) | 備考 |
+| :--- | :---: | :--- | :---: | :---: | :--- |
+| **右メイン (`curcur40-right`)** | **R1** | 外周・内側上（USB-C横） | $(0.0000, -15.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **右メイン (`curcur40-right`)** | **R2** | 外周・内側下（TRRS上） | $(0.0000, 25.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **右メイン (`curcur40-right`)** | **R3** | 外周・小指側上 | $(109.5375, -20.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **右メイン (`curcur40-right`)** | **R4** | 外周・小指側下 | $(98.0000, 38.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **右メイン (`curcur40-right`)** | **R5** | 外周・親指側下（`rSW1` 南側） | $(33.3375, 64.3000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴（左手 `L5` と左右対称） |
+| **センサー (`curcur40-pmw3360`)** | **TB1** | トラックボール北西 (NW) | $(-2.4750, 41.0875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, -11.3)$ |
+| **センサー (`curcur40-pmw3360`)** | **TB2** | トラックボール北東 (NE) | $(21.5250, 41.0875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, -11.3)$ |
+| **センサー (`curcur40-pmw3360`)** | **TB3** | トラックボール南西 (SW) | $(-2.4750, 63.6875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, +11.3)$ |
+| **センサー (`curcur40-pmw3360`)** | **TB4** | トラックボール南東 (SE) | $(21.5250, 63.6875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, +11.3)$ |
 
 ---
 
@@ -268,13 +284,14 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **TRRS ジャック** | `J2` | `rJ2` | `PJ-398A-5A` | `kbd:Jack_PJ-398A-5A_PJ-399B-6A` | `B.Cu` | 1 | 1 |
 | **タクトSW** | `SMDSW1, SMDSW2` | `rSMDSW1, rSMDSW2` | `TS-1088R-02026` | `kbd:TS-1088R-02026` | `B.Cu` | 2 | 2 |
 | **逆付け RGB LED** | `LED1`〜`18`, `EXLED1`〜`3` | `rLED1`〜`18`, `rEXLED2` | `YS-SK6812MINI-E` | `kbd:YS-SK6812MINI-E` | `B.Cu` | 21 | 19 |
-| **Choc ソケット (1u)** | `SW1`〜`18`, `EXSW1`〜`3` | `rSW1`〜`18`, `rEXSW2` | `CPG135001S30` | `kbd:keyswitch_choc12_hotswap_1u` | `B.Cu` | 21 | 19 |
-| **ホイールエンコーダ** | ― | `rEXSW1` (手ハンダ) | `CKW12` | `kbd:RotaryEncoder_Switch_CKW12` | `F.Cu` | 0 | 1 |
-| **光学センサー** | ― | `U1` (手ハンダ) | `PMW3360DM-T2QU` | `kbd:PMW3360DM-T2QU_16Pin` | `B.Cu` | 0 | 1 |
-| **1.8V LDO** | ― | `U2` | `TLV74318PDBVR` | `Package_TO_SOT_SMD:SOT-23-5` | `B.Cu` | 0 | 1 |
-| **コンデンサ (0603)** | ― | `C1`〜`C4` (`C5` は `DNP`) | `4.7uF`(1), `1uF`(2), `100nF`(1) | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 4 (実装) + 1 (`DNP`) |
-| **抵抗 (0603)** | ― | `R1`〜`R3` (`R4` は `DNP`) | `10k`(2), `39R`(1) | `Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder` | `B.Cu` | 0 | 3 (実装) + 1 (`DNP`) |
-| **電圧選択ジャンパ** | ― | `JP1` (Pad 1–2 基板直結) | `SolderJumper_3_Bridged12` | `Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels` | `B.Cu` | 0 | 0 (銅箔パターン) |
+| **Choc ソケット (1u)** | `SW1`〜`18`, `EXSW1`〜`3` | `rSW1`〜`18`, `rEXSW2` | `CPG135001S30` | `kbd:keyswitch_choc12_hotswap_1u` | `B.Cu` | 21 | 19 (右メイン) |
+| **ホイールエンコーダ** | ― | `rEXSW1` (右メイン手ハンダ) | `CKW12` | `kbd:RotaryEncoder_Switch_CKW12` | `F.Cu` | 0 | 1 (右メイン) |
+| **JST SH 6ピンコネクタ** | ― | `rJ3` (右メイン) / `J1` (センサー基板) | `SM06B-SRSS-TB(LF)(SN)` | `Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal` | `B.Cu` | 0 | 1 (右メイン) + 1 (センサー) |
+| **光学センサー** | ― | `U1` (センサー基板手ハンダ) | `PMW3360DM-T2QU` | `kbd:PMW3360DM-T2QU_16Pin` | `B.Cu` | 0 | 1 (センサー) |
+| **1.8V LDO** | ― | `U2` (センサー基板) | `TLV74318PDBVR` | `Package_TO_SOT_SMD:SOT-23-5` | `B.Cu` | 0 | 1 (センサー) |
+| **コンデンサ (0603)** | ― | `C1`〜`C4` (`C5` は `DNP`, センサー基板) | `4.7uF`(1), `1uF`(2), `100nF`(1) | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 4 (実装) + 1 (`DNP`) |
+| **抵抗 (0603)** | ― | `R1`〜`R3` (`R4` は `DNP`, センサー基板) | `10k`(2), `39R`(1) | `Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder` | `B.Cu` | 0 | 3 (実装) + 1 (`DNP`) |
+| **電圧選択ジャンパ** | ― | `JP1` (Pad 1–2 基板直結, センサー基板) | `SolderJumper_3_Bridged12` | `Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels` | `B.Cu` | 0 | 0 (銅箔パターン) |
 | **SWD デバッグ端子** | `J4` (`DNP`) | `rJ4` (`DNP`) | `Conn_01x03` | `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` | `B.Cu` | 0 (`DNP`) | 0 (`DNP`) |
 
 ---
@@ -289,9 +306,13 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 & "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\kicad-cli.exe" sch erc pcbs/left/curcur40-left.kicad_sch
 & "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\kicad-cli.exe" pcb drc --schematic-parity pcbs/left/curcur40-left.kicad_pcb
 
-# 右手 ERC / DRC
+# 右手メイン ERC / DRC
 & "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\kicad-cli.exe" sch erc pcbs/right/curcur40-right.kicad_sch
 & "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\kicad-cli.exe" pcb drc --schematic-parity pcbs/right/curcur40-right.kicad_pcb
+
+# トラックボールセンサーサブ基板 ERC / DRC
+& "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\kicad-cli.exe" sch erc pcbs/pmw3360/curcur40-pmw3360.kicad_sch
+& "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\kicad-cli.exe" pcb drc --schematic-parity pcbs/pmw3360/curcur40-pmw3360.kicad_pcb
 ```
 
 ### 8.2 合格基準（現在の達成状態）
@@ -299,9 +320,11 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | チェック対象 | エラー数 | 警告数 | 未配線 / 回路図不一致 | 無視設定 (Ignored Checks) | 許容される唯一の警告内容 |
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **左手 PCB DRC** | **0 件** | **0 件** | **0 件 / 0 件** | **なし (0 件)** | なし（完全ゼロ） |
-| **右手 PCB DRC** | **0 件** | **0 件** | **0 件 / 0 件** | **なし (0 件)** | なし（完全ゼロ） |
+| **右手メイン PCB DRC** | **0 件** | **0 件** | **0 件 / 0 件** | **なし (0 件)** | なし（完全ゼロ） |
+| **センサーサブ PCB DRC** | **0 件** | **0 件** | **0 件 / 0 件** | **なし (0 件)** | なし（完全ゼロ） |
 | **左手 回路図 ERC** | **0 件** | **1 件** | ― | **なし (0 件)** | `[pin_to_pin]` `U1` Pin 32 (`GPIO21`) と `+3V3` の直結（左右判定ピン） |
-| **右手 回路図 ERC** | **0 件** | **1 件** | ― | **なし (0 件)** | `[pin_to_pin]` `rU1` Pin 32 (`GPIO21`) と `GNDR` の直結（左右判定ピン） |
+| **右手メイン 回路図 ERC** | **0 件** | **1 件** | ― | **なし (0 件)** | `[pin_to_pin]` `rU1` Pin 32 (`GPIO21`) と `GNDR` の直結（左右判定ピン） |
+| **センサーサブ 回路図 ERC** | **0 件** | **0 件** | ― | **なし (0 件)** | なし（完全ゼロ） |
 
 * **ERC グリッド整合・ジャンクション規約**: `endpoint_off_grid` および `four_way_junction` を含む全 ERC ルールを有効化（`Ignored checks: None`）した状態で検証します。すべてのシンボルピン・ワイヤー端点は `50 mil` (`1.27 mm`) グリッド上に配置し、RGB LED マトリックスの電源・GND バス接続は偶数列を `1.27 mm` オフセット配置した3方向 T 字接続（`junction`）とすることで 4方向十字接続（`four_way_junction`）をゼロに保ちます。
 * **DRC 回路図等価性（Schematic Parity）規約**: PCB 上の全フットプリントに回路図シンボルの UUID 参照（`(path "/<symbol-uuid>")`）を保持し、フットプリント名・Value・Description・属性（`DNP` / `exclude_from_bom` / `exclude_from_pos_files`）を回路図と完全一致させます。外部スクリプト等でファイルを更新した後に KiCad GUI 上で DRC/ERC を実行する場合は、メモリ上の古いキャッシュによる不一致警告（旧 `JP1` Open ジャンパや `R4`/`C5`/`R1` 属性の差分など）を防ぐため、必ず KiCad でプロジェクトを再読み込みしてから実行してください。
