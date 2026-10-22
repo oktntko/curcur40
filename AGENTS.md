@@ -63,11 +63,11 @@
 1. **実行環境**:
    - `& "$env:USERPROFILE\.local\bin\uvx.exe" --no-config --managed-python --python 3.13 --from "cadgen==0.7.21" python`
 2. **光学距離基準点 (`Lens_Optical_Ref_Point`) の維持**:
-   - 以下の4つの STEP モデルには、GUI（CAD Viewer 等）で直接選択して 25mm ボール（`Trackball_25mm`, 最下面 $Z_{\text{rel}} = +5.80\text{ mm}$）との距離（設計値 **$2.40\text{ mm}$**）を計測できるよう、光軸中心のレンズフランジ着座面（$Z_{\text{rel}} = +3.4000\text{ mm}$ / フルアセンブリ $Z = -0.2000\text{ mm}$）に独立した名前付きオブジェクト **`Lens_Optical_Ref_Point`** を `bd.Compound(children=[...])` の子要素として必ず含めること：
+   - 以下の4つの STEP モデルには、GUI（CAD Viewer 等）で直接選択して 25mm ボール（`Trackball_25mm`, 最下面 $Z_{\text{rel}} = +5.80\text{ mm}$ / フルアセンブリ $Z = +1.6000\text{ mm}$）との距離（設計値 **$2.40\text{ mm}$**）を計測できるよう、光軸中心のレンズフランジ着座面（$Z_{\text{rel}} = +3.4000\text{ mm}$ / フルアセンブリ $Z = -0.8000\text{ mm}$）に独立した名前付きオブジェクト **`Lens_Optical_Ref_Point`** を `bd.Compound(children=[...])` の子要素として必ず含めること：
      - `cases/pmw3360-lens-pcb-assembly.step`
      - `cases/trackball-sensor-assembly.step`
      - `cases/trackball-cup-with-ball.step`
      - `cases/assembly-full.step`
-3. **13箇所 M2 5.50mm スペーサー統一締結構造と干渉ゼロ検証**:
-   - 左手外周 5箇所 ＋ 右手外周 4箇所 ＋ トラックボールカップ固定耳 4箇所 ＝ 計 13箇所すべてを M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、基板 $\varnothing 3.60\text{ mm}$ 貫通穴を通って基板上面 F.Cu $Z = -3.60\text{ mm}$ とツライチ）と上下 M2 × 4.0mm ネジ（計 26本、ケース底面ザグリ $\varnothing 4.60 \times 0.90\text{ mm}$、トッププレート $\varnothing 2.40\text{ mm}$ ストレート穴）で締結する仕様を維持すること。
+3. **13箇所 M2 スペーサー締結構造と干渉ゼロ検証**:
+   - 左手外周 5箇所 ＋ 右手外周 4箇所 ＝ 計 9箇所を M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、基板 $\varnothing 3.25\text{ mm}$ 貫通穴を通ってトッププレート下面 $Z = -3.60\text{ mm}$ を直接支持）、トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`）を M2 6.0〜7.0mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、基板 $\varnothing 3.25\text{ mm}$ 穴を貫通してカップ耳 $\varnothing 3.60\text{ mm}$ 穴内部へ進入）と上下 M2 × 4.0mm ネジ（計 26本、ケース底面ザグリ $\varnothing 4.60 \times 0.90\text{ mm}$、トッププレート $\varnothing 2.40\text{ mm}$ ストレート穴）で締結する仕様を維持すること。
    - モデル更新時は `scripts/generate_full_assembly.py` を実行し、全パーツ間の干渉体積（`overlap_volume`）が `0.00000000 mm³` であることを確認すること。
