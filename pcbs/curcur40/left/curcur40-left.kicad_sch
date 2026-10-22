@@ -11993,7 +11993,7 @@
 				)
 			)
 		)
-		(property "Footprint" "kbd:keyswitch_choc12_hotswap_1.5u"
+		(property "Footprint" "kbd:keyswitch_choc12_hotswap_1u"
 			(at 254 148.59 0)
 			(hide yes)
 			(show_name no)
