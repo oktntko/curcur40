@@ -1,40 +1,35 @@
-# KBD firmware
-
-## How to build
+# curcur40 Firmware (QMK / Vial)
 
 ## 1. Setting Up Your QMK Environment
 
-Please see https://docs.qmk.fm/#/newbs_getting_started and set up 1 to 3.
+Please see https://docs.qmk.fm/#/newbs_getting_started and set up your QMK build environment.
 
-## 2. Getting source files
+## 2. Getting Source Files
 
-Please get source files of `qmk/qmk_firmware` and `vial-kb/vial-qmk`
+Fetch the `qmk/qmk_firmware` and `vial-kb/vial-qmk` submodules:
 ```sh
 make git-submodule
 ```
 
-## 3. Building firmwares
+## 3. Building Firmware for curcur40
 
-### for VIA
-
+### For VIA
 ```sh
 make qmk-clean
-kb=crkbd make qmk-init
-kb=crkbd kr=rev4_1/standard km=via make qmk-compile
+kb=curcur40 make qmk-init
+kb=curcur40 kr=rev1 km=via make qmk-compile
 ```
-A built data will be stored on `keyboards/crkbd/qmk/qmk_firmware/.build`\
-Please change `kb`, `kr` and `km` when build other.
+The compiled `.uf2` firmware will be stored in `keyboards/curcur40/qmk/qmk_firmware/.build/curcur40_rev1_via.uf2`.
 
-### for Vial
+### For Vial (Recommended)
 ```sh
 make vial-qmk-clean
-kb=crkbd make vial-qmk-init
-kb=crkbd kr=rev4_1/standard km=vial make vial-qmk-compile
+kb=curcur40 make vial-qmk-init
+kb=curcur40 kr=rev1 km=vial make vial-qmk-compile
 ```
-A built data will be stored on `keyboards/crkbd/vial-kb/vial-qmk/.build`\
-Please change `kb`, `kr` and `km` when build other.
+The compiled `.uf2` firmware will be stored in `keyboards/curcur40/vial-kb/vial-qmk/.build/curcur40_rev1_vial.uf2`.
 
-### All cleaning and building
+### Clean & Build All
 ```sh
 make update-all
 ```

@@ -253,7 +253,7 @@
 		(uuid "3a5b9ee7-1c8f-492b-8ca5-3f850113e099")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/PJ-398A-5A.step"
+	(model "${KIPRJMOD}/../common/kbd/kicad-packages3D/kbd.3dshapes/PJ-398A-5A.step"
 		(offset
 			(xyz 0 2.5 -2.1)
 		)

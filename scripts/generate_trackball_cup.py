@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Generate trackball-cup.step and trackball-cup.stl for curcur40.
-Strictly adheres to docs/curcur40/case_spec.md Section 4 (Trackball & Optics).
+Strictly adheres to docs/case_spec.md Section 4 (Trackball & Optics).
 """
 import math
 import time
@@ -10,7 +10,7 @@ from cadgen import build123d as bd
 from cadgen.geometry import is_sound
 
 WORKSPACE = Path(r"c:\Users\oktnt\workspace\curcur40")
-CASES_DIR = WORKSPACE / "cases" / "curcur40"
+CASES_DIR = WORKSPACE / "cases"
 CASES_DIR.mkdir(parents=True, exist_ok=True)
 
 def build_trackball_cup() -> bd.Solid:

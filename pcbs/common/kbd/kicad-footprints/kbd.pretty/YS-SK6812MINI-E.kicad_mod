@@ -172,7 +172,7 @@
 		(uuid "b391fa5c-839e-4765-a88e-c94d5c99084f")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
+	(model "${KIPRJMOD}/../common/kbd/kicad-packages3D/kbd.3dshapes/YS-SK6812MINI-E.step"
 		(offset
 			(xyz 0 0 0.15)
 		)

@@ -13,10 +13,10 @@
    - 複数の作業を行う場合や、1つのタスクが完了した際は、**タスクごとに Git コミットを作成し、どのタスクでどのファイルがどう変わったのか（タスクごとの差分）が履歴から明確に追えるようにすること**。
 3. **仕様書ファースト（Single Source of Truth）**:
    - 設計の正は以下の4つのドキュメントである。対象領域の作業を行う前に必ず該当ドキュメントを確認すること。
-     - ケース・プレート・トラックボールカップ仕様: [`docs/curcur40/case_spec.md`](docs/curcur40/case_spec.md)
-     - PCB・回路図・ライブラリ・スクリプト格納仕様: [`docs/curcur40/pcb_spec.md`](docs/curcur40/pcb_spec.md)
-     - ビルドガイド・BOM・発注仕様: [`docs/curcur40/buildguide_jp.md`](docs/curcur40/buildguide_jp.md)
-     - 3Dプレビューギャラリー: [`docs/curcur40/preview.md`](docs/curcur40/preview.md)
+     - ケース・プレート・トラックボールカップ仕様: [`docs/case_spec.md`](docs/case_spec.md)
+     - PCB・回路図・ライブラリ・スクリプト格納仕様: [`docs/pcb_spec.md`](docs/pcb_spec.md)
+     - ビルドガイド・BOM・発注仕様: [`docs/buildguide_jp.md`](docs/buildguide_jp.md)
+     - プロジェクト概要・3Dプレビューギャラリー: [`README.md`](README.md)
    - エラーや警告を回避するためだけに無理やり不要な配線を追加したり、DRC/ERC ルールを無効化するような対症療法は絶対に行わないこと。
 
 ---
@@ -29,9 +29,9 @@
 2. **公式生成スクリプトの一元管理 (`scripts/`)**:
    - 3Dモデル・プレート・発注データ・図版・プレビュー画像の生成は [`scripts/`](scripts/) 配下の8本の公式スクリプト（詳細は [`scripts/README.md`](scripts/README.md) 参照）に集約し、1回限りの調査・デバッグ用スクリプトを `scripts/` に残さないこと。
 3. **ボトムプレートの作成禁止**:
-   - ボトムプレートは 3D プリント製トレイ型ボトムケース（`cases/curcur40/left.step`, `right.step`）に統合済みのため、生成・出力しないこと。
-4. **ドキュメント・画像アセットの一元管理 (`docs/curcur40/`)**:
-   - `curcur40` に関するドキュメントおよびプレビュー・図解画像はすべて `docs/curcur40/` および `docs/curcur40/assets/` 配下に格納すること（ルート直下に `preview/` 等を作らない）。
+   - ボトムプレートは 3D プリント製トレイ型ボトムケース（`cases/left.step`, `right.step`）に統合済みのため、生成・出力しないこと。
+4. **ドキュメント・画像アセットの一元管理 (`docs/`)**:
+   - `curcur40` に関するドキュメントおよびプレビュー・図解画像はすべて `docs/` および `docs/assets/` 配下に格納すること（ルート直下に `preview/` 等を作らない）。
 
 ---
 
@@ -63,10 +63,10 @@
    - `& "$env:USERPROFILE\.local\bin\uvx.exe" --no-config --managed-python --python 3.13 --from "cadgen==0.7.21" python`
 2. **光学距離基準点 (`Lens_Optical_Ref_Point`) の維持**:
    - 以下の4つの STEP モデルには、GUI（CAD Viewer 等）で直接選択して 25mm ボール（`Trackball_25mm`, 最下面 $Z_{\text{rel}} = +5.80\text{ mm}$）との距離（設計値 **$2.40\text{ mm}$**）を計測できるよう、光軸中心のレンズフランジ着座面（$Z_{\text{rel}} = +3.4000\text{ mm}$ / フルアセンブリ $Z = -0.2000\text{ mm}$）に独立した名前付きオブジェクト **`Lens_Optical_Ref_Point`** を `bd.Compound(children=[...])` の子要素として必ず含めること：
-     - `cases/curcur40/pmw3360-lens-pcb-assembly.step`
-     - `cases/curcur40/trackball-sensor-assembly.step`
-     - `cases/curcur40/trackball-cup-with-ball.step`
-     - `cases/curcur40/assembly-full.step`
+     - `cases/pmw3360-lens-pcb-assembly.step`
+     - `cases/trackball-sensor-assembly.step`
+     - `cases/trackball-cup-with-ball.step`
+     - `cases/assembly-full.step`
 3. **13箇所 M2 5.50mm スペーサー統一締結構造と干渉ゼロ検証**:
    - 左手外周 5箇所 ＋ 右手外周 4箇所 ＋ トラックボールカップ固定耳 4箇所 ＝ 計 13箇所すべてを M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、基板 $\varnothing 3.60\text{ mm}$ 貫通穴を通って基板上面 F.Cu $Z = -3.60\text{ mm}$ とツライチ）と上下 M2 × 4.0mm ネジ（計 26本、ケース底面ザグリ $\varnothing 4.60 \times 0.90\text{ mm}$、トッププレート $\varnothing 2.40\text{ mm}$ ストレート穴）で締結する仕様を維持すること。
    - モデル更新時は `scripts/generate_full_assembly.py` を実行し、全パーツ間の干渉体積（`overlap_volume`）が `0.00000000 mm³` であることを確認すること。

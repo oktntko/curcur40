@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Generate curcur40 Plates (KiCad PCBs and laser-cut SVGs) according to docs/curcur40/case_spec.md.
+Generate curcur40 Plates (KiCad PCBs and laser-cut SVGs) according to docs/case_spec.md.
 Note: Gerber ZIP generation is omitted by default per user workflow (only generated on demand).
 """
 import os
@@ -255,8 +255,8 @@ def write_laser_svg(svg_path, items, width_mm, height_mm):
 def main():
     import tempfile
 
-    out_pcb_dir = r"c:\Users\oktnt\workspace\curcur40\plates\curcur40\pcb"
-    out_svg_dir = r"c:\Users\oktnt\workspace\curcur40\plates\curcur40\svg"
+    out_pcb_dir = r"c:\Users\oktnt\workspace\curcur40\plates\pcb"
+    out_svg_dir = r"c:\Users\oktnt\workspace\curcur40\plates\svg"
     os.makedirs(out_pcb_dir, exist_ok=True)
     os.makedirs(out_svg_dir, exist_ok=True)
 

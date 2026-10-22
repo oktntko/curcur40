@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Generate engineering specification diagrams for curcur40 case documentation.
-Outputs high-resolution diagrams to docs/curcur40/assets/
+Outputs high-resolution diagrams to docs/assets/
 """
 from pathlib import Path
 import math
@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-ASSETS_DIR = Path(r"c:\Users\oktnt\workspace\curcur40\docs\curcur40\assets")
+ASSETS_DIR = Path(r"c:\Users\oktnt\workspace\curcur40\docs\assets")
 ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
 plt.rcParams['font.sans-serif'] = ['Meiryo', 'Yu Gothic', 'MS Gothic', 'DejaVu Sans', 'Arial', 'Helvetica']
