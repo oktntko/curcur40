@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Export JLCPCB PCB / PCBA production files for curcur40:
-- Left Main PCB:  pcbs/left/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-left.*
-- Right Main PCB: pcbs/right/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-right.*
-- Top Plates:     plates/pcb/jlcpcb/production_files/GERBER-plate-top-{left,right}.zip
+- Left Main PCB:    pcbs/left/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-left.*
+- Right Main PCB:   pcbs/right/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-right.*
+- PMW3360 Sub PCB:  pcbs/pmw3360/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-pmw3360.*
+- Top Plates:       plates/pcb/jlcpcb/production_files/GERBER-plate-top-{left,right}.zip
 """
 import os
 import csv
@@ -45,6 +46,7 @@ LCSC_MAP_MAIN = {
     "R2": ("5.1k", "R_0402_1005Metric", "C25905"),
     "R8": ("5.6k", "R_0402_1005Metric", "C25908"),
     "J1": ("TYPE-C-31-M-13C", "TYPE-C-31-M-13C", "C2848620"),
+    "J3": ("SM06B-SRSS-TB(LF)(SN)", "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", "C160404"),
     "R4": ("27", "R_0402_1005Metric", "C2909343"),
     "R5": ("27", "R_0402_1005Metric", "C2909343"),
     "SMDSW1": ("TS-1088R-02026", "TS-1088R-02026", "C455280"),
@@ -60,6 +62,7 @@ PMW_PARTS = {
     "C2": ("100nF", "C_0603_1608Metric", "C14663"),
     "C3": ("1uF", "C_0603_1608Metric", "C15849"),
     "C4": ("1uF", "C_0603_1608Metric", "C15849"),
+    "J1": ("SM06B-SRSS-TB(LF)(SN)", "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", "C160404"),
     "R1": ("10k", "R_0603_1608Metric", "C25804"),
     "R2": ("10k", "R_0603_1608Metric", "C25804"),
     "R3": ("39R", "R_0603_1608Metric", "C23154"),
@@ -67,7 +70,9 @@ PMW_PARTS = {
 }
 
 
-def get_part_info(ref, is_right=False):
+def get_part_info(ref, is_right=False, is_pmw=False):
+    if is_pmw:
+        return PMW_PARTS.get(ref)
     if is_right:
         if ref.startswith("r"):
             base = ref[1:]
@@ -135,7 +140,7 @@ def export_gerber_zip(pcb_path, zip_path):
                 zf.write(os.path.join(tmp_dir, fname), fname)
 
 
-def export_main_pcb(pcb_path, proj_name, is_right=False):
+def export_main_pcb(pcb_path, proj_name, is_right=False, is_pmw=False):
     out_dir = os.path.join(os.path.dirname(pcb_path), "jlcpcb", "production_files")
     os.makedirs(out_dir, exist_ok=True)
     export_gerber_zip(pcb_path, os.path.join(out_dir, f"GERBER-{proj_name}.zip"))
@@ -156,7 +161,7 @@ def export_main_pcb(pcb_path, proj_name, is_right=False):
         if fp.GetAttributes() & exclude_mask:
             continue
         ref = fp.GetReference()
-        info = get_part_info(ref, is_right=is_right)
+        info = get_part_info(ref, is_right=is_right, is_pmw=is_pmw)
         if not info:
             continue
         comment, pkg, lcsc = info
@@ -214,5 +219,10 @@ if __name__ == "__main__":
         str(WORKSPACE / "pcbs" / "left" / "curcur40-left.kicad_pcb"),
         "curcur40-left",
         is_right=False,
+    )
+    export_main_pcb(
+        str(WORKSPACE / "pcbs" / "pmw3360" / "curcur40-pmw3360.kicad_pcb"),
+        "curcur40-pmw3360",
+        is_pmw=True,
     )
     export_top_plates()
