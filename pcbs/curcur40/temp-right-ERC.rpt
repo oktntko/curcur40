@@ -1,0 +1,323 @@
+ERC report (2026-10-22T12:23:33, Encoding UTF8)
+Report includes: Errors, Warnings, Exclusions
+
+***** Sheet /
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2475 mils, 1300 mils): Horizontal Wire, length 275 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2050 mils, 1300 mils): Horizontal Wire, length 425 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2475 mils, 1425 mils): Symbol rR8 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2475 mils, 1425 mils): Vertical Wire, length 125 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2475 mils, 1625 mils): Vertical Wire, length 25 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2600 mils, 1650 mils): Horizontal Wire, length 125 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2475 mils, 1650 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2475 mils, 1700 mils): Symbol rR9 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2475 mils, 1900 mils): Vertical Wire, length 25 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2475 mils, 1925 mils): Symbol #PWR082 Hidden pin 1 [GNDR, 電源入力, ライン]
+[pin_to_pin]: ピンのタイプ 双方向 と 電源出力 が接続されています
+    ; warning
+    @(4200 mils, 7150 mils): Symbol rU1 Pin 32 [GPIO21, 双方向, ライン]
+    @(8300 mils, 10850 mils): Symbol #FLG0103 Pin 1 [電源出力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(4200 mils, 6350 mils): Horizontal Wire, length 475 mils
+[four_way_junction]: 4 つのアイテムが2108200 、 1905000に接続されています
+    ; warning
+    @(8300 mils, 7500 mils): Symbol #FLG0104 Pin 1 [電源出力, ライン]
+    @(8300 mils, 7500 mils): Horizontal Wire, length 600 mils
+[four_way_junction]: 4 つのアイテムが2108200 、 2273300に接続されています
+    ; warning
+    @(8300 mils, 8950 mils): Symbol rLED14 Pin 3 [VSS, 電源入力, ライン]
+    @(8300 mils, 8950 mils): Symbol rLED17 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2108200 、 2451100に接続されています
+    ; warning
+    @(8300 mils, 9650 mils): Symbol rLED15 Pin 3 [VSS, 電源入力, ライン]
+    @(8300 mils, 9650 mils): Symbol rLED16 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2108200 、 2755900に接続されています
+    ; warning
+    @(8300 mils, 10850 mils): Symbol #PWR0101 Hidden pin 1 [GNDR, 電源入力, ライン]
+    @(8300 mils, 10850 mils): Symbol #FLG0103 Pin 1 [電源出力, ライン]
+[four_way_junction]: 4 つのアイテムが2260600 、 2082800に接続されています
+    ; warning
+    @(8900 mils, 8200 mils): Symbol rLED13 Pin 1 [VDD, 電源入力, ライン]
+    @(8900 mils, 8200 mils): Symbol rLED12 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2260600 、 2273300に接続されています
+    ; warning
+    @(8900 mils, 8950 mils): Symbol rLED11 Pin 1 [VDD, 電源入力, ライン]
+    @(8900 mils, 8950 mils): Symbol rLED14 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2260600 、 2451100に接続されています
+    ; warning
+    @(8900 mils, 9650 mils): Symbol rLED10 Pin 1 [VDD, 電源入力, ライン]
+    @(8900 mils, 9650 mils): Symbol rLED15 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2413000 、 2273300に接続されています
+    ; warning
+    @(9500 mils, 8950 mils): Symbol rLED11 Pin 3 [VSS, 電源入力, ライン]
+    @(9500 mils, 8950 mils): Symbol rLED6 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2413000 、 2451100に接続されています
+    ; warning
+    @(9500 mils, 9650 mils): Symbol rLED10 Pin 3 [VSS, 電源入力, ライン]
+    @(9500 mils, 9650 mils): Symbol rLED7 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2413000 、 2628900に接続されています
+    ; warning
+    @(9500 mils, 10350 mils): Symbol rLED9 Pin 3 [VSS, 電源入力, ライン]
+    @(9500 mils, 10350 mils): Symbol rLED8 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2565400 、 2082800に接続されています
+    ; warning
+    @(10100 mils, 8200 mils): Symbol rLED5 Pin 1 [VDD, 電源入力, ライン]
+    @(10100 mils, 8200 mils): Symbol rLED4 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2565400 、 2273300に接続されています
+    ; warning
+    @(10100 mils, 8950 mils): Symbol rLED3 Pin 1 [VDD, 電源入力, ライン]
+    @(10100 mils, 8950 mils): Symbol rLED6 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2565400 、 2451100に接続されています
+    ; warning
+    @(10100 mils, 9650 mils): Symbol rLED2 Pin 1 [VDD, 電源入力, ライン]
+    @(10100 mils, 9650 mils): Symbol rLED7 Pin 1 [VDD, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(10525 mils, 4150 mils): Symbol #PWR0103 Hidden pin 1 [GNDR, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(10625 mils, 4150 mils): Symbol rEXSW1 Pin A [A, パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(10625 mils, 4750 mils): Symbol #PWR063 Hidden pin 1 [GNDR, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(10800 mils, 1325 mils): Symbol #PWR058 Hidden pin 1 [GNDR, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(10800 mils, 1425 mils): Symbol rJ2 Pin R [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(10800 mils, 1525 mils): Symbol #PWR07 Hidden pin 1 [+5VR, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12083 mils, 6884 mils): Symbol #PWR0203 Hidden pin 1 [+3V3R, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12083 mils, 6884 mils): Horizontal Wire, length 300 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 3534 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 3584 mils): Horizontal Wire, length 550 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 3584 mils): Vertical Wire, length 200 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 3784 mils): Symbol R3 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 3884 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 3884 mils): Horizontal Wire, length 200 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 3934 mils): Symbol C1 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 4184 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 4184 mils): Horizontal Wire, length 200 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 4184 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12143 mils, 4234 mils): Symbol #PWR0205 Hidden pin 1 [GNDR, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12343 mils, 3884 mils): Horizontal Wire, length 350 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12343 mils, 3934 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12343 mils, 3934 mils): Symbol C2 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12343 mils, 4134 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12343 mils, 4184 mils): Horizontal Wire, length 350 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12383 mils, 6884 mils): Horizontal Wire, length 200 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12383 mils, 7034 mils): Vertical Wire, length 150 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12383 mils, 7034 mils): Symbol C3 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12383 mils, 7334 mils): Vertical Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12383 mils, 7334 mils): Symbol #PWR0206 Hidden pin 1 [GNDR, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12443 mils, 3784 mils): Horizontal Wire, length 250 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12583 mils, 6884 mils): Horizontal Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12583 mils, 6884 mils): Vertical Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12633 mils, 6884 mils): Symbol U2 Pin 1 [IN, パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12633 mils, 6984 mils): Horizontal Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(12643 mils, 3684 mils): Horizontal Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13033 mils, 7334 mils): Symbol #PWR0201 Hidden pin 1 [GNDR, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13033 mils, 7334 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13433 mils, 6884 mils): Horizontal Wire, length 850 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13433 mils, 6984 mils): Horizontal Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13483 mils, 6984 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13483 mils, 6984 mils): Horizontal Wire, length 400 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13483 mils, 7034 mils): Symbol C5 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13483 mils, 7234 mils): Vertical Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13483 mils, 7334 mils): Symbol #PWR0202 Hidden pin 1 [GNDR, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13593 mils, 3584 mils): Horizontal Wire, length 200 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13593 mils, 3684 mils): Horizontal Wire, length 550 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13593 mils, 3884 mils): Horizontal Wire, length 750 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13593 mils, 3984 mils): Horizontal Wire, length 1050 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13593 mils, 4084 mils): Horizontal Wire, length 1050 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13593 mils, 4084 mils): Symbol U1 Pin 10 [SCLK, 入力, クロック]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13593 mils, 4184 mils): Horizontal Wire, length 1050 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13793 mils, 2934 mils): Horizontal Wire, length 550 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13793 mils, 3034 mils): Vertical Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13793 mils, 3034 mils): Symbol R1 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13793 mils, 3334 mils): Vertical Wire, length 250 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(13793 mils, 3584 mils): Horizontal Wire, length 350 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14183 mils, 6984 mils): Symbol R4 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14283 mils, 6884 mils): Vertical Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14283 mils, 6884 mils): Horizontal Wire, length 150 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14283 mils, 6984 mils): Horizontal Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14343 mils, 2934 mils): Vertical Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14343 mils, 3034 mils): Symbol R2 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14343 mils, 3334 mils): Vertical Wire, length 550 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14343 mils, 3884 mils): Horizontal Wire, length 300 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14433 mils, 6834 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14433 mils, 7034 mils): Symbol C4 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14433 mils, 7034 mils): Vertical Wire, length 150 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14433 mils, 7334 mils): Vertical Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14433 mils, 7334 mils): Symbol #PWR0207 Hidden pin 1 [GNDR, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(14443 mils, 2934 mils): Horizontal Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(15157 mils, 6784 mils): Vertical Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(15157 mils, 7184 mils): Symbol JP1 Pin 1 [A, パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(15157 mils, 7184 mils): Vertical Wire, length 100 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(15157 mils, 7284 mils): Symbol #PWR0204 Hidden pin 1 [+3V3R, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(15307 mils, 6984 mils): Horizontal Wire, length 93 mils
+
+ ** ERC messages: 100  Errors 0  Warnings 100
+
+ ** Ignored checks:
+    - None

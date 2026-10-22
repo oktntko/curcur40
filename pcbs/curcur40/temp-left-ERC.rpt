@@ -1,0 +1,108 @@
+ERC report (2026-10-22T12:25:01, Encoding UTF8)
+Report includes: Errors, Warnings, Exclusions
+
+***** Sheet /
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2675 mils, 1300 mils): Horizontal Wire, length 275 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2500 mils, 1300 mils): Horizontal Wire, length 175 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2675 mils, 1425 mils): Symbol R8 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2675 mils, 1425 mils): Vertical Wire, length 125 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2675 mils, 1625 mils): Vertical Wire, length 50 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2675 mils, 1675 mils): Vertical Wire, length 25 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2675 mils, 1700 mils): Symbol R9 Pin 1 [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2675 mils, 1900 mils): Vertical Wire, length 25 mils
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2675 mils, 1925 mils): Symbol #PWR010 Pin 1 [電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2800 mils, 1675 mils): Horizontal Wire, length 125 mils
+[pin_to_pin]: ピンのタイプ 双方向 と 電源出力 が接続されています
+    ; warning
+    @(4400 mils, 7150 mils): Symbol U1 Pin 32 [GPIO21, 双方向, ライン]
+    @(4700 mils, 1300 mils): Symbol U2 Pin 2 [VO, 電源出力, ライン]
+[four_way_junction]: 4 つのアイテムが2159000 、 1905000に接続されています
+    ; warning
+    @(8500 mils, 7500 mils): Symbol #FLG04 Pin 1 [電源出力, ライン]
+    @(8500 mils, 7500 mils): Horizontal Wire, length 600 mils
+[four_way_junction]: 4 つのアイテムが2159000 、 2273300に接続されています
+    ; warning
+    @(8500 mils, 8950 mils): Symbol LED14 Pin 3 [VSS, 電源入力, ライン]
+    @(8500 mils, 8950 mils): Symbol LED17 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2159000 、 2451100に接続されています
+    ; warning
+    @(8500 mils, 9650 mils): Symbol LED15 Pin 3 [VSS, 電源入力, ライン]
+    @(8500 mils, 9650 mils): Symbol LED16 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2311400 、 2082800に接続されています
+    ; warning
+    @(9100 mils, 8200 mils): Symbol LED13 Pin 1 [VDD, 電源入力, ライン]
+    @(9100 mils, 8200 mils): Symbol LED12 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2311400 、 2273300に接続されています
+    ; warning
+    @(9100 mils, 8950 mils): Symbol LED11 Pin 1 [VDD, 電源入力, ライン]
+    @(9100 mils, 8950 mils): Symbol LED14 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2311400 、 2451100に接続されています
+    ; warning
+    @(9100 mils, 9650 mils): Symbol LED10 Pin 1 [VDD, 電源入力, ライン]
+    @(9100 mils, 9650 mils): Symbol LED15 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2463800 、 2273300に接続されています
+    ; warning
+    @(9700 mils, 8950 mils): Symbol LED11 Pin 3 [VSS, 電源入力, ライン]
+    @(9700 mils, 8950 mils): Symbol LED6 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2463800 、 2451100に接続されています
+    ; warning
+    @(9700 mils, 9650 mils): Symbol LED10 Pin 3 [VSS, 電源入力, ライン]
+    @(9700 mils, 9650 mils): Symbol LED7 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2463800 、 2628900に接続されています
+    ; warning
+    @(9700 mils, 10350 mils): Symbol LED9 Pin 3 [VSS, 電源入力, ライン]
+    @(9700 mils, 10350 mils): Symbol LED8 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2616200 、 2082800に接続されています
+    ; warning
+    @(10300 mils, 8200 mils): Symbol LED4 Pin 1 [VDD, 電源入力, ライン]
+    @(10300 mils, 8200 mils): Symbol LED5 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2616200 、 2273300に接続されています
+    ; warning
+    @(10300 mils, 8950 mils): Symbol LED6 Pin 1 [VDD, 電源入力, ライン]
+    @(10300 mils, 8950 mils): Symbol LED3 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2616200 、 2451100に接続されています
+    ; warning
+    @(10300 mils, 9650 mils): Symbol LED2 Pin 1 [VDD, 電源入力, ライン]
+    @(10300 mils, 9650 mils): Symbol LED7 Pin 1 [VDD, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2768600 、 2273300に接続されています
+    ; warning
+    @(10900 mils, 8950 mils): Symbol EXLED2 Pin 3 [VSS, 電源入力, ライン]
+    @(10900 mils, 8950 mils): Symbol LED3 Pin 3 [VSS, 電源入力, ライン]
+[four_way_junction]: 4 つのアイテムが2768600 、 2451100に接続されています
+    ; warning
+    @(10900 mils, 9650 mils): Symbol LED2 Pin 3 [VSS, 電源入力, ライン]
+    @(10900 mils, 9650 mils): Symbol EXLED3 Pin 3 [VSS, 電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(10925 mils, 1350 mils): Symbol #PWR078 Pin 1 [電源入力, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(10925 mils, 1450 mils): Symbol J2 Pin R [パッシブ, ライン]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(10925 mils, 1550 mils): Symbol #PWR079 Pin 1 [電源入力, ライン]
+
+ ** ERC messages: 28  Errors 0  Warnings 28
+
+ ** Ignored checks:
+    - None
