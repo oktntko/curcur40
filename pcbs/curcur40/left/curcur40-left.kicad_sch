@@ -14979,7 +14979,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "kbd:YS-SK6812MINI-E_LED9"
+		(property "Footprint" "kbd:YS-SK6812MINI-E"
 			(at 245.11 260.35 0)
 			(hide yes)
 			(show_name no)
@@ -17081,10 +17081,10 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "b0546930-7e44-4b86-96c0-01ff7908ffd4")
 		(property "Reference" "J4"
