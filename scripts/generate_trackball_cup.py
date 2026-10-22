@@ -190,6 +190,19 @@ def build_trackball_cup() -> bd.Solid:
         ).moved(bd.Location((sx, sy, z_ear / 2)))
         cup = cup - hole
 
+    # 11. Exterior relief notch on North outer wall (Y >= +11.60 mm, Z = +4.50 to +12.50 mm)
+    # Provides >= 0.4875 mm clearance to the Right Main PCB strip (Y_pcb <= 40.30 mm, Z = -5.80 to -4.20 mm)
+    # and TRRS jack body (rJ2, Z = -10.80 to -5.80 mm) when the Trackball Cup is mounted in the
+    # low-profile sunk position (Z_base = -16.00 mm, Z_rim = -2.00 mm flush with Top Plate).
+    # Preserves 100% of the uniform circular rim (Z = 12.50 to 14.00 mm) and inner spherical bowl.
+    relief = bd.Box(
+        30.0,
+        10.0,
+        8.00,
+        align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((0.0, 11.60, 4.50)))
+    cup = cup - relief
+
     cup_solid = cup.solids()[0]
     cup_solid.label = "Trackball_Cup"
     return cup_solid
