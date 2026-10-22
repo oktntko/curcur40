@@ -14,11 +14,11 @@
 - **PMW3360 光学センサーの右手メイン基板へのシングルボード統合**:
   - センサー子基板やピンヘッダーを使わず、右手メイン基板（`curcur40-right`）へ `PMW3360DM-T2QU` および `1.8V` LDO（`TLV74318PDBVR`）を直接統合。
   - 基板の矩形開口（$8.70 \times 16.90\,\text{mm}$）に表面から `LM19-LSI` レンズをスナップイン装着し、裏面からセンサーICを差し込んで表面スルーホールでハンダ付けする高剛性・省スペース構造により、ケース外底面高さ **$Z = -12.30\,\text{mm}$** の薄型トレイ設計を実現。
-- **13箇所 M2 5.50mm スペーサーによる統一締結アーキテクチャ**:
-  - 左手外周 5箇所（`L1`〜`L5`、うち `L5` は右手トラックボール南東穴 `TB4` と左右対称配置）＋ 右手外周 4箇所（`R1`〜`R4`）＋ トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`）＝ **計 13箇所**すべてを **M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\,\text{mm}$）** と上下の **M2 × 4.0mm ネジ（計 26本）** で締結。
-  - ケース内底面（$Z = -9.10\,\text{mm}$）から立ち上がるスペーサーがメイン基板の $\varnothing 3.60\,\text{mm}$ 貫通穴を通って基板表面（$Z = -3.60\,\text{mm}$）と完全にツライチとなり、底面外側の **$\varnothing 4.60 \times 0.90\,\text{mm}$ ザグリ穴**によってネジ頭が底面から一切突出しないフラット構造。
+- **M2 メスメススペーサーによる高剛性締結アーキテクチャ**:
+  - 左手外周 5箇所（`L1`〜`L5`、うち `L5` は右手トラックボール南東穴 `TB4` と左右対称配置）＋ 右手外周 4箇所（`R1`〜`R4`）の **外周 9箇所**には **M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\,\text{mm}$）**、トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`）には **M2 6.0〜7.0mm メス-メス スペーサー（外径 $\varnothing 3.0\,\text{mm}$）** を配置し、上下の **M2 × 4.0mm ネジ（計 26本）** で締結。
+  - ケース内底面（$Z = -9.10\,\text{mm}$）から立ち上がるスペーサーがメイン基板（$Z = -5.80 \sim -4.20\,\text{mm}$）の **$\varnothing 3.25\,\text{mm}$ 貫通穴**を通り、外周 9箇所ではトッププレート下面（$Z = -3.60\,\text{mm}$）を直接支持、トラックボール部 4箇所ではカップ固定耳（$\varnothing 3.60\,\text{mm}$ 穴）内部へ進入して締結。ケース底面外側の **$\varnothing 4.60 \times 0.90\,\text{mm}$ ザグリ穴**によってネジ頭が底面から一切突出しないフラット構造。
 - **3爪スリムアーチ保持・3点セラミック球支持トラックボールカップ**:
-  - $\varnothing 2.0\,\text{mm}$ G5 窒化ケイ素（$\text{Si}_3\text{N}_4$）セラミックベアリング球 3個で $\varnothing 25.0\,\text{mm}$ ボールを低摩擦支持し、上部のスリムアーチ3爪（スロート径 $\varnothing 24.59\,\text{mm}$、食い込み量 $0.205\,\text{mm}$）で逆さにしても落下しないスナップイン保持と全方位の指クリアランスを両立。
+  - $\varnothing 2.0\,\text{mm}$ G5 窒化ケイ素（$\text{Si}_3\text{N}_4$）セラミックベアリング球 3個（入口スロート径 $\varnothing 1.95\,\text{mm}$ のスナップイン球面座）で $\varnothing 25.0\,\text{mm}$ ボールを低摩擦支持し、上部のスリムアーチ3爪（スロート径 $\varnothing 24.59\,\text{mm}$、食い込み量 $0.205\,\text{mm}$）で逆さにしても落下しないスナップイン保持と全方位の指クリアランスを両立。
 - **RP2040 オンボード & QMK / Vial 完全対応**:
   - 左右とも `RP2040` + `16MB` QSPI Flash (`W25Q128JVSIQ`) をオンボード実装し、ダイオードレスのダイレクトピン接続を採用。Vial GUI からキーマップ・ロータリーエンコーダ・トラックボール設定をリアルタイム変更可能。
 
@@ -29,7 +29,7 @@
 | ドキュメント | 内容 |
 | :--- | :--- |
 | **[ビルドガイド (`docs/buildguide_jp.md`)](./docs/buildguide_jp.md)** | 必要パーツ一覧（BOM）、JLCPCB PCBA 発注手順、PMW3360/CKW12 の手ハンダ手順、ケース・トラックボールカップ組み立て手順、ファームウェア書き込み手順 |
-| **[ケース・機構設計仕様書 (`docs/case_spec.md`)](./docs/case_spec.md)** | Z軸スタックアップ定義、13箇所 M2 5.50mm スペーサー締結仕様、外周ポート開口（USB-C / TRRS）、トラックボールカップ＆光学距離（$2.40\,\text{mm}$）仕様 |
+| **[ケース・機構設計仕様書 (`docs/case_spec.md`)](./docs/case_spec.md)** | Z軸スタックアップ定義、13箇所 M2 スペーサー締結仕様、外周ポート開口（USB-C / TRRS）、トラックボールカップ＆光学距離（$2.40\,\text{mm}$）仕様 |
 | **[PCB・回路図設計仕様書 (`docs/pcb_spec.md`)](./docs/pcb_spec.md)** | 左右メイン基板の回路構成、RP2040 GPIO ピンアサイン表、PMW3360 シングルボード統合仕様、カスタムライブラリ一覧、DRC/ERC 検証基準 |
 | **[生成スクリプト一覧 (`scripts/README.md`)](./scripts/README.md)** | 3Dモデル（ケース・カップ・フルアセンブリ）、トッププレート、JLCPCB 発注データ、プレビュー画像の再現生成スクリプト（全8本）の説明 |
 
@@ -54,8 +54,8 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）および `cadgen` 3D CAD レ�
 
 ### 2. 左手メイン基板 (`curcur40-left`)
 - **構成**: 21キー（メイン $3\times 5$ + 内側 1u×2 + 親指 1u×4）
-- **制御回路**: `RP2040`（QFN-56）+ `W25Q128JVSIQ`（16MB QSPI Flash）+ USB Type-C（ESD保護 `TPD4E05U06DQAR`・VBUS逆流防止ダイオード搭載）+ TRRS/TRS 4極ジャック
-- **外周固定穴**: 5箇所（$\varnothing 3.60\,\text{mm}$ 貫通穴、M2 5.50mm スペーサー挿通用。親指下穴 `L5` $(-21.5250, 63.6875)$ は右手トラックボール南東穴 `TB4` $(21.5250, 63.6875)$ と完全左右対称）
+- **制御回路**: `RP2040`（QFN-56）+ `W25Q128JVSIQ`（16MB QSPI Flash）+ USB Type-C（ESD保護 `TPD4E05U06DQAR`・VBUS逆流防止ダイオード `ZD1` 搭載）+ TRRS/TRS 3.5mmジャック
+- **外周固定穴**: 5箇所（$\varnothing 3.25\,\text{mm}$ 貫通穴、M2 5.50mm スペーサー挿通用。親指下穴 `L5` $(-21.5250, 63.6875)$ は右手トラックボール南東穴 `TB4` $(21.5250, 63.6875)$ と完全左右対称）
 
 #### 表面（スイッチ差し込み面 / `F.Cu`）
 ![Left PCB Top](./docs/assets/render_left_top.png)
@@ -75,7 +75,7 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）および `cadgen` 3D CAD レ�
   - 裏面（`B.Cu`）の電圧選択ジャンパ `JP1` は、**Pad 1（`+3V3R`）– Pad 2（`/V_{IO}`）間が基板の銅箔パターンで最初から直結（`SolderJumper_3_Bridged12`）** されており、手作業でのブリッジは不要。
   - `R4`（28kΩ）、`C5`（22nF）、およびデバッグ端子 `J4` / `rJ4` は **DNP（未実装）** 指定。
 - **固定穴・光学開口**:
-  - 外周スペーサー貫通穴 4箇所（$\varnothing 3.60\,\text{mm}$）+ トラックボールカップ固定用スペーサー貫通穴 4箇所（$\varnothing 3.60\,\text{mm}$：中心 $(9.5250, 52.3875)\,\text{mm}$ から $X \pm 12.00\,\text{mm}, Y \pm 11.30\,\text{mm}$）＝ 計 8箇所
+  - 外周スペーサー貫通穴 4箇所（$\varnothing 3.25\,\text{mm}$）+ トラックボールカップ固定用スペーサー貫通穴 4箇所（$\varnothing 3.25\,\text{mm}$：中心 $(9.5250, 52.3875)\,\text{mm}$ から $X \pm 12.00\,\text{mm}, Y \pm 11.30\,\text{mm}$）＝ 計 8箇所
   - PMW3360 光学窓＆LM19-LSI レンズ脚部用の矩形開口（$8.70 \times 16.90\,\text{mm}$）
 
 #### 表面（スイッチ・トラックボールカップ搭載面 / `F.Cu`）
@@ -90,9 +90,9 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）および `cadgen` 3D CAD レ�
 ---
 
 ### 4. FR-4 トッププレート (`plate-top-left` / `plate-top-right`)
-- **材質・板厚**: FR-4（ガラスエポキシ基板材）、板厚 $1.60\,\text{mm}$（$Z = -1.60 \sim 0.00\,\text{mm}$）
-- **ネジ穴仕様**: すべて **$\varnothing 2.40\,\text{mm}$ ストレート貫通穴（ザグリなし）**（左手 5箇所、右手 4箇所）。上から M2 × 4.0mm ネジを通してメイン基板表面とツライチの M2 5.50mm スペーサー上端へ締結。
-- **右手プレート形状**: CKW12 水平ローラーエンコーダ用の開口（$18.20 \times 18.20\,\text{mm}$）および親指内側のトラックボールカップ領域を切り欠いた L字ノッチ形状。
+- **材質・板厚**: FR-4（ガラスエポキシ基板材）、板厚 $1.60\,\text{mm}$（$Z = -3.60 \sim -2.00\,\text{mm}$）
+- **ネジ穴仕様**: すべて **$\varnothing 2.40\,\text{mm}$ ストレート貫通穴（ザグリなし）**（左手 5箇所、右手 4箇所）。上から M2 × 4.0mm ネジを通してプレート下面（$Z = -3.60\,\text{mm}$）を直接支持する M2 5.50mm スペーサー上端へ締結（噛み合い深さ $2.40\,\text{mm}$）。
+- **右手プレート形状**: CKW12 水平ローラーエンコーダ用の開口（$18.20 \times 18.20\,\text{mm}$）および親指内側のトラックボールカップ領域を切り欠いた L字ノッチ形状（ケース内壁クリアランス $0.30\,\text{mm}$、カップ耳クリアランス $0.3125\,\text{mm}$）。
 
 #### 左手トッププレート (`plate-top-left`)
 ![Left Top Plate](./docs/assets/render_plate_left.png)
@@ -103,7 +103,7 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）および `cadgen` 3D CAD レ�
 ---
 
 ### 5. トラックボールカップ・光学スタックアップ検証モデル
-[`cases/`](./cases/) 配下の3Dプリント用モデルおよび4つの光学検証アセンブリモデルです。4つの検証アセンブリ STEP には、GUI（CAD Viewer等）の計測ツールで直接選択してボール底面（$Z_{\text{rel}} = +5.80\,\text{mm}$）との距離（設計値 **$2.40\,\text{mm}$**）を計測できるよう、レンズ側光学距離基準点（**`Lens_Optical_Ref_Point`**, $Z_{\text{rel}} = +3.40\,\text{mm}$ / グローバル $Z = -0.20\,\text{mm}$）が独立オブジェクトとしてプロットされています。
+[`cases/`](./cases/) 配下の3Dプリント用モデルおよび4つの光学検証アセンブリモデルです。4つの検証アセンブリ STEP には、GUI（CAD Viewer等）の計測ツールで直接選択してボール底面（$Z_{\text{rel}} = +5.80\,\text{mm}$ / グローバル $Z = +1.60\,\text{mm}$）との距離（設計値 **$2.40\,\text{mm}$**）を計測できるよう、レンズ側光学距離基準点（**`Lens_Optical_Ref_Point`**, $Z_{\text{rel}} = +3.40\,\text{mm}$ / グローバル $Z = -0.80\,\text{mm}$）が独立オブジェクトとしてプロットされています。
 
 | トラックボールカップ単体 (`trackball-cup.step`) | 25mmボール・レンズ組込 (`trackball-cup-with-ball.step`) |
 | :---: | :---: |
@@ -148,7 +148,7 @@ curcur40/
 | 対象領域 / ファイル | 派生元リポジトリ・原著作者 | 適用ライセンス | 改変履歴・表示事項（CC BY 4.0 Sec. 3(a) / CERN-OHL-P v2 Sec. 3.3 準拠） |
 | :--- | :--- | :--- | :--- |
 | **基板・プレート・ケース・ドキュメント・スクリプト**<br>(`pcbs/left/`, `pcbs/right/`, `plates/`, `cases/`, `docs/`, `scripts/`) | **[foostan/crkbd](https://github.com/foostan/crkbd)**<br>(Original Author: `foostan` / Kosuke Adachi) | **[MIT License](./LICENSE_MIT)** ＆<br>**[CC BY 4.0](./LICENSE_CC)** | Corne v4 (`corne-chocolate`) をベースに、40キー配列化・親指クラスタ再配置・右手 PMW3360 トラックボール＆CKW12 エンコーダ統合・KiCad 10.0 対応・3Dプリントケース＆トラックボールカップ新規設計を実施（`2026-10`） |
-| **プロジェクト固有 KiCad ライブラリ（Corne 由来）**<br>(`pcbs/common/kbd/kicad-symbols/kbd.kicad_sym`, `kbd.pretty/`, `kbd.3dshapes/`) | **[foostan/kbd](https://github.com/foostan/kbd)**<br>(Original Author: `foostan`) | **[MIT License](./pcbs/common/kbd/LICENSE)** | `2026-10-22`: 未使用シンボル・フットプリント・3Dモデルを整理し、KiCad 10.0 標準シンボルとのピン名・フィルタ整合、`YS-SK6812MINI-E` `DOUT` ピン電気タイプ修正、環境非依存の3Dモデル相対パス化を実施 |
+| **プロジェクト固有 KiCad ライブラリ（Corne 由来）**<br>(`pcbs/common/kbd/kicad-symbols/kbd.kicad_sym`, `kbd.pretty/`, `kicad-packages3D/kbd.3dshapes/`) | **[foostan/kbd](https://github.com/foostan/kbd)**<br>(Original Author: `foostan`) | **[MIT License](./pcbs/common/kbd/LICENSE)** | `2026-10-22`: 未使用シンボル・フットプリント・3Dモデルを整理し、KiCad 10.0 標準シンボルとのピン名・フィルタ整合、`YS-SK6812MINI-E` Pin 2 (`DOUT`) 電気タイプ修正、`keyswitch_choc12_hotswap_1u` の旧 Corne V3 由来 $\varnothing 0.40\,\text{mm}$ NPTH 穴削除、環境非依存の3Dモデル相対パス化を実施 |
 | **PMW3360 回路図シンボル・フットプリント**<br>(`pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym`, `PMW3360DM-T2QU_16Pin.kicad_mod`) | **[siderakb/pmw3360-pcb](https://github.com/siderakb/pmw3360-pcb)**<br>(Original Author: `siderakb` / `ziteh`) | **[CERN-OHL-P v2](./LICENSE_CERN_OHL_P_V2)**<br>(Permissive) | `2026-10-22`: 未使用の `TXS0108E-QPWRQ1` シンボルを削除、`PMW3360DM-T2QU` Pin 3 (`VDDPIX`) を `power_out` に変更、および `PMW3360DM-T2QU_16Pin.kicad_mod` のスルーホールパッド層定義を KiCad 10.0 向けに補完し右手メイン基板へシングルボード統合 |
-| **CKW12 水平ローラーエンコーダ フットプリント・3Dモデル**<br>(`RotaryEncoder_Switch_CKW12.kicad_mod`, `pcbs/common/kbd/3dmodels/ckw12_*.stp`) | **[kumamuk-git/CKW12](https://github.com/kumamuk-git/CKW12)** ＆<br>**[kumamuk-git/roBa](https://github.com/kumamuk-git/roBa)**<br>(Original Author: `kumamuk-git`) | **GPL-3.0**<br>([kumamuk-git/roBa LICENSE](https://github.com/kumamuk-git/roBa/blob/main/LICENSE)) | `2026-10-22`: `CKW12.kicad_mod`（`roBa:SW_MX_EC12`）を KiCad 10.0 標準 `Device:RotaryEncoder_Switch` シンボルフィルタに合わせて `RotaryEncoder_Switch_CKW12.kicad_mod` へリネームし、3Dモデル参照パスを設定 |
+| **CKW12 水平ローラーエンコーダ フットプリント・3Dモデル**<br>(`RotaryEncoder_Switch_CKW12.kicad_mod`, `pcbs/common/kbd/3dmodels/ckw12_*.stp`) | **[kumamuk-git/CKW12](https://github.com/kumamuk-git/CKW12)** ＆<br>**[kumamuk-git/roBa](https://github.com/kumamuk-git/roBa)**<br>(Original Author: `kumamuk-git`) | **GPL-3.0**<br>([kumamuk-git/roBa LICENSE](https://github.com/kumamuk-git/roBa/blob/main/LICENSE)) | `2026-10-22`: `CKW12.kicad_mod`（`roBa:SW_MX_EC12`）を KiCad 10.0 標準 `Device:RotaryEncoder_Switch` シンボルフィルタに合わせて `RotaryEncoder_Switch_CKW12.kicad_mod` へリネームし、3Dモデル参照パスおよび `CKW12_top` 厚みオフセット `(0, 0, 0.5)`・回転 `(0, 0, 180)` を設定 |
 | **ファームウェア定義 (`kbd_firmware/`)**<br>(`kbd_firmware/keyboards/curcur40/`) | **[foostan/kbd_firmware](https://github.com/foostan/kbd_firmware)**<br>**[QMK Firmware](https://github.com/qmk/qmk_firmware)** / **[Vial-QMK](https://github.com/vial-kb/vial-qmk)** | **GPL-2.0-or-later**<br>(`SPDX-License-Identifier: GPL-2.0-or-later`) | `crkbd/rev4_1/mini` の設定をベースに、40キーマトリックス、CKW12 エンコーダ、SPI1 PMW3360 トラックボール（1200 CPI・角度補正）対応ファームウェアとして改変 |

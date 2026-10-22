@@ -44,19 +44,19 @@
 
 | ライブラリ / シンボル名 | ファイルパス | データ入手元（公開リポジトリ） | ローカルでの生成・改変内容 |
 | :--- | :--- | :--- | :--- |
-| **`kbd`**<br>(`+1V1R`, `+3V3R`, `+5VR`, `GNDR`, `VBUSR`, `YS-SK6812MINI-E`) | [kbd.kicad_sym](../pcbs/common/kbd/kicad-symbols/kbd.kicad_sym) | **foostan/kbd**<br>(`https://github.com/foostan/kbd` — Corne v4 公式 KiCad ライブラリ、[MIT License](../pcbs/common/kbd/LICENSE)。`git subtree` で取得) | `2026-10-22`: 未使用シンボルを削除し、`YS-SK6812MINI-E` の Pin 3 (`DOUT`) が元データで `power_in` になっていたため、KiCad 10.0 ERC 対応としてデータシート通り `output` にローカル修正 |
+| **`kbd`**<br>(`+1V1R`, `+3V3R`, `+5VR`, `GNDR`, `VBUSR`, `YS-SK6812MINI-E`) | [kbd.kicad_sym](../pcbs/common/kbd/kicad-symbols/kbd.kicad_sym) | **foostan/kbd**<br>(`https://github.com/foostan/kbd` — Corne v4 公式 KiCad ライブラリ、[MIT License](../pcbs/common/kbd/LICENSE)。`git subtree` で取得) | `2026-10-22`: 未使用シンボルを削除し、`YS-SK6812MINI-E` の Pin 2 (`DOUT`) が元データで `power_in` になっていたため、KiCad 10.0 ERC 対応としてデータシート通り `output` にローカル修正 |
 | **`PMW3360_PCB`**<br>(`PMW3360DM-T2QU`, `TLV74318PDBVR`) | [pmw3360_pcb.kicad_sym](../pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym) | **siderakb/pmw3360-pcb**<br>(`https://github.com/siderakb/pmw3360-pcb` — PMW3360 ブレイクアウト基板 OSS、[CERN-OHL-P v2](../LICENSE_CERN_OHL_P_V2)) | `2026-10-22`: 未使用の `TXS0108E-QPWRQ1` シンボルを削除し、`PMW3360DM-T2QU` の Pin 3 (`VDDPIX`) を内部レギュレータ出力仕様に合わせて `power_in` から `power_out` にローカル修正 |
 
 #### ② フットプリントライブラリ（`kbd.pretty/*.kicad_mod`）および 3Dモデル
 
 | フットプリント名 (`kbd:`) | 対象部品 / 回路図シンボル | データ入手元（公開リポジトリ） | ローカルでの生成・改変内容 |
 | :--- | :--- | :--- | :--- |
-| **[`keyswitch_choc12_hotswap_1u.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/keyswitch_choc12_hotswap_1u.kicad_mod)** | Kailh Choc ソケット (`CPG135001S30`)<br>`Switch:SW_Push` | **foostan/kbd**<br>(`keyswitch_choc12_hotswap_1u.kicad_mod` ＋ `kailh_choc_socket.step`, [MIT License](../pcbs/common/kbd/LICENSE)) | `2026-10-22`: NPTH 穴の `solder_mask_margin`（`-0.2 mm`）統一、および 3D モデル参照パスを環境非依存の `${KIPRJMOD}/../common/kbd/...` に修正 |
+| **[`keyswitch_choc12_hotswap_1u.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/keyswitch_choc12_hotswap_1u.kicad_mod)** | Kailh Choc ソケット (`CPG135001S30`)<br>`Switch:SW_Push` | **foostan/kbd**<br>(`keyswitch_choc12_hotswap_1u.kicad_mod` ＋ `kailh_choc_socket.step`, [MIT License](../pcbs/common/kbd/LICENSE)) | `2026-10-22`: 旧 Corne V3 由来の不要な $\varnothing 0.40\,\text{mm}$ NPTH 穴（`(-5, -5.15)`）および個別の `(solder_mask_margin -0.2)` 指定を削除し、3D モデル参照パスを環境非依存の `${KIPRJMOD}/../common/kbd/...` に修正 |
 | **[`YS-SK6812MINI-E.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/YS-SK6812MINI-E.kicad_mod)** | 逆付け RGB LED (`YS-SK6812MINI-E`)<br>`kbd:YS-SK6812MINI-E` | **foostan/kbd**<br>(`YS-SK6812MINI-E.kicad_mod` ＋ `YS-SK6812MINI-E.step`, [MIT License](../pcbs/common/kbd/LICENSE)) | `2026-10-22`: パッド上のシルク重なり回避微調整、および 3D モデル参照パス（元データの `/Users/foostan/...`）を `${KIPRJMOD}/../common/kbd/...` に修正 |
 | **[`TS-1088R-02026.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/TS-1088R-02026.kicad_mod)** | SMD タクトSW (`TS-1088R-02026`)<br>`Switch:SW_Push` | **foostan/kbd**<br>(`TS-1088R-02026.kicad_mod` ＋ `TS-1088R-02026.step`, [MIT License](../pcbs/common/kbd/LICENSE)) | `2026-10-22`: 形状変更なし。3D モデル参照パスを環境非依存の `${KIPRJMOD}/../common/kbd/...` に修正 |
 | **[`USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod)** | USB-C 16ピン (`TYPE-C-31-M-13C`)<br>`Connector:USB_C_Receptacle_USB2.0_16P` | **foostan/kbd** の `TYPE-C-31-M-13C.kicad_mod`（＋ `TYPE-C-31-M-13C.step`, [MIT License](../pcbs/common/kbd/LICENSE)）が元データ | `2026-10-22`: 標準シンボル `USB_C_Receptacle_USB2.0_16P` のフィルタ（`USB*C*Receptacle*`）に適合するよう**ローカルでリネーム**し、シールド脚 `SH` のピン名整合・3D モデルパス修正を実施 |
 | **[`Jack_PJ-398A-5A_PJ-399B-6A.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/Jack_PJ-398A-5A_PJ-399B-6A.kicad_mod)** | 3.5mm ジャック (`PJ-398A-5A`)<br>`Connector_Audio:AudioJack3` | **foostan/kbd** の `PJ-398A-5A_PJ-399B-6A.kicad_mod`（＋ `PJ-398A-5A.step`, [MIT License](../pcbs/common/kbd/LICENSE)）が元データ | `2026-10-22`: 標準シンボル `AudioJack3` のフィルタ（`Jack*`）に適合するよう**ローカルでリネーム**し、パッド番号を `1/2/3` から `T/R/S` に変更・3D モデルパス修正を実施 |
-| **[`RotaryEncoder_Switch_CKW12.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/RotaryEncoder_Switch_CKW12.kicad_mod)** | ホイールエンコーダ (`CKW12`)<br>`Device:RotaryEncoder_Switch` | **kumamuk-git/CKW12** & **kumamuk-git/roBa**<br>(`https://github.com/kumamuk-git/CKW12` の `pcb/_footprint/CKW12.kicad_mod` ＋ `3dmodel/ckw12_*.stp` / `roBa` GPL-3.0) | `2026-10-22`: 標準シンボル `RotaryEncoder_Switch` のフィルタ（`RotaryEncoder*Switch*`）に適合するよう `CKW12.kicad_mod` から**ローカルでリネーム**し、3D モデル参照パスを `${KIPRJMOD}/../common/kbd/3dmodels/...` に設定 |
+| **[`RotaryEncoder_Switch_CKW12.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/RotaryEncoder_Switch_CKW12.kicad_mod)** | ホイールエンコーダ (`CKW12`)<br>`Device:RotaryEncoder_Switch` | **kumamuk-git/CKW12** & **kumamuk-git/roBa**<br>(`https://github.com/kumamuk-git/CKW12` の `pcb/_footprint/CKW12.kicad_mod` ＋ `3dmodel/ckw12_*.stp` / `roBa` GPL-3.0) | `2026-10-22`: 標準シンボル `RotaryEncoder_Switch` のフィルタ（`RotaryEncoder*Switch*`）に適合するよう `CKW12.kicad_mod` から**ローカルでリネーム**し、3D モデル参照パスを `${KIPRJMOD}/../common/kbd/3dmodels/...` に設定、さらに `CKW12_top` サブ基板厚（$0.50\,\text{mm}$）および向きに合わせて 3D オフセット `(0, 0, 0.5)`・回転 `(0, 0, 180)` に補正 |
 | **[`PMW3360DM-T2QU_16Pin.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/PMW3360DM-T2QU_16Pin.kicad_mod)** | 光学センサー (`PMW3360DM-T2QU`)<br>`PMW3360_PCB:PMW3360DM-T2QU` | **siderakb/pmw3360-pcb**<br>(`https://github.com/siderakb/pmw3360-pcb` の `PMW3360DM-T2QU_16Pin.kicad_mod`, [CERN-OHL-P v2](../LICENSE_CERN_OHL_P_V2)) | `2026-10-22`: 元データをベースに、KiCad 10.0 でスルーホールパッドの銅箔定義欠落エラーを防ぐため `(layers "*.Cu" "*.Mask")` をローカル補完 |
 
 > **【補足：`SW1` / `rSW1` のソケットフットプリント統一について】**
@@ -108,7 +108,7 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **トラックボールセンサー** | なし（親指4キー構成） | **PMW3360DM-T2QU** (`U1`) ＋ **1.8V LDO** (`U2`) | 右手親指部に配置（SPI接続） |
 | **SWD デバッグ端子** | `J4` (`1x03` 2.54mm スルーホール) | `rJ4` (`1x03` 2.54mm スルーホール) | `/SWCLK`, `GND`, `/SWD`。**未実装 (`DNP`)**・BOM/Pos/3Dモデル非表示 |
 | **左右判定ピン (`GPIO21`)** | **`+3V3` (HIGH) に直結** | **`GNDR` (LOW) に直結** | QMK `split.handedness.pin = GP21` による自動左右認識 |
-| **M2 スペーサー貫通穴** | **5 箇所**（外周5） | **8 箇所**（外周4 ＋ トラックボール周囲4） | すべて $\varnothing 3.60 \, \text{mm}$ 非スルーホール（NPTH相当のEdge.Cuts円穴） |
+| **M2 スペーサー貫通穴** | **5 箇所**（外周5） | **8 箇所**（外周4 ＋ トラックボール周囲4） | すべて **$\varnothing 3.25 \, \text{mm}$** 非スルーホール（NPTH相当のEdge.Cuts円穴） |
 
 ---
 
@@ -116,11 +116,11 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 
 ### 4.1 電源回路と左右間電源分離
 1. **USB 5V 入力と逆流防止**:
-   - USB Type-C コネクタ（`J1` / `rJ1`）の `VBUS` ピンからヒューズ・ショットキーバリアダイオード `D1` / `rD1` (`RB521S30T1G`) を経由して内部 5V ライン（RGB LED 電源および 3.3V LDO 入力）へ供給されます。
+   - USB Type-C コネクタ（`J1` / `rJ1`）の `VBUS` ピンから逆流防止ショットキーバリアダイオード **`ZD1` / `rZD1` (`RB521S30T1G`)** を経由して内部 5V ライン（`+5V` / `+5VR`：RGB LED 電源、3.3V LDO 入力、および TRRS ジャック経由の対向基板電源）へ供給されます（なお `D1` / `rD1` [`1N4148WT`] は `QSPI_SS` の BOOT スイッチ回路に使用されます）。
 2. **VBUS 接続検出 (`/USB_VBUS_PIN`)**:
-   - USB `VBUS` を `10kΩ` 抵抗（`R5`/`R6`、右は `rR5`/`rR6`）で分圧し、`RP2040` の Pin 16 (`GPIO13` / `/USB_VBUS_PIN`) に入力することで、どちらの基板に USB ケーブルが挿さっているか（マスター/スレーブ判定）を検出します。
-3. **3.3V ロジック電源 (`+3V3` / `+3V3R`)**:
-   - LDO `U2` / `rU2` (`NCP1117LPST33T3G`) により 3.3V を生成し、`RP2040` の `IOVDD` / `USB_VDD` / `ADC_AVDD`、QSPI フラッシュ、および TRRS コネクタ経由の対向基板へ供給します。
+   - USB `VBUS` を **`R8` (`5.6kΩ`) および `R9` (`10kΩ`)**（右手は `rR8` / `rR9`）で分圧し、`RP2040` の Pin 16 (`GPIO13` / `/USB_VBUS_PIN`) に入力することで、どちらの基板に USB ケーブルが挿さっているか（マスター/スレーブ判定）を検出します。
+3. **3.3V ロジック電源 (`+3V3` / `+3V3R`) と左右間 TRRS 接続 (`J2` / `rJ2`)**:
+   - TRRS/TRS ジャック `J2` / `rJ2`（`PJ-398A-5A`）は **`+5V` (`+5VR`)**、`GND` (`GNDR`)、およびシリアル通信線 `/TX` の 3本を左右基板間で接続し、各基板上の LDO `U2` / `rU2` (`NCP1117LPST33T3G`) が `+5V` (`+5VR`) からそれぞれのローカル `+3V3` / `+3V3R` を生成して `RP2040` の `IOVDD` / `USB_VDD` / `ADC_AVDD`、QSPI フラッシュ、および右手 PMW3360 用 1.8V LDO `U2` (`TLV74318PDBVR`) へ供給します。
 
 ### 4.2 左右判定ピン (`RP2040` Pin 32 `GPIO21`) の設計と ERC 警告の扱い
 * **設計意図**:
@@ -219,17 +219,17 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 
 ## 6. 固定穴・機械的インターフェース仕様 (Mechanical Mounting & Holes)
 
-ケース設計仕様書（[case_spec.md](./case_spec.md) 第2.3節）と完全一致する、M2 5.50mm メスメススペーサー貫通用の円穴（`Edge.Cuts` レイヤー、直径 **$\varnothing 3.60 \, \text{mm}$**）の配置定義です。
+ケース設計仕様書（[case_spec.md](./case_spec.md) 第2.3節）と完全一致する、M2 メスメススペーサー（外径 $\varnothing 3.0\,\text{mm}$）貫通用の円穴（`Edge.Cuts` レイヤー、直径 **$\varnothing 3.25 \, \text{mm}$**）の配置定義です。
 
 ### 6.1 左手 PCB (`curcur40-left.kicad_pcb`) — 計5箇所
 
 | 穴番号 | 配置箇所 | PCB座標 $(x_{\text{pcb}}, y_{\text{pcb}})$ | 穴径 (`Edge.Cuts`) | 備考 |
 | :---: | :--- | :---: | :---: | :--- |
-| **L1** | 内側上（USB-C横） | $(0.0000, -15.0000)$ | $\varnothing 3.60 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **L2** | 内側下（TRRS上） | $(0.0000, 25.0000)$ | $\varnothing 3.60 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **L3** | 小指側上 | $(-109.5375, -20.0000)$ | $\varnothing 3.60 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **L4** | 小指側下 | $(-98.0000, 38.0000)$ | $\varnothing 3.60 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **L5** | 親指側下 | $(-21.5250, 63.6875)$ | $\varnothing 3.60 \, \text{mm}$ | 外周スペーサー貫通穴（右手 `TB4` と左右対称） |
+| **L1** | 内側上（USB-C横） | $(0.0000, -15.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
+| **L2** | 内側下（TRRS上） | $(0.0000, 25.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
+| **L3** | 小指側上 | $(-109.5375, -20.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
+| **L4** | 小指側下 | $(-98.0000, 38.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
+| **L5** | 親指側下 | $(-21.5250, 63.6875)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴（右手 `TB4` と左右対称） |
 
 ### 6.2 右手 PCB (`curcur40-right.kicad_pcb`) — 計8箇所
 
@@ -237,14 +237,14 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 
 | 穴番号 | 配置箇所 | PCB座標 $(x_{\text{pcb}}, y_{\text{pcb}})$ | 穴径 (`Edge.Cuts`) | 備考 |
 | :---: | :--- | :---: | :---: | :--- |
-| **R1** | 外周・内側上（USB-C横） | $(0.0000, -15.0000)$ | $\varnothing 3.60 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **R2** | 外周・内側下（TRRS上） | $(0.0000, 25.0000)$ | $\varnothing 3.60 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **R3** | 外周・小指側上 | $(109.5375, -20.0000)$ | $\varnothing 3.60 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **R4** | 外周・小指側下 | $(98.0000, 38.0000)$ | $\varnothing 3.60 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **TB1** | トラックボール北西 (NW) | $(-2.4750, 41.0875)$ | $\varnothing 3.60 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, -11.3)$ |
-| **TB2** | トラックボール北東 (NE) | $(21.5250, 41.0875)$ | $\varnothing 3.60 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, -11.3)$ |
-| **TB3** | トラックボール南西 (SW) | $(-2.4750, 63.6875)$ | $\varnothing 3.60 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, +11.3)$ |
-| **TB4** | トラックボール南東 (SE) | $(21.5250, 63.6875)$ | $\varnothing 3.60 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, +11.3)$ |
+| **R1** | 外周・内側上（USB-C横） | $(0.0000, -15.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
+| **R2** | 外周・内側下（TRRS上） | $(0.0000, 25.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
+| **R3** | 外周・小指側上 | $(109.5375, -20.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
+| **R4** | 外周・小指側下 | $(98.0000, 38.0000)$ | $\varnothing 3.25 \, \text{mm}$ | 外周スペーサー貫通穴 |
+| **TB1** | トラックボール北西 (NW) | $(-2.4750, 41.0875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, -11.3)$ |
+| **TB2** | トラックボール北東 (NE) | $(21.5250, 41.0875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, -11.3)$ |
+| **TB3** | トラックボール南西 (SW) | $(-2.4750, 63.6875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, +11.3)$ |
+| **TB4** | トラックボール南東 (SE) | $(21.5250, 63.6875)$ | $\varnothing 3.25 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, +11.3)$ |
 
 ---
 
