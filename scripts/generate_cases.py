@@ -113,7 +113,7 @@ def get_case_hole_coords(is_right=True):
             (   0.0000,  25.0000),  # L2
             (-109.5375, -20.0000),  # L3
             ( -98.0000,  38.0000),  # L4
-            ( -23.8125,  64.0000),  # L5
+            ( -21.5250,  63.6875),  # L5 (mirror-symmetric to TB4 SE)
         ]
         return [(x - 14.2875, -(y + 57.1500)) for x, y in pcb_holes]
 

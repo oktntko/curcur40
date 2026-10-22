@@ -85,7 +85,7 @@ PCB座標系 $(x_{\text{pcb}}, y_{\text{pcb}})$ からケース・アセンブ�
 | **L2** | 内側下（TRRS上） | $(0.0000, 25.0000)$ | $(-14.2875, -82.1500)$ | $\varnothing 2.40$ | $\varnothing 3.60$ | $\varnothing 2.40$ / $\varnothing 4.60 \times 0.90$ |
 | **L3** | 小指側上 | $(-109.5375, -20.0000)$ | $(-123.8250, -37.1500)$ | $\varnothing 2.40$ | $\varnothing 3.60$ | $\varnothing 2.40$ / $\varnothing 4.60 \times 0.90$ |
 | **L4** | 小指側下 | $(-98.0000, 38.0000)$ | $(-112.2875, -95.1500)$ | $\varnothing 2.40$ | $\varnothing 3.60$ | $\varnothing 2.40$ / $\varnothing 4.60 \times 0.90$ |
-| **L5** | 親指側下 | $(-23.8125, 64.0000)$ | $(-38.1000, -121.1500)$ | $\varnothing 2.40$ | $\varnothing 3.60$ | $\varnothing 2.40$ / $\varnothing 4.60 \times 0.90$ |
+| **L5** | 親指側下（右 `TB4` と左右対称） | $(-21.5250, 63.6875)$ | $(-35.8125, -120.8375)$ | $\varnothing 2.40$ | $\varnothing 3.60$ | $\varnothing 2.40$ / $\varnothing 4.60 \times 0.90$ |
 
 #### ② 右手（計8箇所：外周4箇所 ＋ トラックボールカップ周囲4箇所）
 | 番号 | 配置箇所 | PCB座標 $(x_{\text{pcb}}, y_{\text{pcb}})$ | STEP座標 $(X_{\text{step}}, Y_{\text{step}})$ | トッププレート / カップ穴 | メインPCB穴 | ケース底面穴 / ザグリ |
