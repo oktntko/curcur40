@@ -71,3 +71,25 @@
 3. **13箇所 M2 スペーサー締結構造と干渉ゼロ検証**:
    - 左手外周 5箇所 ＋ 右手外周 4箇所 ＝ 計 9箇所を M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、基板 $\varnothing 3.25\text{ mm}$ 貫通穴を通ってトッププレート下面 $Z = -3.60\text{ mm}$ を直接支持）、トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`）を M2 6.0〜7.0mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、基板 $\varnothing 3.25\text{ mm}$ 穴を貫通してカップ耳 $\varnothing 3.60\text{ mm}$ 穴内部へ進入）と上下 M2 × 4.0mm ネジ（計 26本、ケース底面ザグリ $\varnothing 4.60 \times 0.90\text{ mm}$、トッププレート $\varnothing 2.40\text{ mm}$ ストレート穴）で締結する仕様を維持すること。
    - モデル更新時は `scripts/generate_full_assembly.py` を実行し、全パーツ間の干渉体積（`overlap_volume`）が `0.00000000 mm³` であることを確認すること。
+
+---
+
+## 5. AI 監査・レビュー時の誤認防止ルール（確定設計仕様の根拠）
+
+過去に AI 監査で誤認（フォールスポジティブ）が発生した以下の項目については、実部品・データシート・上流 OSS に基づく確定仕様であるため、再度の誤指摘や誤った改変を行わないこと：
+
+1. **`PMW3360` / `LM19-LSI` の基板角穴（$16.90 \times 8.70\text{ mm}$）とガイドポスト位置**:
+   - スクリプト内のプロシージャル生成モデルではなく、常に実フットプリント [`PMW3360DM-T2QU_16Pin.kicad_mod`](pcbs/common/kbd/kicad-footprints/kbd.pretty/PMW3360DM-T2QU_16Pin.kicad_mod)（[`monkeypad/pmw3360-breakout`](https://github.com/monkeypad/pmw3360-breakout) / [`siderakb/pmw3360-pcb`](https://github.com/siderakb/pmw3360-pcb) 準拠）および実基板 `curcur40-right.kicad_pcb` を正とする。
+   - 実部品の丸ガイドポスト穴は非対称配置（センサー中心基準で $(-7.10, +3.30)\text{ mm}$ および $(+6.70, -3.40)\text{ mm}$、穴径 $\varnothing 1.70\text{ mm}$）であり、$16.90 \times 8.70\text{ mm}$（$\pm 8.45 \times \pm 4.35\text{ mm}$）の基板角穴の内側に余裕をもって収まる。
+2. **`CKW12` ロータリーエンコーダ（`rEXSW1`）の実装構造・ネジ穴・3Dモデル回転角**:
+   - **メイン基板にネジ穴がなくて正常**: 公式 [`kumamuk-git/CKW12`](https://github.com/kumamuk-git/CKW12) キットは、付属の専用サブ基板 `CKW12_top`（厚さ約 $0.50\text{ mm}$）の裏側から M2 × 3.5mm ネジ 4本で 3Dプリントハウジング四隅を固定し、`CKW12_top` から下に出たコンスルー 5ピン（`2.54 mm` ピッチ）をメイン基板 `rEXSW1` の 5穴（`A, B, C, S1, S2`）に挿して実装する構造である。メイン基板自体に M2 ネジ穴は不要。
+   - **3Dモデルの回転角を 90° 曲げないこと**: `CKW12` のホイールは人差し指で**上下方向（南北方向）に転がす向き**が正しい。`rEXSW1` のスルーホール 5ピンが北側3ピン・南側2ピンに並んでいるのは `CKW12_top` サブ基板内の引き回しによるものであり、フットプリント [`RotaryEncoder_Switch_CKW12.kicad_mod`](pcbs/common/kbd/kicad-footprints/kbd.pretty/RotaryEncoder_Switch_CKW12.kicad_mod) の `(rotate (xyz 0 0 90))`（および [`scripts/generate_full_assembly.py`](scripts/generate_full_assembly.py) の `(0, 0, -90)`）が正しい向きである。
+3. **トラックボールカップ固定耳（`TB1`〜`TB4`）の穴径 $\varnothing 3.60\text{ mm}$ とスペーサー貫通構造**:
+   - ケース内底面（$Z = -9.10\text{ mm}$）からメイン基板下面（$Z = -5.80\text{ mm}$）までの空間は **$3.30\text{ mm}$**、メイン基板厚は **$1.60\text{ mm}$** であり、メイン基板上面（`F.Cu`, $Z = -4.20\text{ mm}$）までの高さは **$4.90\text{ mm}$** である。
+   - したがって、`TB1`〜`TB4` のスペーサー（外径 $\varnothing 3.0\text{ mm}$、長さ $6.0\sim 7.0\text{ mm}$）はメイン基板（$\varnothing 3.25\text{ mm}$ 穴）を貫通して、その上に乗るカップ固定耳（厚さ $2.40\text{ mm}$、$Z = -4.20 \sim -1.80\text{ mm}$）の **$\varnothing 3.60\text{ mm}$ 穴の内部へ下から進入する**。カップ耳の穴径が $\varnothing 2.40\text{ mm}$ ではなく $\varnothing 3.60\text{ mm}$ なのはこのスペーサー進入を受けるための正当な設計である。
+4. **外周 9箇所の $5.50\text{ mm}$ スペーサー・メイン基板保持・ケース側壁高さ $9.10\text{ mm}$**:
+   - 外周 9箇所（`L1`〜`L5`, `R1`〜`R4`）では、ケース内底面（$Z = -9.10\text{ mm}$）から立った $5.50\text{ mm}$ スペーサー（$3.30 + 1.60 + 0.60 = 5.50\text{ mm}$）がメイン基板の $\varnothing 3.25\text{ mm}$ 穴を通過してトッププレート下面（$Z = -3.60\text{ mm}$）を直接支持する（空中ギャップは存在しない）。メイン基板はトッププレートに嵌合したキースイッチ（左21個・右19個）とホットスワップソケットにより一体保持される。
+   - ケース側壁内深さ $9.10\text{ mm}$（全高 $12.30\text{ mm}$、トッププレート天面 $Z = -2.00\text{ mm}$ に対してリム天面 $Z = 0.00\text{ mm}$ が $2.00\text{ mm}$ 高い形状）およびケース底面フラット構造（`BOOT`/`RESET` 用の底面穴を設けない仕様）は確定仕様であり、変更しない。
+5. **Kailh Choc V2 スイッチのプレート厚（$1.60\text{ mm}$）・開口（$14.0 \times 14.0\text{ mm}$）と旧 $\varnothing 0.40\text{ mm}$ 穴**:
+   - Kailh Choc V2（`CPG1353`）のラッチ溝高さは $1.65\text{ mm}$、ハウジング幅は $13.80 \times 13.80\text{ mm}$ であり、板厚 $1.60\text{ mm}$ の FR-4 トッププレートおよび $14.0 \times 14.0\text{ mm}$ 開口（Corne V4 準拠）に適合する。
+   - `keyswitch_choc12_hotswap_1u` の `(-5.0, -5.15)` にあった $\varnothing 0.40\text{ mm}$ NPTH 穴は、Corne V3 のスイッチ回り止め樹脂ピン穴（$1.5 \times 2.0\text{ mm}$）を Corne V4 で配線通過のために縮小した残骸であったため削除済み。

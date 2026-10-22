@@ -158,13 +158,16 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
   * パターン・フットプリントは基板上に残しつつ、回路図および PCB の双方で **未実装（`DNP`）・部品表（BOM）除外・実装座標（CPL/Pos）除外・3Dモデル非表示** に設定しています。
 
 ### 4.4 右手専用：ロータリーエンコーダ `CKW12` (`rEXSW1`)
-* 遊舎工房 CKW12（薄型ホイールエンコーダ＋プッシュスイッチ）を右手内側上部 `(14.2875, 0.0)` の表面（`F.Cu`）に配置。
+* 遊舎工房 / kumamuk 氏設計の **CKW12**（薄型ホイールエンコーダ＋プッシュスイッチ）を右手内側上部 `(14.2875, 0.0)` の表面（`F.Cu`）に配置。
 * **ピン接続**:
   * **Pad A**: `/RE0A` → `rU1` Pin 36 (`GPIO24`)
   * **Pad B**: `/REB` → `rU1` Pin 9 (`GPIO7`)
   * **Pad C**: `GNDR`
   * **Pad S1**: `GNDR`
   * **Pad S2**: `/KEYEX1` → `rU1` Pin 37 (`GPIO25`、マトリクス座標 `[4, 6]` のプッシュスイッチとして動作)
+* **実装構造と 3D モデルの向き（AI 監査時の誤認防止ルール）**:
+  1. **メイン基板に M2 ネジ穴がなくて正常**: 公式 [`kumamuk-git/CKW12`](https://github.com/kumamuk-git/CKW12) キットは、付属の専用サブ基板 **`CKW12_top`（板厚約 $0.50\,\text{mm}$）** の裏側から **M2 × 3.5mm ネジ 4本** で 3Dプリントハウジング（`ckw12_housing`）四隅を固定し、その `CKW12_top` から下へ突き出た **コンスルー 5ピン（2.54mm ピッチ）** をメイン基板 `rEXSW1` の 5つのスルーホール（`A, B, C, S1, S2`）に挿して実装する構造です。メイン基板自体に M2 ネジ穴を設ける必要はありません。
+  2. **3D モデルの回転角 `(rotate (xyz 0 0 90))` を変更しないこと**: `CKW12` は人差し指で**上下方向（南北方向）に転がすホイール**です。メイン基板上の 5ピンが北側3ピン（`A, B, C`）・南側2ピン（`S1, S2`）に並んでいるのは `CKW12_top` サブ基板内の配線引き回しによるものであり、フットプリント [`RotaryEncoder_Switch_CKW12.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/RotaryEncoder_Switch_CKW12.kicad_mod) の 3D モデル設定 `(rotate (xyz 0 0 90))`（および [`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py) の `Rotation(0, 0, -90)`）が正しい向きです。
 
 ### 4.5 SWD デバッグ用スルーホール端子 (`J4` / `rJ4`)
 * ベース基板（Corne Chocolate v4）由来の RP2040 SWD デバッグ端子（Pad 1: `/SWCLK`, Pad 2: `GND`/`GNDR`, Pad 3: `/SWD`）として、小指側外周付近（左 `J4`: `(-106.8675, 22.37625)`、右 `rJ4`: `(111.8475, 22.43125)`）に `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` フットプリントが配置されています。
