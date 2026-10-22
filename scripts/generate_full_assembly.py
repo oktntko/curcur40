@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Generate curcur40 Full Assembly STEP (cases/curcur40/assembly-full.step)
-and verify zero interference across all components per docs/curcur40/case_spec.md:
+Generate curcur40 Full Assembly STEP (cases/assembly-full.step)
+and verify zero interference across all components per docs/case_spec.md:
 - Left & Right 3D-printed Tray Bottom Cases (Z = -12.30 to 0.00 mm, inner floor Z = -9.10 mm)
 - Left & Right Main PCBs (Z = -5.20 to -3.60 mm, with Ø 3.60 mm spacer through-holes & PMW3360 optical cutout)
 - Left & Right FR-4 Top Plates (Z = -1.60 to 0.00 mm, with Ø 2.40 mm screw holes & switch cutouts)
@@ -19,7 +19,7 @@ from cadgen import build123d as bd
 from cadgen.geometry import overlap_volume, is_sound
 
 WORKSPACE = Path(r"c:\Users\oktnt\workspace\curcur40")
-CASES_DIR = WORKSPACE / "cases" / "curcur40"
+CASES_DIR = WORKSPACE / "cases"
 
 LEFT_SWITCHES = [
     (-109.5375, -7.14375),

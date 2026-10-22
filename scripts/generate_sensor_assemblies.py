@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Generate PMW3360 + LM19-LSI optical sensor assemblies for curcur40:
-1. cases/curcur40/pmw3360-lens-pcb-assembly.step
-2. cases/curcur40/trackball-sensor-assembly.step
+1. cases/pmw3360-lens-pcb-assembly.step
+2. cases/trackball-sensor-assembly.step
 
 Includes the GUI-selectable lens-side optical distance reference point
 (`Lens_Optical_Ref_Point`) at (0.00, 0.00, +3.40 mm), exactly 2.40 mm below
@@ -13,7 +13,7 @@ from cadgen import build123d as bd
 from cadgen.geometry import overlap_volume, closest_points
 
 WORKSPACE = Path(r"c:\Users\oktnt\workspace\curcur40")
-CASES_DIR = WORKSPACE / "cases" / "curcur40"
+CASES_DIR = WORKSPACE / "cases"
 OUT_SENSOR_PCB_STEP = CASES_DIR / "pmw3360-lens-pcb-assembly.step"
 OUT_TRACKBALL_SENSOR_STEP = CASES_DIR / "trackball-sensor-assembly.step"
 

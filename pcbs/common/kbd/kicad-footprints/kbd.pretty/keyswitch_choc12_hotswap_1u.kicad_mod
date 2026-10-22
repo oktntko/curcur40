@@ -255,7 +255,7 @@
 		(uuid "abacb15b-9f76-4d97-afb8-c0f6608fd870")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/../../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
+	(model "${KIPRJMOD}/../common/kbd/kicad-packages3D/kbd.3dshapes/kailh_choc_socket.step"
 		(offset
 			(xyz 0 0 1.6)
 		)

@@ -302,7 +302,7 @@
 		(uuid "d5d9f2d4-6ccb-4151-8d6f-ce1214fe2e57")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/../../common/kbd/3dmodels/ckw12_housing.stp"
+	(model "${KIPRJMOD}/../common/kbd/3dmodels/ckw12_housing.stp"
 		(offset
 			(xyz 0 0 0)
 		)
@@ -313,7 +313,7 @@
 			(xyz 0 0 90)
 		)
 	)
-	(model "${KIPRJMOD}/../../common/kbd/3dmodels/ckw12_wheel.stp"
+	(model "${KIPRJMOD}/../common/kbd/3dmodels/ckw12_wheel.stp"
 		(offset
 			(xyz 0 0 0)
 		)
@@ -324,7 +324,7 @@
 			(xyz 0 0 90)
 		)
 	)
-	(model "${KIPRJMOD}/../../common/kbd/3dmodels/ckw12_stem.stp"
+	(model "${KIPRJMOD}/../common/kbd/3dmodels/ckw12_stem.stp"
 		(offset
 			(xyz 0 0 0)
 		)

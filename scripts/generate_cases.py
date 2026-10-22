@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Generate curcur40 3D-printed Tray Bottom Cases (cases/curcur40/left.step, left.stl, right.step, right.stl).
-Strictly adheres to docs/curcur40/case_spec.md:
+Generate curcur40 3D-printed Tray Bottom Cases (cases/left.step, left.stl, right.step, right.stl).
+Strictly adheres to docs/case_spec.md:
 - Vertical Stackup (Section 1):
     - Top Plate (FR-4 1.60 mm): Z = 0.00 to -1.60 mm
     - Switch Gap (2.00 mm): Z = -1.60 to -3.60 mm
@@ -23,7 +23,7 @@ from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import is_sound
 
-OUT_DIR = Path(r"c:\Users\oktnt\workspace\curcur40\cases\curcur40")
+OUT_DIR = Path(r"c:\Users\oktnt\workspace\curcur40\cases")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -89,7 +89,7 @@ def make_filleted_sketch(pts_and_radii):
 def get_case_hole_coords(is_right=True):
     """
     Returns STEP-coordinate (X_step, Y_step) centers for all M2 mounting holes
-    per docs/curcur40/case_spec.md Section 2.3.
+    per docs/case_spec.md Section 2.3.
     """
     if is_right:
         # 4 perimeter holes + 4 trackball cup holes = 8 holes

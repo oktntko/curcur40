@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Export JLCPCB PCB / PCBA production files for curcur40:
-- Left Main PCB:  pcbs/curcur40/left/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-left.*
-- Right Main PCB: pcbs/curcur40/right/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-right.*
-- Top Plates:     plates/curcur40/pcb/jlcpcb/production_files/GERBER-plate-top-{left,right}.zip
+- Left Main PCB:  pcbs/left/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-left.*
+- Right Main PCB: pcbs/right/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-right.*
+- Top Plates:     plates/pcb/jlcpcb/production_files/GERBER-plate-top-{left,right}.zip
 """
 import os
 import csv
@@ -192,7 +192,7 @@ def export_main_pcb(pcb_path, proj_name, is_right=False):
 
 
 def export_top_plates():
-    plate_dir = r"plates\curcur40\pcb"
+    plate_dir = r"plates\pcb"
     out_dir = os.path.join(plate_dir, "jlcpcb", "production_files")
     os.makedirs(out_dir, exist_ok=True)
     for name in ("plate-top-left", "plate-top-right"):
@@ -204,12 +204,12 @@ def export_top_plates():
 
 if __name__ == "__main__":
     export_main_pcb(
-        "pcbs/curcur40/right/curcur40-right.kicad_pcb",
+        "pcbs/right/curcur40-right.kicad_pcb",
         "curcur40-right",
         is_right=True,
     )
     export_main_pcb(
-        "pcbs/curcur40/left/curcur40-left.kicad_pcb",
+        "pcbs/left/curcur40-left.kicad_pcb",
         "curcur40-left",
         is_right=False,
     )
