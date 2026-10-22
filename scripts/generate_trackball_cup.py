@@ -189,15 +189,19 @@ def build_trackball_cup() -> bd.Solid:
 
 def build_trackball_assembly() -> bd.Compound:
     """
-    Assembly of Trackball Cup with 25mm Trackball centered at (0, 0, 18.30 mm).
-    Allows visual inspection of claw retention, equator coverage, and clearances.
+    Assembly of Trackball Cup with 25mm Trackball centered at (0, 0, 18.30 mm)
+    and Lens_Optical_Ref_Point at (0, 0, +3.40 mm) (exact 2.40 mm optical tracking distance).
     """
     cup = build_trackball_cup()
     ball = bd.Sphere(radius=12.50).moved(bd.Location((0, 0, 18.30)))
     ball_solid = ball.solids()[0]
     ball_solid.label = "Trackball_25mm"
-    
-    assembly = bd.Compound([cup, ball_solid])
+
+    ref_point = bd.Pos(0.0, 0.0, 3.40) * bd.Circle(0.35).face()
+    ref_point.label = "Lens_Optical_Ref_Point"
+
+    assembly = bd.Compound(children=[cup, ball_solid, ref_point])
+    assembly.label = "Trackball_Cup_With_Ball"
     return assembly
 
 if __name__ == "__main__":

@@ -3490,19 +3490,7 @@
 				)
 			)
 		)
-		(property "dnp" ""
-			(at 0 0 0)
-			(layer "B.SilkS")
-			(hide yes)
-			(uuid "696a7005-a143-4930-93ce-21fcc69bb45f")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(attr smd dnp)
+		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.254724 -0.5225)
@@ -4361,12 +4349,12 @@
 			)
 		)
 	)
-	(footprint "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels"
+	(footprint "Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels"
 		(layer "B.Cu")
 		(uuid "315a45c1-e273-4540-8517-7b4802a4df39")
 		(at 17.775 50.1457 -90)
-		(descr "SMD Solder 3-pad Jumper, 1x1.5mm rounded Pads, 0.3mm gap, open, labeled with numbers")
-		(tags "solder jumper open")
+		(descr "SMD Solder 3-pad Jumper, 1x1.5mm rounded Pads, 0.3mm gap, pads 1-2 bridged with 1 copper strip, labeled with numbers")
+		(tags "net tie solder jumper bridged")
 		(property "Reference" "JP1"
 			(at 0 2 90)
 			(layer "B.SilkS")
@@ -4380,7 +4368,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "SolderJumper_3_Open"
+		(property "Value" "SolderJumper_3_Bridged12"
 			(at 0 -1.9 90)
 			(layer "B.Fab")
 			(hide yes)
@@ -4407,7 +4395,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Description" "Solder Jumper, 3-pole, open"
+		(property "Description" "3-pole Solder Jumper, pins 1+2 closed/bridged"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -4459,7 +4447,20 @@
 		)
 		(zone_connect 1)
 		(attr exclude_from_pos_files exclude_from_bom allow_soldermask_bridges)
+		(net_tie_pad_groups "1, 2")
 		(duplicate_pad_numbers_are_jumpers no)
+		(fp_poly
+			(pts
+				(xy -0.9 0.3) (xy -0.4 0.3) (xy -0.4 -0.3) (xy -0.9 -0.3)
+			)
+			(stroke
+				(width 0)
+				(type solid)
+			)
+			(fill yes)
+			(layer "B.Cu")
+			(uuid "b9a4074d-bff7-4d03-bad0-2d3535c86672")
+		)
 		(fp_rect
 			(start -0.75 0.75)
 			(end 0.75 -0.75)
@@ -4631,6 +4632,13 @@
 				(anchor rect)
 			)
 			(primitives
+				(gr_poly
+					(pts
+						(xy 0.55 -0.75) (xy 0 -0.75) (xy 0 0.75) (xy 0.55 0.75)
+					)
+					(width 0)
+					(fill yes)
+				)
 				(gr_circle
 					(center 0 -0.25)
 					(end 0.5 -0.25)
@@ -4640,13 +4648,6 @@
 				(gr_circle
 					(center 0 0.25)
 					(end 0.5 0.25)
-					(width 0)
-					(fill yes)
-				)
-				(gr_poly
-					(pts
-						(xy 0.55 -0.75) (xy 0 -0.75) (xy 0 0.75) (xy 0.55 0.75)
-					)
 					(width 0)
 					(fill yes)
 				)
@@ -10338,7 +10339,7 @@
 				)
 			)
 		)
-		(attr smd dnp)
+		(attr smd exclude_from_pos_files exclude_from_bom dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.146267 0.51)
@@ -10411,17 +10412,6 @@
 			(uuid "d5d020d2-666b-4a91-aa79-ecd4106c1602")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
 	)
 	(footprint "kbd:keyswitch_choc12_hotswap_1u"
 		(layer "B.Cu")
@@ -11603,7 +11593,7 @@
 				)
 			)
 		)
-		(attr smd dnp)
+		(attr smd exclude_from_pos_files exclude_from_bom dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.254724 -0.5225)
@@ -11676,17 +11666,6 @@
 			(uuid "f67f1ffc-34f4-4da9-83f4-8f01b5c5c1b9")
 		)
 		(embedded_fonts no)
-		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
 	)
 	(footprint "kbd:keyswitch_choc12_hotswap_1u"
 		(layer "B.Cu")

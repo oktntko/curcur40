@@ -253,6 +253,8 @@ def write_laser_svg(svg_path, items, width_mm, height_mm):
 
 
 def main():
+    import tempfile
+
     out_pcb_dir = r"c:\Users\oktnt\workspace\curcur40\plates\curcur40\pcb"
     out_svg_dir = r"c:\Users\oktnt\workspace\curcur40\plates\curcur40\svg"
     os.makedirs(out_pcb_dir, exist_ok=True)
@@ -271,47 +273,25 @@ def main():
     p_top_right = os.path.join(out_pcb_dir, "plate-top-right.kicad_pcb")
     write_plate_kicad_pcb(p_top_right, right_outer_notched, right_cutouts, RIGHT_MOUNTING_HOLES)
 
-    # 3. Left Bottom Plate
-    p_bot_left = os.path.join(out_pcb_dir, "plate-bottom-left.kicad_pcb")
-    write_plate_kicad_pcb(p_bot_left, left_outer, [], LEFT_MOUNTING_HOLES)
-    p_bot_univ = os.path.join(out_pcb_dir, "plate-bottom.kicad_pcb")
-    write_plate_kicad_pcb(p_bot_univ, left_outer, [], LEFT_MOUNTING_HOLES)
+    # Verify DRC on top plate PCBs using temporary directory
+    with tempfile.TemporaryDirectory() as tmpdir:
+        for name, pcb_path in [
+            ("plate-top-left", p_top_left),
+            ("plate-top-right", p_top_right),
+        ]:
+            rpt = os.path.join(tmpdir, f"drc_{name}.rpt")
+            subprocess.run([KICAD_CLI, "pcb", "drc", "-o", rpt, pcb_path], check=True)
+            print(f"Verified DRC for {name}.")
 
-    # 4. Right Bottom Plate (4 perimeter holes + 4 trackball holes + optical window)
-    right_outer_full = round_polygon_with_fillets(get_right_outer_pts(notched_trackball=False))
-    right_bot_cutouts = [make_rect_cutout(9.5250, 52.3875, 8.0, 12.0, 1.5)]
-    right_bot_holes = RIGHT_MOUNTING_HOLES + [
-        (-2.4750, 41.0875, 1.20),
-        (21.5250, 41.0875, 1.20),
-        (-2.4750, 63.6875, 1.20),
-        (21.5250, 63.6875, 1.20),
-    ]
-    p_bot_right = os.path.join(out_pcb_dir, "plate-bottom-right.kicad_pcb")
-    write_plate_kicad_pcb(p_bot_right, right_outer_full, right_bot_cutouts, right_bot_holes)
-
-    # Verify DRC on all plate PCBs
-    for name, pcb_path in [
-        ("plate-top-left", p_top_left),
-        ("plate-top-right", p_top_right),
-        ("plate-bottom-left", p_bot_left),
-        ("plate-bottom-right", p_bot_right),
-        ("plate-bottom", p_bot_univ),
-    ]:
-        rpt = os.path.join("scratch", f"drc_{name}.rpt")
-        subprocess.run([KICAD_CLI, "pcb", "drc", "-o", rpt, pcb_path], check=True)
-        print(f"Verified DRC for {name}.")
-
-    # 5. SVGs
+    # 3. SVGs (Top Plates & Switch Foam only)
     write_laser_svg(
         os.path.join(out_svg_dir, "plate-curcur40.svg"),
         [
-            (left_outer, left_cutouts, LEFT_MOUNTING_HOLES, 130.0, 30.0),
-            (right_outer_notched, right_cutouts, RIGHT_MOUNTING_HOLES, 140.0, 30.0),
-            (left_outer, [], LEFT_MOUNTING_HOLES, 130.0, 130.0),
-            (right_outer_full, right_bot_cutouts, right_bot_holes, 140.0, 130.0),
+            (left_outer, left_cutouts, LEFT_MOUNTING_HOLES, 130.0, 35.0),
+            (right_outer_notched, right_cutouts, RIGHT_MOUNTING_HOLES, 140.0, 35.0),
         ],
         width_mm=280.0,
-        height_mm=210.0,
+        height_mm=120.0,
     )
 
     left_foam_holes = [(x, y, 2.0) for (x, y, _) in LEFT_MOUNTING_HOLES]
@@ -325,8 +305,9 @@ def main():
         width_mm=280.0,
         height_mm=120.0,
     )
-    print("All curcur40 plates and SVGs updated successfully!")
+    print("All curcur40 top plates and SVGs updated successfully!")
 
 
 if __name__ == "__main__":
     main()
+
