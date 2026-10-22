@@ -447,7 +447,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 180)
+				(xyz 0 0 90)
 			)
 		)
 		(model "${KIPRJMOD}/../common/kbd/3dmodels/ckw12_wheel.stp"
@@ -458,7 +458,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 180)
+				(xyz 0 0 90)
 			)
 		)
 		(model "${KIPRJMOD}/../common/kbd/3dmodels/ckw12_stem.stp"
@@ -469,7 +469,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 180)
+				(xyz 0 0 90)
 			)
 		)
 	)
