@@ -6877,6 +6877,158 @@
 		(uuid "4f78f295-0767-4162-a2f8-2ac057230593")
 	)
 	(junction
+		(at 218.44 190.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d623ce48-9f8b-4069-8573-701ef0d34a01")
+	)
+	(junction
+		(at 215.9 209.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "56e60534-d277-4858-9896-7790cb6bedcf")
+	)
+	(junction
+		(at 215.9 228.6)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6ba39675-d3ac-4188-9017-5712734e8b12")
+	)
+	(junction
+		(at 215.9 246.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e23918c2-ccb6-4239-bc19-d77e3b2d76f9")
+	)
+	(junction
+		(at 231.14 209.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "aa3a5115-f55e-4e77-ae89-e94a1f95dad1")
+	)
+	(junction
+		(at 231.14 228.6)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b674abdf-9bb8-4b9e-bb92-e1e5b0f28ae7")
+	)
+	(junction
+		(at 231.14 246.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ad266b17-4aef-43b9-97d8-214c1fd28b75")
+	)
+	(junction
+		(at 246.38 209.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b4e3296d-5c6c-439d-8d79-61e425aa270f")
+	)
+	(junction
+		(at 246.38 228.6)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "808bfb6f-08fd-48c6-8037-49a8ba59f5dd")
+	)
+	(junction
+		(at 246.38 246.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d9b5b96a-7e4e-4b9b-b97f-f53f8df6ea19")
+	)
+	(junction
+		(at 246.38 264.16)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "12dee353-f3e0-48ac-a410-751191d3758f")
+	)
+	(junction
+		(at 261.62 209.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "39ff8f39-2c94-457c-9c52-1fc9a530c395")
+	)
+	(junction
+		(at 261.62 228.6)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4623c7f4-49c7-4179-86b6-a8d3ef200244")
+	)
+	(junction
+		(at 261.62 246.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "404f810e-85ca-4882-a670-2ce61284987d")
+	)
+	(junction
+		(at 276.86 209.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e9750d2e-bf1c-4b68-9435-855b932c4723")
+	)
+	(junction
+		(at 276.86 228.6)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3f28cc1e-042f-43a8-9ff9-e7caaaca6423")
+	)
+	(junction
+		(at 276.86 246.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ca566a9e-a114-48d7-ad89-ef826f6f94ca")
+	)
+	(wire
+		(pts
+			(xy 223.52 200.66) (xy 223.52 201.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b94fb194-82dc-4e81-8401-b17c97813d87")
+	)
+	(wire
+		(pts
+			(xy 223.52 252.73) (xy 223.52 254.0)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "424676db-bc9f-4c64-8ad6-1368c5a84e75")
+	)
+	(wire
+		(pts
+			(xy 254.0 200.66) (xy 254.0 201.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e71a42e0-c335-486f-9765-c90b97d7fbc0")
+	)
+	(wire
+		(pts
+			(xy 254.0 270.51) (xy 254.0 271.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4238e2d4-ed8d-40b1-b995-5c3047c86ef4")
+	)
+	(wire
+		(pts
+			(xy 261.62 262.89) (xy 261.62 264.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "152ebf96-4792-481f-bb0d-ef983d9eb28b")
+	)
+	(junction
 		(at 76.2 118.11)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6999,7 +7151,7 @@
 		(uuid "1b8af880-c22d-4ca8-b62c-d989716e7d90")
 	)
 	(junction
-		(at 292.1 227.33)
+		(at 292.1 228.6)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "21f49c27-450f-573f-9fcc-c1652456ba56")
@@ -7133,7 +7285,7 @@
 	)
 	
 	(junction
-		(at 67.945 42.545)
+		(at 67.31 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7bac840a-c382-421f-b0e1-9cb7059d8578")
@@ -7207,7 +7359,7 @@
 	)
 	
 	(junction
-		(at 67.945 33.02)
+		(at 67.31 33.02)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "bf49413a-7c28-4d19-a52c-fc021690102a")
@@ -7280,7 +7432,7 @@
 		(uuid "e2e8f8c2-5b0d-4457-af00-644da62bfa29")
 	)
 	(junction
-		(at 292.1 208.28)
+		(at 292.1 209.55)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ef301004-0566-4353-b1cb-d09e24289c69")
@@ -7316,7 +7468,7 @@
 		(uuid "4cb0ab74-e830-5182-b674-a9a4d816bceb")
 	)
 	(no_connect
-		(at 284.48 252.73)
+		(at 284.48 254.0)
 		(uuid "87be62ee-6039-5375-99a0-71ad2879b9c9")
 	)
 	(no_connect
@@ -7337,7 +7489,17 @@
 	)
 	(wire
 		(pts
-			(xy 261.62 208.28) (xy 261.62 227.33)
+			(xy 261.62 208.28) (xy 261.62 209.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7fcccf42-07e4-4b01-b008-7d0cfc337141")
+	)
+	(wire
+		(pts
+			(xy 261.62 209.55) (xy 261.62 227.33)
 		)
 		(stroke
 			(width 0)
@@ -7409,7 +7571,17 @@
 	)
 	(wire
 		(pts
-			(xy 276.86 208.28) (xy 276.86 227.33)
+			(xy 276.86 208.28) (xy 276.86 209.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1e8a775c-6283-472d-b6ff-292c0f3a1f68")
+	)
+	(wire
+		(pts
+			(xy 276.86 209.55) (xy 276.86 227.33)
 		)
 		(stroke
 			(width 0)
@@ -7451,7 +7623,17 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 245.11) (xy 231.14 262.89)
+			(xy 231.14 245.11) (xy 231.14 246.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c4260655-f6ba-48e7-bf3c-349f15852f88")
+	)
+	(wire
+		(pts
+			(xy 231.14 246.38) (xy 231.14 262.89)
 		)
 		(stroke
 			(width 0)
@@ -7461,7 +7643,17 @@
 	)
 	(wire
 		(pts
-			(xy 246.38 245.11) (xy 246.38 262.89)
+			(xy 246.38 245.11) (xy 246.38 246.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2e2d1ab2-3331-48dc-9271-afd545f69287")
+	)
+	(wire
+		(pts
+			(xy 246.38 246.38) (xy 246.38 262.89)
 		)
 		(stroke
 			(width 0)
@@ -7471,7 +7663,7 @@
 	)
 	(wire
 		(pts
-			(xy 292.1 227.33) (xy 292.1 245.11)
+			(xy 292.1 228.6) (xy 292.1 246.38)
 		)
 		(stroke
 			(width 0)
@@ -7501,7 +7693,17 @@
 	)
 	(wire
 		(pts
-			(xy 246.38 227.33) (xy 246.38 245.11)
+			(xy 246.38 227.33) (xy 246.38 228.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8eb491ff-3f8f-4687-98c5-466db125cfab")
+	)
+	(wire
+		(pts
+			(xy 246.38 228.6) (xy 246.38 245.11)
 		)
 		(stroke
 			(width 0)
@@ -7521,7 +7723,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.945 33.02) (xy 74.93 33.02)
+			(xy 67.31 33.02) (xy 74.93 33.02)
 		)
 		(stroke
 			(width 0)
@@ -7653,7 +7855,7 @@
 	)
 	(wire
 		(pts
-			(xy 254 215.9) (xy 254 219.71)
+			(xy 254 217.17) (xy 254 220.98)
 		)
 		(stroke
 			(width 0)
@@ -7673,7 +7875,17 @@
 	)
 	(wire
 		(pts
-			(xy 215.9 208.28) (xy 215.9 227.33)
+			(xy 215.9 208.28) (xy 215.9 209.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fde3ecb3-2c40-471e-b9a5-4a42fc116106")
+	)
+	(wire
+		(pts
+			(xy 215.9 209.55) (xy 215.9 227.33)
 		)
 		(stroke
 			(width 0)
@@ -7693,7 +7905,17 @@
 	)
 	(wire
 		(pts
-			(xy 215.9 245.11) (xy 215.9 275.59)
+			(xy 215.9 245.11) (xy 215.9 246.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "377d4457-2853-415e-b981-25a93035a810")
+	)
+	(wire
+		(pts
+			(xy 215.9 246.38) (xy 215.9 275.59)
 		)
 		(stroke
 			(width 0)
@@ -7723,7 +7945,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.945 42.545) (xy 67.945 43.18)
+			(xy 67.31 41.91) (xy 67.31 43.18)
 		)
 		(stroke
 			(width 0)
@@ -7824,7 +8046,17 @@
 	)
 	(wire
 		(pts
-			(xy 215.9 190.5) (xy 231.14 190.5)
+			(xy 215.9 190.5) (xy 218.44 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2ea384e1-fcab-4c79-a540-1d45e32d229a")
+	)
+	(wire
+		(pts
+			(xy 218.44 190.5) (xy 231.14 190.5)
 		)
 		(stroke
 			(width 0)
@@ -7834,7 +8066,7 @@
 	)
 	(wire
 		(pts
-			(xy 292.1 208.28) (xy 292.1 227.33)
+			(xy 292.1 209.55) (xy 292.1 228.6)
 		)
 		(stroke
 			(width 0)
@@ -7854,7 +8086,17 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 227.33) (xy 231.14 245.11)
+			(xy 231.14 227.33) (xy 231.14 228.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "42d1bbe1-d9e7-4551-a01f-2be141976a87")
+	)
+	(wire
+		(pts
+			(xy 231.14 228.6) (xy 231.14 245.11)
 		)
 		(stroke
 			(width 0)
@@ -7875,7 +8117,7 @@
 	
 	(wire
 		(pts
-			(xy 223.52 234.95) (xy 223.52 237.49)
+			(xy 223.52 236.22) (xy 223.52 238.76)
 		)
 		(stroke
 			(width 0)
@@ -7937,7 +8179,7 @@
 	)
 	(wire
 		(pts
-			(xy 254 234.95) (xy 254 237.49)
+			(xy 254 236.22) (xy 254 238.76)
 		)
 		(stroke
 			(width 0)
@@ -7968,7 +8210,7 @@
 	
 	(wire
 		(pts
-			(xy 284.48 215.9) (xy 284.48 219.71)
+			(xy 284.48 217.17) (xy 284.48 220.98)
 		)
 		(stroke
 			(width 0)
@@ -7988,7 +8230,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.945 41.275) (xy 67.945 42.545)
+			(xy 67.31 40.64) (xy 67.31 41.91)
 		)
 		(stroke
 			(width 0)
@@ -8008,7 +8250,17 @@
 	)
 	(wire
 		(pts
-			(xy 246.38 262.89) (xy 246.38 275.59)
+			(xy 246.38 262.89) (xy 246.38 264.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7e717e2e-8079-43af-83b1-b46e09928b38")
+	)
+	(wire
+		(pts
+			(xy 246.38 264.16) (xy 246.38 275.59)
 		)
 		(stroke
 			(width 0)
@@ -8028,7 +8280,7 @@
 	)
 	(wire
 		(pts
-			(xy 71.12 42.545) (xy 67.945 42.545)
+			(xy 71.12 41.91) (xy 67.31 41.91)
 		)
 		(stroke
 			(width 0)
@@ -8048,7 +8300,7 @@
 	)
 	(wire
 		(pts
-			(xy 223.52 219.71) (xy 223.52 215.9)
+			(xy 223.52 220.98) (xy 223.52 217.17)
 		)
 		(stroke
 			(width 0)
@@ -8069,7 +8321,7 @@
 	
 	(wire
 		(pts
-			(xy 292.1 190.5) (xy 292.1 208.28)
+			(xy 292.1 190.5) (xy 292.1 209.55)
 		)
 		(stroke
 			(width 0)
@@ -8089,7 +8341,7 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 33.02) (xy 67.945 33.02)
+			(xy 63.5 33.02) (xy 67.31 33.02)
 		)
 		(stroke
 			(width 0)
@@ -8110,7 +8362,17 @@
 	)
 	(wire
 		(pts
-			(xy 276.86 245.11) (xy 276.86 262.89)
+			(xy 276.86 245.11) (xy 276.86 246.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d0970e67-bf2a-4e51-ba85-f946f5dd7275")
+	)
+	(wire
+		(pts
+			(xy 276.86 246.38) (xy 276.86 262.89)
 		)
 		(stroke
 			(width 0)
@@ -8120,7 +8382,17 @@
 	)
 	(wire
 		(pts
-			(xy 261.62 227.33) (xy 261.62 245.11)
+			(xy 261.62 227.33) (xy 261.62 228.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f5ea68cf-643e-464a-aff2-55e5606779f7")
+	)
+	(wire
+		(pts
+			(xy 261.62 228.6) (xy 261.62 245.11)
 		)
 		(stroke
 			(width 0)
@@ -8130,7 +8402,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.945 36.195) (xy 67.945 33.02)
+			(xy 67.31 35.56) (xy 67.31 33.02)
 		)
 		(stroke
 			(width 0)
@@ -8150,7 +8422,17 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 208.28) (xy 231.14 227.33)
+			(xy 231.14 208.28) (xy 231.14 209.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e7d5a5bb-c0cd-487b-8e8d-ddeb19fec360")
+	)
+	(wire
+		(pts
+			(xy 231.14 209.55) (xy 231.14 227.33)
 		)
 		(stroke
 			(width 0)
@@ -8211,7 +8493,17 @@
 	)
 	(wire
 		(pts
-			(xy 276.86 227.33) (xy 276.86 245.11)
+			(xy 276.86 227.33) (xy 276.86 228.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c4be6fe4-6dae-4f12-ba7f-a175fa829c37")
+	)
+	(wire
+		(pts
+			(xy 276.86 228.6) (xy 276.86 245.11)
 		)
 		(stroke
 			(width 0)
@@ -8231,7 +8523,7 @@
 	)
 	(wire
 		(pts
-			(xy 284.48 193.04) (xy 284.48 200.66)
+			(xy 284.48 193.04) (xy 284.48 201.93)
 		)
 		(stroke
 			(width 0)
@@ -8241,7 +8533,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.945 48.26) (xy 67.945 48.895)
+			(xy 67.31 48.26) (xy 67.31 49.53)
 		)
 		(stroke
 			(width 0)
@@ -8261,7 +8553,17 @@
 	)
 	(wire
 		(pts
-			(xy 246.38 208.28) (xy 246.38 227.33)
+			(xy 246.38 208.28) (xy 246.38 209.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a8a1cc1b-980e-4200-a2f7-b474bfd0ea8a")
+	)
+	(wire
+		(pts
+			(xy 246.38 209.55) (xy 246.38 227.33)
 		)
 		(stroke
 			(width 0)
@@ -8291,7 +8593,17 @@
 	)
 	(wire
 		(pts
-			(xy 215.9 227.33) (xy 215.9 245.11)
+			(xy 215.9 227.33) (xy 215.9 228.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "98691abb-3f62-4a22-bd32-a38e5f9e3e9c")
+	)
+	(wire
+		(pts
+			(xy 215.9 228.6) (xy 215.9 245.11)
 		)
 		(stroke
 			(width 0)
@@ -8321,7 +8633,7 @@
 	)
 	(wire
 		(pts
-			(xy 284.48 234.95) (xy 284.48 237.49)
+			(xy 284.48 236.22) (xy 284.48 238.76)
 		)
 		(stroke
 			(width 0)
@@ -8381,7 +8693,7 @@
 	)
 	(wire
 		(pts
-			(xy 254 252.73) (xy 254 255.27)
+			(xy 254 254.0) (xy 254 256.54)
 		)
 		(stroke
 			(width 0)
@@ -8421,7 +8733,17 @@
 	)
 	(wire
 		(pts
-			(xy 261.62 245.11) (xy 261.62 262.89)
+			(xy 261.62 245.11) (xy 261.62 246.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d1fb7af9-683c-4156-a794-1780c07a1d5c")
+	)
+	(wire
+		(pts
+			(xy 261.62 246.38) (xy 261.62 262.89)
 		)
 		(stroke
 			(width 0)
@@ -8830,7 +9152,7 @@
 		(uuid "8734c175-24d0-479c-9567-25cd906d8eaa")
 	)
 	(label "TX"
-		(at 277.495 36.83 0)
+		(at 276.86 36.83 0)
 		(effects
 			(font
 				(size 1 1)
@@ -8880,7 +9202,7 @@
 		(uuid "988dd498-e953-49ec-b769-9ab08339918f")
 	)
 	(label "USB_VBUS_PIN"
-		(at 71.12 42.545 0)
+		(at 71.12 41.91 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9773,7 +10095,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 254 227.33 270)
+		(at 254 228.6 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9783,7 +10105,7 @@
 		(dnp no)
 		(uuid "09d6b10f-b7e0-498f-8aa2-72c2f862d4ce")
 		(property "Reference" "LED6"
-			(at 248.285 221.615 0)
+			(at 248.285 222.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9794,7 +10116,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 248.285 227.965 0)
+			(at 248.285 229.24 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9805,7 +10127,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 247.65 229.87 0)
+			(at 247.65 231.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9816,7 +10138,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 247.65 229.87 0)
+			(at 247.65 231.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9827,7 +10149,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 254 227.33 0)
+			(at 254 228.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10255,7 +10577,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 67.945 45.72 0)
+		(at 67.31 45.72 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10275,7 +10597,7 @@
 			)
 		)
 		(property "Value" "10K"
-			(at 67.945 45.72 90)
+			(at 67.31 45.72 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10285,7 +10607,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 67.945 45.72 0)
+			(at 67.31 45.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10296,7 +10618,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 67.945 45.72 0)
+			(at 67.31 45.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10307,7 +10629,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 67.945 45.72 0)
+			(at 67.31 45.72 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11557,7 +11879,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 284.48 227.33 270)
+		(at 284.48 228.6 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11567,7 +11889,7 @@
 		(dnp no)
 		(uuid "3a7446c4-1bb3-4f2a-91aa-8b39b241611e")
 		(property "Reference" "EXLED2"
-			(at 278.765 221.615 0)
+			(at 278.765 222.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11578,7 +11900,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 278.765 227.965 0)
+			(at 278.765 229.24 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11589,7 +11911,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 278.13 229.87 0)
+			(at 278.13 231.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11600,7 +11922,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 278.13 229.87 0)
+			(at 278.13 231.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11611,7 +11933,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 284.48 227.33 0)
+			(at 284.48 228.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11878,7 +12200,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 254 208.28 270)
+		(at 254 209.55 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11888,7 +12210,7 @@
 		(dnp no)
 		(uuid "43a5cf8f-cc9e-4bd6-b1a4-26035db69032")
 		(property "Reference" "LED5"
-			(at 248.285 203.2 0)
+			(at 248.285 204.47 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11899,7 +12221,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 248.285 208.915 0)
+			(at 248.285 210.19 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11910,7 +12232,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 247.65 210.82 0)
+			(at 247.65 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11921,7 +12243,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 247.65 210.82 0)
+			(at 247.65 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11932,7 +12254,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 254 208.28 0)
+			(at 254 209.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12198,7 +12520,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 223.52 208.28 270)
+		(at 223.52 209.55 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12208,7 +12530,7 @@
 		(dnp no)
 		(uuid "46568157-e50b-4a43-9c17-bce0a464cdf1")
 		(property "Reference" "LED13"
-			(at 217.805 203.2 0)
+			(at 217.805 204.47 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12219,7 +12541,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 217.805 208.915 0)
+			(at 217.805 210.19 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12230,7 +12552,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 217.17 210.82 0)
+			(at 217.17 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12241,7 +12563,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 217.17 210.82 0)
+			(at 217.17 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12252,7 +12574,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 223.52 208.28 0)
+			(at 223.52 209.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12437,7 +12759,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 67.945 38.735 0)
+		(at 67.31 38.1 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12457,7 +12779,7 @@
 			)
 		)
 		(property "Value" "5.6k"
-			(at 67.945 38.735 90)
+			(at 67.31 38.1 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12467,7 +12789,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 67.945 38.735 0)
+			(at 67.31 38.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12478,7 +12800,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 67.945 38.735 0)
+			(at 67.31 38.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12489,7 +12811,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 67.945 38.735 0)
+			(at 67.31 38.1 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12745,7 +13067,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 223.52 227.33 270)
+		(at 223.52 228.6 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12755,7 +13077,7 @@
 		(dnp no)
 		(uuid "540d70a4-896d-4405-93bc-a45a98544102")
 		(property "Reference" "LED14"
-			(at 217.805 222.25 0)
+			(at 217.805 223.52 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12766,7 +13088,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 217.805 227.965 0)
+			(at 217.805 229.24 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12777,7 +13099,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 217.17 229.87 0)
+			(at 217.17 231.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12788,7 +13110,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 217.17 229.87 0)
+			(at 217.17 231.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12799,7 +13121,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 223.52 227.33 0)
+			(at 223.52 228.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13330,7 +13652,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 67.945 48.895 0)
+		(at 67.31 49.53 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13341,7 +13663,7 @@
 		(fields_autoplaced yes)
 		(uuid "5dd239fa-6718-4faa-b902-4ff19d7c9190")
 		(property "Reference" "#PWR010"
-			(at 67.945 55.245 0)
+			(at 67.31 55.245 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13352,7 +13674,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 67.945 53.34 0)
+			(at 67.31 53.34 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13362,7 +13684,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 67.945 48.895 0)
+			(at 67.31 49.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13373,7 +13695,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 67.945 48.895 0)
+			(at 67.31 49.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13384,7 +13706,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 67.945 48.895 0)
+			(at 67.31 49.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14027,7 +14349,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 254 262.89 270)
+		(at 254 264.16 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14037,7 +14359,7 @@
 		(dnp no)
 		(uuid "766e2d4e-7d94-4dc3-8a2b-4a7665d74798")
 		(property "Reference" "LED8"
-			(at 248.285 257.175 0)
+			(at 248.285 258.44 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14048,7 +14370,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 248.285 263.525 0)
+			(at 248.285 264.79 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14059,7 +14381,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 247.65 265.43 0)
+			(at 247.65 266.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14070,7 +14392,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 247.65 265.43 0)
+			(at 247.65 266.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14081,7 +14403,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 254 262.89 0)
+			(at 254 264.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15924,7 +16246,7 @@
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
-		(at 215.9 190.5 0)
+		(at 218.44 190.5 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -15935,7 +16257,7 @@
 		(fields_autoplaced yes)
 		(uuid "93852c56-2966-5b64-93f9-bbe7286a4dda")
 		(property "Reference" "#FLG04"
-			(at 215.9 196.85 0)
+			(at 218.44 196.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15946,7 +16268,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 215.9 194.945 0)
+			(at 218.44 194.945 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15956,7 +16278,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 215.9 190.5 0)
+			(at 218.44 190.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15967,7 +16289,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 215.9 190.5 0)
+			(at 218.44 190.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15978,7 +16300,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 215.9 190.5 0)
+			(at 218.44 190.5 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16834,7 +17156,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 284.48 245.11 270)
+		(at 284.48 246.38 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16845,7 +17167,7 @@
 		(fields_autoplaced yes)
 		(uuid "ae118c3d-72a2-5f71-b098-732756a61652")
 		(property "Reference" "EXLED3"
-			(at 280.67 238.76 0)
+			(at 280.67 240.03 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16856,7 +17178,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 280.67 241.3 0)
+			(at 280.67 242.57 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16868,7 +17190,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 284.48 250.19 0)
+			(at 284.48 251.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16879,7 +17201,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 284.48 245.11 0)
+			(at 284.48 246.38 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16890,7 +17212,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 284.48 245.11 0)
+			(at 284.48 246.38 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17236,7 +17558,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 277.495 39.37 270)
+		(at 276.86 39.37 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17269,7 +17591,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 277.495 39.37 0)
+			(at 276.86 39.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17280,7 +17602,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 277.495 39.37 0)
+			(at 276.86 39.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17291,7 +17613,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 277.495 39.37 0)
+			(at 276.86 39.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17556,7 +17878,7 @@
 		(dnp no)
 		(uuid "b8c9fe11-0dcb-4c1f-97df-eed66150cef2")
 		(property "Reference" "R2"
-			(at 53.34 42.545 90)
+			(at 53.34 41.91 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17784,7 +18106,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 284.48 208.28 270)
+		(at 284.48 209.55 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17794,7 +18116,7 @@
 		(dnp no)
 		(uuid "c4a6db05-9b3d-4ca9-bf63-abe3739f22ef")
 		(property "Reference" "EXLED1"
-			(at 278.765 202.565 0)
+			(at 278.765 203.84 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17805,7 +18127,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 278.765 208.915 0)
+			(at 278.765 210.19 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17816,7 +18138,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 278.13 210.82 0)
+			(at 278.13 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17827,7 +18149,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 278.13 210.82 0)
+			(at 278.13 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17838,7 +18160,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 284.48 208.28 0)
+			(at 284.48 209.55 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17870,7 +18192,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 223.52 245.11 270)
+		(at 223.52 246.38 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17880,7 +18202,7 @@
 		(dnp no)
 		(uuid "c4be08b9-032b-47f1-b0b7-97cfbea4aff9")
 		(property "Reference" "LED15"
-			(at 217.805 240.03 0)
+			(at 217.805 241.3 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17891,7 +18213,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 217.805 245.745 0)
+			(at 217.805 247.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17902,7 +18224,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 217.17 247.65 0)
+			(at 217.17 248.92 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17913,7 +18235,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 217.17 247.65 0)
+			(at 217.17 248.92 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17924,7 +18246,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 223.52 245.11 0)
+			(at 223.52 246.38 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18773,7 +19095,7 @@
 	)
 	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
-		(at 254 245.11 270)
+		(at 254 246.38 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -18783,7 +19105,7 @@
 		(dnp no)
 		(uuid "d50bf836-858e-4c21-9b29-a49270322db5")
 		(property "Reference" "LED7"
-			(at 248.285 239.395 0)
+			(at 248.285 240.67 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18794,7 +19116,7 @@
 			)
 		)
 		(property "Value" "YS-SK6812MINI-E"
-			(at 248.285 245.745 0)
+			(at 248.285 247.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18805,7 +19127,7 @@
 			)
 		)
 		(property "Footprint" "kbd:YS-SK6812MINI-E"
-			(at 247.65 247.65 0)
+			(at 247.65 248.92 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18816,7 +19138,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 247.65 247.65 0)
+			(at 247.65 248.92 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18827,7 +19149,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 254 245.11 0)
+			(at 254 246.38 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -19825,7 +20147,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 277.495 34.29 90)
+		(at 276.86 34.29 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -19857,7 +20179,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 277.495 34.29 0)
+			(at 276.86 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19868,7 +20190,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 277.495 34.29 0)
+			(at 276.86 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19879,7 +20201,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 277.495 34.29 0)
+			(at 276.86 34.29 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -20057,7 +20379,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Audio:AudioJack3")
-		(at 272.415 36.83 0)
+		(at 271.78 36.83 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -20088,7 +20410,7 @@
 			)
 		)
 		(property "Footprint" "kbd:Jack_PJ-398A-5A_PJ-399B-6A"
-			(at 272.415 36.83 0)
+			(at 271.78 36.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20099,7 +20421,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 272.415 36.83 0)
+			(at 271.78 36.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20110,7 +20432,7 @@
 			)
 		)
 		(property "Description" "Audio Jack, 3 Poles (Stereo / TRS)"
-			(at 272.415 36.83 0)
+			(at 271.78 36.83 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -20120,7 +20442,7 @@
 			)
 		)
 		(property "JLCPCB Part #" "C128994"
-			(at 272.415 36.83 0)
+			(at 271.78 36.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
