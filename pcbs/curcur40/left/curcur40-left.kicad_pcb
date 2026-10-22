@@ -8639,7 +8639,7 @@
 			)
 		)
 	)
-	(footprint "kbd:keyswitch_choc12_hotswap_1.5u"
+	(footprint "kbd:keyswitch_choc12_hotswap_1u"
 		(layer "B.Cu")
 		(uuid "65a1f4ae-889a-4ae7-96c8-66f3d601c46e")
 		(at -33.3375 52.3875 180)
@@ -8714,8 +8714,8 @@
 			(uuid "e5e67a1e-8cfa-46a9-bddf-4be4ce0fd6e5")
 		)
 		(fp_line
-			(start 14.2875 9.525)
-			(end -14.2875 9.525)
+			(start 9.525 9.525)
+			(end -9.525 9.525)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -8724,8 +8724,8 @@
 			(uuid "60b707e5-bd3c-4f6c-9eac-b8d591b9bc77")
 		)
 		(fp_line
-			(start 14.2875 -9.525)
-			(end 14.2875 9.525)
+			(start 9.525 -9.525)
+			(end 9.525 9.525)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -8734,8 +8734,8 @@
 			(uuid "56d8bd11-2b39-46f8-b3e1-f96f990b8479")
 		)
 		(fp_line
-			(start -14.2875 9.525)
-			(end -14.2875 -9.525)
+			(start -9.525 9.525)
+			(end -9.525 -9.525)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -8744,8 +8744,8 @@
 			(uuid "9b5cef1d-d86d-45d7-9f17-17b1601cbb82")
 		)
 		(fp_line
-			(start -14.2875 -9.525)
-			(end 14.2875 -9.525)
+			(start -9.525 -9.525)
+			(end 9.525 -9.525)
 			(stroke
 				(width 0.1)
 				(type solid)
