@@ -32,10 +32,9 @@
 
 | ライブラリ名 | 種別 | パス | 収録されている固有部品 |
 | :--- | :--- | :--- | :--- |
-| **`kbd`** | シンボル | [pcbs/common/kbd/kicad-symbols/kbd.kicad_sym](../../pcbs/common/kbd/kicad-symbols/kbd.kicad_sym) | `TYPE-C-31-M-13C`, `PJ-398A-5A_PJ-399B-6A`, `YS-SK6812MINI-E`, `TS-1088R-02026`, `CKW12` |
-| **`PMW3360_PCB`** | シンボル | [pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym](../../pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym) | `PMW3360DM-T2QU` |
-| **`kbd`** | フットプリント | [pcbs/common/kbd/kicad-footprints/kbd.pretty](../../pcbs/common/kbd/kicad-footprints/kbd.pretty) | Choc v1/v2 ホットスワップソケット（1u / 1.5u）、USB-C、TRRS、SK6812MINI-E、リセットSW、CKW12、PMW3360 16Pin |
-| **`PMW3360_PCB`** | フットプリント | [pcbs/common/kbd/kicad-footprints/PMW3360_PCB.pretty](../../pcbs/common/kbd/kicad-footprints/PMW3360_PCB.pretty) | PMW3360 関連フットプリント |
+| **`kbd`** | シンボル | [pcbs/common/kbd/kicad-symbols/kbd.kicad_sym](../../pcbs/common/kbd/kicad-symbols/kbd.kicad_sym) | `+1V1R`, `+3V3R`, `+5VR`, `GNDR`, `VBUSR`, `YS-SK6812MINI-E` |
+| **`PMW3360_PCB`** | シンボル | [pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym](../../pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym) | `PMW3360DM-T2QU`, `TLV74318PDBVR` |
+| **`kbd`** | フットプリント | [pcbs/common/kbd/kicad-footprints/kbd.pretty](../../pcbs/common/kbd/kicad-footprints/kbd.pretty) | Choc v1/v2 ホットスワップソケット（`keyswitch_choc12_hotswap_1u` / `1.5u`）、USB-C（`USB_C_Receptacle_TYPE-C-31-M-13C`）、TRRS（`Jack_PJ-398A-5A_PJ-399B-6A`）、SK6812MINI-E（`YS-SK6812MINI-E`）、タクトSW（`TS-1088R-02026`）、CKW12（`RotaryEncoder_Switch_CKW12`）、PMW3360 16Pin（`PMW3360DM-T2QU_16Pin`） |
 
 ---
 
@@ -78,9 +77,10 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **QSPI フラッシュ** | `U4` (`W25Q128JVSIQ`, 16MB) | `rU4` (`W25Q128JVSIQ`, 16MB) | 裏面（`B.Cu`）実装、SOIC-8 (5.3×5.3mm) |
 | **3.3V LDO レギュレータ** | `U2` (`NCP1117LPST33T3G`) | `rU2` (`NCP1117LPST33T3G`) | 5V (`VBUS`) → 3.3V (`+3V3` / `+3V3R`) |
 | **キースイッチ数 (Choc)** | **21 キー**（1u × 20、1.5u × 1） | **19 キー**（1u × 18、1.5u × 1） | ダイレクトピン接続（マトリクスダイオード不要） |
-| **RGB LED (SK6812MINI-E)** | **21 個** (`LED1`〜`LED21`) | **19 個** (`rLED1`〜`rLED18`, `rLED20`) | 各キースイッチ直下に配置（右親指トラックボール位置はLEDなし） |
+| **RGB LED (SK6812MINI-E)** | **21 個** (`LED1`〜`18`, `EXLED1`〜`3`) | **19 個** (`rLED1`〜`18`, `rEXLED2`) | 各キースイッチ直下に配置（右親指トラックボール位置はLEDなし） |
 | **ロータリーエンコーダ** | なし（通常キースイッチ `EXSW1`） | **CKW12 ホイール** (`rEXSW1`) | 右手内側上部に配置（A/B相回転 ＋ プッシュスイッチ `/KEYEX1`） |
 | **トラックボールセンサー** | なし（親指4キー構成） | **PMW3360DM-T2QU** (`U1`) ＋ **1.8V LDO** (`U2`) | 右手親指部に配置（SPI接続） |
+| **SWD デバッグ端子** | `J4` (`1x03` 2.54mm スルーホール) | `rJ4` (`1x03` 2.54mm スルーホール) | `/SWCLK`, `GND`, `/SWD`。**未実装 (`DNP`)**・BOM/Pos/3Dモデル非表示 |
 | **左右判定ピン (`GPIO21`)** | **`+3V3` (HIGH) に直結** | **`GNDR` (LOW) に直結** | QMK `split.handedness.pin = GP21` による自動左右認識 |
 | **M2 スペーサー貫通穴** | **5 箇所**（外周5） | **8 箇所**（外周4 ＋ トラックボール周囲4） | すべて $\varnothing 3.60 \, \text{mm}$ 非スルーホール（NPTH相当のEdge.Cuts円穴） |
 
@@ -137,6 +137,10 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
   * **Pad S1**: `GNDR`
   * **Pad S2**: `/KEYEX1` → `rU1` Pin 37 (`GPIO25`、マトリクス座標 `[4, 6]` のプッシュスイッチとして動作)
 
+### 4.5 SWD デバッグ用スルーホール端子 (`J4` / `rJ4`)
+* ベース基板（Corne Chocolate v4）由来の RP2040 SWD デバッグ端子（Pad 1: `/SWCLK`, Pad 2: `GND`/`GNDR`, Pad 3: `/SWD`）として、小指側外周付近（左 `J4`: `(-106.8675, 22.37625)`、右 `rJ4`: `(111.8475, 22.43125)`）に `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` フットプリントが配置されています。
+* **通常使用時はピンヘッダを実装しない（空きランドのままにする）** ため、回路図およびPCBの双方で **未実装（`DNP`）・部品表（BOM）除外・実装座標（Pos）除外** に設定しています（これにより KiCad の 3D ビューアでもピンヘッダの 3D モデルは非表示となります）。
+
 ---
 
 ## 5. RP2040 ピンアサイン対応表 (MCU Pin Assignment Table)
@@ -161,9 +165,9 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **16** | `GPIO13` | `/USB_VBUS_PIN` | VBUS 検出 | `/USB_VBUS_PIN` | VBUS 検出 |
 | **17** | `GPIO14` | `/KEY9` | キー `[3, 3]` | **`/SCLK`** | **PMW3360 SPI SCLK** |
 | **18** | `GPIO15` | `/KEY8` | キー `[3, 4]` | `/KEY17` | キー `[5, 1]` |
-| **24** | `SWCLK` | `/SWCLK` | デバッグ SWCLK (`J3`) | `/SWCLK` | デバッグ SWCLK (`rJ3`) |
-| **25** | `SWDIO` | `/SWD` | デバッグ SWDIO (`J3`) | `/SWD` | デバッグ SWDIO (`rJ3`) |
-| **26** | `RUN` | `Net-(U1-RUN)` | リセットSW (`RSW1`) | `Net-(rU1-RUN)` | リセットSW (`rRSW1`) |
+| **24** | `SWCLK` | `/SWCLK` | デバッグ SWCLK (`J4`) | `/SWCLK` | デバッグ SWCLK (`rJ4`) |
+| **25** | `SWDIO` | `/SWD` | デバッグ SWDIO (`J4`) | `/SWD` | デバッグ SWDIO (`rJ4`) |
+| **26** | `RUN` | `Net-(U1-RUN)` | リセットSW (`SMDSW2`) | `Net-(rU1-RUN)` | リセットSW (`rSMDSW2`) |
 | **27** | `GPIO16` | `/KEY16` | キー `[2, 1]` | `/KEY9` | キー `[7, 3]` |
 | **28** | `GPIO17` | 未接続 (`NC`) | ― | `/KEY8` | キー `[7, 4]` |
 | **29** | `GPIO18` | `/KEY17` | キー `[1, 1]` | `/KEY16` | キー `[6, 1]` |
@@ -180,7 +184,7 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **41** | `GPIO29` | `/KEY5` | キー `[0, 4]` | `/KEY10` | キー `[6, 3]` |
 | **46** | `USB_DM` | `Net-(U1-USB_DM)` | USB D- (`27Ω` 経由) | `Net-(rU1-USB_DM)` | USB D- (`27Ω` 経由) |
 | **47** | `USB_DP` | `Net-(U1-USB_DP)` | USB D+ (`27Ω` 経由) | `Net-(rU1-USB_DP)` | USB D+ (`27Ω` 経由) |
-| **51〜56** | `QSPI_*` | `/QSPI_*` | Flash `U4` & `BOOT` SW | `/QSPI_*` | Flash `rU4` & `rBOOT` SW |
+| **51〜56** | `QSPI_*` | `/QSPI_*` | Flash `U4` & `SMDSW1` | `/QSPI_*` | Flash `rU4` & `rSMDSW1` |
 
 ---
 
@@ -229,17 +233,18 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **コンデンサ (0402)** | `C1`〜`C16` | `rC1`〜`rC16` | `100n`(9), `1u`(3), `10u`(2), `27p`(2) | `Capacitor_SMD:C_0402_1005Metric` | `B.Cu` | 16 | 16 |
 | **抵抗 (0402)** | `R1`〜`R9` | `rR1`〜`rR9` | `27`(2), `1k`(2), `5.1k`(2), `5.6k`(1), `10k`(2) | `Resistor_SMD:R_0402_1005Metric` | `B.Cu` | 9 | 9 |
 | **USB-C コネクタ** | `J1` | `rJ1` | `TYPE-C-31-M-13C` | `kbd:USB_C_Receptacle_TYPE-C-31-M-13C` | `B.Cu` | 1 | 1 |
-| **TRRS ジャック** | `J4` | `rJ4` | `PJ-398A-5A` | `kbd:Jack_PJ-398A-5A_PJ-399B-6A` | `B.Cu` | 1 | 1 |
-| **タクトSW** | `BOOT`, `RSW1` | `rBOOT`, `rRSW1` | `TS-1088R-02026` | `kbd:TS-1088R-02026` | `B.Cu` | 2 | 2 |
-| **RGB LED** | `LED1`〜`LED21` | `rLED1`〜`rLED18`, `rLED20` | `YS-SK6812MINI-E` | `kbd:YS-SK6812MINI-E` | `B.Cu` | 21 | 19 |
-| **Choc ソケット (1u)** | `SW1`〜`SW18`, `EXSW1`, `EXSW2` | `rSW1`〜`rSW18`, `rEXSW2` | Kailh Choc Hotswap | `kbd:keyswitch_choc12_hotswap_1u` | `B.Cu` | 20 | 18 |
-| **Choc ソケット (1.5u)** | `EXSW3` | `rSW19` | Kailh Choc Hotswap | `kbd:keyswitch_choc12_hotswap_1.5u` | `B.Cu` | 1 | 1 |
+| **TRRS ジャック** | `J2` | `rJ2` | `PJ-398A-5A` | `kbd:Jack_PJ-398A-5A_PJ-399B-6A` | `B.Cu` | 1 | 1 |
+| **タクトSW** | `SMDSW1`, `SMDSW2` | `rSMDSW1`, `rSMDSW2` | `TS-1088R-02026` | `kbd:TS-1088R-02026` | `B.Cu` | 2 | 2 |
+| **RGB LED** | `LED1`〜`18`, `EXLED1`〜`3` | `rLED1`〜`18`, `rEXLED2` | `YS-SK6812MINI-E` | `kbd:YS-SK6812MINI-E` | `B.Cu` | 21 | 19 |
+| **Choc ソケット (1u)** | `SW2`〜`18`, `EXSW1`〜`3` | `rSW2`〜`18`, `rEXSW2` | Kailh Choc Hotswap | `kbd:keyswitch_choc12_hotswap_1u` | `B.Cu` | 20 | 18 |
+| **Choc ソケット (1.5u)** | `SW1` | `rSW1` | Kailh Choc Hotswap | `kbd:keyswitch_choc12_hotswap_1.5u` | `B.Cu` | 1 | 1 |
 | **ホイールエンコーダ** | ― | `rEXSW1` | `CKW12` | `kbd:RotaryEncoder_Switch_CKW12` | `F.Cu` | 0 | 1 |
 | **光学センサー** | ― | `U1` | `PMW3360DM-T2QU` | `kbd:PMW3360DM-T2QU_16Pin` | `B.Cu` | 0 | 1 |
 | **1.8V LDO** | ― | `U2` | `TLV74318PDBVR` | `Package_TO_SOT_SMD:SOT-23-5` | `B.Cu` | 0 | 1 |
 | **コンデンサ (0603)** | ― | `C1`〜`C5` | `4.7uF`(1), `1uF`(2), `100nF`(1), `22nF`(1) | `Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder` | `B.Cu` | 0 | 5 |
 | **抵抗 (0603)** | ― | `R1`〜`R4` | `10k`(2), `39R`(1), `28k`(1) | `Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder` | `B.Cu` | 0 | 4 |
 | **電圧選択ジャンパ** | ― | `JP1` | `SolderJumper_3_Open` | `Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels` | `B.Cu` | 0 | 1 |
+| **SWD デバッグ端子** | `J4` (`DNP`) | `rJ4` (`DNP`) | `Conn_01x03` | `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` | `B.Cu` | 0 (未実装) | 0 (未実装) |
 
 ---
 
