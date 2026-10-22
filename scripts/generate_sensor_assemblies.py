@@ -39,21 +39,37 @@ def build_sensor_pcb_parts():
       Z = +3.40 mm: Lens Flange Bottom / Optical Distance Reference Point (2.40 mm below ball)
       Z = +5.80 mm: 25mm Trackball Bottom Surface (Navigation Surface)
     """
-    # 1. Customer Supplied PCB (1.60 mm FR-4, Z in [-1.60, 0.00] mm)
-    pcb_w, pcb_d, pcb_th = 32.0, 32.0, 1.60
+    # 1. Customer Supplied PCB (curcur40-pmw3360, 1.60 mm FR-4, Z in [-1.60, 0.00] mm)
+    # Exact board dimensions relative to sensor center (9.5250, 52.3875) in KiCad -> rotated +90 deg around Z:
+    # Before +90 deg Z rotation: X = -(y_pcb - 52.3875) in [-15.1125, +14.0875], Y = (x_pcb - 9.5250) in [-14.7875, +14.7875]
+    pcb_th = 1.60
     # Staggered 16-pin coordinates matching PMW3360DM-T2QU_16Pin.kicad_mod
     top_pin_xs = [-6.168 + i * 1.78 for i in range(8)]     # Pads 1..8 at Y = +5.35
     bot_pin_xs = [-5.278 + i * 1.78 for i in range(8)]     # Pads 16..9 at Y = -5.35
     pin_coords = [(px, 5.35, 1) for px in top_pin_xs] + [(px, -5.35, -1) for px in bot_pin_xs]
+    ear_holes = [
+        ( 11.30, -12.00),  # TB1
+        ( 11.30,  12.00),  # TB2
+        (-11.30, -12.00),  # TB3
+        (-11.30,  12.00),  # TB4
+    ]
     with bd.BuildPart() as pcb_bp:
         with bd.BuildSketch(bd.Plane.XY.offset(-pcb_th)):
-            bd.RectangleRounded(pcb_w, pcb_d, 2.0)
+            with bd.Locations([(-0.5125, 0.0)]):
+                bd.RectangleRounded(29.20, 29.575, 1.0)
         bd.extrude(amount=pcb_th)
 
         # Central optical + lens-leg cutout (exact 16.90 x 8.70 mm matching PMW3360DM-T2QU_16Pin.kicad_mod)
         with bd.BuildSketch(bd.Plane.XY.offset(-pcb_th - 0.5)):
             with bd.Locations([(0.0, 0.0)]):
                 bd.Rectangle(16.90, 8.70)
+        bd.extrude(amount=pcb_th + 1.0, mode=bd.Mode.SUBTRACT)
+
+        # 4x TB1-TB4 Ø 3.25 mm spacer through-holes
+        with bd.BuildSketch(bd.Plane.XY.offset(-pcb_th - 0.5)):
+            for hx, hy in ear_holes:
+                with bd.Locations([(hx, hy)]):
+                    bd.Circle(radius=1.625)
         bd.extrude(amount=pcb_th + 1.0, mode=bd.Mode.SUBTRACT)
 
         # 16 Pin Through-Holes (row pitch 10.70 mm, pin pitch 1.78 mm, staggered X)
