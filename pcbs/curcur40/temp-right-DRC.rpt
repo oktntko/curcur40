@@ -1,0 +1,35 @@
+** Drc report for curcur40-right.kicad_pcb **
+** Created on 2026-10-22T12:23:59 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 0 DRC violations **
+
+** Found 0 unconnected pads **
+
+** Found 7 Footprint errors **
+[footprint_symbol_mismatch]: フットプリントの属性がシンボルと一致しない: '部品表(BOM)から除外' の設定が異なります
+    Local override; warning
+    @(17.3860 mm, 64.0617 mm): Footprint C5
+[footprint_symbol_mismatch]: 値 ( JP1 ) はシンボル値 ( SolderJumper_3_Open ) と一致しません
+    Local override; warning
+    @(17.7750 mm, 50.1457 mm): Footprint JP1
+[footprint_symbol_mismatch]: Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels はシンボル ( Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels ) によって指定されたフットプリントと一致しません
+    Local override; warning
+    @(17.7750 mm, 50.1457 mm): Footprint JP1
+[footprint_filters_mismatch]: Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels はシンボルのフットプリント フィルター ( SolderJumper*Bridged12* ) と一致しません
+    Local override; warning
+    @(17.7750 mm, 50.1457 mm): Footprint JP1
+[footprint_symbol_field_mismatch]: フィールド 'Description' が異なります(プリント基板図: 'Solder Jumper, 3-pole, open', 回路図: '3-pole Solder Jumper, pins 1+2 closed/bridged')
+    Local override; warning
+    @(17.7750 mm, 50.1457 mm): Footprint JP1
+[footprint_symbol_mismatch]: フットプリントの属性がシンボルと一致しない: ''未実装(DNP)'' の設定が異なります
+    Local override; warning
+    @(17.8860 mm, 45.3617 mm): Footprint R1
+[footprint_symbol_mismatch]: フットプリントの属性がシンボルと一致しない: '部品表(BOM)から除外' の設定が異なります
+    Local override; warning
+    @(17.3860 mm, 62.0617 mm): Footprint R4
+
+** Ignored checks **
+    - None
+
+** End of Report **
