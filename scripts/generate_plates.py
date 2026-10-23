@@ -160,8 +160,8 @@ def get_right_outer_pts(notched_trackball=False):
             (119.2625,  41.18125, 1.0),  # Pinky-right bottom
             ( 82.6625,  41.18125, 1.0),  # Pinky step inner
             ( 82.6625,  67.70000, 1.0),  # Thumb bottom-right
-            ( 24.8375,  67.70000, 1.0),  # Notch bottom-right (0.3125 mm clearance to Trackball Cup ear)
-            ( 24.8375,  37.40000, 1.0),  # Notch top-right
+            ( 24.2000,  67.70000, 1.0),  # Notch bottom-right (aligned with Right Main PCB x = 24.2000 mm)
+            ( 24.2000,  37.40000, 1.0),  # Notch top-right (aligned with Right Main PCB x = 24.2000, y = 37.4000 mm)
             ( -5.4625,  37.40000, 1.0),  # Notch top-left
         ]
 
