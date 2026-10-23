@@ -294,11 +294,11 @@ def build_case(is_right=True) -> bd.Solid:
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((cx, cy, -32.0)))
 
-    # 7. USB-C port cutout (Section 3.2: Width = 12.50 mm, Height = 6.80 mm, R = 1.50 mm, Center Z = -7.35 mm)
-    #    Top edge Z = -3.95 mm (0.35 mm below Top Plate bottom Z = -3.60 mm so Top Plate is completely hidden from outside)
+    # 7. USB-C port cutout (Section 3.2: Width = 12.00 mm, Height = 6.20 mm, R = 1.50 mm, Center Z = -5.85 mm)
+    #    Concentric with mid-mount TYPE-C-31-M-13C (center Z = -5.87 mm); top edge at Z = -2.75 mm hides upper half of Top Plate
     usb_cx = 26.5750 if is_right else -26.5750
-    usb_cutter = bd.Box(12.50, 15.00, 6.80).moved(
-        bd.Location((usb_cx, -30.8375, -7.3500))
+    usb_cutter = bd.Box(12.00, 15.00, 6.20).moved(
+        bd.Location((usb_cx, -30.8375, -5.8500))
     )
     edges_y = usb_cutter.edges().filter_by(
         lambda e: abs(e.bounding_box().size.Y - 15.00) < 0.1
@@ -307,13 +307,13 @@ def build_case(is_right=True) -> bd.Solid:
         usb_cutter = bd.fillet(edges_y, radius=1.50)
     body = body - usb_cutter
 
-    # 8. TRRS port cutout (Section 3.1: Ø 7.50 mm -> radius 3.75 mm, Center Z = -7.85 mm, Y = -86.8000 mm)
-    #    Top edge Z = -4.10 mm (0.50 mm below Top Plate bottom Z = -3.60 mm so Top Plate is completely hidden from outside)
+    # 8. TRRS port cutout (Section 3.1: Ø 6.80 mm -> radius 3.40 mm, Center Z = -5.85 mm, Y = -86.8000 mm)
+    #    Concentric with mid-mount PJ-398A-5A barrel (center Z = -5.84 mm); top edge at Z = -2.45 mm
     trrs_x = 7.0250 if is_right else -7.0250
     trrs_cutter = (
-        bd.Cylinder(radius=3.75, height=20.0)
+        bd.Cylinder(radius=3.40, height=20.0)
         .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((trrs_x, -86.8000, -7.8500)))
+        .moved(bd.Location((trrs_x, -86.8000, -5.8500)))
     )
     body = body - trrs_cutter
 
