@@ -102,95 +102,97 @@ def generate_ports_and_screws_diagram():
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5.5), dpi=200)
     fig.patch.set_facecolor('#ffffff')
 
-    # AX1: TRRS Hole (Section View)
+    # AX1: TRRS Hole (Section View, Y coordinate mapped directly to Z in [-13.0, +0.5])
     ax1.set_xlim(-3, 17)
-    ax1.set_ylim(-1, 11)
+    ax1.set_ylim(-13.5, 1.5)
     ax1.set_aspect('equal')
     ax1.set_facecolor('#f8f9fa')
     ax1.set_title("1. TRRS Jack Port (Thumb Side Wall)", fontsize=12, fontweight='bold')
 
-    # Wall thickness 6mm (X in [3, 9]), floor below (y <= 1.5)
-    wall = patches.Rectangle((3, 0), 6, 9.5, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
+    # Wall thickness 6mm (X in [3, 9]), Z from -13.0 to 0.0
+    wall = patches.Rectangle((3, -13.0), 6, 13.0, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
     ax1.add_patch(wall)
 
-    # Interior floor line at Z = -9.10 (at y = 1.50)
-    floor_y = 1.50
-    ax1.plot([0.5, 9.5], [floor_y, floor_y], linestyle='--', color='#2d6a4f', lw=1.5)
-    ax1.text(0.5, floor_y + 0.15, "Interior Floor\n(Z = -9.10mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+    # Top Plate inside case (Z = -3.60 to -2.00)
+    tp_plate = patches.Rectangle((0.0, -3.60), 2.8, 1.60, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', alpha=0.85)
+    ax1.add_patch(tp_plate)
+    ax1.text(1.4, -2.80, "Top Plate", ha='center', va='center', fontsize=6.5, color='white', fontweight='bold')
+    ax1.plot([0.0, 9.5], [-3.60, -3.60], linestyle='--', color='#1d3557', lw=1.2)
+    ax1.text(9.6, -3.50, "Plate Bot (Z = -3.60mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
 
-    # TRRS Straight Through-Hole Ø 7.50mm (NO counterbore needed!)
-    # Bottom touches floor exactly (y = 1.50, distance 0.00 mm), top reaches y = 9.00
-    center_y = floor_y + 3.75  # 5.25 (Z = -5.35mm)
-    hole_straight = patches.Rectangle((3, floor_y), 6.0, 7.50, linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
+    # Main PCB (Z = -5.80 to -4.20)
+    pcb_rect = patches.Rectangle((0.0, -5.80), 2.8, 1.60, linewidth=1.2, edgecolor='#1b4332', facecolor='#2d6a4f', alpha=0.85)
+    ax1.add_patch(pcb_rect)
+
+    # TRRS Straight Through-Hole Ø 7.50mm centered at Z = -7.85 (Z = -11.60 to -4.10)
+    center_y = -7.85
+    hole_straight = patches.Rectangle((3, -11.60), 6.0, 7.50, linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
     ax1.add_patch(hole_straight)
 
-    # Jack silhouette inside
-    jack_barrel = patches.Rectangle((1.0, center_y - 2.50), 3.0, 5.0, linewidth=1.2, edgecolor='#6a040f', facecolor='#9d0208', alpha=0.85)
+    # Jack silhouette inside (centered at Z = -7.85, Ø 5.0mm barrel)
+    jack_barrel = patches.Rectangle((0.5, center_y - 2.50), 3.2, 5.0, linewidth=1.2, edgecolor='#6a040f', facecolor='#9d0208', alpha=0.9)
     ax1.add_patch(jack_barrel)
-    ax1.text(2.5, center_y, "TRRS\nJack", ha='center', va='center', fontsize=7.5, color='white', fontweight='bold')
+    ax1.text(2.1, center_y, "TRRS\nJack", ha='center', va='center', fontsize=7.0, color='white', fontweight='bold')
 
-    # Floor contact annotation (0.00mm)
-    ax1.text(6.0, floor_y + 0.4, "Bottom touches Floor\n(Distance = 0.00 mm)", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#2d6a4f',
+    # Concealment annotation (Top edge Z = -4.10mm hides Top Plate)
+    ax1.text(6.0, -12.65, "Top Plate Hidden!\n(0.50 mm Rim Margin)", ha='center', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f',
              bbox=dict(boxstyle="round,pad=0.2", fc="#d8f3dc", ec="#2d6a4f", lw=0.8))
 
     # Diameter dimension
-    ax1.annotate('', xy=(9.8, floor_y), xytext=(9.8, floor_y + 7.50),
+    ax1.annotate('', xy=(9.8, -11.60), xytext=(9.8, -4.10),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax1.text(10.3, center_y, "Straight Through-Hole\nØ 7.50 mm (R = 3.75mm)\n[No Counterbore Needed]", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax1.text(10.3, center_y, "Straight Through-Hole\nØ 7.50 mm (R = 3.75mm)\nCenter Z = -7.85 mm\nTop Edge Z = -4.10 mm", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#d90429')
 
-    ax1.plot([2.0, 9.8], [center_y, center_y], linestyle='-.', color='#888888', lw=1)
-    ax1.text(9.5, center_y + 0.3, "CL (Z = -5.35)", ha='right', va='bottom', fontsize=8, color='#666666')
+    ax1.plot([0.2, 9.8], [center_y, center_y], linestyle='-.', color='#888888', lw=1)
     ax1.axis('off')
 
-    # AX2: USB-C North Wall Opening (Front View)
+    # AX2: USB-C North Wall Opening (Front View, Y mapped to Z in [-12.5, +1.0])
     ax2.set_xlim(-2, 18)
-    ax2.set_ylim(-1, 11)
+    ax2.set_ylim(-12.5, 1.5)
     ax2.set_aspect('equal')
     ax2.set_facecolor('#f8f9fa')
     ax2.set_title("2. USB-C Port Cutout (North Wall Front View)", fontsize=12, fontweight='bold')
 
-    # Case wall representation
-    wall2 = patches.Rectangle((0, 0), 16, 9.5, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
+    # Case wall representation (Z from -12.0 to 0.0)
+    wall2 = patches.Rectangle((0, -12.0), 16, 12.0, linewidth=1.5, edgecolor='#333333', facecolor='#e9ecef')
     ax2.add_patch(wall2)
 
     cx2 = 8.0
     w2 = 12.50
     h2 = 6.80
-    # Interior floor line at y = 1.50 (Z = -9.10)
-    fl_y2 = 1.50
-    ax2.plot([0, 16], [fl_y2, fl_y2], linestyle='--', color='#2d6a4f', lw=1.5)
-    ax2.text(0.5, fl_y2 + 0.15, "Interior Floor (Z = -9.10mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+    # Hidden Top Plate bottom line at Z = -3.60
+    tp_bot_z = -3.60
+    ax2.plot([0, 16], [tp_bot_z, tp_bot_z], linestyle='--', color='#1d3557', lw=1.5)
+    ax2.text(0.4, tp_bot_z + 0.20, "Hidden Top Plate Bottom (Z = -3.60mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
 
-    # Cutout bottom at y = 1.50 + 0.60 = 2.10
-    cutout_bot_y = fl_y2 + 0.60
-    cy2 = cutout_bot_y + h2 / 2  # 5.50 (Z = -5.10mm)
-    # USB-C cutout rounded rectangle (12.5 x 6.8 mm, R = 1.5mm)
+    # Cutout centered at Z = -7.35 (Z = -10.75 to -3.95)
+    cy2 = -7.35
+    cutout_bot_y = cy2 - h2 / 2  # -10.75
+    cutout_top_y = cy2 + h2 / 2  # -3.95
     cutout = patches.FancyBboxPatch((cx2 - w2/2, cutout_bot_y), w2, h2,
                                     boxstyle="round,pad=0,rounding_size=1.5",
                                     linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
     ax2.add_patch(cutout)
 
-    # Receptacle silhouette inside (8.94 x 3.16 mm)
-    rec = patches.FancyBboxPatch((cx2 - 8.94/2, cy2 - 3.16/2), 8.94, 3.16,
+    # Receptacle silhouette inside (8.94 x 3.16 mm, centered at Z = -7.38)
+    rec = patches.FancyBboxPatch((cx2 - 8.94/2, -7.38 - 3.16/2), 8.94, 3.16,
                                  boxstyle="round,pad=0,rounding_size=1.0",
                                  linewidth=1.2, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85)
     ax2.add_patch(rec)
-    ax2.text(cx2, cy2, "Type-C Receptacle\n(8.94 x 3.16 mm)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#1d3557')
+    ax2.text(cx2, -7.38, "Type-C Receptacle\n(8.94 x 3.16 mm, Z = -7.38)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#1d3557')
 
     # Width dimension
-    ax2.annotate('', xy=(cx2 - w2/2, cy2 + h2/2 + 0.8), xytext=(cx2 + w2/2, cy2 + h2/2 + 0.8),
+    ax2.annotate('', xy=(cx2 - w2/2, 0.4), xytext=(cx2 + w2/2, 0.4),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax2.text(cx2, cy2 + h2/2 + 1.1, "Width: 12.50 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax2.text(cx2, 0.65, "Width: 12.50 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
 
     # Height dimension
-    ax2.annotate('', xy=(cx2 + w2/2 + 0.8, cutout_bot_y), xytext=(cx2 + w2/2 + 0.8, cutout_bot_y + h2),
+    ax2.annotate('', xy=(cx2 + w2/2 + 0.8, cutout_bot_y), xytext=(cx2 + w2/2 + 0.8, cutout_top_y),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax2.text(cx2 + w2/2 + 1.2, cy2, "Height:\n6.80 mm", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax2.text(cx2 + w2/2 + 1.1, cy2, "Height:\n6.80 mm\n(Z = -7.35)", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#d90429')
 
-    # Clearance from floor annotation (+0.60mm)
-    ax2.annotate('', xy=(cx2, fl_y2), xytext=(cx2, cutout_bot_y),
-                 arrowprops=dict(arrowstyle='<->', color='#2d6a4f', lw=1.2))
-    ax2.text(cx2 - 1.0, (fl_y2 + cutout_bot_y) / 2, "0.60 mm Clearance", ha='right', va='center', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+    # Concealment text at bottom
+    ax2.text(cx2, -11.45, "Cutout Top Z = -3.95 mm (0.35 mm Below Plate Bottom)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#2d6a4f')
 
     ax2.axis('off')
 
