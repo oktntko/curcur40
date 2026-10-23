@@ -326,6 +326,57 @@ def make_usbc_and_trrs_solids(is_right: bool):
     return [usbc_shell, usbc_tongue, trrs_body]
 
 
+def make_sensor_and_jst_smd_solids():
+    """
+    Builds 3D bounding solids for all populated B.Cu SMD components on the separated
+    Sensor PCB (curcur40-pmw3360, B.Cu at Z = -17.60 mm) and rJ3 on Right Main PCB
+    (B.Cu at Z = -5.80 mm) to verify 0.00000000 mm^3 overlap against right_case,
+    trackball cup, PCBs, and standoffs.
+    """
+    solids = []
+    # 1. rJ3 (JST SH 6-pin horizontal, SM06B-SRSS-TB) on Right Main PCB B.Cu at (46.5000, 63.0000), rot +90 deg
+    # Footprint body + pins span local X in [-4.3, 4.3], local Y in [-2.6, 2.75], height 2.95 mm below B.Cu (Z = -5.80..-8.75 mm)
+    rj3_x, rj3_y = to_step_right(46.5000, 63.0000)
+    rj3_solid = (
+        bd.Pos(rj3_x + (-2.60 + 2.75) / 2.0, rj3_y, -5.80 - 2.95 / 2.0)
+        * bd.Box(5.35, 8.60, 2.95)
+    ).solids()[0]
+    rj3_solid.label = "Right_PCB_rJ3_JST_SH"
+    solids.append(rj3_solid)
+
+    # 2. J1 (JST SH 6-pin horizontal, SM06B-SRSS-TB) on Sensor PCB B.Cu at (19.2000, 52.3875), rot -90 deg
+    # With rot -90 deg on B.Cu, local Y [-2.575, +1.675] maps to X_pcb [19.2 - 1.675, 19.2 + 2.575], height 2.95 mm (Z = -17.60..-20.55 mm)
+    j1_x, j1_y = to_step_right(19.2000, 52.3875)
+    j1_solid = (
+        bd.Pos(j1_x + (2.575 - 1.675) / 2.0, j1_y, -17.60 - 2.95 / 2.0)
+        * bd.Box(4.25, 8.60, 2.95)
+    ).solids()[0]
+    j1_solid.label = "Sensor_PCB_J1_JST_SH"
+    solids.append(j1_solid)
+
+    # 3. Sensor PCB B.Cu passive/IC SMD components (including pads + 3D body envelope, Z = -17.60..-18.70 mm)
+    sensor_smds = [
+        # (ref, x_pcb, y_pcb, dx_pcb, dy_pcb, height)
+        ("C1", 0.5000, 54.9955, 2.80, 0.95, 0.90),
+        ("C2", 0.5000, 56.7755, 2.80, 0.95, 0.90),
+        ("C3", 2.3860, 63.3617, 0.95, 2.80, 0.90),
+        ("C4", 10.6235, 63.6617, 2.80, 0.95, 0.90),
+        ("R1", 0.5000, 47.8755, 2.80, 0.95, 0.60),
+        ("R2", 15.3860, 41.6617, 2.80, 0.95, 0.60),
+        ("R3", 7.8860, 41.6617, 2.80, 0.95, 0.60),
+        ("U2", 16.0000, 63.0617, 2.95, 3.00, 1.15),
+    ]
+    for ref, px, py, dx, dy, h in sensor_smds:
+        sx, sy = to_step_right(px, py)
+        smd_solid = (
+            bd.Pos(sx, sy, -17.60 - h / 2.0) * bd.Box(dx, dy, h)
+        ).solids()[0]
+        smd_solid.label = f"Sensor_PCB_{ref}"
+        solids.append(smd_solid)
+
+    return solids
+
+
 def transform_to_desk(shape, is_right: bool):
     """
     Rigidly transforms a left-half or right-half shape from the Top-Plate-horizontal
@@ -527,6 +578,13 @@ def main():
         max(overlap_volume(s, right_plate) for s in right_conn_solids),
     )
 
+    sensor_smd_solids = make_sensor_and_jst_smd_solids()
+    ov_smd_case = max(overlap_volume(s, right_case) for s in sensor_smd_solids)
+    ov_smd_cup = max(overlap_volume(s, cup_global) for s in sensor_smd_solids)
+    ov_smd_so = max(
+        overlap_volume(s, so) for s in sensor_smd_solids for so in standoffs
+    )
+
     print(f"Cup vs Right Case:       {ov_cup_case:.8f} mm^3")
     print(f"Cup vs Right Plate:      {ov_cup_plate:.8f} mm^3")
     print(f"Cup vs Right Main PCB:   {ov_cup_rpcb:.8f} mm^3")
@@ -546,6 +604,9 @@ def main():
     print(f"USBC/TRRS vs Cases:      {ov_conn_case:.8f} mm^3")
     print(f"USBC/TRRS vs Main PCBs:  {ov_conn_pcb:.8f} mm^3")
     print(f"USBC/TRRS vs Top Plates: {ov_conn_plate:.8f} mm^3")
+    print(f"Sensor/JST SMDs vs Case: {ov_smd_case:.8f} mm^3")
+    print(f"Sensor/JST SMDs vs Cup:  {ov_smd_cup:.8f} mm^3")
+    print(f"Sensor/JST SMDs vs SOs:  {ov_smd_so:.8f} mm^3")
     print(f"Optical Distance (Ball Bottom Z=-10.20 to Ref Point Z=-12.60): {dist_opt:.6f} mm")
 
     max_so_ov = 0.0
@@ -615,6 +676,9 @@ def main():
     assert ov_conn_case == 0.0
     assert ov_conn_pcb == 0.0
     assert ov_conn_plate == 0.0
+    assert ov_smd_case == 0.0
+    assert ov_smd_cup == 0.0
+    assert ov_smd_so == 0.0
     assert max_so_ov == 0.0
     assert max_bscr_ov == 0.0
     assert max_tscr_ov == 0.0
