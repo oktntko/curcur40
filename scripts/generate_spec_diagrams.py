@@ -29,42 +29,43 @@ def generate_vertical_stackup_diagram():
         ("Top Plate (FR4)", -2.0, -3.6, '#3a7ca5', 0.85, '#16425b'),
         ("Switch Gap (Kailh Choc v2)", -3.6, -4.2, '#e0e1dd', 0.4, '#778da9'),
         ("Main PCB (FR4)", -4.2, -5.8, '#2a9d8f', 0.85, '#1b4332'),
-        ("Component Cavity (Air Gap)", -5.8, -9.1, '#f4f1de', 0.4, '#e07a5f'),
-        ("Case Floor (3D Print Solid)", -9.1, -12.3, '#495057', 0.85, '#212529'),
+        ("Component Cavity", -5.8, -9.1, '#f4f1de', 0.4, '#e07a5f'),
+        ("Case Boss & Tilted Floor (2.40mm Clamp)", -9.1, -11.5, '#495057', 0.85, '#212529'),
     ]
 
     for name, z_top, z_bot, col, a, ec in layers:
         h = z_top - z_bot
         rect = patches.Rectangle((20, z_bot), 80, h, linewidth=1.5, edgecolor=ec, facecolor=col, alpha=a)
         ax.add_patch(rect)
-        fs_layer = 9.0 if h < 1.0 else 11.0
-        ax.text(60, (z_top + z_bot) / 2, name, ha='center', va='center', fontsize=fs_layer, fontweight='bold', color='#111111')
+        fs_layer = 9.0 if h < 1.0 else 10.5
+        tx = 32 if name == "Component Cavity" else 60
+        ax.text(tx, (z_top + z_bot) / 2, name, ha='center', va='center', fontsize=fs_layer, fontweight='bold', color='#111111')
 
     # Component Protrusions on Under-PCB (B.Cu at Z = -5.80 mm)
-    # 1. Choc Socket
-    sock = patches.Rectangle((28, -5.8 - 1.85), 12, 1.85, linewidth=1, edgecolor='#d90429', facecolor='#ef233c', alpha=0.85)
+    # 1. Choc Socket (1.80mm -> Z = -7.60mm)
+    sock = patches.Rectangle((46, -5.8 - 1.80), 14, 1.80, linewidth=1, edgecolor='#d90429', facecolor='#ef233c', alpha=0.85)
     ax.add_patch(sock)
-    ax.text(34, -6.72, "Choc\nSocket\n(1.85mm)", ha='center', va='center', fontsize=7.5, color='white', fontweight='bold')
+    ax.text(53, -6.70, "Choc\nSocket\n(1.80mm)", ha='center', va='center', fontsize=7.5, color='white', fontweight='bold')
 
-    # 2. TRRS Jack
-    trrs = patches.Rectangle((48, -5.8 - 2.3), 16, 2.3, linewidth=1, edgecolor='#6a040f', facecolor='#9d0208', alpha=0.85)
+    # 2. TRRS Jack (2.30mm -> Z = -8.10mm)
+    trrs = patches.Rectangle((63, -5.8 - 2.30), 15, 2.30, linewidth=1, edgecolor='#6a040f', facecolor='#9d0208', alpha=0.85)
     ax.add_patch(trrs)
-    ax.text(56, -6.95, "TRRS Jack\n(2.3mm)", ha='center', va='center', fontsize=7.5, color='white', fontweight='bold')
+    ax.text(70.5, -6.95, "TRRS Jack\n(2.30mm)", ha='center', va='center', fontsize=7.5, color='white', fontweight='bold')
 
-    # 3. PMW3360 Sensor Body
-    pmw = patches.Rectangle((70, -5.8 - 2.41), 18, 2.41, linewidth=1, edgecolor='#003049', facecolor='#0077b6', alpha=0.85)
-    ax.add_patch(pmw)
-    ax.text(79, -7.0, "PMW3360 IC\n(2.41mm)", ha='center', va='center', fontsize=7.5, color='white', fontweight='bold')
+    # 3. JST SH 6-pin Connector rJ3 (2.95mm -> Z = -8.75mm)
+    jst = patches.Rectangle((81, -5.8 - 2.95), 16, 2.95, linewidth=1, edgecolor='#003049', facecolor='#0077b6', alpha=0.85)
+    ax.add_patch(jst)
+    ax.text(89, -7.27, "JST SH rJ3\n(2.95mm)", ha='center', va='center', fontsize=7.5, color='white', fontweight='bold')
 
-    # Standoff Representation (5.5mm perimeter standoff stands on floor Z=-9.1, reaches Z=-3.6 under Top Plate!)
+    # Standoff Representation (5.5mm perimeter standoff stands on boss top Z=-9.1, reaches Z=-3.6 under Top Plate!)
     standoff = patches.Rectangle((108, -9.1), 6, 5.5, linewidth=1.5, edgecolor='#d4a373', facecolor='#faedcd', hatch='//')
     ax.add_patch(standoff)
     ax.text(111, -6.35, "M2\n5.5mm\nSpacer\n(Under\nPlate!)", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#6b705c')
 
     # Case Floor Counterbore (unified 2.40mm solid floor above counterbore ceiling Z=-11.50mm)
-    cb = patches.Rectangle((40, -12.3), 10, 0.8, linewidth=1.2, edgecolor='#e63946', facecolor='#ffffff', linestyle='--')
+    cb = patches.Rectangle((40, -12.3), 24, 0.8, linewidth=1.2, edgecolor='#e63946', facecolor='#ffffff', linestyle='--')
     ax.add_patch(cb)
-    ax.text(45, -12.3 + 0.40, "Counterbore Ø4.6 (2.40mm Floor)", ha='center', va='center', fontsize=7.5, color='#e63946', fontweight='bold')
+    ax.text(52, -12.3 + 0.40, "Counterbore Ø4.6 (Ceil Z=-11.5)", ha='center', va='center', fontsize=7.5, color='#e63946', fontweight='bold')
 
     def draw_dim(x, z1, z2, label, offset_text=0):
         ax.annotate('', xy=(x, z1), xytext=(x, z2),
@@ -80,16 +81,16 @@ def generate_vertical_stackup_diagram():
     draw_dim(3, 0.0, -10.0, "Pinky: 10.00 mm\n(Thumb: 26.90 mm)", offset_text=-1)
     draw_dim(122, 0.0, -9.1, "Boss Top: -9.10 mm", offset_text=18)
 
-    ax.annotate('Safe Clearance: 0.89 mm\n(Floor Z=-9.1 to Max Part Z=-8.21)',
-                xy=(79, -8.21), xytext=(115, -8.3),
+    ax.annotate('Pinky Skim Floor Z=-8.00 (>=0.40mm clear)\nThumb Tilted Floor drops to Z=-24.50mm',
+                xy=(89, -8.75), xytext=(116, -8.3),
                 arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1, headwidth=5),
-                fontsize=8.5, fontweight='bold', color='#d90429',
+                fontsize=8.0, fontweight='bold', color='#d90429',
                 bbox=dict(boxstyle="round,pad=0.3", fc="#ffe3e0", ec="#d90429", lw=1))
 
-    ax.set_title("curcur40 Vertical Z-Stackup Architecture (Kailh Choc v2 True Stackup)", fontsize=14, fontweight='bold', pad=15)
+    ax.set_title("curcur40 Vertical Z-Stackup Architecture (Main PCB & Perimeter Boss)", fontsize=14, fontweight='bold', pad=15)
     ax.set_xticks([])
-    ax.set_yticks([0, -2.0, -3.6, -4.2, -5.8, -9.1, -12.3])
-    ax.set_yticklabels(['Z=0.0 (Case Rim)', 'Z=-2.0 (Plate Top)', 'Z=-3.6 (Plate Bot)', 'Z=-4.2 (PCB Top)', 'Z=-5.8 (PCB Bot)', 'Z=-9.1 (Floor)', 'Z=-12.3 (Case Bot)'])
+    ax.set_yticks([0, -2.0, -3.6, -4.2, -5.8, -9.1, -11.5])
+    ax.set_yticklabels(['Z=0.0 (Case Rim)', 'Z=-2.0 (Plate Top)', 'Z=-3.6 (Plate Bot)', 'Z=-4.2 (PCB Top)', 'Z=-5.8 (PCB Bot)', 'Z=-9.1 (Boss Top)', 'Z=-11.5 (CB Ceil)'])
     ax.grid(axis='y', linestyle=':', alpha=0.6, color='#888888')
 
     plt.tight_layout()
@@ -124,24 +125,24 @@ def generate_ports_and_screws_diagram():
     pcb_rect = patches.Rectangle((0.0, -5.80), 1.2, 1.60, linewidth=1.2, edgecolor='#1b4332', facecolor='#2d6a4f', alpha=0.85)
     ax1.add_patch(pcb_rect)
 
-    # TRRS Straight Through-Hole Ø 6.80mm centered at Z = -5.85 (Z = -9.25 to -2.45)
-    center_y = -5.85
-    hole_straight = patches.Rectangle((3, -9.25), 6.0, 6.80, linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
+    # TRRS Straight Through-Hole Ø 6.40mm centered at Z = -7.85 (Z = -11.05 to -4.65)
+    center_y = -7.85
+    hole_straight = patches.Rectangle((3, -11.05), 6.0, 6.40, linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
     ax1.add_patch(hole_straight)
 
-    # Mid-mount Jack silhouette inside (centered at Z = -5.84, Ø 5.0mm barrel)
+    # Bottom-mount PJ-398A-5A Jack barrel inside (centered at Z = -7.85, Ø 5.0mm barrel)
     jack_barrel = patches.Rectangle((0.6, center_y - 2.50), 3.2, 5.0, linewidth=1.2, edgecolor='#6a040f', facecolor='#9d0208', alpha=0.9)
     ax1.add_patch(jack_barrel)
-    ax1.text(2.2, center_y, "TRRS\n(Mid-Mnt)", ha='center', va='center', fontsize=6.5, color='white', fontweight='bold')
+    ax1.text(2.2, center_y, "TRRS\n(PJ-398A)", ha='center', va='center', fontsize=6.5, color='white', fontweight='bold')
 
     # Concealment annotation
-    ax1.text(6.0, -10.65, "Concentric w/ B.Cu\n(+0.90 mm Margin)", ha='center', va='bottom', fontsize=7.5, fontweight='bold', color='#2d6a4f',
+    ax1.text(6.0, -3.50, "Hides Plate & PCB\n(Top Z = -4.65mm)", ha='center', va='bottom', fontsize=6.5, fontweight='bold', color='#2d6a4f',
              bbox=dict(boxstyle="round,pad=0.2", fc="#d8f3dc", ec="#2d6a4f", lw=0.8))
 
     # Diameter dimension
-    ax1.annotate('', xy=(9.8, -9.25), xytext=(9.8, -2.45),
+    ax1.annotate('', xy=(9.8, -11.05), xytext=(9.8, -4.65),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax1.text(10.3, center_y, "Straight Through-Hole\nØ 6.80 mm (R = 3.40mm)\nCenter Z = -5.85 mm\nTop Edge Z = -2.45 mm", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#d90429')
+    ax1.text(10.3, center_y, "Straight Through-Hole\nØ 6.40 mm (R = 3.20mm)\nCenter Z = -7.85 mm\nTop Edge Z = -4.65 mm", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#d90429')
 
     ax1.plot([0.2, 9.8], [center_y, center_y], linestyle='-.', color='#888888', lw=1)
     ax1.axis('off')
@@ -158,40 +159,40 @@ def generate_ports_and_screws_diagram():
     ax2.add_patch(wall2)
 
     cx2 = 8.0
-    w2 = 12.00
-    h2 = 6.20
+    w2 = 10.60
+    h2 = 4.60
     # Top Plate top & bottom lines (Z = -2.00 to -3.60)
     ax2.plot([0, 16], [-2.00, -2.00], linestyle='--', color='#1d3557', lw=1.2)
     ax2.text(0.4, -1.85, "Top Plate Top (Z = -2.00mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
 
-    # Cutout centered at Z = -5.85 (Z = -8.95 to -2.75)
-    cy2 = -5.85
-    cutout_bot_y = cy2 - h2 / 2  # -8.95
-    cutout_top_y = cy2 + h2 / 2  # -2.75
+    # Cutout centered at Z = -7.05 (Z = -9.35 to -4.75)
+    cy2 = -7.05
+    cutout_bot_y = cy2 - h2 / 2  # -9.35
+    cutout_top_y = cy2 + h2 / 2  # -4.75
     cutout = patches.FancyBboxPatch((cx2 - w2/2, cutout_bot_y), w2, h2,
                                     boxstyle="round,pad=0,rounding_size=1.5",
                                     linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
     ax2.add_patch(cutout)
 
-    # Receptacle silhouette inside (8.94 x 3.16 mm, centered at Z = -5.87)
-    rec = patches.FancyBboxPatch((cx2 - 8.94/2, -5.87 - 3.16/2), 8.94, 3.16,
+    # Receptacle silhouette inside (8.94 x 3.16 mm, centered at Z = -7.38)
+    rec = patches.FancyBboxPatch((cx2 - 8.94/2, -7.38 - 3.16/2), 8.94, 3.16,
                                  boxstyle="round,pad=0,rounding_size=1.0",
                                  linewidth=1.2, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85)
     ax2.add_patch(rec)
-    ax2.text(cx2, -5.87, "Mid-Mount Type-C\n(8.94 x 3.16 mm, Z = -5.87)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#1d3557')
+    ax2.text(cx2, -7.38, "TYPE-C-31-M-13C\n(8.94 x 3.16 mm, Z = -7.38)", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#1d3557')
 
     # Width dimension
     ax2.annotate('', xy=(cx2 - w2/2, 0.4), xytext=(cx2 + w2/2, 0.4),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax2.text(cx2, 0.65, "Width: 12.00 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax2.text(cx2, 0.65, "Width: 10.60 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
 
     # Height dimension
     ax2.annotate('', xy=(cx2 + w2/2 + 0.8, cutout_bot_y), xytext=(cx2 + w2/2 + 0.8, cutout_top_y),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax2.text(cx2 + w2/2 + 1.1, cy2, "Height:\n6.20 mm\n(Z = -5.85)", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#d90429')
+    ax2.text(cx2 + w2/2 + 1.1, cy2, "Height:\n4.60 mm\n(Z = -7.05)", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#d90429')
 
     # Concealment text at bottom
-    ax2.text(cx2, -9.85, "Cutout Z = -8.95 to -2.75 mm (±1.52 mm Margin)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#2d6a4f')
+    ax2.text(cx2, -10.0, "Cutout Z = -9.35 to -4.75 mm (Hides Plate Z = -3.60..-2.00)", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#2d6a4f')
 
     ax2.axis('off')
 
@@ -262,7 +263,7 @@ def generate_trackball_optical_diagram():
     ax.add_patch(lens_flange)
     ax.text(0, 4.1, "LM19 Lens Flange (Z_rel = +3.40 to +4.80 mm)", ha='center', va='center', fontsize=8.5, fontweight='bold', color='#7f4f24')
     ax.annotate('2.40 mm Optical Tracking Distance\n(Flange Bottom Z_rel=+3.40 to Ball Bottom Z_rel=+5.80)',
-                xy=(0, 5.80), xytext=(11, 7.5),
+                xy=(0, 5.80), xytext=(8.5, 8.2),
                 arrowprops=dict(facecolor='#0077b6', shrink=0.05, width=1, headwidth=4),
                 fontsize=8, fontweight='bold', color='#0077b6',
                 bbox=dict(boxstyle="round,pad=0.2", fc="#e0f2fe", ec="#0077b6", lw=0.8))
@@ -273,7 +274,7 @@ def generate_trackball_optical_diagram():
     ax.add_patch(leg_left)
     ax.add_patch(leg_right)
     ax.annotate('4 Lens Legs extend DOWN\nthrough 16.9x8.7mm PCB cutout',
-                xy=(7.2, -2.5), xytext=(12, -0.5),
+                xy=(7.2, -2.5), xytext=(10.5, 1.2),
                 arrowprops=dict(facecolor='#d48b00', shrink=0.05, width=1, headwidth=4),
                 fontsize=8, fontweight='bold', color='#d48b00',
                 bbox=dict(boxstyle="round,pad=0.2", fc="#fff3cd", ec="#d48b00", lw=0.8))
@@ -296,20 +297,20 @@ def generate_trackball_optical_diagram():
     ax.plot([-8.1, -9.2, -9.2], [-2.3, -2.3, 0.8], color='#ffd166', lw=2.5)
     ax.plot([8.1, 9.2, 9.2], [-2.3, -2.3, 0.8], color='#ffd166', lw=2.5)
     ax.annotate('16 Pins emerge from IC sides,\nextend UP through PCB to F.Cu',
-                xy=(-9.2, 0.4), xytext=(-23, 2.5),
+                xy=(-9.2, 0.4), xytext=(-24, 2.5),
                 arrowprops=dict(facecolor='#cca000', shrink=0.05, width=1, headwidth=4),
                 fontsize=8, fontweight='bold', color='#cca000',
                 bbox=dict(boxstyle="round,pad=0.2", fc="#fff9db", ec="#cca000", lw=0.8))
 
-    # Flat Case Interior Floor (Z_rel = -4.90 mm, 3.30 mm below B.Cu)
-    floor = patches.Rectangle((-24, -8.1), 48, 3.2, linewidth=2, edgecolor='#495057', facecolor='#ced4da', alpha=0.7)
+    # Tilted Case Interior Floor (Z_rel = -6.29 to -8.16 mm / Global Z = -22.29 to -24.16 mm)
+    floor = patches.Rectangle((-24, -8.7), 48, 2.4, linewidth=2, edgecolor='#495057', facecolor='#ced4da', alpha=0.7)
     ax.add_patch(floor)
-    ax.text(0, -6.5, "Sunk Sensor Bay Floor (Z_rel = -4.90 mm / Global Z = -20.90 mm)\n(Zero Through-Hole or Sensor Pocket Needed!)", ha='center', va='center', fontsize=9.5, fontweight='bold', color='#212529')
+    ax.text(0, -7.5, "Tilted Case Interior Floor (Z_rel = -6.29..-8.16 mm / Global Z = -22.29..-24.16 mm)\n(Zero Through-Hole or Sensor Pocket Needed!)", ha='center', va='center', fontsize=9.0, fontweight='bold', color='#212529')
 
     # Clearance arrow
-    ax.annotate('', xy=(12, -4.01), xytext=(12, -4.90),
+    ax.annotate('', xy=(11.5, -4.01), xytext=(11.5, -6.29),
                 arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.8))
-    ax.text(13.5, -4.45, "Clearance: 0.89 mm\n(Completely safe)", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax.text(12.5, -5.15, "Clearance: >= 2.28 mm\n(Completely safe)", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
 
     ax.set_title("Trackball & Optical Sensor Stackup (pmw3360-lens-pcb-assembly)", fontsize=13, fontweight='bold', pad=15)
     ax.axis('off')
@@ -497,40 +498,33 @@ def generate_trackball_cup_detail_drawing():
     ax1.add_patch(pcb_xz)
     ax1.text(-19, -0.8, "Sensor PCB (1.6mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=3)
 
-    # 4 Mounting Ears: X-Z cross section shows Left Ear (X=-12) and Right Ear (X=+12)
-    # Left Ear: body X in [-15.25, -8.75], Z in [0, 2.4]
-    ear_l_solid1 = patches.Rectangle((-15.25, 0.0), 1.45, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
-    ear_l_solid2 = patches.Rectangle((-10.20, 0.0), 1.45, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
-    ear_l_hole = patches.Rectangle((-13.80, 0.0), 3.60, 2.4, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=4)
-    ax1.add_patch(ear_l_solid1)
-    ax1.add_patch(ear_l_solid2)
-    ax1.add_patch(ear_l_hole)
+    # 4 Mounting Ears: X-Z cross section shows Left Ear (X=-12, R=3.0) and Right Ear (X=+12, R=3.0), Height 5.50mm
+    # Stepped hole: lower Z in [0, 3.9] is Ø 3.30 mm (±1.65), upper Z in [3.9, 5.5] is Ø 2.40 mm (±1.20)
+    for ex_c in (-12.0, 12.0):
+        ear_body = patches.Rectangle((ex_c - 3.0, 0.0), 6.0, 5.50, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
+        ear_h_low = patches.Rectangle((ex_c - 1.65, 0.0), 3.30, 3.90, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=4)
+        ear_h_top = patches.Rectangle((ex_c - 1.20, 3.90), 2.40, 1.60, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=4)
+        ax1.add_patch(ear_body)
+        ax1.add_patch(ear_h_low)
+        ax1.add_patch(ear_h_top)
 
-    # Right Ear: body X in [8.75, 15.25], Z in [0, 2.4]
-    ear_r_solid1 = patches.Rectangle((8.75, 0.0), 1.45, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
-    ear_r_solid2 = patches.Rectangle((13.80, 0.0), 1.45, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
-    ear_r_hole = patches.Rectangle((10.20, 0.0), 3.60, 2.4, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=4)
-    ax1.add_patch(ear_r_solid1)
-    ax1.add_patch(ear_r_solid2)
-    ax1.add_patch(ear_r_hole)
-
-    # Cup Body Profile (X-Z)
+    # Cup Body Profile (X-Z): Flush R=14.0mm cylindrical outer wall up to claw tip Z=22.80
     cup_wall_left = patches.Polygon([
-        (-14.0, 0.0), (-14.0, 20.5), (-14.5, 20.5), (-12.5, 22.8), (-11.2, 22.8),
+        (-14.0, 0.0), (-14.0, 20.5), (-12.5, 22.8), (-11.2, 22.8),
         (-11.5, 20.5), (-12.0, 14.0), (-8.0, 5.8), (-5.5, 5.8), (-5.5, 3.4), (-10.5, 3.4), (-10.5, 0.0)
     ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
     ax1.add_patch(cup_wall_left)
 
     cup_wall_right = patches.Polygon([
-        (14.0, 0.0), (14.0, 20.5), (14.5, 20.5), (12.5, 22.8), (11.2, 22.8),
+        (14.0, 0.0), (14.0, 20.5), (12.5, 22.8), (11.2, 22.8),
         (11.5, 20.5), (12.0, 14.0), (8.0, 5.8), (5.5, 5.8), (5.5, 3.4), (10.5, 3.4), (10.5, 0.0)
     ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
     ax1.add_patch(cup_wall_right)
 
-    # Claws highlight (West 180° and East 0°)
-    claw_w = patches.Polygon([(-14.5, 20.5), (-12.5, 22.8), (-11.2, 22.8), (-11.5, 20.5), (-14.0, 20.5)],
+    # Claws highlight (West 180° and East 0°, flush outer R=14.0mm)
+    claw_w = patches.Polygon([(-14.0, 14.0), (-14.0, 20.5), (-12.5, 22.8), (-11.2, 22.8), (-11.5, 20.5), (-12.0, 14.0)],
                              closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
-    claw_e = patches.Polygon([(14.5, 20.5), (12.5, 22.8), (11.2, 22.8), (11.5, 20.5), (14.0, 20.5)],
+    claw_e = patches.Polygon([(14.0, 14.0), (14.0, 20.5), (12.5, 22.8), (11.2, 22.8), (11.5, 20.5), (12.0, 14.0)],
                              closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
     ax1.add_patch(claw_w)
     ax1.add_patch(claw_e)
@@ -538,9 +532,9 @@ def generate_trackball_cup_detail_drawing():
     ax1.text(13.0, 23.5, "East Claw (0°)\nTip Z=+22.80", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#1d3557')
 
     # LM19 Lens body in pocket
-    lens_rect = patches.Rectangle((-10.5, 0.0), 21.0, 3.4, linewidth=1.2, edgecolor='#e76f51', facecolor='#f4a261', alpha=0.9, zorder=3)
+    lens_rect = patches.Rectangle((-9.0, 0.0), 18.0, 3.4, linewidth=1.2, edgecolor='#e76f51', facecolor='#f4a261', alpha=0.9, zorder=3)
     ax1.add_patch(lens_rect)
-    ax1.text(0, 1.7, "LM19 Lens Body (Flange Z=+3.40mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=4)
+    ax1.text(0, 1.7, "LM19 Lens (Flange Z=+3.40mm)", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#ffffff', zorder=4)
 
     # 25mm Trackball Sphere
     ball_xz = patches.Circle((0, 18.30), 12.50, linewidth=1.5, edgecolor='#0077b6', facecolor='#caf0f8', alpha=0.45, zorder=4)
@@ -557,21 +551,24 @@ def generate_trackball_cup_detail_drawing():
     brg_r = patches.Circle((7.20, 7.66), 1.0, linewidth=1.2, edgecolor='#6a040f', facecolor='#d90429', zorder=6)
     ax1.add_patch(brg_l)
     ax1.add_patch(brg_r)
-    ax1.text(7.5, 7.0, "Ø2.0mm Bearing\n(Z=+7.66mm)", ha='left', va='top', fontsize=7.5, fontweight='bold', color='#d90429')
+    ax1.text(4.2, 8.8, "Ø2.0mm Bearing\n(Z=+7.66mm)", ha='center', va='bottom', fontsize=7.0, fontweight='bold', color='#d90429', zorder=7)
 
-    # Dimensions on Left (Vertical Stackup)
-    def dim_v(z1, z2, label, x, col='#2b2d42', fs=8):
+    # Dimensions on Left/Right (Vertical Stackup - staggered Y so text boxes never overlap)
+    def dim_v(z1, z2, label, x, col='#2b2d42', fs=7.5, y_text=None):
         ax1.annotate('', xy=(x, z1), xytext=(x, z2),
                      arrowprops=dict(arrowstyle='<->', color=col, lw=1.0))
-        ax1.text(x - 0.4, (z1 + z2) / 2, label, ha='right', va='center', fontsize=fs, fontweight='bold', color=col,
-                 bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec=col, lw=0.6, alpha=0.9))
+        ty = (z1 + z2) / 2 if y_text is None else y_text
+        ha = 'right' if x < 0 else 'left'
+        dx_t = -0.4 if x < 0 else 0.4
+        ax1.text(x + dx_t, ty, label, ha=ha, va='center', fontsize=fs, fontweight='bold', color=col,
+                 bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec=col, lw=0.6, alpha=0.95))
 
-    dim_v(5.5, 0.0, "Ear: 5.50mm", -16.0, '#1d3557', 7.5)
-    dim_v(3.4, 0.0, "Lens: 3.40mm", -19.0, '#e76f51', 7.5)
-    dim_v(5.8, 0.0, "PCB to Ball:\n5.80mm", -22.0, '#0077b6', 7.5)
-    dim_v(18.30, 0.0, "Center: 18.30mm", -24.5, '#03045e', 7.5)
-    dim_v(22.80, 18.30, "Claw Tip:\n+4.50mm", 16.5, '#1d3557', 7.5)
-    dim_v(30.80, 0.0, "Ball Top:\n30.80mm", 20.5, '#0077b6', 7.5)
+    dim_v(3.4, 0.0, "Lens: 3.40mm", -15.8, '#e76f51', 7.5, y_text=1.5)
+    dim_v(5.5, 0.0, "Ear: 5.50mm", -16.8, '#1d3557', 7.5, y_text=4.8)
+    dim_v(18.30, 0.0, "Center: 18.30mm", -17.8, '#03045e', 7.5, y_text=15.0)
+    dim_v(5.8, 0.0, "Ball Bot: 5.80mm", 15.8, '#0077b6', 7.5, y_text=2.9)
+    dim_v(22.80, 18.30, "Claw Tip:\n+4.50mm", 15.8, '#1d3557', 7.5, y_text=20.5)
+    dim_v(30.80, 0.0, "Ball Top:\n30.80mm", 17.5, '#0077b6', 7.5, y_text=28.5)
 
     # Horizontal Ear pitch dimension
     ax1.annotate('', xy=(-12.0, -3.2), xytext=(12.0, -3.2),
@@ -580,9 +577,9 @@ def generate_trackball_cup_detail_drawing():
 
     # Ear Hole dimension callout
     ax1.annotate('Stepped Ear (Height: 5.50 mm)\nUpper 1.6mm: Ø2.4mm / Lower 3.9mm: Ø3.3mm',
-                 xy=(-12.0, 2.5), xytext=(-22.0, 8.5),
+                 xy=(-12.0, 5.5), xytext=(-25.2, 9.5),
                  arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=4),
-                 fontsize=8, fontweight='bold', color='#1d3557',
+                 fontsize=7.5, fontweight='bold', color='#1d3557',
                  bbox=dict(boxstyle="round,pad=0.2", fc="#e0f2fe", ec="#1d3557", lw=0.8))
 
     ax1.set_title("1. Trackball Cup Cross-Section (X-Z View)\n[側面断面・正面図: 西/東爪・耳厚み・光学系]", fontsize=11, fontweight='bold', pad=12)
@@ -611,20 +608,20 @@ def generate_trackball_cup_detail_drawing():
     ]
 
     for ex, ey, elab in ear_coords:
-        boss = patches.Circle((ex, ey), 3.25, linewidth=1.5, edgecolor='#1d3557', facecolor='#457b9d', zorder=2)
+        boss = patches.Circle((ex, ey), 3.00, linewidth=1.5, edgecolor='#1d3557', facecolor='#457b9d', zorder=2)
         ax2.add_patch(boss)
         ang = np.arctan2(ey, ex)
-        dx = 3.25 * np.sin(ang)
-        dy = -3.25 * np.cos(ang)
+        dx = 3.00 * np.sin(ang)
+        dy = -3.00 * np.cos(ang)
         p_ear = [(ex + dx, ey + dy), (ex - dx, ey - dy),
                  (13.5 * np.cos(ang - 0.25), 13.5 * np.sin(ang - 0.25)),
                  (13.5 * np.cos(ang + 0.25), 13.5 * np.sin(ang + 0.25))]
         bridge = patches.Polygon(p_ear, closed=True, edgecolor='#1d3557', facecolor='#457b9d', zorder=1)
         ax2.add_patch(bridge)
 
-        seat = patches.Circle((ex, ey), 2.0, linewidth=1.0, edgecolor='#adb5bd', facecolor='#6c757d', linestyle=':', zorder=3)
+        seat = patches.Circle((ex, ey), 1.65, linewidth=1.0, edgecolor='#adb5bd', facecolor='#6c757d', linestyle=':', zorder=3)
         ax2.add_patch(seat)
-        hole = patches.Circle((ex, ey), 1.80, linewidth=1.2, edgecolor='#d90429', facecolor='#ffffff', zorder=4)
+        hole = patches.Circle((ex, ey), 1.20, linewidth=1.2, edgecolor='#d90429', facecolor='#ffffff', zorder=4)
         ax2.add_patch(hole)
         ha_align = 'left' if ex > 0 else 'right'
         va_align = 'bottom' if ey > 0 else 'top'
@@ -711,28 +708,26 @@ def generate_trackball_cup_detail_drawing():
     ax3.add_patch(pcb_yz)
     ax3.text(0, -0.8, "Sensor PCB (1.6mm)", ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=3)
 
-    # South Ear (Y = -11.3) and North Ear (Y = +11.3)
-    ear_s = patches.Rectangle((-14.55, 0.0), 6.5, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
-    ear_s_h = patches.Rectangle((-13.10, 0.0), 3.60, 2.4, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=5)
-    ax3.add_patch(ear_s)
-    ax3.add_patch(ear_s_h)
-
-    ear_n = patches.Rectangle((8.05, 0.0), 6.5, 2.4, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
-    ear_n_h = patches.Rectangle((9.50, 0.0), 3.60, 2.4, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=5)
-    ax3.add_patch(ear_n)
-    ax3.add_patch(ear_n_h)
+    # South Ear (Y = -11.3, R = 3.0) and North Ear (Y = +11.3, R = 3.0), Height 5.50mm stepped hole
+    for ey_c in (-11.3, 11.3):
+        ear_b = patches.Rectangle((ey_c - 3.0, 0.0), 6.0, 5.50, linewidth=1.2, edgecolor='#1d3557', facecolor='#457b9d', zorder=4)
+        ear_hl = patches.Rectangle((ey_c - 1.65, 0.0), 3.30, 3.90, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=5)
+        ear_ht = patches.Rectangle((ey_c - 1.20, 3.90), 2.40, 1.60, linewidth=1.0, edgecolor='#d90429', facecolor='#ffffff', linestyle='--', zorder=5)
+        ax3.add_patch(ear_b)
+        ax3.add_patch(ear_hl)
+        ax3.add_patch(ear_ht)
 
     # Cup Body Profile in Y-Z:
     # Cup body has UNIFORM rim height Z = 14.0 mm all around (below Equator Z = 18.30 mm)
-    # North side (+Y) has North Claw rising from Z = 14.0 to Z = 22.80 mm
+    # North side (+Y) has North Claw rising from Z = 14.0 to Z = 22.80 mm with flush outer R = 14.0 mm
     # South side (-Y) stops cleanly at Z = 14.0 mm (No claw!)
     cup_yz_poly = patches.Polygon([
         # South uniform rim (Z = 14.0)
         (-14.0, 0.0), (-14.0, 14.0), (-11.8, 14.0),
         # Inner bowl profile
         (-8.0, 5.8), (-5.5, 3.4), (5.5, 3.4), (8.0, 5.8),
-        # North side: uniform rim at 14.0, then claw rises to 22.80
-        (11.8, 14.0), (11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.5, 20.5), (14.0, 14.0), (14.0, 0.0)
+        # North side: uniform rim at 14.0, then claw rises to 22.80 with flush outer R = 14.0
+        (11.8, 14.0), (11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.0, 20.5), (14.0, 14.0), (14.0, 0.0)
     ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
     ax3.add_patch(cup_yz_poly)
 
@@ -740,7 +735,7 @@ def generate_trackball_cup_detail_drawing():
     ax3.plot([-14.0, 14.0], [14.0, 14.0], linestyle=':', color='#1d3557', lw=1.0, zorder=4)
 
     # North Claw highlight
-    claw_n_yz = patches.Polygon([(11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.5, 20.5), (14.0, 14.0), (11.8, 14.0)],
+    claw_n_yz = patches.Polygon([(11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.0, 20.5), (14.0, 14.0), (11.8, 14.0)],
                                 closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
     ax3.add_patch(claw_n_yz)
     ax3.text(13.0, 23.5, "North Claw (90°)\nTip Z=+22.80mm", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#03045e')
@@ -771,8 +766,8 @@ def generate_trackball_cup_detail_drawing():
                  arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
     ax3.text(0, -3.6, "Ear Pitch Y: 22.60 mm", ha='center', va='top', fontsize=8.5, fontweight='bold', color='#1d3557')
 
-    ax3.text(-11.3, 3.2, "South Ear", ha='center', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
-    ax3.text(11.3, 3.2, "North Ear", ha='center', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
+    ax3.text(-11.3, 6.0, "South Ear\n(5.5mm)", ha='center', va='bottom', fontsize=7.0, fontweight='bold', color='#1d3557')
+    ax3.text(11.3, 6.0, "North Ear\n(5.5mm)", ha='center', va='bottom', fontsize=7.0, fontweight='bold', color='#1d3557')
 
     ax3.set_title("3. Longitudinal Elevation (Y-Z View)\n[側面立面図: 南側爪なし vs 北側保持爪]", fontsize=11, fontweight='bold', pad=12)
     ax3.axis('off')

@@ -38,9 +38,9 @@
   <circle cx="308" cy="376" r="7" class="pad"/>
   <circle cx="308" cy="402" r="7" class="pad"/>
   <circle cx="308" cy="428" r="7" class="pad"/>
-  <text x="333" y="380" class="small" fill="#fff">3</text>
+  <text x="333" y="380" class="small" fill="#fff">1</text>
   <text x="333" y="406" class="small" fill="#fff">2</text>
-  <text x="333" y="432" class="small" fill="#fff">1</text>
+  <text x="333" y="432" class="small" fill="#fff">3</text>
   <text x="307" y="462" class="small" text-anchor="middle" fill="#fff">JP1 (B.Cu)</text>
   <path d="M322 404 C389 398 408 354 448 337" class="leader"/>
 
@@ -67,21 +67,19 @@
 
   <text x="790" y="260" class="label">裏面（B.Cu）から見た1番ピン位置合わせ</text>
   <rect x="802" y="281" width="294" height="190" rx="14" class="board"/>
-  <rect x="892" y="324" width="112" height="105" fill="#0f172a" stroke="#e2e8f0" stroke-width="4"/>
-  <rect x="873" y="306" width="18" height="18" fill="#facc15" stroke="#fff" stroke-width="3"/>
+  <rect x="900" y="298" width="96" height="154" fill="#0f172a" stroke="#e2e8f0" stroke-width="4"/>
+  <rect x="1003" y="424" width="18" height="18" fill="#facc15" stroke="#fff" stroke-width="3"/>
   <text x="948" y="381" class="small" text-anchor="middle" fill="#fff">中央の開口</text>
-  <text x="840" y="303" class="small" fill="#fff">Pin 1 角ランド</text>
-  <path d="M873 310 L859 292" stroke="#fff" stroke-width="2"/>
-  <rect x="850" y="475" width="198" height="50" rx="8" fill="#334155" stroke="#0f172a" stroke-width="3"/>
-  <path d="M886 475 L901 432 H997 L1012 475Z" fill="#111827" stroke="#64748b" stroke-width="2"/>
-  <text x="949" y="507" class="small" text-anchor="middle" fill="#fff">PMW3360DM-T2QU (U1)</text>
-  <circle cx="867" cy="470" r="8" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
-  <text x="1030" y="457" class="small">光学窓（F.Cu側へ）</text>
-  <path d="M1026 462 L1002 446" class="leader"/>
+  <text x="1028" y="439" class="small" fill="#fff">Pin 1 角ランド</text>
+  <rect x="850" y="478" width="198" height="47" rx="8" fill="#334155" stroke="#0f172a" stroke-width="3"/>
+  <path d="M886 478 L901 456 H997 L1012 478Z" fill="#111827" stroke="#64748b" stroke-width="2"/>
+  <text x="949" y="508" class="small" text-anchor="middle" fill="#fff">PMW3360DM-T2QU (U1)</text>
+  <circle cx="1030" cy="490" r="8" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
+  <text x="1055" y="495" class="small">Pin 1 印（右下角ランドへ）</text>
   <path d="M1150 390 H1097" class="leader"/>
   <text x="1155" y="369" class="body">ICの1番ピン印</text>
-  <text x="1155" y="396" class="body">と基板の四角ランド</text>
-  <text x="1155" y="423" class="body">を一致させる</text>
+  <text x="1155" y="396" class="body">と基板右下の四角</text>
+  <text x="1155" y="423" class="body">ランドを一致させる</text>
   <text x="770" y="555" class="small">ICパッケージ上面が基板裏面（B.Cu、Z = -1.60mm）に密着するまで全16ピンを差し込みます。</text>
 
   <!-- Step 3: Solder 16 pins on F.Cu side -->
