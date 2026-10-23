@@ -13,9 +13,9 @@ and verify zero interference across all components per docs/case_spec.md:
 - PMW3360 Sensor IC & LM19-LSI Optical Lens
 - 14x Unified M2 5.50mm Female-Female Standoffs:
     - 10x Perimeter (5 Left L1-L5 + 5 Right R1-R5, Z = -9.10 to -3.60 mm, seated under Top Plate)
-    - 4x Trackball Cup (TB1-TB4, Z = -19.10 to -13.60 mm, seated on Z = -19.10 mm bosses and penetrating 1.60 mm into Cup Ear Ø 3.60 mm holes)
+    - 4x Trackball Cup (TB1-TB4, Z = -17.60 to -12.10 mm, seated on Z = -17.60 mm bosses, passing through 1.60 mm Sensor PCB and 3.90 mm into 5.50 mm Cup Ear socket)
 - 14x Bottom M2x4mm Screws (head seated against counterbore ceiling z_boss_top - 2.40 mm)
-- 14x Top M2x4mm Screws (4 on Trackball Cup ears Z = -13.60 mm, 10 on Top Plates Z = -2.00 mm)
+- 14x Top M2x4mm Screws (4 on Trackball Cup ears Z = -10.50 mm, 10 on Top Plates Z = -2.00 mm)
 - Keycaps (Choc v2 low-profile) & CKW12 Rotary Encoder
 """
 import math
@@ -180,10 +180,10 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
     sk = make_filleted_sketch(pts_step)
     pcb = bd.extrude(sk, amount=1.60).moved(bd.Location((0, 0, -5.80)))
 
-    # Cut Ø 3.25 mm (radius 1.625 mm) spacer through-holes
+    # Cut Ø 3.30 mm (radius 1.65 mm) spacer through-holes
     for hx, hy in holes_step:
         pcb = pcb - bd.Cylinder(
-            radius=1.625,
+            radius=1.65,
             height=4.0,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((hx, hy, -6.5)))
@@ -361,7 +361,7 @@ def main():
     enc_x, enc_y = to_step_right(*RIGHT_ENCODER)
     ckw12_solids = make_ckw12_solids(enc_x, enc_y)
 
-    # Create all 14x Unified 5.50mm Standoffs (10x perimeter at Z=-9.10..-3.60, 4x trackball cup at Z=-19.10..-13.60)
+    # Create all 14x Unified 5.50mm Standoffs (10x perimeter at Z=-9.10..-3.60, 4x trackball cup at Z=-17.60..-12.10)
     left_holes_step = [to_step_left(x, y) for x, y in LEFT_PERIMETER_HOLES_PCB]
     right_perim_step = [to_step_right(x, y) for x, y in RIGHT_PERIMETER_HOLES_PCB]
     right_tb_step = [to_step_right(x, y) for x, y in RIGHT_TB_HOLES_PCB]
@@ -373,7 +373,7 @@ def main():
     all_holes = (
         [(x, y, "L_Perim", -9.10, -2.00, 5.50, False) for x, y in left_holes_step]
         + [(x, y, "R_Perim", -9.10, -2.00, 5.50, True) for x, y in right_perim_step]
-        + [(x, y, "R_TB", -19.10, -13.60, 5.50, True) for x, y in right_tb_step]
+        + [(x, y, "R_TB", -17.60, -10.50, 5.50, True) for x, y in right_tb_step]
     )
 
     left_fasteners = []
@@ -506,6 +506,24 @@ def main():
         )
     print(f"Max Bottom Screw Overlap vs Cases:          {max_bscr_ov:.8f} mm^3")
 
+    max_tscr_ov = 0.0
+    for t_scr in top_screws:
+        max_tscr_ov = max(
+            max_tscr_ov,
+            overlap_volume(t_scr, right_plate),
+            overlap_volume(t_scr, left_plate),
+            overlap_volume(t_scr, cup_global),
+            overlap_volume(t_scr, right_pcb),
+            overlap_volume(t_scr, left_pcb),
+        )
+    print(f"Max Top Screw Overlap vs Plates/Cup/PCBs:   {max_tscr_ov:.8f} mm^3")
+
+    max_scr_pair_ov = max(
+        overlap_volume(b_scr, t_scr)
+        for b_scr, t_scr in zip(bottom_screws, top_screws)
+    )
+    print(f"Max Top vs Bottom Screw Tip Overlap:        {max_scr_pair_ov:.8f} mm^3")
+
     max_cap_screw_ov = 0.0
     for t_scr in top_screws:
         for kc in keycaps:
@@ -530,6 +548,8 @@ def main():
     assert ov_ckw12_screws == 0.0
     assert max_so_ov == 0.0
     assert max_bscr_ov == 0.0
+    assert max_tscr_ov == 0.0
+    assert max_scr_pair_ov == 0.0
     assert max_cap_screw_ov == 0.0
     assert abs(dist_opt - 2.40) < 1e-6
 

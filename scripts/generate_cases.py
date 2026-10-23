@@ -15,7 +15,7 @@ Strictly adheres to docs/case_spec.md:
     - All 14 mounting points use unified M2 5.50 mm Female-Female Standoffs (OD Ø 3.00 mm) and M2 x 4.0 mm screws (28 pcs)
     - Cylindrical Boss Pillars (OD Ø 6.80 mm, R = 3.40 mm) rise from the tilted interior floor to support each standoff:
         - 10x Perimeter bosses (L1..L5, R1..R5): boss top Z = -9.10 mm, counterbore ceiling Z = -11.50 mm (2.40 mm clamping floor)
-        - 4x Trackball bosses (TB1..TB4):        boss top Z = -19.10 mm, counterbore ceiling Z = -21.50 mm (2.40 mm clamping floor)
+        - 4x Trackball bosses (TB1..TB4):        boss top Z = -17.60 mm (directly supporting Sensor PCB B.Cu and 5.50 mm standoff), counterbore ceiling Z = -20.00 mm (2.40 mm clamping floor)
     - Screw through-holes: Ø 2.40 mm (radius 1.20 mm)
     - Bottom screw head counterbores: Ø 4.60 mm (radius 2.30 mm) from angled bottom up to z_boss_top - 2.40 mm
 - Cutouts & Ports (Section 3):
@@ -112,7 +112,7 @@ def get_case_hole_specs(is_right=True):
     """
     Returns list of (cx, cy, z_boss_top) in STEP coordinates:
     - Perimeter holes (L1..L5, R1..R5): z_boss_top = -9.10 mm (counterbore ceiling Z = -11.50 mm, 2.40 mm floor)
-    - Trackball holes (TB1..TB4):       z_boss_top = -19.10 mm (counterbore ceiling Z = -21.50 mm, 2.40 mm floor)
+    - Trackball holes (TB1..TB4):       z_boss_top = -17.60 mm (counterbore ceiling Z = -20.00 mm, 2.40 mm floor)
       All 14 holes use M2 5.50 mm Female-Female standoffs!
     """
     if is_right:
@@ -130,7 +130,7 @@ def get_case_hole_specs(is_right=True):
             ( 21.5250,  63.6875),  # TB4 (SE)
         ]
         specs = [(x + 14.2875, -(y + 57.1500), -9.10) for x, y in perim_pcb]
-        specs += [(x + 14.2875, -(y + 57.1500), -19.10) for x, y in tb_pcb]
+        specs += [(x + 14.2875, -(y + 57.1500), -17.60) for x, y in tb_pcb]
         return specs
     else:
         perim_pcb = [

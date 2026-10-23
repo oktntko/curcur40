@@ -23,8 +23,8 @@ def build_trackball_cup() -> bd.Solid:
     - Outer body radius: R = 14.00 mm (Ø 28.00 mm)
     - Inner spherical bowl radius: R = 12.85 mm (0.35 mm ball gap)
     - 4 Mounting Ears at (+/-12.00, +/-11.30 mm):
-        - Thickness = 2.40 mm (Z = 0.00 to 2.40 mm)
-        - Through-hole = Ø 3.60 mm (no counterbore, flat top)
+        - Height = 5.50 mm (Z = 0.00 to 5.50 mm: 1.60 mm top clamping roof + 2.40 mm top screw thread + 1.50 mm screw gap)
+        - Stepped hole: lower Ø 3.30 mm standoff socket (Z = 0.00 to 3.90 mm) + upper Ø 2.40 mm M2 screw hole (Z = 3.90 to 5.50 mm)
         - Outer boss radius = 3.00 mm (Ø 6.00 mm)
     - 3 Retention Claws (T-shape orthogonal):
         - North 90.0 deg, West 180.0 deg, East 0.0 deg
@@ -42,7 +42,8 @@ def build_trackball_cup() -> bd.Solid:
         - Central peephole (8.00 x 11.00 mm): Z = +4.85 to 6.69 mm (optical path)
     """
     z_base = 0.00
-    z_ear = 2.40
+    z_ear = 5.50
+    z_ear_socket = 3.90
     z_rim = 14.00
     z_claw_top = 22.80
     r_outer = 14.00
@@ -181,14 +182,21 @@ def build_trackball_cup() -> bd.Solid:
         throat = bd.extrude(throat_plane * bd.Circle(radius=0.975), amount=2.50)
         cup = cup - pocket - throat
 
-    # 10. 4x M2 screw through-holes (Ø 3.60 mm through-hole, NO counterbore, flat top)
+    # 10. 4x M2 stepped holes in mounting ears (height = 5.50 mm):
+    #     - Lower Ø 3.30 mm (radius 1.65 mm) standoff socket from Z = 0.00 to 3.90 mm
+    #     - Upper Ø 2.40 mm (radius 1.20 mm) M2 screw clamping hole from Z = 3.90 to 5.50 mm (thickness 1.60 mm)
     for sx, sy in ear_coords:
-        hole = bd.Cylinder(
-            radius=1.80,
-            height=10.0,
-            align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)
-        ).moved(bd.Location((sx, sy, z_ear / 2)))
-        cup = cup - hole
+        screw_hole = bd.Cylinder(
+            radius=1.20,
+            height=z_ear + 2.0,
+            align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+        ).moved(bd.Location((sx, sy, -1.0)))
+        standoff_socket = bd.Cylinder(
+            radius=1.65,
+            height=z_ear_socket + 1.0,
+            align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+        ).moved(bd.Location((sx, sy, -1.0)))
+        cup = cup - screw_hole - standoff_socket
 
     cup_solid = cup.solids()[0]
     cup_solid.label = "Trackball_Cup"
