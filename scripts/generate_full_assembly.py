@@ -5,7 +5,7 @@ Generate curcur40 Full Assembly STEP models:
   2. cases/assembly-full-desk.step (Case Bottom horizontal on desk plane Z = 0.00 mm)
 and verify zero interference across all components per docs/case_spec.md:
 - Left & Right 3D-printed Low-Height Built-in Tented Tray Bottom Cases (with Tilted Floor & Cylindrical Bosses)
-- Left & Right Main PCBs (Z = -5.80 to -4.20 mm, with Ø 3.25 mm spacer through-holes)
+- Left & Right Main PCBs (Z = -5.80 to -4.20 mm, with Ø 3.30 mm spacer through-holes)
 - Separated PMW3360 Sensor PCB (`curcur40-pmw3360`, Z = -17.60 to -16.00 mm)
 - Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, with Ø 2.40 mm screw holes & switch cutouts)
 - Sunk Trackball Cup placed on Sensor PCB F.Cu at (23.8125, -109.5375, -16.00 mm), Rim at Z = -2.00 mm (flush with Top Plate)
@@ -141,8 +141,8 @@ def make_filleted_sketch(pts_and_radii):
 def build_main_pcb_solid(is_right=True) -> bd.Solid:
     """
     Constructs the Main PCB solid (Z = -5.80 to -4.20 mm, thickness 1.60 mm)
-    with exact outer boundary, TRRS notch, and Ø 3.25 mm spacer holes.
-    On Right Main PCB, the thumb trackball section (X < 24.2000, Y > 37.4000) is separated into `curcur40-pmw3360`.
+    with exact outer boundary, TRRS notch, and Ø 3.30 mm spacer holes.
+    On Right Main PCB, the thumb trackball section (X < 25.3125, Y > 37.3000) is separated into `curcur40-pmw3360`.
     """
     if is_right:
         pts_pcb = [
@@ -457,7 +457,7 @@ def main():
         b_scr.label = f"Bottom_Screw_{tag}_{i+1}"
         bottom_screws.append(b_scr)
 
-        # Top M2x4mm screw (head seated at z_top_seat: -2.00 mm on Top Plate or -13.60 mm on Cup Ear)
+        # Top M2x4mm screw (head seated at z_top_seat: -2.00 mm on Top Plate or -10.50 mm on Cup Ear)
         t_head = bd.Cylinder(
             radius=2.00,
             height=0.80,

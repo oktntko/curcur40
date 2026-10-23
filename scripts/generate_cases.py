@@ -19,8 +19,8 @@ Strictly adheres to docs/case_spec.md:
     - Screw through-holes: Ø 2.40 mm (radius 1.20 mm)
     - Bottom screw head counterbores: Ø 4.60 mm (radius 2.30 mm) from angled bottom up to z_boss_top - 2.40 mm
 - Cutouts & Ports (Section 3):
-    - TRRS opening (inner wall): Ø 7.50 mm (radius 3.75 mm), center at Z = -7.85 mm (concentric with PJ-398A-5A barrel; top edge Z = -4.10 mm hides Top Plate Z = -3.60..-2.00 mm), Y = -86.8000 mm
-    - USB-C opening (top wall): Width 12.50 mm x Height 6.80 mm, corner fillet R = 1.50 mm, center at Z = -7.35 mm (concentric with TYPE-C-31-M-13C shell Z = -7.38 mm; top edge Z = -3.95 mm hides Top Plate Z = -3.60..-2.00 mm)
+    - TRRS opening (inner wall): Ø 6.40 mm (radius 3.20 mm), center at Z = -7.85 mm (concentric with PJ-398A-5A barrel; top edge Z = -4.65 mm hides Top Plate Z = -3.60..-2.00 mm), Y = -86.8000 mm
+    - USB-C opening (top wall): Width 10.60 mm x Height 4.60 mm, corner fillet R = 1.50 mm, center at Z = -7.05 mm (top edge Z = -4.75 mm hides Top Plate Z = -3.60..-2.00 mm)
 """
 import math
 from pathlib import Path
@@ -254,8 +254,8 @@ def build_case(is_right=True) -> bd.Solid:
     for l_sol in ledge_solids:
         body = body + l_sol
 
-    # 5. Cut angled outer bottom tenting plane (theta_tent = 7.166 deg):
-    #    Z_bottom(|X|) = -26.20 at |X|=7.0250 mm, -10.00 at |X|=135.8580 mm
+    # 5. Cut angled outer bottom tenting plane (theta_tent = 7.47 deg):
+    #    Z_bottom(|X|) = -26.90 at |X|=7.0250 mm, -10.00 at |X|=135.8580 mm
     if is_right:
         p_thumb = (X_THUMB_OUTER, -80.0, Z_THUMB_BOTTOM)
         p_pinky = (X_PINKY_OUTER, -80.0, Z_PINKY_BOTTOM)
@@ -275,7 +275,7 @@ def build_case(is_right=True) -> bd.Solid:
 
     # 6. Cut M2 mounting holes & deep bottom counterbores:
     #    Unified 2.40 mm solid clamping floor thickness at all 14 holes!
-    #    - z_cb_ceil = z_boss_top - 2.40 mm (-11.50 mm for perimeter holes, -21.50 mm for TB1..TB4)
+    #    - z_cb_ceil = z_boss_top - 2.40 mm (-11.50 mm for perimeter holes, -20.00 mm for TB1..TB4)
     #    - Ø 2.40 mm through-hole + Ø 4.60 mm deep bottom counterbore up to z_cb_ceil
     for cx, cy, z_boss_top in hole_specs:
         z_cb_ceil = round(z_boss_top - 2.40, 4)
