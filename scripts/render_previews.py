@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Render all 3D preview images for curcur40 into docs/assets/:
-- Full Assembly (ISO, Top, Bottom) from cases/assembly-full.step via cadgen
+- Full Assembly (ISO, Top, Bottom) from cases/assembly-full-desk.step via cadgen
 - Left & Right Main PCBs (Top, Bottom, ISO) via kicad-cli pcb render
 - Left & Right Top Plates via kicad-cli pcb render
 """
@@ -42,9 +42,9 @@ def render_kicad_pcb(pcb_path: Path, out_path: Path, side="top", rotate=None, wi
 
 def render_assembly_step():
     step_jobs = [
-        (WORKSPACE / "cases" / "assembly-full.step", "iso", ASSETS_DIR / "render_full_assembly_iso.png", 1600, 1000),
-        (WORKSPACE / "cases" / "assembly-full.step", "top", ASSETS_DIR / "render_full_assembly_top.png", 1600, 1000),
-        (WORKSPACE / "cases" / "assembly-full.step", "bottom", ASSETS_DIR / "render_full_assembly_bottom.png", 1600, 1000),
+        (WORKSPACE / "cases" / "assembly-full-desk.step", "iso", ASSETS_DIR / "render_full_assembly_iso.png", 1600, 1000),
+        (WORKSPACE / "cases" / "assembly-full-desk.step", "top", ASSETS_DIR / "render_full_assembly_top.png", 1600, 1000),
+        (WORKSPACE / "cases" / "assembly-full-desk.step", "bottom", ASSETS_DIR / "render_full_assembly_bottom.png", 1600, 1000),
         (WORKSPACE / "cases" / "trackball-cup.step", "iso", ASSETS_DIR / "trackball_cup_render.png", 1200, 1000),
         (WORKSPACE / "cases" / "trackball-cup-with-ball.step", "iso", ASSETS_DIR / "trackball_cup_with_ball_render.png", 1200, 1000),
     ]
