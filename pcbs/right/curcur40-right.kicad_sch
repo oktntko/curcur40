@@ -21272,7 +21272,7 @@
 	)
 	(symbol
 		(lib_id "kbd:+3V3R")
-		(at 317.5 96.52 90)
+		(at 317.5 109.22 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -21282,7 +21282,7 @@
 		(fields_autoplaced yes)
 		(uuid "c1f26a10-61b1-4b2e-9a01-200000000001")
 		(property "Reference" "#PWR0201"
-			(at 317.5 102.86999999999999 0)
+			(at 317.5 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21291,7 +21291,7 @@
 			)
 		)
 		(property "Value" "+3V3R"
-			(at 317.5 100.33 0)
+			(at 317.5 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21299,7 +21299,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 317.5 96.52 0)
+			(at 317.5 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21308,7 +21308,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 317.5 96.52 0)
+			(at 317.5 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21317,7 +21317,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 317.5 96.52 0)
+			(at 317.5 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21339,7 +21339,7 @@
 	)
 	(symbol
 		(lib_id "kbd:GNDR")
-		(at 317.5 99.06 270)
+		(at 317.5 106.68 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -21349,7 +21349,7 @@
 		(fields_autoplaced yes)
 		(uuid "c1f26a10-61b1-4b2e-9a01-200000000003")
 		(property "Reference" "#PWR0202"
-			(at 317.5 105.41 0)
+			(at 317.5 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21358,7 +21358,7 @@
 			)
 		)
 		(property "Value" "GNDR"
-			(at 317.5 102.87 0)
+			(at 317.5 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21366,7 +21366,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 317.5 99.06 0)
+			(at 317.5 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21375,7 +21375,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 317.5 99.06 0)
+			(at 317.5 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21384,7 +21384,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 317.5 99.06 0)
+			(at 317.5 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21542,7 +21542,7 @@
 		(uuid "c1f26a10-61b1-4b2e-9a01-200000000017")
 	)
 	(label "SCLK"
-		(at 317.5 101.6 0)
+		(at 317.5 104.14 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -21552,7 +21552,7 @@
 		(uuid "c1f26a10-61b1-4b2e-9a01-200000000021")
 	)
 	(label "MOSI"
-		(at 317.5 104.14 0)
+		(at 317.5 101.6 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -21562,7 +21562,7 @@
 		(uuid "c1f26a10-61b1-4b2e-9a01-200000000022")
 	)
 	(label "MISO"
-		(at 317.5 106.68 0)
+		(at 317.5 99.06 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -21572,7 +21572,7 @@
 		(uuid "c1f26a10-61b1-4b2e-9a01-200000000023")
 	)
 	(label "NCS"
-		(at 317.5 109.22 0)
+		(at 317.5 96.52 0)
 		(effects
 			(font
 				(size 1.27 1.27)
