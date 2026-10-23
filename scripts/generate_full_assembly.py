@@ -196,6 +196,12 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((hx, hy, -6.5)))
 
+    # Cut USB-C shield PTH slots (4x SH oval holes at ±5.62 mm from J1/rJ1 center)
+    usbc_cx = 26.5750 if is_right else -26.5750
+    for sx in (usbc_cx - 5.6200, usbc_cx + 5.6200):
+        for sy in (-34.0925, -38.0925):
+            pcb = pcb - bd.Box(1.25, 2.20, 4.0).moved(bd.Location((sx, sy, -5.0)))
+
     solid = pcb.solids()[0]
     solid.label = "Right_Main_PCB" if is_right else "Left_Main_PCB"
     return solid
@@ -287,6 +293,37 @@ def make_ckw12_solids(ex, ey):
             s.label = label if len(placed.solids()) == 1 else f"{label}_{idx+1}"
             solids.append(s)
     return solids
+
+
+def make_usbc_and_trrs_solids(is_right: bool):
+    """
+    Loads the official TYPE-C-31-M-13C.step (J1 / rJ1) and PJ-398A-5A.step (J2 / rJ2)
+    3D models and places them at their exact mid-mount positions on Main PCB B.Cu (Z = -5.80 mm).
+    """
+    pkg_dir = WORKSPACE / "pcbs" / "common" / "kbd" / "kicad-packages3D" / "kbd.3dshapes"
+    prefix = "Right" if is_right else "Left"
+    usbc_raw = bd.import_step(str(pkg_dir / "TYPE-C-31-M-13C.step"))
+    usbc_cx = 26.5750 if is_right else -26.5750
+    usbc_placed = usbc_raw.rotate(bd.Axis.X, 180).moved(
+        bd.Location((usbc_cx, -38.5925, -4.2850))
+    )
+    usbc_shell = usbc_placed.solids()[0]
+    usbc_shell.label = f"{prefix}_USBC_Shell"
+    usbc_tongue = usbc_placed.solids()[1]
+    usbc_tongue.label = f"{prefix}_USBC_Tongue"
+
+    trrs_raw = bd.import_step(str(pkg_dir / "PJ-398A-5A.step"))
+    rot_z = -90.0 if is_right else 90.0
+    trrs_cx = 6.5300 if is_right else -6.5300
+    trrs_placed = (
+        trrs_raw.rotate(bd.Axis.Y, 180)
+        .rotate(bd.Axis.Z, rot_z)
+        .moved(bd.Location((trrs_cx, -86.7963, -3.7850)))
+    )
+    trrs_body = trrs_placed.solids()[0]
+    trrs_body.label = f"{prefix}_TRRS_Jack"
+
+    return [usbc_shell, usbc_tongue, trrs_body]
 
 
 def transform_to_desk(shape, is_right: bool):
@@ -451,6 +488,11 @@ def main():
         right_keycaps.append(make_keycap_solid(sx, sy, f"Right_Keycap_{idx+1}"))
     keycaps = left_keycaps + right_keycaps
 
+    # Mid-mount USB-C (TYPE-C-31-M-13C) & TRRS (PJ-398A-5A) connectors
+    left_conn_solids = make_usbc_and_trrs_solids(is_right=False)
+    right_conn_solids = make_usbc_and_trrs_solids(is_right=True)
+    conn_solids = left_conn_solids + right_conn_solids
+
     # Run interference checks
     print("\n--- Interference Verification ---")
     ov_cup_case = overlap_volume(cup_global, right_case)
@@ -472,6 +514,19 @@ def main():
     ov_ckw12_pcb = max(overlap_volume(s, right_pcb) for s in ckw12_solids)
     ov_ckw12_screws = max(overlap_volume(s, t_scr) for s in ckw12_solids for t_scr in top_screws)
 
+    ov_conn_case = max(
+        max(overlap_volume(s, left_case) for s in left_conn_solids),
+        max(overlap_volume(s, right_case) for s in right_conn_solids),
+    )
+    ov_conn_pcb = max(
+        max(overlap_volume(s, left_pcb) for s in left_conn_solids),
+        max(overlap_volume(s, right_pcb) for s in right_conn_solids),
+    )
+    ov_conn_plate = max(
+        max(overlap_volume(s, left_plate) for s in left_conn_solids),
+        max(overlap_volume(s, right_plate) for s in right_conn_solids),
+    )
+
     print(f"Cup vs Right Case:       {ov_cup_case:.8f} mm^3")
     print(f"Cup vs Right Plate:      {ov_cup_plate:.8f} mm^3")
     print(f"Cup vs Right Main PCB:   {ov_cup_rpcb:.8f} mm^3")
@@ -488,6 +543,9 @@ def main():
     print(f"CKW12 vs Right Plate:    {ov_ckw12_plate:.8f} mm^3")
     print(f"CKW12 vs Right PCB:      {ov_ckw12_pcb:.8f} mm^3")
     print(f"CKW12 vs Top Screws:     {ov_ckw12_screws:.8f} mm^3")
+    print(f"USBC/TRRS vs Cases:      {ov_conn_case:.8f} mm^3")
+    print(f"USBC/TRRS vs Main PCBs:  {ov_conn_pcb:.8f} mm^3")
+    print(f"USBC/TRRS vs Top Plates: {ov_conn_plate:.8f} mm^3")
     print(f"Optical Distance (Ball Bottom Z=-10.20 to Ref Point Z=-12.60): {dist_opt:.6f} mm")
 
     max_so_ov = 0.0
@@ -554,6 +612,9 @@ def main():
     assert ov_ckw12_plate == 0.0
     assert ov_ckw12_pcb == 0.0
     assert ov_ckw12_screws == 0.0
+    assert ov_conn_case == 0.0
+    assert ov_conn_pcb == 0.0
+    assert ov_conn_plate == 0.0
     assert max_so_ov == 0.0
     assert max_bscr_ov == 0.0
     assert max_tscr_ov == 0.0
@@ -577,6 +638,7 @@ def main():
             ref_point_global,
         ]
         + ckw12_solids
+        + conn_solids
         + standoffs
         + bottom_screws
         + top_screws
@@ -592,7 +654,7 @@ def main():
     )
 
     # Build & export Desk-Horizontal Full Assembly (cases/assembly-full-desk.step)
-    left_group = [left_case, left_pcb, left_plate] + left_fasteners + left_keycaps
+    left_group = [left_case, left_pcb, left_plate] + left_conn_solids + left_fasteners + left_keycaps
     right_group = (
         [
             right_case,
@@ -606,6 +668,7 @@ def main():
             ref_point_global,
         ]
         + ckw12_solids
+        + right_conn_solids
         + right_fasteners
         + right_keycaps
     )
