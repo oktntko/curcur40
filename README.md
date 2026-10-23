@@ -1,6 +1,6 @@
 # curcur40
 
-**curcur40** は、[Corne Keyboard (crkbd v4)](https://github.com/foostan/crkbd) をベースに、Kailh Choc V1/V2 ロープロファイルスイッチ専用の **40キー左右分割レイアウト**、右手親指内側の **$\varnothing 25\,\text{mm}$ 光学式トラックボール（PMW3360DM-T2QU シングルボード統合）**、および右手人差し指内側の **水平ローラーエンコーダ（CKW12）** を融合したカスタム分割エルゴノミクスキーボードです。
+**curcur40** は、[Corne Keyboard (crkbd v4)](https://github.com/foostan/crkbd) をベースに、Kailh Choc V1/V2 ロープロファイルスイッチ専用の **40キー左右分割レイアウト**、右手親指内側の **$\varnothing 25\,\text{mm}$ 光学式トラックボール（PMW3360DM-T2QU 低プロファイル分離センサーサブ基板）**、および右手人差し指内側の **水平ローラーエンコーダ（CKW12）** を融合したカスタム分割エルゴノミクスキーボードです。
 
 ![Full Assembly Isometric](./docs/assets/render_full_assembly_iso.png)
 
@@ -30,8 +30,8 @@
 | ドキュメント | 内容 |
 | :--- | :--- |
 | **[ビルドガイド (`docs/buildguide_jp.md`)](./docs/buildguide_jp.md)** | 必要パーツ一覧（BOM）、JLCPCB PCBA 発注手順、PMW3360/CKW12 の手ハンダ手順、ケース・トラックボールカップ組み立て手順、ファームウェア書き込み手順 |
-| **[ケース・機構設計仕様書 (`docs/case_spec.md`)](./docs/case_spec.md)** | Z軸スタックアップ定義、13箇所 M2 スペーサー締結仕様、外周ポート開口（USB-C / TRRS）、トラックボールカップ＆光学距離（$2.40\,\text{mm}$）仕様 |
-| **[PCB・回路図設計仕様書 (`docs/pcb_spec.md`)](./docs/pcb_spec.md)** | 左右メイン基板の回路構成、RP2040 GPIO ピンアサイン表、PMW3360 シングルボード統合仕様、カスタムライブラリ一覧、DRC/ERC 検証基準 |
+| **[ケース・機構設計仕様書 (`docs/case_spec.md`)](./docs/case_spec.md)** | Z軸スタックアップ定義、14箇所 M2 5.50mm スペーサー締結仕様、外周ポート開口（USB-C / TRRS）、トラックボールカップ＆光学距離（$2.40\,\text{mm}$）仕様 |
+| **[PCB・回路図設計仕様書 (`docs/pcb_spec.md`)](./docs/pcb_spec.md)** | 左右メイン基板＆センサーサブ基板の回路構成、RP2040 GPIO ピンアサイン表、PMW3360 サブ基板分離＆正対コネクタ仕様、カスタムライブラリ一覧、DRC/ERC 検証基準 |
 | **[生成スクリプト一覧 (`scripts/README.md`)](./scripts/README.md)** | 3Dモデル（ケース・カップ・フルアセンブリ）、トッププレート、JLCPCB 発注データ、プレビュー画像の再現生成スクリプト（全8本）の説明 |
 
 ---
@@ -86,8 +86,13 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）および `cadgen` 3D CAD レ�
 #### 斜視図（アイソメトリックビュー）
 ![Right PCB Isometric](./docs/assets/render_right_iso.png)
 
-#### 裏面（SMD部品・JST SH コネクタ実装面 / `B.Cu`）
+#### 右メイン基板 裏面（SMD部品・JST SH コネクタ `rJ3` 実装面 / `B.Cu`）
 ![Right PCB Bottom](./docs/assets/render_right_bottom.png)
+
+#### トラックボールセンサーサブ基板 (`curcur40-pmw3360`) 表裏プレビュー
+| 表面（レンズ着座面 / `F.Cu`） | 裏面（PMW3360・1.8V LDO・JST SH コネクタ `J1` 実装面 / `B.Cu`） |
+| :---: | :---: |
+| ![PMW3360 Sub-PCB Top](./docs/assets/render_pmw3360_top.png) | ![PMW3360 Sub-PCB Bottom](./docs/assets/render_pmw3360_bottom.png) |
 
 ---
 
@@ -105,7 +110,7 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）および `cadgen` 3D CAD レ�
 ---
 
 ### 5. トラックボールカップ・光学スタックアップ検証モデル
-[`cases/`](./cases/) 配下の3Dプリント用モデルおよび4つの光学検証アセンブリモデルです。4つの検証アセンブリ STEP には、GUI（CAD Viewer等）の計測ツールで直接選択してボール底面（$Z_{\text{rel}} = +5.80\,\text{mm}$ / グローバル $Z = +1.60\,\text{mm}$）との距離（設計値 **$2.40\,\text{mm}$**）を計測できるよう、レンズ側光学距離基準点（**`Lens_Optical_Ref_Point`**, $Z_{\text{rel}} = +3.40\,\text{mm}$ / グローバル $Z = -0.80\,\text{mm}$）が独立オブジェクトとしてプロットされています。
+[`cases/`](./cases/) 配下の3Dプリント用モデルおよび4つの光学検証アセンブリモデルです。4つの検証アセンブリ STEP には、GUI（CAD Viewer等）の計測ツールで直接選択してボール底面（$Z_{\text{rel}} = +5.80\,\text{mm}$ / グローバル $Z = -10.2000\,\text{mm}$）との距離（設計値 **$2.40\,\text{mm}$**）を計測できるよう、レンズ側光学距離基準点（**`Lens_Optical_Ref_Point`**, $Z_{\text{rel}} = +3.40\,\text{mm}$ / グローバル $Z = -12.6000\,\text{mm}$）が独立オブジェクトとしてプロットされています。
 
 | トラックボールカップ単体 (`trackball-cup.step`) | 25mmボール・レンズ組込 (`trackball-cup-with-ball.step`) |
 | :---: | :---: |
@@ -123,13 +128,15 @@ curcur40/
 │   ├── right.step / right.stl    # 右手トレイ型ボトムケース（トッププレート水平基準）
 │   ├── right-desk.step / .stl    # 右手トレイ型ボトムケース（ケース外底面＝デスク水平基準）
 │   ├── trackball-cup.step / .stl # 25mmトラックボール用スナップインカップ
-│   ├── assembly-full.step        # 全99パーツ統合フルアセンブリ（トッププレート水平基準）
-│   └── assembly-full-desk.step   # 全99パーツ統合フルアセンブリ（ケース底面＝デスク面 Z=0 水平基準）
-├── pcbs/                         # KiCad 10.0 左右メイン基板プロジェクト & JLCPCB PCBA 発注データ
+│   ├── assembly-full.step        # 全105パーツ統合フルアセンブリ（トッププレート水平基準）
+│   └── assembly-full-desk.step   # 全105パーツ統合フルアセンブリ（ケース底面＝デスク面 Z=0 水平基準）
+├── pcbs/                         # KiCad 10.0 左右メイン基板・センサーサブ基板 & JLCPCB PCBA 発注データ
 │   ├── left/                     # 左手メイン基板 (curcur40-left)
 │   │   └── jlcpcb/production_files/  # GERBER-curcur40-left.zip, BOM-curcur40-left.csv, CPL-curcur40-left.csv
-│   ├── right/                    # 右手メイン基板 (curcur40-right: PMW3360統合)
+│   ├── right/                    # 右手メイン基板 (curcur40-right)
 │   │   └── jlcpcb/production_files/  # GERBER-curcur40-right.zip, BOM-curcur40-right.csv, CPL-curcur40-right.csv
+│   ├── pmw3360/                  # トラックボールセンサーサブ基板 (curcur40-pmw3360)
+│   │   └── jlcpcb/production_files/  # GERBER-curcur40-pmw3360.zip, BOM-curcur40-pmw3360.csv, CPL-curcur40-pmw3360.csv
 │   └── common/kbd/               # プロジェクト固有 KiCad シンボル・フットプリント・3Dモデルライブラリ
 ├── plates/                       # FR-4 トッププレート KiCad PCB / Gerber & レーザーカット用 SVG
 │   ├── pcb/                      # plate-top-left.kicad_pcb, plate-top-right.kicad_pcb
@@ -152,8 +159,8 @@ curcur40/
 
 | 対象領域 / ファイル | 派生元リポジトリ・原著作者 | 適用ライセンス | 改変履歴・表示事項（CC BY 4.0 Sec. 3(a) / CERN-OHL-P v2 Sec. 3.3 準拠） |
 | :--- | :--- | :--- | :--- |
-| **基板・プレート・ケース・ドキュメント・スクリプト**<br>(`pcbs/left/`, `pcbs/right/`, `plates/`, `cases/`, `docs/`, `scripts/`) | **[foostan/crkbd](https://github.com/foostan/crkbd)**<br>(Original Author: `foostan` / Kosuke Adachi) | **[MIT License](./LICENSE_MIT)** ＆<br>**[CC BY 4.0](./LICENSE_CC)** | Corne v4 (`corne-chocolate`) をベースに、40キー配列化・親指クラスタ再配置・右手 PMW3360 トラックボール＆CKW12 エンコーダ統合・KiCad 10.0 対応・3Dプリントケース＆トラックボールカップ新規設計を実施（`2026-10`） |
+| **基板・プレート・ケース・ドキュメント・スクリプト**<br>(`pcbs/left/`, `pcbs/right/`, `pcbs/pmw3360/`, `plates/`, `cases/`, `docs/`, `scripts/`) | **[foostan/crkbd](https://github.com/foostan/crkbd)**<br>(Original Author: `foostan` / Kosuke Adachi) | **[MIT License](./LICENSE_MIT)** ＆<br>**[CC BY 4.0](./LICENSE_CC)** | Corne v4 (`corne-chocolate`) をベースに、40キー配列化・親指クラスタ再配置・右手 PMW3360 トラックボール（低プロファイルサブ基板分離）＆CKW12 エンコーダ統合・KiCad 10.0 対応・3Dプリントケース＆トラックボールカップ新規設計を実施（`2026-10`） |
 | **プロジェクト固有 KiCad ライブラリ（Corne 由来）**<br>(`pcbs/common/kbd/kicad-symbols/kbd.kicad_sym`, `kbd.pretty/`, `kicad-packages3D/kbd.3dshapes/`) | **[foostan/kbd](https://github.com/foostan/kbd)**<br>(Original Author: `foostan`) | **[MIT License](./pcbs/common/kbd/LICENSE)** | `2026-10-22`: 未使用シンボル・フットプリント・3Dモデルを整理し、KiCad 10.0 標準シンボルとのピン名・フィルタ整合、`YS-SK6812MINI-E` Pin 2 (`DOUT`) 電気タイプ修正、`keyswitch_choc12_hotswap_1u` の旧 Corne V3 由来 $\varnothing 0.40\,\text{mm}$ NPTH 穴削除、環境非依存の3Dモデル相対パス化を実施 |
-| **PMW3360 回路図シンボル・フットプリント**<br>(`pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym`, `PMW3360DM-T2QU_16Pin.kicad_mod`) | **[siderakb/pmw3360-pcb](https://github.com/siderakb/pmw3360-pcb)**<br>(Original Author: `siderakb` / `ziteh`) | **[CERN-OHL-P v2](./LICENSE_CERN_OHL_P_V2)**<br>(Permissive) | `2026-10-22`: 未使用の `TXS0108E-QPWRQ1` シンボルを削除、`PMW3360DM-T2QU` Pin 3 (`VDDPIX`) を `power_out` に変更、および `PMW3360DM-T2QU_16Pin.kicad_mod` のスルーホールパッド層定義を KiCad 10.0 向けに補完し右手メイン基板へシングルボード統合 |
+| **PMW3360 回路図シンボル・フットプリント**<br>(`pcbs/common/kbd/kicad-symbols/pmw3360_pcb.kicad_sym`, `PMW3360DM-T2QU_16Pin.kicad_mod`) | **[siderakb/pmw3360-pcb](https://github.com/siderakb/pmw3360-pcb)**<br>(Original Author: `siderakb` / `ziteh`) | **[CERN-OHL-P v2](./LICENSE_CERN_OHL_P_V2)**<br>(Permissive) | `2026-10-22`: 未使用の `TXS0108E-QPWRQ1` シンボルを削除、`PMW3360DM-T2QU` Pin 3 (`VDDPIX`) を `power_out` に変更、および `PMW3360DM-T2QU_16Pin.kicad_mod` のスルーホールパッド層定義を KiCad 10.0 向けに補完し専用センサーサブ基板 `curcur40-pmw3360` へ統合 |
 | **CKW12 水平ローラーエンコーダ フットプリント・3Dモデル**<br>(`RotaryEncoder_Switch_CKW12.kicad_mod`, `pcbs/common/kbd/3dmodels/ckw12_*.stp`) | **[kumamuk-git/CKW12](https://github.com/kumamuk-git/CKW12)** ＆<br>**[kumamuk-git/roBa](https://github.com/kumamuk-git/roBa)**<br>(Original Author: `kumamuk-git`) | **GPL-3.0**<br>([kumamuk-git/roBa LICENSE](https://github.com/kumamuk-git/roBa/blob/main/LICENSE)) | `2026-10-22`: `CKW12.kicad_mod`（`roBa:SW_MX_EC12`）を KiCad 10.0 標準 `Device:RotaryEncoder_Switch` シンボルフィルタに合わせて `RotaryEncoder_Switch_CKW12.kicad_mod` へリネームし、3Dモデル参照パスおよび `CKW12_top` 厚みオフセット `(0, 0, 0.5)` を設定 |
 | **ファームウェア定義 (`kbd_firmware/`)**<br>(`kbd_firmware/keyboards/curcur40/`) | **[foostan/kbd_firmware](https://github.com/foostan/kbd_firmware)**<br>**[QMK Firmware](https://github.com/qmk/qmk_firmware)** / **[Vial-QMK](https://github.com/vial-kb/vial-qmk)** | **GPL-2.0-or-later**<br>(`SPDX-License-Identifier: GPL-2.0-or-later`) | `crkbd/rev4_1/mini` の設定をベースに、40キーマトリックス、CKW12 エンコーダ、SPI1 PMW3360 トラックボール（1200 CPI・角度補正）対応ファームウェアとして改変 |
