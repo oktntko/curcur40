@@ -217,6 +217,43 @@ def build_case(is_right=True) -> bd.Solid:
     for b_cyl in boss_solids:
         body = body + b_cyl
 
+    # 4b. Add 4x Wall-Mounted Main PCB Support Ledges (North, South, Outer/Pinky, Inner/Thumb-Index)
+    #     Top surface at Z = -5.80 mm (supporting Main PCB B.Cu bottom plane by 1.00 mm overlap at component-free edges),
+    #     with a 45-deg sloped underside (Z = -8.00 to -5.80 mm) so no spiky floor pillars are needed.
+    sgn = 1.0 if is_right else -1.0
+    ledge_solids = []
+
+    # (a) North wall ledge: |X_step| in [71.2875, 81.2875] (width 10.0 mm), Y_step from -31.8375 (inside wall) to -33.8375 (1.0 mm under PCB)
+    pts_n = [(-31.8375, -5.80), (-33.8375, -5.80), (-33.8375, -6.30), (-31.8375, -8.30)]
+    with bd.BuildSketch(bd.Plane.YZ) as sk_n:
+        bd.Polygon(pts_n, align=None)
+    ledge_n = bd.extrude(sk_n.sketch, amount=10.0 * sgn).moved(bd.Location((sgn * 71.2875, 0, 0)))
+    ledge_solids.append(ledge_n & outer_solid)
+
+    # (b) South wall ledge: |X_step| in [82.2875, 92.2875] (width 10.0 mm), Y_step from -125.6500 (inside wall) to -123.6500 (1.0 mm under PCB)
+    pts_s = [(-125.6500, -5.80), (-123.6500, -5.80), (-123.6500, -6.30), (-125.6500, -8.30)]
+    with bd.BuildSketch(bd.Plane.YZ) as sk_s:
+        bd.Polygon(pts_s, align=None)
+    ledge_s = bd.extrude(sk_s.sketch, amount=10.0 * sgn).moved(bd.Location((sgn * 82.2875, 0, 0)))
+    ledge_solids.append(ledge_s & outer_solid)
+
+    # (c) Outer (Pinky) wall ledge: Y_step in [-65.1500, -55.1500] (length 10.0 mm), |X_step| from 134.8580 (inside wall) to 132.3500 (1.0 mm under PCB)
+    pts_o = [(sgn * 134.8580, -5.80), (sgn * 132.3500, -5.80), (sgn * 132.3500, -8.00), (sgn * 134.8580, -8.00)]
+    with bd.BuildSketch(bd.Plane.XZ) as sk_o:
+        bd.Polygon(pts_o, align=None)
+    ledge_o = bd.extrude(sk_o.sketch, amount=10.0).moved(bd.Location((0, -55.1500, 0)))
+    ledge_solids.append(ledge_o & outer_solid)
+
+    # (d) Inner (Thumb/Index) wall ledge: Y_step in [-64.1500, -54.1500] (length 10.0 mm), |X_step| from 8.0250 (inside wall) to 10.0250 (1.0 mm under PCB)
+    pts_i = [(sgn * 8.0250, -5.80), (sgn * 10.0250, -5.80), (sgn * 10.0250, -6.30), (sgn * 8.0250, -8.30)]
+    with bd.BuildSketch(bd.Plane.XZ) as sk_i:
+        bd.Polygon(pts_i, align=None)
+    ledge_i = bd.extrude(sk_i.sketch, amount=10.0).moved(bd.Location((0, -54.1500, 0)))
+    ledge_solids.append(ledge_i & outer_solid)
+
+    for l_sol in ledge_solids:
+        body = body + l_sol
+
     # 5. Cut angled outer bottom tenting plane (theta_tent = 7.166 deg):
     #    Z_bottom(|X|) = -26.20 at |X|=7.0250 mm, -10.00 at |X|=135.8580 mm
     if is_right:
@@ -290,6 +327,33 @@ def build_case(is_right=True) -> bd.Solid:
     print(
         f"Exported {step_path.name} & {stl_path.name}: "
         f"bbox Z=[{bb.min.Z:.4f}, {bb.max.Z:.4f}], volume={solid.volume:.2f} mm^3"
+    )
+
+    # 9. Reuse the exact generated solid to export desk-horizontal (outer bottom flat on Z = 0.00 mm) STEP & STL
+    theta_deg = math.degrees(
+        math.atan2(Z_PINKY_BOTTOM - Z_THUMB_BOTTOM, X_PINKY_OUTER - X_THUMB_OUTER)
+    )
+    if is_right:
+        pivot = (X_PINKY_OUTER, 0.0, Z_PINKY_BOTTOM)
+        rot_angle = theta_deg
+    else:
+        pivot = (-X_PINKY_OUTER, 0.0, Z_PINKY_BOTTOM)
+        rot_angle = -theta_deg
+
+    desk_solid = (
+        solid.moved(bd.Location((-pivot[0], -pivot[1], -pivot[2])))
+        .rotate(bd.Axis.Y, rot_angle)
+        .moved(bd.Location((pivot[0], pivot[1], 0.0)))
+    )
+    desk_solid.label = f"curcur40_case_{side_str}_desk"
+    desk_step_path = OUT_DIR / f"{side_str}-desk.step"
+    desk_stl_path = OUT_DIR / f"{side_str}-desk.stl"
+    bd.export_step(desk_solid, str(desk_step_path))
+    bd.export_stl(desk_solid, str(desk_stl_path))
+    bb_desk = desk_solid.bounding_box()
+    print(
+        f"Exported {desk_step_path.name} & {desk_stl_path.name}: "
+        f"bbox Z=[{bb_desk.min.Z:.4f}, {bb_desk.max.Z:.4f}], volume={desk_solid.volume:.2f} mm^3"
     )
     return solid
 
