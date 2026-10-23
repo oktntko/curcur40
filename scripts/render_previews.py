@@ -58,7 +58,7 @@ def render_assembly_step():
                 "--python",
                 "3.13",
                 "--from",
-                "cadgen==0.7.21",
+                "cadgen==0.7.26",
                 "cadgen",
                 "step",
                 "snapshot",
