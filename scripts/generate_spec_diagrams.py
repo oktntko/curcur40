@@ -77,8 +77,8 @@ def generate_vertical_stackup_diagram():
     draw_dim(15, -5.8, -9.1, "3.30 mm")
     draw_dim(15, -9.1, -11.5, "2.40 mm")
 
-    draw_dim(3, 0.0, -10.5, "Pinky: 10.50 mm\n(Thumb: 28.60 mm)", offset_text=-1)
-    draw_dim(122, 0.0, -9.1, "Wall: 9.10 mm", offset_text=16)
+    draw_dim(3, 0.0, -10.0, "Pinky: 10.00 mm\n(Thumb: 26.90 mm)", offset_text=-1)
+    draw_dim(122, 0.0, -9.1, "Boss Top: -9.10 mm", offset_text=18)
 
     ax.annotate('Safe Clearance: 0.89 mm\n(Floor Z=-9.1 to Max Part Z=-8.21)',
                 xy=(79, -8.21), xytext=(115, -8.3),
