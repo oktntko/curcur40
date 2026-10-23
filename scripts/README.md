@@ -33,10 +33,10 @@ $CADGEN_PY = "$env:USERPROFILE\.local\bin\uvx.exe"
 
 | スクリプト | 役割・出力ファイル |
 | :--- | :--- |
-| **[`generate_cases.py`](./generate_cases.py)** | 左右の3Dプリント用トレイ型ボトムケース（`cases/left.step`, `left.stl`, `right.step`, `right.stl`）を生成します。 |
+| **[`generate_cases.py`](./generate_cases.py)** | 左右の3Dプリント用トレイ型ボトムケース（トッププレート水平基準 `cases/left.step`, `left.stl`, `right.step`, `right.stl` およびデスク水平基準 `left-desk.step`, `left-desk.stl`, `right-desk.step`, `right-desk.stl`）を生成します。 |
 | **[`generate_trackball_cup.py`](./generate_trackball_cup.py)** | 25mm トラックボールカップ（`trackball-cup.step`, `trackball-cup.stl`）および 25mm 球＋光学距離基準点（`Lens_Optical_Ref_Point`, $Z_{\text{rel}} = +3.40\text{ mm}$）付きアセンブリ（`trackball-cup-with-ball.step`, `trackball-cup-with-ball.stl`）を生成します。 |
 | **[`generate_sensor_assemblies.py`](./generate_sensor_assemblies.py)** | PMW3360DM-T2QU + LM19-LSI レンズ + PCB の光学アセンブリ（`pmw3360-lens-pcb-assembly.step`）およびカップ＋ボール統合検証モデル（`trackball-sensor-assembly.step`）を生成します（両モデルとも `Lens_Optical_Ref_Point` を収録）。 |
-| **[`generate_full_assembly.py`](./generate_full_assembly.py)** | 左右ケース・左右メイン基板・左右トッププレート・トラックボールカップ・25mm球・センサー・レンズ・`Lens_Optical_Ref_Point`・CKW12・M2スペーサー13本・M2ネジ26本・キーキャップ40個を統合したフルアセンブリ（`assembly-full.step`）を生成し、全パーツ間の干渉体積ゼロ（`0.00000000 mm³`）を検証します。 |
+| **[`generate_full_assembly.py`](./generate_full_assembly.py)** | 左右ケース・左右メイン基板・センサーサブ基板・左右トッププレート・トラックボールカップ・25mm球・センサー・レンズ・`Lens_Optical_Ref_Point`・CKW12・USB-C・TRRS・M2 5.50mmスペーサー14本・M2×4mmネジ28本・キーキャップ40個を統合したフルアセンブリ（`assembly-full.step`, `assembly-full-desk.step`、全105パーツ）を生成し、全パーツ間の干渉体積ゼロ（`0.00000000 mm³`）を検証します。 |
 
 ### ② KiCad 基板・プレート・JLCPCB 発注データ・図版スクリプト（KiCad 10.0 Python で実行）
 ```powershell
@@ -46,6 +46,6 @@ $KICAD_PY = "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\python.exe"
 | スクリプト | 役割・出力ファイル |
 | :--- | :--- |
 | **[`generate_plates.py`](./generate_plates.py)** | 左右 FR-4 トッププレート（`plate-top-left.kicad_pcb`, `plate-top-right.kicad_pcb`）およびレーザーカット用 SVG（`plate-curcur40.svg`, `foam-curcur40.svg`）を生成し、DRC を検証します。 |
-| **[`export_jlcpcb.py`](./export_jlcpcb.py)** | 左右メイン基板（`curcur40-left`, `curcur40-right`）の Gerber ZIP・BOM CSV・CPL CSV、および左右トッププレートの Gerber ZIP を一括出力します。 |
+| **[`export_jlcpcb.py`](./export_jlcpcb.py)** | 全3基板（`curcur40-left`, `curcur40-right`, `curcur40-pmw3360`）の Gerber ZIP・BOM CSV・CPL CSV、および左右トッププレートの Gerber ZIP を一括出力します。 |
 | **[`generate_spec_diagrams.py`](./generate_spec_diagrams.py)** | `docs/assets/` 配下のスタックアップ断面図・トラックボールカップ詳細図面等の解説図版 PNG を生成します。 |
-| **[`render_previews.py`](./render_previews.py)** | `docs/assets/render_*.png`（フルアセンブリ・左右メイン基板・左右トッププレートの3Dレンダリング画像）を一括更新します。 |
+| **[`render_previews.py`](./render_previews.py)** | `docs/assets/render_*.png`（フルアセンブリ・全3基板・左右トッププレートの3Dレンダリング画像）を一括更新します。 |

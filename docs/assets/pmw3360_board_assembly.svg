@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1160" role="img" aria-labelledby="title desc">
-  <title id="title">右手メイン基板（curcur40-right）PMW3360センサー＆レンズの実装手順</title>
-  <desc id="desc">右手一体型基板におけるJP1（Pad 1-2基板内直結済み）の確認、裏面（B.Cu）からのPMW3360挿入、表面（F.Cu）での16ピンはんだ付け、表面（F.Cu）からのLM19-LSIレンズ装着を4段階で示す図。</desc>
+  <title id="title">トラックボールセンサーサブ基板（curcur40-pmw3360）PMW3360センサー＆レンズの実装手順</title>
+  <desc id="desc">センサーサブ基板（curcur40-pmw3360）におけるJP1（Pad 1-2基板内直結済み）の確認、裏面（B.Cu）からのPMW3360挿入、表面（F.Cu）での16ピンはんだ付け、表面（F.Cu）からのLM19-LSIレンズ装着を4段階で示す図。</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
       <path d="M0 0 10 5 0 10Z" fill="#475569"/>
@@ -20,8 +20,8 @@
   </defs>
 
   <rect width="1440" height="1160" fill="#f1f5f9"/>
-  <text x="48" y="58" class="title">右手メイン基板（curcur40-right）PMW3360 光学センサー部の実装</text>
-  <text x="50" y="91" class="body" fill="#475569">シングルボード統合設計：JP1確認（配線直結済） → 裏面（B.Cu）からIC挿入 → 表面（F.Cu）ではんだ付け → 表面からレンズ装着の順で作業します。</text>
+  <text x="48" y="58" class="title">センサーサブ基板（curcur40-pmw3360）PMW3360 光学センサー部の実装</text>
+  <text x="50" y="91" class="body" fill="#475569">低プロファイル分離サブ基板：JP1確認（配線直結済） → 裏面（B.Cu）からIC挿入 → 表面（F.Cu）ではんだ付け → 表面からレンズ装着の順で作業します。</text>
 
   <!-- Step 1: Back side JP1 pre-bridged check -->
   <rect x="40" y="125" width="660" height="465" rx="18" class="panel"/>
@@ -137,5 +137,5 @@
   <text x="790" y="1017" class="body">Z = +3.40mm（ボール底面 Z = +5.80mm から光学距離 2.40mm）に決まります。</text>
   <text x="790" y="1041" class="small" fill="#475569">※この上からトラックボールカップを被せ、4箇所のM2スペーサーへ共締め固定します。</text>
 
-  <text x="48" y="1127" class="small" fill="#64748b">図は右手メイン基板（curcur40-right）の表裏と光学部品の位置関係を示す模式図です。</text>
+  <text x="48" y="1127" class="small" fill="#64748b">図はトラックボールセンサーサブ基板（curcur40-pmw3360）の表裏と光学部品の位置関係を示す模式図です。</text>
 </svg>

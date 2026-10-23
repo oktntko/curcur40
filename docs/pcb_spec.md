@@ -243,23 +243,23 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 
 | 穴番号 | 配置箇所 | PCB座標 $(x_{\text{pcb}}, y_{\text{pcb}})$ | 穴径 (`Edge.Cuts`) | 備考 |
 | :---: | :--- | :---: | :---: | :--- |
-| **L1** | 内側上（USB-C横） | $(0.0000, -15.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **L2** | 内側下（TRRS上） | $(0.0000, 25.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **L3** | 小指側上 | $(-109.5375, -20.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **L4** | 小指側下 | $(-98.0000, 38.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周スペーサー貫通穴 |
-| **L5** | 親指側下（`SW1` 南側） | $(-33.3375, 64.3000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周スペーサー貫通穴（右手 `R5` と完全左右対称） |
+| **L1** | 内側上（USB-C横） | $(0.0000, -15.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **L2** | 内側下（TRRS上） | $(0.0000, 20.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **L3** | 小指側上 | $(-101.0000, -20.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **L4** | 小指側下 | $(-98.0000, 38.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **L5** | 親指側下（`SW8`–`SW9` 南側） | $(-62.0000, 64.6000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴（右手 `R5` と完全左右対称） |
 
 ### 6.2 右手メイン PCB (`curcur40-right.kicad_pcb`) — 計5箇所（左手と完全対称）および センサーサブ PCB (`curcur40-pmw3360.kicad_pcb`) — 計4箇所
 
-右手メイン基板は親指トラックボール領域が分離されているため、`rSW1` 南側の $(33.3375, 64.3000)$ に親指外周穴 **`R5`**（左手 `L5` と完全対称）を配置して親指キー領域のたわみを防止します。分離されたセンサーサブ基板（`curcur40-pmw3360`）は `TB1`〜`TB4` の4箇所でケース下段ボス天面（$Z = -17.60\,\text{mm}$）とトラックボールカップ底面（$Z = -16.00\,\text{mm}$）にサンドイッチ固定されます（スペーサーがセンサー基板の $\varnothing 3.30\,\text{mm}$ 穴を貫通してカップ耳下段の深さ $3.90\,\text{mm}$・穴径 $\varnothing 3.30\,\text{mm}$ 受け穴に進入）。
+右手メイン基板は親指トラックボール領域が分離されているため、`rSW8`–`rSW9` 南側の $(62.0000, 64.6000)$ に親指外周穴 **`R5`**（左手 `L5` と完全対称）を配置して親指キー領域のたわみを防止します。分離されたセンサーサブ基板（`curcur40-pmw3360`）は `TB1`〜`TB4` の4箇所でケース下段ボス天面（$Z = -17.60\,\text{mm}$）とトラックボールカップ底面（$Z = -16.00\,\text{mm}$）にサンドイッチ固定されます（スペーサーがセンサー基板の $\varnothing 3.30\,\text{mm}$ 穴を貫通してカップ耳下段の深さ $3.90\,\text{mm}$・穴径 $\varnothing 3.30\,\text{mm}$ 受け穴に進入）。
 
 | 基板 | 穴番号 | 配置箇所 | PCB座標 $(x_{\text{pcb}}, y_{\text{pcb}})$ | 穴径 (`Edge.Cuts`) | 備考 |
 | :--- | :---: | :--- | :---: | :---: | :--- |
 | **右メイン (`curcur40-right`)** | **R1** | 外周・内側上（USB-C横） | $(0.0000, -15.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
-| **右メイン (`curcur40-right`)** | **R2** | 外周・内側下（TRRS上） | $(0.0000, 25.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
-| **右メイン (`curcur40-right`)** | **R3** | 外周・小指側上 | $(109.5375, -20.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **右メイン (`curcur40-right`)** | **R2** | 外周・内側下（TRRS上） | $(0.0000, 20.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
+| **右メイン (`curcur40-right`)** | **R3** | 外周・小指側上 | $(101.0000, -20.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
 | **右メイン (`curcur40-right`)** | **R4** | 外周・小指側下 | $(98.0000, 38.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
-| **右メイン (`curcur40-right`)** | **R5** | 外周・親指側下（`rSW1` 南側） | $(33.3375, 64.3000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴（左手 `L5` と左右対称） |
+| **右メイン (`curcur40-right`)** | **R5** | 外周・親指側下（`rSW8`–`rSW9` 南側） | $(62.0000, 64.6000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴（左手 `L5` と左右対称） |
 | **センサー (`curcur40-pmw3360`)** | **TB1** | トラックボール北西 (NW) | $(-2.4750, 41.0875)$ | $\varnothing 3.30 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, -11.3)$、5.50mm スペーサー貫通 |
 | **センサー (`curcur40-pmw3360`)** | **TB2** | トラックボール北東 (NE) | $(21.5250, 41.0875)$ | $\varnothing 3.30 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, -11.3)$、5.50mm スペーサー貫通 |
 | **センサー (`curcur40-pmw3360`)** | **TB3** | トラックボール南西 (SW) | $(-2.4750, 63.6875)$ | $\varnothing 3.30 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, +11.3)$、5.50mm スペーサー貫通 |
@@ -343,18 +343,18 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | ディレクトリ | 格納対象・役割 | 運用ルール |
 | :--- | :--- | :--- |
 | **[`docs/`](../docs)** | 設計仕様書（`case_spec.md`, `pcb_spec.md`）、ビルドガイド（`buildguide_jp.md`）、および図版・3Dレンダリング資産（`assets/`） | すべての仕様書・画像アセットをこの配下に一元管理する（3Dプレビューギャラリーはルート [`README.md`](../README.md) に統合） |
-| **[`pcbs/`](../pcbs)** | 左右メイン基板の KiCad プロジェクト（`left/`, `right/`）および JLCPCB 発注データ（`*/jlcpcb/production_files/`） | `.rpt`, `.net`, `.bak`, `.kicad_prl` 等の一時ファイルや廃止された旧子基板ディレクトリを残さない |
+| **[`pcbs/`](../pcbs)** | 左右メイン基板およびセンサーサブ基板の KiCad プロジェクト（`left/`, `right/`, `pmw3360/`）および JLCPCB 発注データ（`*/jlcpcb/production_files/`） | `.rpt`, `.net`, `.bak`, `.kicad_prl` 等の一時ファイルを残さない |
 | **[`plates/`](../plates)** | FR-4 トッププレート基板（`pcb/plate-top-{left,right}.kicad_pcb`）、JLCPCB Gerber（`pcb/jlcpcb/production_files/`）、レーザーカット用 SVG（`svg/`） | ボトムプレートはトレイ型ケースに統合済みのため作成・保持しない |
-| **[`cases/`](../cases)** | 左右ボトムケース（`left.step/.stl`, `right.step/.stl`）、トラックボールカップ（`trackball-cup.step/.stl`）、および4種の3D検証アセンブリ STEP | すべて [`scripts/`](../scripts) 配下のジェネレータから再現可能に生成する |
+| **[`cases/`](../cases)** | 左右ボトムケース（`left.step/.stl`, `left-desk.step/.stl`, `right.step/.stl`, `right-desk.step/.stl`）、トラックボールカップ（`trackball-cup.step/.stl`）、および5種の3D検証アセンブリ STEP | すべて [`scripts/`](../scripts) 配下のジェネレータから再現可能に生成する |
 | **[`scripts/`](../scripts)** | 恒久的に使用する公式生成・出力スクリプト群（下記一覧参照） | 1回限りのデバッグ用・調査用スクリプトや一時レポート（`scratch/`, `tmp/`）は作業完了後に削除し、リポジトリに残さない |
 
 ### `scripts/` 配下の公式スクリプト一覧
-1. **[`scripts/generate_cases.py`](../scripts/generate_cases.py)**: 左右 3D プリントボトムケース（`left.step/.stl`, `right.step/.stl`）を生成
+1. **[`scripts/generate_cases.py`](../scripts/generate_cases.py)**: 左右 3D プリントボトムケース（トッププレート水平基準 `left.step/.stl`, `right.step/.stl` およびデスク水平基準 `left-desk.step/.stl`, `right-desk.step/.stl`）を生成
 2. **[`scripts/generate_trackball_cup.py`](../scripts/generate_trackball_cup.py)**: トラックボールカップ（`trackball-cup.step/.stl`）および `trackball-cup-with-ball.step/.stl`（光学基準点 `Lens_Optical_Ref_Point` 含む）を生成
 3. **[`scripts/generate_sensor_assemblies.py`](../scripts/generate_sensor_assemblies.py)**: 光学センサー検証アセンブリ（`pmw3360-lens-pcb-assembly.step`, `trackball-sensor-assembly.step`、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成
-4. **[`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py)**: フルアセンブリ（`assembly-full.step`、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成し、全パーツ間の干渉ゼロ（`0.00000000 mm³`）を検証
+4. **[`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py)**: フルアセンブリ（`assembly-full.step`, `assembly-full-desk.step`、全105パーツ、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成し、全パーツ間の干渉ゼロ（`0.00000000 mm³`）を検証
 5. **[`scripts/generate_plates.py`](../scripts/generate_plates.py)**: 左右トッププレート（`plate-top-left.kicad_pcb`, `plate-top-right.kicad_pcb`）およびレーザーカット用 SVG（`plate-curcur40.svg`, `foam-curcur40.svg`）を生成・DRC検証
-6. **[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py)**: 左右メイン基板および左右トッププレートの JLCPCB 発注用データ（`GERBER-*.zip`, `BOM-*.csv`, `CPL-*.csv`）を一括出力
+6. **[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py)**: 全3基板（`left`, `right`, `pmw3360`）および左右トッププレートの JLCPCB 発注用データ（`GERBER-*.zip`, `BOM-*.csv`, `CPL-*.csv`）を一括出力
 7. **[`scripts/generate_spec_diagrams.py`](../scripts/generate_spec_diagrams.py)**: `docs/assets/` 内の設計図解 PNG を生成
 8. **[`scripts/render_previews.py`](../scripts/render_previews.py)**: `docs/assets/render_*.png` の 3D プレビュー画像を一括レンダリング
 
