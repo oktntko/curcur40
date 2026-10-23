@@ -65,11 +65,11 @@ def build_sensor_pcb_parts():
                 bd.Rectangle(16.90, 8.70)
         bd.extrude(amount=pcb_th + 1.0, mode=bd.Mode.SUBTRACT)
 
-        # 4x TB1-TB4 Ø 3.25 mm spacer through-holes
+        # 4x TB1-TB4 Ø 3.30 mm spacer through-holes
         with bd.BuildSketch(bd.Plane.XY.offset(-pcb_th - 0.5)):
             for hx, hy in ear_holes:
                 with bd.Locations([(hx, hy)]):
-                    bd.Circle(radius=1.625)
+                    bd.Circle(radius=1.65)
         bd.extrude(amount=pcb_th + 1.0, mode=bd.Mode.SUBTRACT)
 
         # 16 Pin Through-Holes (row pitch 10.70 mm, pin pitch 1.78 mm, staggered X)
