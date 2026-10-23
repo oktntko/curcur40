@@ -15,19 +15,19 @@ KICAD_CLI = os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cl
 # Left perimeter mounting holes (5 holes, Ø 2.40 mm -> radius 1.20 mm)
 LEFT_MOUNTING_HOLES = [
     (   0.0000, -15.0000, 1.20),
-    (   0.0000,  25.0000, 1.20),
-    (-109.5375, -20.0000, 1.20),
+    (   0.0000,  20.0000, 1.20),
+    (-101.0000, -20.0000, 1.20),
     ( -98.0000,  38.0000, 1.20),
-    ( -33.3375,  64.3000, 1.20),
+    ( -62.0000,  64.6000, 1.20),
 ]
 
 # Right perimeter mounting holes (5 holes, Ø 2.40 mm -> radius 1.20 mm, symmetric with Left)
 RIGHT_MOUNTING_HOLES = [
     (  0.0000, -15.0000, 1.20),
-    (  0.0000,  25.0000, 1.20),
-    (109.5375, -20.0000, 1.20),
+    (  0.0000,  20.0000, 1.20),
+    (101.0000, -20.0000, 1.20),
     ( 98.0000,  38.0000, 1.20),
-    ( 33.3375,  64.3000, 1.20),
+    ( 62.0000,  64.6000, 1.20),
 ]
 
 LEFT_SWITCHES = [
