@@ -61,10 +61,10 @@ def generate_vertical_stackup_diagram():
     ax.add_patch(standoff)
     ax.text(111, -6.35, "M2\n5.5mm\nSpacer\n(Under\nPlate!)", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#6b705c')
 
-    # Case Floor Counterbore
-    cb = patches.Rectangle((40, -12.3), 10, 0.9, linewidth=1.2, edgecolor='#e63946', facecolor='#ffffff', linestyle='--')
+    # Case Floor Counterbore (unified 2.40mm solid floor above counterbore ceiling Z=-11.50mm)
+    cb = patches.Rectangle((40, -12.3), 10, 0.8, linewidth=1.2, edgecolor='#e63946', facecolor='#ffffff', linestyle='--')
     ax.add_patch(cb)
-    ax.text(45, -12.3 + 0.45, "Counterbore Ø4.6 x 0.9", ha='center', va='center', fontsize=7.5, color='#e63946', fontweight='bold')
+    ax.text(45, -12.3 + 0.40, "Counterbore Ø4.6 (2.40mm Floor)", ha='center', va='center', fontsize=7.5, color='#e63946', fontweight='bold')
 
     def draw_dim(x, z1, z2, label, offset_text=0):
         ax.annotate('', xy=(x, z1), xytext=(x, z2),
@@ -75,9 +75,9 @@ def generate_vertical_stackup_diagram():
     draw_dim(15, -3.6, -4.2, "0.60 mm")
     draw_dim(15, -4.2, -5.8, "1.60 mm")
     draw_dim(15, -5.8, -9.1, "3.30 mm")
-    draw_dim(15, -9.1, -12.3, "3.20 mm")
+    draw_dim(15, -9.1, -11.5, "2.40 mm")
 
-    draw_dim(3, 0.0, -12.3, "CASE: 12.30 mm", offset_text=-1)
+    draw_dim(3, 0.0, -10.5, "Pinky: 10.50 mm\n(Thumb: 28.60 mm)", offset_text=-1)
     draw_dim(122, 0.0, -9.1, "Wall: 9.10 mm", offset_text=16)
 
     ax.annotate('Safe Clearance: 0.89 mm\n(Floor Z=-9.1 to Max Part Z=-8.21)',
@@ -217,7 +217,7 @@ def generate_ports_and_screws_diagram():
 
     ax3.annotate('', xy=(3.8, 3.0), xytext=(3.8, 3.9),
                  arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
-    ax3.text(3.4, 3.45, "Depth: 0.90 mm\n(Recessed 0.1mm)", ha='right', va='center', fontsize=8.5, fontweight='bold', color='#1d3557')
+    ax3.text(3.4, 3.45, "Deep Counterbore\n(100% Recessed)", ha='right', va='center', fontsize=8.5, fontweight='bold', color='#1d3557')
 
     ax3.annotate('', xy=(7 - 2.3, 2.3), xytext=(7 + 2.3, 2.3),
                  arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.2))
@@ -225,7 +225,7 @@ def generate_ports_and_screws_diagram():
 
     ax3.annotate('', xy=(7 - 1.2, 9.3), xytext=(7 + 1.2, 9.3),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax3.text(7.0, 9.7, "Through Hole: Ø 2.40 mm\nSolid Floor: 2.30 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax3.text(7.0, 9.7, "Through Hole: Ø 2.40 mm\nUnified Solid Floor: 2.40 mm", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
 
     ax3.axis('off')
 
@@ -397,11 +397,11 @@ def generate_trackball_cup_fastening_diagram():
     ax.plot([0, 0], [-7.8, -7.2], color='#ffffff', lw=1.5, zorder=6)
 
     # -------------------------------------------------------------
-    # Thread safety gap inside spacer (Z = -3.2 to -1.6, gap = 1.6 mm)
+    # Thread safety gap inside spacer (Z = -3.3 to -1.6, gap = 1.7 mm)
     # -------------------------------------------------------------
-    ax.annotate('', xy=(0, -1.6), xytext=(0, -3.2),
+    ax.annotate('', xy=(0, -1.6), xytext=(0, -3.3),
                  arrowprops=dict(arrowstyle='<->', color='#2b9348', lw=2.2), zorder=7)
-    ax.text(0.3, -2.4, "1.6 mm\nSafety Gap", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#2b9348',
+    ax.text(0.3, -2.45, "1.7 mm\nSafety Gap", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#2b9348',
             bbox=dict(boxstyle="round,pad=0.2", fc="#d8f3dc", ec="#2b9348", lw=0.8), zorder=7)
 
     # -------------------------------------------------------------
@@ -415,11 +415,11 @@ def generate_trackball_cup_fastening_diagram():
     dim_left(2.4, 0.0, "1. Cup Ear:\n2.40 mm", -11.0, '#1d3557')
     dim_left(0.0, -1.6, "2. Sensor PCB:\n1.60 mm", -11.0, '#1b4332')
     dim_left(-1.6, -4.9, "3. Under-PCB Cavity:\n3.30 mm", -11.0, '#b08968')
-    dim_left(-4.9, -7.2, "4a. Solid Floor:\n2.30 mm", -11.0, '#343a40')
-    dim_left(-7.2, -8.1, "4b. Counterbore:\n0.90 mm", -11.0, '#d90429')
+    dim_left(-4.9, -7.3, "4a. Solid Floor:\n2.40 mm", -11.0, '#343a40')
+    dim_left(-7.3, -8.1, "4b. Counterbore:\n>=0.80 mm", -11.0, '#d90429')
 
     # Total case floor thickness
-    dim_left(-4.9, -8.1, "Case Floor\nTotal 3.20 mm", -14.5, '#212529')
+    dim_left(-4.9, -8.1, "Unified Floor\n2.40 mm + CB", -14.5, '#212529')
 
     # -------------------------------------------------------------
     # Right Annotations: Detailed Explanations
@@ -460,7 +460,7 @@ def generate_trackball_cup_fastening_diagram():
                 bbox=dict(boxstyle="round,pad=0.25", fc="#e9ecef", ec="#495057", lw=0.8))
 
     # 6. Bottom Screw callout
-    ax.annotate('Bottom M2 x 4mm Screw (Head Ø4.0 x 0.8mm)\n• Recessed 0.10mm inside Ø4.6 x 0.9mm counterbore\n• Passes through 2.30mm solid floor\n• Engages 1.70mm thread into Spacer (4.25 threads)',
+    ax.annotate('Bottom M2 x 4mm Screw (Head Ø4.0 x 0.8mm)\n• Recessed inside Ø4.6mm deep counterbore\n• Passes through unified 2.40mm solid floor\n• Engages 1.60mm thread into Spacer (4.00 threads)',
                 xy=(1.5, -7.0), xytext=(8.5, -7.2),
                 arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1.2, headwidth=5),
                 fontsize=8.5, fontweight='bold', color='#d90429',
