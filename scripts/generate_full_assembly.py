@@ -25,7 +25,7 @@ CASES_DIR = WORKSPACE / "cases"
 
 
 def z_bottom_at_x(x_abs: float) -> float:
-    return -24.10 + 11.80 * (x_abs - 7.0250) / (135.8580 - 7.0250)
+    return -28.60 + 18.10 * (x_abs - 7.0250) / (135.8580 - 7.0250)
 
 
 LEFT_SWITCHES = [
@@ -78,18 +78,18 @@ RIGHT_ENCODER = (14.2875, 0.00000)
 
 LEFT_PERIMETER_HOLES_PCB = [
     (   0.0000, -15.0000),  # L1
-    (   0.0000,  25.0000),  # L2
-    (-109.5375, -20.0000),  # L3
+    (   0.0000,  20.0000),  # L2
+    (-101.0000, -20.0000),  # L3
     ( -98.0000,  38.0000),  # L4
-    ( -33.3375,  64.3000),  # L5
+    ( -62.0000,  64.6000),  # L5
 ]
 
 RIGHT_PERIMETER_HOLES_PCB = [
     (  0.0000, -15.0000),  # R1
-    (  0.0000,  25.0000),  # R2
-    (109.5375, -20.0000),  # R3
+    (  0.0000,  20.0000),  # R2
+    (101.0000, -20.0000),  # R3
     ( 98.0000,  38.0000),  # R4
-    ( 33.3375,  64.3000),  # R5
+    ( 62.0000,  64.6000),  # R5
 ]
 
 RIGHT_TB_HOLES_PCB = [
@@ -129,7 +129,7 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
     """
     Constructs the Main PCB solid (Z = -5.80 to -4.20 mm, thickness 1.60 mm)
     with exact outer boundary, TRRS notch, and Ø 3.25 mm spacer holes.
-    On Right Main PCB, the thumb trackball section (X < 23.8000, Y > 40.3000) is separated into `curcur40-pmw3360`.
+    On Right Main PCB, the thumb trackball section (X < 23.8000, Y > 37.4000) is separated into `curcur40-pmw3360`.
     """
     if is_right:
         pts_pcb = [
@@ -139,12 +139,12 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
             ( 82.4625,  40.98125, 1.0),
             ( 82.4625,  67.5000, 1.0),
             ( 23.8000,  67.5000, 1.0),
-            ( 23.8000,  40.3000, 1.0),
-            ( -5.2625,  40.3000, 1.0),
-            ( -5.2625,  37.8000, 0.0),
-            (  7.7425,  37.8000, 0.0),
-            (  7.7425,  31.5000, 0.0),
-            ( -5.2625,  31.5000, 0.0),
+            ( 23.8000,  37.4000, 0.8),
+            ( -5.2625,  37.4000, 0.8),
+            ( -5.2625,  32.8000, 0.0),
+            (  7.7425,  32.8000, 0.0),
+            (  7.7425,  26.5000, 0.0),
+            ( -5.2625,  26.5000, 0.0),
         ]
         pts_step = [(*to_step_right(x, y), r) for x, y, r in pts_pcb]
         holes_step = [to_step_right(x, y) for x, y in RIGHT_PERIMETER_HOLES_PCB]
@@ -156,10 +156,10 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
             ( -82.4625,  40.98125, 1.0),
             ( -82.4625,  67.5000, 1.0),
             (   5.2625,  67.5000, 1.0),
-            (   5.2625,  37.8000, 0.0),
-            (  -7.7425,  37.8000, 0.0),
-            (  -7.7425,  31.5000, 0.0),
-            (   5.2625,  31.5000, 0.0),
+            (   5.2625,  32.8000, 0.0),
+            (  -7.7425,  32.8000, 0.0),
+            (  -7.7425,  26.5000, 0.0),
+            (   5.2625,  26.5000, 0.0),
         ]
         pts_step = [(*to_step_left(x, y), r) for x, y, r in pts_pcb]
         holes_step = [to_step_left(x, y) for x, y in LEFT_PERIMETER_HOLES_PCB]
@@ -355,8 +355,8 @@ def main():
         so_solid.label = f"Standoff_{tag}_{i+1}"
         standoffs.append(so_solid)
 
-        # Bottom M2x4mm screw seated against horizontal counterbore ceiling z_cb_ceil = z_bottom(|X|) + 1.15 mm
-        z_cb_ceil = round(z_bottom_at_x(abs(sx)) + 1.15, 4)
+        # Bottom M2x4mm screw seated against horizontal counterbore ceiling z_cb_ceil = z_floor - 2.40 mm (unified 2.40 mm clamping floor!)
+        z_cb_ceil = round(z_floor - 2.40, 4)
         b_head = bd.Cylinder(
             radius=2.00,
             height=0.80,
