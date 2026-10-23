@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-Generate curcur40 Full Assembly STEP (cases/assembly-full.step)
+Generate curcur40 Full Assembly STEP models:
+  1. cases/assembly-full.step      (Top Plate horizontal at Z = -2.00 mm)
+  2. cases/assembly-full-desk.step (Case Bottom horizontal on desk plane Z = 0.00 mm)
 and verify zero interference across all components per docs/case_spec.md:
-- Left & Right 3D-printed Built-in Tented Tray Bottom Cases
+- Left & Right 3D-printed Low-Height Built-in Tented Tray Bottom Cases (with Tilted Floor & Cylindrical Bosses)
 - Left & Right Main PCBs (Z = -5.80 to -4.20 mm, with Ø 3.25 mm spacer through-holes)
 - Separated PMW3360 Sensor PCB (`curcur40-pmw3360`, Z = -17.60 to -16.00 mm)
 - Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, with Ø 2.40 mm screw holes & switch cutouts)
 - Sunk Trackball Cup placed on Sensor PCB F.Cu at (23.8125, -109.5375, -16.00 mm), Rim at Z = -2.00 mm (flush with Top Plate)
 - 25mm Trackball Sphere at (23.8125, -109.5375, +2.30 mm) (Top at Z = +14.80 mm, +11.20 mm above Keycap top Z = +3.60 mm)
 - PMW3360 Sensor IC & LM19-LSI Optical Lens
-- 10x Perimeter M2 5.50mm Female-Female Standoffs (5 Left L1-L5 + 5 Right R1-R5, Z = -9.10 to -3.60 mm, seated under Top Plate)
-- 4x Trackball Cup M2 6.00mm Female-Female Standoffs (TB1-TB4, Z = -20.90 to -14.90 mm, penetrating 1.10 mm into Cup Ear Ø 3.60 mm holes)
-- 14x Bottom M2x4mm Screws (head in horizontal bottom counterbore at Z_bottom(|X|) + 1.15 mm)
+- 14x Unified M2 5.50mm Female-Female Standoffs:
+    - 10x Perimeter (5 Left L1-L5 + 5 Right R1-R5, Z = -9.10 to -3.60 mm, seated under Top Plate)
+    - 4x Trackball Cup (TB1-TB4, Z = -19.10 to -13.60 mm, seated on Z = -19.10 mm bosses and penetrating 1.60 mm into Cup Ear Ø 3.60 mm holes)
+- 14x Bottom M2x4mm Screws (head seated against counterbore ceiling z_boss_top - 2.40 mm)
 - 14x Top M2x4mm Screws (4 on Trackball Cup ears Z = -13.60 mm, 10 on Top Plates Z = -2.00 mm)
 - Keycaps (Choc v2 low-profile) & CKW12 Rotary Encoder
 """
@@ -23,9 +26,19 @@ from cadgen.geometry import overlap_volume, closest_points, is_sound
 WORKSPACE = Path(__file__).resolve().parent.parent
 CASES_DIR = WORKSPACE / "cases"
 
+Z_THUMB_BOTTOM = -26.9000
+Z_PINKY_BOTTOM = -10.0000
+X_THUMB_OUTER = 7.0250
+X_PINKY_OUTER = 135.8580
+THETA_TENT_DEG = math.degrees(
+    math.atan2(Z_PINKY_BOTTOM - Z_THUMB_BOTTOM, X_PINKY_OUTER - X_THUMB_OUTER)
+)
+
 
 def z_bottom_at_x(x_abs: float) -> float:
-    return -28.60 + 18.10 * (x_abs - 7.0250) / (135.8580 - 7.0250)
+    return Z_THUMB_BOTTOM + (Z_PINKY_BOTTOM - Z_THUMB_BOTTOM) * (
+        x_abs - X_THUMB_OUTER
+    ) / (X_PINKY_OUTER - X_THUMB_OUTER)
 
 
 LEFT_SWITCHES = [
@@ -129,7 +142,7 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
     """
     Constructs the Main PCB solid (Z = -5.80 to -4.20 mm, thickness 1.60 mm)
     with exact outer boundary, TRRS notch, and Ø 3.25 mm spacer holes.
-    On Right Main PCB, the thumb trackball section (X < 23.8000, Y > 37.4000) is separated into `curcur40-pmw3360`.
+    On Right Main PCB, the thumb trackball section (X < 24.2000, Y > 37.4000) is separated into `curcur40-pmw3360`.
     """
     if is_right:
         pts_pcb = [
@@ -138,8 +151,8 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
             (119.0625,  40.98125, 1.0),
             ( 82.4625,  40.98125, 1.0),
             ( 82.4625,  67.5000, 1.0),
-            ( 23.8000,  67.5000, 1.0),
-            ( 23.8000,  37.4000, 0.8),
+            ( 24.2000,  67.5000, 1.0),
+            ( 24.2000,  37.4000, 0.8),
             ( -5.2625,  37.4000, 0.8),
             ( -5.2625,  32.8000, 0.0),
             (  7.7425,  32.8000, 0.0),
@@ -192,8 +205,8 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
             (119.2625,  41.18125, 1.0),
             ( 82.6625,  41.18125, 1.0),
             ( 82.6625,  67.70000, 1.0),
-            ( 24.8375,  67.70000, 1.0),
-            ( 24.8375,  37.40000, 1.0),
+            ( 24.2000,  67.70000, 1.0),
+            ( 24.2000,  37.40000, 1.0),
             ( -5.4625,  37.40000, 1.0),
         ]
         pts_step = [(*to_step_right(x, y), r) for x, y, r in pts_plate]
@@ -268,8 +281,33 @@ def make_ckw12_solids(ex, ey):
     return solids
 
 
+def transform_to_desk(shape, is_right: bool):
+    """
+    Rigidly transforms a left-half or right-half shape from the Top-Plate-horizontal
+    coordinate system into the Desk-horizontal coordinate system where both Left and Right
+    case bottom faces lie flat on Z = 0.0000 mm.
+    """
+    pivot_x = X_PINKY_OUTER if is_right else -X_PINKY_OUTER
+    pivot_z = Z_PINKY_BOTTOM
+    rot_y = THETA_TENT_DEG if is_right else -THETA_TENT_DEG
+    lbl = getattr(shape, "label", "")
+    transformed = (
+        shape.moved(bd.Location((-pivot_x, 0.0, -pivot_z)))
+        .rotate(bd.Axis.Y, rot_y)
+        .moved(bd.Location((pivot_x, 0.0, 0.0)))
+    )
+    if hasattr(transformed, "solids") and len(transformed.solids()) == 1 and isinstance(shape, bd.Solid):
+        res = transformed.solids()[0]
+    elif hasattr(transformed, "faces") and len(transformed.faces()) == 1 and isinstance(shape, bd.Face):
+        res = transformed.faces()[0]
+    else:
+        res = transformed
+    res.label = lbl
+    return res
+
+
 def main():
-    print("=== Building & Verifying curcur40 Full Assembly (assembly-full.step) ===")
+    print("=== Building & Verifying curcur40 Full Assembly (assembly-full.step & assembly-full-desk.step) ===")
 
     left_case = bd.import_step(str(CASES_DIR / "left.step")).solids()[0]
     left_case.label = "Left_Case"
@@ -323,7 +361,7 @@ def main():
     enc_x, enc_y = to_step_right(*RIGHT_ENCODER)
     ckw12_solids = make_ckw12_solids(enc_x, enc_y)
 
-    # Create all 14x Standoffs (10x 5.50mm perimeter, 4x 6.00mm trackball cup)
+    # Create all 14x Unified 5.50mm Standoffs (10x perimeter at Z=-9.10..-3.60, 4x trackball cup at Z=-19.10..-13.60)
     left_holes_step = [to_step_left(x, y) for x, y in LEFT_PERIMETER_HOLES_PCB]
     right_perim_step = [to_step_right(x, y) for x, y in RIGHT_PERIMETER_HOLES_PCB]
     right_tb_step = [to_step_right(x, y) for x, y in RIGHT_TB_HOLES_PCB]
@@ -333,12 +371,15 @@ def main():
     top_screws = []
 
     all_holes = (
-        [(x, y, "L_Perim", -9.10, -2.00, 5.50) for x, y in left_holes_step]
-        + [(x, y, "R_Perim", -9.10, -2.00, 5.50) for x, y in right_perim_step]
-        + [(x, y, "R_TB", -20.90, -13.60, 6.00) for x, y in right_tb_step]
+        [(x, y, "L_Perim", -9.10, -2.00, 5.50, False) for x, y in left_holes_step]
+        + [(x, y, "R_Perim", -9.10, -2.00, 5.50, True) for x, y in right_perim_step]
+        + [(x, y, "R_TB", -19.10, -13.60, 5.50, True) for x, y in right_tb_step]
     )
 
-    for i, (sx, sy, tag, z_floor, z_top_seat, so_height) in enumerate(all_holes):
+    left_fasteners = []
+    right_fasteners = []
+
+    for i, (sx, sy, tag, z_floor, z_top_seat, so_height, is_right_hole) in enumerate(all_holes):
         # M2 standoff (OD 3.0mm, ID 1.7mm, Z = z_floor to z_floor + so_height)
         so = bd.Cylinder(
             radius=1.50,
@@ -386,14 +427,21 @@ def main():
         t_scr.label = f"Top_Screw_{tag}_{i+1}"
         top_screws.append(t_scr)
 
+        if is_right_hole:
+            right_fasteners.extend([so_solid, b_scr, t_scr])
+        else:
+            left_fasteners.extend([so_solid, b_scr, t_scr])
+
     # Keycaps
-    keycaps = []
+    left_keycaps = []
+    right_keycaps = []
     for idx, (kx, ky) in enumerate(LEFT_SWITCHES):
         sx, sy = to_step_left(kx, ky)
-        keycaps.append(make_keycap_solid(sx, sy, f"Left_Keycap_{idx+1}"))
+        left_keycaps.append(make_keycap_solid(sx, sy, f"Left_Keycap_{idx+1}"))
     for idx, (kx, ky) in enumerate(RIGHT_SWITCHES):
         sx, sy = to_step_right(kx, ky)
-        keycaps.append(make_keycap_solid(sx, sy, f"Right_Keycap_{idx+1}"))
+        right_keycaps.append(make_keycap_solid(sx, sy, f"Right_Keycap_{idx+1}"))
+    keycaps = left_keycaps + right_keycaps
 
     # Run interference checks
     print("\n--- Interference Verification ---")
@@ -513,6 +561,40 @@ def main():
     bd.export_step(asm_full, str(out_step))
     print(
         f"\nSuccessfully exported {out_step} ({len(all_parts)} items, valid={asm_full.is_valid})"
+    )
+
+    # Build & export Desk-Horizontal Full Assembly (cases/assembly-full-desk.step)
+    left_group = [left_case, left_pcb, left_plate] + left_fasteners + left_keycaps
+    right_group = (
+        [
+            right_case,
+            right_pcb,
+            sensor_pcb_global,
+            right_plate,
+            cup_global,
+            ball_global,
+            lens_global,
+            sensor_global,
+            ref_point_global,
+        ]
+        + ckw12_solids
+        + right_fasteners
+        + right_keycaps
+    )
+
+    desk_parts = [transform_to_desk(p, False) for p in left_group] + [
+        transform_to_desk(p, True) for p in right_group
+    ]
+    asm_desk = bd.Compound(children=desk_parts)
+    asm_desk.label = "curcur40_Full_Assembly_Desk"
+    out_desk_step = CASES_DIR / "assembly-full-desk.step"
+    bd.export_step(asm_desk, str(out_desk_step))
+    bb_desk_l = desk_parts[0].bounding_box()
+    bb_desk_r = desk_parts[len(left_group)].bounding_box()
+    print(
+        f"Successfully exported {out_desk_step} ({len(desk_parts)} items, valid={asm_desk.is_valid}, "
+        f"Left Case Z=[{bb_desk_l.min.Z:.4f}, {bb_desk_l.max.Z:.4f}], "
+        f"Right Case Z=[{bb_desk_r.min.Z:.4f}, {bb_desk_r.max.Z:.4f}])"
     )
 
 
