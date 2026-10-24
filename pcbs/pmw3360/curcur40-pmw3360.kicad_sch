@@ -3942,7 +3942,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C160404"
+		(property "LCSC" "C160405"
 			(at 279.4 101.6 0)
 			(effects
 				(font
