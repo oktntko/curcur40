@@ -26,7 +26,10 @@ import math
 from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import is_sound
+from OCP.BRepAdaptor import BRepAdaptor_Surface
 from OCP.BRepExtrema import BRepExtrema_DistShapeShape
+from OCP.GeomAbs import GeomAbs_Cylinder
+from OCP.TopAbs import TopAbs_REVERSED
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 OUT_DIR = WORKSPACE / "cases"
@@ -146,15 +149,43 @@ def get_case_hole_specs(is_right=True):
 
 def verify_case_wall_thickness_and_gaps(solid: bd.Solid, is_right: bool):
     """
-    Automated B-rep check for micro-gaps and < 0.80 mm wall thicknesses on the case solid
-    (in Top-Plate-horizontal coordinates, Z in [-26.90, 0.00] mm).
-    Asserts 0 unexpected hits outside the documented intentional exclusions:
-      1) Case top rim (Z ~ 0.00 mm): 1.50 mm wall minus R=0.95 mm outer fillet = 0.550..0.743 mm
-      2) Pinky skim floor boundary (|X| > 132.0 mm, Z ~ -8.00 mm): 0.459..0.549 mm
-      3) R3/L3 boss top step height above tilted floor (|X| ~ 118.7 mm, Y ~ -37.15 mm): 0.746 mm
+    Automated JLC3DP (SLA / MJF / SLS) pre-order DFM & B-rep check on the case solid
+    (in Top-Plate-horizontal coordinates, Z in [-26.90, 0.00] mm):
+      1) Watertight manifold single solid (`is_valid`, `is_sound`, `len(solids) == 1`, `volume > 0`)
+      2) JLC3DP build envelope (<= 380 x 284 x 380 mm) & min part size (>= 5 x 5 x 2 mm)
+      3) Minimum concave hole/bore diameter >= Ø 1.50 mm (JLC3DP MJF/SLS powder/resin escape rule)
+      4) Minimum wall thickness >= 0.80 mm & zero micro-gaps outside documented intentional exclusions:
+         - Case top rim (Z ~ 0.00 mm): 1.50 mm wall minus R=0.95 mm outer fillet = 0.550..0.743 mm
+         - Pinky skim floor boundary (|X| > 132.0 mm, Z ~ -8.00 mm): 0.459..0.549 mm
+         - R3/L3 boss top step height above tilted floor (|X| ~ 118.7 mm, Y ~ -37.15 mm): 0.746 mm
     """
     side_str = "right" if is_right else "left"
+
+    # 1. Manifoldness & single solid body
+    assert solid.is_valid and is_sound(solid), f"[{side_str}] Solid is not watertight/manifold!"
+    assert len(solid.solids()) == 1 and solid.volume > 0, f"[{side_str}] Must be a single positive-volume solid!"
+
+    # 2. JLC3DP build volume & min size check
+    bb = solid.bounding_box()
+    sx, sy, sz = bb.max.X - bb.min.X, bb.max.Y - bb.min.Y, bb.max.Z - bb.min.Z
+    assert 5.0 <= sx <= 380.0 and 5.0 <= sy <= 284.0 and 2.0 <= sz <= 380.0, (
+        f"[{side_str}] Bounding box {sx:.2f}x{sy:.2f}x{sz:.2f} mm outside JLC3DP limits!"
+    )
+
+    # 3. Minimum concave cylindrical hole/bore diameter >= Ø 1.50 mm
     faces = solid.faces()
+    min_concave_diam = float("inf")
+    for f in faces:
+        surf = BRepAdaptor_Surface(f.wrapped)
+        if surf.GetType() == GeomAbs_Cylinder and f.wrapped.Orientation() == TopAbs_REVERSED:
+            diam = round(2.0 * surf.Cylinder().Radius(), 4)
+            if diam < min_concave_diam:
+                min_concave_diam = diam
+    assert min_concave_diam >= 1.50, (
+        f"[{side_str}] Concave hole/bore diameter {min_concave_diam:.3f} mm < JLC3DP 1.50 mm limit!"
+    )
+
+    # 4. Wall thickness (< 0.80 mm) & micro-gap scan
     bbs = [f.bounding_box() for f in faces]
     unexpected = []
     excluded_count = 0
@@ -189,7 +220,8 @@ def verify_case_wall_thickness_and_gaps(solid: bd.Solid, is_right: bool):
                         unexpected.append((d, (mx, my, mz), i, j))
 
     print(
-        f"[{side_str}] Wall-thickness (<0.80mm) & micro-gap check: "
+        f"[{side_str}] JLC3DP preflight & <0.80mm check: "
+        f"bbox={sx:.2f}x{sy:.2f}x{sz:.2f}mm, min_hole_diam={min_concave_diam:.2f}mm (>=1.50mm), "
         f"{len(unexpected)} unexpected violations ({excluded_count} known excluded pairs)"
     )
     if unexpected:
@@ -429,6 +461,7 @@ def build_case(is_right=True) -> bd.Solid:
     bd.export_step(desk_solid, str(desk_step_path))
     bd.export_stl(desk_solid, str(desk_stl_path))
     bb_desk = desk_solid.bounding_box()
+    assert abs(bb_desk.min.Z - 0.0) < 1e-4, f"[{side_str}-desk] Bottom Z={bb_desk.min.Z:.4f} mm is not flat on Z=0.0000 mm!"
     print(
         f"Exported {desk_step_path.name} & {desk_stl_path.name}: "
         f"bbox Z=[{bb_desk.min.Z:.4f}, {bb_desk.max.Z:.4f}], volume={desk_solid.volume:.2f} mm^3"

@@ -377,16 +377,21 @@ flowchart TD
     D --> E["自動検証 (干渉体積ゼロ / 極小隙間ゼロ / 0.8mm未満肉厚チェック)"]
 ```
 
-### 5.1 モデル生成時の3段階自動検証ルール（干渉・極小隙間・0.8mm未満肉厚）
+### 5.1 モデル生成時の自動検証ルール（干渉・極小隙間・0.8mm未満肉厚・JLC3DP 発注前チェック）
 
-[`scripts/generate_cases.py`](../scripts/generate_cases.py)、[`scripts/generate_trackball_cup.py`](../scripts/generate_trackball_cup.py)、および [`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py) の実行時には、以下の3つの自動検証が必ず実行され、違反が **0件** であることがアサートされます：
+[`scripts/generate_cases.py`](../scripts/generate_cases.py)、[`scripts/generate_trackball_cup.py`](../scripts/generate_trackball_cup.py)、および [`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py) の実行時には、以下の自動検証（JLC3DP 公式 SLA / MJF / SLS デザインルール準拠）が必ず実行され、違反が **0件** であることがアサートされます：
 
-1. **全パーツ間の3D干渉体積検証（`overlap_volume == 0.00000000 mm³`）**:
+1. **JLC3DP 基本造形ルール検証（水密多様体・造形サイズ・最小穴径・底面水平接地）**:
+   * **水密・多様体・単一ソリッド**: `solid.is_valid == True`, `is_sound(solid) == True`, `len(solid.solids()) == 1`, `solid.volume > 0`（浮遊パーツや非多様体エッジがゼロであること）。
+   * **造形サイズ範囲**: バウンディングボックスが JLC3DP MJF/SLS 最小パーツサイズ（$5.0 \times 5.0 \times 2.0\,\text{mm}$）以上、最大造形サイズ（$380 \times 284 \times 380\,\text{mm}$）以内であること（実測：左右ケース $129.88 \times 96.00 \times 26.59\,\text{mm}$、カップ $29.20 \times 29.58 \times 23.50\,\text{mm}$）。
+   * **最小凹円筒穴径 $\ge \varnothing 1.50\,\text{mm}$（未硬化レジン・未焼結パウダー詰まり防止）**: すべての凹円筒面（`TopAbs_REVERSED`）の直径が JLC3DP MJF/SLS 推奨基準 $\varnothing 1.50\,\text{mm}$（SLA 基準 $\varnothing 0.50\,\text{mm}$）以上であること（実測最小：左右ケース $\varnothing 2.00\,\text{mm}$ 内角R／$\varnothing 2.40\,\text{mm}$ M2穴、カップ $\varnothing 1.95\,\text{mm}$ 支持球スナップイン入口）。
+   * **造形ベッド接地面水平性**: 3Dプリント用モデル（`left-desk`, `right-desk`, `trackball-cup`）の最下面が $Z = 0.0000\,\text{mm}$ 平面に完全接地していること。
+2. **全パーツ間の3D干渉体積検証（`overlap_volume == 0.00000000 mm³`）**:
    * 左右ケース・メイン基板・センサーサブ基板・トッププレート・トラックボールカップ・25mmボール・PMW3360センサー・LM19レンズ・CKW12・USB-C・TRRS・裏面SMD部品・14本のM2 5.50mmスペーサー・28本のM2×4mmネジ・40個のキーキャップの全組み合わせで干渉体積が完全ゼロであること。
-2. **極小隙間（クリアランス不足・清掃不能スリット・アンダーカット）の検証**:
-   * 非接触パーツ間（センサー基板 `J1`・`U1`・裏面SMD部品 vs ケース内底面・ボス・スペーサー、右メイン基板 `rJ3` vs ケース、25mmボール vs カップ球面、上下ネジ先端同士等）の最短距離を `closest_points` で計測し、組立困難や接触トラブルを招く極小隙間が存在しないこと。
+3. **極小隙間（クリアランス不足・清掃不能スリット・アンダーカット）および JLC3DP アセンブリクリアランス検証**:
+   * 非接触パーツ間（センサー基板 `J1`・`U1`・裏面SMD部品 vs ケース内底面・ボス・スペーサー、右メイン基板 `rJ3` vs ケース、上下ネジ先端同士等）および JLC3DP 推奨クリアランス（可動部 $\ge 0.30\,\text{mm}$：25mmボール vs カップ球面 $= 0.35\,\text{mm}$、静的嵌合部 $\ge 0.20\,\text{mm}$：プレート／基板 vs カップ・ケース内壁 $= 0.30\,\text{mm}$）を `closest_points` で自動検証し、組立困難や接触トラブルを招く極小隙間が存在しないこと。
    * ケース内壁に近接するボス（左手 `L4, L5`、右手 `R4, R5, TB1, TB3, TB4`）はすべて隣接内壁へU字・コーナーブリッジで直結・一体化し、小指側の基板受けリブは底面を床面下（$Z = -8.50\,\text{mm}$）まで延長して傾斜床と完全融合させること。
-3. **3Dプリント部品（`left`, `right`, `trackball-cup`）の肉厚 $0.80\,\text{mm}$ 未満検証（確定除外箇所を除く）**:
+4. **3Dプリント部品（`left`, `right`, `trackball-cup`）の肉厚 $0.80\,\text{mm}$ 未満検証（確定除外箇所を除く）**:
    * OpenCascade `BRepExtrema_DistShapeShape` により各3Dプリント部品の全非隣接面ペア（$0.001 < d < 0.80\,\text{mm}$）を総当たり走査し、**以下の意図的な確定除外箇所（ホワイトリスト）以外の $0.80\,\text{mm}$ 未満箇所が 0件** であることを検証します：
      * **左右ケース（`left` / `right`）の確定除外箇所**:
        * ① ケース上端フチ（$Z = 0.00\,\text{mm}$）：壁厚 $1.50\,\text{mm}$ に対する外周 $R = 0.95\,\text{mm}$ フィレット残りの水平天面幅（$0.550\,\text{mm}$、コーナー斜め距離 $0.629 \sim 0.743\,\text{mm}$）。

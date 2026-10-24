@@ -29,8 +29,9 @@
 2. **公式生成スクリプトの一元管理 (`scripts/`)**:
    - 3Dモデル・プレート・発注データ・図版・プレビュー画像の生成は [`scripts/`](scripts/) 配下の8本の公式スクリプト（詳細は [`scripts/README.md`](scripts/README.md) 参照）に集約し、1回限りの調査・デバッグ用スクリプトを `scripts/` に残さないこと。
    - スクリプト内でワークスペースや入出力パスを参照する際は、`c:\Users\...` 等の環境依存フルパスをハードコードせず、必ずスクリプト自身の位置からの相対解決（`WORKSPACE = Path(__file__).resolve().parent.parent`）で記述すること。
-3. **ボトムプレートの作成禁止**:
+3. **ボトムプレートの作成禁止と `cases/` ディレクトリ構成**:
    - ボトムプレートは 3D プリント製トレイ型ボトムケース（`cases/left.step`, `right.step`）に統合済みのため、生成・出力しないこと。
+   - `cases/` 直下には 3Dプリント発注用の実部品（`left.step/.stl`, `left-desk.step/.stl`, `right.step/.stl`, `right-desk.step/.stl`, `trackball-cup.step/.stl`）のみを配置し、検証・確認用のアセンブリモデル（`assembly-full.step`, `assembly-full-desk.step`, `trackball-cup-with-ball.step/.stl`, `pmw3360-lens-pcb-assembly.step`, `trackball-sensor-assembly.step`）はすべて `cases/assemblies/` 配下に分離して管理すること。
 4. **ドキュメント・画像アセットの一元管理 (`docs/`)**:
    - `curcur40` に関するドキュメントおよびプレビュー・図解画像はすべて `docs/` および `docs/assets/` 配下に格納すること（ルート直下に `preview/` 等を作らない）。
 
@@ -52,9 +53,15 @@
    - `U1` (`PMW3360DM-T2QU`) の Pin 3 (`VDDPIX`) は内部レギュレータ出力（`power_out`）であるため、外部 1.8V 電源（`/+1V8_PMW`）とショートさせず `C1`/`C2` のみの独立ネット（`Net-(U1-VDDPIX)`）に保つこと。
    - `JP1` は `Jumper:SolderJumper_3_Bridged12`（`SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels`：Pad 1 `+3V3R` – Pad 2 `/V_{IO}` 基板内銅箔直結）を維持すること。
    - `R4` (28kΩ)、`C5` (22nF)、および左右のデバッグ端子 `J4` / `rJ4` は `DNP`（BOM/CPL/3Dモデル除外）を維持すること。
-5. **DRC / ERC 合格基準**:
-   - `kicad-cli pcb drc --schematic-parity`: 3基板（`left`, `right`, `pmw3360`）すべて **違反 0件・未接続 0件・回路図不一致 0件**。
+5. **DRC / ERC 合格基準および JLCPCB 発注前自動チェック (`scripts/export_jlcpcb.py`)**:
+   - `kicad-cli pcb drc --schematic-parity`: 3基板（`left`, `right`, `pmw3360`）すべて **違反 0件・未接続 0件・回路図不一致 0件**（左右トッププレートも DRC 違反 0件）。
    - `kicad-cli sch erc`: 左右メイン基板は **エラー 0件、警告 1件**（`RP2040` Pin 32 `GPIO21` と `+3V3` / `GNDR` の左右判定ピン直結による正当な `pin_to_pin` 警告 1件のみを意図的に保持）、センサーサブ基板 `curcur40-pmw3360` は **エラー 0件、警告 0件**。
+   - **JLCPCB 2層 FR-4 標準製造ルール (`verify_jlcpcb_preflight`)**:
+     - 基板外形（`Edge.Cuts`）サイズ：PCBA 対象基板は単体実装下限 $20.0 \times 20.0\text{ mm}$ 以上、最大 $400 \times 500\text{ mm}$ 以内。
+     - 最小配線幅 $\ge 0.127\text{ mm}$（$5\text{ mil}$、1oz 銅箔標準。実基板は $\ge 0.200\text{ mm}$）。
+     - 最小ビア外径 $\ge 0.450\text{ mm}$、ビアドリル径 $\ge 0.300\text{ mm}$（2層標準追加料金なし下限。実基板は $0.50/0.30\text{ mm}$ または $0.60/0.30\text{ mm}$）、ビアアニュラリング $\ge 0.075\text{ mm}$。
+     - PTH ドリル径 $0.20 \sim 6.30\text{ mm}$、NPTH ドリル径 $\ge 0.50\text{ mm}$。
+     - Gerber ZIP 内の全9レイヤー＋PTH/NPTH ドリルファイル存在確認、BOM/CPL の Designator 完全一致、全実装部品の有効な LCSC 番号（`Cxxxxxx`）、および `DNP`/THT 部品の除外を自動検証すること。
 
 ---
 
@@ -71,13 +78,17 @@
      - `cases/assemblies/assembly-full-desk.step`
 3. **14箇所 M2 5.50mm スペーサー統一締結構造・傾斜内底面＋円筒ボスケース・干渉ゼロ検証**:
    - 左手外周 5箇所（`L1`〜`L5`）＋ 右手外周 5箇所（`R1`〜`R5`、親指側 `L5`/`R5` は $(\pm 62.0000, 64.6000)$ で完全左右対称、ボス上面 $Z = -9.10\text{ mm}$）＋ トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`、ボス上面 $Z = -17.60\text{ mm}$、センサー基板サンドイッチ＋カップ耳高さ $5.50\text{ mm}$ 段付き穴）＝ **全 14箇所すべてを共通の M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、計 14個、PCB穴径 $\varnothing 3.30\text{ mm}$）** と上下 M2 × 4.0mm ネジ（計 28本、ボス上面〜ザグリ天井のクランプ肉厚は全14箇所とも $2.40\text{ mm}$ に統一、スペーサー内のネジ間隙間 $1.50\text{ mm}$）で締結する仕様を維持すること。
-   - モデル更新時は `scripts/generate_full_assembly.py` を実行し、`assembly-full.step`（トッププレート水平基準）と `assembly-full-desk.step`（ケース底面＝デスク水平基準）の双方を出力するとともに、全パーツ間の干渉体積（`overlap_volume`）が `0.00000000 mm³` であることを確認すること。
-4. **極小隙間（クリアランス不足・狭小スリット）および肉厚 $0.80\text{ mm}$ 未満の自動検証ルール**:
-   - 3Dモデル生成時（[`scripts/generate_cases.py`](scripts/generate_cases.py)、[`scripts/generate_trackball_cup.py`](scripts/generate_trackball_cup.py)、[`scripts/generate_full_assembly.py`](scripts/generate_full_assembly.py)）には、干渉体積チェックに加えて以下の2項目を自動検証し、違反が **0件** であることをアサートすること：
-     1. **極小隙間の検証（別パーツ間クリアランス & 同一ボディ内の微小隙間）**:
-        - 干渉はしていなくても組立困難・清掃不能・製造時の造形トラブルにつながる極小隙間を防止するため、非接触パーツ間（センサーIC・`J1`/`rJ3` コネクタ・裏面SMD部品・USB-C/TRRS・ネジ先端 vs ケース内底面・ボス・カップ・プレート等）の最小クリアランスが規定閾値以上であることを `closest_points` で自動検証すること。
+   - モデル更新時は `scripts/generate_full_assembly.py` を実行し、`cases/assemblies/assembly-full.step`（トッププレート水平基準）と `cases/assemblies/assembly-full-desk.step`（ケース底面＝デスク水平基準）の双方を出力するとともに、全パーツ間の干渉体積（`overlap_volume`）が `0.00000000 mm³` であることを確認すること。
+4. **JLC3DP 発注前チェック・極小隙間（クリアランス不足・狭小スリット）・肉厚 $0.80\text{ mm}$ 未満の自動検証ルール**:
+   - 3Dモデル生成時（[`scripts/generate_cases.py`](scripts/generate_cases.py)、[`scripts/generate_trackball_cup.py`](scripts/generate_trackball_cup.py)、[`scripts/generate_full_assembly.py`](scripts/generate_full_assembly.py)）には、干渉体積チェックに加えて以下の3項目を自動検証し、違反が **0件** であることをアサートすること：
+     1. **JLC3DP 基本造形ルール（水密多様体・造形サイズ・最小穴径・底面接地）**:
+        - 水密・多様体かつ単一ソリッド（`solid.is_valid`, `is_sound(solid)`, `len(solid.solids()) == 1`, `solid.volume > 0`）であること。
+        - 造形サイズが JLC3DP MJF/SLS 最小サイズ（$5 \times 5 \times 2\text{ mm}$）以上・最大造形サイズ（$380 \times 284 \times 380\text{ mm}$）以内であり、3Dプリント用モデル（`left-desk`, `right-desk`, `trackball-cup`）の底面が $Z = 0.0000\text{ mm}$ に水平接地していること。
+        - すべての凹円筒面（穴・ザグリ・内角R）の直径が JLC3DP MJF/SLS 基準の **$\varnothing 1.50\text{ mm}$ 以上**（未硬化レジン・未焼結パウダー詰まり防止）であること。
+     2. **極小隙間の検証（別パーツ間クリアランス & 同一ボディ内の微小隙間）**:
+        - 干渉はしていなくても組立困難・清掃不能・製造時の造形トラブルにつながる極小隙間を防止するため、非接触パーツ間（センサーIC・`J1`/`rJ3` コネクタ・裏面SMD部品・USB-C/TRRS・ネジ先端 vs ケース内底面・ボス・カップ・プレート等）および JLC3DP 推奨クリアランス（可動部 $\ge 0.30\text{ mm}$、静的嵌合部 $\ge 0.20\text{ mm}$）が規定閾値以上であることを `closest_points` で自動検証すること。
         - ケース内壁に近接する円筒ボス（右手 `R4, R5, TB1, TB3, TB4`、左手 `L4, L5`）は隣接内壁へU字・コーナーブリッジで直結・一体化させ、清掃不能な狭小隙間を残さないこと。また、小指側のメイン基板受けリブは下端を床面下（$Z = -8.50\text{ mm}$）まで延長して傾斜床と完全融合させ、微小アンダーカット隙間を作らないこと。
-     2. **肉厚 $0.80\text{ mm}$ 未満の検証（確定除外箇所を除く）**:
+     3. **肉厚 $0.80\text{ mm}$ 未満の検証（確定除外箇所を除く）**:
         - 3Dプリント発注対象の3モデル（`left-desk.step`, `right-desk.step`, `trackball-cup.step`）について、OpenCascade `BRepExtrema_DistShapeShape` により全非隣接面ペア距離（$0.001 < d < 0.80\text{ mm}$）を自動走査し、**以下の意図的な確定除外箇所（ホワイトリスト）以外の $0.80\text{ mm}$ 未満箇所が 0件** であることを検証すること：
           - **左右ケース（`left` / `right`）の除外箇所**:
             - ① ケース上端フチ（$Z = 0.00\text{ mm}$）：壁厚 $1.50\text{ mm}$ に対する外周 $R = 0.95\text{ mm}$ フィレット残りの水平天面幅（$0.550\text{ mm}$、およびコーナー部の斜め距離 $0.629 \sim 0.743\text{ mm}$）。
