@@ -686,6 +686,52 @@ def main():
     assert max_cap_screw_ov == 0.0
     assert abs(dist_opt - 2.40) < 1e-6
 
+    # --- Micro-Gap & Minimum Clearance Verification (Assembly Parts & 3D-Printed Wall Thickness) ---
+    print("\n--- Micro-Gap & Wall-Thickness (<0.80mm) Verification ---")
+    from generate_cases import verify_case_wall_thickness_and_gaps
+    from generate_trackball_cup import verify_cup_wall_thickness_and_gaps
+
+    verify_case_wall_thickness_and_gaps(left_case, is_right=False)
+    verify_case_wall_thickness_and_gaps(right_case, is_right=True)
+    verify_cup_wall_thickness_and_gaps(cup_local.solids()[0])
+
+    rj3_solid = sensor_smd_solids[0]
+    j1_solid = sensor_smd_solids[1]
+    passive_smds = sensor_smd_solids[2:]
+
+    clr_j1_case = closest_points(j1_solid, right_case).distance
+    clr_rj3_case = closest_points(rj3_solid, right_case).distance
+    clr_sensor_case = closest_points(sensor_global, right_case).distance
+    clr_smds_case = min(closest_points(s, right_case).distance for s in passive_smds)
+    clr_smds_so = min(closest_points(s, so).distance for s in sensor_smd_solids for so in standoffs)
+    clr_ball_cup = closest_points(ball_global, cup_global).distance
+    clr_cup_plate = closest_points(cup_global, right_plate).distance
+    clr_cup_rpcb = closest_points(cup_global, right_pcb).distance
+    clr_screw_tips = min(
+        closest_points(b_scr, t_scr).distance
+        for b_scr, t_scr in zip(bottom_screws, top_screws)
+    )
+
+    print(f"Min Clearance Sensor J1 vs Right Case:      {clr_j1_case:.4f} mm (req >= 0.12 mm)")
+    print(f"Min Clearance Main rJ3 vs Right Case:       {clr_rj3_case:.4f} mm (req >= 0.50 mm)")
+    print(f"Min Clearance PMW3360 Sensor vs Right Case: {clr_sensor_case:.4f} mm (req >= 1.50 mm)")
+    print(f"Min Clearance Sensor SMDs vs Right Case:    {clr_smds_case:.4f} mm (req >= 0.50 mm)")
+    print(f"Min Clearance Sensor SMDs vs Standoffs:     {clr_smds_so:.4f} mm (req >= 0.80 mm)")
+    print(f"Min Clearance 25mm Ball vs Trackball Cup:   {clr_ball_cup:.4f} mm (req >= 0.30 mm)")
+    print(f"Min Clearance Trackball Cup vs Right Plate: {clr_cup_plate:.4f} mm (req >= 0.25 mm)")
+    print(f"Min Clearance Trackball Cup vs Right PCB:   {clr_cup_rpcb:.4f} mm (req >= 0.25 mm)")
+    print(f"Min Clearance Top vs Bottom Screw Tips:     {clr_screw_tips:.4f} mm (req >= 1.00 mm)")
+
+    assert clr_j1_case >= 0.12, f"J1 too close to Right Case: {clr_j1_case:.4f} mm"
+    assert clr_rj3_case >= 0.50, f"rJ3 too close to Right Case: {clr_rj3_case:.4f} mm"
+    assert clr_sensor_case >= 1.50, f"PMW3360 too close to Right Case: {clr_sensor_case:.4f} mm"
+    assert clr_smds_case >= 0.50, f"Sensor SMDs too close to Right Case: {clr_smds_case:.4f} mm"
+    assert clr_smds_so >= 0.80, f"Sensor SMDs too close to Standoffs: {clr_smds_so:.4f} mm"
+    assert clr_ball_cup >= 0.30, f"25mm Ball too close to Cup: {clr_ball_cup:.4f} mm"
+    assert clr_cup_plate >= 0.25, f"Cup too close to Right Plate: {clr_cup_plate:.4f} mm"
+    assert clr_cup_rpcb >= 0.25, f"Cup too close to Right PCB: {clr_cup_rpcb:.4f} mm"
+    assert clr_screw_tips >= 1.00, f"Top/Bottom screws too close: {clr_screw_tips:.4f} mm"
+
     all_parts = (
         [
             left_case,
