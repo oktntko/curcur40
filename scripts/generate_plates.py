@@ -134,12 +134,12 @@ def make_rect_cutout(cx, cy, w, h, r=0.5):
 
 def get_left_outer_pts():
     return [
-        (   5.4625, -24.51250, 1.0),  # Top-right (+0.20 mm from Main PCB, 0.30 mm clearance to Case inner wall)
         (-119.2625, -24.51250, 1.0),  # Top-left
-        (-119.2625,  41.18125, 1.0),  # Pinky-left bottom
-        ( -82.6625,  41.18125, 1.0),  # Pinky step inner
-        ( -82.6625,  67.70000, 1.0),  # Thumb bottom-left
+        (   5.4625, -24.51250, 1.0),  # Top-right (+0.20 mm from Main PCB, 0.30 mm clearance to Case inner wall)
         (   5.4625,  67.70000, 1.0),  # Bottom-right
+        ( -82.6625,  67.70000, 1.0),  # Thumb bottom-left
+        ( -82.6625,  41.18125, 1.0),  # Pinky step inner
+        (-119.2625,  41.18125, 1.0),  # Pinky-left bottom
     ]
 
 
@@ -216,8 +216,10 @@ def prims_to_svg_path(prims, ox, oy):
             _, (x1, y1), (xm, ym), (x2, y2) = prim
             if i == 0:
                 d.append(f"M {x1 + ox:.4f} {y1 + oy:.4f}")
-            r = math.hypot(x1 - (x1 + x2)/2, y1 - (y1 + y2)/2)
-            d.append(f"A {r:.4f} {r:.4f} 0 0 1 {x2 + ox:.4f} {y2 + oy:.4f}")
+            r = math.hypot(x2 - x1, y2 - y1) * math.sqrt(0.5)
+            cross = (xm - x1) * (y2 - y1) - (ym - y1) * (x2 - x1)
+            sweep = 1 if cross < 0 else 0
+            d.append(f"A {r:.4f} {r:.4f} 0 0 {sweep} {x2 + ox:.4f} {y2 + oy:.4f}")
     d.append("Z")
     return " ".join(d)
 
