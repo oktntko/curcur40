@@ -135,7 +135,7 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 
 ### 4.3 右手専用：光学トラックボールセンサー基板 (`curcur40-pmw3360`) と JST SH 6ピン接続 (`rJ3` / `J1`)
 
-トラックボールカップの円形リム天面をトッププレート表面（$Z = -2.00\,\text{mm}$）と同じ高さまで $-11.80\,\text{mm}$ 沈み込ませる低プロファイル設計に伴い、光学センサー `U1` (`PMW3360DM-T2QU`) とその周辺回路は独立したセンサーサブ基板 **[`pcbs/pmw3360/curcur40-pmw3360.kicad_pcb`](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)**（配置高さ $Z = -17.60 \sim -16.00\,\text{mm}$）に分離し、右手メイン基板（$Z = -5.80 \sim -4.20\,\text{mm}$）と **JST SH 1.0mm ピッチ 6ピン横向き SMD コネクタ（`SM06B-SRSS-TB(LF)(SN)`, LCSC `C160404`）および 6ピン両端ハーネス** で接続します。
+トラックボールカップの円形リム天面をトッププレート表面（$Z = -2.00\,\text{mm}$）と同じ高さまで $-11.80\,\text{mm}$ 沈み込ませる低プロファイル設計に伴い、光学センサー `U1` (`PMW3360DM-T2QU`) とその周辺回路は独立したセンサーサブ基板 **[`pcbs/pmw3360/curcur40-pmw3360.kicad_pcb`](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)**（配置高さ $Z = -17.60 \sim -16.00\,\text{mm}$）に分離し、右手メイン基板（$Z = -5.80 \sim -4.20\,\text{mm}$）と **JST SH 1.0mm ピッチ 6ピン横向き SMD コネクタ（`SM06B-SRSS-TB(LF)(SN)`, LCSC `C160405`）および 6ピン両端ハーネス** で接続します。
 
 #### ⓪ 基板間コネクタ `rJ3`（右メイン基板）↔ `J1`（センサーサブ基板）のピンアサイン
 * **回路図シンボル**: `Connector_Generic_MountingPin:Conn_01x06_MountingPin`
