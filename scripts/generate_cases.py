@@ -212,6 +212,16 @@ def build_case(is_right=True) -> bd.Solid:
             height=z_boss_top - z_ext_bottom,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((cx, cy, z_ext_bottom)))
+        # Merge R4/L4 boss (cy = -95.1500, South edge -98.5500) cleanly into the South inner wall (Y = -98.6316)
+        # to eliminate the 0.082 mm sliver gap between the boss outer wall and the case inner wall.
+        if abs(cy - (-95.1500)) < 0.1 and abs(abs(cx) - 112.2875) < 0.1:
+            wall_bridge = bd.Box(
+                6.80,
+                4.20,
+                z_boss_top - z_ext_bottom,
+                align=(bd.Align.CENTER, bd.Align.MAX, bd.Align.MIN),
+            ).moved(bd.Location((cx, cy, z_ext_bottom)))
+            boss_cyl = boss_cyl + wall_bridge
         boss_solids.append(boss_cyl & outer_solid)
 
     for b_cyl in boss_solids:
@@ -219,33 +229,34 @@ def build_case(is_right=True) -> bd.Solid:
 
     # 4b. Add 4x Wall-Mounted Main PCB Support Ledges (North, South, Outer/Pinky, Inner/Thumb-Index)
     #     Top surface at Z = -5.80 mm (supporting Main PCB B.Cu bottom plane by 1.00 mm overlap at component-free edges),
-    #     with a 45-deg sloped underside (Z = -8.00 to -5.80 mm) so no spiky floor pillars are needed.
+    #     with a 0.85 mm vertical tip face and 45-deg sloped underside so no < 0.80 mm thin tip or spiky floor pillar exists.
     sgn = 1.0 if is_right else -1.0
     ledge_solids = []
 
     # (a) North wall ledge: |X_step| in [71.2875, 81.2875] (width 10.0 mm), Y_step from -31.8375 (inside wall) to -33.8375 (1.0 mm under PCB)
-    pts_n = [(-31.8375, -5.80), (-33.8375, -5.80), (-33.8375, -6.30), (-31.8375, -8.30)]
+    pts_n = [(-31.8375, -5.80), (-33.8375, -5.80), (-33.8375, -6.65), (-31.8375, -8.65)]
     with bd.BuildSketch(bd.Plane.YZ) as sk_n:
         bd.Polygon(pts_n, align=None)
     ledge_n = bd.extrude(sk_n.sketch, amount=10.0 * sgn).moved(bd.Location((sgn * 71.2875, 0, 0)))
     ledge_solids.append(ledge_n & outer_solid)
 
     # (b) South wall ledge: |X_step| in [82.2875, 92.2875] (width 10.0 mm), Y_step from -125.6500 (inside wall) to -123.6500 (1.0 mm under PCB)
-    pts_s = [(-125.6500, -5.80), (-123.6500, -5.80), (-123.6500, -6.30), (-125.6500, -8.30)]
+    pts_s = [(-125.6500, -5.80), (-123.6500, -5.80), (-123.6500, -6.65), (-125.6500, -8.65)]
     with bd.BuildSketch(bd.Plane.YZ) as sk_s:
         bd.Polygon(pts_s, align=None)
     ledge_s = bd.extrude(sk_s.sketch, amount=10.0 * sgn).moved(bd.Location((sgn * 82.2875, 0, 0)))
     ledge_solids.append(ledge_s & outer_solid)
 
     # (c) Outer (Pinky) wall ledge: Y_step in [-65.1500, -55.1500] (length 10.0 mm), |X_step| from 134.8580 (inside wall) to 132.3500 (1.0 mm under PCB)
-    pts_o = [(sgn * 134.8580, -5.80), (sgn * 132.3500, -5.80), (sgn * 132.3500, -8.00), (sgn * 134.8580, -8.00)]
+    #     Extended down to Z = -8.50 mm so it merges completely into the tilted/skimmed floor without any 0.06 mm undercut gap.
+    pts_o = [(sgn * 134.8580, -5.80), (sgn * 132.3500, -5.80), (sgn * 132.3500, -8.50), (sgn * 134.8580, -8.50)]
     with bd.BuildSketch(bd.Plane.XZ) as sk_o:
         bd.Polygon(pts_o, align=None)
     ledge_o = bd.extrude(sk_o.sketch, amount=10.0).moved(bd.Location((0, -55.1500, 0)))
     ledge_solids.append(ledge_o & outer_solid)
 
     # (d) Inner (Thumb/Index) wall ledge: Y_step in [-64.1500, -54.1500] (length 10.0 mm), |X_step| from 8.0250 (inside wall) to 10.0250 (1.0 mm under PCB)
-    pts_i = [(sgn * 8.0250, -5.80), (sgn * 10.0250, -5.80), (sgn * 10.0250, -6.30), (sgn * 8.0250, -8.30)]
+    pts_i = [(sgn * 8.0250, -5.80), (sgn * 10.0250, -5.80), (sgn * 10.0250, -6.65), (sgn * 8.0250, -8.65)]
     with bd.BuildSketch(bd.Plane.XZ) as sk_i:
         bd.Polygon(pts_i, align=None)
     ledge_i = bd.extrude(sk_i.sketch, amount=10.0).moved(bd.Location((0, -54.1500, 0)))
