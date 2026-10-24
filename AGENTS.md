@@ -63,12 +63,12 @@
 1. **実行環境**:
    - `& "$env:USERPROFILE\.local\bin\uvx.exe" --no-config --managed-python --python 3.13 --from "cadgen==0.7.26" python`
 2. **光学距離基準点 (`Lens_Optical_Ref_Point`) の維持**:
-   - 以下の4つの STEP モデルには、GUI（CAD Viewer 等）で直接選択して 25mm ボール（`Trackball_25mm`, 最下面 $Z_{\text{rel}} = +5.80\text{ mm}$ / フルアセンブリ $Z = -10.2000\text{ mm}$）との距離（設計値 **$2.40\text{ mm}$**）を計測できるよう、光軸中心のレンズフランジ着座面（$Z_{\text{rel}} = +3.4000\text{ mm}$ / フルアセンブリ $Z = -12.6000\text{ mm}$）に独立した名前付きオブジェクト **`Lens_Optical_Ref_Point`** を `bd.Compound(children=[...])` の子要素として必ず含めること：
-     - `cases/pmw3360-lens-pcb-assembly.step`
-     - `cases/trackball-sensor-assembly.step`
-     - `cases/trackball-cup-with-ball.step`
-     - `cases/assembly-full.step`
-     - `cases/assembly-full-desk.step`
+   - 以下の5つの検証アセンブリ STEP モデル（[`cases/assemblies/`](cases/assemblies/) 配下）には、GUI（CAD Viewer 等）で直接選択して 25mm ボール（`Trackball_25mm`, 最下面 $Z_{\text{rel}} = +5.80\text{ mm}$ / フルアセンブリ $Z = -10.2000\text{ mm}$）との距離（設計値 **$2.40\text{ mm}$**）を計測できるよう、光軸中心のレンズフランジ着座面（$Z_{\text{rel}} = +3.4000\text{ mm}$ / フルアセンブリ $Z = -12.6000\text{ mm}$）に独立した名前付きオブジェクト **`Lens_Optical_Ref_Point`** を `bd.Compound(children=[...])` の子要素として必ず含めること：
+     - `cases/assemblies/pmw3360-lens-pcb-assembly.step`
+     - `cases/assemblies/trackball-sensor-assembly.step`
+     - `cases/assemblies/trackball-cup-with-ball.step`
+     - `cases/assemblies/assembly-full.step`
+     - `cases/assemblies/assembly-full-desk.step`
 3. **14箇所 M2 5.50mm スペーサー統一締結構造・傾斜内底面＋円筒ボスケース・干渉ゼロ検証**:
    - 左手外周 5箇所（`L1`〜`L5`）＋ 右手外周 5箇所（`R1`〜`R5`、親指側 `L5`/`R5` は $(\pm 62.0000, 64.6000)$ で完全左右対称、ボス上面 $Z = -9.10\text{ mm}$）＋ トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`、ボス上面 $Z = -17.60\text{ mm}$、センサー基板サンドイッチ＋カップ耳高さ $5.50\text{ mm}$ 段付き穴）＝ **全 14箇所すべてを共通の M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、計 14個、PCB穴径 $\varnothing 3.30\text{ mm}$）** と上下 M2 × 4.0mm ネジ（計 28本、ボス上面〜ザグリ天井のクランプ肉厚は全14箇所とも $2.40\text{ mm}$ に統一、スペーサー内のネジ間隙間 $1.50\text{ mm}$）で締結する仕様を維持すること。
    - モデル更新時は `scripts/generate_full_assembly.py` を実行し、`assembly-full.step`（トッププレート水平基準）と `assembly-full-desk.step`（ケース底面＝デスク水平基準）の双方を出力するとともに、全パーツ間の干渉体積（`overlap_volume`）が `0.00000000 mm³` であることを確認すること。

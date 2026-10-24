@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Generate PMW3360 + LM19-LSI optical sensor assemblies for curcur40:
-1. cases/pmw3360-lens-pcb-assembly.step
-2. cases/trackball-sensor-assembly.step
+1. cases/assemblies/pmw3360-lens-pcb-assembly.step
+2. cases/assemblies/trackball-sensor-assembly.step
 
 Includes the GUI-selectable lens-side optical distance reference point
 (`Lens_Optical_Ref_Point`) at (0.00, 0.00, +3.40 mm), exactly 2.40 mm below
@@ -14,8 +14,9 @@ from cadgen.geometry import overlap_volume, closest_points
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 CASES_DIR = WORKSPACE / "cases"
-OUT_SENSOR_PCB_STEP = CASES_DIR / "pmw3360-lens-pcb-assembly.step"
-OUT_TRACKBALL_SENSOR_STEP = CASES_DIR / "trackball-sensor-assembly.step"
+ASSEMBLIES_DIR = CASES_DIR / "assemblies"
+OUT_SENSOR_PCB_STEP = ASSEMBLIES_DIR / "pmw3360-lens-pcb-assembly.step"
+OUT_TRACKBALL_SENSOR_STEP = ASSEMBLIES_DIR / "trackball-sensor-assembly.step"
 
 OPTICAL_REF_Z = 3.40
 OPTICAL_REF_RADIUS = 0.35  # Ø 0.70 mm reference disk (both face & edge measure 2.40 mm to ball)
@@ -171,6 +172,7 @@ def main():
 
     pcb_solid, sensor_solid, lens_solid, ref_point = build_sensor_pcb_parts()
 
+    ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
     # 1. Export pmw3360-lens-pcb-assembly.step
     sensor_pcb_assy = bd.Compound(children=[pcb_solid, sensor_solid, lens_solid, ref_point])
     sensor_pcb_assy.label = "PMW3360_Lens_PCB_Assembly"

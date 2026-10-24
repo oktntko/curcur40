@@ -12,6 +12,7 @@ from OCP.BRepExtrema import BRepExtrema_DistShapeShape
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 CASES_DIR = WORKSPACE / "cases"
+ASSEMBLIES_DIR = CASES_DIR / "assemblies"
 CASES_DIR.mkdir(parents=True, exist_ok=True)
 
 def build_trackball_cup() -> bd.Solid:
@@ -291,7 +292,7 @@ if __name__ == "__main__":
     print(f"Overlap volume with seated 25mm ball: {ov:.8f} mm^3 (ZERO CONTACT = {ov == 0.0})")
 
     # Verify zero collision with LM19 optical lens
-    lens_step = CASES_DIR / "pmw3360-lens-pcb-assembly.step"
+    lens_step = ASSEMBLIES_DIR / "pmw3360-lens-pcb-assembly.step"
     if lens_step.exists():
         assy = bd.import_step(str(lens_step))
         lens = assy.solids()[2]
@@ -308,9 +309,10 @@ if __name__ == "__main__":
 
     # Build and export Trackball Cup + 25mm Ball Assembly
     print("\nBuilding Trackball Cup with 25mm Ball Assembly...")
+    ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
     assembly = build_trackball_assembly()
-    out_assembly_step = CASES_DIR / "trackball-cup-with-ball.step"
-    out_assembly_stl = CASES_DIR / "trackball-cup-with-ball.stl"
+    out_assembly_step = ASSEMBLIES_DIR / "trackball-cup-with-ball.step"
+    out_assembly_stl = ASSEMBLIES_DIR / "trackball-cup-with-ball.stl"
     bd.export_step(assembly, str(out_assembly_step))
     bd.export_stl(assembly, str(out_assembly_stl))
     print(f"Successfully generated Assembly:")
