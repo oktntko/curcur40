@@ -140,6 +140,17 @@ def export_gerber_zip(pcb_path, zip_path):
                 zf.write(os.path.join(tmp_dir, fname), fname)
 
 
+# JLCPCB 3D/DFM model rotation offsets (in degrees, added to standard bottom-side rotation (180 - krot) % 360)
+# Verified against JLCPCB DFM Component Placement viewer:
+JLCPCB_ROT_OFFSETS = {
+    "SOIC-8_5.3x5.3mm_P1.27mm": 270.0,       # U4/rU4 (W25Q128JVSIQ, C97521/C113767): 90 deg CW in Bottom view
+    "SOT-223-3_TabPin2": 180.0,              # U2/rU2 (NCP1117LPST33T3G, C146799): 180 deg in Bottom view
+    "USON-10_2.5x1.0mm_P0.5mm": 270.0,       # U3/rU3 (TPD4E05U06DQAR, C138714): 90 deg CW in Bottom view
+    "PJ-398A-5A_PJ-399B-6A": 90.0,           # J2/rJ2 (PJ-398A-5A / PJ-399B-6A, C128994): 90 deg CCW in Bottom view
+    "SOT-23-5": 270.0,                       # PMW3360 U2 (TLV74318PDBVR, C485152): 90 deg CW in Bottom view
+}
+
+
 def export_main_pcb(pcb_path, proj_name, is_right=False, is_pmw=False):
     out_dir = os.path.join(os.path.dirname(pcb_path), "jlcpcb", "production_files")
     os.makedirs(out_dir, exist_ok=True)
@@ -168,10 +179,18 @@ def export_main_pcb(pcb_path, proj_name, is_right=False, is_pmw=False):
         bom_groups.setdefault((comment, pkg, lcsc), []).append(ref)
 
         pos = fp.GetPosition()
-        x_mm = round(pcbnew.ToMM(pos.x) - ox, 6)
-        y_mm = round(oy - pcbnew.ToMM(pos.y), 6)
+        px_mm = pcbnew.ToMM(pos.x)
+        py_mm = pcbnew.ToMM(pos.y)
+        # PJ-398A-5A_PJ-399B-6A has its KiCad footprint origin at the barrel tip (board edge);
+        # shift 6.50 mm inward to the pad/body center expected by JLCPCB's C128994 model.
+        if pkg == "PJ-398A-5A_PJ-399B-6A":
+            px_mm += 6.50 if is_right else -6.50
+
+        x_mm = round(px_mm - ox, 6)
+        y_mm = round(oy - py_mm, 6)
         krot = fp.GetOrientationDegrees()
-        crot = round((180.0 - krot) % 360.0, 2)
+        rot_offset = JLCPCB_ROT_OFFSETS.get(pkg, 0.0)
+        crot = round((180.0 - krot + rot_offset) % 360.0, 2)
         layer = "bottom" if fp.GetLayer() == pcbnew.B_Cu else "top"
         cpl_rows.append([ref, comment, pkg, x_mm, y_mm, crot, layer])
 
