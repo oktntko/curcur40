@@ -212,16 +212,25 @@ def build_case(is_right=True) -> bd.Solid:
             height=z_boss_top - z_ext_bottom,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((cx, cy, z_ext_bottom)))
-        # Merge R4/L4 boss (cy = -95.1500, South edge -98.5500) cleanly into the South inner wall (Y = -98.6316)
-        # to eliminate the 0.082 mm sliver gap between the boss outer wall and the case inner wall.
-        if abs(cy - (-95.1500)) < 0.1 and abs(abs(cx) - 112.2875) < 0.1:
-            wall_bridge = bd.Box(
+        # Bridge near-wall bosses cleanly into adjacent inner walls to eliminate narrow un-cleanable crevices:
+        # 1) South-wall bridges for R4/L4 (cy=-95.15), R5/L5 (cy=-121.75), TB3 (cy=-120.8375), TB4 (cy=-120.8375)
+        if abs(cy - (-95.1500)) < 0.1 or cy < -120.0:
+            south_bridge = bd.Box(
                 6.80,
-                4.20,
+                5.50,
                 z_boss_top - z_ext_bottom,
                 align=(bd.Align.CENTER, bd.Align.MAX, bd.Align.MIN),
             ).moved(bd.Location((cx, cy, z_ext_bottom)))
-            boss_cyl = boss_cyl + wall_bridge
+            boss_cyl = boss_cyl + south_bridge
+        # 2) West-wall bridges for right-hand TB1 (11.8125, -98.2375) and TB3 (11.8125, -120.8375)
+        if is_right and abs(cx - 11.8125) < 0.1:
+            west_bridge = bd.Box(
+                4.50,
+                6.80,
+                z_boss_top - z_ext_bottom,
+                align=(bd.Align.MAX, bd.Align.CENTER, bd.Align.MIN),
+            ).moved(bd.Location((cx, cy, z_ext_bottom)))
+            boss_cyl = boss_cyl + west_bridge
         boss_solids.append(boss_cyl & outer_solid)
 
     for b_cyl in boss_solids:
