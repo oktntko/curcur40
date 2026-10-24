@@ -147,7 +147,7 @@ JLCPCB_ROT_OFFSETS = {
     "SOT-223-3_TabPin2": 180.0,              # U2/rU2 (NCP1117LPST33T3G, C146799): 180 deg in Bottom view
     "USON-10_2.5x1.0mm_P0.5mm": 270.0,       # U3/rU3 (TPD4E05U06DQAR, C138714): 90 deg CW in Bottom view
     "PJ-398A-5A_PJ-399B-6A": 90.0,           # J2/rJ2 (PJ-398A-5A / PJ-399B-6A, C128994): 90 deg CCW in Bottom view
-    "SOT-23-5": 270.0,                       # PMW3360 U2 (TLV74318PDBVR, C485152): 90 deg CW in Bottom view
+    "SOT-23-5": 180.0,                       # PMW3360 U2 (TLV74318PDBVR, C485152): 180 deg in Bottom view
 }
 
 
