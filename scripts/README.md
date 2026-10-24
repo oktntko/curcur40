@@ -47,6 +47,6 @@ $KICAD_PY = "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\python.exe"
 | スクリプト | 役割・出力ファイル |
 | :--- | :--- |
 | **[`generate_plates.py`](./generate_plates.py)** | 左右 FR-4 トッププレート（`plate-top-left.kicad_pcb`, `plate-top-right.kicad_pcb`）およびレーザーカット用 SVG（`plate-curcur40.svg`, `foam-curcur40.svg`）を生成し、DRC を検証します。 |
-| **[`export_jlcpcb.py`](./export_jlcpcb.py)** | 全3基板（`curcur40-left`, `curcur40-right`, `curcur40-pmw3360`）の Gerber ZIP・BOM CSV・CPL CSV、および左右トッププレートの Gerber ZIP を一括出力します。 |
+| **[`export_jlcpcb.py`](./export_jlcpcb.py)** | 全3基板（`curcur40-left`, `curcur40-right`, `curcur40-pmw3360`）の Gerber ZIP・BOM CSV・CPL CSV、および左右トッププレートの Gerber ZIP を一括出力し、JLCPCB 公式製造ルール（DRC/ERC、基板サイズ、最小配線幅 $\ge 0.127\text{ mm}$、最小ビア $\ge 0.45/0.30\text{ mm}$、PTH/NPTH穴径、BOM/CPL/LCSC整合性）を発注前自動チェックします。 |
 | **[`generate_spec_diagrams.py`](./generate_spec_diagrams.py)** | `docs/assets/` 配下のスタックアップ断面図・トラックボールカップ詳細図面等の解説図版 PNG を生成します。 |
 | **[`render_previews.py`](./render_previews.py)** | `docs/assets/render_*.png`（フルアセンブリ・全3基板・左右トッププレートの3Dレンダリング画像）を一括更新します。 |

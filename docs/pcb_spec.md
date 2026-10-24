@@ -329,6 +329,13 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 
 * **ERC グリッド整合・ジャンクション規約**: `endpoint_off_grid` および `four_way_junction` を含む全 ERC ルールを有効化（`Ignored checks: None`）した状態で検証します。すべてのシンボルピン・ワイヤー端点は `50 mil` (`1.27 mm`) グリッド上に配置し、RGB LED マトリックスの電源・GND バス接続は偶数列を `1.27 mm` オフセット配置した3方向 T 字接続（`junction`）とすることで 4方向十字接続（`four_way_junction`）をゼロに保ちます。
 * **DRC 回路図等価性（Schematic Parity）規約**: PCB 上の全フットプリントに回路図シンボルの UUID 参照（`(path "/<symbol-uuid>")`）を保持し、フットプリント名・Value・Description・属性（`DNP` / `exclude_from_bom` / `exclude_from_pos_files`）を回路図と完全一致させます。外部スクリプト等でファイルを更新した後に KiCad GUI 上で DRC/ERC を実行する場合は、メモリ上の古いキャッシュによる不一致警告（旧 `JP1` Open ジャンパや `R4`/`C5`/`R1` 属性の差分など）を防ぐため、必ず KiCad でプロジェクトを再読み込みしてから実行してください。
+* **JLCPCB 2層 FR-4 PCB / PCBA 公式製造ルール自動チェック（[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py) の `verify_jlcpcb_preflight`）**:
+  発注データ出力時に、上記の DRC / ERC チェックに加えて以下の JLCPCB 公式製造基準（追加料金なしの標準2層1oz仕様）を自動検証・アサートします：
+  1. **基板外形サイズ（`Edge.Cuts`）**: PCBA 対象基板は単体実装最小サイズ $20.0 \times 20.0\text{ mm}$ 以上、最大 $400 \times 500\text{ mm}$ 以内であること（実測：左 $124.45 \times 91.91\text{ mm}$、右 $124.45 \times 91.94\text{ mm}$、センサーサブ基板 $29.73 \times 29.35\text{ mm}$、トッププレート $124.88 \times 92.36\text{ mm}$）。
+  2. **最小配線幅**: $\ge 0.127\text{ mm}$（$5\text{ mil}$、1oz 銅箔標準。実測最小：$0.200\text{ mm}$）。
+  3. **最小ビア外径・ドリル径・アニュラリング**: ビア外径 $\ge 0.450\text{ mm}$、ビアドリル径 $\ge 0.300\text{ mm}$（2層標準追加料金なし下限。実測：$0.50/0.30\text{ mm}$ または $0.60/0.30\text{ mm}$）、ビアアニュラリング $\ge 0.075\text{ mm}$（実測 $\ge 0.100\text{ mm}$）。
+  4. **PTH / NPTH ドリル径**: PTH ドリル径 $0.20 \sim 6.30\text{ mm}$（実測最小：$0.60\text{ mm}$）、NPTH ドリル径 $\ge 0.50\text{ mm}$（実測最小：$1.90\text{ mm}$）。
+  5. **Gerber ZIP 構成 & BOM / CPL 完全性**: 全9レイヤーの Gerber ファイル＋PTH/NPTH ドリルファイルの存在確認、BOM と CPL の Designator 集合 100% 一致、全実装部品の有効な LCSC 部品番号（`Cxxxxxx`）付与、および `DNP` / 手ハンダ部品（`R4`, `C5`, `J4`, `rJ4`, `U1(PMW3360)`, `rEXSW1`, `JP1`）の BOM/CPL 除外を自動検証します。
 
 ### 8.3 KiCad 10.0 `pcbnew` Python スクリプト操作時の注意事項
 * KiCad 10.0 (Windows版) の `pcbnew` Python API では、`PCB_VIA` オブジェクトに対してレイヤー引数なしで `t.GetWidth()` を呼び出したり、`t.GetEnd()` を呼び出すと、C++ 内部アサーションダイアログ（`assert "false" failed in GetWidth(): Warning: PCB_VIA::GetWidth called without a layer argument`）が発生してプロセスが停止します。

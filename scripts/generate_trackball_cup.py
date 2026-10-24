@@ -8,7 +8,10 @@ import time
 from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import is_sound
+from OCP.BRepAdaptor import BRepAdaptor_Surface
 from OCP.BRepExtrema import BRepExtrema_DistShapeShape
+from OCP.GeomAbs import GeomAbs_Cylinder
+from OCP.TopAbs import TopAbs_REVERSED
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 CASES_DIR = WORKSPACE / "cases"
@@ -207,14 +210,38 @@ def build_trackball_cup() -> bd.Solid:
 
 def verify_cup_wall_thickness_and_gaps(cup: bd.Solid):
     """
-    Automated B-rep check for micro-gaps and < 0.80 mm wall thicknesses on Trackball_Cup.
-    Asserts 0 unexpected hits outside the 4 documented intentional features:
-      - Group A (~0.355 mm, Z in [7.0, 9.0] mm): 3x Ø 2.00 mm bearing ball snap-in retention lips
-      - Group B (0.450 mm, Z = 3.90 mm): 4x mounting ear internal counterbore step (Ø 3.30 to Ø 2.40 mm)
-      - Group C (0.650 mm, Z in [4.80, 5.55] mm): Z-offset between ear top (5.50) and lens pocket ceiling (4.85)
-      - Group D (0.700 mm, Z in [21.0, 22.9] mm): 3x ball retention claw top lead-in chamfer edges
+    Automated JLC3DP (SLA / MJF / SLS) pre-order DFM & B-rep check on Trackball_Cup:
+      1) Watertight manifold single solid (`is_valid`, `is_sound`, `len(solids) == 1`, `volume > 0`)
+      2) JLC3DP build envelope (<= 380 x 284 x 380 mm), min part size (>= 5 x 5 x 2 mm), and flat bottom Z_min = 0.0000 mm
+      3) Minimum concave hole/bore diameter >= Ø 1.50 mm (actual min Ø 1.95 mm bearing snap-in throat)
+      4) Minimum wall thickness >= 0.80 mm & zero micro-gaps outside 4 documented intentional features:
+         - Group A (~0.355 mm, Z in [7.0, 9.0] mm): 3x Ø 2.00 mm bearing ball snap-in retention lips
+         - Group B (0.450 mm, Z = 3.90 mm): 4x mounting ear internal counterbore step (Ø 3.30 to Ø 2.40 mm)
+         - Group C (0.650 mm, Z in [4.80, 5.55] mm): Z-offset between ear top (5.50) and lens pocket ceiling (4.85)
+         - Group D (0.700 mm, Z in [21.0, 22.9] mm): 3x ball retention claw top lead-in chamfer edges
     """
+    assert cup.is_valid and is_sound(cup), "[trackball-cup] Solid is not watertight/manifold!"
+    assert len(cup.solids()) == 1 and cup.volume > 0, "[trackball-cup] Must be a single positive-volume solid!"
+
+    bb = cup.bounding_box()
+    sx, sy, sz = bb.max.X - bb.min.X, bb.max.Y - bb.min.Y, bb.max.Z - bb.min.Z
+    assert 5.0 <= sx <= 380.0 and 5.0 <= sy <= 284.0 and 2.0 <= sz <= 380.0, (
+        f"[trackball-cup] Bounding box {sx:.2f}x{sy:.2f}x{sz:.2f} mm outside JLC3DP limits!"
+    )
+    assert abs(bb.min.Z - 0.0) < 1e-4, f"[trackball-cup] Bottom Z={bb.min.Z:.4f} mm is not flat on Z=0.0000 mm!"
+
     faces = cup.faces()
+    min_concave_diam = float("inf")
+    for f in faces:
+        surf = BRepAdaptor_Surface(f.wrapped)
+        if surf.GetType() == GeomAbs_Cylinder and f.wrapped.Orientation() == TopAbs_REVERSED:
+            diam = round(2.0 * surf.Cylinder().Radius(), 4)
+            if diam < min_concave_diam:
+                min_concave_diam = diam
+    assert min_concave_diam >= 1.50, (
+        f"[trackball-cup] Concave hole/bore diameter {min_concave_diam:.3f} mm < JLC3DP 1.50 mm limit!"
+    )
+
     bbs = [f.bounding_box() for f in faces]
     unexpected = []
     excluded_count = 0
@@ -249,7 +276,8 @@ def verify_cup_wall_thickness_and_gaps(cup: bd.Solid):
                         unexpected.append((d, (mx, my, mz), i, j))
 
     print(
-        f"[trackball-cup] Wall-thickness (<0.80mm) & micro-gap check: "
+        f"[trackball-cup] JLC3DP preflight & <0.80mm check: "
+        f"bbox={sx:.2f}x{sy:.2f}x{sz:.2f}mm, min_hole_diam={min_concave_diam:.2f}mm (>=1.50mm), "
         f"{len(unexpected)} unexpected violations ({excluded_count} known excluded pairs)"
     )
     if unexpected:
