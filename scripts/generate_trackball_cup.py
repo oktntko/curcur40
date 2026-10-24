@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import is_sound
+from OCP.BRepExtrema import BRepExtrema_DistShapeShape
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 CASES_DIR = WORKSPACE / "cases"
@@ -202,6 +203,60 @@ def build_trackball_cup() -> bd.Solid:
     cup_solid.label = "Trackball_Cup"
     return cup_solid
 
+
+def verify_cup_wall_thickness_and_gaps(cup: bd.Solid):
+    """
+    Automated B-rep check for micro-gaps and < 0.80 mm wall thicknesses on Trackball_Cup.
+    Asserts 0 unexpected hits outside the 4 documented intentional features:
+      - Group A (~0.355 mm, Z in [7.0, 9.0] mm): 3x Ø 2.00 mm bearing ball snap-in retention lips
+      - Group B (0.450 mm, Z = 3.90 mm): 4x mounting ear internal counterbore step (Ø 3.30 to Ø 2.40 mm)
+      - Group C (0.650 mm, Z in [4.80, 5.55] mm): Z-offset between ear top (5.50) and lens pocket ceiling (4.85)
+      - Group D (0.700 mm, Z in [21.0, 22.9] mm): 3x ball retention claw top lead-in chamfer edges
+    """
+    faces = cup.faces()
+    bbs = [f.bounding_box() for f in faces]
+    unexpected = []
+    excluded_count = 0
+
+    for i in range(len(faces)):
+        b1 = bbs[i]
+        for j in range(i + 1, len(faces)):
+            b2 = bbs[j]
+            dx = max(0.0, b1.min.X - b2.max.X, b2.min.X - b1.max.X)
+            dy = max(0.0, b1.min.Y - b2.max.Y, b2.min.Y - b1.max.Y)
+            dz = max(0.0, b1.min.Z - b2.max.Z, b2.min.Z - b1.max.Z)
+            if math.sqrt(dx * dx + dy * dy + dz * dz) > 0.85:
+                continue
+            dss = BRepExtrema_DistShapeShape(faces[i].wrapped, faces[j].wrapped)
+            if dss.IsDone() and dss.NbSolution() > 0:
+                d = dss.Value()
+                if 0.001 < d < 0.800:
+                    p1 = dss.PointOnShape1(1)
+                    p2 = dss.PointOnShape2(1)
+                    mx = 0.5 * (p1.X() + p2.X())
+                    my = 0.5 * (p1.Y() + p2.Y())
+                    mz = 0.5 * (p1.Z() + p2.Z())
+
+                    is_group_a = 7.0 <= mz <= 9.0 and 0.340 <= d <= 0.370
+                    is_group_b = abs(mz - 3.90) < 0.15 and 0.440 <= d <= 0.460
+                    is_group_c = 4.80 <= mz <= 5.55 and 0.640 <= d <= 0.660
+                    is_group_d = 21.0 <= mz <= 22.9 and 0.690 <= d <= 0.710
+
+                    if is_group_a or is_group_b or is_group_c or is_group_d:
+                        excluded_count += 1
+                    else:
+                        unexpected.append((d, (mx, my, mz), i, j))
+
+    print(
+        f"[trackball-cup] Wall-thickness (<0.80mm) & micro-gap check: "
+        f"{len(unexpected)} unexpected violations ({excluded_count} known excluded pairs)"
+    )
+    if unexpected:
+        for d, (mx, my, mz), i, j in unexpected:
+            print(f"  UNEXPECTED: d={d:.4f} mm at ({mx:.2f}, {my:.2f}, {mz:.2f}) [F{i}-F{j}]")
+    assert len(unexpected) == 0, f"Trackball cup has {len(unexpected)} unexpected <0.80mm wall/gap violations!"
+
+
 def build_trackball_assembly() -> bd.Compound:
     """
     Assembly of Trackball Cup with 25mm Trackball centered at (0, 0, 18.30 mm)
@@ -225,6 +280,7 @@ if __name__ == "__main__":
     print("Building curcur40 Trackball Cup per case_spec.md Section 4...")
     cup = build_trackball_cup()
     print(f"Trackball Cup solid: valid={cup.is_valid}, sound={is_sound(cup)}, volume={cup.volume:.2f} mm^3 in {time.time() - t0:.2f}s")
+    verify_cup_wall_thickness_and_gaps(cup)
     
     bbox = cup.bounding_box()
     print(f"Bounding box: X=[{bbox.min.X:.2f}, {bbox.max.X:.2f}], Y=[{bbox.min.Y:.2f}, {bbox.max.Y:.2f}], Z=[{bbox.min.Z:.2f}, {bbox.max.Z:.2f}]")

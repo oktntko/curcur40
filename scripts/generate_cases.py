@@ -26,6 +26,7 @@ import math
 from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import is_sound
+from OCP.BRepExtrema import BRepExtrema_DistShapeShape
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 OUT_DIR = WORKSPACE / "cases"
@@ -141,6 +142,60 @@ def get_case_hole_specs(is_right=True):
             ( -62.0000,  64.6000),  # L5
         ]
         return [(x - 14.2875, -(y + 57.1500), -9.10) for x, y in perim_pcb]
+
+
+def verify_case_wall_thickness_and_gaps(solid: bd.Solid, is_right: bool):
+    """
+    Automated B-rep check for micro-gaps and < 0.80 mm wall thicknesses on the case solid
+    (in Top-Plate-horizontal coordinates, Z in [-26.90, 0.00] mm).
+    Asserts 0 unexpected hits outside the documented intentional exclusions:
+      1) Case top rim (Z ~ 0.00 mm): 1.50 mm wall minus R=0.95 mm outer fillet = 0.550..0.743 mm
+      2) Pinky skim floor boundary (|X| > 132.0 mm, Z ~ -8.00 mm): 0.459..0.549 mm
+      3) R3/L3 boss top step height above tilted floor (|X| ~ 118.7 mm, Y ~ -37.15 mm): 0.746 mm
+    """
+    side_str = "right" if is_right else "left"
+    faces = solid.faces()
+    bbs = [f.bounding_box() for f in faces]
+    unexpected = []
+    excluded_count = 0
+
+    for i in range(len(faces)):
+        b1 = bbs[i]
+        for j in range(i + 1, len(faces)):
+            b2 = bbs[j]
+            dx = max(0.0, b1.min.X - b2.max.X, b2.min.X - b1.max.X)
+            dy = max(0.0, b1.min.Y - b2.max.Y, b2.min.Y - b1.max.Y)
+            dz = max(0.0, b1.min.Z - b2.max.Z, b2.min.Z - b1.max.Z)
+            if math.sqrt(dx * dx + dy * dy + dz * dz) > 0.85:
+                continue
+            dss = BRepExtrema_DistShapeShape(faces[i].wrapped, faces[j].wrapped)
+            if dss.IsDone() and dss.NbSolution() > 0:
+                d = dss.Value()
+                if 0.001 < d < 0.800:
+                    p1 = dss.PointOnShape1(1)
+                    p2 = dss.PointOnShape2(1)
+                    mx = 0.5 * (p1.X() + p2.X())
+                    my = 0.5 * (p1.Y() + p2.Y())
+                    mz = 0.5 * (p1.Z() + p2.Z())
+
+                    # Check against documented intentional exclusions:
+                    is_top_rim = abs(mz - 0.00) < 0.15 and 0.540 <= d <= 0.760
+                    is_pinky_skim = abs(mx) > 132.0 and abs(mz - (-8.00)) < 0.15 and 0.450 <= d <= 0.560
+                    is_r3_l3_step = 118.0 <= abs(mx) <= 119.5 and abs(my - (-37.15)) < 0.5 and 0.740 <= d <= 0.760
+
+                    if is_top_rim or is_pinky_skim or is_r3_l3_step:
+                        excluded_count += 1
+                    else:
+                        unexpected.append((d, (mx, my, mz), i, j))
+
+    print(
+        f"[{side_str}] Wall-thickness (<0.80mm) & micro-gap check: "
+        f"{len(unexpected)} unexpected violations ({excluded_count} known excluded pairs)"
+    )
+    if unexpected:
+        for d, (mx, my, mz), i, j in unexpected:
+            print(f"  UNEXPECTED: d={d:.4f} mm at ({mx:.2f}, {my:.2f}, {mz:.2f}) [F{i}-F{j}]")
+    assert len(unexpected) == 0, f"{side_str} case has {len(unexpected)} unexpected <0.80mm wall/gap violations!"
 
 
 def build_case(is_right=True) -> bd.Solid:
@@ -340,6 +395,7 @@ def build_case(is_right=True) -> bd.Solid:
     solid = body.solids()[0]
     solid.label = f"curcur40_case_{side_str}"
     assert is_sound(solid), f"{side_str} case solid is not sound!"
+    verify_case_wall_thickness_and_gaps(solid, is_right)
 
     step_path = OUT_DIR / f"{side_str}.step"
     stl_path = OUT_DIR / f"{side_str}.stl"
