@@ -110,9 +110,9 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）および `cadgen` 3D CAD レ�
 ---
 
 ### 5. トラックボールカップ・光学スタックアップ検証モデル
-[`cases/`](./cases/) 配下の3Dプリント用モデルおよび4つの光学検証アセンブリモデルです。4つの検証アセンブリ STEP には、GUI（CAD Viewer等）の計測ツールで直接選択してボール底面（$Z_{\text{rel}} = +5.80\,\text{mm}$ / グローバル $Z = -10.2000\,\text{mm}$）との距離（設計値 **$2.40\,\text{mm}$**）を計測できるよう、レンズ側光学距離基準点（**`Lens_Optical_Ref_Point`**, $Z_{\text{rel}} = +3.40\,\text{mm}$ / グローバル $Z = -12.6000\,\text{mm}$）が独立オブジェクトとしてプロットされています。
+[`cases/`](./cases/) 直下の3Dプリント用単体モデルおよび [`cases/assemblies/`](./cases/assemblies/) 配下の5つの検証アセンブリモデルです。5つの検証アセンブリ STEP には、GUI（CAD Viewer等）の計測ツールで直接選択してボール底面（$Z_{\text{rel}} = +5.80\,\text{mm}$ / グローバル $Z = -10.2000\,\text{mm}$）との距離（設計値 **$2.40\,\text{mm}$**）を計測できるよう、レンズ側光学距離基準点（**`Lens_Optical_Ref_Point`**, $Z_{\text{rel}} = +3.40\,\text{mm}$ / グローバル $Z = -12.6000\,\text{mm}$）が独立オブジェクトとしてプロットされています。
 
-| トラックボールカップ単体 (`trackball-cup.step`) | 25mmボール・レンズ組込 (`trackball-cup-with-ball.step`) |
+| トラックボールカップ単体 (`cases/trackball-cup.step`) | 25mmボール・レンズ組込 (`cases/assemblies/trackball-cup-with-ball.step`) |
 | :---: | :---: |
 | ![Trackball Cup](./docs/assets/trackball_cup_render.png) | ![Trackball Cup with Ball](./docs/assets/trackball_cup_with_ball_render.png) |
 
@@ -122,14 +122,18 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）および `cadgen` 3D CAD レ�
 
 ```text
 curcur40/
-├── cases/                        # 3Dプリント用ケース・トラックボールカップ・検証用フルアセンブリ (STEP / STL)
+├── cases/                        # 3Dプリント用実部品（左右ボトムケース・トラックボールカップ）(STEP / STL)
 │   ├── left.step / left.stl      # 左手トレイ型ボトムケース（トッププレート水平基準）
-│   ├── left-desk.step / .stl     # 左手トレイ型ボトムケース（ケース外底面＝デスク水平基準）
+│   ├── left-desk.step / .stl     # 左手トレイ型ボトムケース（ケース外底面＝デスク水平基準・JLC3DP推奨）
 │   ├── right.step / right.stl    # 右手トレイ型ボトムケース（トッププレート水平基準）
-│   ├── right-desk.step / .stl    # 右手トレイ型ボトムケース（ケース外底面＝デスク水平基準）
+│   ├── right-desk.step / .stl    # 右手トレイ型ボトムケース（ケース外底面＝デスク水平基準・JLC3DP推奨）
 │   ├── trackball-cup.step / .stl # 25mmトラックボール用スナップインカップ
-│   ├── assembly-full.step        # 全105パーツ統合フルアセンブリ（トッププレート水平基準）
-│   └── assembly-full-desk.step   # 全105パーツ統合フルアセンブリ（ケース底面＝デスク面 Z=0 水平基準）
+│   └── assemblies/               # 光学距離・干渉・クリアランス検証用アセンブリモデル (STEP / STL)
+│       ├── assembly-full.step                # 全105パーツ統合フルアセンブリ（トッププレート水平基準）
+│       ├── assembly-full-desk.step           # 全105パーツ統合フルアセンブリ（ケース底面＝デスク面 Z=0 水平基準）
+│       ├── trackball-cup-with-ball.step/.stl # カップ＋25mm球＋光学基準点アセンブリ
+│       ├── pmw3360-lens-pcb-assembly.step    # PMW3360＋LM19レンズ＋サブ基板光学モジュール
+│       └── trackball-sensor-assembly.step    # カップ＋25mm球＋センサーサブ基板統合アセンブリ
 ├── pcbs/                         # KiCad 10.0 左右メイン基板・センサーサブ基板 & JLCPCB PCBA 発注データ
 │   ├── left/                     # 左手メイン基板 (curcur40-left)
 │   │   └── jlcpcb/production_files/  # GERBER-curcur40-left.zip, BOM-curcur40-left.csv, CPL-curcur40-left.csv

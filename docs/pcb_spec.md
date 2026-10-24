@@ -346,7 +346,7 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **[`docs/`](../docs)** | 設計仕様書（`case_spec.md`, `pcb_spec.md`）、ビルドガイド（`buildguide_jp.md`）、および図版・3Dレンダリング資産（`assets/`） | すべての仕様書・画像アセットをこの配下に一元管理する（3Dプレビューギャラリーはルート [`README.md`](../README.md) に統合） |
 | **[`pcbs/`](../pcbs)** | 左右メイン基板およびセンサーサブ基板の KiCad プロジェクト（`left/`, `right/`, `pmw3360/`）および JLCPCB 発注データ（`*/jlcpcb/production_files/`） | `.rpt`, `.net`, `.bak`, `.kicad_prl` 等の一時ファイルを残さない |
 | **[`plates/`](../plates)** | FR-4 トッププレート基板（`pcb/plate-top-{left,right}.kicad_pcb`）、JLCPCB Gerber（`pcb/jlcpcb/production_files/`）、レーザーカット用 SVG（`svg/`） | ボトムプレートはトレイ型ケースに統合済みのため作成・保持しない |
-| **[`cases/`](../cases)** | 左右ボトムケース（`left.step/.stl`, `left-desk.step/.stl`, `right.step/.stl`, `right-desk.step/.stl`）、トラックボールカップ（`trackball-cup.step/.stl`）、および5種の3D検証アセンブリ STEP | すべて [`scripts/`](../scripts) 配下のジェネレータから再現可能に生成する |
+| **[`cases/`](../cases)** | 直下に3Dプリント実部品（左右ボトムケース `left.step/.stl`, `left-desk.step/.stl`, `right.step/.stl`, `right-desk.step/.stl` およびトラックボールカップ `trackball-cup.step/.stl`）、[`cases/assemblies/`](../cases/assemblies) に5種の3D検証アセンブリモデル | すべて [`scripts/`](../scripts) 配下のジェネレータから再現可能に生成する |
 | **[`scripts/`](../scripts)** | 恒久的に使用する公式生成・出力スクリプト群（下記一覧参照） | 1回限りのデバッグ用・調査用スクリプトや一時レポート（`scratch/`, `tmp/`）は作業完了後に削除し、リポジトリに残さない |
 
 ### `scripts/` 配下の公式スクリプト一覧

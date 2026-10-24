@@ -13,7 +13,8 @@
 3. **環境非依存の相対パス記述（フルパス直書きの禁止）**:
    - スクリプト内のワークスペースパスや入出力先パスには `c:\Users\...` 等の環境依存フルパスをハードコードせず、必ずスクリプト自身の位置からの相対解決（`WORKSPACE = Path(__file__).resolve().parent.parent`）を起点として記述します（カレントディレクトリに依存せずどこからでも実行可能）。
 4. **出力先ディレクトリ**:
-   - **3D CAD (STEP / STL)**: [`cases/`](../cases/)
+   - **3Dプリント単体部品 (STEP / STL)**: [`cases/`](../cases/) 直下
+   - **検証・確認用アセンブリモデル (STEP / STL)**: [`cases/assemblies/`](../cases/assemblies/)
    - **トッププレート PCB / SVG**: [`plates/pcb/`](../plates/pcb/), [`plates/svg/`](../plates/svg/)
    - **JLCPCB 発注用データ**:
      - 左メイン基板: [`pcbs/left/jlcpcb/production_files/`](../pcbs/left/jlcpcb/production_files/)
@@ -34,9 +35,9 @@ $CADGEN_PY = "$env:USERPROFILE\.local\bin\uvx.exe"
 | スクリプト | 役割・出力ファイル |
 | :--- | :--- |
 | **[`generate_cases.py`](./generate_cases.py)** | 左右の3Dプリント用トレイ型ボトムケース（トッププレート水平基準 `cases/left.step`, `left.stl`, `right.step`, `right.stl` およびデスク水平基準 `left-desk.step`, `left-desk.stl`, `right-desk.step`, `right-desk.stl`）を生成し、極小隙間・0.80mm未満薄肉検証（確定除外箇所を除く違反0件）を実行します。 |
-| **[`generate_trackball_cup.py`](./generate_trackball_cup.py)** | 25mm トラックボールカップ（`trackball-cup.step`, `trackball-cup.stl`）および 25mm 球＋光学距離基準点（`Lens_Optical_Ref_Point`, $Z_{\text{rel}} = +3.40\text{ mm}$）付きアセンブリ（`trackball-cup-with-ball.step`, `trackball-cup-with-ball.stl`）を生成し、極小隙間・0.80mm未満薄肉検証を実行します。 |
-| **[`generate_sensor_assemblies.py`](./generate_sensor_assemblies.py)** | PMW3360DM-T2QU + LM19-LSI レンズ + PCB の光学アセンブリ（`pmw3360-lens-pcb-assembly.step`）およびカップ＋ボール統合検証モデル（`trackball-sensor-assembly.step`）を生成します（両モデルとも `Lens_Optical_Ref_Point` を収録）。 |
-| **[`generate_full_assembly.py`](./generate_full_assembly.py)** | 左右ケース・左右メイン基板・センサーサブ基板・左右トッププレート・トラックボールカップ・25mm球・センサー・レンズ・`Lens_Optical_Ref_Point`・CKW12・USB-C・TRRS・M2 5.50mmスペーサー14本・M2×4mmネジ28本・キーキャップ40個を統合したフルアセンブリ（`assembly-full.step`, `assembly-full-desk.step`、全105パーツ）を生成し、①全パーツ間の干渉体積ゼロ（`0.00000000 mm³`）、②非接触パーツ間の最小クリアランス（極小隙間ゼロ）、③3Dプリント部品の0.80mm未満肉厚・微小隙間チェック（確定除外箇所を除く違反0件）を一括検証します。 |
+| **[`generate_trackball_cup.py`](./generate_trackball_cup.py)** | 25mm トラックボールカップ（`cases/trackball-cup.step`, `trackball-cup.stl`）および 25mm 球＋光学距離基準点（`Lens_Optical_Ref_Point`, $Z_{\text{rel}} = +3.40\text{ mm}$）付き検証アセンブリ（`cases/assemblies/trackball-cup-with-ball.step`, `trackball-cup-with-ball.stl`）を生成し、極小隙間・0.80mm未満薄肉検証を実行します。 |
+| **[`generate_sensor_assemblies.py`](./generate_sensor_assemblies.py)** | PMW3360DM-T2QU + LM19-LSI レンズ + PCB の光学アセンブリ（`cases/assemblies/pmw3360-lens-pcb-assembly.step`）およびカップ＋ボール統合検証モデル（`cases/assemblies/trackball-sensor-assembly.step`）を生成します（両モデルとも `Lens_Optical_Ref_Point` を収録）。 |
+| **[`generate_full_assembly.py`](./generate_full_assembly.py)** | 左右ケース・左右メイン基板・センサーサブ基板・左右トッププレート・トラックボールカップ・25mm球・センサー・レンズ・`Lens_Optical_Ref_Point`・CKW12・USB-C・TRRS・M2 5.50mmスペーサー14本・M2×4mmネジ28本・キーキャップ40個を統合したフルアセンブリ（`cases/assemblies/assembly-full.step`, `assembly-full-desk.step`、全105パーツ）を生成し、①全パーツ間の干渉体積ゼロ（`0.00000000 mm³`）、②非接触パーツ間の最小クリアランス（極小隙間ゼロ）、③3Dプリント部品の0.80mm未満肉厚・微小隙間チェック（確定除外箇所を除く違反0件）を一括検証します。 |
 
 ### ② KiCad 基板・プレート・JLCPCB 発注データ・図版スクリプト（KiCad 10.0 Python で実行）
 ```powershell

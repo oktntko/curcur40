@@ -152,7 +152,7 @@ PCB座標系 $(x_{\text{pcb}}, y_{\text{pcb}})$ からケース・アセンブ�
 
 ## 4. トラックボールカップ & 光学系詳細仕様 (Trackball & Optics)
 
-本節は、PixArt社データシート（PMW3360DM-T2QU / LM19-LSI）および基準アセンブリ [`cases/pmw3360-lens-pcb-assembly.step`](../cases/pmw3360-lens-pcb-assembly.step) に基づき、トラックボールカップの幾何寸法・光学アライメントを完全定義したものです。
+本節は、PixArt社データシート（PMW3360DM-T2QU / LM19-LSI）および基準アセンブリ [`cases/assemblies/pmw3360-lens-pcb-assembly.step`](../cases/assemblies/pmw3360-lens-pcb-assembly.step) に基づき、トラックボールカップの幾何寸法・光学アライメントを完全定義したものです。
 
 ![Trackball Cup Detail Engineering Drawing](assets/trackball_cup_detail_drawing.png)
 
@@ -354,13 +354,13 @@ LM19レンズ（$21.15 \times 18.85 \, \text{mm}$）およびPMW3360センサー
 
 GUI（CAD Viewer 等）の計測ツール（`📏 Measure`）で、25mm トラックボール球（`Trackball_25mm`, 最下面 $Z_{\text{rel}} = +5.80 \, \text{mm}$ / フルアセンブリ $Z = -10.2000 \, \text{mm}$）とレンズ側光学距離基準点（フランジ下面 $Z_{\text{rel}} = +3.40 \, \text{mm}$ / フルアセンブリ $Z = -12.6000 \, \text{mm}$）の間の光学距離（設計値 **$2.40 \, \text{mm}$**）を直接クリック選択して検証できるよう、以下の5つの STEP モデルに独立した名前付きオブジェクト **`Lens_Optical_Ref_Point`**（光軸中心に配置した厚みゼロ・直径 $\varnothing 0.70 \, \text{mm}$ の円形基準面）をプロットしています。
 
-| STEP モデルファイル | 生成スクリプト | `Lens_Optical_Ref_Point` 座標 $(X, Y, Z)$ | `Trackball_25mm` との計測距離 |
+| STEP モデルファイル（`cases/assemblies/`） | 生成スクリプト | `Lens_Optical_Ref_Point` 座標 $(X, Y, Z)$ | `Trackball_25mm` との計測距離 |
 | :--- | :--- | :---: | :---: |
-| **[`pmw3360-lens-pcb-assembly.step`](../cases/pmw3360-lens-pcb-assembly.step)** | [`scripts/generate_sensor_assemblies.py`](../scripts/generate_sensor_assemblies.py) | $(0.0000, 0.0000, +3.4000) \, \text{mm}$ | ―（単体光学モジュール） |
-| **[`trackball-sensor-assembly.step`](../cases/trackball-sensor-assembly.step)** | [`scripts/generate_sensor_assemblies.py`](../scripts/generate_sensor_assemblies.py) | $(0.0000, 0.0000, +3.4000) \, \text{mm}$ | **$2.4000 \, \text{mm}$** |
-| **[`trackball-cup-with-ball.step`](../cases/trackball-cup-with-ball.step)** | [`scripts/generate_trackball_cup.py`](../scripts/generate_trackball_cup.py) | $(0.0000, 0.0000, +3.4000) \, \text{mm}$ | **$2.4000 \, \text{mm}$** |
-| **[`assembly-full.step`](../cases/assembly-full.step)** | [`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py) | $(23.8125, -109.5375, -12.6000) \, \text{mm}$ | **$2.4000 \, \text{mm}$** |
-| **[`assembly-full-desk.step`](../cases/assembly-full-desk.step)** | [`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py) | デスク水平変換後の光軸座面 | **$2.4000 \, \text{mm}$** |
+| **[`pmw3360-lens-pcb-assembly.step`](../cases/assemblies/pmw3360-lens-pcb-assembly.step)** | [`scripts/generate_sensor_assemblies.py`](../scripts/generate_sensor_assemblies.py) | $(0.0000, 0.0000, +3.4000) \, \text{mm}$ | ―（単体光学モジュール） |
+| **[`trackball-sensor-assembly.step`](../cases/assemblies/trackball-sensor-assembly.step)** | [`scripts/generate_sensor_assemblies.py`](../scripts/generate_sensor_assemblies.py) | $(0.0000, 0.0000, +3.4000) \, \text{mm}$ | **$2.4000 \, \text{mm}$** |
+| **[`trackball-cup-with-ball.step`](../cases/assemblies/trackball-cup-with-ball.step)** | [`scripts/generate_trackball_cup.py`](../scripts/generate_trackball_cup.py) | $(0.0000, 0.0000, +3.4000) \, \text{mm}$ | **$2.4000 \, \text{mm}$** |
+| **[`assembly-full.step`](../cases/assemblies/assembly-full.step)** | [`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py) | $(23.8125, -109.5375, -12.6000) \, \text{mm}$ | **$2.4000 \, \text{mm}$** |
+| **[`assembly-full-desk.step`](../cases/assemblies/assembly-full-desk.step)** | [`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py) | デスク水平変換後の光軸座面 | **$2.4000 \, \text{mm}$** |
 
 ---
 

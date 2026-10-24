@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Generate curcur40 Full Assembly STEP models:
-  1. cases/assembly-full.step      (Top Plate horizontal at Z = -2.00 mm)
-  2. cases/assembly-full-desk.step (Case Bottom horizontal on desk plane Z = 0.00 mm)
+  1. cases/assemblies/assembly-full.step      (Top Plate horizontal at Z = -2.00 mm)
+  2. cases/assemblies/assembly-full-desk.step (Case Bottom horizontal on desk plane Z = 0.00 mm)
 and verify zero interference across all components per docs/case_spec.md:
 - Left & Right 3D-printed Low-Height Built-in Tented Tray Bottom Cases (with Tilted Floor & Cylindrical Bosses)
 - Left & Right Main PCBs (Z = -5.80 to -4.20 mm, with Ø 3.30 mm spacer through-holes)
@@ -25,6 +25,7 @@ from cadgen.geometry import overlap_volume, closest_points, is_sound
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 CASES_DIR = WORKSPACE / "cases"
+ASSEMBLIES_DIR = CASES_DIR / "assemblies"
 
 Z_THUMB_BOTTOM = -26.9000
 Z_PINKY_BOTTOM = -10.0000
@@ -431,7 +432,7 @@ def main():
     ball_global.label = "Trackball_25mm"
 
     # Load PMW3360 sensor, LM19 lens, and separated Sensor PCB from pmw3360-lens-pcb-assembly.step
-    asm_parts = bd.import_step(str(CASES_DIR / "pmw3360-lens-pcb-assembly.step"))
+    asm_parts = bd.import_step(str(ASSEMBLIES_DIR / "pmw3360-lens-pcb-assembly.step"))
     sensor_local, lens_local, sensor_pcb_local = None, None, None
     for s in asm_parts.solids():
         bb = s.bounding_box()
@@ -755,15 +756,16 @@ def main():
         + keycaps
     )
 
+    ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
     asm_full = bd.Compound(children=all_parts)
     asm_full.label = "curcur40_Full_Assembly"
-    out_step = CASES_DIR / "assembly-full.step"
+    out_step = ASSEMBLIES_DIR / "assembly-full.step"
     bd.export_step(asm_full, str(out_step))
     print(
         f"\nSuccessfully exported {out_step} ({len(all_parts)} items, valid={asm_full.is_valid})"
     )
 
-    # Build & export Desk-Horizontal Full Assembly (cases/assembly-full-desk.step)
+    # Build & export Desk-Horizontal Full Assembly (cases/assemblies/assembly-full-desk.step)
     left_group = [left_case, left_pcb, left_plate] + left_conn_solids + left_fasteners + left_keycaps
     right_group = (
         [
@@ -788,7 +790,7 @@ def main():
     ]
     asm_desk = bd.Compound(children=desk_parts)
     asm_desk.label = "curcur40_Full_Assembly_Desk"
-    out_desk_step = CASES_DIR / "assembly-full-desk.step"
+    out_desk_step = ASSEMBLIES_DIR / "assembly-full-desk.step"
     bd.export_step(asm_desk, str(out_desk_step))
     bb_desk_l = desk_parts[0].bounding_box()
     bb_desk_r = desk_parts[len(left_group)].bounding_box()
