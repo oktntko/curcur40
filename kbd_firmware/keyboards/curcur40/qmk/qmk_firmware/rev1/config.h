@@ -18,6 +18,8 @@
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_RIGHT
 #define PMW33XX_CPI 1200
+#define MOUSE_EXTENDED_REPORT
+#define ENCODER_MAP_KEY_DELAY 2
 
 /*
  * Trackball Sensor (U1: PMW3360DM-T2QU) Orientation on Right PCB:

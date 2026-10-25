@@ -3,24 +3,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-
-#ifndef RM_TOGG
-#    define RM_TOGG RGB_TOG
-#    define RM_NEXT RGB_MOD
-#    define RM_PREV RGB_RMOD
-#    define RM_HUEU RGB_HUI
-#    define RM_HUED RGB_HUD
-#    define RM_SATU RGB_SAI
-#    define RM_SATD RGB_SAD
-#    define RM_VALU RGB_VAI
-#    define RM_VALD RGB_VAD
-#endif
-
-#ifndef MS_BTN1
-#    define MS_BTN1 KC_BTN1
-#    define MS_BTN2 KC_BTN2
-#    define MS_BTN3 KC_BTN3
-#endif
+#include "curcur40_scroll.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
@@ -32,8 +15,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [1] = LAYOUT(
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_ESC,     _______, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        XXXXXXX, XXXXXXX, MS_BTN2, MS_BTN1, XXXXXXX, _______,    _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_QUOT,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      MS_BTN1, MS_BTN2, XXXXXXX, XXXXXXX, KC_ESC,
+        SCRL_TG, SCRL_MO, MS_BTN2, MS_BTN1, SCRL_SL, _______,    _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_QUOT,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      MS_BTN1, MS_BTN2, SCRL_MO, SCRL_TG, KC_ESC,
                           _______, _______, _______, _______,    _______, MO(3),   KC_DEL
     ),
 
@@ -54,9 +37,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef ENCODER_MAP_ENABLE
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-    [1] = { ENCODER_CCW_CW(RM_PREV, RM_NEXT), ENCODER_CCW_CW(KC_PGUP, KC_PGDN) },
-    [2] = { ENCODER_CCW_CW(RM_HUED, RM_HUEU), ENCODER_CCW_CW(RM_VALD, RM_VALU) },
+    [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(MS_WHLU, MS_WHLD) },
+    [1] = { ENCODER_CCW_CW(RM_PREV, RM_NEXT), ENCODER_CCW_CW(MS_WHLL, MS_WHLR) },
+    [2] = { ENCODER_CCW_CW(RM_HUED, RM_HUEU), ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [3] = { ENCODER_CCW_CW(RM_SATD, RM_SATU), ENCODER_CCW_CW(RM_PREV, RM_NEXT) },
 };
 #endif
