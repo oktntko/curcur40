@@ -1,0 +1,37 @@
+{
+    "keyboard_name": "curcur40 Inertia Wheel Eval Pod",
+    "maintainer": "oktntko",
+    "manufacturer": "oktntko",
+    "url": "https://github.com/oktntko/curcur40",
+    "usb": {
+        "vid": "0x4653",
+        "pid": "0x0141",
+        "device_version": "1.0.0",
+        "suspend_wakeup_delay": 200
+    },
+    "processor": "RP2040",
+    "bootloader": "rp2040",
+    "features": {
+        "bootmagic": true,
+        "extrakey": true,
+        "mousekey": true,
+        "nkro": false
+    },
+    "diode_direction": "COL2ROW",
+    "matrix_pins": {
+        "direct": [
+            ["GP6"]
+        ]
+    },
+    "bootmagic": {
+        "enabled": true,
+        "matrix": [0, 0]
+    },
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+                {"matrix": [0, 0], "x": 0, "y": 0, "label": "SW_MID"}
+            ]
+        }
+    }
+}
