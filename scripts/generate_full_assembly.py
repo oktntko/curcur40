@@ -142,7 +142,7 @@ def make_filleted_sketch(pts_and_radii):
 def build_main_pcb_solid(is_right=True) -> bd.Solid:
     """
     Constructs the Main PCB solid (Z = -5.80 to -4.20 mm, thickness 1.60 mm)
-    with exact outer boundary, TRRS notch, and Ø 3.30 mm spacer holes.
+    with exact outer boundary, Host & Split USB-C notches, and Ø 3.30 mm spacer holes.
     On Right Main PCB, the thumb trackball section (X < 25.3125, Y > 37.3000) is separated into `curcur40-pmw3360`.
     """
     if is_right:
@@ -159,10 +159,10 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
             ( 23.8000,  67.5000, 1.0),
             ( 23.8000,  37.4000, 0.8),
             ( -5.2625,  37.4000, 0.8),
-            ( -5.2625,  32.8000, 0.0),
-            (  7.7425,  32.8000, 0.0),
-            (  7.7425,  26.5000, 0.0),
-            ( -5.2625,  26.5000, 0.0),
+            ( -5.2625,  34.1200, 0.0),
+            (  0.5400,  34.1200, 0.0),
+            (  0.5400,  24.8800, 0.0),
+            ( -5.2625,  24.8800, 0.0),
         ]
         pts_step = [(*to_step_right(x, y), r) for x, y, r in pts_pcb]
         holes_step = [to_step_right(x, y) for x, y in RIGHT_PERIMETER_HOLES_PCB]
@@ -178,10 +178,10 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
             ( -82.4625,  40.98125, 1.0),
             ( -82.4625,  67.5000, 1.0),
             (   5.2625,  67.5000, 1.0),
-            (   5.2625,  32.8000, 0.0),
-            (  -7.7425,  32.8000, 0.0),
-            (  -7.7425,  26.5000, 0.0),
-            (   5.2625,  26.5000, 0.0),
+            (   5.2625,  34.1200, 0.0),
+            (  -0.5400,  34.1200, 0.0),
+            (  -0.5400,  24.8800, 0.0),
+            (   5.2625,  24.8800, 0.0),
         ]
         pts_step = [(*to_step_left(x, y), r) for x, y, r in pts_pcb]
         holes_step = [to_step_left(x, y) for x, y in LEFT_PERIMETER_HOLES_PCB]
@@ -197,11 +197,17 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((hx, hy, -6.5)))
 
-    # Cut USB-C shield PTH slots (4x SH oval holes at ±5.62 mm from J1/rJ1 center)
+    # Cut Host USB-C shield PTH slots (4x SH oval holes at ±5.62 mm from J1/rJ1 center)
     usbc_cx = 26.5750 if is_right else -26.5750
     for sx in (usbc_cx - 5.6200, usbc_cx + 5.6200):
         for sy in (-34.0925, -38.0925):
             pcb = pcb - bd.Box(1.25, 2.20, 4.0).moved(bd.Location((sx, sy, -5.0)))
+
+    # Cut Split USB-C shield PTH slots (4x SH oval holes at ±5.62 mm from J2/rJ2 center Y = -86.6500)
+    sgn = 1.0 if is_right else -1.0
+    for sx in (sgn * 10.2800, sgn * 14.2800):
+        for sy in (-86.6500 - 5.6200, -86.6500 + 5.6200):
+            pcb = pcb - bd.Box(2.20, 1.25, 4.0).moved(bd.Location((sx, sy, -5.0)))
 
     solid = pcb.solids()[0]
     solid.label = "Right_Main_PCB" if is_right else "Left_Main_PCB"
@@ -296,35 +302,37 @@ def make_ckw12_solids(ex, ey):
     return solids
 
 
-def make_usbc_and_trrs_solids(is_right: bool):
+def make_usbc_solids(is_right: bool):
     """
-    Loads the official TYPE-C-31-M-13C.step (J1 / rJ1) and PJ-398A-5A.step (J2 / rJ2)
-    3D models and places them at their exact mid-mount positions on Main PCB B.Cu (Z = -5.80 mm).
+    Loads the official TYPE-C-31-M-13C.step for both Host USB-C (J1 / rJ1) and
+    Split USB-C (J2 / rJ2) and places them at their exact mid-mount positions
+    on Main PCB B.Cu (Z = -5.80 mm).
     """
     pkg_dir = WORKSPACE / "pcbs" / "common" / "kbd" / "kicad-packages3D" / "kbd.3dshapes"
     prefix = "Right" if is_right else "Left"
     usbc_raw = bd.import_step(str(pkg_dir / "TYPE-C-31-M-13C.step"))
+    usbc_flipped = usbc_raw.rotate(bd.Axis.X, 180)
+
+    # 1. Host USB-C (J1 / rJ1 on North edge)
     usbc_cx = 26.5750 if is_right else -26.5750
-    usbc_placed = usbc_raw.rotate(bd.Axis.X, 180).moved(
-        bd.Location((usbc_cx, -38.5925, -4.2850))
-    )
+    usbc_placed = usbc_flipped.moved(bd.Location((usbc_cx, -38.5925, -4.2850)))
     usbc_shell = usbc_placed.solids()[0]
     usbc_shell.label = f"{prefix}_USBC_Shell"
     usbc_tongue = usbc_placed.solids()[1]
     usbc_tongue.label = f"{prefix}_USBC_Tongue"
 
-    trrs_raw = bd.import_step(str(pkg_dir / "PJ-398A-5A.step"))
-    rot_z = -90.0 if is_right else 90.0
-    trrs_cx = 6.5300 if is_right else -6.5300
-    trrs_placed = (
-        trrs_raw.rotate(bd.Axis.Y, 180)
-        .rotate(bd.Axis.Z, rot_z)
-        .moved(bd.Location((trrs_cx, -86.7963, -3.7850)))
+    # 2. Split USB-C (J2 / rJ2 on Inner thumb edge)
+    split_rot_z = 90.0 if is_right else -90.0
+    split_cx = 14.7800 if is_right else -14.7800
+    split_placed = usbc_flipped.rotate(bd.Axis.Z, split_rot_z).moved(
+        bd.Location((split_cx, -86.6500, -4.2850))
     )
-    trrs_body = trrs_placed.solids()[0]
-    trrs_body.label = f"{prefix}_TRRS_Jack"
+    split_shell = split_placed.solids()[0]
+    split_shell.label = f"{prefix}_Split_USBC_Shell"
+    split_tongue = split_placed.solids()[1]
+    split_tongue.label = f"{prefix}_Split_USBC_Tongue"
 
-    return [usbc_shell, usbc_tongue, trrs_body]
+    return [usbc_shell, usbc_tongue, split_shell, split_tongue]
 
 
 def make_sensor_and_jst_smd_solids():
@@ -540,9 +548,9 @@ def main():
         right_keycaps.append(make_keycap_solid(sx, sy, f"Right_Keycap_{idx+1}"))
     keycaps = left_keycaps + right_keycaps
 
-    # Mid-mount USB-C (TYPE-C-31-M-13C) & TRRS (PJ-398A-5A) connectors
-    left_conn_solids = make_usbc_and_trrs_solids(is_right=False)
-    right_conn_solids = make_usbc_and_trrs_solids(is_right=True)
+    # Mid-mount Host & Split USB-C (TYPE-C-31-M-13C) connectors
+    left_conn_solids = make_usbc_solids(is_right=False)
+    right_conn_solids = make_usbc_solids(is_right=True)
     conn_solids = left_conn_solids + right_conn_solids
 
     # Run interference checks
@@ -602,9 +610,9 @@ def main():
     print(f"CKW12 vs Right Plate:    {ov_ckw12_plate:.8f} mm^3")
     print(f"CKW12 vs Right PCB:      {ov_ckw12_pcb:.8f} mm^3")
     print(f"CKW12 vs Top Screws:     {ov_ckw12_screws:.8f} mm^3")
-    print(f"USBC/TRRS vs Cases:      {ov_conn_case:.8f} mm^3")
-    print(f"USBC/TRRS vs Main PCBs:  {ov_conn_pcb:.8f} mm^3")
-    print(f"USBC/TRRS vs Top Plates: {ov_conn_plate:.8f} mm^3")
+    print(f"Host/Split USBC vs Cases:{ov_conn_case:.8f} mm^3")
+    print(f"Host/Split USBC vs PCBs: {ov_conn_pcb:.8f} mm^3")
+    print(f"Host/Split USBC vs Plate:{ov_conn_plate:.8f} mm^3")
     print(f"Sensor/JST SMDs vs Case: {ov_smd_case:.8f} mm^3")
     print(f"Sensor/JST SMDs vs Cup:  {ov_smd_cup:.8f} mm^3")
     print(f"Sensor/JST SMDs vs SOs:  {ov_smd_so:.8f} mm^3")
@@ -712,6 +720,14 @@ def main():
         closest_points(b_scr, t_scr).distance
         for b_scr, t_scr in zip(bottom_screws, top_screws)
     )
+    clr_usbc_case = min(
+        min(closest_points(s, left_case).distance for s in left_conn_solids),
+        min(closest_points(s, right_case).distance for s in right_conn_solids),
+    )
+    clr_usbc_plate = min(
+        min(closest_points(s, left_plate).distance for s in left_conn_solids),
+        min(closest_points(s, right_plate).distance for s in right_conn_solids),
+    )
 
     print(f"Min Clearance Sensor J1 vs Right Case:      {clr_j1_case:.4f} mm (req >= 0.12 mm)")
     print(f"Min Clearance Main rJ3 vs Right Case:       {clr_rj3_case:.4f} mm (req >= 0.50 mm)")
@@ -722,6 +738,8 @@ def main():
     print(f"Min Clearance Trackball Cup vs Right Plate: {clr_cup_plate:.4f} mm (req >= 0.25 mm)")
     print(f"Min Clearance Trackball Cup vs Right PCB:   {clr_cup_rpcb:.4f} mm (req >= 0.25 mm)")
     print(f"Min Clearance Top vs Bottom Screw Tips:     {clr_screw_tips:.4f} mm (req >= 1.00 mm)")
+    print(f"Min Clearance Host/Split USBC vs Cases:     {clr_usbc_case:.4f} mm (req >= 0.50 mm)")
+    print(f"Min Clearance Host/Split USBC vs Plates:    {clr_usbc_plate:.4f} mm (req >= 0.50 mm)")
 
     assert clr_j1_case >= 0.12, f"J1 too close to Right Case: {clr_j1_case:.4f} mm"
     assert clr_rj3_case >= 0.50, f"rJ3 too close to Right Case: {clr_rj3_case:.4f} mm"
@@ -732,6 +750,8 @@ def main():
     assert clr_cup_plate >= 0.25, f"Cup too close to Right Plate: {clr_cup_plate:.4f} mm"
     assert clr_cup_rpcb >= 0.25, f"Cup too close to Right PCB: {clr_cup_rpcb:.4f} mm"
     assert clr_screw_tips >= 1.00, f"Top/Bottom screws too close: {clr_screw_tips:.4f} mm"
+    assert clr_usbc_case >= 0.50, f"USB-C too close to Case: {clr_usbc_case:.4f} mm"
+    assert clr_usbc_plate >= 0.50, f"USB-C too close to Top Plate: {clr_usbc_plate:.4f} mm"
 
     all_parts = (
         [
