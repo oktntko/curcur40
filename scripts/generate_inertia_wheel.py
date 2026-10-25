@@ -6,16 +6,19 @@ JLCCNC / JLC3DP DFM checks and zero-interference verification on `curcur40-right
 
 Outputs:
   Manufacturing Parts (`cases/inertia_wheel/`):
-    1. sus304-flywheel.step / .stl    (JLCCNC SUS304 Stainless Steel, Ø16.80 x 5.60 mm, 2-way groove)
-    2. ratchet-hub-11ball.step / .stl (JLC3DP SLA Resin, Ø12.40 x 3.75 mm, 11x Ø2.00 mm ball pockets)
-    3. wheel-carriage.step / .stl     (JLC3DP SLA Resin, Unitized Hinged Inner Carriage)
-    4. wheel-base-frame.step / .stl   (JLC3DP SLA Resin, 17.60 x 17.60 mm Base Frame)
-    5. eval-pod-stand.step / .stl     (JLC3DP SLA/MJF Desktop Stand for RP2040-Zero Carrier PCB)
+    1. sus304-flywheel.step / .stl         (JLCCNC SUS304 Stainless Steel, Ø16.80 x 5.60 mm, 2-way groove)
+    2. ratchet-hub-11ball.step / .stl      (JLC3DP SLA Resin, Ø12.40 x 3.75 mm, 11x Ø2.00 mm ball pockets)
+    3. wheel-carriage.step / .stl          (JLC3DP SLA Resin, Unitized Hinged Inner Carriage)
+    4. wheel-base-frame.step / .stl        (JLC3DP SLA Resin, 17.60 x 17.60 mm Surface-Mount Base Frame)
+    5. wheel-base-frame-sunk.step / .stl   (JLC3DP SLA Resin, Low-Profile Sunk Under-PCB Base Frame)
+    6. eval-pod-stand.step / .stl          (JLC3DP SLA/MJF Desktop Stand for RP2040-Zero Carrier PCB)
 
   Verification Assemblies (`cases/assemblies/`):
     1. inertia-wheel-module-assembly.step
-    2. inertia-wheel-eval-pod-assembly.step
-    3. curcur40-right-with-inertia-wheel.step
+    2. inertia-wheel-module-sunk-assembly.step
+    3. inertia-wheel-eval-pod-assembly.step
+    4. curcur40-right-with-inertia-wheel.step      (Variant A: Surface-mount, zero PCB modification)
+    5. curcur40-right-with-inertia-wheel-sunk.step (Variant B: Low-profile sunk, wheel center = keycap center Z=+1.40mm)
 """
 import math
 import sys
@@ -371,6 +374,110 @@ def build_wheel_base_frame() -> bd.Solid:
     return base.solids()[0]
 
 
+# Sunk-variant 3-point M2 mounting boss coordinates in module local XY:
+# After 180 deg Z-rotation onto curcur40-right rEXSW1 (14.2875, 0.0000):
+#   W1 (+12.20, -1.90) -> PCB dx=-12.20, dy=-1.90 (open inner-West margin, keycap-free)
+#   W2 (+12.20, +5.80) -> PCB dx=-12.20, dy=+5.80 (open inner-West margin, keycap-free)
+#   W3 (-2.00, -12.20) -> PCB dx=+2.00,  dy=-12.20 (open North margin, keycap-free)
+SUNK_MOUNT_PTS_MOD = [
+    (12.20, -1.90),
+    (12.20, 5.80),
+    (-2.00, -12.20),
+]
+
+
+def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
+    """
+    Build Low-Profile Sunk Base Frame in assembled module coordinates (`Z_mod = 0.00 mm` corresponds
+    to `Z_global = -8.90 mm`, placing rotary axle `Z_AXLE = 10.30 mm` at `Z_global = +1.40 mm` == exact
+    Keycap vertical midpoint, and wheel top at `Z_global = +9.80 mm` == +6.20 mm mouse-like protrusion):
+      - Continuous 1.20 mm bottom floor (`Z_mod = -1.20 .. 0.00 mm`) across 17.60 x 17.60 mm basket,
+        supporting the Kailh Square Silent Switch directly inside the sunk SE pocket (`Ø3.20 mm` wire exit)
+      - Raised 2.60 mm inner floor (`Z_mod = -1.20 .. +1.40 mm`) across `Y in [-4.70, +8.80]` outside SE pocket
+      - Two North Hinge Outer Ears (`Z_mod = -1.20 .. +4.10 mm`) with `Ø2.06 mm` hinge pin bore
+      - East Flange (`X in [+8.80, +14.90]`, `Y in [-7.70, +7.70]`) and North Lug (`X in [-4.70, +0.70]`,
+        `Y in [-14.90, -8.80]`) rising from `Z_mod = -1.20` to `+3.09 mm` (seating against Main PCB B.Cu = +3.10 mm)
+      - Three `Ø3.40 mm` integrated spacer posts at `SUNK_MOUNT_PTS_MOD` rising from `Z_mod = +3.09` to `+5.29 mm`
+        (passing through `Ø3.70 mm` Main PCB holes to support Top Plate underside at `Z_global = -3.60 mm`),
+        with `Ø1.60 mm` (>= Ø1.50 mm JLC3DP limit!) M2 screw bores!
+    """
+    # 1. Main 17.60 x 17.60 mm basket (`Z_mod = -1.20 .. +1.40 mm` = 2.60 mm height)
+    base = bd.Box(
+        MOD_XY, MOD_XY, 2.60,
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((0.00, 0.00, -1.20)))
+
+    # 2. Recess North Hinge Barrel swing slot down to `Z_mod = 0.00 mm` (leaving 1.20 mm solid bottom floor!)
+    hinge_slot = bd.Box(
+        13.40, 4.30, 5.00,
+        align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((0.00, -9.00, 0.00)))
+    base = base - hinge_slot
+
+    # 3. North Hinge Outer Ears (`X in [-8.80, -6.70]` & `[+6.70, +8.80]`, `Y in [-8.80, -4.70]`, `Z in [-1.20, +4.10]`)
+    ear_l = bd.Box(
+        2.10, 4.10, 5.30,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-8.80, -8.80, -1.20)))
+    ear_r = bd.Box(
+        2.10, 4.10, 5.30,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((6.70, -8.80, -1.20)))
+    base = base + ear_l + ear_r
+
+    # 4. Recess South-East Switch Pocket down to `Z_mod = 0.00 mm` (supporting Kailh Silent Switch on 1.20 mm floor!)
+    sw_pocket = bd.Box(
+        6.25, 6.25, 5.00,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((2.55, 2.55, 0.00)))
+    base = base - sw_pocket
+
+    # 5. East Under-PCB Mounting Flange (`X in [+8.80, +14.90]`, `Y in [-4.70, +8.80]`, `Z in [-1.20, +3.09]`)
+    #    Starts at Y = -4.70 (flush with ear_r South face), leaving East side of Hinge Pin Bore 100% unobstructed!
+    east_flange = bd.Box(
+        6.10, 13.50, 4.29,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((8.80, -4.70, -1.20)))
+
+    # 6. North Under-PCB Mounting Lug (`X in [-4.70, +0.70]`, `Y in [-14.90, -8.80]`, `Z in [-1.20, +3.09]`)
+    #    Note: X_max = +0.70 leaves clear screwdriver access along Y to M2 magnet adjuster at X = +4.525!
+    north_lug = bd.Box(
+        5.40, 6.10, 4.29,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-4.70, -14.90, -1.20)))
+    base = base + east_flange + north_lug
+
+    # 7. Three Ø3.40 mm integrated Top-Plate support posts (`Z_mod = +3.09 .. +5.29 mm`)
+    for mx, my in SUNK_MOUNT_PTS_MOD:
+        post = bd.Cylinder(
+            radius=1.70, height=2.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        ).moved(bd.Location((mx, my, 3.09)))
+        base = base + post
+
+    # 8. Cut Hinge Pin Bore Ø2.06 mm through both North Hinge Ears
+    hinge_bore = (
+        bd.Cylinder(radius=1.03, height=22.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
+        .rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((0.0, HINGE_Y, HINGE_Z)))
+    )
+    base = base - hinge_bore
+
+    # 9. Cut Ø3.20 mm switch-pin / wire exit hole centered in SE switch floor `(5.70, 5.70)`
+    sw_wire_hole = bd.Cylinder(
+        radius=1.60, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)
+    ).moved(bd.Location((5.70, 5.70, -0.60)))
+    base = base - sw_wire_hole
+
+    # 10. Cut Ø1.60 mm (>= Ø1.50 mm JLC3DP min bore!) M2 screw holes through the 3 mounting posts
+    for mx, my in SUNK_MOUNT_PTS_MOD:
+        sh = bd.Cylinder(
+            radius=0.80, height=10.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)
+        ).moved(bd.Location((mx, my, 2.00)))
+        base = base - sh
+
+    return base.solids()[0]
+
+
 def build_eval_pod_stand() -> bd.Solid:
     """
     Build Desktop Stand for the 48.0 x 32.0 mm Standalone Evaluation Carrier PCB:
@@ -499,16 +606,20 @@ def verify_jlc3dp_part(
     )
 
 
-def assemble_module_parts(origin=(0.0, 0.0, 0.0)) -> list[bd.Shape]:
+def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False) -> list[bd.Shape]:
     """
     Build all physical parts of the Passive Magnetic Inertia Wheel Module in module coords,
-    then shift by `origin`.
+    then shift by `origin`. When `sunk=True`, uses `wheel-base-frame-sunk`.
     """
     ox, oy, oz = origin
 
     # 1. Base Frame
-    base = build_wheel_base_frame()
-    base.label = "Wheel_Base_Frame"
+    if sunk:
+        base = build_wheel_base_frame_sunk_assembled()
+        base.label = "Wheel_Base_Frame_Sunk"
+    else:
+        base = build_wheel_base_frame()
+        base.label = "Wheel_Base_Frame"
 
     # 2. Hinged Carriage
     carriage = build_wheel_carriage_assembled()
@@ -688,6 +799,13 @@ def main():
     bd.export_step(base_part, str(PARTS_DIR / "wheel-base-frame.step"))
     bd.export_stl(base_part, str(PARTS_DIR / "wheel-base-frame.stl"))
 
+    # 4b) Low-Profile Sunk Wheel Base Frame (shifted +1.20 mm in Z so flat bottom lies at Z = 0.0000 mm!)
+    base_sunk_asm = build_wheel_base_frame_sunk_assembled()
+    base_sunk_print = base_sunk_asm.moved(bd.Location((0.0, 0.0, 1.20))).solids()[0]
+    verify_jlc3dp_part(base_sunk_print, "wheel-base-frame-sunk", check_bores=True)
+    bd.export_step(base_sunk_print, str(PARTS_DIR / "wheel-base-frame-sunk.step"))
+    bd.export_stl(base_sunk_print, str(PARTS_DIR / "wheel-base-frame-sunk.stl"))
+
     # 5) Standalone Eval Pod Stand (flat at Z = 0.0000 mm!)
     stand_part = build_eval_pod_stand()
     verify_jlc3dp_part(stand_part, "eval-pod-stand", check_bores=True)
@@ -695,10 +813,15 @@ def main():
     bd.export_stl(stand_part, str(PARTS_DIR / "eval-pod-stand.stl"))
 
     print("\n=== 2. Building & Verifying Module & Standalone Pod Assemblies ===")
-    mod_parts = assemble_module_parts(origin=(0.0, 0.0, 0.0))
+    mod_parts = assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=False)
     verify_zero_overlap(mod_parts, "Inertia_Wheel_Module")
     mod_asm = bd.Compound(label="Inertia_Wheel_Module_Assembly", children=mod_parts)
     bd.export_step(mod_asm, str(ASSEMBLIES_DIR / "inertia-wheel-module-assembly.step"))
+
+    mod_sunk_parts = assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=True)
+    verify_zero_overlap(mod_sunk_parts, "Inertia_Wheel_Module_Sunk")
+    mod_sunk_asm = bd.Compound(label="Inertia_Wheel_Module_Sunk_Assembly", children=mod_sunk_parts)
+    bd.export_step(mod_sunk_asm, str(ASSEMBLIES_DIR / "inertia-wheel-module-sunk-assembly.step"))
 
     # Standalone Eval Pod Assembly: Stand (Z=0..6.4) + Carrier PCB (42x30x1.6 at Z=5.4..7.0) + RP2040-Zero (West) + Wheel Module (East X=+8.0, Z=7.0)
     stand_asm = build_eval_pod_stand()
@@ -813,7 +936,85 @@ def main():
 
     dropin_asm = bd.Compound(label="curcur40_Right_With_Inertia_Wheel", children=fit_check_parts)
     bd.export_step(dropin_asm, str(ASSEMBLIES_DIR / "curcur40-right-with-inertia-wheel.step"))
-    print("\nAll Passive Inertia Wheel 3D models & assemblies generated and verified successfully!")
+
+    print("\n=== 4. Verifying Low-Profile Sunk Variant on curcur40-right (Wheel Center = Keycap Center Z=+1.40mm) ===")
+    # Keycap spans Z = [-0.80, +3.60] -> Keycap vertical center Z = +1.40 mm!
+    # Placing sunk module at cz_sunk = +1.40 - Z_AXLE (10.30) = -8.90 mm puts:
+    #   - Wheel Axle Center Z = +1.40 mm (exact keycap vertical center!)
+    #   - Wheel Top         Z = +9.80 mm (+6.20 mm above keycap top +3.60 mm, mouse-wheel-like profile!)
+    #   - Wheel Bottom      Z = -7.00 mm (sunk cleanly through 18.2x18.2mm inner cutout in Main PCB & Top Plate!)
+    #   - Sunk Base Bottom  Z = -10.10 mm (>10.4 mm clear above unmodified cases/right.step inner floor!)
+    cz_sunk = 1.40 - Z_AXLE  # -8.90 mm
+    mod_sunk_local = bd.Compound(children=assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=True)).rotate(
+        bd.Axis.Z, 180
+    ).moved(bd.Location((cx_step, cy_step, cz_sunk)))
+    sunk_dropped_parts = list(mod_sunk_local.solids())
+    for idx, s in enumerate(sunk_dropped_parts):
+        s.label = mod_sunk_parts[idx].label
+
+    # Build Right Main PCB with 18.50x18.50mm inner cutout + 3x Ø3.70mm spacer holes (outer outline 100% unchanged!)
+    with bd.BuildSketch(bd.Plane.XY.offset(-6.50)) as sk_pcb_win:
+        with bd.Locations([(cx_step, cy_step)]):
+            bd.RectangleRounded(18.50, 18.50, 0.50)
+    sunk_main_pcb = right_main_pcb - bd.extrude(sk_pcb_win.sketch, amount=3.00)
+    sunk_mount_step = [(cx_step - mx, cy_step - my) for mx, my in SUNK_MOUNT_PTS_MOD]
+    for sx_m, sy_m in sunk_mount_step:
+        sunk_main_pcb = sunk_main_pcb - bd.Cylinder(
+            radius=1.85, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        ).moved(bd.Location((sx_m, sy_m, -6.50)))
+    sunk_main_pcb = sunk_main_pcb.solids()[0]
+    sunk_main_pcb.label = "curcur40_Right_Main_PCB_SunkCutout"
+
+    # Build Right Top Plate with 18.50x18.50mm inner cutout + 3x Ø2.40mm M2 screw holes (outer outline 100% unchanged!)
+    with bd.BuildSketch(bd.Plane.XY.offset(-4.50)) as sk_plate_win:
+        with bd.Locations([(cx_step, cy_step)]):
+            bd.RectangleRounded(18.50, 18.50, 0.50)
+    sunk_top_plate = top_plate_ref - bd.extrude(sk_plate_win.sketch, amount=3.00)
+    for sx_m, sy_m in sunk_mount_step:
+        sunk_top_plate = sunk_top_plate - bd.Cylinder(
+            radius=1.20, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        ).moved(bd.Location((sx_m, sy_m, -4.50)))
+    sunk_top_plate = sunk_top_plate.solids()[0]
+    sunk_top_plate.label = "curcur40_Right_Top_Plate_SunkMount"
+
+    # Add 3x standard M2 x 4.0mm top screws seated on Top Plate Z = -2.00 mm (with Ø1.58mm visualization shank inside Ø1.60mm bore)
+    sunk_screws = []
+    for idx_m, (sx_m, sy_m) in enumerate(sunk_mount_step):
+        sc_head = bd.Cylinder(
+            radius=2.00, height=0.80, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        ).moved(bd.Location((sx_m, sy_m, -1.99)))
+        sc_shank = bd.Cylinder(
+            radius=0.78, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)
+        ).moved(bd.Location((sx_m, sy_m, -1.99)))
+        sc = (sc_head + sc_shank).solids()[0]
+        sc.label = f"Sunk_Mount_Screw_M2x4_{idx_m+1}"
+        sunk_screws.append(sc)
+
+    sunk_fit_parts = [
+        right_case, sunk_main_pcb, sunk_top_plate, tb_cup, tb_ball,
+        *keycaps, *sunk_screws, *sunk_dropped_parts,
+    ]
+    verify_zero_overlap(sunk_fit_parts, "curcur40_Right_Sunk_Check")
+
+    sunk_static_labels = {"Wheel_Base_Frame_Sunk", "Hinge_Pin_SUS304_2mm", "Kailh_Silent_Switch_6x6x4p3"}
+    sunk_fw = [s for s in sunk_dropped_parts if s.label == "SUS304_Flywheel_16p8mm"][0]
+    fw_bb = sunk_fw.bounding_box()
+    d_case_floor = min(closest_points(s, right_case).distance for s in sunk_dropped_parts)
+    d_sunk_plate_moving = min(closest_points(s, sunk_top_plate).distance for s in sunk_dropped_parts if s.label not in sunk_static_labels)
+    d_sunk_pcb_moving = min(closest_points(s, sunk_main_pcb).distance for s in sunk_dropped_parts if s.label not in sunk_static_labels)
+    d_sunk_rexsw2 = min(closest_points(s, rexsw2_cap).distance for s in sunk_dropped_parts)
+    assert d_case_floor >= 2.00, f"Sunk module vs Right Case clearance {d_case_floor:.3f} mm < 2.00 mm!"
+    assert d_sunk_plate_moving >= 0.30, f"Sunk moving parts vs Top Plate {d_sunk_plate_moving:.3f} mm < 0.30 mm!"
+    assert d_sunk_pcb_moving >= 0.30, f"Sunk moving parts vs Main PCB {d_sunk_pcb_moving:.3f} mm < 0.30 mm!"
+    assert d_sunk_rexsw2 >= 1.00, f"Sunk module vs rEXSW2 Keycap {d_sunk_rexsw2:.3f} mm < 1.00 mm!"
+    print(f"         -> Sunk Flywheel Z span = [{fw_bb.min.Z:+.2f}, {fw_bb.max.Z:+.2f}] mm, Center Z = {0.5*(fw_bb.min.Z+fw_bb.max.Z):+.2f} mm (Keycap Center = +1.40 mm!)")
+    print(f"         -> Clearance to unmodified Right Case floor/walls = {d_case_floor:.3f} mm")
+    print(f"         -> Moving Parts clearance to Top Plate / Main PCB = {d_sunk_plate_moving:.3f} / {d_sunk_pcb_moving:.3f} mm (>= 0.30 mm)")
+    print(f"         -> Clearance to South Keycap (rEXSW2)             = {d_sunk_rexsw2:.3f} mm (>= 1.00 mm)")
+
+    sunk_asm = bd.Compound(label="curcur40_Right_With_Inertia_Wheel_Sunk", children=sunk_fit_parts)
+    bd.export_step(sunk_asm, str(ASSEMBLIES_DIR / "curcur40-right-with-inertia-wheel-sunk.step"))
+    print("\nAll Passive Inertia Wheel 3D models (Standard & Sunk) generated and verified successfully!")
 
 
 if __name__ == "__main__":
