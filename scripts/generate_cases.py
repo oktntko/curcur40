@@ -19,8 +19,8 @@ Strictly adheres to docs/case_spec.md:
     - Screw through-holes: Ø 2.40 mm (radius 1.20 mm)
     - Bottom screw head counterbores: Ø 4.60 mm (radius 2.30 mm) from angled bottom up to z_boss_top - 2.40 mm
 - Cutouts & Ports (Section 3):
-    - TRRS opening (inner wall): Ø 6.40 mm (radius 3.20 mm), center at Z = -7.85 mm (concentric with PJ-398A-5A barrel; top edge Z = -4.65 mm hides Top Plate Z = -3.60..-2.00 mm), Y = -86.8000 mm
-    - USB-C opening (top wall): Width 10.60 mm x Height 4.60 mm, corner fillet R = 1.50 mm, center at Z = -7.05 mm (top edge Z = -4.75 mm hides Top Plate Z = -3.60..-2.00 mm)
+    - Split USB-C opening (inner thumb wall): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at Y = -86.6500 mm, Z = -5.85 mm (concentric with mid-mount J2 / rJ2 TYPE-C-31-M-13C; top edge Z = -2.75 mm hides upper half of Top Plate)
+    - Host USB-C opening (north wall): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at X = ±26.5750 mm, Z = -5.85 mm (concentric with mid-mount J1 / rJ1 TYPE-C-31-M-13C; top edge Z = -2.75 mm hides upper half of Top Plate)
 """
 import math
 from pathlib import Path
@@ -414,15 +414,18 @@ def build_case(is_right=True) -> bd.Solid:
         usb_cutter = bd.fillet(edges_y, radius=1.50)
     body = body - usb_cutter
 
-    # 8. TRRS port cutout (Section 3.1: Ø 6.80 mm -> radius 3.40 mm, Center Z = -5.85 mm, Y = -86.8000 mm)
-    #    Concentric with mid-mount PJ-398A-5A barrel (center Z = -5.84 mm); top edge at Z = -2.45 mm
-    trrs_x = 7.0250 if is_right else -7.0250
-    trrs_cutter = (
-        bd.Cylinder(radius=3.40, height=20.0)
-        .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((trrs_x, -86.8000, -5.8500)))
+    # 8. Split USB-C port cutout on inner thumb wall (Section 3.1: Width = 12.00 mm, Height = 6.20 mm, R = 1.50 mm,
+    #    Center Y = -86.6500 mm, Center Z = -5.8500 mm; concentric with mid-mount J2 / rJ2 TYPE-C-31-M-13C)
+    split_usb_x = 7.7750 if is_right else -7.7750
+    split_usb_cutter = bd.Box(6.00, 12.00, 6.20).moved(
+        bd.Location((split_usb_x, -86.6500, -5.8500))
     )
-    body = body - trrs_cutter
+    edges_x = split_usb_cutter.edges().filter_by(
+        lambda e: abs(e.bounding_box().size.X - 6.00) < 0.1
+    )
+    assert len(edges_x) == 4, f"Expected 4 X-parallel edges on split_usb_cutter, got {len(edges_x)}"
+    split_usb_cutter = bd.fillet(edges_x, radius=1.50)
+    body = body - split_usb_cutter
 
     solid = body.solids()[0]
     solid.label = f"curcur40_case_{side_str}"
