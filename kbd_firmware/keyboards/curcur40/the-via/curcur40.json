@@ -4,6 +4,23 @@
     "productId": "0x0140",
     "matrix": {"rows": 8, "cols": 7},
     "menus": ["qmk_rgb_matrix"],
+    "customKeycodes": [
+        {
+            "name": "Scroll Hold (Inertia)",
+            "title": "Hold for 2D Trackball Inertia High-Speed Drag-Scroll (release brakes)",
+            "shortName": "SCRL_MO"
+        },
+        {
+            "name": "Scroll Toggle (Inertia)",
+            "title": "Toggle Hands-Free 2D Trackball Inertia High-Speed Drag-Scroll",
+            "shortName": "SCRL_TG"
+        },
+        {
+            "name": "Scroll Hold (Precision)",
+            "title": "Hold for Slow Precision 2D Trackball Drag-Scroll (no inertia)",
+            "shortName": "SCRL_SL"
+        }
+    ],
     "layouts": {
         "keymap": [
             [{"y": 1, "x": 2.5}, "0,3", {"x": 7.5}, "4,3"],
