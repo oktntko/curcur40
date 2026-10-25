@@ -187,6 +187,92 @@ def main():
     plt.close(fig)
     print(f"Saved {out_path}")
 
+    # =========================================================================
+    # Second Diagram: Standard vs Low-Profile Sunk Z-Height Comparison
+    # =========================================================================
+    fig2, (bx1, bx2) = plt.subplots(1, 2, figsize=(15.2, 6.6), dpi=200)
+    fig2.patch.set_facecolor("#ffffff")
+    fig2.suptitle(
+        "curcur40-right ホイール高さ比較：タイプA（基板無加工ポン付け） vs タイプB（マウスホイール同等・沈み込み版）",
+        fontsize=13.0,
+        fontweight="bold",
+        y=0.97,
+        color="#1a1a1a",
+    )
+
+    for ax, is_sunk in [(bx1, False), (bx2, True)]:
+        ax.set_xlim(-14.5, 22.5)
+        ax.set_ylim(-14.0, 17.0)
+        ax.set_aspect("equal")
+        ax.set_facecolor("#f8f9fa")
+        ax.grid(True, linestyle=":", linewidth=0.5, color="#cccccc")
+        ax.set_xlabel("Y 座標 [mm]（北 -Y ── ホイール rEXSW1 ── 南 +Y キー rEXSW2）", fontsize=9.2)
+        ax.set_ylabel("curcur40 グローバル Z 座標 [mm]（ケース上縁 = 0.00 mm）", fontsize=9.2)
+
+        # Case Rim reference Z = 0.00 mm & Case Inner Cavity indicator
+        ax.axhline(0.0, color="#6c757d", linestyle="-.", linewidth=0.9)
+        ax.text(-14.0, 0.35, "ケース上縁リム Z=0.00", fontsize=7.2, color="#495057")
+        ax.add_patch(patches.Rectangle((-14.5, -14.0), 37.0, 1.3, fc="#adb5bd", ec="#495057", lw=0.9, alpha=0.5, zorder=1))
+        ax.text(4.0, -13.35, "既存ケース内底面は Z = -20.5 mm（さらに下方へ 10 mm 以上の余裕あり・ケース無改造）",
+                ha="center", va="center", fontsize=7.3, fontweight="bold", color="#343a40")
+
+        # Keycap center reference line Z = +1.40 mm & Keycap top Z = +3.60 mm
+        ax.axhline(1.40, color="#2b9348", linestyle="--", linewidth=1.3, zorder=8)
+        ax.axhline(3.60, color="#0077b6", linestyle=":", linewidth=1.0, zorder=8)
+
+        # Adjacent South Switch + Keycap (rEXSW2 centered at y = +19.05 -> North cap edge at +10.95)
+        ax.add_patch(patches.Rectangle((10.95, -0.80), 11.0, 4.40, fc="#e9ecef", ec="#212529", lw=1.3, zorder=5))
+        ax.text(16.45, 1.40, "隣接キーキャップ\n(Z = -0.8〜+3.6)\n中央 Z = +1.4mm", ha="center", va="center", fontsize=6.9, fontweight="bold", color="#212529",
+                bbox=dict(boxstyle="round,pad=0.15", fc="#e9ecef", ec="none", alpha=0.92), zorder=9)
+
+        if not is_sunk:
+            ax.set_title("タイプA：標準ポン付け版（メインPCB開口なし：頂点 Z = +14.50 mm）", fontsize=10.8, fontweight="bold", pad=9)
+            # Continuous Main PCB (-5.80..-4.20) & Top Plate (-3.60..-2.00) with 18.2mm cutout
+            ax.add_patch(patches.Rectangle((-14.5, -5.80), 37.0, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
+            ax.add_patch(patches.Rectangle((-14.5, -3.60), 5.4, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
+            ax.add_patch(patches.Rectangle((9.1, -3.60), 13.4, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
+            ax.add_patch(patches.Rectangle((-8.8, -4.20), 17.6, 1.40, fc="#264653", ec="#111111", lw=1.0, zorder=3))
+            wz = 6.10
+            ax.annotate("キー上面から +10.9 mm 突出\n(やや背が高い)", xy=(0.0, wz + 8.4), xytext=(-13.5, 13.5),
+                        arrowprops=dict(arrowstyle="->", color="#d90429", lw=1.2),
+                        fontsize=7.6, fontweight="bold", color="#9d0208",
+                        bbox=dict(boxstyle="round,pad=0.22", fc="#ffe5ec", ec="#d90429", lw=0.9), zorder=10)
+        else:
+            ax.set_title("タイプB：ロープロファイル沈み込み版（マウスホイール同等：頂点 Z = +9.80 mm）", fontsize=10.8, fontweight="bold", pad=9, color="#1b4332")
+            # Main PCB with 18.2mm inner cutout (outer dimensions 100% unchanged!)
+            ax.add_patch(patches.Rectangle((-14.5, -5.80), 5.4, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
+            ax.add_patch(patches.Rectangle((9.1, -5.80), 13.4, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
+            ax.add_patch(patches.Rectangle((-14.5, -3.60), 5.4, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
+            ax.add_patch(patches.Rectangle((9.1, -3.60), 13.4, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
+            # Sunk Under-PCB Basket + North Mounting Lug + Spacer Post
+            ax.add_patch(patches.Rectangle((-8.8, -10.10), 17.6, 1.20, fc="#264653", ec="#111111", lw=1.0, zorder=3))
+            ax.add_patch(patches.Rectangle((-13.8, -10.10), 5.0, 4.29, fc="#264653", ec="#111111", lw=1.0, zorder=3))
+            ax.add_patch(patches.Rectangle((-13.0, -5.81), 3.4, 2.20, fc="#264653", ec="#111111", lw=1.0, zorder=3))
+            wz = 1.40
+            ax.annotate("キー上面から +6.2 mm 浮き出し!\n(一般的なマウスホイールと同等・\n ホイール中心 = キー中央 Z=+1.4mm)",
+                        xy=(0.0, wz + 8.4), xytext=(-13.8, 12.2),
+                        arrowprops=dict(arrowstyle="->", color="#1b4332", lw=1.3),
+                        fontsize=7.6, fontweight="bold", color="#1b4332",
+                        bbox=dict(boxstyle="round,pad=0.25", fc="#d8f3dc", ec="#2b9348", lw=1.0), zorder=10)
+            ax.text(0.0, -11.3, "メインPCB・プレート内窓 18.5×18.5mm 通過（基板・プレート外形は 100% 変更なし）",
+                    ha="center", va="center", fontsize=7.1, fontweight="bold", color="#264653")
+
+        # Draw SUS304 Wheel Ø16.80 mm at (-0.10, wz)
+        wy = -0.10
+        ax.add_patch(patches.Circle((wy, wz), 8.40, fc="#d8dee9", ec="#4c566a", lw=1.6, alpha=0.88, zorder=6))
+        ax.add_patch(patches.Circle((wy, wz), 5.10, fc="none", ec="#1d3557", lw=0.9, linestyle="--", zorder=7))
+        ax.add_patch(patches.Circle((wy, wz), 1.05, fc="#ffffff", ec="#212529", lw=1.2, zorder=8))
+        ax.plot([wy], [wz], marker="+", color="#d90429", markersize=8, markeredgewidth=1.5, zorder=9)
+        ax.text(wy, wz - 2.6, f"軸中心 Z = {wz:+.2f} mm\n頂点 Z = {wz+8.4:+.2f} mm",
+                ha="center", va="center", fontsize=7.5, fontweight="bold", color="#1f2937",
+                bbox=dict(boxstyle="round,pad=0.18", fc="#ffffff", ec="#adb5bd", lw=0.8), zorder=9)
+
+    plt.tight_layout(rect=[0, 0.035, 1, 0.93])
+    out_comp = ASSETS_DIR / "inertia_wheel_height_comparison.png"
+    fig2.savefig(out_comp, dpi=200)
+    plt.close(fig2)
+    print(f"Saved {out_comp}")
+
 
 if __name__ == "__main__":
     main()
