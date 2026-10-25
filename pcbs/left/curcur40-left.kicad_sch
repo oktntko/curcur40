@@ -724,205 +724,6 @@
 		)
 		(embedded_fonts no)
 	)
-		(symbol "Connector_Audio:AudioJack3"
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(duplicate_pin_numbers_are_jumpers no)
-		(property "Reference" "J"
-			(at 0 8.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "AudioJack3"
-			(at 0 6.35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 3 Poles (Stereo / TRS)"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_keywords" "audio jack receptacle stereo headphones phones TRS connector"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_fp_filters" "Jack*"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(symbol "AudioJack3_0_1"
-			(rectangle
-				(start -5.08 -5.08)
-				(end -6.35 -2.54)
-				(stroke
-					(width 0.254)
-					(type default)
-				)
-				(fill
-					(type outline)
-				)
-			)
-			(polyline
-				(pts
-					(xy -1.905 -2.54) (xy -1.27 -3.175) (xy -0.635 -2.54) (xy -0.635 0) (xy 2.54 0)
-				)
-				(stroke
-					(width 0.254)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 0 -2.54) (xy 0.635 -3.175) (xy 1.27 -2.54) (xy 2.54 -2.54)
-				)
-				(stroke
-					(width 0.254)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(rectangle
-				(start 2.54 3.81)
-				(end -5.08 -5.08)
-				(stroke
-					(width 0.254)
-					(type default)
-				)
-				(fill
-					(type background)
-				)
-			)
-			(polyline
-				(pts
-					(xy 2.54 2.54) (xy -2.54 2.54) (xy -2.54 -2.54) (xy -3.175 -3.175) (xy -3.81 -2.54)
-				)
-				(stroke
-					(width 0.254)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-		)
-		(symbol "AudioJack3_1_1"
-			(pin passive line
-				(at 5.08 0 180)
-				(length 2.54)
-				(name ""
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "R"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin passive line
-				(at 5.08 2.54 180)
-				(length 2.54)
-				(name ""
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "S"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin passive line
-				(at 5.08 -2.54 180)
-				(length 2.54)
-				(name ""
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "T"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-		)
-		(embedded_fonts no)
-	)
 		(symbol "Connector_Generic:Conn_01x03"
 		(pin_names
 			(offset 1.016)
@@ -6731,7 +6532,7 @@
 		)
 		(uuid "ab602c60-ddd0-4892-abb9-1575c4d251d0")
 	)
-	(text "TRS"
+	(text "Split USB-C"
 		(exclude_from_sim no)
 		(at 265.43 23.241 0)
 		(effects
@@ -9150,16 +8951,6 @@
 			(justify left bottom)
 		)
 		(uuid "8734c175-24d0-479c-9567-25cd906d8eaa")
-	)
-	(label "TX"
-		(at 276.86 36.83 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "87d9db54-ae67-4140-95a9-9646e6f4730b")
 	)
 	(label "D+"
 		(at 50.8 53.34 0)
@@ -17557,84 +17348,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+5V")
-		(at 276.86 39.37 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b26abc12-6811-4f06-b475-8f42c474ab9a")
-		(property "Reference" "#PWR079"
-			(at 273.685 39.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+5V"
-			(at 280.67 39.37 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 276.86 39.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 276.86 39.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 276.86 39.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "004e0db6-f687-489d-a9db-74b30619cca4")
-		)
-		(instances
-			(project "curcur40-left"
-				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
-					(reference "#PWR079")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 246.38 138.43 0)
 		(unit 1)
@@ -20146,83 +19859,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 276.86 34.29 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "e925abc7-e4b2-4ec0-bb92-f867aa91174a")
-		(property "Reference" "#PWR078"
-			(at 283.845 34.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 281.305 34.29 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 276.86 34.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 276.86 34.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 276.86 34.29 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "dc611e00-965b-4ee9-98d5-6333113ab7ea")
-		)
-		(instances
-			(project "curcur40-left"
-				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
-					(reference "#PWR078")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Switch:SW_Push")
 		(at 254 123.19 0)
 		(unit 1)
@@ -20372,99 +20008,6 @@
 			(project "curcur40-left"
 				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
 					(reference "#PWR047")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Audio:AudioJack3")
-		(at 271.78 36.83 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f247c722-bdff-4ff5-be5b-adf7eff471bc")
-		(property "Reference" "J2"
-			(at 270.51 28.575 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "TRS"
-			(at 270.51 31.115 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "kbd:Jack_PJ-398A-5A_PJ-399B-6A"
-			(at 271.78 36.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 271.78 36.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 3 Poles (Stereo / TRS)"
-			(at 271.78 36.83 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "JLCPCB Part #" "C128994"
-			(at 271.78 36.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "R"
-			(uuid "bf066d63-923d-4291-8b11-47109d3d66de")
-		)
-		(pin "S"
-			(uuid "453c6e22-60b7-41aa-a5a7-c218988eb614")
-		)
-		(pin "T"
-			(uuid "5150c5ee-253c-4dd6-8c7f-1947dd356bc8")
-		)
-		(instances
-			(project "curcur40-left"
-				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
-					(reference "J2")
 					(unit 1)
 				)
 			)
@@ -20939,6 +20482,1127 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "Connector:USB_C_Receptacle_USB2.0_16P")
+		(at 266.7 53.34 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "f247c722-bdff-4ff5-be5b-adf7eff471bc")
+		(property "Reference" "J2"
+			(at 266.7 30.48 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TYPE-C-31-M-13C"
+			(at 266.7 33.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "kbd:USB_C_Receptacle_TYPE-C-31-M-13C"
+			(at 270.51 53.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 270.51 53.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "USB 2.0-only 16P Type-C Receptacle connector"
+			(at 266.7 53.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB Part #" "C2848620"
+			(at 266.7 53.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "A1"
+			(uuid "7b774ed0-43e8-4d7c-a0a6-6996bee79f3a")
+		)
+		(pin "A12"
+			(uuid "8cfade03-17ba-4b47-8eb0-f0ec41fce449")
+		)
+		(pin "A4"
+			(uuid "ea5fdd3d-46f6-4f23-a77e-95dcec0b6111")
+		)
+		(pin "A5"
+			(uuid "5174c3bf-75c9-49c5-af78-f3a70344c0b0")
+		)
+		(pin "A6"
+			(uuid "86f14afd-429c-4b81-bc76-b1dec3de4bc3")
+		)
+		(pin "A7"
+			(uuid "a199aab7-b1c1-48ec-b8e4-b95bda261e24")
+		)
+		(pin "A8"
+			(uuid "01e87121-7791-45e5-b314-e1e9387fb14d")
+		)
+		(pin "A9"
+			(uuid "014dce95-b609-40cf-b262-1ad60f5e6c01")
+		)
+		(pin "B1"
+			(uuid "c9b2a847-25fb-4909-a3a0-265a06ed20bc")
+		)
+		(pin "B12"
+			(uuid "3e00f0ae-d5c2-4ca5-a667-2605bf73d54d")
+		)
+		(pin "B4"
+			(uuid "62c7008a-ad84-43ff-8768-89b516bf868c")
+		)
+		(pin "B5"
+			(uuid "cf3ac4dc-a370-45d8-869c-ec70b57cf1e0")
+		)
+		(pin "B6"
+			(uuid "10abb4b4-21ef-4e5a-b01e-a946456f901d")
+		)
+		(pin "B7"
+			(uuid "f520ece8-05dd-4ed7-9f73-ca2221b6bd22")
+		)
+		(pin "B8"
+			(uuid "6c534d5e-45be-4707-8560-0edc8796a854")
+		)
+		(pin "B9"
+			(uuid "75513f99-861c-42fd-96e0-434c41f97227")
+		)
+		(pin "SH"
+			(uuid "7bfb4a8c-0714-4eaf-bd29-f7c4fee26e68")
+		)
+		(instances
+			(project "curcur40-left"
+				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
+					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Power_Protection:TPD4EUSB30")
+		(at 299.72 58.42 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d2434606-49b6-5ea2-aec8-e5c46aacc576")
+		(property "Reference" "U5"
+			(at 306.07 48.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TPD4E05U06DQAR"
+			(at 306.07 50.8 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_SON:USON-10_2.5x1.0mm_P0.5mm"
+			(at 275.59 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 299.72 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "4-Channel ESD Protection for Super-Speed USB 3.0 Interface, USON-10"
+			(at 299.72 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB Part #" "C138714"
+			(at 299.72 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "307d43dd-9334-484b-bf6e-84304383ecf2")
+		)
+		(pin "10"
+			(uuid "85dc5c78-0d75-4bb3-9975-45b196ad3efc")
+		)
+		(pin "2"
+			(uuid "72e0abfe-d549-4951-98ad-33fe0d9c7af4")
+		)
+		(pin "3"
+			(uuid "7fdf6994-dec1-4146-a38f-f8abb4f38728")
+		)
+		(pin "4"
+			(uuid "6d0e8f3a-ef02-4176-a5f1-06e005f391f9")
+		)
+		(pin "5"
+			(uuid "b6e839b2-bd82-4a8a-82e9-5d40ee6205f1")
+		)
+		(pin "6"
+			(uuid "70ef84ed-32a0-4107-8545-512065c79e3e")
+		)
+		(pin "7"
+			(uuid "40e41c6b-3253-4816-8b41-d571ac9a3328")
+		)
+		(pin "8"
+			(uuid "fa382ef5-96b1-4271-a50d-12afb396de49")
+		)
+		(pin "9"
+			(uuid "47f2eec2-b158-4b63-824c-0c6735882fa5")
+		)
+		(instances
+			(project "curcur40-left"
+				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
+					(reference "U5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 299.72 45.72 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "52417a99-1a3a-53de-bc12-1955ba78c81f")
+		(property "Reference" "R10"
+			(at 299.72 43.18 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "27"
+			(at 299.72 45.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 299.72 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 299.72 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 299.72 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB Part #" "C2909343"
+			(at 299.72 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "15a3ea8c-5501-445e-a24e-f7696c7c43b1")
+		)
+		(pin "2"
+			(uuid "558a189f-2ea0-44f1-bae9-8c0d7a3086ee")
+		)
+		(instances
+			(project "curcur40-left"
+				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
+					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Small")
+		(at 289.56 33.02 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "15acee0b-1fb1-5a41-9715-7d8ec090cb2f")
+		(property "Reference" "C17"
+			(at 292.1 31.75 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 292.1 34.29 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 289.56 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 289.56 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 289.56 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB Part #" "C1525"
+			(at 289.56 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "61fc78f8-6781-4ff0-bb2f-6e675c83c4a5")
+		)
+		(pin "2"
+			(uuid "25dd7d08-d9fc-4810-904b-358457bc775b")
+		)
+		(instances
+			(project "curcur40-left"
+				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
+					(reference "C17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 259.08 76.2 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6d7aa8b5-105b-4ff5-a7aa-4fc60d0b6cd5")
+		(property "Reference" "#PWR007"
+			(at 259.08 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 259.08 80.01 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 259.08 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 259.08 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e9052a47-27ca-497a-aaee-6ea1601bdab0")
+		)
+		(instances
+			(project "curcur40-left"
+				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
+					(reference "#PWR007")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 266.7 76.2 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "780d332f-8367-459f-90cc-1a54395cfb9b")
+		(property "Reference" "#PWR028"
+			(at 266.7 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 266.7 80.01 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 266.7 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 266.7 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 266.7 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d6f0e8af-23b7-48c0-b80b-bc99bcfe62fb")
+		)
+		(instances
+			(project "curcur40-left"
+				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
+					(reference "#PWR028")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 289.56 35.56 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a581cc3f-e447-4df0-addf-d66cee67449c")
+		(property "Reference" "#PWR029"
+			(at 289.56 41.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 289.56 39.37 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 289.56 35.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 289.56 35.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 289.56 35.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6cd18063-704e-42f5-9ced-2e4d3443323c")
+		)
+		(instances
+			(project "curcur40-left"
+				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
+					(reference "#PWR029")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 299.72 71.12 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e6ccfdf8-7515-46dc-bd26-b6212e5ffd34")
+		(property "Reference" "#PWR030"
+			(at 299.72 77.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 299.72 74.93 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 299.72 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 299.72 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 299.72 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5fb49d94-cfd5-450c-a85a-d555ad9fa647")
+		)
+		(instances
+			(project "curcur40-left"
+				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
+					(reference "#PWR030")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 294.64 30.48 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f477c2db-5708-4dbc-9629-7a0edc706cba")
+		(property "Reference" "#PWR057"
+			(at 294.64 34.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+5V"
+			(at 294.64 27.305 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 294.64 30.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 294.64 30.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 294.64 30.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "89ee132d-ee72-41dc-bca0-cbef91a809d0")
+		)
+		(instances
+			(project "curcur40-left"
+				(path "/5d636ecb-124e-4eb3-8682-4273aa9c70aa"
+					(reference "#PWR057")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(no_connect
+		(at 281.94 43.18)
+		(uuid "1d4cd8c5-588e-4fbd-9696-b863abfb601b")
+	)
+	(no_connect
+		(at 281.94 45.72)
+		(uuid "5928ec57-a008-4d00-9853-5b92aca084c9")
+	)
+	(no_connect
+		(at 281.94 50.8)
+		(uuid "af7b99da-370e-4c07-b1a7-e67365f7c8dc")
+	)
+	(no_connect
+		(at 281.94 53.34)
+		(uuid "1571fa49-53dc-4c27-aa66-1ff579502687")
+	)
+	(no_connect
+		(at 281.94 66.04)
+		(uuid "d5af1517-1dc4-4e81-9f5a-1f88a258852a")
+	)
+	(no_connect
+		(at 281.94 68.58)
+		(uuid "d1bd4a52-8d29-43cd-ae53-cc0ae99cfec5")
+	)
+	(no_connect
+		(at 312.42 50.8)
+		(uuid "4478c958-f24c-44c8-888a-f6142739e3ec")
+	)
+	(no_connect
+		(at 312.42 55.88)
+		(uuid "74a5b367-81a9-4285-89c2-ff147366f98d")
+	)
+	(no_connect
+		(at 312.42 60.96)
+		(uuid "5259b021-c1b2-44b4-9a79-528b4027c01e")
+	)
+	(no_connect
+		(at 312.42 66.04)
+		(uuid "238b8436-ca97-45ac-9422-bd3417dca5b2")
+	)
+	(wire
+		(pts
+			(xy 281.94 38.1) (xy 284.48 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "da0ae486-5a5b-424b-82bb-e908875f50c8")
+	)
+	(wire
+		(pts
+			(xy 284.48 38.1) (xy 284.48 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8ee4dc28-2a4c-4048-9ba7-751f5fb2beb7")
+	)
+	(wire
+		(pts
+			(xy 284.48 30.48) (xy 289.56 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4e45796e-ec9d-4f58-8402-e82a2c62fdfd")
+	)
+	(wire
+		(pts
+			(xy 289.56 30.48) (xy 294.64 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "14c0a1c9-ce7b-4a4d-b43e-1b496707df13")
+	)
+	(wire
+		(pts
+			(xy 281.94 55.88) (xy 283.21 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "176b916c-27b3-486e-9ab8-83e8eca3835e")
+	)
+	(wire
+		(pts
+			(xy 283.21 55.88) (xy 283.21 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "34c0f850-2b2f-4a1c-ae52-d51d83147152")
+	)
+	(wire
+		(pts
+			(xy 281.94 58.42) (xy 283.21 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "12ee798c-b725-4c48-b53d-c95ec70e928f")
+	)
+	(wire
+		(pts
+			(xy 283.21 58.42) (xy 283.21 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "01562b62-c403-44de-a4a1-d8f632ac3c85")
+	)
+	(wire
+		(pts
+			(xy 283.21 57.15) (xy 285.75 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7860a747-a1b3-4728-b222-a683a49c2c0c")
+	)
+	(wire
+		(pts
+			(xy 285.75 45.72) (xy 285.75 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "48b9c1c4-5dde-4127-a7f4-581a92e1089d")
+	)
+	(wire
+		(pts
+			(xy 285.75 50.8) (xy 285.75 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "62f79436-a8f1-487f-9fe5-e79b847ccc0a")
+	)
+	(wire
+		(pts
+			(xy 285.75 55.88) (xy 285.75 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "56f6e5ea-69d3-4d14-b561-9879713de4d7")
+	)
+	(wire
+		(pts
+			(xy 285.75 57.15) (xy 285.75 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1f4e3dcb-7be9-4e8b-9e57-f98c30033689")
+	)
+	(wire
+		(pts
+			(xy 285.75 60.96) (xy 285.75 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83d70ec9-f212-4119-b0b3-1d2e33836cae")
+	)
+	(wire
+		(pts
+			(xy 285.75 50.8) (xy 287.02 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "17837d0d-8da2-436f-a233-140344e528dc")
+	)
+	(wire
+		(pts
+			(xy 285.75 55.88) (xy 287.02 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ebce771f-6230-471c-9a9f-9cf96ddef0e7")
+	)
+	(wire
+		(pts
+			(xy 285.75 60.96) (xy 287.02 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "82864e79-7709-4f6b-889f-d2536430bc39")
+	)
+	(wire
+		(pts
+			(xy 285.75 66.04) (xy 287.02 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4f10d58c-33e6-4c19-9e95-1a8ed74365ce")
+	)
+	(wire
+		(pts
+			(xy 285.75 45.72) (xy 297.18 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ecba2c34-3dd7-4985-aa1e-5c6924bcdf01")
+	)
+	(wire
+		(pts
+			(xy 302.26 45.72) (xy 307.34 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c549a859-a8ef-4508-affd-4402269a00e9")
+	)
+	(junction
+		(at 289.56 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "192c4da1-eedd-4c01-9013-668f3c3af1b2")
+	)
+	(junction
+		(at 283.21 57.15)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "28f14cfa-30b0-45ba-af0f-006f18eed0e7")
+	)
+	(junction
+		(at 285.75 50.8)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3eb0aab0-800e-4c73-b5f5-597ae22375fe")
+	)
+	(junction
+		(at 285.75 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1c7152fb-d590-40ea-9b35-cdc41ff9a0df")
+	)
+	(junction
+		(at 285.75 57.15)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "81ddefb8-77ab-4a4b-baf6-9c229b518db2")
+	)
+	(junction
+		(at 285.75 60.96)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d4470743-0f93-47b3-8d57-a077749c6f14")
+	)
+	(label "SPLIT_DP"
+		(at 289.56 45.72 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "179bc191-0d42-4d9c-9583-2fc0fc1e2edd")
+	)
+	(label "TX"
+		(at 307.34 45.72 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "90cd4115-f7d5-4269-bf40-24487bddbf29")
 	)
 	(sheet_instances
 		(path "/"

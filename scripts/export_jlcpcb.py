@@ -23,8 +23,8 @@ LCSC_MAP_MAIN = {
     "U4": ("W25Q128JVSIQ", "SOIC-8_5.3x5.3mm_P1.27mm", "C113767"),
     "R3": ("1k", "R_0402_1005Metric", "C11702"),
     "R6": ("1k", "R_0402_1005Metric", "C11702"),
-    "J2": ("TRS", "PJ-398A-5A_PJ-399B-6A", "C128994"),
     "U3": ("TPD4E05U06DQAR", "USON-10_2.5x1.0mm_P0.5mm", "C138714"),
+    "U5": ("TPD4E05U06DQAR", "USON-10_2.5x1.0mm_P0.5mm", "C138714"),
     "ZD1": ("RB521S30T1G", "D_SOD-523", "C145179"),
     "U2": ("NCP1117LPST33T3G", "SOT-223-3_TabPin2", "C146799"),
     "C3": ("100n", "C_0402_1005Metric", "C1525"),
@@ -36,6 +36,7 @@ LCSC_MAP_MAIN = {
     "C13": ("100n", "C_0402_1005Metric", "C1525"),
     "C14": ("100n", "C_0402_1005Metric", "C1525"),
     "C15": ("100n", "C_0402_1005Metric", "C1525"),
+    "C17": ("100n", "C_0402_1005Metric", "C1525"),
     "C6": ("10u", "C_0402_1005Metric", "C15525"),
     "C11": ("10u", "C_0402_1005Metric", "C15525"),
     "C1": ("27p", "C_0402_1005Metric", "C1557"),
@@ -48,9 +49,11 @@ LCSC_MAP_MAIN = {
     "R2": ("5.1k", "R_0402_1005Metric", "C25905"),
     "R8": ("5.6k", "R_0402_1005Metric", "C25908"),
     "J1": ("TYPE-C-31-M-13C", "TYPE-C-31-M-13C", "C2848620"),
+    "J2": ("TYPE-C-31-M-13C", "TYPE-C-31-M-13C", "C2848620"),
     "J3": ("SM06B-SRSS-TB(LF)(SN)", "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", "C160405"),
     "R4": ("27", "R_0402_1005Metric", "C2909343"),
     "R5": ("27", "R_0402_1005Metric", "C2909343"),
+    "R10": ("27", "R_0402_1005Metric", "C2909343"),
     "SMDSW1": ("TS-1088R-02026", "TS-1088R-02026", "C455280"),
     "SMDSW2": ("TS-1088R-02026", "TS-1088R-02026", "C455280"),
     "C5": ("1u", "C_0402_1005Metric", "C52923"),
@@ -147,8 +150,7 @@ def export_gerber_zip(pcb_path, zip_path):
 JLCPCB_ROT_OFFSETS = {
     "SOIC-8_5.3x5.3mm_P1.27mm": 270.0,       # U4/rU4 (W25Q128JVSIQ, C97521/C113767): 90 deg CW in Bottom view
     "SOT-223-3_TabPin2": 180.0,              # U2/rU2 (NCP1117LPST33T3G, C146799): 180 deg in Bottom view
-    "USON-10_2.5x1.0mm_P0.5mm": 270.0,       # U3/rU3 (TPD4E05U06DQAR, C138714): 90 deg CW in Bottom view
-    "PJ-398A-5A_PJ-399B-6A": 90.0,           # J2/rJ2 (PJ-398A-5A / PJ-399B-6A, C128994): 90 deg CCW in Bottom view
+    "USON-10_2.5x1.0mm_P0.5mm": 270.0,       # U3/U5, rU3/rU5 (TPD4E05U06DQAR, C138714): 90 deg CW in Bottom view
     "SOT-23-5": 180.0,                       # PMW3360 U2 (TLV74318PDBVR, C485152): 180 deg in Bottom view
 }
 
@@ -336,10 +338,6 @@ def export_main_pcb(pcb_path, proj_name, is_right=False, is_pmw=False):
         pos = fp.GetPosition()
         px_mm = pcbnew.ToMM(pos.x)
         py_mm = pcbnew.ToMM(pos.y)
-        # PJ-398A-5A_PJ-399B-6A has its KiCad footprint origin at the barrel tip (board edge);
-        # shift 6.50 mm inward to the pad/body center expected by JLCPCB's C128994 model.
-        if pkg == "PJ-398A-5A_PJ-399B-6A":
-            px_mm += 6.50 if is_right else -6.50
 
         x_mm = round(px_mm - ox, 6)
         y_mm = round(oy - py_mm, 6)
