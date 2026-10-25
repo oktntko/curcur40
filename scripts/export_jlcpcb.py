@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 Export JLCPCB PCB / PCBA production files for curcur40:
-- Left Main PCB:    pcbs/left/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-left.*
-- Right Main PCB:   pcbs/right/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-right.*
-- PMW3360 Sub PCB:  pcbs/pmw3360/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-pmw3360.*
-- Top Plates:       plates/pcb/jlcpcb/production_files/GERBER-plate-top-{left,right}.zip
+- Left Main PCB:      pcbs/left/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-left.*
+- Right Main PCB:     pcbs/right/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-right.*
+- PMW3360 Sub PCB:    pcbs/pmw3360/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-pmw3360.*
+- Wheel Sensor PCB:   pcbs/inertia-wheel-sensor/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-wheel-sensor.*
+- Wheel Eval PCB:     pcbs/inertia-wheel-eval/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-wheel-eval.*
+- Top Plates:         plates/pcb/jlcpcb/production_files/GERBER-plate-top-{left,right}.zip
 """
 import os
 import re
@@ -74,8 +76,23 @@ PMW_PARTS = {
     "U2": ("TLV74318PDBVR", "SOT-23-5", "C485152"),
 }
 
+WHEEL_SENSOR_PARTS = {
+    "U1": ("AS5600-ASOT", "SOIC-8_3.9x4.9mm_P1.27mm", "C499458"),
+    "C1": ("100nF", "C_0402_1005Metric", "C1525"),
+    "C2": ("1uF", "C_0402_1005Metric", "C52923"),
+}
 
-def get_part_info(ref, is_right=False, is_pmw=False):
+WHEEL_EVAL_PARTS = {
+    "J1": ("SM06B-SRSS-TB(LF)(SN)", "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", "C160405"),
+    "C1": ("100nF", "C_0402_1005Metric", "C1525"),
+    "R1": ("4.7k", "R_0402_1005Metric", "C25900"),
+    "R2": ("4.7k", "R_0402_1005Metric", "C25900"),
+}
+
+
+def get_part_info(ref, is_right=False, is_pmw=False, custom_map=None):
+    if custom_map is not None:
+        return custom_map.get(ref)
     if is_pmw:
         return PMW_PARTS.get(ref)
     if is_right:
@@ -161,13 +178,16 @@ def verify_jlcpcb_preflight(
     zip_path: str,
     is_plate: bool = False,
     is_pmw: bool = False,
+    zero_erc_warn: bool = False,
+    min_board_mm: float = 20.0,
+    extra_forbidden_refs: set = None,
     bom_groups: dict = None,
     cpl_rows: list = None,
 ):
     """
     Automated pre-order check against JLCPCB official 2-Layer FR-4 PCB & PCBA manufacturing capabilities:
       1) KiCad DRC (`--schematic-parity` for PCBs) == 0 violations, 0 unconnected, 0 parity mismatches
-      2) KiCad ERC on `.kicad_sch` == 0 errors (and 0 warnings on pmw3360, <=1 intentional GPIO21 warning on main PCBs)
+      2) KiCad ERC on `.kicad_sch` == 0 errors (and 0 warnings on sub/eval PCBs, <=1 intentional GPIO21 warning on main PCBs)
       3) Board outline (`Edge.Cuts`) bounding box within JLCPCB single-board PCBA/PCB size limits
       4) Copper track width >= 0.127 mm (5 mil, 1oz Cu standard)
       5) Via outer diameter >= 0.45 mm, via drill >= 0.30 mm (standard 2-layer no-surcharge), annular ring >= 0.075 mm
@@ -212,7 +232,7 @@ def verify_jlcpcb_preflight(
                         erc_errors += 1
                     elif sev == "warning":
                         erc_warnings += 1
-            max_warn = 0 if is_pmw else 1
+            max_warn = 0 if (is_pmw or zero_erc_warn) else 1
             assert erc_errors == 0 and erc_warnings <= max_warn, (
                 f"[{proj_name}] ERC failed: errors={erc_errors}, warnings={erc_warnings} (max {max_warn})"
             )
@@ -221,7 +241,7 @@ def verify_jlcpcb_preflight(
     bb = board.GetBoardEdgesBoundingBox()
     w_mm = round(pcbnew.ToMM(bb.GetWidth()), 2)
     h_mm = round(pcbnew.ToMM(bb.GetHeight()), 2)
-    min_dim = 10.0 if is_plate else 20.0  # JLCPCB PCBA single-board min is 20x20 mm
+    min_dim = 10.0 if is_plate else min_board_mm  # JLCPCB PCBA single-board min is 20x20 mm (bare PCB / panelized sub-PCB >= 5x5 mm)
     assert min_dim <= w_mm <= 400.0 and min_dim <= h_mm <= 500.0, (
         f"[{proj_name}] Board dimensions {w_mm}x{h_mm} mm outside JLCPCB [{min_dim}, 400x500] mm limits!"
     )
@@ -250,9 +270,10 @@ def verify_jlcpcb_preflight(
 
     if not is_plate:
         assert min_track_w >= 0.127, f"[{proj_name}] Track width {min_track_w} mm < JLCPCB 0.127 mm (5 mil) limit!"
-        assert min_via_w >= 0.450, f"[{proj_name}] Via diameter {min_via_w} mm < JLCPCB 0.45 mm standard limit!"
-        assert min_via_drill >= 0.300, f"[{proj_name}] Via drill {min_via_drill} mm < JLCPCB 0.30 mm standard 2L limit!"
-        assert min_via_ar >= 0.075, f"[{proj_name}] Via annular ring {min_via_ar} mm < JLCPCB 0.075 mm limit!"
+        if min_via_w != float("inf"):
+            assert min_via_w >= 0.450, f"[{proj_name}] Via diameter {min_via_w} mm < JLCPCB 0.45 mm standard limit!"
+            assert min_via_drill >= 0.300, f"[{proj_name}] Via drill {min_via_drill} mm < JLCPCB 0.30 mm standard 2L limit!"
+            assert min_via_ar >= 0.075, f"[{proj_name}] Via annular ring {min_via_ar} mm < JLCPCB 0.075 mm limit!"
 
     min_pth = float("inf")
     max_pth = 0.0
@@ -298,16 +319,29 @@ def verify_jlcpcb_preflight(
         cpl_refs = {row[0] for row in cpl_rows}
         assert bom_refs == cpl_refs, f"[{proj_name}] BOM/CPL mismatch: {bom_refs ^ cpl_refs}"
         forbidden_dnp = {"J4", "rJ4", "U1" if is_pmw else "", "rEXSW1", "JP1"}
+        if extra_forbidden_refs:
+            forbidden_dnp |= set(extra_forbidden_refs)
         assert not (bom_refs & forbidden_dnp), f"[{proj_name}] DNP/THT ref found in BOM/CPL: {bom_refs & forbidden_dnp}"
 
+    via_w_disp = 0.0 if (is_plate or min_via_w == float("inf")) else min_via_w
+    via_d_disp = 0.0 if (is_plate or min_via_drill == float("inf")) else min_via_drill
     print(
         f"[{proj_name}] JLCPCB preflight OK: size={w_mm:.2f}x{h_mm:.2f}mm, "
         f"DRC=0, track>={0.0 if is_plate else min_track_w:.2f}mm, "
-        f"via>={0.0 if is_plate else min_via_w:.2f}/{0.0 if is_plate else min_via_drill:.2f}mm"
+        f"via>={via_w_disp:.2f}/{via_d_disp:.2f}mm"
     )
 
 
-def export_main_pcb(pcb_path, proj_name, is_right=False, is_pmw=False):
+def export_main_pcb(
+    pcb_path,
+    proj_name,
+    is_right=False,
+    is_pmw=False,
+    custom_map=None,
+    zero_erc_warn=False,
+    min_board_mm=20.0,
+    extra_forbidden_refs=None,
+):
     out_dir = os.path.join(os.path.dirname(pcb_path), "jlcpcb", "production_files")
     os.makedirs(out_dir, exist_ok=True)
     zip_path = os.path.join(out_dir, f"GERBER-{proj_name}.zip")
@@ -329,7 +363,7 @@ def export_main_pcb(pcb_path, proj_name, is_right=False, is_pmw=False):
         if fp.GetAttributes() & exclude_mask:
             continue
         ref = fp.GetReference()
-        info = get_part_info(ref, is_right=is_right, is_pmw=is_pmw)
+        info = get_part_info(ref, is_right=is_right, is_pmw=is_pmw, custom_map=custom_map)
         if not info:
             continue
         comment, pkg, lcsc = info
@@ -343,8 +377,11 @@ def export_main_pcb(pcb_path, proj_name, is_right=False, is_pmw=False):
         y_mm = round(oy - py_mm, 6)
         krot = fp.GetOrientationDegrees()
         rot_offset = JLCPCB_ROT_OFFSETS.get(pkg, 0.0)
-        crot = round((180.0 - krot + rot_offset) % 360.0, 2)
         layer = "bottom" if fp.GetLayer() == pcbnew.B_Cu else "top"
+        if layer == "bottom":
+            crot = round((180.0 - krot + rot_offset) % 360.0, 2)
+        else:
+            crot = round((krot + rot_offset) % 360.0, 2)
         cpl_rows.append([ref, comment, pkg, x_mm, y_mm, crot, layer])
 
     bom_path = os.path.join(out_dir, f"BOM-{proj_name}.csv")
@@ -371,6 +408,9 @@ def export_main_pcb(pcb_path, proj_name, is_right=False, is_pmw=False):
         zip_path,
         is_plate=False,
         is_pmw=is_pmw,
+        zero_erc_warn=zero_erc_warn,
+        min_board_mm=min_board_mm,
+        extra_forbidden_refs=extra_forbidden_refs,
         bom_groups=bom_groups,
         cpl_rows=cpl_rows,
     )
@@ -406,5 +446,21 @@ if __name__ == "__main__":
         str(WORKSPACE / "pcbs" / "pmw3360" / "curcur40-pmw3360.kicad_pcb"),
         "curcur40-pmw3360",
         is_pmw=True,
+    )
+    export_main_pcb(
+        str(WORKSPACE / "pcbs" / "inertia-wheel-sensor" / "curcur40-wheel-sensor.kicad_pcb"),
+        "curcur40-wheel-sensor",
+        custom_map=WHEEL_SENSOR_PARTS,
+        zero_erc_warn=True,
+        min_board_mm=5.0,
+        extra_forbidden_refs={"J1"},
+    )
+    export_main_pcb(
+        str(WORKSPACE / "pcbs" / "inertia-wheel-eval" / "curcur40-wheel-eval.kicad_pcb"),
+        "curcur40-wheel-eval",
+        custom_map=WHEEL_EVAL_PARTS,
+        zero_erc_warn=True,
+        min_board_mm=20.0,
+        extra_forbidden_refs={"U1", "SW1", "J2", "H1", "H2", "H3", "H4", "H5", "H6"},
     )
     export_top_plates()
