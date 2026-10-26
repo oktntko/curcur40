@@ -66,13 +66,13 @@
 
 ### 1.2 3D CAD / KiCad PCB プレビューギャラリー
 
-| カップ型 `SUS304` ホイール単体 (`#01`) | ホイールモジュール単体 (22パーツ) |
+| カップ型 `SUS304` ホイール単体 (`#01`) | ホイールモジュール単体 (24パーツ) |
 | :---: | :---: |
 | ![SUS304 Flywheel](assets/render_inertia_wheel_flywheel.png) | ![Inertia Wheel Module](assets/render_inertia_wheel_module.png) |
 | **タイプA：標準ポン付け版 (`Z_top = +14.8 mm`)** | **タイプB：沈み込み＋クロススロット版 (`Z_top = +9.8 mm`)** |
 | ![curcur40-right Standard](assets/render_curcur40_right_inertia_wheel.png) | ![curcur40-right Sunk](assets/render_curcur40_right_inertia_wheel_sunk.png) |
-| **単体デスクトップ評価ポッド (`RP2040-Zero`)** | **評価キャリア基板 ＆ `AS5600` センサー小基板** |
-| ![Eval Pod Assembly](assets/render_inertia_wheel_eval_pod.png) | ![Wheel Eval PCB](assets/render_pcb_wheel_eval.png) |
+| **単体デスクトップ評価ポッド (`RP2040-Zero`)** | **`AS5600` センサー基板 (`#07`, 0.8mm Top PCBA)** |
+| ![Eval Pod Assembly](assets/render_inertia_wheel_eval_pod.png) | ![Wheel Sensor PCB](assets/render_pcb_wheel_sensor.png) |
 
 ---
 
@@ -108,15 +108,15 @@
 | [`wheel-base-frame.step`](../cases/inertia_wheel/wheel-base-frame.step) / `.stl` | JLC3DP SLA 標準ベース枠（評価ポッド／タイプA用） | $17.60 \times 17.60 \times 4.10$ | 最小穴径 $2.06\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
 | [`wheel-base-frame-sunk.step`](../cases/inertia_wheel/wheel-base-frame-sunk.step) / `.stl` | JLC3DP SLA 沈み込みベース枠（タイプB低背版用） | $23.70 \times 23.70 \times 6.74$ | 最小穴径 $1.60\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
 | [`eval-pod-stand.step`](../cases/inertia_wheel/eval-pod-stand.step) / `.stl` | JLC3DP SLA/MJF 単体評価ポッド台座 | $52.00 \times 36.00 \times 6.60$ | 最小穴径 $2.00\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
-| [`inertia-wheel-module-assembly.step`](../cases/assemblies/inertia-wheel-module-assembly.step) | 標準モジュール検証アセンブリ (22パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
-| [`inertia-wheel-module-sunk-assembly.step`](../cases/assemblies/inertia-wheel-module-sunk-assembly.step) | 沈み込みモジュール検証アセンブリ (22パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
-| [`inertia-wheel-eval-pod-assembly.step`](../cases/assemblies/inertia-wheel-eval-pod-assembly.step) | 単体デスクトップ評価ポッド検証 (26パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
-| [`curcur40-right-with-inertia-wheel.step`](../cases/assemblies/curcur40-right-with-inertia-wheel.step) | タイプA：無改造 `curcur40-right` 搭載検証 (46パーツ) | ― | 全ペア `overlap = 0.00000000 mm³`・可動隙間 $\ge 0.33\,\text{mm}$ **PASS** |
-| [`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) | タイプB：沈み込み＋クロススロット版 `curcur40-right` 検証 (49パーツ) | ― | 全ペア `overlap = 0.00000000 mm³`・可動隙間 $\ge 0.32\,\text{mm}$ **PASS** |
+| [`inertia-wheel-module-assembly.step`](../cases/assemblies/inertia-wheel-module-assembly.step) | 標準モジュール検証アセンブリ (24パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
+| [`inertia-wheel-module-sunk-assembly.step`](../cases/assemblies/inertia-wheel-module-sunk-assembly.step) | 沈み込みモジュール検証アセンブリ (24パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
+| [`inertia-wheel-eval-pod-assembly.step`](../cases/assemblies/inertia-wheel-eval-pod-assembly.step) | 単体デスクトップ評価ポッド検証 (28パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
+| [`curcur40-right-with-inertia-wheel.step`](../cases/assemblies/curcur40-right-with-inertia-wheel.step) | タイプA：無改造 `curcur40-right` 搭載検証 (48パーツ) | ― | 全ペア `overlap = 0.00000000 mm³`・可動隙間 $\ge 0.33\,\text{mm}$ **PASS** |
+| [`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) | タイプB：沈み込み＋クロススロット版 `curcur40-right` 検証 (51パーツ) | ― | 全ペア `overlap = 0.00000000 mm³`・可動隙間 $\ge 0.32\,\text{mm}$ **PASS** |
 
 ### 3.2 KiCad 10.0 回路図・基板・JLCPCB 発注ファイル
-* **`AS5600` センサーサブ基板（[`pcbs/inertia-wheel-sensor/`](../pcbs/inertia-wheel-sensor/)）**：$8.80 \times 8.80 \times 0.80\,\text{mm}$、ERC `0/0`・DRC `0/0/0`。
-* **単体 USB-C 評価キャリア基板（[`pcbs/inertia-wheel-eval/`](../pcbs/inertia-wheel-eval/)）**：$48.00 \times 32.00 \times 1.60\,\text{mm}$、ERC `0/0`・DRC `0/0/0`。
+* **`AS5600` センサーサブ基板（[`pcbs/inertia-wheel-sensor/`](../pcbs/inertia-wheel-sensor/)）**：$22.00 \times 22.00\,\text{mm}$ 捨て基板枠（左右3連 $\varnothing 0.55\,\text{mm}$ マウスバイトタブ付、折り取り後 $8.80 \times 8.80 \times 0.80\,\text{mm}$）、板厚 `0.8 mm`・表面片面 `Top Side` Economic PCBA（`U1 AS5600-ASOT` `C499458`、`C1 100nF` `C1525`、`C2 1μF` `C52923` 工場実装済）、ERC `0/0`・DRC `0/0/0`。
+* **単体 USB-C 評価キャリア基板（[`pcbs/inertia-wheel-eval/`](../pcbs/inertia-wheel-eval/)）**：$48.00 \times 32.00 \times 1.60\,\text{mm}$、表面片面 `Top Side` Economic PCBA、ERC `0/0`・DRC `0/0/0`。
 * **`curcur40-right` Rev2（タイプB 沈み込み版）への統合時変更点（外形サイズ不変）**：
   * `rEXSW1` 中心 $(14.2875, 0.0000)\,\text{mm}$ に対し、メインPCBに **$18.50 \times 18.50\,\text{mm}$ ($R=0.50\,\text{mm}$) の内窓** と 3箇所の $\varnothing 3.70\,\text{mm}$ ボス貫通穴を設け、トッププレートには **四隅のヒンジ・静音スイッチ・ストライカーを上側から完全に覆い隠すクロススロット開口**（ホイールスリット幅 $6.60 \times 17.80\,\text{mm}$ ＋ 中央軸受アルコーブ、下からの1ピース挿入組立対応、全可動部クリアランス $\ge 0.32\,\text{mm}$）と 3箇所の $\varnothing 2.40\,\text{mm}$ M2 ネジ穴を設けるだけで、**基板・プレートの外形サイズと既存ケースを1ミリも変えず、外装カバー不要で市販マウスのような外観に仕上がります**。
 
@@ -134,7 +134,7 @@
 | **`#13` ラチェット鋼球** | 精密ベアリング鋼球 (`SUJ2`) | **$\varnothing 2.00\,\text{mm}$** × 9個使用 | Amazon / MonotaRO (`2mm SUJ2 鋼球`) | 約 \$1.50 (¥230 / 100個) |
 | **`#14`/`#15` シャフト・ピン** | 非磁性ステンレス平行ピン (`SUS304`/`316`) | ホイール軸 $\varnothing 2.0 \times 10\text{〜}11\,\text{mm}$ ×1、ヒンジ軸 $\varnothing 2.0 \times 16\text{〜}17\,\text{mm}$ ×1 | Amazon / ミスミ / MonotaRO | 約 \$1.00 (¥150) |
 | **`#18` 磁力調整ネジ** | M2 ステンレスイモネジ / 小ねじ | `M2 × 3〜4 mm`（東側軸受下部の軸方向ギャップ調整用） | ホームセンター / Amazon | 約 \$0.20 (¥30) |
-| **`#08` 角度センサーIC** | ams OSRAM **`AS5600-ASOT`** | `SOIC-8`, 12-bit I2C 非接触磁気角度センサー | **LCSC `C499458`** / 秋月電子 | 約 \$1.10 (¥170) |
+| **`#07`＋`#08` センサー基板 PCBA** | `curcur40-wheel-sensor` (`AS5600-ASOT`＋`C1/C2` 実装済) | $22\times 22\,\text{mm}$ 枠付 $\rightarrow$ 折って $8.8\times 8.8\times 0.8\,\text{mm}$ | **JLCPCB `0.8mm` Top PCBA (`C499458`)** | 約 \$1.80 (¥270) |
 | **`#16` 角度磁石** | 径方向2極着磁（Diametric）NdFeB磁石 | $\varnothing 3.0 \times 0.85 \sim 1.0\,\text{mm}$ (`N35`) | AliExpress / マグネット専門店 | 約 \$0.50 (¥80) |
 | **`#17` ラチェット磁石** | 軸方向着磁 小型ネオジム磁石 | $\varnothing 1.5 \sim 2.0 \times 1.0 \sim 1.5\,\text{mm}$ (`N35`) | Amazon / ハイキューパーツ | 約 \$0.30 (¥50) |
 | **`#10` 静音スイッチ** | **`Kailh Square Silent 6.2×6.2×4.3mm`** | 静音角形マイクロスイッチ（Red Dot, $0.74\,\text{N}$） | 遊舎工房 / Amazon / AliExpress | 約 \$0.35 (¥55) |
