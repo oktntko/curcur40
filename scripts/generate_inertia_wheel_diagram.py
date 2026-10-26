@@ -34,20 +34,20 @@ def main():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15.8, 7.5), dpi=200)
     fig.patch.set_facecolor("#ffffff")
     fig.suptitle(
-        "パッシブ磁気慣性ホイール確定仕様図（SUS304 削り出し 7.96g × 渦電流ゼロ Ø2.0鋼球×11個磁気ラチェット × 静音ミドルクリック）",
-        fontsize=13.2,
+        "パッシブ磁気慣性ホイール確定仕様図（中空カップ型 SUS304 削り出し × 内蔵9球磁気ラチェット × 静音ミドルクリック）",
+        fontsize=13.0,
         fontweight="bold",
         y=0.97,
         color="#1a1a1a",
     )
 
-    # Module seated at F.Cu = -4.20 mm -> Z_mod = +10.30 mm corresponds to Z_global = +6.10 mm
-    z_axle = 6.10  # Wheel Ø16.80 -> bottom Z = -2.30 mm, top Z = +14.50 mm (< +14.80mm 25mm trackball!)
+    # Module seated at F.Cu = -4.20 mm -> Z_mod = +10.55 mm corresponds to Z_global = +6.35 mm
+    z_axle = 6.35  # Wheel Ø16.80 -> bottom Z = -2.05 mm, top Z = +14.75 mm (< +14.80mm 25mm trackball!)
 
     # =========================================================================
-    # Panel 1: X-Z Front Cross-Section (17.60 mm Module inside 18.00 mm Courtyard)
+    # Panel 1: X-Z Front Cross-Section (Cup-Shaped #01 Enclosing #02 Inside!)
     # =========================================================================
-    ax1.set_title("① 正面断面図 (X–Z 軸方向積層：17.60 mm 幅・電磁部品ゼロ構成)", fontsize=11, fontweight="bold", pad=10)
+    ax1.set_title("① 正面断面図 (X–Z 軸方向積層：カップ型ホイール内部へ9球ハブを完全格納)", fontsize=10.8, fontweight="bold", pad=10)
     ax1.set_xlim(-11.5, 11.5)
     ax1.set_ylim(-6.5, 17.2)
     ax1.set_aspect("equal")
@@ -70,44 +70,56 @@ def main():
     ax1.text(-10.15, -1.3, "プレート開口\n18.20 mm", ha="center", va="bottom", fontsize=7.1, color="#16425b", fontweight="bold")
 
     # Base Frame (17.60 x 17.60 mm = ±8.80 mm)
-    ax1.add_patch(patches.Rectangle((-8.8, -4.2), 4.6, 1.2, fc="#264653", ec="#111111", lw=1.0, zorder=3))
-    ax1.add_patch(patches.Rectangle((2.5, -4.2), 6.3, 1.2, fc="#264653", ec="#111111", lw=1.0, zorder=3))
+    ax1.add_patch(patches.Rectangle((-8.8, -4.2), 17.6, 1.4, fc="#264653", ec="#111111", lw=1.0, zorder=3))
 
-    # Hinged Inner Carriage U-Frame & Bearing Pillars
-    ax1.add_patch(patches.Rectangle((-6.5, -2.5), 2.4, 11.4, fc="#dee2e6", ec="#495057", lw=1.0, zorder=3))
-    ax1.add_patch(patches.Rectangle((6.2, -2.5), 2.4, 11.4, fc="#dee2e6", ec="#495057", lw=1.0, zorder=3))
+    # Slim Symmetrical Rounded-Ear Carriage Pillars (X in [-5.35, -3.50] & [+2.65, +4.90])
+    ax1.add_patch(patches.Rectangle((-5.35, -0.1), 1.85, 9.9, fc="#dee2e6", ec="#495057", lw=1.0, zorder=3))
+    ax1.add_patch(patches.Rectangle((2.65, -0.1), 2.25, 9.9, fc="#dee2e6", ec="#495057", lw=1.0, zorder=3))
 
-    # Shaft Ø2.0 mm (SUS304 non-magnetic, X = -6.8 to +8.6)
-    ax1.add_patch(patches.Rectangle((-6.8, z_axle - 1.0), 15.4, 2.0, fc="#f8f9fa", ec="#343a40", lw=1.1, zorder=5))
-    ax1.text(-0.85, z_axle, "SUS304 平行軸 Ø2.0", ha="center", va="center", fontsize=6.4, fontweight="bold", color="#212529", zorder=9)
+    # Shaft Ø2.0 mm (SUS304 non-magnetic, X = -5.38 to +4.82)
+    ax1.add_patch(patches.Rectangle((-5.38, z_axle - 1.0), 10.2, 2.0, fc="#f8f9fa", ec="#343a40", lw=1.1, zorder=5))
+    ax1.text(-0.4, z_axle, "SUS304軸 Ø2.0", ha="center", va="center", fontsize=6.2, fontweight="bold", color="#212529", zorder=9)
 
-    # Miniature Degreased Stainless Bearings (DDL-520 / MR52: Ø2 x Ø5 x 2.5mm)
-    ax1.add_patch(patches.Rectangle((-6.45, z_axle - 2.5), 2.5, 5.0, fc="#ffffff", ec="#0077b6", lw=1.3, zorder=4))
-    ax1.add_patch(patches.Rectangle((6.30, z_axle - 2.5), 2.5, 5.0, fc="#ffffff", ec="#0077b6", lw=1.3, zorder=4))
-    ax1.text(-5.20, z_axle + 2.85, "脱脂MR52\n(DDL-520)", ha="center", va="bottom", fontsize=6.5, color="#0077b6", fontweight="bold")
-    ax1.text(7.55, z_axle + 2.85, "脱脂MR52\n(DDL-520)", ha="center", va="bottom", fontsize=6.5, color="#0077b6", fontweight="bold")
+    # Miniature Degreased Stainless Bearings (DDL-520 / MR52: Ø2 x Ø5 x 2.0mm)
+    ax1.add_patch(patches.Rectangle((-5.33, z_axle - 2.5), 1.98, 5.0, fc="#ffffff", ec="#0077b6", lw=1.3, zorder=4))
+    ax1.add_patch(patches.Rectangle((2.68, z_axle - 2.5), 2.00, 5.0, fc="#ffffff", ec="#0077b6", lw=1.3, zorder=4))
+    ax1.text(-4.55, z_axle + 2.85, "脱脂MR52", ha="center", va="bottom", fontsize=6.4, color="#0077b6", fontweight="bold")
+    ax1.text(4.05, z_axle + 2.85, "脱脂MR52", ha="center", va="bottom", fontsize=6.4, color="#0077b6", fontweight="bold")
 
-    # West Sensor Sub-PCB (8.8 x 8.8 x 0.8 mm) + AS5600-ASOT (SOIC-8) + Ø3x1.0mm Diametric Magnet
-    ax1.add_patch(patches.Rectangle((-8.75, z_axle - 4.4), 0.8, 8.8, fc="#2a9d8f", ec="#1b4332", lw=1.0, zorder=4))
-    ax1.add_patch(patches.Rectangle((-7.95, z_axle - 2.45), 1.35, 4.9, fc="#212529", ec="#000000", lw=1.0, zorder=5))
-    ax1.text(-7.28, z_axle, "AS5600\n12-bit I2C", ha="center", va="center", fontsize=5.5, color="white", rotation=90, zorder=6)
-    ax1.add_patch(patches.Rectangle((-6.35, z_axle - 1.5), 1.0, 3.0, fc="#e63946", ec="#6a040f", lw=1.0, zorder=6))
-    ax1.annotate("径方向磁石 Ø3×1mm\n(非接触12-bit検出)", xy=(-6.35, z_axle + 1.5), xytext=(-11.2, 12.6),
+    # West Sensor Sub-PCB (8.8 x 8.8 x 0.8 mm) + AS5600-ASOT (SOIC-8) + Ø3x0.85mm Diametric Magnet
+    ax1.add_patch(patches.Rectangle((-8.75, z_axle - 6.25), 0.8, 8.8, fc="#2a9d8f", ec="#1b4332", lw=1.0, zorder=4))
+    ax1.add_patch(patches.Rectangle((-7.94, z_axle - 2.45), 1.30, 4.9, fc="#212529", ec="#000000", lw=1.0, zorder=5))
+    ax1.text(-7.29, z_axle, "AS5600\n12-bit I2C", ha="center", va="center", fontsize=5.5, color="white", rotation=90, zorder=6)
+    ax1.add_patch(patches.Rectangle((-6.25, z_axle - 1.5), 0.85, 3.0, fc="#e63946", ec="#6a040f", lw=1.0, zorder=6))
+    ax1.annotate("径方向磁石 Ø3×1mm\n(非接触12-bit検出)", xy=(-6.12, z_axle + 1.5), xytext=(-11.2, 12.6),
                  arrowprops=dict(arrowstyle="->", color="#6a040f", lw=1.0), fontsize=7.0, fontweight="bold", color="#6a040f")
 
-    # SUS304 Silver Stainless Flywheel (Ø16.80 x 5.60 mm, X = -3.65 to +1.95, mass 7.96 g)
-    ax1.add_patch(patches.Rectangle((-3.65, z_axle - 8.4), 5.6, 16.8, fc="#d8dee9", ec="#4c566a", lw=1.5, zorder=6))
-    ax1.add_patch(patches.Rectangle((-1.50, z_axle + 7.9), 1.3, 0.52, fc="#f8f9fa", ec="#4c566a", lw=0.9, zorder=7))
-    ax1.add_patch(patches.Rectangle((-1.50, z_axle - 8.42), 1.3, 0.52, fc="#f8f9fa", ec="#4c566a", lw=0.9, zorder=7))
-    ax1.text(-0.85, z_axle + 4.4, "SUS304 ステンレス\n削り出しホイール\nØ16.8×5.6mm (7.96g)\n(36溝＋中央2way溝)", ha="center", va="center", fontsize=6.7, fontweight="bold", color="#1f2937", zorder=8)
+    # Cup-Shaped SUS304 Silver Stainless Flywheel (Ø16.80 x 5.46 mm, X = -3.18 to +2.28, rotor total 6.58 g)
+    # West solid flange [-3.18..-1.02] + Upper/Lower Cup Rim [-1.02..+2.28, R=6.25..8.40]
+    cup_poly = patches.Polygon(
+        [
+            [-3.18, z_axle - 8.4], [2.28, z_axle - 8.4], [2.28, z_axle - 6.25], [-1.02, z_axle - 6.25],
+            [-1.02, z_axle + 6.25], [2.28, z_axle + 6.25], [2.28, z_axle + 8.4], [-3.18, z_axle + 8.4],
+        ],
+        closed=True, fc="#d8dee9", ec="#4c566a", lw=1.5, zorder=6,
+    )
+    ax1.add_patch(cup_poly)
+    ax1.add_patch(patches.Rectangle((-1.10, z_axle + 7.9), 1.3, 0.52, fc="#f8f9fa", ec="#4c566a", lw=0.9, zorder=7))
+    ax1.add_patch(patches.Rectangle((-1.10, z_axle - 8.42), 1.3, 0.52, fc="#f8f9fa", ec="#4c566a", lw=0.9, zorder=7))
+    ax1.annotate("カップ型 SUS304 削り出し\nØ16.8×5.46mm (単体5.66g / ローター6.58g)", xy=(-1.50, z_axle + 7.8), xytext=(-4.2, 14.3),
+                 arrowprops=dict(arrowstyle="->", color="#1f2937", lw=1.1), fontsize=6.8, fontweight="bold", color="#1f2937", ha="center",
+                 bbox=dict(boxstyle="round,pad=0.2", fc="#f1f5f9", ec="#4c566a", lw=0.8), zorder=9)
 
-    # Coaxial Eddy-Current-Free Resin Ratchet Hub (Ø12.40 x 3.75 mm, X = +2.35 to +6.10) + 11x Ø2.00mm SUJ2 Steel Balls
-    ax1.add_patch(patches.Rectangle((2.35, z_axle - 6.2), 3.75, 12.4, fc="#a8dadc", ec="#1d3557", lw=1.2, zorder=6))
-    ax1.add_patch(patches.Circle((4.225, z_axle + 5.1), 1.0, fc="#495057", ec="#111111", lw=0.9, zorder=7))
-    ax1.add_patch(patches.Circle((4.225, z_axle - 5.1), 1.0, fc="#495057", ec="#111111", lw=0.9, zorder=7))
-    ax1.annotate("絶縁SLAハブ Ø12.4×3.75mm\n＋ Ø2.0鋼球×11個 (渦電流ゼロ!)", xy=(4.225, z_axle + 6.2), xytext=(4.8, 14.3),
-                 arrowprops=dict(arrowstyle="->", color="#1d3557", lw=1.1), fontsize=7.0, fontweight="bold", color="#1d3557", ha="center",
-                 bbox=dict(boxstyle="round,pad=0.2", fc="#e0fbfc", ec="#1d3557", lw=0.8))
+    # Internal Resin Ratchet Hub (Ø12.40 x 3.10 mm, X = -0.94 to +2.16) + 9x Ø2.00mm SUJ2 Steel Balls inside Cup!
+    ax1.add_patch(patches.Rectangle((-0.94, z_axle - 6.2), 3.10, 12.4, fc="#a8dadc", ec="#1d3557", lw=1.2, zorder=6))
+    ax1.add_patch(patches.Circle((0.96, z_axle + 4.3), 1.0, fc="#495057", ec="#111111", lw=0.9, zorder=7))
+    ax1.add_patch(patches.Circle((0.96, z_axle - 4.3), 1.0, fc="#495057", ec="#111111", lw=0.9, zorder=7))
+    # Axial M2 Magnet Adjuster in lower East Stem (Z = z_axle - 4.30 = +2.05)
+    ax1.add_patch(patches.Rectangle((2.40, z_axle - 4.3 - 0.85), 1.0, 1.7, fc="#e63946", ec="#6a040f", lw=1.0, zorder=8))
+    ax1.add_patch(patches.Rectangle((3.40, z_axle - 4.3 - 0.82), 1.85, 1.64, fc="#adb5bd", ec="#212529", lw=1.0, hatch="///", zorder=8))
+    ax1.annotate("内蔵9球ハブ Ø12.4×3.10mm\n(カップ内部へ100%格納・渦電流ゼロ!)", xy=(1.1, z_axle + 5.6), xytext=(6.2, 12.5),
+                 arrowprops=dict(arrowstyle="->", color="#1d3557", lw=1.1), fontsize=6.8, fontweight="bold", color="#1d3557", ha="center",
+                 bbox=dict(boxstyle="round,pad=0.2", fc="#e0fbfc", ec="#1d3557", lw=0.8), zorder=9)
 
     # =========================================================================
     # Panel 2: Y-Z Side Section (Hinged Silent Click + North-East M2 Magnet Gap Adjuster)
@@ -160,32 +172,28 @@ def main():
                  arrowprops=dict(arrowstyle="<->", color="#2b9348", lw=1.1),
                  fontsize=6.8, fontweight="bold", color="#1b4332", ha="center", zorder=8)
 
-    # Wheel Circle (Ø16.80 mm at Y = -0.10, Z = +6.10) + Insulated 11-Ball Ratchet Hub (Ø12.40 mm, R_orbit = 5.10 mm)
+    # Wheel Circle (Ø16.80 mm at Y = -0.10, Z = +6.35) + Internal 9-Ball Ratchet Hub (Ø12.40 mm, R_orbit = 4.30 mm)
     wy, wz = -0.10, z_axle
     ax2.add_patch(patches.Circle((wy, wz), 8.4, fc="#d8dee9", ec="#4c566a", lw=1.6, alpha=0.65, zorder=3))
     for a in np.linspace(0, 2 * np.pi, 36, endpoint=False):
         ax2.plot([wy + 7.95 * np.cos(a), wy + 8.40 * np.cos(a)],
                  [wz + 7.95 * np.sin(a), wz + 8.40 * np.sin(a)], color="#4c566a", lw=0.8, zorder=4)
 
-    ax2.add_patch(patches.Circle((wy, wz), 6.2, fc="#a8dadc", ec="#1d3557", lw=1.1, alpha=0.90, zorder=4))
-    for a in np.linspace(0, 2 * np.pi, 11, endpoint=False):
-        bx = wy + 5.10 * np.cos(a)
-        bz = wz + 5.10 * np.sin(a)
+    ax2.add_patch(patches.Circle((wy, wz), 6.2, fc="#a8dadc", ec="#1d3557", lw=1.1, linestyle="--", alpha=0.88, zorder=4))
+    for a in np.linspace(0, 2 * np.pi, 9, endpoint=False):
+        bx = wy + 4.30 * np.sin(a)
+        bz = wz - 4.30 * np.cos(a)
         ax2.add_patch(patches.Circle((bx, bz), 1.00, fc="#495057", ec="#111111", lw=0.75, zorder=5))
     ax2.add_patch(patches.Circle((wy, wz), 1.0, fc="#ffffff", ec="#212529", lw=1.2, zorder=6))
-    ax2.text(wy, wz + 6.95, "Ø16.8 SUS304\n(頂点 Z=+14.5mm)", ha="center", va="center", fontsize=7.3, fontweight="bold", color="#1f2937", zorder=7)
+    ax2.text(wy, wz + 6.95, "Ø16.8 カップ型 SUS304\n(ハブを内部格納!)", ha="center", va="center", fontsize=7.0, fontweight="bold", color="#1f2937", zorder=7)
 
-    # North-East M2 Magnet Gap Adjuster Boss at Z_global = +1.45 mm (Z_mod = +5.65 mm), Y = -8.6..-4.8 mm
-    mz = 1.45
-    ax2.add_patch(patches.Rectangle((-6.25, mz - 1.0), 1.5, 2.0, fc="#e63946", ec="#6a040f", lw=1.1, zorder=7))
-    ax2.add_patch(patches.Rectangle((-8.75, mz - 0.85), 2.5, 1.7, fc="#adb5bd", ec="#212529", lw=1.1, hatch="///", zorder=6))
-    ax2.annotate("", xy=(-6.3, mz), xytext=(-4.2, mz),
-                 arrowprops=dict(arrowstyle="<->", color="#d90429", lw=1.4), zorder=8)
-
-    ax2.annotate("北東 M2イモネジ磁力調整 (0.4mm/周)\n・締める → コリコリ強ノッチ\n・緩める → 3〜7秒の慣性スピン!",
-                 xy=(-6.8, mz + 1.0), xytext=(-10.5, 14.3),
+    # Bottom Axial M2 Magnet Gap Adjuster at 6 o'clock (Y = -0.10, Z = wz - 4.30 = +2.05)
+    mz = wz - 4.30
+    ax2.add_patch(patches.Circle((wy, mz), 1.05, fc="#e63946", ec="#6a040f", lw=1.3, zorder=8))
+    ax2.annotate("東軸受下部 M2ネジ軸方向磁力調整\n・沈み込み版ではプレート下へ完全隠蔽\n・単体ポッドでは横から無段階調整!",
+                 xy=(wy - 0.8, mz), xytext=(-10.5, 13.8),
                  arrowprops=dict(arrowstyle="->", color="#d90429", lw=1.2),
-                 fontsize=7.0, fontweight="bold", color="#9d0208",
+                 fontsize=6.9, fontweight="bold", color="#9d0208",
                  bbox=dict(boxstyle="round,pad=0.22", fc="#ffe5ec", ec="#d90429", lw=0.9), zorder=9)
 
     plt.tight_layout(rect=[0, 0.01, 1, 0.94])
@@ -326,19 +334,19 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
         car = car.moved(bd.Location((0, 0, -c_bb.min.Z)))
         bd.export_step(car, str(out / "p03_carriage.step"))
 
-        # 1b. 3D Exploded Module Assembly (cleanly separated along X & Z to reveal all internal parts!)
+        # 1b. 3D Exploded Module Assembly (cleanly separated along X & Z to reveal the internal 9-ball hub!)
         mod_parts = giw.assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=False)
         exp_offsets = {{
             "AS5600_Sensor_SubPCB": (-13.5, 0.0, 7.5),
             "AS5600_SOIC8_IC": (-12.5, 0.0, 7.5),
             "Diametric_Magnet_3x1mm": (-8.5, 0.0, 7.5),
-            "Bearing_MR52_West": (-5.0, 0.0, 7.5),
-            "SUS304_Flywheel_16p8mm": (-0.5, 0.0, 7.5),
-            "SUS316_Axle_Shaft_2mm": (1.0, 0.0, 7.5),
-            "Ratchet_Hub_Resin": (6.2, 0.0, 7.5),
-            "Bearing_MR52_East": (12.2, 0.0, 7.5),
+            "Bearing_MR52_West": (-5.2, 0.0, 7.5),
+            "SUS304_Flywheel_Cup_16p8mm": (-1.2, 0.0, 7.5),
+            "SUS304_Axle_Shaft_2mm": (1.5, 0.0, 7.5),
+            "Ratchet_Hub_Internal_Resin": (7.5, 0.0, 7.5),
+            "Bearing_MR52_East": (15.5, 0.0, 7.5),
             "Wheel_Hinged_Carriage": (0.0, 0.0, -2.5),
-            "M2_Magnet_Adjuster_And_NdFeB": (0.0, -5.8, -2.5),
+            "M2_Magnet_Adjuster_And_NdFeB": (8.8, 0.0, -2.5),
             "Wheel_Base_Frame": (0.0, 0.0, -10.5),
             "Kailh_Silent_Switch_6x6x4p3": (0.0, 0.0, -8.0),
             "Hinge_Pin_SUS304_2mm": (-10.5, 0.0, -10.5),
@@ -347,7 +355,7 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
         for s in mod_parts:
             lbl = s.label
             if lbl.startswith("Steel_Ball_2mm_"):
-                dx, dy, dz = (6.2, 0.0, 7.5)
+                dx, dy, dz = (10.2, 0.0, 7.5)
             else:
                 dx, dy, dz = exp_offsets.get(lbl, (0.0, 0.0, 0.0))
             ms = s.moved(bd.Location((dx, dy, dz))).solids()[0]
@@ -435,17 +443,17 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
                 brg_parts.append(ball)
         bd.export_step(bd.Compound(children=brg_parts), str(out / "p12_bearings.step"))
 
-        # 6. 11x Ø2.00 mm SUJ2 Steel Balls in ring
-        balls_11 = []
-        for k in range(11):
-            a = math.radians(k * (360.0 / 11.0))
-            sp = bd.Sphere(1.00).moved(bd.Location((5.1 * math.cos(a), 5.1 * math.sin(a), 1.00)))
+        # 6. 9x Ø2.00 mm SUJ2 Steel Balls in ring
+        balls_9 = []
+        for k in range(9):
+            a = math.radians(k * (360.0 / 9.0))
+            sp = bd.Sphere(1.00).moved(bd.Location((4.3 * math.cos(a), 4.3 * math.sin(a), 1.00)))
             sp.label = f"SUJ2_Ball_{{k:02d}}"
-            balls_11.append(sp)
-        bd.export_step(bd.Compound(children=balls_11), str(out / "p13_steel_balls.step"))
+            balls_9.append(sp)
+        bd.export_step(bd.Compound(children=balls_9), str(out / "p13_steel_balls.step"))
 
-        # 7. Axle Shaft (Ø2.0 x 14.2 mm) & Hinge Pin (Ø2.0 x 17.2 mm)
-        sh = bd.Cylinder(1.00, 14.2, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)).rotate(bd.Axis.Y, 90)
+        # 7. Axle Shaft (Ø2.0 x 10.5 mm) & Hinge Pin (Ø2.0 x 17.2 mm)
+        sh = bd.Cylinder(1.00, 10.5, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)).rotate(bd.Axis.Y, 90)
         sh = bd.chamfer(sh.edges(), length=0.18)
         sh.label = "Axle_Shaft"
         bd.export_step(sh, str(out / "p14_axle_shaft.step"))
@@ -517,7 +525,7 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
     render_specs = [
         ("mod_west", tmp_dir / "mod_exploded.step", "iso", "parts", 1400, 1000),
         ("p01", parts_dir / "sus304-flywheel.step", "iso", "shaded", 720, 520),
-        ("p02", parts_dir / "ratchet-hub-11ball.step", "iso", "shaded", 720, 520),
+        ("p02", parts_dir / "ratchet-hub.step", "iso", "shaded", 720, 520),
         ("p03", tmp_dir / "p03_carriage.step", "iso", "shaded", 720, 520),
         ("p04a", parts_dir / "wheel-base-frame.step", "iso", "shaded", 720, 520),
         ("p04b", parts_dir / "wheel-base-frame-sunk.step", "iso", "shaded", 720, 520),
@@ -680,18 +688,18 @@ def generate_parts_guide():
 
         pod_callouts = [
             # (target_x, target_y, text_x, text_y, label, border_color)
-            (59.5, 76.0, 44.0, 97.5, "#01 フライホイール", "#1d3557"),
-            (66.5, 63.0, 84.0, 97.0, "#02 11球ハブ (+#13 鋼球)", "#1d3557"),
-            (72.5, 57.5, 89.0, 83.0, "#03 キャリッジ", "#1d3557"),
-            (69.5, 51.5, 84.5, 68.5, "#12 ベアリング + #14 軸", "#005f73"),
-            (73.2, 39.5, 89.5, 53.0, "#10 静音スイッチ", "#1b4332"),
-            (63.8, 30.8, 84.0, 35.5, "#04A 標準ベース枠 + #15 ピン", "#1d3557"),
-            (57.2, 23.8, 84.5, 19.0, "#19 固定M2ネジ穴 (四隅)", "#9b2226"),
-            (56.0, 14.5, 54.0, 1.5, "#05 ポッド台座", "#1d3557"),
-            (39.0, 32.0, 13.0, 6.5, "#06 キャリア基板", "#1b4332"),
+            (63.0, 77.0, 44.0, 97.5, "#01 カップ型フライホイール", "#1d3557"),
+            (67.2, 68.0, 84.0, 97.0, "#02 内蔵9球ハブ (#01内部格納)", "#1d3557"),
+            (65.5, 44.5, 89.0, 83.0, "#03 キャリッジ (スリム丸耳)", "#1d3557"),
+            (70.2, 60.5, 86.5, 68.5, "#12 ベアリング + #14 軸", "#005f73"),
+            (77.5, 47.0, 89.5, 53.0, "#10 静音スイッチ", "#1b4332"),
+            (68.0, 34.5, 84.5, 35.5, "#04A 標準ベース枠 + #15 ピン", "#1d3557"),
+            (62.8, 25.8, 84.5, 19.0, "#19 固定M2ネジ穴 (四隅)", "#9b2226"),
+            (60.0, 16.5, 54.0, 1.5, "#05 ポッド台座", "#1d3557"),
+            (42.0, 34.0, 13.0, 6.5, "#06 キャリア基板", "#1b4332"),
             (37.5, 48.5, 14.5, 24.0, "#11 センサー4芯線 接続先(J1)", "#1b4332"),
-            (29.5, 64.0, 11.5, 86.0, "#09 RP2040-Zero", "#1b4332"),
-            (59.6, 42.2, 16.5, 43.0, "#18 磁力調整ネジ (+#17 磁石)", "#9b2226"),
+            (31.0, 66.0, 11.5, 86.0, "#09 RP2040-Zero", "#1b4332"),
+            (70.5, 51.8, 17.5, 43.0, "#18 磁力調整ネジ (+#17 磁石)", "#9b2226"),
         ]
         for tx, ty, lx, ly, txt, col in pod_callouts:
             ax_pod.annotate(
@@ -725,12 +733,12 @@ def generate_parts_guide():
             (28.5, 81.5, 13.5, 96.5, "#07 センサー基板 + #08 IC", "#1b4332"),
             (38.0, 75.5, 12.5, 81.0, "#16 角度磁石 (径方向)", "#9b2226"),
             (43.0, 72.5, 13.5, 66.0, "#12 ベアリング (西側)", "#005f73"),
-            (49.5, 76.0, 48.0, 97.5, "#01 フライホイール", "#1d3557"),
-            (65.0, 69.0, 84.5, 96.5, "#02 11球ハブ + #13 鋼球", "#005f73"),
-            (77.5, 58.0, 88.0, 80.5, "#12 ベアリング (東側)", "#005f73"),
-            (58.5, 65.5, 88.0, 65.0, "#14 回転シャフト (中心軸)", "#005f73"),
-            (59.0, 44.0, 88.5, 47.0, "#03 キャリッジ", "#1d3557"),
-            (43.5, 42.5, 15.5, 46.5, "#18 磁力調整ネジ + #17 磁石", "#9b2226"),
+            (49.5, 76.0, 48.0, 97.5, "#01 カップ型フライホイール", "#1d3557"),
+            (65.5, 69.5, 84.5, 96.5, "#02 内蔵9球ハブ + #13 鋼球", "#005f73"),
+            (80.5, 60.5, 88.0, 80.5, "#12 ベアリング (東側)", "#005f73"),
+            (57.0, 66.5, 88.0, 65.0, "#14 回転シャフト (中心軸)", "#005f73"),
+            (58.5, 43.0, 88.5, 47.0, "#03 キャリッジ (スリム丸耳)", "#1d3557"),
+            (69.5, 40.5, 15.5, 46.5, "#18 磁力調整ネジ + #17 磁石", "#9b2226"),
             (34.5, 25.0, 13.5, 28.0, "#15 ヒンジピン (北端軸)", "#005f73"),
             (55.0, 14.0, 48.0, 1.5, "#04A 標準ベース枠", "#1d3557"),
             (68.5, 22.0, 88.0, 21.0, "#10 静音スイッチ (南東)", "#1b4332"),
@@ -760,11 +768,11 @@ def generate_parts_guide():
 
         cards = [
             # (code_title, img_source, qty_spec, route_spec, colors)
-            ("#01  フライホイール", rendered["p01"], "数量: 1個 ｜ Ø16.8 × 5.6 mm (7.96g)", "JLCCNC (SUS304) : sus304-flywheel.step", C_CUSTOM),
-            ("#02  11球ハブ", rendered["p02"], "数量: 1個 ｜ Ø12.4 × 3.75 mm", "JLC3DP (SLA) : ratchet-hub-11ball.step", C_CUSTOM),
-            ("#03  キャリッジ", rendered["p03"], "数量: 1個 ｜ 13.6 × 17.3 × 16.7 mm", "JLC3DP (SLA) : wheel-carriage.step", C_CUSTOM),
+            ("#01  カップ型フライホイール", rendered["p01"], "数量: 1個 ｜ Ø16.8 × 幅5.46 mm (5.66g)", "JLCCNC (SUS304) : sus304-flywheel.step", C_CUSTOM),
+            ("#02  内蔵9球ハブ", rendered["p02"], "数量: 1個 ｜ Ø12.4 × 3.10 mm (#01内部格納)", "JLC3DP (SLA) : ratchet-hub.step", C_CUSTOM),
+            ("#03  キャリッジ (スリム丸耳)", rendered["p03"], "数量: 1個 ｜ 15.25 × 15.87 × 13.77 mm", "JLC3DP (SLA) : wheel-carriage.step", C_CUSTOM),
             ("#04A  標準ベース枠", rendered["p04a"], "数量: 1個 ｜ 17.6 × 17.6 × 4.1 mm", "JLC3DP (SLA) : wheel-base-frame.step", C_CUSTOM),
-            ("#04B  沈み込みベース枠 [移植用]", rendered["p04b"], "任意: 1個 ｜ 23.7 × 23.7 × 6.5 mm", "JLC3DP (SLA) : wheel-base-frame-sunk.step", C_CUSTOM),
+            ("#04B  沈み込みベース枠 [移植用]", rendered["p04b"], "任意: 1個 ｜ 23.7 × 23.7 × 6.74 mm", "JLC3DP (SLA) : wheel-base-frame-sunk.step", C_CUSTOM),
             ("#05  ポッド台座", rendered["p05"], "数量: 1個 ｜ 52.0 × 36.0 × 6.6 mm", "JLC3DP (SLA) : eval-pod-stand.step", C_CUSTOM),
             ("#06  キャリア基板", ASSETS_DIR / "render_pcb_wheel_eval.png", "数量: 1枚 ｜ 48.0 × 32.0 × 板厚1.6 mm", "JLCPCB (Top PCBA) : curcur40-wheel-eval", C_ELEC),
             ("#07  センサー基板", ASSETS_DIR / "render_pcb_wheel_sensor.png", "数量: 1枚 ｜ 8.8 × 8.8 × 板厚0.8 mm必須", "JLCPCB (0.8mm生基板) : curcur40-wheel-sensor", C_ELEC),
@@ -772,13 +780,13 @@ def generate_parts_guide():
             ("#09  RP2040-Zero", rendered["p09"], "数量: 1個 ｜ ピンヘッダ未実装タイプ", "通販 : Waveshare RP2040-Zero (USB-C)", C_ELEC),
             ("#10  静音スイッチ", rendered["p10"], "数量: 1個 ｜ 6.2 × 6.2 × 高4.3 mm", "遊舎工房/通販 : Kailh Square Silent (2ピン)", C_ELEC),
             ("#11  センサー4芯線", "CUSTOM_WIRE", "数量: 1式 ｜ AWG30〜34 約60mm × 4本", "通販 : 極細シリコン撚り線 または JST SH線", C_ELEC),
-            ("#12  ベアリング [要脱脂]", rendered["p12"], "数量: 2個 ｜ 内径Ø2 × 外径Ø5 × 幅2.5 mm", "通販 : DDL-520 / MR52 (★パーツクリーナー脱脂)", C_MECH),
-            ("#13  ラチェット鋼球", rendered["p13"], "数量: 11個 ｜ 直径 Ø2.00 mm 精密球", "通販 : SUJ2 または SUS440C 磁性鋼球 (セラミック不可)", C_MECH),
-            ("#14  回転シャフト", rendered["p14"], "数量: 1本 ｜ Ø2.0 × 長さ 14〜15 mm", "通販 : 非磁性 SUS304/316 平行ピン (ホイール軸)", C_MECH),
+            ("#12  ベアリング [要脱脂]", rendered["p12"], "数量: 2個 ｜ 内径Ø2 × 外径Ø5 × 幅2.0 mm", "通販 : DDL-520 / MR52 オープン形 (★脱脂洗浄)", C_MECH),
+            ("#13  ラチェット鋼球", rendered["p13"], "数量: 9個 ｜ 直径 Ø2.00 mm 精密球", "通販 : SUJ2 または SUS440C 磁性鋼球 (セラミック不可)", C_MECH),
+            ("#14  回転シャフト", rendered["p14"], "数量: 1本 ｜ Ø2.0 × 長さ 10〜11 mm", "通販 : 非磁性 SUS304/316 平行ピン (ホイール軸)", C_MECH),
             ("#15  ヒンジピン", rendered["p15"], "数量: 1本 ｜ Ø2.0 × 長さ 16〜17 mm", "通販 : 非磁性 SUS304/316 平行ピン (北端揺動軸)", C_MECH),
-            ("#16  角度磁石 [径方向着磁]", "CUSTOM_MAG_DIAM", "数量: 1個 ｜ Ø3.0 × 厚1.0〜1.5 mm", "通販 : 径方向2極着磁ネオジム (AS5600用)", C_MAG),
-            ("#17  ラチェット磁石 [軸方向]", "CUSTOM_MAG_AXIAL", "数量: 1個 ｜ Ø1.5〜2.0 × 厚1.5 mm", "通販 : 通常の軸方向着磁ネオジム (N35等)", C_MAG),
-            ("#18  磁力調整ネジ", rendered["p18"], "数量: 1本 ｜ M2 × 長さ 4〜5 mm", "通販 : 非磁性ステンレス M2 イモネジ/小ねじ", C_MAG),
+            ("#16  角度磁石 [径方向着磁]", "CUSTOM_MAG_DIAM", "数量: 1個 ｜ Ø3.0 × 厚0.85〜1.0 mm", "通販 : 径方向2極着磁ネオジム (AS5600用)", C_MAG),
+            ("#17  ラチェット磁石 [軸方向]", "CUSTOM_MAG_AXIAL", "数量: 1個 ｜ Ø1.5〜2.0 × 厚1.0〜1.5 mm", "通販 : 通常の軸方向着磁ネオジム (N35等)", C_MAG),
+            ("#18  磁力調整ネジ", rendered["p18"], "数量: 1本 ｜ M2 × 長さ 3〜4 mm", "通販 : 非磁性ステンレス M2 イモネジ/小ねじ", C_MAG),
             ("#19  固定M2ネジ ＆ ゴム足", rendered["p19"], "数量: M2×4mmネジ 6本 ＋ ゴム足 4個", "通販 : ベース固定2本＋台座4本 (沈み込み版は3本)", C_MAG),
         ]
 
@@ -839,7 +847,7 @@ def generate_parts_guide():
                 y0 = 50.0 - disp_h / 2.0
                 vax.imshow(im_arr, extent=[x0, x0 + disp_w, y0, y0 + disp_h], aspect="auto", zorder=2)
                 if title.startswith("#14 "):
-                    vax.text(72, 82, "短い方: 14〜15mm", ha="center", va="center", fontsize=6.9, fontweight="bold", color="#005f73",
+                    vax.text(72, 82, "短い方: 10〜11mm", ha="center", va="center", fontsize=6.9, fontweight="bold", color="#005f73",
                              bbox=dict(boxstyle="round,pad=0.2", fc="#ffffff", ec="#005f73", lw=0.9), zorder=5)
                 elif title.startswith("#15 "):
                     vax.text(72, 82, "長い方: 16〜17mm", ha="center", va="center", fontsize=6.9, fontweight="bold", color="#005f73",
