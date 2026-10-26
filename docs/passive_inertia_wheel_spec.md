@@ -61,14 +61,26 @@
 | **メインPCB・プレート内部加工** | 既存プレート開口 $18.2\times 18.2\,\text{mm}$ のみ<br>（メインPCB開口なし） | プレート＆メインPCBに $18.5\times 18.5\,\text{mm}$ 内窓 ＋ 周囲3箇所の M2 ネジ穴を追加<br>（プレート・基板外周およびキー配置への影響ゼロ） |
 | **既存ケース (`cases/right.step`)** | **無改造（干渉 `0.000 mm³`）** | **無改造（干渉 `0.000 mm³`、ケース内壁・底面まで $\ge 3.65\,\text{mm}$ 余裕）** |
 
-### 1.2 3D CAD / KiCad PCB プレビューギャラリー
+### 1.2 マウス風シュラウドカバー（任意オプション `#20A` / `#20B`：内部メカ完全隠蔽＆防塵）
+
+市販の高速スクロールマウス（MX Master 3S / G502 等）と同様に、**`#02` 11球ハブ・`#03` キャリッジ・`#07` センサー基板・`#12` 脱脂ベアリングを完全に覆い隠し、上面スリット（$6.30 \times 15.70\,\text{mm}$）からシルバーの `#01` フライホイールだけを見せるシュラウドカバー（`#20A` / `#20B`）** を選択装着できます：
+* **`#20B` 沈み込み用シュラウドカバー（[`wheel-shroud-cover-sunk.step`](../cases/inertia_wheel/wheel-shroud-cover-sunk.step)）**:
+  * トッププレート上面（$Z = -2.00\,\text{mm}$）に直接着座し、**`#04B` 沈み込みベース枠とまったく同じ 3箇所の M2 ネジ穴で共締め固定**（追加の基板穴・プレート穴はゼロ、ネジ長のみ `M2 × 4.0mm` → `M2 × 5.0mm` × 3本に変更）。
+  * フード天面は $Z = +6.15\,\text{mm}$（キーキャップ上面 $+3.60\,\text{mm}$ から $+2.55\,\text{mm}$）、`#02` 11球ハブ直上の同軸アーチ外径は $R = 7.70\,\text{mm}$（`#01` フライホイール外周 $R = 8.40\,\text{mm}$ より常時 $0.70\,\text{mm}$ 低い段差）のため、指の腹でホイールを弾いてもカバー角が一切指に当たりません。
+  * **防塵メリット**: グリスを抜いたドライ状態の `#12` 脱脂ベアリングや `#17` ラチェット磁石へのホコリ・鉄粉の侵入を防ぎ、長い空転性能を維持します。
+* **`#20A` ポッド用シュラウドカバー（[`wheel-shroud-cover-eval.step`](../cases/inertia_wheel/wheel-shroud-cover-eval.step)）**:
+  * 単体評価ポッド用のフル4面シュラウド。北壁に **$\varnothing 2.80\,\text{mm}$ ドライバー調整穴**（`#18` 磁力調整ネジと同軸）を備え、**カバーを被せたままノッチ感・空転時間の無段階チューニングが可能**です（西壁下端には `#11` センサー4芯線の配線トンネル付き）。
+
+### 1.3 3D CAD / KiCad PCB プレビューギャラリー
 
 | `SUS304` ホイール単体 (`7.96 g`) | ホイールモジュール単体 (24パーツ) |
 | :---: | :---: |
 | ![SUS304 Flywheel](assets/render_inertia_wheel_flywheel.png) | ![Inertia Wheel Module](assets/render_inertia_wheel_module.png) |
-| **タイプA：標準ポン付け版 (`Z_top = +14.5 mm`)** | **タイプB：ロープロファイル沈み込み版 (`Z_top = +9.8 mm`)** |
+| **タイプA：標準ポン付け版 (`Z_top = +14.5 mm`)** | **タイプB：ロープロファイル沈み込み版・露出 (`Z_top = +9.8 mm`)** |
 | ![curcur40-right Standard](assets/render_curcur40_right_inertia_wheel.png) | ![curcur40-right Sunk](assets/render_curcur40_right_inertia_wheel_sunk.png) |
-| **単体デスクトップ評価ポッド (`RP2040-Zero`)** | **評価キャリア基板 ＆ `AS5600` センサー小基板** |
+| **タイプB＋`#20B` シュラウドカバー装着（マウス風外観）** | **単体評価ポッド＋`#20A` シュラウドカバー装着** |
+| ![curcur40-right Sunk Covered](assets/render_curcur40_right_inertia_wheel_sunk_covered.png) | ![Eval Pod Covered](assets/render_inertia_wheel_eval_pod_covered.png) |
+| **単体デスクトップ評価ポッド・露出 (`RP2040-Zero`)** | **評価キャリア基板 ＆ `AS5600` センサー小基板** |
 | ![Eval Pod Assembly](assets/render_inertia_wheel_eval_pod.png) | ![Wheel Eval PCB](assets/render_pcb_wheel_eval.png) |
 
 ---
@@ -105,11 +117,15 @@
 | [`wheel-base-frame.step`](../cases/inertia_wheel/wheel-base-frame.step) / `.stl` | JLC3DP SLA 標準ベース枠（評価ポッド／タイプA用） | $17.60 \times 17.60 \times 4.10$ | 最小穴径 $2.06\,\text{mm}$・薄肉違反 `0` **PASS** |
 | [`wheel-base-frame-sunk.step`](../cases/inertia_wheel/wheel-base-frame-sunk.step) / `.stl` | JLC3DP SLA 沈み込みベース枠（タイプB低背版用） | $23.70 \times 23.70 \times 6.49$ | 最小穴径 $1.60\,\text{mm}$・薄肉違反 `0` **PASS** |
 | [`eval-pod-stand.step`](../cases/inertia_wheel/eval-pod-stand.step) / `.stl` | JLC3DP SLA/MJF 単体評価ポッド台座 | $52.00 \times 36.00 \times 6.60$ | 最小穴径 $2.00\,\text{mm}$・薄肉違反 `0` **PASS** |
+| [`wheel-shroud-cover-eval.step`](../cases/inertia_wheel/wheel-shroud-cover-eval.step) / `.stl` | *(任意)* JLC3DP SLA/MJF ポッド用シュラウドカバー (`#20A`) | $20.20 \times 28.80 \times 18.00$ | 最小穴径 $2.40\,\text{mm}$・薄肉違反 `0` **PASS** |
+| [`wheel-shroud-cover-sunk.step`](../cases/inertia_wheel/wheel-shroud-cover-sunk.step) / `.stl` | *(任意)* JLC3DP SLA/MJF 沈み込み用シュラウドカバー (`#20B`) | $24.55 \times 24.55 \times 11.09$ | 最小穴径 $2.40\,\text{mm}$・薄肉違反 `0` **PASS** |
 | [`inertia-wheel-module-assembly.step`](../cases/assemblies/inertia-wheel-module-assembly.step) | 標準モジュール検証アセンブリ (24パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
 | [`inertia-wheel-module-sunk-assembly.step`](../cases/assemblies/inertia-wheel-module-sunk-assembly.step) | 沈み込みモジュール検証アセンブリ (24パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
 | [`inertia-wheel-eval-pod-assembly.step`](../cases/assemblies/inertia-wheel-eval-pod-assembly.step) | 単体デスクトップ評価ポッド検証 (28パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
+| [`inertia-wheel-eval-pod-covered-assembly.step`](../cases/assemblies/inertia-wheel-eval-pod-covered-assembly.step) | 単体評価ポッド＋`#20A` カバー装着検証 (29パーツ) | ― | 全ペア `overlap = 0.00000000 mm³`・可動隙間 $\ge 0.35\,\text{mm}$ **PASS** |
 | [`curcur40-right-with-inertia-wheel.step`](../cases/assemblies/curcur40-right-with-inertia-wheel.step) | タイプA：無改造 `curcur40-right` 搭載検証 (48パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
 | [`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) | タイプB：沈み込み版 `curcur40-right` 搭載検証 (51パーツ) | ― | 全ペア `overlap = 0.00000000 mm³` **PASS** |
+| [`curcur40-right-with-inertia-wheel-sunk-covered.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk-covered.step) | タイプB＋`#20B` カバー装着 `curcur40-right` 検証 (52パーツ) | ― | 全ペア `overlap = 0.00000000 mm³`・可動隙間 $\ge 0.35\,\text{mm}$ **PASS** |
 
 ### 3.2 KiCad 10.0 回路図・基板・JLCPCB 発注ファイル
 * **`AS5600` センサーサブ基板（[`pcbs/inertia-wheel-sensor/`](../pcbs/inertia-wheel-sensor/)）**：$8.80 \times 8.80 \times 0.80\,\text{mm}$、ERC `0/0`・DRC `0/0/0`。
