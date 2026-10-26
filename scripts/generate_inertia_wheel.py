@@ -1,27 +1,27 @@
 # -*- coding: utf-8 -*-
 """
 Generate 3D CAD models (STEP & STL) for the Passive Magnetic Inertia Wheel Module
-(`curcur40-inertia-wheel`, Method B: Cup-Shaped SUS304 Flywheel with Internal 9-Ball Axial Hub,
-Slim Rounded-Ear Carriage, and Twin 180°-Symmetric Pyramid-Deep-R Snap Covers) and Standalone
-Evaluation Pod, and run automated JLCCNC / JLC3DP DFM checks and zero-interference verification
-on `curcur40-right`.
+(`curcur40-inertia-wheel`: Cup-Shaped SUS304 Flywheel with Internal 9-Ball Axial Hub,
+Slim Rounded-Ear Carriage, On-PCB / Sunk-PCB Mount Frames, and Twin 180°-Symmetric
+Edge-Rounded Pyramid Snap Covers) and Standalone Evaluation Pod, and run automated
+JLCCNC / JLC3DP DFM checks and zero-interference verification on `curcur40-right`.
 
 Outputs:
   Manufacturing Parts (`cases/inertia_wheel/`):
     1. sus304-flywheel.step / .stl        (JLCCNC SUS304 Stainless Steel Cup Wheel, Ø16.80 x 5.46 mm, 2-way groove)
     2. ratchet-hub.step / .stl            (JLC3DP SLA Resin Internal Hub, Ø12.40 x 3.10 mm, 9x Ø2.00 mm axial pockets)
     3. wheel-carriage.step / .stl         (JLC3DP SLA Resin Slim Rounded-Ear Hinged Inner Carriage)
-    4. wheel-base-frame.step / .stl       (JLC3DP SLA Resin, 17.30 x 17.60 mm Surface-Mount Base Frame)
-    5. wheel-base-frame-sunk.step / .stl  (JLC3DP SLA Resin, Pattern 5 Low-Profile Sunk Under-PCB Base Frame)
-    6. wheel-cover.step / .stl            (JLC3DP SLA Resin, 180°-Symmetric Pyramid-Deep-R Switch-Snap Cover, x2)
+    4. wheel-base-frame.step / .stl       (JLC3DP SLA Resin, 17.18 x 17.56 mm On-PCB Surface-Mount Base Frame)
+    5. wheel-base-frame-sunk.step / .stl  (JLC3DP SLA Resin, Low-Profile Sunk Under-PCB Base Frame)
+    6. wheel-cover.step / .stl            (JLC3DP SLA Resin, 180°-Symmetric Edge-Rounded Pyramid Switch-Snap Cover, x2)
     7. eval-pod-stand.step / .stl         (JLC3DP SLA/MJF Desktop Stand for RP2040-Zero Carrier PCB)
 
   Verification Assemblies (`cases/assemblies/`):
     1. inertia-wheel-module-assembly.step
     2. inertia-wheel-module-sunk-assembly.step
     3. inertia-wheel-eval-pod-assembly.step
-    4. curcur40-right-with-inertia-wheel.step      (Variant A: Surface-mount, zero PCB modification)
-    5. curcur40-right-with-inertia-wheel-sunk.step (Variant B: Pattern 5 Sunk + Twin Pyramid-Deep-R Snap Covers,
+    4. curcur40-right-with-inertia-wheel.step      (On-PCB mount check, zero PCB modification)
+    5. curcur40-right-with-inertia-wheel-sunk.step (Sunk-PCB mount + Twin Snap Covers,
                                                     wheel center Z = -2.00 mm == Top Plate top, wheel top Z = +6.40 mm)
 """
 import math
@@ -45,12 +45,12 @@ ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
 
 # =============================================================================
 # Core Geometric Parameters (Module Local Coordinates: F.Cu / Basket Floor = Z_mod 0.00 mm)
-#   - Variant A (Surface-mount): cz_fcu = -4.19 -> Wheel top Z = +14.76 mm (< +14.80 mm Trackball!)
-#   - Variant B (Pattern 5 Low-profile Sunk + Twin Pyramid-Deep-R Snap Covers):
+#   - On-PCB Mount (#04A): cz_fcu = -4.19 -> Wheel top Z = +14.76 mm (< +14.80 mm Trackball!)
+#   - Sunk Mount (#04B + Twin Edge-Rounded Pyramid Snap Covers #20):
 #       cz_sunk = -12.55 mm -> Wheel rotary center Z = -2.0000 mm (== Top Plate top surface!),
 #       Wheel top Z = +6.4000 mm (+2.80 mm natural mouse-like protrusion above +3.60 mm keycaps),
 #       #01 Flywheel X-centered at 0.0000 mm (aligned with rEXSW2 key below at X_step = 28.5750 mm),
-#       Twin 180°-symmetric Pyramid-Deep-R covers peak at Z = +2.68 mm (0.92 mm lower than keycaps!).
+#       Twin 180°-symmetric snap covers peak at Z = +2.68 mm (0.92 mm lower than keycaps!).
 # =============================================================================
 MOD_XY = 17.60
 Y_AXLE = -0.10          # Wheel Ø16.80 -> Y in [-8.50, +8.30]
@@ -404,7 +404,7 @@ SUNK_MOUNT_PTS_MOD = [
 
 def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     """
-    Build Pattern 5 Low-Profile Sunk Base Frame (`#04B`) in assembled module coordinates (`Z_mod = 0.00 mm`
+    Build Low-Profile Sunk Base Frame (`#04B`) in assembled module coordinates (`Z_mod = 0.00 mm`
     corresponds to `Z_global = -12.55 mm`, placing rotary axle `Z_AXLE = 10.55 mm` at `Z_global = -2.0000 mm`
     == Top Plate top surface, and wheel top at `Z_global = +6.4000 mm` == +2.80 mm natural mouse protrusion):
       - Continuous 1.20 mm bottom floor (`Z_mod = -1.20 .. 0.00 mm`) across `X in [-8.45, +9.35]`, `Y in [-8.80, +8.80]`,
@@ -500,7 +500,7 @@ def make_rounded_pyramid_solid(
     r_crown: float,
 ) -> bd.Solid:
     """
-    Edge-Rounded Pyramid Wedge (`③-B` Pyramid-Deep-R) with sloped pyramid facets joined by tangent
+    Edge-Rounded Pyramid Wedge with sloped pyramid facets joined by tangent
     circular-arc Eave Fillets (`r_eave`), Conical Hip Fillets (`r_xy_bot -> r_xy_top`), and Crown Fillets (`r_crown`).
     """
     x_ext = COV_X_PLANE + 6.0
@@ -569,7 +569,7 @@ def make_rounded_pyramid_solid(
 
 def build_wheel_cover_plate_coords() -> bd.Solid:
     """
-    Build `③-B` Pyramid-Deep-R Switch-Snap Cover (`#20`, `wheel-cover.step`) in Plate-Top Z coordinates
+    Build Edge-Rounded Pyramid Switch-Snap Cover (`#20`, `wheel-cover.step`) in Plate-Top Z coordinates
     (`Z = -2.00 mm` == Top Plate top surface, mirror-symmetric about `Y = Y_AXLE` so 1 single part serves
     BOTH Sensor and Companion sides via a 180° XY rotation around `(0.0, Y_AXLE)`):
       - Exterior: `16.40 -> 11.60 mm` trapezoid length x `6.19 mm` width (`X in [-9.12, -2.93]`),
@@ -1029,14 +1029,14 @@ def main():
     bd.export_step(base_part, str(PARTS_DIR / "wheel-base-frame.step"))
     bd.export_stl(base_part, str(PARTS_DIR / "wheel-base-frame.stl"))
 
-    # 4b) Pattern 5 Low-Profile Sunk Wheel Base Frame (shifted +1.20 mm in Z so flat bottom lies at Z = 0.0000 mm)
+    # 4b) Low-Profile Sunk Wheel Base Frame (shifted +1.20 mm in Z so flat bottom lies at Z = 0.0000 mm)
     base_sunk_asm = build_wheel_base_frame_sunk_assembled()
     base_sunk_print = base_sunk_asm.moved(bd.Location((0.0, 0.0, 1.20))).solids()[0]
     verify_jlc3dp_part(base_sunk_print, "wheel-base-frame-sunk", check_bores=True)
     bd.export_step(base_sunk_print, str(PARTS_DIR / "wheel-base-frame-sunk.step"))
     bd.export_stl(base_sunk_print, str(PARTS_DIR / "wheel-base-frame-sunk.stl"))
 
-    # 4c) 180°-Symmetric Pyramid-Deep-R Switch-Snap Cover (`#20`, flat wheel-facing face placed on Z = 0.0000!)
+    # 4c) 180°-Symmetric Edge-Rounded Pyramid Switch-Snap Cover (`#20`, flat outer wall placed on Z = 0.0000!)
     cover_plate = build_wheel_cover_plate_coords()
     cover_rot = cover_plate.rotate(bd.Axis.Y, 90)
     cov_bb = cover_rot.bounding_box()
@@ -1164,7 +1164,7 @@ def main():
     dropin_asm = bd.Compound(label="curcur40_Right_With_Inertia_Wheel", children=fit_check_parts)
     bd.export_step(dropin_asm, str(ASSEMBLIES_DIR / "curcur40-right-with-inertia-wheel.step"))
 
-    print("\n=== 4. Verifying Pattern 5 Sunk + Twin Pyramid-Deep-R Snap Covers on curcur40-right (Type B) ===")
+    print("\n=== 4. Verifying Sunk Mount + Twin Snap Covers on curcur40-right ===")
     mod_sunk_local = bd.Compound(
         children=assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=True, include_covers=True)
     ).rotate(bd.Axis.Z, 180).moved(bd.Location((cx_step, cy_step, CZ_SUNK)))
