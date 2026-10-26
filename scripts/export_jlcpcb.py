@@ -39,6 +39,7 @@ LCSC_MAP_MAIN = {
     "C14": ("100n", "C_0402_1005Metric", "C1525"),
     "C15": ("100n", "C_0402_1005Metric", "C1525"),
     "C17": ("100n", "C_0402_1005Metric", "C1525"),
+    "C18": ("100n", "C_0402_1005Metric", "C1525"),
     "C6": ("10u", "C_0402_1005Metric", "C15525"),
     "C11": ("10u", "C_0402_1005Metric", "C15525"),
     "C1": ("27p", "C_0402_1005Metric", "C1557"),
@@ -50,9 +51,12 @@ LCSC_MAP_MAIN = {
     "R1": ("5.1k", "R_0402_1005Metric", "C25905"),
     "R2": ("5.1k", "R_0402_1005Metric", "C25905"),
     "R8": ("5.6k", "R_0402_1005Metric", "C25908"),
+    "R11": ("4.7k", "R_0402_1005Metric", "C25900"),
+    "R12": ("4.7k", "R_0402_1005Metric", "C25900"),
     "J1": ("TYPE-C-31-M-13C", "TYPE-C-31-M-13C", "C2848620"),
     "J2": ("TYPE-C-31-M-13C", "TYPE-C-31-M-13C", "C2848620"),
     "J3": ("SM06B-SRSS-TB(LF)(SN)", "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", "C160405"),
+    "J5": ("SM06B-SRSS-TB(LF)(SN)", "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", "C160405"),
     "R4": ("27", "R_0402_1005Metric", "C2909343"),
     "R5": ("27", "R_0402_1005Metric", "C2909343"),
     "R10": ("27", "R_0402_1005Metric", "C2909343"),
@@ -103,8 +107,6 @@ def get_part_info(ref, is_right=False, is_pmw=False, custom_map=None):
             if base.startswith("LED") or base.startswith("EXLED"):
                 return ("YS-SK6812MINI-E", "YS-SK6812MINI-E", "C5149201")
             if base.startswith("SW") or base.startswith("EXSW"):
-                if ref == "rEXSW1":
-                    return None
                 return ("SW_Push", "keyswitch_choc12_hotswap_1u", "C5333465")
             return None
         elif ref in PMW_PARTS:
@@ -320,7 +322,7 @@ def verify_jlcpcb_preflight(
             bom_refs.update(refs)
         cpl_refs = {row[0] for row in cpl_rows}
         assert bom_refs == cpl_refs, f"[{proj_name}] BOM/CPL mismatch: {bom_refs ^ cpl_refs}"
-        forbidden_dnp = {"J4", "rJ4", "U1" if is_pmw else "", "rEXSW1", "JP1"}
+        forbidden_dnp = {"J4", "rJ4", "U1" if is_pmw else "", "JP1"}
         if extra_forbidden_refs:
             forbidden_dnp |= set(extra_forbidden_refs)
         assert not (bom_refs & forbidden_dnp), f"[{proj_name}] DNP/THT ref found in BOM/CPL: {bom_refs & forbidden_dnp}"
