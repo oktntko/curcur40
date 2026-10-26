@@ -7,6 +7,7 @@
 #define I2C_DRIVER I2CD0
 #define I2C1_SDA_PIN GP4
 #define I2C1_SCL_PIN GP5
+#define I2C1_CLOCK_SPEED 400000
 #define F_SCL 400000UL
 
 /* High-rate 1 kHz polling for zero-loss tracking during 20+ rev/s inertia flicks */
@@ -30,9 +31,9 @@
 #    define WHEEL_DEADBAND_LSB 6
 #endif
 
-/* Set to 1 to invert scroll direction */
+/* Set to 0 to invert scroll direction */
 #ifndef WHEEL_INVERT_DIR
-#    define WHEEL_INVERT_DIR 0
+#    define WHEEL_INVERT_DIR 1
 #endif
 
 /* RP2040 double-tap reset bootloader entry */

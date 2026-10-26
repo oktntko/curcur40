@@ -18,8 +18,7 @@
         "oled": false,
         "rgblight": false,
         "rgb_matrix": true,
-        "mousekey": true,
-        "encoder": true
+        "mousekey": true
     },
     "diode_direction": "COL2ROW",
     "dynamic_keymap": {
@@ -31,11 +30,6 @@
             [null, "GP18", "GP24", "GP27",  "GP1",  "GP2",  "GP8"],
             [null, "GP16", "GP25", "GP28",  "GP3",  "GP9",   null],
             [null,   null,   null, "GP14", "GP15", "GP11",  "GP5"]
-        ]
-    },
-    "encoder": {
-        "rotary": [
-            {"pin_a": "GP6", "pin_b": "GP7"}
         ]
     },
     "bootmagic": {
@@ -53,17 +47,10 @@
         "matrix_pins": {
             "right": {
                 "direct": [
-                    [null,  "GP9",  "GP3",  "GP2",  "GP1", "GP27", "GP25"],
+                    [null,  "GP9",  "GP3",  "GP2",  "GP1", "GP27",  "GP7"],
                     [null, "GP15",  "GP4",  "GP0", "GP28", "GP26", "GP23"],
                     [null, "GP18",  "GP5", "GP29", "GP20", "GP22",   null],
                     [null,   null,   null, "GP16", "GP17", "GP19",   null]
-                ]
-            }
-        },
-        "encoder": {
-            "right": {
-                "rotary": [
-                    {"pin_a": "GP24", "pin_b": "GP7"}
                 ]
             }
         },
