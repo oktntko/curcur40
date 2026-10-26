@@ -20,8 +20,7 @@ Outputs:
     1. inertia-wheel-module-assembly.step
     2. inertia-wheel-module-sunk-assembly.step
     3. inertia-wheel-eval-pod-assembly.step
-    4. curcur40-right-with-inertia-wheel.step      (On-PCB mount check, zero PCB modification)
-    5. curcur40-right-with-inertia-wheel-sunk.step (Sunk-PCB mount + Twin Snap Covers,
+    4. curcur40-right-with-inertia-wheel-sunk.step (Sunk-PCB mount + Twin Snap Covers,
                                                     wheel center Z = -2.00 mm == Top Plate top, wheel top Z = +6.40 mm)
 """
 import math
@@ -1100,16 +1099,8 @@ def main():
     pod_asm = bd.Compound(label="Inertia_Wheel_Eval_Pod_Assembly", children=pod_all)
     bd.export_step(pod_asm, str(ASSEMBLIES_DIR / "inertia-wheel-eval-pod-assembly.step"))
 
-    print("\n=== 3. Verifying Zero-Modification Drop-In Fit on curcur40-right (Type A) ===")
-    cx_step, cy_step, cz_fcu = 28.5750, -57.1500, -4.19
-    # Center the 17.68 mm [-8.38, +9.30] module envelope cleanly inside the unmodified 18.20x18.20 mm plate hole:
-    mod_local = bd.Compound(children=assemble_module_parts(origin=(0.0, 0.0, 0.0))).rotate(bd.Axis.Z, 180).moved(
-        bd.Location((cx_step + 0.42, cy_step, cz_fcu))
-    )
-    dropped_parts = list(mod_local.solids())
-    for idx, s in enumerate(dropped_parts):
-        s.label = mod_parts[idx].label
-
+    print("\n=== 3. Verifying Sunk Mount + Twin Snap Covers on curcur40-right ===")
+    cx_step, cy_step = 28.5750, -57.1500
     sys.path.insert(0, str(WORKSPACE / "scripts"))
     from generate_full_assembly import (
         build_main_pcb_solid,
@@ -1120,13 +1111,27 @@ def main():
     )
 
     right_case = bd.import_step(str(WORKSPACE / "cases" / "right.step")).solids()[0]
-    right_case.label = "curcur40_Right_Case_Unmodified"
+    right_case.label = "curcur40_Right_Case"
 
-    right_main_pcb = build_main_pcb_solid(is_right=True)
-    right_main_pcb.label = "curcur40_Right_Main_PCB"
+    sunk_main_pcb = build_main_pcb_solid(is_right=True)
+    sunk_main_pcb.label = "curcur40_Right_Main_PCB"
 
-    top_plate_ref = build_top_plate_solid(is_right=True)
-    top_plate_ref.label = "curcur40_Right_Top_Plate_Unmodified"
+    sunk_top_plate = build_top_plate_solid(is_right=True)
+    sunk_top_plate.label = "curcur40_Right_Top_Plate"
+
+    # Backward-compatible fallback if called before curcur40-right.kicad_pcb / plate-top-right.kicad_pcb has sunk cutouts:
+    # (Once curcur40-right.kicad_pcb & plate-top-right.kicad_pcb have native sunk cutouts, subtracting again is a clean no-op!)
+    with bd.BuildSketch(bd.Plane.XY.offset(-6.50)) as sk_pcb_win:
+        with bd.Locations([(cx_step, cy_step)]):
+            bd.RectangleRounded(18.50, 18.50, 0.50)
+    sunk_main_pcb = sunk_main_pcb - bd.extrude(sk_pcb_win.sketch, amount=3.00)
+    sunk_mount_step = [(cx_step - mx, cy_step - my) for mx, my in SUNK_MOUNT_PTS_MOD]
+    for sx_m, sy_m in sunk_mount_step:
+        sunk_main_pcb = sunk_main_pcb - bd.Cylinder(
+            radius=1.85, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        ).moved(bd.Location((sx_m, sy_m, -6.50)))
+    sunk_main_pcb = sunk_main_pcb.solids()[0]
+    sunk_main_pcb.label = "curcur40_Right_Main_PCB"
 
     tb_cup = (
         bd.import_step(str(WORKSPACE / "cases" / "trackball-cup.step"))
@@ -1147,24 +1152,6 @@ def main():
     tb_ball = bd.Sphere(radius=12.50).moved(bd.Location((23.8125, -109.5375, 2.30))).solids()[0]
     tb_ball.label = "Trackball_25mm_Ref"
 
-    fit_check_parts = [right_case, right_main_pcb, top_plate_ref, tb_cup, tb_ball, *keycaps, *dropped_parts]
-    verify_zero_overlap(fit_check_parts, "curcur40_Right_DropIn_Check")
-
-    static_labels = {"Wheel_Base_Frame", "Hinge_Pin_SUS304_2mm", "Kailh_Silent_Switch_6x6x4p3"}
-    d_plate_static = min(closest_points(s, top_plate_ref).distance for s in dropped_parts if s.label in static_labels)
-    d_plate_moving = min(closest_points(s, top_plate_ref).distance for s in dropped_parts if s.label not in static_labels)
-    d_rexsw2 = min(closest_points(s, rexsw2_cap).distance for s in dropped_parts)
-    assert d_plate_static >= 0.20, f"Static Base/Switch vs Top Plate clearance {d_plate_static:.4f} mm < 0.20 mm!"
-    assert d_plate_moving >= 0.30, f"Moving Carriage/Wheel vs Top Plate clearance {d_plate_moving:.4f} mm < 0.30 mm!"
-    assert d_rexsw2 >= 1.00, f"rEXSW2 Keycap clearance {d_rexsw2:.4f} mm < 1.00 mm!"
-    print(f"         -> Static Base/Switch clearance to 18.20mm Top Plate = {d_plate_static:.3f} mm (>= 0.20 mm)")
-    print(f"         -> Moving Parts clearance to 18.20mm Top Plate       = {d_plate_moving:.3f} mm (>= 0.30 mm)")
-    print(f"         -> Clearance to South Keycap (rEXSW2)                = {d_rexsw2:.3f} mm (>= 1.00 mm)")
-
-    dropin_asm = bd.Compound(label="curcur40_Right_With_Inertia_Wheel", children=fit_check_parts)
-    bd.export_step(dropin_asm, str(ASSEMBLIES_DIR / "curcur40-right-with-inertia-wheel.step"))
-
-    print("\n=== 4. Verifying Sunk Mount + Twin Snap Covers on curcur40-right ===")
     mod_sunk_local = bd.Compound(
         children=assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=True, include_covers=True)
     ).rotate(bd.Axis.Z, 180).moved(bd.Location((cx_step, cy_step, CZ_SUNK)))
@@ -1172,30 +1159,17 @@ def main():
     for idx, s in enumerate(sunk_dropped_parts):
         s.label = mod_sunk_parts[idx].label
 
-    # Build Right Main PCB with 18.50x18.50mm inner cutout + 3x Ø3.70mm spacer holes (outer outline 100% unchanged!)
-    with bd.BuildSketch(bd.Plane.XY.offset(-6.50)) as sk_pcb_win:
-        with bd.Locations([(cx_step, cy_step)]):
-            bd.RectangleRounded(18.50, 18.50, 0.50)
-    sunk_main_pcb = right_main_pcb - bd.extrude(sk_pcb_win.sketch, amount=3.00)
-    sunk_mount_step = [(cx_step - mx, cy_step - my) for mx, my in SUNK_MOUNT_PTS_MOD]
-    for sx_m, sy_m in sunk_mount_step:
-        sunk_main_pcb = sunk_main_pcb - bd.Cylinder(
-            radius=1.85, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-        ).moved(bd.Location((sx_m, sy_m, -6.50)))
-    sunk_main_pcb = sunk_main_pcb.solids()[0]
-    sunk_main_pcb.label = "curcur40_Right_Main_PCB_SunkCutout"
-
-    # Build Right Top Plate with Twin-Snap window (`_build_sunk_top_plate_twin_snap_cutter`) + 3x Ø2.40mm M2 holes!
+    # Ensure Top Plate has Twin-Snap window + 3x Ø2.40mm M2 holes (works both before and after plate-top-right update):
     plate_fill = bd.Box(
         18.60, 18.60, 1.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
     ).moved(bd.Location((cx_step, cy_step, -3.60)))
-    sunk_top_plate = (top_plate_ref + plate_fill) - _build_sunk_top_plate_twin_snap_cutter(cx_step, cy_step)
+    sunk_top_plate = (sunk_top_plate + plate_fill) - _build_sunk_top_plate_twin_snap_cutter(cx_step, cy_step)
     for sx_m, sy_m in sunk_mount_step:
         sunk_top_plate = sunk_top_plate - bd.Cylinder(
             radius=1.20, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
         ).moved(bd.Location((sx_m, sy_m, -4.50)))
     sunk_top_plate = sunk_top_plate.solids()[0]
-    sunk_top_plate.label = "curcur40_Right_Top_Plate_SunkTwinSnap"
+    sunk_top_plate.label = "curcur40_Right_Top_Plate"
 
     sunk_screws = []
     for idx_m, (sx_m, sy_m) in enumerate(sunk_mount_step):
