@@ -94,11 +94,11 @@
 | ピン番号 (JST SH 基準) | 信号名 | 接続先（モジュール側） | ホストマイコン側の要件 |
 | :---: | :---: | :--- | :--- |
 | **Pin 1** | `+3V3` | `#07` センサー基板 `Pad 1` (`VDD5V` & `VDD3V3` 直結, 3.3V動作) | `3.3V` 電源出力（消費電流 約 `1.5〜6.5 mA`） |
-| **Pin 2** | `GND` | `#07` センサー基板 `Pad 2` ＆ `#10` 静音スイッチ片側端子 | グランド共通 |
+| **Pin 2** | `GND` | `#07` センサー基板 `Pad 2`（センサー GND） | グランド共通 |
 | **Pin 3** | `SDA` | `#07` センサー基板 `Pad 3` (`AS5600` Pin 6 `SDA`) | ハードウェア I2C `SDA`（ホスト側で `4.7kΩ` プルアップ） |
 | **Pin 4** | `SCL` | `#07` センサー基板 `Pad 4` (`AS5600` Pin 7 `SCL`) | ハードウェア I2C `SCL`（ホスト側で `4.7kΩ` プルアップ、`400 kHz` 推奨） |
-| **Pin 5** | `SW_MID` | `#10` 静音スイッチ もう片側端子 | 任意の GPIO 入力（内部プルアップ有効・Active-Low、またはキーマトリクス交点） |
-| **Pin 6** | *(予備 / NC)* | 未接続 | ― |
+| **Pin 5** | `SW_MID` | `#10` 静音スイッチ 片側端子 | 任意の GPIO 入力（内部プルアップ有効・Active-Low、またはダイレクトキーピン） |
+| **Pin 6** | `GND` | `#10` 静音スイッチ もう片側端子（スイッチ GND リターン） | グランド共通（`curcur40-right` の `rJ5` および `curcur40-wheel-eval` の `J1` で `Pin 2` と共通 GND 結線済） |
 
 ---
 
@@ -133,7 +133,7 @@
 
 ## 4. キーボードメイン基板への組み込み最適化（沈み込みフレーム＆ツインカバー）
 
-第2章のホイールコアユニットを、ロープロファイル分割キーボード **`curcur40-right`**（Kailh Choc V2 スイッチ採用、トッププレート上面 $Z = -2.00\,\text{mm}$、隣接キーキャップ上面 $Z = +3.60\,\text{mm}$）の `rEXSW1` 位置へ統合するためにマウントフレームを最適化した本番採用設計です。
+第2章のホイールコアユニットを、ロープロファイル分割キーボード **`curcur40-right`**（Kailh Choc V2 スイッチ採用、トッププレート上面 $Z = -2.00\,\text{mm}$、隣接キーキャップ上面 $Z = +3.60\,\text{mm}$）の右手内側上部 $(14.2875, 0.0000)\,\text{mm}$ へ統合した本番採用設計です。
 
 ### 4.1 沈み込みベース枠（`#04B`）によるロープロファイル実装仕様
 
@@ -163,20 +163,23 @@
 * **キースイッチ方式のワンタッチスナップ固定**:
   カバー南北の片持ちスナップ脚（板厚 $0.85\,\text{mm}$）先端の $0.28\,\text{mm}$ ラッチ爪が、板厚 $1.60\,\text{mm}$ トッププレートの裏面（$Z = -3.63\,\text{mm}$）へ上からパチンと引っ掛かります。先に `#04B` 沈み込み枠を3本の M2 ネジでしっかり締結・動作確認してから、最後に上から被せるだけで位置ずれなく固定できます。
 
-### 4.3 メイン基板・トッププレートへの内部開口仕様（外周サイズ・ケース不変）
-`curcur40-right` のメイン基板およびトッププレートへ沈み込み実装を組み込む際の加工箇所は、モジュール中心 $(X_{\text{pcb}}, Y_{\text{pcb}}) = (14.2875, 0.0000)\,\text{mm}$（STEP座標 $X = 28.5750\,\text{mm}$）周りの内部開口とネジ穴3箇所のみです：
-1. **メイン基板（`curcur40-right`）内部開口**:
-   * 中央内窓：**$18.50 \times 18.50\,\text{mm}$**（四隅 $R = 0.50\,\text{mm}$）
-   * `#04B` 一体スペーサーポスト通過穴（3箇所、$\varnothing 3.70\,\text{mm}$ NPTH）：モジュール相対 $(+12.20, -1.90)$, $(+12.20, +5.80)$, $(-2.00, -12.20)\,\text{mm}$
-2. **トッププレート（板厚 $1.60\,\text{mm}$）内部開口**:
-   * 中央ホイールスリット（$6.16 \times 17.56\,\text{mm}$）＋ ツインカバーの下へ完全に隠れる軸受・スナップ脚スリット（$16.40 \times 9.50\,\text{mm}$ および東西 $\pm 6.70\,\text{mm}$ 位置の $3.00 \times 10.86\,\text{mm}$ スナップ窓）
-   * M2 皿／低頭ネジ貫通穴（3箇所、$\varnothing 2.40\,\text{mm}$）：上記3箇所のスペーサーポストと同軸に上から M2 × 4mm ネジ3本で締結
+### 4.3 メイン基板・トッププレート・ファームウェアへの統合仕様（外周サイズ・ケース不変）
+`curcur40-right` のメイン基板・トッププレート・ファームウェアへ沈み込み実装を統合した仕様は以下の通りです：
+1. **メイン基板（[`curcur40-right.kicad_pcb`](../pcbs/right/curcur40-right.kicad_pcb)）内部開口 ＆ `rJ5` コネクタ**:
+   * 中央内窓：**$18.50 \times 18.50\,\text{mm}$**（中心 $(14.2875, 0.0000)\,\text{mm}$、四隅 $R = 0.50\,\text{mm}$）
+   * `#04B` 一体スペーサーポスト通過穴（3箇所、$\varnothing 3.70\,\text{mm}$ `Edge.Cuts` 円穴）：`W1` $(2.0875, -1.9000)$、`W2` $(2.0875, +5.8000)$、`W3` $(16.2875, -12.2000)\,\text{mm}$
+   * 裏面 `B.Cu` の $(15.8000, 32.0000)\,\text{mm}$（西向き開口）に JST SH 6ピンコネクタ **`rJ5` (`SM06B-SRSS-TB`, `C160405`)**、`I2C0` プルアップ抵抗 `rR11`/`rR12` (`4.7kΩ`)、パスコン `rC18` (`100nF`) を PCBA 実装し、`rU1` (`RP2040`) の `GPIO24` (`I2C0 SDA`), `GPIO25` (`I2C0 SCL`), `GPIO7` (`/KEYEX1` 静音中クリック `[4, 6]`) へ接続。
+2. **トッププレート（[`plate-top-right.kicad_pcb`](../plates/pcb/plate-top-right.kicad_pcb)、板厚 $1.60\,\text{mm}$）内部開口**:
+   * 中央ホイールスリット（$6.16 \times 17.56\,\text{mm}$）＋ ツインカバーの下へ完全に隠れる軸受・スナップ脚スリット（$16.40 \times 9.50\,\text{mm}$ および東西 $\pm 6.70\,\text{mm}$ 位置の $3.00 \times 10.86\,\text{mm}$ スナップ窓、計20頂点ポリゴン）
+   * M2 低頭ネジ貫通穴（3箇所、$\varnothing 2.40\,\text{mm}$）：`W1`〜`W3` のスペーサーポストと同軸に上から M2 × 4mm ネジ3本で締結
+3. **複合ポインティング QMK / Vial ファームウェア（[`curcur40_scroll.c`](../kbd_firmware/keyboards/curcur40/qmk/qmk_firmware/rev1/curcur40_scroll.c)）**:
+   * 右手マイコン上で SPI1 接続の `PMW3360` トラックボール（2D慣性ドラッグスクロール対応）と I2C0 接続の `AS5600` パッシブ磁気慣性ホイール（1回転 18ノッチ分解能、`Shift` またはカスタムキー `WHL_HRZ` による水平スクロール切替）を単一の複合カスタムポインティングドライバに統合。
 
 ---
 
 ## 5. 製造データ一覧・検証結果・構成別 BOM
 
-### 5.1 3D CAD モデル一覧（生成・自動検証スクリプト：[`scripts/generate_inertia_wheel.py`](../scripts/generate_inertia_wheel.py)）
+### 5.1 3D CAD モデル一覧（生成・自動検証スクリプト：[`scripts/generate_inertia_wheel.py`](../scripts/generate_inertia_wheel.py), [`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py)）
 
 | 区分 | ファイル | 役割・製造プロセス | 外形寸法 [mm] | 自動検証結果 |
 | :--- | :--- | :--- | :---: | :--- |
@@ -190,7 +193,8 @@
 | **検証モデル** | [`inertia-wheel-module-assembly.step`](../cases/assemblies/inertia-wheel-module-assembly.step) | コア＋`#04A` オンボード枠アセンブリ (`24` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
 | **検証モデル** | [`inertia-wheel-module-sunk-assembly.step`](../cases/assemblies/inertia-wheel-module-sunk-assembly.step) | コア＋`#04B` 沈み込み枠＋`#20` カバー (`26` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
 | **検証モデル** | [`inertia-wheel-eval-pod-assembly.step`](../cases/assemblies/inertia-wheel-eval-pod-assembly.step) | 単体デスクトップ評価ポッド全体 (`28` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
-| **検証モデル** | [`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) | `curcur40-right` 沈み込み実装検証 (`53` パーツ) | ― | 全ペア干渉 `0.00000000 mm³`・可動隙間 $\ge 0.35\,\text{mm}$ **PASS** |
+| **検証モデル** | [`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) | `curcur40-right` 右手単体沈み込み検証 (`55` パーツ) | ― | 全ペア干渉 `0.00000000 mm³`・可動隙間 $\ge 0.35\,\text{mm}$ **PASS** |
+| **検証モデル** | [`assembly-full-desk.step`](../cases/assemblies/assembly-full-desk.step) / [`assembly-full.step`](../cases/assemblies/assembly-full.step) | `curcur40` 左右フルアセンブリ統合検証 (`134` パーツ) | ― | 全ペア干渉 `0.00000000 mm³`・`rJ5`/ケース隙間 $9.13\,\text{mm}$ **PASS** |
 
 ### 5.2 KiCad 10.0 回路図・基板データ（発注データ一括生成：[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py)）
 * **`#07` センサー基板（[`pcbs/inertia-wheel-sensor/`](../pcbs/inertia-wheel-sensor/)）**: 【① コア共通】$22.00 \times 22.00\,\text{mm}$ 捨て基板枠付 $\rightarrow$ 折り取り後 $8.80/7.90 \times 8.66 \times 0.80\,\text{mm}$、表面片面 `Top Side` Economic PCBA（`U1 AS5600-ASOT` `C499458`、`C1 100nF` `C1525`、`C2 1μF` `C52923` 工場実装済）、ERC `0/0`・DRC `0/0/0`。
