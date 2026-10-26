@@ -133,28 +133,24 @@
 
 ## 4. キーボードメイン基板への組み込み最適化（沈み込みフレーム＆ツインカバー）
 
-第2章のホイールコアユニットを、ロープロファイル分割キーボード **`curcur40-right`**（Kailh Choc V2 スイッチ採用、トッププレート上面 $Z = -2.00\,\text{mm}$、隣接キーキャップ上面 $Z = +3.60\,\text{mm}$）の `rEXSW1` 位置へ統合するためにマウントフレームを最適化した応用設計です。
+第2章のホイールコアユニットを、ロープロファイル分割キーボード **`curcur40-right`**（Kailh Choc V2 スイッチ採用、トッププレート上面 $Z = -2.00\,\text{mm}$、隣接キーキャップ上面 $Z = +3.60\,\text{mm}$）の `rEXSW1` 位置へ統合するためにマウントフレームを最適化した本番採用設計です。
 
-### 4.1 オンボード実装（`#04A`）と沈み込み実装（`#04B`）の高さ比較
+### 4.1 沈み込みベース枠（`#04B`）によるロープロファイル実装仕様
 
-![On-PCB vs Sunk Mount Height Comparison](assets/inertia_wheel_height_comparison.png)
+![curcur40-right Sunk](assets/render_curcur40_right_inertia_wheel_sunk.png)
 
-| `curcur40-right` オンボード実装検証 (`#04A` 枠使用) | `curcur40-right` 沈み込み最適化実装 (`#04B` 枠 ＋ `#20` カバー×2) |
-| :---: | :---: |
-| ![curcur40-right On-PCB](assets/render_curcur40_right_inertia_wheel.png) | ![curcur40-right Sunk](assets/render_curcur40_right_inertia_wheel_sunk.png) |
+`curcur40-right` のホイール搭載位置直下は、テンティングケース（[`cases/right.step`](../cases/right.step)）の内底面が **$Z \approx -20.5\,\text{mm}$** と深く空いています。**ホイールコアユニット自体は一切変更せず**、マウント枠を **`#04B` 沈み込みベース枠（[`wheel-base-frame-sunk.step`](../cases/inertia_wheel/wheel-base-frame-sunk.step)）** にすることで、以下のように高さと外観を最適化しています：
 
-`curcur40-right` のホイール搭載位置直下は、テンティングケース（[`cases/right.step`](../cases/right.step)）の内底面が **$Z \approx -20.5\,\text{mm}$** と深く空いています。**ホイールコアユニット自体は一切変更せず**、マウント枠を `#04A` から **`#04B` 沈み込みベース枠（[`wheel-base-frame-sunk.step`](../cases/inertia_wheel/wheel-base-frame-sunk.step)）** へ差し替えることで、以下のように高さと外観を最適化しています：
-
-| 比較項目 | ① オンボード実装（`#04A` 基板上載せ枠）<br>[`curcur40-right-with-inertia-wheel.step`](../cases/assemblies/curcur40-right-with-inertia-wheel.step) | ② 沈み込み実装（`#04B` 沈み込み枠 ＋ `#20` ツインカバー）<br>[`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) |
+| 項目 | テスト基板オンボード実装（第3章：`#04A`） | キーボード本体沈み込み実装（本章：`#04B` ＋ `#20`×2）<br>[`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) |
 | :--- | :---: | :---: |
 | **使用するマウント部品** | [`wheel-base-frame.step`](../cases/inertia_wheel/wheel-base-frame.step)（カバーなし） | **[`wheel-base-frame-sunk.step`](../cases/inertia_wheel/wheel-base-frame-sunk.step)** ＋ **[`wheel-cover.step`](../cases/inertia_wheel/wheel-cover.step) × 2個** |
-| **コア基準面高さ ($Z_{\text{mod}}=0$)** | $Z = -4.19\,\text{mm}$（メインPCB表面に着座） | **$Z = -12.55\,\text{mm}$（メインPCB下へ $-8.36\,\text{mm}$ 沈み込み）** |
-| **ホイール回転軸高さ ($Z$)** | $Z = +6.36\,\text{mm}$ | **$Z = -2.00\,\text{mm}$（トッププレート上面と完全一致）** |
-| **ホイール頂点高さ ($Z$)** | $Z = +14.76\,\text{mm}$（キー上面から $+11.16\,\text{mm}$ 突出） | **$Z = +6.40\,\text{mm}$（キー上面 $+3.60\,\text{mm}$ から $+2.80\,\text{mm}$ の自然な突出）** |
-| **直下キー（`rEXSW2`）との左右位置** | 既存 $18.2\,\text{mm}$ 角穴中央合わせ（$+0.42\,\text{mm}$） | **直下キー `rEXSW2` 左右中央と完全一致（$X_{\text{step}} = 28.5750\,\text{mm}$）** |
-| **基板・軸受・調整ネジの外観** | プレート上に露出（動作検証用） | **`#20` ツインカバーが `#07` 基板と軸受丸耳を完全目隠し**（`#18` ネジも基板下 $Z=-6.30\,\text{mm}$ へ隠蔽） |
-| **メインPCB・プレートの外形輪郭** | 変更なし（0%） | **変更なし（0%：外周サイズは 100% 同一）** |
-| **既存ケース（`cases/right.step`）** | 無改造（干渉 `0.000 mm³`） | **無改造（干渉 `0.000 mm³`、内底面まで $3.65\,\text{mm}$ 以上の余裕）** |
+| **コア基準面高さ ($Z_{\text{mod}}=0$)** | キャリア基板表面に着座 | **$Z = -12.55\,\text{mm}$（メインPCB下へ $-8.36\,\text{mm}$ 沈み込み）** |
+| **ホイール回転軸高さ ($Z$)** | キャリア基板表面 $+10.55\,\text{mm}$ | **$Z = -2.00\,\text{mm}$（トッププレート上面と完全一致）** |
+| **ホイール頂点高さ ($Z$)** | キャリア基板表面 $+18.95\,\text{mm}$ | **$Z = +6.40\,\text{mm}$（キー上面 $+3.60\,\text{mm}$ から $+2.80\,\text{mm}$ の自然な突出）** |
+| **直下キー（`rEXSW2`）との左右位置** | ―（単体評価ポッド） | **直下キー `rEXSW2` 左右中央と完全一致（$X_{\text{step}} = 28.5750\,\text{mm}$）** |
+| **基板・軸受・調整ネジの外観** | 露出（観察・評価用） | **`#20` ツインカバーが `#07` 基板と軸受丸耳を完全目隠し**（`#18` ネジも基板下 $Z=-6.30\,\text{mm}$ へ隠蔽） |
+| **メインPCB・プレートの外形輪郭** | ― | **変更なし（0%：外周サイズは 100% 同一）** |
+| **既存ケース（`cases/right.step`）** | ― | **無改造（干渉 `0.000 mm³`、内底面まで $3.65\,\text{mm}$ 以上の余裕）** |
 
 ### 4.2 沈み込み断面構造と `#20` ツインスナップカバー（[`wheel-cover.step`](../cases/inertia_wheel/wheel-cover.step)）
 
@@ -194,7 +190,6 @@
 | **検証モデル** | [`inertia-wheel-module-assembly.step`](../cases/assemblies/inertia-wheel-module-assembly.step) | コア＋`#04A` オンボード枠アセンブリ (`24` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
 | **検証モデル** | [`inertia-wheel-module-sunk-assembly.step`](../cases/assemblies/inertia-wheel-module-sunk-assembly.step) | コア＋`#04B` 沈み込み枠＋`#20` カバー (`26` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
 | **検証モデル** | [`inertia-wheel-eval-pod-assembly.step`](../cases/assemblies/inertia-wheel-eval-pod-assembly.step) | 単体デスクトップ評価ポッド全体 (`28` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
-| **検証モデル** | [`curcur40-right-with-inertia-wheel.step`](../cases/assemblies/curcur40-right-with-inertia-wheel.step) | `curcur40-right` オンボード実装検証 (`48` パーツ) | ― | 全ペア干渉 `0.00000000 mm³`・可動隙間 $\ge 0.33\,\text{mm}$ **PASS** |
 | **検証モデル** | [`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) | `curcur40-right` 沈み込み実装検証 (`53` パーツ) | ― | 全ペア干渉 `0.00000000 mm³`・可動隙間 $\ge 0.35\,\text{mm}$ **PASS** |
 
 ### 5.2 KiCad 10.0 回路図・基板データ（発注データ一括生成：[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py)）
