@@ -4,7 +4,7 @@
 
 ---
 
-## 部品名称・構成図鑑（共通呼称マップ `#01`〜`#19`）
+## 部品名称・構成図鑑（共通呼称マップ `#01`〜`#20`）
 
 本ビルドガイドおよび設計・組み立て時のやり取りでは、すべての部品を以下の **`#番号` ＋ 統一呼称（太字）** で呼びます。
 
@@ -32,6 +32,8 @@
 | **`#17`** | **ラチェット磁石** | 1個 | 通常の**軸方向着磁** ネオジム磁石 $\varnothing 1.5\text{〜}2.0 \times 1.5\,\text{mm}$（`#18` 先端に固定） |
 | **`#18`** | **磁力調整ネジ** | 1本 | 非磁性ステンレス `M2 × 4〜5mm` イモネジ／小ねじ（`#03` 北東ボスへねじ込み） |
 | **`#19`** | **固定M2ネジ（＋ゴム足）** | 1式 | `M2 × 4.0mm` ネジ × 6本（枠固定2＋台座固定4）＋ 台座裏面ゴム足 × 4個 |
+| **`#20A`** | **ポッド用シュラウドカバー** | *(1個)* | *(任意)* JLC3DP SLA マウス風防塵・目隠しカバー（単体評価ポッド用、北面 `#18` 調整穴付） |
+| **`#20B`** | **沈み込み用シュラウドカバー** | *(1個)* | *(任意)* JLC3DP SLA マウス風防塵・目隠しカバー（`curcur40-right` 沈み込み版 3穴共締め用） |
 
 > [!TIP]
 > **単体評価ポッドから始めるメリット**
@@ -41,12 +43,12 @@
 
 ## 目次
 
-- **[部品名称・構成図鑑（共通呼称マップ `#01`〜`#19`）](#部品名称構成図鑑共通呼称マップ-0119)**
+- **[部品名称・構成図鑑（共通呼称マップ `#01`〜`#20`）](#部品名称構成図鑑共通呼称マップ-0120)**
 - **[Step 1: 資材一覧と入手経路・発注ガイド](#step-1-資材一覧と入手経路発注ガイド)**
   - [1-1. 全体構成の概要（4つの調達ルート）](#1-1-全体構成の概要4つの調達ルート)
   - [1-2. JLCPCB に発注するもの（基板 2種：`#06`, `#07`）](#1-2-jlcpcb-に発注するもの基板-2種06-07)
   - [1-3. JLCCNC に発注するもの（`#01` フライホイール）](#1-3-jlccnc-に発注するもの01-フライホイール)
-  - [1-4. JLC3DP に発注するもの（SLA 高精細レジン造形パーツ：`#02`〜`#05`）](#1-4-jlc3dp-に発注するものsla-高精細レジン造形パーツ0205)
+  - [1-4. JLC3DP に発注するもの（SLA 高精細レジン造形パーツ：`#02`〜`#05`, `#20`）](#1-4-jlc3dp-に発注するものsla-高精細レジン造形パーツ0205-20)
   - [1-5. 通販（Amazon・秋月電子・遊舎工房等）で購入するパーツ（`#08`〜`#19`）](#1-5-通販amazon秋月電子遊舎工房等で購入するパーツ0819)
   - [1-6. 発注前チェックリスト](#1-6-発注前チェックリスト)
 - **[Step 2: 組み立て・脱脂・ハンダ付け・ファームウェア書き込み手順](#step-2-組み立て脱脂ハンダ付けファームウェア書き込み手順)**
@@ -102,7 +104,7 @@ JLC3DP / JLCCNC の **CNC Machining** サービス（[https://jlc3dp.com/cnc-mac
 
 ---
 
-## 1-4. JLC3DP に発注するもの（SLA 高精細レジン造形パーツ：`#02`〜`#05`）
+## 1-4. JLC3DP に発注するもの（SLA 高精細レジン造形パーツ：`#02`〜`#05`, `#20`）
 
 JLC3DP の **3D Printing** サービス（[https://jlc3dp.com/3d-printing-quote](https://jlc3dp.com/3d-printing-quote)）にて、以下の樹脂パーツを **SLA（光造形レジン：`8001` 半透明 / `Imagine Black` / `9600` 等）** で発注します。`#12` ベアリング圧入座や `#13` ラチェット鋼球スナップインポケットの寸法精度を出すため、MJF/FDM ではなく **SLA レジン** を推奨します。
 
@@ -113,6 +115,12 @@ JLC3DP の **3D Printing** サービス（[https://jlc3dp.com/3d-printing-quote]
 | **`#04A` 標準ベース枠** | **1個** | [wheel-base-frame.step](../cases/inertia_wheel/wheel-base-frame.step) | [wheel-base-frame.stl](../cases/inertia_wheel/wheel-base-frame.stl) | `#06` キャリア基板（および標準版 `curcur40`）固定用 |
 | *(任意)* **`#04B` 沈み込みベース枠** | *(1個)* | [wheel-base-frame-sunk.step](../cases/inertia_wheel/wheel-base-frame-sunk.step) | [wheel-base-frame-sunk.stl](../cases/inertia_wheel/wheel-base-frame-sunk.stl) | 将来 `curcur40-right` 沈み込み版へ移植する際に使用 |
 | **`#05` ポッド台座** | **1個** | [eval-pod-stand.step](../cases/inertia_wheel/eval-pod-stand.step) | [eval-pod-stand.stl](../cases/inertia_wheel/eval-pod-stand.stl) | `#06` キャリア基板の卓上ケース |
+| *(任意)* **`#20A` ポッド用シュラウドカバー** | *(1個)* | [wheel-shroud-cover-eval.step](../cases/inertia_wheel/wheel-shroud-cover-eval.step) | [wheel-shroud-cover-eval.stl](../cases/inertia_wheel/wheel-shroud-cover-eval.stl) | 市販マウス風に `#02`/`#03` を隠し `#12` ベアリングを防塵 |
+| *(任意)* **`#20B` 沈み込み用シュラウドカバー** | *(1個)* | [wheel-shroud-cover-sunk.step](../cases/inertia_wheel/wheel-shroud-cover-sunk.step) | [wheel-shroud-cover-sunk.stl](../cases/inertia_wheel/wheel-shroud-cover-sunk.stl) | `curcur40-right` 沈み込み版の3箇所 M2 穴へ共締め装着 |
+
+| 単体評価ポッド（メカ露出：観察・調整用） | 単体評価ポッド＋`#20A` シュラウドカバー装着 | `curcur40-right` 沈み込み版＋`#20B` カバー装着 |
+| :---: | :---: | :---: |
+| ![Eval Pod Bare](./assets/render_inertia_wheel_eval_pod.png) | ![Eval Pod Covered](./assets/render_inertia_wheel_eval_pod_covered.png) | ![Sunk Covered](./assets/render_curcur40_right_inertia_wheel_sunk_covered.png) |
 
 ---
 
@@ -259,6 +267,9 @@ kb=curcur40_wheel_eval kr=rev1 km=default make qmk-compile
    - `#01` フライホイールを指で弾きながら `#18` 磁力調整ネジを少しずつ回してスイートスポットを探します：
      - **時計回りに締める（`#17` 磁石を `#02` 11球ハブへ近づける）**: 1ノッチごとの「コツ、コツ」という磁気ラチェット感が強くなります（近づけすぎると `#13` 鋼球に接触するため、必ず非接触ギャップ $\ge 0.2\,\text{mm}$ を保ちます）。
      - **反時計回りに緩める（`#17` 磁石を離す）**: 弾いたときに「トトトトト…」という微振動を伴いながら **3〜7秒間スーーッと回り続け、指で触れればピタッと止まる** 理想のバランス点が見つかります！
+5. *(任意)* **`#20A` ポッド用シュラウドカバーの装着**
+   - マウス風のすっきりした外観にしたい場合や、脱脂した `#12` ベアリングへのホコリ侵入を防ぎたい場合は、上から **`#20A` ポッド用シュラウドカバー** を被せます（西側下端のアーチ穴から `#11` センサー4芯線を逃がします）。
+   - `#20A` の北面には `#18` 磁力調整ネジと同軸の **$\varnothing 2.80\,\text{mm}$ 調整穴** が開いているため、カバーを被せた状態のまま精密ドライバーや六角レンチを差し込んで磁力バランスを微調整できます。
 
 ---
 
