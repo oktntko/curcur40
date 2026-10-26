@@ -664,8 +664,10 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False) -> list[bd
     )
     hinge_pin.label = "Hinge_Pin_SUS304_2mm"
 
-    # 9. Diametric Sensor Magnet Ø3.0 x 0.85 mm (X = -6.25 to -5.40) + AS5600-ASOT IC (X = -7.94 to -6.64)
-    #    + SubPCB 8.8x8.8x0.80 mm (X = -8.75 to -7.95, Z = 4.30 to 13.10 -> Z_global top = +3.95 mm, nearly flush with keycaps!)
+    # 9. Diametric Sensor Magnet Ø3.0 x 0.85 mm (X = -6.25 to -5.40) + Top-Side PCBA AS5600 SubPCB:
+    #    - SubPCB 8.8x8.8x0.80 mm (snapped from 22x22mm breakaway frame; X = -8.75 to -7.95, Z = 4.30 to 13.10)
+    #    - U1 AS5600-ASOT SOIC-8 (X = -7.94 to -6.59, Y = Y_AXLE ± 3.00, Z = 9.90 ± 2.45)
+    #    - C1 (100nF 0402) & C2 (1uF 0402) on F.Cu at Z_mod = 6.25 mm (1.10 mm above west_pcb_bridge Z=5.15!)
     sens_mag = (
         bd.Cylinder(radius=1.50, height=0.85, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
@@ -680,10 +682,22 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False) -> list[bd
     as5600_pcb.label = "AS5600_Sensor_SubPCB"
 
     as5600_ic = bd.Box(
-        1.30, 4.90, 3.90,
+        1.35, 6.00, 4.90,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
-    ).moved(bd.Location((-7.94, Y_AXLE, Z_AXLE)))
+    ).moved(bd.Location((-7.94, Y_AXLE, 9.90)))
     as5600_ic.label = "AS5600_SOIC8_IC"
+
+    as5600_c1 = bd.Box(
+        0.55, 1.00, 0.50,
+        align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
+    ).moved(bd.Location((-7.94, Y_AXLE - 2.30, 6.25)))
+    as5600_c1.label = "AS5600_Cap_C1_100nF"
+
+    as5600_c2 = bd.Box(
+        0.55, 1.00, 0.50,
+        align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
+    ).moved(bd.Location((-7.94, Y_AXLE + 0.10, 6.25)))
+    as5600_c2.label = "AS5600_Cap_C2_1uF"
 
     # 10. Kailh Square Silent Micro Switch (6.2 x 6.2 x 3.8 mm body + 0.46 mm red button) at (+5.70, +5.70)
     sw_body = bd.Box(
@@ -707,7 +721,8 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False) -> list[bd
 
     raw_items = [
         base, carriage, flywheel, hub, shaft, brg_w, brg_e,
-        hinge_pin, sens_mag, as5600_pcb, as5600_ic, silent_sw, m2_adj,
+        hinge_pin, sens_mag, as5600_pcb, as5600_ic, as5600_c1, as5600_c2,
+        silent_sw, m2_adj,
         *balls,
     ]
 
