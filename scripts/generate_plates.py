@@ -82,7 +82,14 @@ RIGHT_SWITCHES = [
     (71.4375, 52.38750),     # rSW9  (7,3)
 ]
 
-RIGHT_ENCODER = (14.2875, 0.00000)  # rEXSW1 (CKW12 horizontal rotary encoder)
+# Right Sunk Inertia Wheel 3-point M2 mounting holes (Ø 2.40 mm -> radius 1.20 mm)
+RIGHT_WHEEL_HOLES = [
+    ( 2.0875,  -1.9000, 1.20),
+    ( 2.0875,   5.8000, 1.20),
+    (16.2875, -12.2000, 1.20),
+]
+
+RIGHT_INERTIA_WHEEL = (14.2875, 0.00000)  # Sunk Passive Magnetic Inertia Wheel module center (axle at Y = -0.1000 mm)
 
 
 def round_polygon_with_fillets(pts_and_radii):
@@ -128,6 +135,40 @@ def make_rect_cutout(cx, cy, w, h, r=0.5):
         (x2, y1, r),
         (x2, y2, r),
         (x1, y2, r),
+    ]
+    return round_polygon_with_fillets(pts)
+
+
+def make_inertia_wheel_top_cutout(cx_mod, cy_mod):
+    """
+    Exact 2D closed boundary of the Sunk Inertia Wheel Twin-Snap Top Plate opening:
+      - Central flywheel slot: 6.16 x 17.56 mm (R = 0.55 mm) around (cx_mod, cy_mod - 0.10)
+      - Bearing / sensor PCB window: 16.40 x 9.50 mm around (cx_mod, cy_mod - 0.10)
+      - Twin switch-style snap-hook windows: 3.00 x 10.86 mm (R = 0.45 mm) at dx = ±6.70 mm
+    """
+    cx = cx_mod
+    cy = cy_mod - 0.1000
+    pts = [
+        (cx - 3.08, cy - 8.78, 0.55),
+        (cx + 3.08, cy - 8.78, 0.55),
+        (cx + 3.08, cy - 4.75, 0.00),
+        (cx + 5.20, cy - 4.75, 0.00),
+        (cx + 5.20, cy - 5.43, 0.45),
+        (cx + 8.20, cy - 5.43, 0.45),
+        (cx + 8.20, cy + 5.43, 0.45),
+        (cx + 5.20, cy + 5.43, 0.45),
+        (cx + 5.20, cy + 4.75, 0.00),
+        (cx + 3.08, cy + 4.75, 0.00),
+        (cx + 3.08, cy + 8.78, 0.55),
+        (cx - 3.08, cy + 8.78, 0.55),
+        (cx - 3.08, cy + 4.75, 0.00),
+        (cx - 5.20, cy + 4.75, 0.00),
+        (cx - 5.20, cy + 5.43, 0.45),
+        (cx - 8.20, cy + 5.43, 0.45),
+        (cx - 8.20, cy - 5.43, 0.45),
+        (cx - 5.20, cy - 5.43, 0.45),
+        (cx - 5.20, cy - 4.75, 0.00),
+        (cx - 3.08, cy - 4.75, 0.00),
     ]
     return round_polygon_with_fillets(pts)
 
@@ -271,12 +312,15 @@ def main():
     p_top_left = os.path.join(out_pcb_dir, "plate-top-left.kicad_pcb")
     write_plate_kicad_pcb(p_top_left, left_outer, left_cutouts, LEFT_MOUNTING_HOLES)
 
-    # 2. Right Top Plate
+    # 2. Right Top Plate (with Sunk Inertia Wheel twin-snap opening + 3x Ø2.40 mm M2 holes)
     right_outer_notched = round_polygon_with_fillets(get_right_outer_pts(notched_trackball=True))
-    right_cutouts = [make_rect_cutout(cx, cy, 14.0, 14.0, 0.5) for (cx, cy) in RIGHT_SWITCHES]
-    right_cutouts.append(make_rect_cutout(RIGHT_ENCODER[0], RIGHT_ENCODER[1], 18.2, 18.2, 0.5))
+    right_switch_cutouts = [make_rect_cutout(cx, cy, 14.0, 14.0, 0.5) for (cx, cy) in RIGHT_SWITCHES]
+    right_cutouts = right_switch_cutouts + [
+        make_inertia_wheel_top_cutout(RIGHT_INERTIA_WHEEL[0], RIGHT_INERTIA_WHEEL[1])
+    ]
+    right_all_holes = RIGHT_MOUNTING_HOLES + RIGHT_WHEEL_HOLES
     p_top_right = os.path.join(out_pcb_dir, "plate-top-right.kicad_pcb")
-    write_plate_kicad_pcb(p_top_right, right_outer_notched, right_cutouts, RIGHT_MOUNTING_HOLES)
+    write_plate_kicad_pcb(p_top_right, right_outer_notched, right_cutouts, right_all_holes)
 
     # Verify DRC on top plate PCBs using temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -284,8 +328,8 @@ def main():
             ("plate-top-left", p_top_left),
             ("plate-top-right", p_top_right),
         ]:
-            rpt = os.path.join(tmpdir, f"drc_{name}.rpt")
-            subprocess.run([KICAD_CLI, "pcb", "drc", "-o", rpt, pcb_path], check=True)
+            rpt = os.path.join(tmpdir, f"drc_{name}.json")
+            subprocess.run([KICAD_CLI, "pcb", "drc", "--format", "json", "-o", rpt, pcb_path], check=True)
             print(f"Verified DRC for {name}.")
 
     # 3. SVGs (Top Plates & Switch Foam only)
@@ -293,19 +337,22 @@ def main():
         os.path.join(out_svg_dir, "plate-curcur40.svg"),
         [
             (left_outer, left_cutouts, LEFT_MOUNTING_HOLES, 130.0, 35.0),
-            (right_outer_notched, right_cutouts, RIGHT_MOUNTING_HOLES, 140.0, 35.0),
+            (right_outer_notched, right_cutouts, right_all_holes, 140.0, 35.0),
         ],
         width_mm=280.0,
         height_mm=120.0,
     )
 
     left_foam_holes = [(x, y, 2.0) for (x, y, _) in LEFT_MOUNTING_HOLES]
-    right_foam_holes = [(x, y, 2.0) for (x, y, _) in RIGHT_MOUNTING_HOLES]
+    right_foam_holes = [(x, y, 2.0) for (x, y, _) in right_all_holes]
+    right_foam_cutouts = right_switch_cutouts + [
+        make_rect_cutout(RIGHT_INERTIA_WHEEL[0], RIGHT_INERTIA_WHEEL[1], 18.6, 18.6, 0.5)
+    ]
     write_laser_svg(
         os.path.join(out_svg_dir, "foam-curcur40.svg"),
         [
             (left_outer, left_cutouts, left_foam_holes, 130.0, 35.0),
-            (right_outer_notched, right_cutouts, right_foam_holes, 140.0, 35.0),
+            (right_outer_notched, right_foam_cutouts, right_foam_holes, 140.0, 35.0),
         ],
         width_mm=280.0,
         height_mm=120.0,

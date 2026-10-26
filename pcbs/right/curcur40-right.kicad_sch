@@ -9075,16 +9075,6 @@
 		)
 		(uuid "0eda859b-76e0-4f58-8ce5-31fd61362159")
 	)
-	(label "RE0A"
-		(at 269.24 105.41 90)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "18e983e6-a705-4ecc-9072-d64b3be38668")
-	)
 	(label "KEY8"
 		(at 106.68 171.45 0)
 		(effects
@@ -9146,7 +9136,7 @@
 		(uuid "2de65e6e-6876-4e45-9f76-b9e104684a81")
 	)
 	
-	(label "RE0A"
+	(label "WHEEL_SDA"
 		(at 106.68 189.23 0)
 		(effects
 			(font
@@ -9477,7 +9467,7 @@
 		)
 		(uuid "8291e761-bc13-4e31-9c48-1d4db0077b96")
 	)
-	(label "REB"
+	(label "KEYEX1"
 		(at 106.68 146.05 0)
 		(effects
 			(font
@@ -9496,16 +9486,6 @@
 			(justify left bottom)
 		)
 		(uuid "84b7b931-a05c-4ec9-8321-e004ae3b8d18")
-	)
-	(label "KEYEX1"
-		(at 264.16 120.65 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "91653b90-5c2e-4d79-b84d-9b82a4d61028")
 	)
 	(label "KEY2"
 		(at 106.68 184.15 0)
@@ -9669,16 +9649,6 @@
 		)
 		(uuid "c68722c7-f1ef-42b6-a613-c1818509eb4b")
 	)
-	(label "REB"
-		(at 264.16 105.41 90)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "c7f1b72a-1627-4136-8dae-77cf0a587f99")
-	)
 	(label "SCLK"
 		(at 106.68 163.83 0)
 		(effects
@@ -9709,7 +9679,7 @@
 		)
 		(uuid "d3c6b576-999f-4329-a6ae-cac9f201cda1")
 	)
-	(label "KEYEX1"
+	(label "WHEEL_SCL"
 		(at 106.68 191.77 0)
 		(effects
 			(font
@@ -11839,83 +11809,6 @@
 			(project "curcur40-right"
 				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "#PWR0134")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "kbd:GNDR")
-		(at 269.24 120.65 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "29a3178e-0e99-4efe-9c51-9aaf059b64d4")
-		(property "Reference" "#PWR063"
-			(at 269.24 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GNDR"
-			(at 269.24 125.095 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 269.24 120.65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 269.24 120.65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 269.24 120.65 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4ff111a5-5c2d-439e-8616-5f0e88bcaa1d")
-		)
-		(instances
-			(project "curcur40-right"
-				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
-					(reference "#PWR063")
 					(unit 1)
 				)
 			)
@@ -14521,93 +14414,6 @@
 			(project "curcur40-right"
 				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
 					(reference "#PWR0156")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:RotaryEncoder_Switch")
-		(at 266.7 113.03 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "75751b4a-a991-4b22-9dd5-2f1e42eac390")
-		(property "Reference" "rEXSW1"
-			(at 266.7 94.615 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CKW12"
-			(at 266.7 97.155 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "kbd:RotaryEncoder_Switch_CKW12"
-			(at 271.399 109.22 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 273.939 113.03 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Rotary encoder, dual channel, incremental quadrate outputs, with switch"
-			(at 266.7 113.03 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "A"
-			(uuid "caa67b78-3a0b-47f8-839b-1dbb5e53f0e6")
-		)
-		(pin "B"
-			(uuid "0099226b-8fd3-4f2b-8a7f-0e3b32f95015")
-		)
-		(pin "C"
-			(uuid "2115c6ca-69f0-4dce-9430-01fe3e32a7a5")
-		)
-		(pin "SH"
-			(uuid "fc68497d-2482-4d2d-85a3-a9ab3a65fdd1")
-		)
-		(pin "S2"
-			(uuid "b7fd904c-3ada-49b5-9355-9d59f56a9bca")
-		)
-		(instances
-			(project "curcur40-right"
-				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
-					(reference "rEXSW1")
 					(unit 1)
 				)
 			)
@@ -19439,82 +19245,6 @@
 		)
 	)
 	(symbol
-		(lib_id "kbd:GNDR")
-		(at 266.7 105.41 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "e39d438f-8a5a-47a2-bb96-6a5953bf2dba")
-		(property "Reference" "#PWR0103"
-			(at 266.7 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GNDR"
-			(at 266.7 100.33 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 266.7 105.41 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 266.7 105.41 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 266.7 105.41 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "26148541-dbb7-4492-9c8f-d292a49ff0c9")
-		)
-		(instances
-			(project "curcur40-right"
-				(path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e"
-					(reference "#PWR0103")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "kbd:YS-SK6812MINI-E")
 		(at 248.92 228.6 270)
 		(unit 1)
@@ -22245,6 +21975,249 @@
 		)
 		(uuid "f4518f0a-c421-4992-b5a5-4a86c7486879")
 	)
+	(symbol
+		(lib_id "Connector_Generic_MountingPin:Conn_01x06_MountingPin")
+		(at 335.28 152.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d5b01005-4000-4a00-9000-000000000005")
+		(property "Reference" "rJ5" (at 337.82 144.78 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "SM06B-SRSS-TB" (at 337.82 147.32 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal" (at 335.28 152.4 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 335.28 152.4 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "JST SH 1.0mm pitch 6-pin horizontal SMD connector" (at 335.28 152.4 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C160405" (at 335.28 152.4 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d5b01105-4000-4a00-9000-000000000001"))
+		(pin "2" (uuid "d5b01105-4000-4a00-9000-000000000002"))
+		(pin "3" (uuid "d5b01105-4000-4a00-9000-000000000003"))
+		(pin "4" (uuid "d5b01105-4000-4a00-9000-000000000004"))
+		(pin "5" (uuid "d5b01105-4000-4a00-9000-000000000005"))
+		(pin "6" (uuid "d5b01105-4000-4a00-9000-000000000006"))
+		(pin "MP" (uuid "d5b01105-4000-4a00-9000-000000000007"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "rJ5") (unit 1))))
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 307.34 142.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d5b01011-4000-4a00-9000-000000000011")
+		(property "Reference" "rR11" (at 309.245 140.97 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "4.7k" (at 309.245 143.51 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 307.34 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 307.34 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "Resistor, small symbol" (at 307.34 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "d5b01111-4000-4a00-9000-000000000001"))
+		(pin "2" (uuid "d5b01111-4000-4a00-9000-000000000002"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "rR11") (unit 1))))
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 314.96 142.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d5b01012-4000-4a00-9000-000000000012")
+		(property "Reference" "rR12" (at 316.865 140.97 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "4.7k" (at 316.865 143.51 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 314.96 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 314.96 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "Resistor, small symbol" (at 314.96 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "d5b01112-4000-4a00-9000-000000000001"))
+		(pin "2" (uuid "d5b01112-4000-4a00-9000-000000000002"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "rR12") (unit 1))))
+	)
+	(symbol
+		(lib_id "Device:C_Small")
+		(at 322.58 152.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d5b01018-4000-4a00-9000-000000000018")
+		(property "Reference" "rC18" (at 324.485 151.13 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100n" (at 324.485 153.67 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 322.58 152.4 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 322.58 152.4 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "Unpolarized capacitor, small symbol" (at 322.58 152.4 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "JLCPCB Part #" "C1525" (at 322.58 152.4 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "d5b01118-4000-4a00-9000-000000000001"))
+		(pin "2" (uuid "d5b01118-4000-4a00-9000-000000000002"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "rC18") (unit 1))))
+	)
+	(symbol
+		(lib_id "kbd:+3V3R")
+		(at 320.04 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d5b02000-4000-4a00-9000-000000000204")
+		(property "Reference" "#PWR0204" (at 320.04 144.78 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Value" "+3V3R" (at 320.04 142.24 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 320.04 144.78 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 320.04 144.78 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "" (at 320.04 144.78 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d5b02100-4000-4a00-9000-000000000204"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "#PWR0204") (unit 1))))
+	)
+	(symbol
+		(lib_id "kbd:GNDR")
+		(at 322.58 157.48 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d5b02000-4000-4a00-9000-000000000205")
+		(property "Reference" "#PWR0205" (at 322.58 157.48 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Value" "GNDR" (at 322.58 154.94 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 322.58 157.48 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 322.58 157.48 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "" (at 322.58 157.48 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d5b02100-4000-4a00-9000-000000000205"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "#PWR0205") (unit 1))))
+	)
+	(symbol
+		(lib_id "kbd:GNDR")
+		(at 327.66 149.86 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d5b02000-4000-4a00-9000-000000000206")
+		(property "Reference" "#PWR0206" (at 327.66 149.86 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Value" "GNDR" (at 327.66 152.4 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 327.66 149.86 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 327.66 149.86 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "" (at 327.66 149.86 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d5b02100-4000-4a00-9000-000000000206"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "#PWR0206") (unit 1))))
+	)
+	(symbol
+		(lib_id "kbd:+3V3R")
+		(at 307.34 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d5b02000-4000-4a00-9000-000000000207")
+		(property "Reference" "#PWR0207" (at 307.34 137.16 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Value" "+3V3R" (at 307.34 134.62 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 307.34 137.16 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 307.34 137.16 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "" (at 307.34 137.16 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d5b02100-4000-4a00-9000-000000000207"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "#PWR0207") (unit 1))))
+	)
+	(symbol
+		(lib_id "kbd:+3V3R")
+		(at 314.96 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d5b02000-4000-4a00-9000-000000000208")
+		(property "Reference" "#PWR0208" (at 314.96 137.16 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Value" "+3V3R" (at 314.96 134.62 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 314.96 137.16 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 314.96 137.16 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "" (at 314.96 137.16 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d5b02100-4000-4a00-9000-000000000208"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "#PWR0208") (unit 1))))
+	)
+	(symbol
+		(lib_id "kbd:GNDR")
+		(at 327.66 160.02 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d5b02000-4000-4a00-9000-000000000209")
+		(property "Reference" "#PWR0209" (at 327.66 160.02 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Value" "GNDR" (at 327.66 162.56 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 327.66 160.02 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 327.66 160.02 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "" (at 327.66 160.02 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d5b02100-4000-4a00-9000-000000000209"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "#PWR0209") (unit 1))))
+	)
+	(symbol
+		(lib_id "kbd:GNDR")
+		(at 335.28 167.64 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d5b02000-4000-4a00-9000-000000000210")
+		(property "Reference" "#PWR0210" (at 335.28 167.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Value" "GNDR" (at 335.28 165.1 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 335.28 167.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 335.28 167.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "" (at 335.28 167.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d5b02100-4000-4a00-9000-000000000210"))
+		(instances (project "curcur40-right" (path "/04ecfb8d-8dc8-41d9-b176-68a9b73f1e5e" (reference "#PWR0210") (unit 1))))
+	)
+	(wire (pts (xy 320.04 144.78) (xy 320.04 147.32)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000001"))
+	(wire (pts (xy 320.04 147.32) (xy 322.58 147.32)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000002"))
+	(wire (pts (xy 322.58 147.32) (xy 330.2 147.32)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000003"))
+	(wire (pts (xy 322.58 147.32) (xy 322.58 149.86)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000004"))
+	(junction (at 322.58 147.32) (diameter 0) (color 0 0 0 0) (uuid "d5b04000-4000-4a00-9000-000000000001"))
+	(wire (pts (xy 322.58 154.94) (xy 322.58 157.48)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000005"))
+	(wire (pts (xy 327.66 149.86) (xy 330.2 149.86)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000006"))
+	(wire (pts (xy 307.34 137.16) (xy 307.34 139.7)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000007"))
+	(wire (pts (xy 299.72 152.4) (xy 307.34 152.4)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000008"))
+	(wire (pts (xy 307.34 152.4) (xy 330.2 152.4)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000009"))
+	(wire (pts (xy 307.34 144.78) (xy 307.34 152.4)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000010"))
+	(junction (at 307.34 152.4) (diameter 0) (color 0 0 0 0) (uuid "d5b04000-4000-4a00-9000-000000000002"))
+	(label "WHEEL_SDA" (at 299.72 152.4 0) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "d5b05000-4000-4a00-9000-000000000001"))
+	(wire (pts (xy 314.96 137.16) (xy 314.96 139.7)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000011"))
+	(wire (pts (xy 299.72 154.94) (xy 314.96 154.94)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000012"))
+	(wire (pts (xy 314.96 154.94) (xy 330.2 154.94)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000013"))
+	(wire (pts (xy 314.96 144.78) (xy 314.96 154.94)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000014"))
+	(junction (at 314.96 154.94) (diameter 0) (color 0 0 0 0) (uuid "d5b04000-4000-4a00-9000-000000000003"))
+	(label "WHEEL_SCL" (at 299.72 154.94 0) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "d5b05000-4000-4a00-9000-000000000002"))
+	(wire (pts (xy 299.72 157.48) (xy 330.2 157.48)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000015"))
+	(label "KEYEX1" (at 299.72 157.48 0) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "d5b05000-4000-4a00-9000-000000000003"))
+	(wire (pts (xy 327.66 160.02) (xy 330.2 160.02)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000016"))
+	(wire (pts (xy 335.28 165.1) (xy 335.28 167.64)) (stroke (width 0) (type default)) (uuid "d5b03000-4000-4a00-9000-000000000017"))
 	(sheet_instances
 		(path "/"
 			(page "1")
