@@ -6,19 +6,23 @@ JLCCNC / JLC3DP DFM checks and zero-interference verification on `curcur40-right
 
 Outputs:
   Manufacturing Parts (`cases/inertia_wheel/`):
-    1. sus304-flywheel.step / .stl         (JLCCNC SUS304 Stainless Steel, Ø16.80 x 5.60 mm, 2-way groove)
-    2. ratchet-hub-11ball.step / .stl      (JLC3DP SLA Resin, Ø12.40 x 3.75 mm, 11x Ø2.00 mm ball pockets)
-    3. wheel-carriage.step / .stl          (JLC3DP SLA Resin, Unitized Hinged Inner Carriage)
-    4. wheel-base-frame.step / .stl        (JLC3DP SLA Resin, 17.60 x 17.60 mm Surface-Mount Base Frame)
-    5. wheel-base-frame-sunk.step / .stl   (JLC3DP SLA Resin, Low-Profile Sunk Under-PCB Base Frame)
-    6. eval-pod-stand.step / .stl          (JLC3DP SLA/MJF Desktop Stand for RP2040-Zero Carrier PCB)
+    1. sus304-flywheel.step / .stl          (JLCCNC SUS304 Stainless Steel, Ø16.80 x 5.60 mm, 2-way groove)
+    2. ratchet-hub-11ball.step / .stl       (JLC3DP SLA Resin, Ø12.40 x 3.75 mm, 11x Ø2.00 mm ball pockets)
+    3. wheel-carriage.step / .stl           (JLC3DP SLA Resin, Unitized Hinged Inner Carriage)
+    4. wheel-base-frame.step / .stl         (JLC3DP SLA Resin, 17.60 x 17.60 mm Surface-Mount Base Frame)
+    5. wheel-base-frame-sunk.step / .stl    (JLC3DP SLA Resin, Low-Profile Sunk Under-PCB Base Frame)
+    6. eval-pod-stand.step / .stl           (JLC3DP SLA/MJF Desktop Stand for RP2040-Zero Carrier PCB)
+    7. wheel-shroud-cover-eval.step / .stl  (JLC3DP SLA/MJF Optional Mouse-Style Shroud Cover `#20A` for Eval Pod)
+    8. wheel-shroud-cover-sunk.step / .stl  (JLC3DP SLA/MJF Optional Mouse-Style Shroud Cover `#20B` for Sunk Variant)
 
   Verification Assemblies (`cases/assemblies/`):
     1. inertia-wheel-module-assembly.step
     2. inertia-wheel-module-sunk-assembly.step
     3. inertia-wheel-eval-pod-assembly.step
-    4. curcur40-right-with-inertia-wheel.step      (Variant A: Surface-mount, zero PCB modification)
-    5. curcur40-right-with-inertia-wheel-sunk.step (Variant B: Low-profile sunk, wheel center = keycap center Z=+1.40mm)
+    4. inertia-wheel-eval-pod-covered-assembly.step
+    5. curcur40-right-with-inertia-wheel.step              (Variant A: Surface-mount, zero PCB modification)
+    6. curcur40-right-with-inertia-wheel-sunk.step         (Variant B: Low-profile sunk, wheel center = keycap center Z=+1.40mm)
+    7. curcur40-right-with-inertia-wheel-sunk-covered.step (Variant B + Shroud Cover `#20B`, mouse-style hidden hub/carriage)
 """
 import math
 import sys
@@ -541,6 +545,178 @@ def build_eval_pod_stand() -> bd.Solid:
     return tray.solids()[0]
 
 
+def _add_shroud_upper_shell(
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    z_bot: float,
+    z_deck: float = 15.05,
+) -> bd.Solid:
+    """
+    Build smooth rounded-corner outer hood (`R_corner = 0.85 mm`) + concentric `R = 7.70 mm`
+    cylindrical hub shroud arch over `#02` 11-ball hub (before subtracting cavity & wheel slot).
+    """
+    cx = 0.5 * (x_min + x_max)
+    cy = 0.5 * (y_min + y_max)
+    with bd.BuildPart() as bp_body:
+        with bd.BuildSketch(bd.Plane.XY.offset(z_bot)):
+            with bd.Locations([(cx, cy)]):
+                bd.RectangleRounded(x_max - x_min, y_max - y_min, radius=0.85)
+        bd.extrude(amount=z_deck - z_bot)
+    body = bp_body.part
+
+    # Concentric cylindrical arch over #02 11-ball hub (`X in [+2.00, +7.80]`, R_outer = 7.70 mm < Wheel R = 8.40 mm!)
+    arch_outer = (
+        bd.Cylinder(radius=7.70, height=5.80, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        .rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((2.00, Y_AXLE, Z_AXLE)))
+    )
+    # Clip arch strictly above z_bot so it never protrudes below the cover bottom plane
+    arch_clip = bd.Box(
+        6.40, 18.00, 20.00,
+        align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((1.90, Y_AXLE, z_bot)))
+    body = body + (arch_outer & arch_clip)
+    return body.solids()[0]
+
+
+def _cut_shroud_wheel_slot_and_arch_cavity(
+    body: bd.Solid,
+    z_bot: float,
+    y_slot_min: float = -7.95,
+    y_slot_max: float = 7.75,
+) -> bd.Solid:
+    """Cut crisp mouse-style top wheel slot (`6.30 x 15.70 mm`) and concentric R=6.75 mm hub pocket."""
+    slot_box = bd.Box(
+        6.30,
+        y_slot_max - y_slot_min,
+        25.0,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-3.35, y_slot_min, z_bot - 1.0)))
+    body = body - slot_box
+
+    # Inner concentric pocket R=6.75 mm over #02 11-ball hub (R=6.20 -> 0.55 mm radial & 0.45 mm axial clearance; 0.95 mm arch walls!)
+    arch_inner = (
+        bd.Cylinder(radius=6.75, height=4.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        .rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((2.45, Y_AXLE, Z_AXLE)))
+    )
+    arch_in_clip = bd.Box(
+        5.20, 16.00, 20.00,
+        align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((2.40, Y_AXLE, z_bot - 1.0)))
+    body = body - (arch_inner & arch_in_clip)
+    return body.solids()[0]
+
+
+def build_wheel_shroud_cover_sunk_assembled() -> bd.Solid:
+    """
+    Build Mouse-Style Shroud Cover (`#20B`) for `curcur40-right` Low-Profile Sunk Variant
+    in assembled module coordinates (`Z_mod = +6.91 mm` seats directly on Top Plate `Z_global = -2.00 mm`):
+      - 100% closed 4-sided perimeter walls hide `#02` 11-ball hub, `#03` carriage, `#07` sensor PCB,
+        `#10` switch, and `#12` bearings from every angle, exposing ONLY `#01` SUS304 flywheel (`R=8.40 mm`,
+        top `Z_global = +9.80 mm`) through a crisp `6.30 x 15.70 mm` mouse-wheel slot!
+      - Fastens via the EXACT same 3 M2 mounting screws (`SUNK_MOUNT_PTS_MOD`) with 1.60 mm thick tabs
+        (zero extra holes on PCB or Top Plate!).
+      - Clears adjacent East & South Choc keycaps (`X_mod = -10.45`, `Y_mod = +10.45`) by 0.50 mm,
+        clears all moving module parts by >= 0.35 mm, and maintains 100% walls >= 0.85 mm!
+    """
+    z_bot = 6.91
+    z_deck = 15.05
+
+    # 1. Closed 4-Sided Outer Hood (`X in [-9.95, +10.05]`, `Y in [-10.10, +9.95]`, `Z in [6.91, 15.05]`) + Concentric Hub Arch
+    cover = _add_shroud_upper_shell(-9.95, 10.05, -10.10, 9.95, z_bot=z_bot, z_deck=z_deck)
+
+    # 2. East Mounting Flange (`X in [+10.05, +14.60]`, `Y in [-4.50, +8.10]`, `Z in [6.91, 8.51]`) for W1 & W2
+    east_tab = bd.Box(
+        4.55, 12.60, 1.60,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((10.05, -4.50, z_bot)))
+
+    # 3. North Mounting Lug (`X in [-4.60, +0.60]`, `Y in [-14.60, -10.10]`, `Z in [6.91, 8.51]`) for W3
+    north_tab = bd.Box(
+        5.20, 4.50, 1.60,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-4.60, -14.60, z_bot)))
+    cover = cover + east_tab + north_tab
+
+    # 4. Internal Main Cavity (`X in [-9.10, +9.15]`, `Y in [-9.20, +9.05]`, `Z in [6.00, 14.20]` -> 100% closed >=0.85 mm walls!)
+    cav_main = bd.Box(
+        18.25, 18.25, 14.20 - 6.00,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-9.10, -9.20, 6.00)))
+    cover = cover - cav_main
+
+    # 5. Cut Top Wheel Slot (`6.30 x 15.70 mm`) & Concentric Hub Clearance Pocket
+    cover = _cut_shroud_wheel_slot_and_arch_cavity(cover, z_bot=z_bot)
+
+    # 6. Cut 3x Ø2.40 mm M2 screw through-holes at SUNK_MOUNT_PTS_MOD
+    for mx, my in SUNK_MOUNT_PTS_MOD:
+        sh = bd.Cylinder(
+            radius=1.20, height=6.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)
+        ).moved(bd.Location((mx, my, z_bot + 0.80)))
+        cover = cover - sh
+
+    return cover.solids()[0]
+
+
+def build_wheel_shroud_cover_eval() -> bd.Solid:
+    """
+    Build Mouse-Style Shroud Cover (`#20A`) for the Standalone Evaluation Pod (`Z_mod = 0.00 mm` on Carrier PCB):
+      - Full 4-sided dust & visual shroud (`20.20 x 20.20 mm` rounded-corner body + North/South M2 mounting ears)
+      - Includes Ø2.80 mm North screwdriver access port at `(X=+4.525, Z=+5.65)` for `#18` magnet tuning
+        without removing the cover, and a West bottom wire exit tunnel for `#11` 4-wire sensor harness!
+    """
+    z_bot = 0.00
+    z_deck = 15.05
+
+    # 1. Outer Hood (`X in [-10.10, +10.10]`, `Y in [-10.20, +10.00]`, `Z in [0.00, 15.05]`) + Concentric Hub Arch
+    cover = _add_shroud_upper_shell(-10.10, 10.10, -10.20, 10.00, z_bot=z_bot, z_deck=z_deck)
+
+    # 2. North & South Mounting Ears (`X in [-2.60, +2.60]`, `Y in [-14.50, -10.20]` & `[+10.00, +14.30]`, `Z in [0.00, 1.80]`)
+    ear_n = bd.Box(5.20, 4.30, 1.80, align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN)).moved(bd.Location((0.0, -14.50, 0.0)))
+    ear_s = bd.Box(5.20, 4.30, 1.80, align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN)).moved(bd.Location((0.0, 10.00, 0.0)))
+    cover = cover + ear_n + ear_s
+
+    # 3. Internal Cavity (`X in [-9.15, +9.15]`, `Y in [-9.25, +9.05]`, `Z in [-1.00, 14.20]` -> >=0.85 mm walls & roof!)
+    cav = bd.Box(
+        18.30, 18.30, 15.20,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-9.15, -9.25, -1.00)))
+    cover = cover - cav
+
+    # 4. Cut Top Wheel Slot (`6.30 x 15.70 mm`) & Concentric Hub Clearance Pocket
+    cover = _cut_shroud_wheel_slot_and_arch_cavity(cover, z_bot=z_bot)
+
+    # 5. Cut Ø2.80 mm North Screwdriver Access Port aligned with M2 Magnet Adjuster `(X=+4.525, Z=+5.65)`
+    adj_port = (
+        bd.Cylinder(radius=1.40, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
+        .rotate(bd.Axis.X, 90)
+        .moved(bd.Location((4.525, -9.70, 5.65)))
+    )
+    cover = cover - adj_port
+
+    # 6. Cut West Wire Exit Arch (`Y in [-2.50, +2.50]`, `Z in [0.00, 2.80]`) for `#11` 4-wire sensor harness
+    wire_box = bd.Box(3.00, 5.00, 1.80, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-9.60, 0.0, -0.20)))
+    wire_cyl = (
+        bd.Cylinder(radius=2.50, height=3.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
+        .rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((-9.60, 0.0, 1.60)))
+    )
+    wire_clip = bd.Box(4.00, 6.00, 5.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-9.60, 0.0, 0.0)))
+    cover = cover - ((wire_box + wire_cyl) & wire_clip)
+
+    # 7. Cut 2x Ø2.40 mm M2 mounting holes in North/South ears `(0.0, -12.35)` & `(0.0, +12.15)` (0.95 mm wall both sides!)
+    for ey in (-12.35, 12.15):
+        eh = bd.Cylinder(radius=1.20, height=5.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)).moved(
+            bd.Location((0.0, ey, 0.90))
+        )
+        cover = cover - eh
+
+    return cover.solids()[0]
+
+
 def verify_jlc3dp_part(
     solid: bd.Solid,
     name: str,
@@ -812,6 +988,19 @@ def main():
     bd.export_step(stand_part, str(PARTS_DIR / "eval-pod-stand.step"))
     bd.export_stl(stand_part, str(PARTS_DIR / "eval-pod-stand.stl"))
 
+    # 6a) Shroud Cover for Standalone Eval Pod (flat at Z = 0.0000 mm!)
+    cover_eval_part = build_wheel_shroud_cover_eval()
+    verify_jlc3dp_part(cover_eval_part, "wheel-shroud-cover-eval", check_bores=True)
+    bd.export_step(cover_eval_part, str(PARTS_DIR / "wheel-shroud-cover-eval.step"))
+    bd.export_stl(cover_eval_part, str(PARTS_DIR / "wheel-shroud-cover-eval.stl"))
+
+    # 6b) Shroud Cover for curcur40-right Sunk Variant (shifted -6.91 mm in Z so flat bottom lies at Z = 0.0000 mm!)
+    cover_sunk_asm = build_wheel_shroud_cover_sunk_assembled()
+    cover_sunk_print = cover_sunk_asm.moved(bd.Location((0.0, 0.0, -6.91))).solids()[0]
+    verify_jlc3dp_part(cover_sunk_print, "wheel-shroud-cover-sunk", check_bores=True)
+    bd.export_step(cover_sunk_print, str(PARTS_DIR / "wheel-shroud-cover-sunk.step"))
+    bd.export_stl(cover_sunk_print, str(PARTS_DIR / "wheel-shroud-cover-sunk.stl"))
+
     print("\n=== 2. Building & Verifying Module & Standalone Pod Assemblies ===")
     mod_parts = assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=False)
     verify_zero_overlap(mod_parts, "Inertia_Wheel_Module")
@@ -855,6 +1044,21 @@ def main():
     verify_zero_overlap(pod_all, "Standalone_Eval_Pod")
     pod_asm = bd.Compound(label="Inertia_Wheel_Eval_Pod_Assembly", children=pod_all)
     bd.export_step(pod_asm, str(ASSEMBLIES_DIR / "inertia-wheel-eval-pod-assembly.step"))
+
+    # Covered Standalone Eval Pod Assembly
+    pod_cover = build_wheel_shroud_cover_eval().moved(bd.Location((12.5, 0.0, 7.03))).solids()[0]
+    pod_cover.label = "Wheel_Shroud_Cover_Eval"
+    pod_covered_all = [*pod_all, pod_cover]
+    verify_zero_overlap(pod_covered_all, "Standalone_Eval_Pod_Covered")
+    pod_moving_parts = [
+        s for s in pod_wheel_parts
+        if s.label not in {"Wheel_Base_Frame", "Hinge_Pin_SUS304_2mm", "Kailh_Silent_Switch_6x6x4p3"}
+    ]
+    d_pod_cover_mov = min(closest_points(s, pod_cover).distance for s in pod_moving_parts)
+    assert d_pod_cover_mov >= 0.30, f"Eval Cover vs moving parts clearance {d_pod_cover_mov:.3f} mm < 0.30 mm!"
+    print(f"         -> Eval Shroud Cover clearance to all moving parts = {d_pod_cover_mov:.3f} mm (>= 0.30 mm)")
+    pod_cov_asm = bd.Compound(label="Inertia_Wheel_Eval_Pod_Covered_Assembly", children=pod_covered_all)
+    bd.export_step(pod_cov_asm, str(ASSEMBLIES_DIR / "inertia-wheel-eval-pod-covered-assembly.step"))
 
     print("\n=== 3. Verifying Zero-Modification Drop-In Fit on curcur40-right ===")
     # Place module at rEXSW1 on curcur40-right:
@@ -1014,7 +1218,49 @@ def main():
 
     sunk_asm = bd.Compound(label="curcur40_Right_With_Inertia_Wheel_Sunk", children=sunk_fit_parts)
     bd.export_step(sunk_asm, str(ASSEMBLIES_DIR / "curcur40-right-with-inertia-wheel-sunk.step"))
-    print("\nAll Passive Inertia Wheel 3D models (Standard & Sunk) generated and verified successfully!")
+
+    print("\n=== 5. Verifying Covered Low-Profile Sunk Variant on curcur40-right ===")
+    sunk_cover_placed = (
+        build_wheel_shroud_cover_sunk_assembled()
+        .rotate(bd.Axis.Z, 180)
+        .moved(bd.Location((cx_step, cy_step, cz_sunk)))
+        .solids()[0]
+    )
+    sunk_cover_placed.label = "Wheel_Shroud_Cover_Sunk"
+
+    # With the 1.60 mm cover flanges seated on Top Plate (Z = -2.00 to -0.40 mm), use 3x M2 x 5.0mm top screws seated at Z = -0.39 mm!
+    sunk_cov_screws = []
+    for idx_m, (sx_m, sy_m) in enumerate(sunk_mount_step):
+        sc_head = bd.Cylinder(
+            radius=1.90, height=0.80, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        ).moved(bd.Location((sx_m, sy_m, -0.38)))
+        sc_shank = bd.Cylinder(
+            radius=0.78, height=5.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)
+        ).moved(bd.Location((sx_m, sy_m, -0.38)))
+        sc = (sc_head + sc_shank).solids()[0]
+        sc.label = f"Sunk_Cover_Screw_M2x5_{idx_m+1}"
+        sunk_cov_screws.append(sc)
+
+    sunk_covered_parts = [
+        right_case, sunk_main_pcb, sunk_top_plate, tb_cup, tb_ball,
+        *keycaps, sunk_cover_placed, *sunk_cov_screws, *sunk_dropped_parts,
+    ]
+    verify_zero_overlap(sunk_covered_parts, "curcur40_Right_Sunk_Covered_Check")
+
+    sunk_moving = [s for s in sunk_dropped_parts if s.label not in sunk_static_labels]
+    d_cov_moving = min(closest_points(s, sunk_cover_placed).distance for s in sunk_moving)
+    d_cov_keycaps = min(closest_points(kc, sunk_cover_placed).distance for kc in keycaps)
+    d_cov_case = closest_points(right_case, sunk_cover_placed).distance
+    assert d_cov_moving >= 0.30, f"Sunk Cover vs moving parts clearance {d_cov_moving:.3f} mm < 0.30 mm!"
+    assert d_cov_keycaps >= 0.30, f"Sunk Cover vs adjacent keycaps clearance {d_cov_keycaps:.3f} mm < 0.30 mm!"
+    assert d_cov_case >= 1.00, f"Sunk Cover vs Right Case clearance {d_cov_case:.3f} mm < 1.00 mm!"
+    print(f"         -> Sunk Shroud Cover clearance to all moving parts = {d_cov_moving:.3f} mm (>= 0.30 mm)")
+    print(f"         -> Sunk Shroud Cover clearance to all 19 Keycaps   = {d_cov_keycaps:.3f} mm (>= 0.30 mm)")
+    print(f"         -> Sunk Shroud Cover clearance to Right Case rim   = {d_cov_case:.3f} mm (>= 1.00 mm)")
+
+    sunk_cov_asm = bd.Compound(label="curcur40_Right_With_Inertia_Wheel_Sunk_Covered", children=sunk_covered_parts)
+    bd.export_step(sunk_cov_asm, str(ASSEMBLIES_DIR / "curcur40-right-with-inertia-wheel-sunk-covered.step"))
+    print("\nAll Passive Inertia Wheel 3D models (Standard, Sunk, and Covered) generated and verified successfully!")
 
 
 if __name__ == "__main__":
