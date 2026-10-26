@@ -137,19 +137,19 @@ def _draw_spec_diagram():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16.0, 7.6), dpi=200)
     fig.patch.set_facecolor("#ffffff")
     fig.suptitle(
-        "パッシブ磁気慣性ホイール確定仕様図（パターン⑤：軸中心=プレート上面 Z=-2.0mm × 中央揃えカップ型SUS304 × ツイン・ピラミッドRカバー）",
+        "パッシブ磁気慣性ホイール 内部断面・機構図（共通コアユニット ＋ #04B 沈み込み枠 ＋ #20 ツインカバー実装時）",
         fontsize=12.4,
         fontweight="bold",
         y=0.97,
         color="#1a1a1a",
     )
 
-    z_axle = -2.00  # Pattern 5 Sunk: rotary center at Top Plate top surface Z = -2.00 mm, wheel top Z = +6.40 mm!
+    z_axle = -2.00  # Sunk mount: rotary center aligned to Top Plate top surface Z = -2.00 mm (wheel top Z = +6.40 mm)
 
     # =========================================================================
-    # Panel 1: X-Z Front Cross-Section (Pattern 5 Centered Cup Wheel + Twin Pyramid-Deep-R Snap Covers)
+    # Panel 1: X-Z Front Cross-Section (Centered Cup Wheel + Twin Symmetric Snap Covers)
     # =========================================================================
-    ax1.set_title("① 正面断面図 (X–Z 積層：X=0中央揃えホイール × 左右対称ピラミッド・ディープRカバー)", fontsize=10.5, fontweight="bold", pad=10)
+    ax1.set_title("① 正面断面図 (X–Z 断面：中央揃えカップ型ホイール × 左右対称スナップカバー)", fontsize=10.5, fontweight="bold", pad=10)
     ax1.set_xlim(-12.2, 12.2)
     ax1.set_ylim(-15.0, 9.2)
     ax1.set_aspect("equal")
@@ -248,7 +248,7 @@ def _draw_spec_diagram():
                  arrowprops=dict(arrowstyle="->", color="#1f2937", lw=1.15),
                  fontsize=6.9, fontweight="bold", color="#1f2937",
                  bbox=dict(boxstyle="round,pad=0.22", fc="#f1f5f9", ec="#4c566a", lw=0.9), zorder=10)
-    ax1.annotate("#20 ピラミッド・ディープRカバー\n(180°対称共通部品×2 / 頂点 +2.68mm)\n#07基板＆軸受丸耳を完全目隠し!",
+    ax1.annotate("#20 ホイールカバー (エッジ曲面ピラミッド)\n(180°対称共通部品×2 / 頂点 +2.68mm)\n#07基板＆軸受丸耳を完全目隠し!",
                  xy=(-6.2, 2.55), xytext=(-7.8, 6.75), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#1e293b", lw=1.15),
                  fontsize=6.7, fontweight="bold", color="#0f172a",
@@ -260,7 +260,7 @@ def _draw_spec_diagram():
                  bbox=dict(boxstyle="round,pad=0.22", fc="#e0fbfc", ec="#1d3557", lw=0.9), zorder=10)
 
     # =========================================================================
-    # Panel 2: Y-Z Side Section (Pattern 5 Hinged Silent Click + Switch-Style Cover Snap Hooks)
+    # Panel 2: Y-Z Side Section (Hinged Silent Click + Switch-Style Cover Snap Hooks)
     # =========================================================================
     ax2.set_title("② 側面機構図 (Y–Z 断面：スイッチ式カバー爪締結 × 一体揺動静音クリック)", fontsize=10.5, fontweight="bold", pad=10)
     ax2.set_xlim(-12.5, 13.5)
@@ -368,7 +368,7 @@ def _draw_height_comparison():
     fig2, (bx1, bx2) = plt.subplots(1, 2, figsize=(15.4, 6.8), dpi=200)
     fig2.patch.set_facecolor("#ffffff")
     fig2.suptitle(
-        "curcur40-right ホイール高さ比較：タイプA（基板無加工ポン付け） vs タイプB（決定仕様・パターン⑤ 沈み込み＋ツインカバー版）",
+        "マウントフレーム交換による実装高さ比較：オンボード実装 (#04A) vs 沈み込み実装 (#04B ＋ #20 ツインカバー)",
         fontsize=12.6,
         fontweight="bold",
         y=0.97,
@@ -381,11 +381,11 @@ def _draw_height_comparison():
         ax.set_aspect("equal")
         ax.set_facecolor("#f8f9fa")
         ax.grid(True, linestyle=":", linewidth=0.5, color="#cccccc")
-        ax.set_xlabel("Y 座標 [mm]（北 -Y ── ホイール rEXSW1 ── 南 +Y キー rEXSW2）", fontsize=9.2)
-        ax.set_ylabel("curcur40 グローバル Z 座標 [mm]（ケース上縁 = 0.00 mm）", fontsize=9.2)
+        ax.set_xlabel("Y 座標 [mm]（北 -Y ── ホイールモジュール ── 南 +Y 隣接キー）", fontsize=9.2)
+        ax.set_ylabel("キーボード Z 座標 [mm]（ケース上縁 = 0.00 / プレート上面 = -2.00）", fontsize=9.2)
 
         ax.axhline(0.0, color="#6c757d", linestyle="-.", linewidth=0.9)
-        ax.text(-14.3, 0.35, "ケース上縁リム Z=0.00", fontsize=7.1, color="#495057")
+        ax.text(-14.5, 0.45, "ケース上縁 Z=0", fontsize=6.9, color="#495057")
         ax.add_patch(patches.Rectangle((-14.8, -15.2), 37.3, 1.25, fc="#adb5bd", ec="#495057", lw=0.9, alpha=0.5, zorder=1))
         ax.text(3.8, -14.58, "既存ケース内底面は Z ≈ -20.5 mm（さらに下方へ 3.65 mm 以上の余裕・ケース無改造）",
                 ha="center", va="center", fontsize=7.2, fontweight="bold", color="#343a40")
@@ -400,19 +400,19 @@ def _draw_height_comparison():
                 bbox=dict(boxstyle="round,pad=0.15", fc="#e9ecef", ec="none", alpha=0.92), zorder=9)
 
         if not is_sunk:
-            ax.set_title("タイプA：標準ポン付け版（メインPCB開口なし：頂点 Z = +14.76 mm）", fontsize=10.5, fontweight="bold", pad=9)
+            ax.set_title("① オンボード実装：#04A 基板上載せ枠（基板開口なし：頂点 Z = +14.76 mm）", fontsize=10.2, fontweight="bold", pad=9)
             ax.add_patch(patches.Rectangle((-14.8, -5.80), 37.3, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
             ax.add_patch(patches.Rectangle((-14.8, -3.60), 5.7, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
             ax.add_patch(patches.Rectangle((9.1, -3.60), 13.4, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
             ax.add_patch(patches.Rectangle((-8.78, -4.19), 17.56, 1.40, fc="#264653", ec="#111111", lw=1.0, zorder=3))
             wz = 6.36
-            ax.annotate("キー上面から +11.16 mm 突出\n(基板無加工だが背が高い)", xy=(0.0, wz + 8.4), xytext=(-14.0, 13.4),
+            ax.annotate("キー上面から +11.16 mm 突出\n(テスト基板と同じ上載せ構成)", xy=(0.0, wz + 8.4), xytext=(-14.0, 13.4),
                         arrowprops=dict(arrowstyle="->", color="#d90429", lw=1.2),
                         fontsize=7.5, fontweight="bold", color="#9d0208",
                         bbox=dict(boxstyle="round,pad=0.22", fc="#ffe5ec", ec="#d90429", lw=0.9), zorder=10)
         else:
-            ax.set_title("タイプB：パターン⑤ 沈み込み＋ツインRカバー版【決定仕様：頂点 Z = +6.40 mm】",
-                         fontsize=10.5, fontweight="bold", pad=9, color="#1b4332")
+            ax.set_title("② 沈み込み実装：#04B 沈み込み枠 ＋ #20 ツインカバー（頂点 Z = +6.40 mm）",
+                         fontsize=10.2, fontweight="bold", pad=9, color="#1b4332")
             ax.add_patch(patches.Rectangle((-14.8, -5.80), 5.55, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
             ax.add_patch(patches.Rectangle((9.25, -5.80), 13.25, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
             ax.add_patch(patches.Rectangle((-14.8, -3.60), 9.27, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
@@ -856,7 +856,7 @@ def generate_parts_guide():
         for sp in ax_pod.spines.values():
             sp.set_edgecolor("#94a3b8")
             sp.set_linewidth(1.3)
-        ax_pod.set_title("【全体配置 A】単体評価ポッド全体（北東アイソメ図）", fontsize=11.5, fontweight="bold", color="#0f172a", pad=7)
+        ax_pod.set_title("【構成例 A】オンボード実装：単体評価ポッド全体（#04A 枠使用）", fontsize=11.5, fontweight="bold", color="#0f172a", pad=7)
 
         pod_callouts = [
             (63.0, 77.0, 44.0, 97.5, "#01 カップ型フライホイール", "#1d3557"),
@@ -864,7 +864,7 @@ def generate_parts_guide():
             (65.5, 44.5, 89.0, 83.0, "#03 キャリッジ (スリム丸耳)", "#1d3557"),
             (70.2, 60.5, 86.5, 68.5, "#12 ベアリング + #14 軸", "#005f73"),
             (78.2, 47.0, 89.5, 53.0, "#10 静音スイッチ", "#1b4332"),
-            (68.0, 34.5, 84.5, 35.5, "#04A 標準ベース枠 + #15 ピン", "#1d3557"),
+            (68.0, 34.5, 84.5, 35.5, "#04A オンボード枠 + #15 ピン", "#1d3557"),
             (62.8, 25.8, 84.5, 19.0, "#19 固定M2ネジ穴 (四隅)", "#9b2226"),
             (60.0, 16.5, 54.0, 1.5, "#05 ポッド台座", "#1d3557"),
             (42.0, 34.0, 13.0, 6.5, "#06 キャリア基板", "#1b4332"),
@@ -897,7 +897,7 @@ def generate_parts_guide():
         for sp in ax_mod.spines.values():
             sp.set_edgecolor("#94a3b8")
             sp.set_linewidth(1.3)
-        ax_mod.set_title("【全体配置 B】パターン⑤ 沈み込み＋ツインカバー 3D分解構造図", fontsize=11.5, fontweight="bold", color="#0f172a", pad=7)
+        ax_mod.set_title("【構成例 B】沈み込み実装：コア ＋ #04B 枠 ＋ #20 ツインカバー分解図", fontsize=11.5, fontweight="bold", color="#0f172a", pad=7)
 
         mod_callouts = [
             (33.0, 84.0, 14.5, 97.0, "#20 ホイールカバー (西:基板側)", "#1d3557"),
@@ -940,9 +940,9 @@ def generate_parts_guide():
             ("#01  カップ型フライホイール", rendered["p01"], "数量: 1個 ｜ Ø16.8 × 幅5.46 mm (5.66g / X=0中央揃え)", "JLCCNC (SUS304) : sus304-flywheel.step", C_CUSTOM),
             ("#02  内蔵9球ハブ", rendered["p02"], "数量: 1個 ｜ Ø12.4 × 3.10 mm (#01カップ内部へ完全格納)", "JLC3DP (SLA) : ratchet-hub.step", C_CUSTOM),
             ("#03  キャリッジ (スリム丸耳)", rendered["p03"], "数量: 1個 ｜ 13.77 × 15.87 × 14.24 mm", "JLC3DP (SLA) : wheel-carriage.step", C_CUSTOM),
-            ("#04A  標準ベース枠 [評価ポッド用]", rendered["p04a"], "数量: 1個 ｜ 17.18 × 17.56 × 4.10 mm", "JLC3DP (SLA) : wheel-base-frame.step", C_CUSTOM),
-            ("#04B  沈み込みベース枠 [パターン⑤移植用]", rendered["p04b"], "任意: 1個 ｜ 23.35 × 23.70 × 10.14 mm (軸Z=-2.0mm)", "JLC3DP (SLA) : wheel-base-frame-sunk.step", C_CUSTOM),
-            ("#20  ホイールカバー (ピラミッド・ディープR)", rendered["p20"], "任意: 2個 (180°回転対称の完全共通部品!) ｜ 16.4×6.19×7.23 mm", "JLC3DP (SLA) : wheel-cover.step (スイッチ式スナップ固定)", C_CUSTOM),
+            ("#04A  オンボードベース枠 [基板上載せ用]", rendered["p04a"], "数量: 1個 ｜ 17.18 × 17.56 × 4.10 mm", "JLC3DP (SLA) : wheel-base-frame.step", C_CUSTOM),
+            ("#04B  沈み込みベース枠 [メイン基板組込用]", rendered["p04b"], "任意: 1個 ｜ 23.35 × 23.70 × 10.14 mm (軸Z=-2.0mm)", "JLC3DP (SLA) : wheel-base-frame-sunk.step", C_CUSTOM),
+            ("#20  ホイールカバー [ツインスナップ式]", rendered["p20"], "任意: 2個 (180°回転対称の完全共通部品!) ｜ 16.4×6.19×7.23 mm", "JLC3DP (SLA) : wheel-cover.step (エッジ曲面ピラミッド)", C_CUSTOM),
             ("#05  ポッド台座", rendered["p05"], "数量: 1個 ｜ 52.0 × 36.0 × 6.6 mm", "JLC3DP (SLA) : eval-pod-stand.step", C_CUSTOM),
             ("#06  キャリア基板", ASSETS_DIR / "render_pcb_wheel_eval.png", "数量: 1枚 ｜ 48.0 × 32.0 × 板厚1.6 mm", "JLCPCB (Top PCBA) : curcur40-wheel-eval", C_ELEC),
             ("#07  センサー基板 [PCBA実装済・段付き]", ASSETS_DIR / "render_pcb_wheel_sensor.png", "数量: 1枚 ｜ 22×22枠→折って8.8/7.9×8.66 (厚0.8mm)", "JLCPCB (0.8mm Top PCBA) : #08実装済・#20カバー内格納!", C_ELEC),
