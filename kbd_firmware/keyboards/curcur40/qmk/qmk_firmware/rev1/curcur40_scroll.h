@@ -6,48 +6,40 @@
 #include QMK_KEYBOARD_H
 
 /*
- * curcur40 Custom Keycodes (mapped to QK_KB_0..2 = 0x7E00..0x7E02 for full
- * compatibility across QMK, VIA USER00..02, and Vial customKeycodes).
+ * curcur40 Custom Keycodes (mapped to QK_KB_0..3 = 0x7E00..0x7E03 for full
+ * compatibility across QMK, VIA USER00..03, and Vial customKeycodes).
  */
 enum curcur40_keycodes {
     SCRL_MO = QK_KB_0, // Hold: 2D trackball inertia high-speed drag-scroll (release brakes & restores cursor)
     SCRL_TG = QK_KB_1, // Toggle: hands-free 2D trackball inertia high-speed drag-scroll
-    SCRL_SL = QK_KB_2, // Hold: precision slow 2D drag-scroll (inertia disabled)
+    SCRL_SL = QK_KB_2, // Hold: precision slow 2D trackball drag-scroll (inertia disabled)
+    WHL_HRZ = QK_KB_3, // Hold: convert AS5600 passive magnetic inertia wheel rotation to horizontal scroll
 };
 
 /* =========================================================================
- * 1. CKW12 Roller Encoder Ballistic Acceleration (Method A: No Runaway Coast)
- *    - Slow clicks (>= 95 ms/detent): exact 1x per physical notch
- *    - Fast flicks (<  95 ms/detent): scales smoothly from 2x up to 12x
- *      based on inter-pulse dt and consecutive same-direction pulse streak.
- *    - Total scroll distance is strictly determined by physical wheel pulses.
+ * 1. AS5600 Passive Magnetic Inertia Wheel (Right Half I2C0: GP24 SDA / GP25 SCL)
+ *    - 12-bit contactless Hall angle sensor (0x36) facing Ø3x2mm diametric magnet
+ *    - Cup-shaped SUS304 flywheel + internal 9-ball axial magnetic ratchet hub
+ *      provides real physical free-spin momentum and finger-touch braking.
+ *    - Recommended CURCUR40_WHEEL_NOTCHES_PER_REV presets:
+ *         9 : Exact 1:1 HID scroll step per physical magnetic detent (40.0 deg)
+ *        18 : Standard 20.0 deg mouse wheel pitch (2 steps/detent, default)
+ *        36 : High-density fast scroll (10.0 deg/step, 4 steps/detent)
  * ========================================================================= */
-#ifndef CURCUR40_ENC_ACCEL_WINDOW_MS
-#    define CURCUR40_ENC_ACCEL_WINDOW_MS 160U
+#define CURCUR40_AS5600_I2C_ADDR        (0x36 << 1)
+#define CURCUR40_AS5600_REG_CONF_H      0x07
+#define CURCUR40_AS5600_REG_STATUS      0x0B
+#define CURCUR40_AS5600_REG_RAW_ANGLE_H 0x0C
+#define CURCUR40_AS5600_STATUS_MD       (1U << 5)
+
+#ifndef CURCUR40_WHEEL_NOTCHES_PER_REV
+#    define CURCUR40_WHEEL_NOTCHES_PER_REV 18
 #endif
-#ifndef CURCUR40_ENC_SLOW_MS
-#    define CURCUR40_ENC_SLOW_MS 95U
+#ifndef CURCUR40_WHEEL_DEADBAND_LSB
+#    define CURCUR40_WHEEL_DEADBAND_LSB 6
 #endif
-#ifndef CURCUR40_ENC_MID_MS
-#    define CURCUR40_ENC_MID_MS 60U
-#endif
-#ifndef CURCUR40_ENC_FAST_MS
-#    define CURCUR40_ENC_FAST_MS 35U
-#endif
-#ifndef CURCUR40_ENC_FLICK_MS
-#    define CURCUR40_ENC_FLICK_MS 20U
-#endif
-#ifndef CURCUR40_ENC_MAX_STEP
-#    define CURCUR40_ENC_MAX_STEP 12
-#endif
-#ifndef CURCUR40_ENC_MAX_PENDING
-#    define CURCUR40_ENC_MAX_PENDING 36
-#endif
-#ifndef CURCUR40_ENC_BURST_TICK_MS
-#    define CURCUR40_ENC_BURST_TICK_MS 4U
-#endif
-#ifndef CURCUR40_ENC_BURST_MAX_PER_TICK
-#    define CURCUR40_ENC_BURST_MAX_PER_TICK 3
+#ifndef CURCUR40_WHEEL_INVERT_DIR
+#    define CURCUR40_WHEEL_INVERT_DIR 1
 #endif
 
 /* =========================================================================

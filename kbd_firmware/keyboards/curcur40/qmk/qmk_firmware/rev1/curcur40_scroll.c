@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "curcur40_scroll.h"
+#include "drivers/sensors/pmw33xx_common.h"
+#include "i2c_master.h"
+#include "pointing_device.h"
+#include "timer.h"
 
 /* -------------------------------------------------------------------------
  * Lightweight Cortex-M0+ helpers (no libm / powf dependency)
@@ -27,78 +31,231 @@ static inline int16_t clamp_i16(int16_t x, int16_t lo, int16_t hi) {
 }
 
 /* -------------------------------------------------------------------------
- * 1. CKW12 Ballistic Wheel State (Method A: Deterministic Flick Multiplier)
+ * 1. Composite Right-Half Pointing Driver: PMW3360 (SPI1) + AS5600 (I2C0)
  * ------------------------------------------------------------------------- */
-static bool     enc_initialized = false;
-static uint32_t enc_last_ms     = 0;
-static uint32_t enc_burst_ms    = 0;
-static int8_t   enc_last_dir_v  = 0;
-static int8_t   enc_last_dir_h  = 0;
-static uint8_t  enc_streak      = 0;
-static int16_t  enc_pending_v   = 0;
-static int16_t  enc_pending_h   = 0;
+#define AS5600_FULL_SCALE_LSB    4096L
+#define AS5600_HALF_SCALE_LSB    2048
+#define AS5600_I2C_TIMEOUT_MS    5
+#define AS5600_RETRY_INTERVAL_MS 200
+#define AS5600_STATUS_POLL_MS    250
+#define WHEEL_IDLE_RESET_MS      60
 
-static void curcur40_enqueue_enc_wheel(int8_t dir_v, int8_t dir_h) {
-    uint32_t now = timer_read32();
-    int16_t  steps = 1;
+static bool     s_pmw3360_online     = false;
+static bool     s_wheel_online       = false;
+static bool     s_wheel_magnet_ok    = false;
+static bool     s_wheel_angle_locked = false;
+static bool     s_wheel_resting      = true;
+static uint16_t s_wheel_prev_angle   = 0;
+static uint16_t s_wheel_rest_anchor  = 0;
+static uint16_t s_wheel_retry_ms     = 0;
+static uint16_t s_wheel_status_ms    = 0;
+static uint16_t s_wheel_motion_ms    = 0;
+static int32_t  s_wheel_subtick_num  = 0;
+static int32_t  s_wheel_pending      = 0;
 
-    if (!enc_initialized) {
-        enc_initialized = true;
-        enc_streak      = 0;
-    } else {
-        uint32_t dt       = timer_elapsed32(enc_last_ms);
-        bool     same_dir = (dir_v == enc_last_dir_v) && (dir_h == enc_last_dir_h);
+static bool as5600_configure(void) {
+    /*
+     * CONF register (0x07..0x08):
+     * - SF   = 0b11 (2x slow filter -> 0.286 ms step response for fast inertia spin)
+     * - FTH  = 0b001 (6 LSB fast-filter threshold: quiet at rest, instant on flick)
+     * - HYST = 0b01 (1 LSB internal hysteresis)
+     */
+    const uint8_t conf[2] = {0x07, 0x04};
+    if (i2c_write_register(CURCUR40_AS5600_I2C_ADDR, CURCUR40_AS5600_REG_CONF_H, conf, sizeof(conf), AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+        return false;
+    }
 
-        if (!same_dir || dt > CURCUR40_ENC_ACCEL_WINDOW_MS) {
-            enc_streak = 0;
-            steps      = 1;
-        } else if (dt >= CURCUR40_ENC_SLOW_MS) {
-            enc_streak = 0;
-            steps      = 1;
-        } else {
-            if (enc_streak < 8) {
-                enc_streak++;
-            }
-            if (dt >= CURCUR40_ENC_MID_MS) {
-                /* Moderate roll (60..94 ms): 2x -> 3x */
-                steps = (enc_streak >= 2) ? 3 : 2;
-            } else if (dt >= CURCUR40_ENC_FAST_MS) {
-                /* Brisk roll (35..59 ms): 4x -> 6x */
-                steps = (enc_streak >= 2) ? 6 : 4;
-            } else if (dt >= CURCUR40_ENC_FLICK_MS) {
-                /* Fast flick (20..34 ms): 6x -> 9x -> 11x */
-                steps = 6 + ((enc_streak >= 2) ? 3 : 0) + ((enc_streak >= 3) ? 2 : 0);
-            } else {
-                /* Hard flick (< 20 ms): 8x -> CURCUR40_ENC_MAX_STEP (12x) */
-                steps = (enc_streak >= 2) ? CURCUR40_ENC_MAX_STEP : 8;
-            }
+    uint8_t status = 0;
+    if (i2c_read_register(CURCUR40_AS5600_I2C_ADDR, CURCUR40_AS5600_REG_STATUS, &status, 1, AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+        return false;
+    }
+
+    s_wheel_magnet_ok = (status & CURCUR40_AS5600_STATUS_MD) != 0;
+    s_wheel_status_ms = timer_read();
+    return true;
+}
+
+static bool as5600_read_raw_angle(uint16_t *out_angle) {
+    uint8_t buf[2] = {0, 0};
+    if (i2c_read_register(CURCUR40_AS5600_I2C_ADDR, CURCUR40_AS5600_REG_RAW_ANGLE_H, buf, sizeof(buf), AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+        return false;
+    }
+    *out_angle = (uint16_t)(((uint16_t)(buf[0] & 0x0FU) << 8) | buf[1]);
+    return true;
+}
+
+static inline int16_t wrap_delta_12bit(uint16_t current, uint16_t previous) {
+    int16_t diff = (int16_t)current - (int16_t)previous;
+    if (diff > (AS5600_HALF_SCALE_LSB - 1)) {
+        diff -= (int16_t)AS5600_FULL_SCALE_LSB;
+    } else if (diff < -AS5600_HALF_SCALE_LSB) {
+        diff += (int16_t)AS5600_FULL_SCALE_LSB;
+    }
+    return diff;
+}
+
+static void curcur40_wheel_init(void) {
+    i2c_init();
+    s_wheel_retry_ms     = timer_read();
+    s_wheel_online       = as5600_configure();
+    s_wheel_angle_locked = false;
+    s_wheel_resting      = true;
+    s_wheel_subtick_num  = 0;
+    s_wheel_pending      = 0;
+}
+
+static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
+    const uint16_t now = timer_read();
+
+    if (!s_wheel_online) {
+        if (timer_elapsed(s_wheel_retry_ms) < AS5600_RETRY_INTERVAL_MS) {
+            return mouse_report;
+        }
+        s_wheel_retry_ms = now;
+        if (!as5600_configure()) {
+            return mouse_report;
+        }
+        s_wheel_online       = true;
+        s_wheel_angle_locked = false;
+        s_wheel_resting      = true;
+        s_wheel_subtick_num  = 0;
+    }
+
+    if (timer_elapsed(s_wheel_status_ms) >= AS5600_STATUS_POLL_MS) {
+        uint8_t status = 0;
+        if (i2c_read_register(CURCUR40_AS5600_I2C_ADDR, CURCUR40_AS5600_REG_STATUS, &status, 1, AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+            s_wheel_online       = false;
+            s_wheel_angle_locked = false;
+            s_wheel_retry_ms     = now;
+            return mouse_report;
+        }
+        s_wheel_magnet_ok = (status & CURCUR40_AS5600_STATUS_MD) != 0;
+        s_wheel_status_ms = now;
+    }
+
+    if (!s_wheel_magnet_ok) {
+        s_wheel_angle_locked = false;
+        return mouse_report;
+    }
+
+    uint16_t raw_angle = 0;
+    if (!as5600_read_raw_angle(&raw_angle)) {
+        s_wheel_online       = false;
+        s_wheel_angle_locked = false;
+        s_wheel_retry_ms     = now;
+        return mouse_report;
+    }
+
+    if (!s_wheel_angle_locked) {
+        s_wheel_prev_angle   = raw_angle;
+        s_wheel_rest_anchor  = raw_angle;
+        s_wheel_motion_ms    = now;
+        s_wheel_resting      = true;
+        s_wheel_angle_locked = true;
+        return mouse_report;
+    }
+
+    if (!s_wheel_resting && timer_elapsed(s_wheel_motion_ms) >= WHEEL_IDLE_RESET_MS) {
+        s_wheel_resting     = true;
+        s_wheel_rest_anchor = raw_angle;
+        s_wheel_prev_angle  = raw_angle;
+        s_wheel_subtick_num = 0;
+    }
+
+    if (s_wheel_resting) {
+        const int16_t wake_delta = wrap_delta_12bit(raw_angle, s_wheel_rest_anchor);
+        if (wake_delta > -CURCUR40_WHEEL_DEADBAND_LSB && wake_delta < CURCUR40_WHEEL_DEADBAND_LSB) {
+            return mouse_report;
+        }
+        s_wheel_resting    = false;
+        s_wheel_prev_angle = s_wheel_rest_anchor;
+    }
+
+    int16_t delta_lsb = wrap_delta_12bit(raw_angle, s_wheel_prev_angle);
+    if (delta_lsb != 0) {
+        s_wheel_prev_angle = raw_angle;
+        s_wheel_motion_ms  = now;
+
+#if CURCUR40_WHEEL_INVERT_DIR
+        delta_lsb = -delta_lsb;
+#endif
+        s_wheel_subtick_num += (int32_t)delta_lsb * (int32_t)CURCUR40_WHEEL_NOTCHES_PER_REV;
+        const int32_t whole_ticks = s_wheel_subtick_num / AS5600_FULL_SCALE_LSB;
+        if (whole_ticks != 0) {
+            s_wheel_subtick_num -= whole_ticks * AS5600_FULL_SCALE_LSB;
+            s_wheel_pending += whole_ticks;
         }
     }
 
-    enc_last_ms    = now;
-    enc_last_dir_v = dir_v;
-    enc_last_dir_h = dir_h;
+    if (s_wheel_pending != 0) {
+        int32_t emit = s_wheel_pending;
+        if (emit > MOUSE_REPORT_HV_MAX) {
+            emit = MOUSE_REPORT_HV_MAX;
+        } else if (emit < MOUSE_REPORT_HV_MIN) {
+            emit = MOUSE_REPORT_HV_MIN;
+        }
+        s_wheel_pending -= emit;
 
-    /* Cancel any remaining micro-burst in the opposite direction immediately */
-    if (dir_v != 0 && (enc_pending_v * (int16_t)dir_v < 0)) {
-        enc_pending_v = 0;
-    }
-    if (dir_h != 0 && (enc_pending_h * (int16_t)dir_h < 0)) {
-        enc_pending_h = 0;
+        int32_t combined = (int32_t)mouse_report.v + emit;
+        if (combined > MOUSE_REPORT_HV_MAX) combined = MOUSE_REPORT_HV_MAX;
+        if (combined < MOUSE_REPORT_HV_MIN) combined = MOUSE_REPORT_HV_MIN;
+        mouse_report.v = (mouse_hv_report_t)combined;
     }
 
-    enc_pending_v = clamp_i16((int16_t)(enc_pending_v + (int16_t)dir_v * steps),
-                              -CURCUR40_ENC_MAX_PENDING, CURCUR40_ENC_MAX_PENDING);
-    enc_pending_h = clamp_i16((int16_t)(enc_pending_h + (int16_t)dir_h * steps),
-                              -CURCUR40_ENC_MAX_PENDING, CURCUR40_ENC_MAX_PENDING);
+    return mouse_report;
+}
+
+#ifdef VIAL_ENABLE
+void pointing_device_driver_init(void) {
+    if (is_keyboard_left()) {
+        return;
+    }
+    s_pmw3360_online = pmw33xx_init(0);
+    curcur40_wheel_init();
+}
+#else
+bool pointing_device_driver_init(void) {
+    if (is_keyboard_left()) {
+        return true;
+    }
+    s_pmw3360_online = pmw33xx_init(0);
+    curcur40_wheel_init();
+    /* Keep driver active so either sensor works independently and supports hot-plug */
+    return true;
+}
+#endif
+
+report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
+    if (is_keyboard_left()) {
+        return mouse_report;
+    }
+    if (s_pmw3360_online) {
+        mouse_report = pmw33xx_get_report(mouse_report);
+    }
+    mouse_report = curcur40_wheel_poll(mouse_report);
+    return mouse_report;
+}
+
+uint16_t pointing_device_driver_get_cpi(void) {
+    if (is_keyboard_left() || !s_pmw3360_online) {
+        return PMW33XX_CPI;
+    }
+    return pmw33xx_get_cpi(0);
+}
+
+void pointing_device_driver_set_cpi(uint16_t cpi) {
+    if (!is_keyboard_left() && s_pmw3360_online) {
+        pmw33xx_set_cpi(0, cpi);
+    }
 }
 
 /* -------------------------------------------------------------------------
- * 2. PMW3360 Trackball 2D Inertia Drag-Scroll State
+ * 2. PMW3360 Trackball 2D Inertia Drag-Scroll & Wheel Axis State (Master)
  * ------------------------------------------------------------------------- */
 static bool     scroll_mo_held       = false;
 static bool     scroll_tg_active     = false;
 static bool     scroll_sl_held       = false;
+static bool     wheel_horiz_held     = false;
 static bool     prev_scroll_active   = false;
 static bool     motion_seen          = false;
 static bool     is_coasting          = false;
@@ -143,36 +300,6 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
-#ifdef ENCODER_MAP_ENABLE
-    /* Intercept mouse wheel keycodes emitted by CKW12 (or dynamic Vial encoder_map) */
-    if (IS_ENCODEREVENT(record->event)) {
-        switch (keycode) {
-            case QK_MOUSE_WHEEL_UP:
-                if (record->event.pressed) {
-                    curcur40_enqueue_enc_wheel(1, 0);
-                }
-                return false;
-            case QK_MOUSE_WHEEL_DOWN:
-                if (record->event.pressed) {
-                    curcur40_enqueue_enc_wheel(-1, 0);
-                }
-                return false;
-            case QK_MOUSE_WHEEL_RIGHT:
-                if (record->event.pressed) {
-                    curcur40_enqueue_enc_wheel(0, 1);
-                }
-                return false;
-            case QK_MOUSE_WHEEL_LEFT:
-                if (record->event.pressed) {
-                    curcur40_enqueue_enc_wheel(0, -1);
-                }
-                return false;
-            default:
-                break;
-        }
-    }
-#endif
-
     switch (keycode) {
         case SCRL_MO:
             scroll_mo_held = record->event.pressed;
@@ -198,6 +325,10 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
+        case WHL_HRZ:
+            wheel_horiz_held = record->event.pressed;
+            return false;
+
         case QK_MOUSE_BUTTON_1 ... QK_MOUSE_BUTTON_8:
             /* Clicking while coasting acts as an immediate brake */
             if (record->event.pressed && is_coasting) {
@@ -211,20 +342,6 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 }
-
-#ifndef ENCODER_MAP_ENABLE
-bool encoder_update_kb(uint8_t index, bool clockwise) {
-    if (!encoder_update_user(index, clockwise)) {
-        return false;
-    }
-    if (index == 1) {
-        /* Right half CKW12 fallback when ENCODER_MAP_ENABLE is disabled */
-        curcur40_enqueue_enc_wheel(clockwise ? -1 : 1, 0);
-        return false;
-    }
-    return true;
-}
-#endif
 
 layer_state_t layer_state_set_kb(layer_state_t state) {
     state = layer_state_set_user(state);
@@ -246,31 +363,26 @@ report_mouse_t pointing_device_task_kb(report_mouse_t mouse_report) {
     }
     prev_scroll_active = scroll_mode;
 
-    /* Prevent accidental Ctrl/Alt/GUI + coasting wheel = OS zoom explosion */
+    /* Prevent accidental Ctrl/Alt/GUI + coasting trackball = OS zoom explosion */
     uint8_t zoom_mods = (get_mods() | get_oneshot_mods()) & (MOD_MASK_CTRL | MOD_MASK_ALT | MOD_MASK_GUI);
     if (is_coasting && (zoom_mods & (uint8_t)(~prev_zoom_mods))) {
         curcur40_stop_coasting();
     }
     prev_zoom_mods = zoom_mods;
 
-    int16_t out_v = 0;
-    int16_t out_h = 0;
+    /* 1. Route AS5600 Passive Magnetic Inertia Wheel ticks (vertical or WHL_HRZ horizontal) */
+    int16_t wheel_ticks = (int16_t)mouse_report.v;
+    int16_t out_v       = 0;
+    int16_t out_h       = (int16_t)mouse_report.h;
+    mouse_report.v      = 0;
+    mouse_report.h      = 0;
 
-    /* 1. Drain CKW12 ballistic micro-burst (completes within <= 16 ms = 1 frame) */
-    if ((enc_pending_v != 0 || enc_pending_h != 0) &&
-        timer_elapsed32(enc_burst_ms) >= CURCUR40_ENC_BURST_TICK_MS) {
-        enc_burst_ms = now;
-
-        int16_t step_v = clamp_i16(enc_pending_v,
-                                   -CURCUR40_ENC_BURST_MAX_PER_TICK,
-                                   CURCUR40_ENC_BURST_MAX_PER_TICK);
-        int16_t step_h = clamp_i16(enc_pending_h,
-                                   -CURCUR40_ENC_BURST_MAX_PER_TICK,
-                                   CURCUR40_ENC_BURST_MAX_PER_TICK);
-        enc_pending_v = (int16_t)(enc_pending_v - step_v);
-        enc_pending_h = (int16_t)(enc_pending_h - step_h);
-        out_v         = (int16_t)(out_v + step_v);
-        out_h         = (int16_t)(out_h + step_h);
+    if (wheel_ticks != 0) {
+        if (wheel_horiz_held) {
+            out_h = (int16_t)(out_h + wheel_ticks);
+        } else {
+            out_v = (int16_t)(out_v + wheel_ticks);
+        }
     }
 
     /* 2. Process PMW3360 25mm Trackball 2D Inertia / Precision Drag-Scroll */
@@ -404,14 +516,10 @@ report_mouse_t pointing_device_task_kb(report_mouse_t mouse_report) {
     }
 
     if (out_v != 0) {
-        int16_t combined_v = clamp_i16((int16_t)((int16_t)mouse_report.v + out_v),
-                                       MOUSE_REPORT_HV_MIN, MOUSE_REPORT_HV_MAX);
-        mouse_report.v = (mouse_hv_report_t)combined_v;
+        mouse_report.v = (mouse_hv_report_t)clamp_i16(out_v, MOUSE_REPORT_HV_MIN, MOUSE_REPORT_HV_MAX);
     }
     if (out_h != 0) {
-        int16_t combined_h = clamp_i16((int16_t)((int16_t)mouse_report.h + out_h),
-                                       MOUSE_REPORT_HV_MIN, MOUSE_REPORT_HV_MAX);
-        mouse_report.h = (mouse_hv_report_t)combined_h;
+        mouse_report.h = (mouse_hv_report_t)clamp_i16(out_h, MOUSE_REPORT_HV_MIN, MOUSE_REPORT_HV_MAX);
     }
 
     return pointing_device_task_user(mouse_report);
