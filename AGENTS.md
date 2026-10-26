@@ -12,10 +12,12 @@
 2. **タスク単位での Git コミット（差分の明確化）**:
    - 複数の作業を行う場合や、1つのタスクが完了した際は、**タスクごとに Git コミットを作成し、どのタスクでどのファイルがどう変わったのか（タスクごとの差分）が履歴から明確に追えるようにすること**。
 3. **仕様書ファースト（Single Source of Truth）**:
-   - 設計の正は以下の4つのドキュメントである。対象領域の作業を行う前に必ず該当ドキュメントを確認すること。
+   - 設計の正は以下の6つのドキュメントである。対象領域の作業を行う前に必ず該当ドキュメントを確認すること。
      - ケース・プレート・トラックボールカップ仕様: [`docs/case_spec.md`](docs/case_spec.md)
      - PCB・回路図・ライブラリ・スクリプト格納仕様: [`docs/pcb_spec.md`](docs/pcb_spec.md)
-     - ビルドガイド・BOM・発注仕様: [`docs/buildguide_jp.md`](docs/buildguide_jp.md)
+     - パッシブ磁気慣性ホイール機構・電気仕様: [`docs/passive_inertia_wheel_spec.md`](docs/passive_inertia_wheel_spec.md)
+     - キーボード全体ビルドガイド・BOM・発注仕様: [`docs/buildguide_jp.md`](docs/buildguide_jp.md)
+     - 慣性ホイール単体評価ポッドビルドガイド: [`docs/inertia_wheel_eval_buildguide_jp.md`](docs/inertia_wheel_eval_buildguide_jp.md)
      - プロジェクト概要・3Dプレビューギャラリー: [`README.md`](README.md)
    - エラーや警告を回避するためだけに無理やり不要な配線を追加したり、DRC/ERC ルールを無効化するような対症療法は絶対に行わないこと。
 
@@ -27,11 +29,11 @@
    - `scratch/` や `tmp/`、ルート直下の `.json` / `.rpt` / `.net` / `.bak` / `.kicad_prl` 等を作業後にリポジトリへ残さないこと。
    - スクリプト内で DRC/ERC レポートや Gerber 一時ファイルを出力する場合は、Python 標準の `tempfile.TemporaryDirectory` を使用して自動削除すること。
 2. **公式生成スクリプトの一元管理 (`scripts/`)**:
-   - 3Dモデル・プレート・発注データ・図版・プレビュー画像の生成は [`scripts/`](scripts/) 配下の8本の公式スクリプト（詳細は [`scripts/README.md`](scripts/README.md) 参照）に集約し、1回限りの調査・デバッグ用スクリプトを `scripts/` に残さないこと。
+   - 3Dモデル・プレート・発注データ・図版・プレビュー画像の生成は [`scripts/`](scripts/) 配下の10本の公式スクリプト（詳細は [`scripts/README.md`](scripts/README.md) 参照）に集約し、1回限りの調査・デバッグ用スクリプトを `scripts/` に残さないこと。
    - スクリプト内でワークスペースや入出力パスを参照する際は、`c:\Users\...` 等の環境依存フルパスをハードコードせず、必ずスクリプト自身の位置からの相対解決（`WORKSPACE = Path(__file__).resolve().parent.parent`）で記述すること。
 3. **ボトムプレートの作成禁止と `cases/` ディレクトリ構成**:
    - ボトムプレートは 3D プリント製トレイ型ボトムケース（`cases/left.step`, `right.step`）に統合済みのため、生成・出力しないこと。
-   - `cases/` 直下には 3Dプリント発注用の実部品（`left.step/.stl`, `left-desk.step/.stl`, `right.step/.stl`, `right-desk.step/.stl`, `trackball-cup.step/.stl`）のみを配置し、検証・確認用のアセンブリモデル（`assembly-full.step`, `assembly-full-desk.step`, `trackball-cup-with-ball.step/.stl`, `pmw3360-lens-pcb-assembly.step`, `trackball-sensor-assembly.step`）はすべて `cases/assemblies/` 配下に分離して管理すること。
+   - `cases/` 直下にはケース・カップ実部品（`left.step/.stl`, `left-desk.step/.stl`, `right.step/.stl`, `right-desk.step/.stl`, `trackball-cup.step/.stl`）、`cases/inertia_wheel/` 配下にはパッシブ磁気慣性ホイール実部品（7種）、`cases/assemblies/` 配下には検証・確認用のアセンブリモデル（計9種）を分離して管理すること。
 4. **ドキュメント・画像アセットの一元管理 (`docs/`)**:
    - `curcur40` に関するドキュメントおよびプレビュー・図解画像はすべて `docs/` および `docs/assets/` 配下に格納すること（ルート直下に `preview/` 等を作らない）。
 
@@ -48,14 +50,15 @@
 3. **`pcbnew` Python API の注意事項**:
    - KiCad 10.0 では `PCB_VIA` オブジェクトに対してレイヤー引数なしで `GetWidth()` を呼び出したり `GetEnd()` を呼ぶと C++ アサーション（`assert "false" failed in GetWidth()`）で停止する。
    - `board.GetTracks()` を走査する際は必ず `if t.GetClass() == "PCB_TRACK":` と `elif t.GetClass() == "PCB_VIA":` を分岐させ、ビアには `t.GetWidth(pcbnew.F_Cu)` および `t.GetPosition()` を使用すること。
-4. **右手基板 (`curcur40-right`) および トラックボールセンサーサブ基板 (`curcur40-pmw3360`) の固有仕様**:
+4. **右手基板 (`curcur40-right`) および 2種のセンサーサブ基板 (`curcur40-pmw3360`, `curcur40-wheel-sensor`) の固有仕様**:
    - トラックボールカップ開口面をトッププレート天面（$Z = -2.00\text{ mm}$）と同じ高さに揃える低プロファイル設計のため、PMW3360 センサー回路は独立サブ基板 [`pcbs/pmw3360/curcur40-pmw3360.kicad_pcb`](pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（$Z = -17.60 \sim -16.00\text{ mm}$）に分離し、右メイン基板 `rJ3` とセンサー基板 `J1` を **JST SH 1.0mm ピッチ 6ピン横向き SMD コネクタ（`SM06B-SRSS-TB(LF)(SN)`, LCSC `C160405`）** で接続する。
+   - パッシブ磁気慣性ホイールは右手内側上部の $18.50 \times 18.50\text{ mm}$ 角穴（＋ $\varnothing 3.70\text{ mm} \times 3$ ポスト穴 `W1`〜`W3`）へ沈み込ませ、板厚 `0.80 mm` の極小サブ基板 [`pcbs/inertia-wheel-sensor/curcur40-wheel-sensor.kicad_pcb`](pcbs/inertia-wheel-sensor/curcur40-wheel-sensor.kicad_pcb)（`AS5600-ASOT` `Top Side` PCBA）と静音中クリック SW を右メイン基板 `B.Cu` の **`rJ5`（`SM06B-SRSS-TB`, `C160405`, Pin 1 `+3V3R`, Pin 2/6 `GNDR`, Pin 3 `/WHEEL_SDA` [`GP24`], Pin 4 `/WHEEL_SCL` [`GP25`], Pin 5 `/KEYEX1` [`GP7`]）** へ接続する。
    - `U1` (`PMW3360DM-T2QU`) の Pin 3 (`VDDPIX`) は内部レギュレータ出力（`power_out`）であるため、外部 1.8V 電源（`/+1V8_PMW`）とショートさせず `C1`/`C2` のみの独立ネット（`Net-(U1-VDDPIX)`）に保つこと。
    - `JP1` は `Jumper:SolderJumper_3_Bridged12`（`SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels`：Pad 1 `+3V3R` – Pad 2 `/V_{IO}` 基板内銅箔直結）を維持すること。
    - `R4` (28kΩ)、`C5` (22nF)、および左右のデバッグ端子 `J4` / `rJ4` は `DNP`（BOM/CPL/3Dモデル除外）を維持すること。
 5. **DRC / ERC 合格基準および JLCPCB 発注前自動チェック (`scripts/export_jlcpcb.py`)**:
-   - `kicad-cli pcb drc --schematic-parity`: 3基板（`left`, `right`, `pmw3360`）すべて **違反 0件・未接続 0件・回路図不一致 0件**（左右トッププレートも DRC 違反 0件）。
-   - `kicad-cli sch erc`: 左右メイン基板は **エラー 0件、警告 1件**（`RP2040` Pin 32 `GPIO21` と `+3V3` / `GNDR` の左右判定ピン直結による正当な `pin_to_pin` 警告 1件のみを意図的に保持）、センサーサブ基板 `curcur40-pmw3360` は **エラー 0件、警告 0件**。
+   - `kicad-cli pcb drc --schematic-parity`: 全5基板（`left`, `right`, `pmw3360`, `inertia-wheel-sensor`, `inertia-wheel-eval`）すべて **違反 0件・未接続 0件・回路図不一致 0件**（左右トッププレートも DRC 違反 0件）。
+   - `kicad-cli sch erc`: 左右メイン基板は **エラー 0件、警告 1件**（`RP2040` Pin 32 `GPIO21` と `+3V3` / `GNDR` の左右判定ピン直結による正当な `pin_to_pin` 警告 1件のみを意図的に保持）、`curcur40-pmw3360`・`curcur40-wheel-sensor`・`curcur40-wheel-eval` の3基板は **エラー 0件、警告 0件**。
    - **JLCPCB 2層 FR-4 標準製造ルール (`verify_jlcpcb_preflight`)**:
      - 基板外形（`Edge.Cuts`）サイズ：PCBA 対象基板は単体実装下限 $20.0 \times 20.0\text{ mm}$ 以上、最大 $400 \times 500\text{ mm}$ 以内。
      - 最小配線幅 $\ge 0.127\text{ mm}$（$5\text{ mil}$、1oz 銅箔標準。実基板は $\ge 0.200\text{ mm}$）。
@@ -76,9 +79,9 @@
      - `cases/assemblies/trackball-cup-with-ball.step`
      - `cases/assemblies/assembly-full.step`
      - `cases/assemblies/assembly-full-desk.step`
-3. **14箇所 M2 5.50mm スペーサー統一締結構造・傾斜内底面＋円筒ボスケース・干渉ゼロ検証**:
-   - 左手外周 5箇所（`L1`〜`L5`）＋ 右手外周 5箇所（`R1`〜`R5`、親指側 `L5`/`R5` は $(\pm 62.0000, 64.6000)$ で完全左右対称、ボス上面 $Z = -9.10\text{ mm}$）＋ トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`、ボス上面 $Z = -17.60\text{ mm}$、センサー基板サンドイッチ＋カップ耳高さ $5.50\text{ mm}$ 段付き穴）＝ **全 14箇所すべてを共通の M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、計 14個、PCB穴径 $\varnothing 3.30\text{ mm}$）** と上下 M2 × 4.0mm ネジ（計 28本、ボス上面〜ザグリ天井のクランプ肉厚は全14箇所とも $2.40\text{ mm}$ に統一、スペーサー内のネジ間隙間 $1.50\text{ mm}$）で締結する仕様を維持すること。
-   - モデル更新時は `scripts/generate_full_assembly.py` を実行し、`cases/assemblies/assembly-full.step`（トッププレート水平基準）と `cases/assemblies/assembly-full-desk.step`（ケース底面＝デスク水平基準）の双方を出力するとともに、全パーツ間の干渉体積（`overlap_volume`）が `0.00000000 mm³` であることを確認すること。
+3. **14箇所 M2 5.50mm スペーサー統一締結構造・沈み込み慣性ホイール吊り下げ締結・干渉ゼロ検証**:
+   - 左手外周 5箇所（`L1`〜`L5`）＋ 右手外周 5箇所（`R1`〜`R5`、親指側 `L5`/`R5` は $(\pm 62.0000, 64.6000)$ で完全左右対称、ボス上面 $Z = -9.10\text{ mm}$）＋ トラックボールカップ固定耳 4箇所（`TB1`〜`TB4`、ボス上面 $Z = -17.60\text{ mm}$、センサー基板サンドイッチ＋カップ耳高さ $5.50\text{ mm}$ 段付き穴）＝ **全 14箇所すべてを共通の M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、計 14個、PCB穴径 $\varnothing 3.30\text{ mm}$）** と上下 M2 × 4.0mm ネジ（28本、ボス上面〜ザグリ天井のクランプ肉厚は全14箇所とも $2.40\text{ mm}$ に統一、スペーサー内のネジ間隙間 $1.50\text{ mm}$）で締結し、さらに右手沈み込み慣性ホイール枠 `#04B`（`wheel-base-frame-sunk.step`）をトッププレート上から M2 × 4.0mm ネジ 3本（`W1`〜`W3`、合計 31本）で吊り下げ固定する仕様を維持すること。
+   - モデル更新時は `scripts/generate_inertia_wheel.py` および `scripts/generate_full_assembly.py` を実行し、`cases/assemblies/assembly-full.step`（トッププレート水平基準）と `cases/assemblies/assembly-full-desk.step`（ケース底面＝デスク水平基準、全134パーツ）の双方を出力するとともに、全パーツ間の干渉体積（`overlap_volume`）が `0.00000000 mm³` であることを確認すること。
 4. **JLC3DP 発注前チェック・極小隙間（クリアランス不足・狭小スリット）・肉厚 $0.80\text{ mm}$ 未満の自動検証ルール**:
    - 3Dモデル生成時（[`scripts/generate_cases.py`](scripts/generate_cases.py)、[`scripts/generate_trackball_cup.py`](scripts/generate_trackball_cup.py)、[`scripts/generate_full_assembly.py`](scripts/generate_full_assembly.py)）には、干渉体積チェックに加えて以下の3項目を自動検証し、違反が **0件** であることをアサートすること：
      1. **JLC3DP 基本造形ルール（水密多様体・造形サイズ・最小穴径・底面接地）**:
@@ -109,9 +112,10 @@
 1. **`PMW3360` / `LM19-LSI` の基板角穴（$16.90 \times 8.70\text{ mm}$）とガイドポスト位置**:
    - スクリプト内のプロシージャル生成モデルではなく、常に実フットプリント [`PMW3360DM-T2QU_16Pin.kicad_mod`](pcbs/common/kbd/kicad-footprints/kbd.pretty/PMW3360DM-T2QU_16Pin.kicad_mod)（[`monkeypad/pmw3360-breakout`](https://github.com/monkeypad/pmw3360-breakout) / [`siderakb/pmw3360-pcb`](https://github.com/siderakb/pmw3360-pcb) 準拠）および実基板 `curcur40-right.kicad_pcb` を正とする。
    - 実部品の丸ガイドポスト穴は非対称配置（センサー中心基準で $(-7.10, +3.30)\text{ mm}$ および $(+6.70, -3.40)\text{ mm}$、穴径 $\varnothing 1.70\text{ mm}$）であり、$16.90 \times 8.70\text{ mm}$（$\pm 8.45 \times \pm 4.35\text{ mm}$）の基板角穴の内側に余裕をもって収まる。
-2. **`CKW12` ロータリーエンコーダ（`rEXSW1`）の実装構造・ネジ穴・3Dモデル回転角**:
-   - **メイン基板にネジ穴がなくて正常**: 公式 [`kumamuk-git/CKW12`](https://github.com/kumamuk-git/CKW12) キットは、付属の専用サブ基板 `CKW12_top`（厚さ約 $0.50\text{ mm}$）の裏側から M2 × 3.5mm ネジ 4本で 3Dプリントハウジング四隅を固定し、`CKW12_top` から下に出たコンスルー 5ピン（`2.54 mm` ピッチ）をメイン基板 `rEXSW1` の 5穴（`A, B, C, S1, S2`）に挿して実装する構造である。メイン基板自体に M2 ネジ穴は不要。
-   - **3Dモデルの回転角を 90° 曲げないこと**: `CKW12` のホイールは人差し指で**上下方向（南北方向）に転がす向き**が正しい。`rEXSW1` のスルーホール 5ピンが北側3ピン・南側2ピンに並んでいるのは `CKW12_top` サブ基板内の引き回しによるものであり、フットプリント [`RotaryEncoder_Switch_CKW12.kicad_mod`](pcbs/common/kbd/kicad-footprints/kbd.pretty/RotaryEncoder_Switch_CKW12.kicad_mod) の `(rotate (xyz 0 0 90))`（および [`scripts/generate_full_assembly.py`](scripts/generate_full_assembly.py) の `(0, 0, -90)`）が正しい向きである。
+2. **沈み込みパッシブ磁気慣性ホイール（`#04B` 枠 ＋ `#20` ツインカバー ＋ `#07` `AS5600` 3.3V 回路）の確定仕様**:
+   - **ケース底面ボス不要のプレート吊り下げ構造**: `#04B`（[`wheel-base-frame-sunk.step`](cases/inertia_wheel/wheel-base-frame-sunk.step)）は3本の一体型樹脂ポスト（外径 $\varnothing 3.40\text{ mm}$、セルフタップ穴 $\varnothing 1.75\text{ mm}$）が右メイン基板の $\varnothing 3.70\text{ mm}$ 逃げ穴（`W1`〜`W3`）を通過して右トッププレート裏面（$Z = -3.60\text{ mm}$）へ密着し、上から M2 × 4.0mm ネジ 3本で締結される。ケース側（`right-desk.step`）は無改造で $3.65\text{ mm}$ 以上の底面クリアランスを確保しており、ケース床面にホイール用ボスを追加してはならない。
+   - **`#20` ホイールカバー（[`wheel-cover.step`](cases/inertia_wheel/wheel-cover.step)）の $180^\circ$ 対称共用とスナップ爪**: 西側（`#07` センサー基板格納）と東側のカバーは同一形状の `wheel-cover.step` を $180^\circ$ 水平回転させて共用する確定仕様であり、スナップラッチ先端の導入テーパー（`19` 箇所の $< 0.80\text{ mm}$ 面ペア）は `generate_inertia_wheel.py` でホワイトリスト管理された意図的形状である。
+   - **`AS5600-ASOT` の 3.3V 単一電源結線**: `#07` [`curcur40-wheel-sensor`](pcbs/inertia-wheel-sensor/curcur40-wheel-sensor.kicad_sch) において `U1` (`AS5600-ASOT`) の Pin 1 (`VDD5V`) と Pin 2 (`VDD3V3`) をともに `+3V3` へ直結しているのは、ams OSRAM 公式データシートの **3.3V Operation Mode**（内部 LDO バイパス規定）に厳密準拠した確定回路である。
 3. **トラックボールカップ固定耳（`TB1`〜`TB4`）の高さ $5.50\text{ mm}$ 段付き穴とセンサー基板サンドイッチ・スペーサー貫通構造**:
    - `TB1`〜`TB4` のケース円筒ボス天面は **$Z = -17.60\text{ mm}$**（ネジ貫通穴 $\varnothing 2.40\text{ mm}$、クランプ肉厚 $2.40\text{ mm}$）であり、その上に **M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\text{ mm}$、$Z = -17.60 \sim -12.10\text{ mm}$）** と **センサーサブ基板 `curcur40-pmw3360`（板厚 $1.60\text{ mm}$、$Z = -17.60 \sim -16.00\text{ mm}$、貫通穴 $\varnothing 3.30\text{ mm}$）** が同時に着座し、上からトラックボールカップ底面（$Z = -16.00\text{ mm}$）でセンサー基板をサンドイッチする。
    - カップ固定耳（全高 $5.50\text{ mm}$、$Z_{\text{rel}} = 0.00 \sim +5.50\text{ mm}$ / $Z = -16.00 \sim -10.50\text{ mm}$）の内部は、下段 $3.90\text{ mm}$（$Z_{\text{rel}} = 0.00 \sim +3.90\text{ mm}$）がスペーサー進入を受ける **$\varnothing 3.30\text{ mm}$ ソケット穴**、上段 $1.60\text{ mm}$（$Z_{\text{rel}} = +3.90 \sim +5.50\text{ mm}$）がネジ頭およびスペーサーを止める **$\varnothing 2.40\text{ mm}$ ネジ貫通穴** の段付き構造である（上下の M2 × 4.0mm ネジ先端間に $1.50\text{ mm}$ の安全隙間を確保）。
