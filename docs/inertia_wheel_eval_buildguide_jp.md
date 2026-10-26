@@ -18,9 +18,9 @@
 | **`#04A`** | **標準ベース枠** | 1個 | JLC3DP SLA 基板表載せ固定枠（単体評価ポッド・標準版 `curcur40` 用） |
 | **`#04B`** | **沈み込みベース枠** | *(1個)* | *(任意)* JLC3DP SLA 裏吊り固定枠（`curcur40-right` 沈み込み＋クロススロット版への移植用） |
 | **`#05`** | **ポッド台座** | 1個 | JLC3DP SLA 単体評価ポッド用卓上ケース（$52 \times 36 \times 6.6\,\text{mm}$） |
-| **`#06`** | **キャリア基板** | 1枚 | JLCPCB `curcur40-wheel-eval`（$48 \times 32 \times 1.6\,\text{mm}$、`J1`・プルアップ抵抗実装済） |
-| **`#07`** | **センサー基板** | 1枚 | JLCPCB `curcur40-wheel-sensor`（$8.8 \times 8.8\,\text{mm}$、**板厚 `0.8 mm` 指定必須**） |
-| **`#08`** | **AS5600 IC** | 1式 | `AS5600-ASOT` 12-bit 磁気角度センサーIC（`SOIC-8`）＋ パスコン `100nF` / `1μF` |
+| **`#06`** | **キャリア基板** | 1枚 | JLCPCB `curcur40-wheel-eval`（$48 \times 32 \times 1.6\,\text{mm}$、`J1`・プルアップ抵抗 PCBA実装済） |
+| **`#07`** | **センサー基板** | 1枚 | JLCPCB `curcur40-wheel-sensor`（$22 \times 22\,\text{mm}$ 枠付 $\rightarrow$ 折って $8.8 \times 8.8\,\text{mm}$、**板厚 `0.8 mm`・表面 PCBA で `#08` 自動実装済**） |
+| **`#08`** | **AS5600 IC** | *(PCBA済)* | `AS5600-ASOT` (`C499458`) ＋ パスコン `100nF` / `1μF`（※**`#07` 表面へ工場実装済・個別購入不要**） |
 | **`#09`** | **RP2040-Zero** | 1個 | `Waveshare RP2040-Zero` マイコンボード（ピンヘッダ未実装） |
 | **`#10`** | **静音スイッチ** | 1個 | `Kailh Square Silent` 角形2ピン静音マイクロスイッチ（ミドルクリック用） |
 | **`#11`** | **センサー4芯線** | 1式 | `#07` センサー基板 ↔ `#06` キャリア基板を繋ぐ極細4芯線（または JST SH 線） |
@@ -44,10 +44,10 @@
 - **[部品名称・構成図鑑（共通呼称マップ `#01`〜`#19`）](#部品名称構成図鑑共通呼称マップ-0119)**
 - **[Step 1: 資材一覧と入手経路・発注ガイド](#step-1-資材一覧と入手経路発注ガイド)**
   - [1-1. 全体構成の概要（4つの調達ルート）](#1-1-全体構成の概要4つの調達ルート)
-  - [1-2. JLCPCB に発注するもの（基板 2種：`#06`, `#07`）](#1-2-jlcpcb-に発注するもの基板-2種06-07)
+  - [1-2. JLCPCB に発注するもの（基板 2種：`#06`, `#07` ともに片面 Economic PCBA）](#1-2-jlcpcb-に発注するもの基板-2種06-07-ともに片面-economic-pcba)
   - [1-3. JLCCNC に発注するもの（`#01` カップ型フライホイール）](#1-3-jlccnc-に発注するもの01-カップ型フライホイール)
   - [1-4. JLC3DP に発注するもの（SLA 高精細レジン造形パーツ：`#02`〜`#05`）](#1-4-jlc3dp-に発注するものsla-高精細レジン造形パーツ0205)
-  - [1-5. 通販（Amazon・秋月電子・遊舎工房等）で購入するパーツ（`#08`〜`#19`）](#1-5-通販amazon秋月電子遊舎工房等で購入するパーツ0819)
+  - [1-5. 通販（Amazon・秋月電子・遊舎工房等）で購入するパーツ（`#09`〜`#19`）](#1-5-通販amazon秋月電子遊舎工房等で購入するパーツ0919)
   - [1-6. 発注前チェックリスト](#1-6-発注前チェックリスト)
 - **[Step 2: 組み立て・脱脂・ハンダ付け・ファームウェア書き込み手順](#step-2-組み立て脱脂ハンダ付けファームウェア書き込み手順)**
   - [2-1. 必要な工具・ケミカル](#2-1-必要な工具ケミカル)
@@ -66,29 +66,34 @@
 
 単体評価ポッドを1台製作するための資材（`#01`〜`#19`）は、以下の **4ルート** で揃います（特殊な手巻きコイルや専用カスタムICは一切不要です）。
 
-1. **JLCPCB（基板製造・PCBA）**: `#06` キャリア基板（$48.0 \times 32.0\,\text{mm}$）＋ `#07` センサー基板（$8.8 \times 8.8\,\text{mm}$、板厚 `0.8 mm`）
+1. **JLCPCB（基板製造・Economic PCBA）**: `#06` キャリア基板（$48.0 \times 32.0\,\text{mm}$、Top PCBA）＋ `#07` センサー基板（$22.0 \times 22.0\,\text{mm}$ 捨て基板枠付 $\rightarrow$ 折って $8.8 \times 8.8\,\text{mm}$、板厚 `0.8 mm`・Top PCBA で `#08` 自動実装済）
 2. **JLCCNC（金属CNC切削）**: `#01` カップ型フライホイール（`SUS304` 削り出し $\varnothing 16.80 \times 5.46\,\text{mm}$）
 3. **JLC3DP（SLA 3Dプリント）**: `#02` 内蔵9球ハブ・`#03` キャリッジ・`#04A` 標準ベース枠（＋任意 `#04B` 沈み込みベース枠）・`#05` ポッド台座
-4. **国内通販（Amazon / 秋月電子 / 遊舎工房 / モノタロウ等）**: `#08` AS5600 IC・`#09` RP2040-Zero・`#10` 静音スイッチ・`#11` センサー4芯線・`#12` ベアリング・`#13` ラチェット鋼球・`#14` 回転シャフト・`#15` ヒンジピン・`#16` 角度磁石・`#17` ラチェット磁石・`#18` 磁力調整ネジ・`#19` 固定M2ネジ＆ゴム足
+4. **国内通販（Amazon / 秋月電子 / 遊舎工房 / モノタロウ等）**: `#09` RP2040-Zero・`#10` 静音スイッチ・`#11` センサー4芯線・`#12` ベアリング・`#13` ラチェット鋼球・`#14` 回転シャフト・`#15` ヒンジピン・`#16` 角度磁石・`#17` ラチェット磁石・`#18` 磁力調整ネジ・`#19` 固定M2ネジ＆ゴム足（※品薄になりやすい `#08` AS5600 IC と極小 `0402` パスコンは `#07` の JLCPCB PCBA に含まれるため個別手配不要です！）
 
 ---
 
-## 1-2. JLCPCB に発注するもの（基板 2種：`#06`, `#07`）
+## 1-2. JLCPCB に発注するもの（基板 2種：`#06`, `#07` ともに片面 Economic PCBA）
 
-JLCPCB（[https://jlcpcb.com/](https://jlcpcb.com/)）にて以下の **2種類の基板** を発注します。
+JLCPCB（[https://jlcpcb.com/](https://jlcpcb.com/)）にて以下の **2種類の基板をどちらも表面片面実装（`Top Side` Economic PCBA）** で発注します。
 
 | 対象基板（統一呼称） | 基板サイズ・板厚 | 推奨発注形態 | ガーバー (ZIP) | BOM (CSV) | CPL (CSV) |
 | :--- | :---: | :---: | :--- | :--- | :--- |
-| **`#06` キャリア基板**<br>(`curcur40-wheel-eval`) | $48.0 \times 32.0\,\text{mm}$<br>**板厚 `1.6 mm`** | **PCB + PCBA**<br>（表面 `Top Side` 実装） | [GERBER-curcur40-wheel-eval.zip](../pcbs/inertia-wheel-eval/jlcpcb/production_files/GERBER-curcur40-wheel-eval.zip) | [BOM-curcur40-wheel-eval.csv](../pcbs/inertia-wheel-eval/jlcpcb/production_files/BOM-curcur40-wheel-eval.csv) | [CPL-curcur40-wheel-eval.csv](../pcbs/inertia-wheel-eval/jlcpcb/production_files/CPL-curcur40-wheel-eval.csv) |
-| **`#07` センサー基板**<br>(`curcur40-wheel-sensor`) | $8.8 \times 8.8\,\text{mm}$<br>**板厚 `0.8 mm`** | **PCB のみ（手ハンダ）**<br>*(※面付け時のみPCBA可)* | [GERBER-curcur40-wheel-sensor.zip](../pcbs/inertia-wheel-sensor/jlcpcb/production_files/GERBER-curcur40-wheel-sensor.zip) | [BOM-curcur40-wheel-sensor.csv](../pcbs/inertia-wheel-sensor/jlcpcb/production_files/BOM-curcur40-wheel-sensor.csv) | [CPL-curcur40-wheel-sensor.csv](../pcbs/inertia-wheel-sensor/jlcpcb/production_files/CPL-curcur40-wheel-sensor.csv) |
+| **`#06` キャリア基板**<br>(`curcur40-wheel-eval`) | $48.0 \times 32.0\,\text{mm}$<br>**板厚 `1.6 mm`** | **PCB + Economic PCBA**<br>（表面 `Top Side` 実装） | [GERBER-curcur40-wheel-eval.zip](../pcbs/inertia-wheel-eval/jlcpcb/production_files/GERBER-curcur40-wheel-eval.zip) | [BOM-curcur40-wheel-eval.csv](../pcbs/inertia-wheel-eval/jlcpcb/production_files/BOM-curcur40-wheel-eval.csv) | [CPL-curcur40-wheel-eval.csv](../pcbs/inertia-wheel-eval/jlcpcb/production_files/CPL-curcur40-wheel-eval.csv) |
+| **`#07` センサー基板**<br>(`curcur40-wheel-sensor`) | $22.0 \times 22.0\,\text{mm}$ 枠付<br>（折って $8.8 \times 8.8\,\text{mm}$）<br>**板厚 `0.8 mm`** | **PCB + Economic PCBA**<br>（表面 `Top Side` 実装） | [GERBER-curcur40-wheel-sensor.zip](../pcbs/inertia-wheel-sensor/jlcpcb/production_files/GERBER-curcur40-wheel-sensor.zip) | [BOM-curcur40-wheel-sensor.csv](../pcbs/inertia-wheel-sensor/jlcpcb/production_files/BOM-curcur40-wheel-sensor.csv) | [CPL-curcur40-wheel-sensor.csv](../pcbs/inertia-wheel-sensor/jlcpcb/production_files/CPL-curcur40-wheel-sensor.csv) |
+
+| `#07` センサー基板 表面（`Top Side` PCBA 自動実装面） | `#07` センサー基板 裏面（`#11` センサー4芯線ハンダ付け面） |
+| :---: | :---: |
+| ![Wheel Sensor Top](./assets/render_pcb_wheel_sensor.png) | ![Wheel Sensor Back](./assets/render_pcb_wheel_sensor_back.png) |
 
 ### JLCPCB 発注時の注意点
 * **`#06` キャリア基板 (`curcur40-wheel-eval`)**:
-  * **PCB Thickness**: `1.6 mm`、**PCBA Assembly Side**: **`Top Side`**（`J1` JST SH 6ピンコネクタ `C160405`、I2C プルアップ抵抗 `R1/R2 4.7kΩ` `C25900`、パスコン `C1 100nF` `C1525` の計4点が自動実装されます）。
+  * **PCB Thickness**: `1.6 mm`、**PCBA Type**: `Economic`、**Assembly Side**: **`Top Side`**（`J1` JST SH 6ピンコネクタ `C160405`、I2C プルアップ抵抗 `R1/R2 4.7kΩ` `C25900`、パスコン `C1 100nF` `C1525` の計4点が自動実装されます）。
   * `U1`（`#09` RP2040-Zero）と `SW1`（`#10` 静音スイッチ）は後から手ハンダするため、PCBA 画面で Unplaced となっていて正常です。
 * **`#07` センサー基板 (`curcur40-wheel-sensor`)**:
   * **PCB Thickness**: 必ず **`0.8 mm`** を選択してください（`#03` キャリッジ西側の $0.85\,\text{mm}$ 基板保持棚に収めるため）。
-  * 単体サイズが $8.8 \times 8.8\,\text{mm}$ であり、JLCPCB の単体 PCBA 最小サイズ（$20 \times 20\,\text{mm}$）未満のため、**生基板（PCB のみ）で発注し、`#08` AS5600 IC（`1.27mm` ピッチ SOIC-8 で手ハンダ容易）とパスコン2個を手ハンダする** 方法が最も安価で手軽です。
+  * **PCBA Type**: **`Economic`**、**Assembly Side**: **`Top Side`**（表面片面実装：`U1 AS5600-ASOT` `C499458`、パスコン `C1 100nF` `C1525`、`C2 1μF` `C52923` の全3点が工場で自動実装されて届きます）。
+  * 外周に **$22.0 \times 22.0\,\text{mm}$ の捨て基板枠（ルータースリット＋左右3穴マウスバイト `SNAP` タブ、Vカット不使用）** を備えているため、JLCPCB の単体 PCBA 最小サイズ（$20 \times 20\,\text{mm}$）および板厚 `0.8 mm` Economic PCBA 条件をそのまま満たします。到着後に左右の `SNAP` タブをパキッと折るだけで $8.8 \times 8.8\,\text{mm}$ の完成基板になります。
 
 ---
 
@@ -120,11 +125,11 @@ JLC3DP の **3D Printing** サービス（[https://jlc3dp.com/3d-printing-quote]
 
 ---
 
-## 1-5. 通販（Amazon・秋月電子・遊舎工房等）で購入するパーツ（`#08`〜`#19`）
+## 1-5. 通販（Amazon・秋月電子・遊舎工房等）で購入するパーツ（`#09`〜`#19`）
 
 | 統一呼称 | 必要数 | 型番・寸法仕様 | 主な入手先 |
 | :--- | :---: | :--- | :--- |
-| **`#08` AS5600 IC（＋パスコン）** | **1式** | ams OSRAM **`AS5600-ASOT`**（`SOIC-8`）×1 ＋ チップコンデンサ `100nF` (`0402/0603`) ×1、`1μF` ×1 ※`#07` センサー基板へ手ハンダ | 秋月電子 / LCSC (`C499458`, `C1525`, `C52923`) / Mouser |
+| **`#08` AS5600 IC（＋パスコン）** | **個別購入不要** | ams OSRAM **`AS5600-ASOT`** (`C499458`) ＋ パスコン `100nF` (`C1525`) / `1μF` (`C52923`) ※**`#07` センサー基板の JLCPCB PCBA（`Top Side`）で工場自動実装済！** | JLCPCB (LCSC 在庫より自動手配) |
 | **`#09` RP2040-Zero** | **1個** | **`Waveshare RP2040-Zero`**（ピンヘッダ未実装タイプ） | Amazon / 秋月電子 / スイッチサイエンス / AliExpress |
 | **`#10` 静音スイッチ** | **1個** | **`Kailh Square Silent Micro Switch`**（$6.2 \times 6.2 \times 4.3\,\text{mm}$、2ピン角形静音スイッチ Red Dot） | 遊舎工房 / Amazon / AliExpress |
 | **`#11` センサー4芯線** | **1式** | `AWG30`〜`AWG34` 極細シリコン被覆撚り線 または ポリウレタン銅線 約 $60\,\text{mm} \times 4$本（`#03` キャリッジ揺動を妨げない柔らかい細線、または片側カットした JST SH 6ピンケーブル） | 秋月電子 / オヤイデ電気 / Amazon |
@@ -142,7 +147,7 @@ JLC3DP の **3D Printing** サービス（[https://jlc3dp.com/3d-printing-quote]
 
 ## 1-6. 発注前チェックリスト
 
-- [ ] **JLCPCB**: `#06` キャリア基板（`1.6mm` / Top PCBA）＋ `#07` センサー基板（**`0.8mm`** / 生基板）
+- [ ] **JLCPCB**: `#06` キャリア基板（`1.6mm` / `Top Side` Economic PCBA）＋ `#07` センサー基板（**`0.8mm`** / **`Top Side` Economic PCBA**：`#08` 自動実装済）
 - [ ] **JLCCNC**: `#01` カップ型フライホイール `sus304-flywheel.step`（`SUS304` / `As Machined` シルバー切削仕上げ）
 - [ ] **JLC3DP**: `#02` 内蔵9球ハブ（`ratchet-hub.step`）、`#03` キャリッジ、`#04A` 標準ベース枠、`#05` ポッド台座（すべて SLA レジン）
 - [ ] **磁石・鋼球・ピンの磁性チェック**:
@@ -160,7 +165,7 @@ JLC3DP の **3D Printing** サービス（[https://jlc3dp.com/3d-printing-quote]
 | 工具・ケミカル | 用途 |
 | :--- | :--- |
 | **ブレーキ＆パーツクリーナー ＋ 小皿（ガラス瓶）** | `#12` ベアリング内部のグリスを完全に洗い流す（脱脂）ために使用します。 |
-| **ハンダごて・細ハンダ・フラックス** | `#08` AS5600 IC、`#09` RP2040-Zero、`#10` 静音スイッチ、`#11` センサー4芯線のハンダ付けに使用します。 |
+| **ハンダごて・細ハンダ・フラックス** | `#11` センサー4芯線、`#09` RP2040-Zero、`#10` 静音スイッチのハンダ付けに使用します（極小SMD部品のハンダ付けは不要です！）。 |
 | **精密ドライバー（`#00`）または `0.9mm` 六角レンチ** | `#19` 固定M2ネジおよび `#18` 磁力調整ネジの回転に使用します。 |
 | **瞬間接着剤（低白化ジェルタイプ）または 2液エポキシ** | `#01` カップ内部への `#02` ハブ固定、`#14` 回転シャフト西端への `#16` 角度磁石、`#18` 磁力調整ネジ先端への `#17` ラチェット磁石の固定に少量使用します。 |
 | **デザインナイフ / カッターの刃先** | シールド付き `#12` ベアリング（`DDL-520ZZ`）のCリング・シールド板を外す場合に使用します（幅 $2.0\,\text{mm}$ のオープン形 `DDL-520` なら不要です）。 |
@@ -207,11 +212,13 @@ kb=curcur40_wheel_eval kr=rev1 km=default make qmk-compile
 
 ## 2-4. Phase 3: 基板のハンダ付け（`#07` センサー基板 ＆ `#06` キャリア基板）
 
-### ① `#07` センサー基板（`curcur40-wheel-sensor`：$8.8 \times 8.8 \times 0.8\,\text{mm}$）
-1. **表面（`F.Cu`）**: `#08` AS5600 IC（`U1`, `SOIC-8`）の **1番ピン丸印／面取り側** を基板シルクの1番マークに合わせ、8ピンをハンダ付けします。
-2. **裏面（`B.Cu`）**: `#08` 付属のパスコン `C1`（`100nF`）と `C2`（`1μF`）をハンダ付けします。
-3. **4極配線パッド（`J1`）への `#11` センサー4芯線ハンダ付け**:
-   - 裏面下端の4つのSMDパッド（シルク表記順に **`3V3` / `GND` / `SDA` / `SCL`**）に、長さ約 `55〜65mm` の `#11` センサー4芯線をハンダ付けします。
+### ① `#07` センサー基板（`curcur40-wheel-sensor`：PCBA 実装済・折って $8.8 \times 8.8 \times 0.8\,\text{mm}$）
+表面（`F.Cu`）の `#08` AS5600 IC（`U1`）およびパスコン2個（`C1`, `C2`）はすべて JLCPCB PCBA で実装済みのため、**作業は裏面のワイヤ4本のはんだ付けと外枠折り取りだけ** です。
+1. **外枠を折る前に、裏面4極パッド（`J1`）へ `#11` センサー4芯線をハンダ付け（★おすすめ！）**:
+   - 外周の $22 \times 22\,\text{mm}$ 捨て基板枠が付いた状態のまま裏返して机に置くと、基板が大きくて動かないため非常にハンダ付けしやすくなります。
+   - 裏面下端のシルク表記（裏面を正面に見て左から順に **`4:SCL` / `3:SDA` / `2:GND` / `1:3V3`**、中央基板上にも `SCL`・`3V3` 刻印あり）に従い、長さ約 `55〜65mm` の `#11` センサー4芯線4本をハンダ付けします。
+2. **捨て基板枠（`SNAP` マウスバイトタブ）の折り取り**:
+   - 左右の `SNAP` タブ（3連小穴ミシン目）を指先またはニッパーでパキッと折り取り、中央の **$8.8 \times 8.8\,\text{mm}$ センサー基板** を取り出します（ミシン目は基板端よりわずかに内側へ控えてあるため、そのまま綺麗に収まります）。
 
 ### ② `#06` キャリア基板（`curcur40-wheel-eval`：$48.0 \times 32.0 \times 1.6\,\text{mm}$）
 1. **`U1`: `#09` RP2040-Zero の実装（基板西側）**:

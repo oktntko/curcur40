@@ -293,7 +293,12 @@ def main():
 
 def _autocrop_pil(img_path: Path, pad_frac: float = 0.08) -> tuple[np.ndarray, tuple[float, float, float]]:
     """Crop uniform background (and light KiCad drop shadow if white bg) around rendered object."""
-    im = Image.open(img_path).convert("RGB")
+    raw = Image.open(img_path)
+    if raw.mode in ("RGBA", "LA"):
+        white = Image.new("RGBA", raw.size, (255, 255, 255, 255))
+        im = Image.alpha_composite(white, raw.convert("RGBA")).convert("RGB")
+    else:
+        im = raw.convert("RGB")
     arr = np.asarray(im, dtype=np.uint8)
     bg = arr[2, 2].astype(np.int16)
     thresh = 35 if int(bg.min()) > 245 else 8
@@ -339,6 +344,8 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
         exp_offsets = {{
             "AS5600_Sensor_SubPCB": (-13.5, 0.0, 7.5),
             "AS5600_SOIC8_IC": (-12.5, 0.0, 7.5),
+            "AS5600_Cap_C1_100nF": (-12.5, 0.0, 7.5),
+            "AS5600_Cap_C2_1uF": (-12.5, 0.0, 7.5),
             "Diametric_Magnet_3x1mm": (-8.5, 0.0, 7.5),
             "Bearing_MR52_West": (-5.2, 0.0, 7.5),
             "SUS304_Flywheel_Cup_16p8mm": (-1.2, 0.0, 7.5),
@@ -775,8 +782,8 @@ def generate_parts_guide():
             ("#04B  沈み込みベース枠 [移植用]", rendered["p04b"], "任意: 1個 ｜ 23.7 × 23.7 × 6.74 mm", "JLC3DP (SLA) : wheel-base-frame-sunk.step", C_CUSTOM),
             ("#05  ポッド台座", rendered["p05"], "数量: 1個 ｜ 52.0 × 36.0 × 6.6 mm", "JLC3DP (SLA) : eval-pod-stand.step", C_CUSTOM),
             ("#06  キャリア基板", ASSETS_DIR / "render_pcb_wheel_eval.png", "数量: 1枚 ｜ 48.0 × 32.0 × 板厚1.6 mm", "JLCPCB (Top PCBA) : curcur40-wheel-eval", C_ELEC),
-            ("#07  センサー基板", ASSETS_DIR / "render_pcb_wheel_sensor.png", "数量: 1枚 ｜ 8.8 × 8.8 × 板厚0.8 mm必須", "JLCPCB (0.8mm生基板) : curcur40-wheel-sensor", C_ELEC),
-            ("#08  AS5600 IC (＋パスコン)", rendered["p08"], "数量: IC×1 ＋ コンデンサ 100nF/1μF 各1", "通販 : AS5600-ASOT (SOIC-8) ※#07へ実装", C_ELEC),
+            ("#07  センサー基板 [PCBA実装済]", ASSETS_DIR / "render_pcb_wheel_sensor.png", "数量: 1枚 ｜ 22×22枠→折って8.8×8.8 (厚0.8mm)", "JLCPCB (0.8mm Top PCBA) : #08実装済!", C_ELEC),
+            ("#08  AS5600 IC [個別購入不要]", rendered["p08"], "PCBA実装済 ｜ U1(C499458)＋C1/C2パスコン", "JLCPCB PCBA : #07の表面へ自動実装済!", C_ELEC),
             ("#09  RP2040-Zero", rendered["p09"], "数量: 1個 ｜ ピンヘッダ未実装タイプ", "通販 : Waveshare RP2040-Zero (USB-C)", C_ELEC),
             ("#10  静音スイッチ", rendered["p10"], "数量: 1個 ｜ 6.2 × 6.2 × 高4.3 mm", "遊舎工房/通販 : Kailh Square Silent (2ピン)", C_ELEC),
             ("#11  センサー4芯線", "CUSTOM_WIRE", "数量: 1式 ｜ AWG30〜34 約60mm × 4本", "通販 : 極細シリコン撚り線 または JST SH線", C_ELEC),
