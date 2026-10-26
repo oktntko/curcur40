@@ -52,10 +52,10 @@ def generate_vertical_stackup_diagram():
     ax.add_patch(usbc)
     ax.text(70.5, -6.625, "Mid-Mount\nUSB-C\n(1.65mm)", ha='center', va='center', fontsize=7.0, color='white', fontweight='bold')
 
-    # 3. JST SH 6-pin Connector rJ3 (2.95mm -> Z = -8.75mm)
+    # 3. JST SH 6-pin Connectors rJ3 / rJ5 (2.95mm -> Z = -8.75mm)
     jst = patches.Rectangle((81, -5.8 - 2.95), 16, 2.95, linewidth=1, edgecolor='#003049', facecolor='#0077b6', alpha=0.85)
     ax.add_patch(jst)
-    ax.text(89, -7.27, "JST SH rJ3\n(2.95mm)", ha='center', va='center', fontsize=7.5, color='white', fontweight='bold')
+    ax.text(89, -7.27, "JST SH rJ3/rJ5\n(2.95mm)", ha='center', va='center', fontsize=7.0, color='white', fontweight='bold')
 
     # Standoff Representation (5.5mm perimeter standoff stands on boss top Z=-9.1, reaches Z=-3.6 under Top Plate!)
     standoff = patches.Rectangle((108, -9.1), 6, 5.5, linewidth=1.5, edgecolor='#d4a373', facecolor='#faedcd', hatch='//')
