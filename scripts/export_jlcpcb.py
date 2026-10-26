@@ -165,6 +165,7 @@ def export_gerber_zip(pcb_path, zip_path):
 # JLCPCB 3D/DFM model rotation offsets (in degrees, added to standard bottom-side rotation (180 - krot) % 360)
 # Verified against JLCPCB DFM Component Placement viewer:
 JLCPCB_ROT_OFFSETS = {
+    "SOIC-8_3.9x4.9mm_P1.27mm": 270.0,       # Wheel Sensor U1 (AS5600-ASOT, C499458): -90 deg in Top view
     "SOIC-8_5.3x5.3mm_P1.27mm": 270.0,       # U4/rU4 (W25Q128JVSIQ, C97521/C113767): 90 deg CW in Bottom view
     "SOT-223-3_TabPin2": 180.0,              # U2/rU2 (NCP1117LPST33T3G, C146799): 180 deg in Bottom view
     "USON-10_2.5x1.0mm_P0.5mm": 270.0,       # U3/U5, rU3/rU5 (TPD4E05U06DQAR, C138714): 90 deg CW in Bottom view
@@ -181,6 +182,7 @@ def verify_jlcpcb_preflight(
     zero_erc_warn: bool = False,
     min_board_mm: float = 20.0,
     extra_forbidden_refs: set = None,
+    single_side_layer: str = None,
     bom_groups: dict = None,
     cpl_rows: list = None,
 ):
@@ -322,6 +324,11 @@ def verify_jlcpcb_preflight(
         if extra_forbidden_refs:
             forbidden_dnp |= set(extra_forbidden_refs)
         assert not (bom_refs & forbidden_dnp), f"[{proj_name}] DNP/THT ref found in BOM/CPL: {bom_refs & forbidden_dnp}"
+        if single_side_layer is not None:
+            wrong_side = [row[0] for row in cpl_rows if row[6] != single_side_layer]
+            assert not wrong_side, (
+                f"[{proj_name}] Expected single-sided '{single_side_layer}' PCBA, found wrong-side refs: {wrong_side}"
+            )
 
     via_w_disp = 0.0 if (is_plate or min_via_w == float("inf")) else min_via_w
     via_d_disp = 0.0 if (is_plate or min_via_drill == float("inf")) else min_via_drill
@@ -341,6 +348,7 @@ def export_main_pcb(
     zero_erc_warn=False,
     min_board_mm=20.0,
     extra_forbidden_refs=None,
+    single_side_layer=None,
 ):
     out_dir = os.path.join(os.path.dirname(pcb_path), "jlcpcb", "production_files")
     os.makedirs(out_dir, exist_ok=True)
@@ -411,6 +419,7 @@ def export_main_pcb(
         zero_erc_warn=zero_erc_warn,
         min_board_mm=min_board_mm,
         extra_forbidden_refs=extra_forbidden_refs,
+        single_side_layer=single_side_layer,
         bom_groups=bom_groups,
         cpl_rows=cpl_rows,
     )
@@ -452,8 +461,9 @@ if __name__ == "__main__":
         "curcur40-wheel-sensor",
         custom_map=WHEEL_SENSOR_PARTS,
         zero_erc_warn=True,
-        min_board_mm=5.0,
-        extra_forbidden_refs={"J1"},
+        min_board_mm=20.0,
+        extra_forbidden_refs={"J1", "MB1", "MB2"},
+        single_side_layer="top",
     )
     export_main_pcb(
         str(WORKSPACE / "pcbs" / "inertia-wheel-eval" / "curcur40-wheel-eval.kicad_pcb"),
@@ -462,5 +472,6 @@ if __name__ == "__main__":
         zero_erc_warn=True,
         min_board_mm=20.0,
         extra_forbidden_refs={"U1", "SW1", "J2", "H1", "H2", "H3", "H4", "H5", "H6"},
+        single_side_layer="top",
     )
     export_top_plates()
