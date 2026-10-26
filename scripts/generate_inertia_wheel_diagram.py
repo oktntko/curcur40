@@ -7,10 +7,9 @@ Internal 9-Ball Eddy-Current-Free Ratchet + Twin 180°-Symmetric Pyramid-Deep-R 
 Outputs into `docs/assets/`:
   1. render_pcb_wheel_sensor.png / render_pcb_wheel_sensor_back.png / render_pcb_wheel_eval.png
   2. render_inertia_wheel_flywheel.png / render_inertia_wheel_module.png / render_inertia_wheel_eval_pod.png
-  3. render_curcur40_right_inertia_wheel.png / render_curcur40_right_inertia_wheel_sunk.png
+  3. render_curcur40_right_inertia_wheel_sunk.png
   4. passive_inertia_wheel_spec.png
-  5. inertia_wheel_height_comparison.png
-  6. inertia_wheel_parts_guide.png
+  5. inertia_wheel_parts_guide.png
 """
 from pathlib import Path
 import json
@@ -95,12 +94,6 @@ def render_pcb_and_step_previews():
             "display": "parts",
         },
         {
-            "input": str(asm_dir / "curcur40-right-with-inertia-wheel.step"),
-            "outputs": [str(ASSETS_DIR / "render_curcur40_right_inertia_wheel.png")],
-            "camera": "iso",
-            "display": "parts",
-        },
-        {
             "input": str(asm_dir / "curcur40-right-with-inertia-wheel-sunk.step"),
             "outputs": [str(ASSETS_DIR / "render_curcur40_right_inertia_wheel_sunk.png")],
             "camera": "iso",
@@ -110,7 +103,7 @@ def render_pcb_and_step_previews():
     with tempfile.TemporaryDirectory() as tmp_s:
         job_path = Path(tmp_s) / "preview_jobs.json"
         job_path.write_text(json.dumps({"jobs": step_jobs}, ensure_ascii=False, indent=2), encoding="utf-8")
-        print("Rendering 5 STEP previews into docs/assets/...")
+        print("Rendering 4 STEP previews into docs/assets/...")
         subprocess.run(
             [
                 str(UVX_EXE),
@@ -362,96 +355,6 @@ def _draw_spec_diagram():
     fig.savefig(out_path, dpi=200)
     plt.close(fig)
     print(f"Saved {out_path}")
-
-
-def _draw_height_comparison():
-    fig2, (bx1, bx2) = plt.subplots(1, 2, figsize=(15.4, 6.8), dpi=200)
-    fig2.patch.set_facecolor("#ffffff")
-    fig2.suptitle(
-        "マウントフレーム交換による実装高さ比較：オンボード実装 (#04A) vs 沈み込み実装 (#04B ＋ #20 ツインカバー)",
-        fontsize=12.6,
-        fontweight="bold",
-        y=0.97,
-        color="#1a1a1a",
-    )
-
-    for ax, is_sunk in [(bx1, False), (bx2, True)]:
-        ax.set_xlim(-14.8, 22.5)
-        ax.set_ylim(-15.2, 16.8)
-        ax.set_aspect("equal")
-        ax.set_facecolor("#f8f9fa")
-        ax.grid(True, linestyle=":", linewidth=0.5, color="#cccccc")
-        ax.set_xlabel("Y 座標 [mm]（北 -Y ── ホイールモジュール ── 南 +Y 隣接キー）", fontsize=9.2)
-        ax.set_ylabel("キーボード Z 座標 [mm]（ケース上縁 = 0.00 / プレート上面 = -2.00）", fontsize=9.2)
-
-        ax.axhline(0.0, color="#6c757d", linestyle="-.", linewidth=0.9)
-        ax.text(-14.5, 0.45, "ケース上縁 Z=0", fontsize=6.9, color="#495057")
-        ax.add_patch(patches.Rectangle((-14.8, -15.2), 37.3, 1.25, fc="#adb5bd", ec="#495057", lw=0.9, alpha=0.5, zorder=1))
-        ax.text(3.8, -14.58, "既存ケース内底面は Z ≈ -20.5 mm（さらに下方へ 3.65 mm 以上の余裕・ケース無改造）",
-                ha="center", va="center", fontsize=7.2, fontweight="bold", color="#343a40")
-
-        ax.axhline(-2.00, color="#16425b", linestyle="--", linewidth=1.1, zorder=7)
-        ax.axhline(3.60, color="#0077b6", linestyle=":", linewidth=1.1, zorder=8)
-
-        # Adjacent South Switch + Keycap (rEXSW2 North cap edge at +10.95)
-        ax.add_patch(patches.Rectangle((10.95, -0.80), 11.0, 4.40, fc="#e9ecef", ec="#212529", lw=1.3, zorder=5))
-        ax.text(16.45, 1.40, "隣接キーキャップ\n(Z = -0.8〜+3.6)\n上面 Z = +3.6mm", ha="center", va="center",
-                fontsize=6.9, fontweight="bold", color="#212529",
-                bbox=dict(boxstyle="round,pad=0.15", fc="#e9ecef", ec="none", alpha=0.92), zorder=9)
-
-        if not is_sunk:
-            ax.set_title("① オンボード実装：#04A 基板上載せ枠（基板開口なし：頂点 Z = +14.76 mm）", fontsize=10.2, fontweight="bold", pad=9)
-            ax.add_patch(patches.Rectangle((-14.8, -5.80), 37.3, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
-            ax.add_patch(patches.Rectangle((-14.8, -3.60), 5.7, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
-            ax.add_patch(patches.Rectangle((9.1, -3.60), 13.4, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
-            ax.add_patch(patches.Rectangle((-8.78, -4.19), 17.56, 1.40, fc="#264653", ec="#111111", lw=1.0, zorder=3))
-            wz = 6.36
-            ax.annotate("キー上面から +11.16 mm 突出\n(テスト基板と同じ上載せ構成)", xy=(0.0, wz + 8.4), xytext=(-14.0, 13.4),
-                        arrowprops=dict(arrowstyle="->", color="#d90429", lw=1.2),
-                        fontsize=7.5, fontweight="bold", color="#9d0208",
-                        bbox=dict(boxstyle="round,pad=0.22", fc="#ffe5ec", ec="#d90429", lw=0.9), zorder=10)
-        else:
-            ax.set_title("② 沈み込み実装：#04B 沈み込み枠 ＋ #20 ツインカバー（頂点 Z = +6.40 mm）",
-                         fontsize=10.2, fontweight="bold", pad=9, color="#1b4332")
-            ax.add_patch(patches.Rectangle((-14.8, -5.80), 5.55, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
-            ax.add_patch(patches.Rectangle((9.25, -5.80), 13.25, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
-            ax.add_patch(patches.Rectangle((-14.8, -3.60), 9.27, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
-            ax.add_patch(patches.Rectangle((5.33, -3.60), 17.17, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
-            # Sunk Under-PCB Basket (-13.75) + North Mounting Lug + Spacer Post
-            ax.add_patch(patches.Rectangle((-8.80, -13.75), 17.60, 1.20, fc="#264653", ec="#111111", lw=1.0, zorder=3))
-            ax.add_patch(patches.Rectangle((-14.50, -13.75), 5.70, 7.94, fc="#264653", ec="#111111", lw=1.0, zorder=3))
-            ax.add_patch(patches.Rectangle((-13.90, -5.81), 3.40, 2.20, fc="#264653", ec="#111111", lw=1.0, zorder=3))
-            # #20 Pyramid-Deep-R Cover silhouette (Z_top = +2.68 mm < +3.60 mm keycaps!)
-            cov_sil = patches.Polygon(
-                [[-8.30, -1.99], [-8.30, 0.10], [-7.55, 0.85], [-4.40, 2.68], [4.20, 2.68], [7.35, 0.85], [8.10, 0.10], [8.10, -1.99]],
-                closed=True, fc="#64748b", ec="#1e293b", lw=1.2, alpha=0.55, zorder=8,
-            )
-            ax.add_patch(cov_sil)
-            ax.text(-0.10, 1.35, "#20 ツインRカバー (+2.68mm)\nキーより低く指が引っ掛からない!",
-                    ha="center", va="center", fontsize=6.4, fontweight="bold", color="#ffffff",
-                    bbox=dict(boxstyle="round,pad=0.14", fc="#334155", ec="none", alpha=0.88), zorder=10)
-            wz = -2.00
-            ax.annotate("キー上面からわずか +2.80 mm 突出!\n(回転中心 = プレート上面 Z=-2.00mm\n マウスホイール同等の自然な操作感)",
-                        xy=(0.0, wz + 8.4), xytext=(-14.2, 11.8),
-                        arrowprops=dict(arrowstyle="->", color="#1b4332", lw=1.3),
-                        fontsize=7.4, fontweight="bold", color="#1b4332",
-                        bbox=dict(boxstyle="round,pad=0.25", fc="#d8f3dc", ec="#2b9348", lw=1.0), zorder=10)
-
-        wy = -0.10
-        ax.add_patch(patches.Circle((wy, wz), 8.40, fc="#d8dee9", ec="#4c566a", lw=1.6, alpha=0.88, zorder=6))
-        ax.add_patch(patches.Circle((wy, wz), 6.20, fc="none", ec="#1d3557", lw=0.9, linestyle="--", zorder=7))
-        ax.add_patch(patches.Circle((wy, wz), 1.05, fc="#ffffff", ec="#212529", lw=1.2, zorder=8))
-        ax.plot([wy], [wz], marker="+", color="#d90429", markersize=8, markeredgewidth=1.5, zorder=9)
-        lbl_z = wz - 3.6 if is_sunk else wz - 2.6
-        ax.text(wy, lbl_z, f"軸中心 Z = {wz:+.2f} mm\n頂点 Z = {wz+8.4:+.2f} mm",
-                ha="center", va="center", fontsize=7.3, fontweight="bold", color="#1f2937",
-                bbox=dict(boxstyle="round,pad=0.18", fc="#ffffff", ec="#adb5bd", lw=0.8), zorder=9)
-
-    plt.tight_layout(rect=[0, 0.02, 1, 0.93])
-    out_comp = ASSETS_DIR / "inertia_wheel_height_comparison.png"
-    fig2.savefig(out_comp, dpi=200)
-    plt.close(fig2)
-    print(f"Saved {out_comp}")
 
 
 def _autocrop_pil(img_path: Path, pad_frac: float = 0.08) -> tuple[np.ndarray, tuple[float, float, float]]:
@@ -1031,7 +934,6 @@ def generate_parts_guide():
 def main():
     render_pcb_and_step_previews()
     _draw_spec_diagram()
-    _draw_height_comparison()
     generate_parts_guide()
 
 
