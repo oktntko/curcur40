@@ -15,14 +15,14 @@
 
 /*
  * Passive Magnetic Inertia Wheel Resolution & Filtering Tuning:
- * - Physical hub has 11 discrete Ø2.00 mm SUJ2 steel balls (32.73 deg/detent).
+ * - Physical internal hub has 9 discrete Ø2.00 mm SUJ2 steel balls (40.0 deg/detent).
  * - Recommended WHEEL_NOTCHES_PER_REV presets:
- *     11 : Exact 1:1 HID scroll step per physical magnetic detent
- *     22 : Standard ~16.4 deg mouse wheel pitch (2 steps per physical detent, default)
- *     36 : High-density fast scroll (~10.0 deg per step, matches 36 rim flutes)
+ *      9 : Exact 1:1 HID scroll step per physical magnetic detent
+ *     18 : Standard 20.0 deg mouse wheel pitch (2 steps per physical detent, default)
+ *     36 : High-density fast scroll (10.0 deg per step, matches 36 rim flutes & 4 steps/detent)
  */
 #ifndef WHEEL_NOTCHES_PER_REV
-#    define WHEEL_NOTCHES_PER_REV 22
+#    define WHEEL_NOTCHES_PER_REV 18
 #endif
 
 /* Stationary thermal/Hall micro-jitter deadband in 12-bit LSBs (6 LSB ~= 0.53 deg) */
