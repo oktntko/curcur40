@@ -164,18 +164,26 @@ def _draw_spec_diagram():
     ax1.add_patch(patches.Rectangle((-12.0, -3.60), 3.80, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
     ax1.add_patch(patches.Rectangle((8.20, -3.60), 3.80, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
 
-    # #04B Sunk Base Frame (-13.75..-11.15 floor + East flange [9.35..12.0] up to -5.81)
+    # #04B Sunk Base Frame (-13.75..-11.15 floor + East flange [9.35..12.0] at Z = -11.50..-9.10)
+    # + Common M2 5.50mm Standoff (Z = -9.10..-3.60) + Top & Bottom M2x4mm Screws
     sunk_base_poly = patches.Polygon(
         [
-            [-8.45, -13.75], [11.95, -13.75], [11.95, -5.81], [9.35, -5.81],
-            [9.35, -11.15], [-8.45, -11.15],
+            [-8.45, -13.75], [10.17, -13.75], [10.17, -11.50], [11.95, -11.50],
+            [11.95, -9.10], [9.35, -9.10], [9.35, -11.15], [-8.45, -11.15],
         ],
         closed=True, fc="#264653", ec="#111111", lw=1.0, zorder=3,
     )
     ax1.add_patch(sunk_base_poly)
-    ax1.add_patch(patches.Rectangle((10.50, -5.81), 1.35, 2.20, fc="#264653", ec="#111111", lw=0.9, zorder=3))
-    ax1.text(0.4, -12.45, "#04B 沈み込みベース枠（既存ケース底面まで 3.65mm 以上の余裕・ケース無改造）",
-             ha="center", va="center", fontsize=6.5, color="white", fontweight="bold", zorder=4)
+    # M2 5.50mm Female-Female Standoff (OD Ø3.0 mm, Z = -9.10..-3.60)
+    ax1.add_patch(patches.Rectangle((10.40, -9.10), 1.50, 5.50, fc="#e9c46a", ec="#7f5539", lw=1.0, zorder=4))
+    # Top M2x4mm Screw (head Z = -2.00..-1.00, shank Z = -6.00..-2.00)
+    ax1.add_patch(patches.Rectangle((10.20, -2.00), 1.85, 0.95, fc="#adb5bd", ec="#212529", lw=0.9, zorder=6))
+    ax1.add_patch(patches.Rectangle((10.65, -6.00), 1.00, 4.00, fc="#ced4da", ec="#212529", lw=0.8, hatch="///", zorder=5))
+    # Bottom M2x4mm Screw (head Z = -12.45..-11.50, shank Z = -11.50..-7.50)
+    ax1.add_patch(patches.Rectangle((10.20, -12.45), 1.85, 0.95, fc="#adb5bd", ec="#212529", lw=0.9, zorder=6))
+    ax1.add_patch(patches.Rectangle((10.65, -11.50), 1.00, 4.00, fc="#ced4da", ec="#212529", lw=0.8, hatch="///", zorder=5))
+    ax1.text(-0.2, -12.45, "#04B 沈み込みベース枠（M2 5.5mmスペーサー＋上下ネジ締結・ケース無改造）",
+             ha="center", va="center", fontsize=6.4, color="white", fontweight="bold", zorder=4)
 
     # #03 Slim Rounded-Ear Carriage Pillars (X in [-4.55, -3.05] & [+3.10, +5.35], Z in [-10.40, +1.45])
     ax1.add_patch(patches.Rectangle((-4.55, -10.40), 1.50, 11.85, fc="#dee2e6", ec="#495057", lw=1.0, zorder=3))
@@ -447,6 +455,10 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
             lbl = s.label
             if lbl.startswith("Steel_Ball_2mm_"):
                 dx, dy, dz = (10.2, 0.0, 6.5)
+            elif lbl.startswith("Sunk_Mount_Standoff_"):
+                dx, dy, dz = (0.0, 0.0, -5.0)
+            elif lbl.startswith("Sunk_Mount_Bottom_Screw_"):
+                dx, dy, dz = (0.0, 0.0, -16.5)
             else:
                 dx, dy, dz = exp_offsets.get(lbl, (0.0, 0.0, 0.0))
             ms = s.moved(bd.Location((dx, dy, dz))).solids()[0]
@@ -852,7 +864,7 @@ def generate_parts_guide():
             ("#02  内蔵9球ハブ", rendered["p02"], "数量: 1個 ｜ Ø12.4 × 3.10 mm (#01カップ内部へ完全格納)", "JLC3DP (SLA) : ratchet-hub.step", C_CUSTOM),
             ("#03  キャリッジ (スリム丸耳)", rendered["p03"], "数量: 1個 ｜ 13.77 × 15.87 × 14.24 mm", "JLC3DP (SLA) : wheel-carriage.step", C_CUSTOM),
             ("#04A  オンボードベース枠 [基板上載せ用]", rendered["p04a"], "数量: 1個 ｜ 17.18 × 17.56 × 4.10 mm", "JLC3DP (SLA) : wheel-base-frame.step", C_CUSTOM),
-            ("#04B  沈み込みベース枠 [メイン基板組込用]", rendered["p04b"], "任意: 1個 ｜ 23.35 × 23.70 × 10.14 mm (軸Z=-2.0mm)", "JLC3DP (SLA) : wheel-base-frame-sunk.step", C_CUSTOM),
+            ("#04B  沈み込みベース枠 [メイン基板組込用]", rendered["p04b"], "任意: 1個 ｜ 23.35 × 23.70 × 5.50 mm (軸Z=-2.0mm)", "JLC3DP (SLA) : wheel-base-frame-sunk.step", C_CUSTOM),
             ("#20  ホイールカバー [ツインスナップ式]", rendered["p20"], "任意: 2個 (180°回転対称の完全共通部品!) ｜ 15.4×6.17×7.23 mm", "JLC3DP (SLA) : wheel-cover.step (エッジ曲面ピラミッド)", C_CUSTOM),
             ("#05  ポッド台座", rendered["p05"], "数量: 1個 ｜ 52.0 × 36.0 × 6.6 mm", "JLC3DP (SLA) : eval-pod-stand.step", C_CUSTOM),
             ("#06  キャリア基板", ASSETS_DIR / "render_pcb_wheel_eval.png", "数量: 1枚 ｜ 48.0 × 32.0 × 板厚1.6 mm", "JLCPCB (Top PCBA) : curcur40-wheel-eval", C_ELEC),
@@ -868,7 +880,7 @@ def generate_parts_guide():
             ("#16  角度磁石 [径方向着磁]", "CUSTOM_MAG_DIAM", "数量: 1個 ｜ Ø3.0 × 厚0.75〜1.0 mm", "通販 : 径方向2極着磁ネオジム (AS5600用)", C_MAG),
             ("#17  ラチェット磁石 [軸方向]", "CUSTOM_MAG_AXIAL", "数量: 1個 ｜ Ø1.5〜2.0 × 厚1.0〜1.5 mm", "通販 : 通常の軸方向着磁ネオジム (N35等)", C_MAG),
             ("#18  磁力調整ネジ", rendered["p18"], "数量: 1本 ｜ M2 × 長さ 3〜4 mm", "通販 : 非磁性ステンレス M2 イモネジ/小ねじ", C_MAG),
-            ("#19  固定M2ネジ ＆ ゴム足", rendered["p19"], "数量: M2×4mmネジ 6本 ＋ ゴム足 4個", "通販 : ベース固定2本＋台座4本 (沈み込み版は3本)", C_MAG),
+            ("#19  固定M2ネジ・スペーサー ＆ ゴム足", rendered["p19"], "ポッド: M2×4mm 6本＋ゴム足4 ／ 沈み込み: 5.5mmスペーサー3＋M2×4mm 6本", "通販 : 外周・カップと共通のM2 5.50mmスペーサー3個＋上下M2×4mmネジ6本", C_MAG),
         ]
 
         n_cols, n_rows = 3, 7
