@@ -160,7 +160,7 @@ def _draw_spec_diagram():
     ax1.add_patch(patches.Rectangle((9.25, -5.80), 2.75, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
     ax1.text(-10.6, -6.55, "メインPCB\n(-5.8〜-4.2)", ha="center", va="top", fontsize=6.6, color="#1b4332", fontweight="bold")
 
-    # Top Plate (-3.60..-2.00) with Twin-Snap window (±8.20 mm hidden under ±9.12 mm Twin Covers!)
+    # Top Plate (-3.60..-2.00) with Twin-Snap window (±8.20 mm hidden under ±9.30 mm Twin Covers!)
     ax1.add_patch(patches.Rectangle((-12.0, -3.60), 3.80, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
     ax1.add_patch(patches.Rectangle((8.20, -3.60), 3.80, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
 
@@ -196,25 +196,28 @@ def _draw_spec_diagram():
     ax1.text(-6.31, -2.50, "AS5600", ha="center", va="center", fontsize=5.3, color="white", rotation=90, zorder=6)
     ax1.add_patch(patches.Rectangle((-5.49, z_axle - 1.50), 0.75, 3.00, fc="#e63946", ec="#6a040f", lw=1.0, zorder=6))
 
-    # Twin 180°-Symmetric #20 Pyramid-Deep-R Snap Covers (X in [-9.12, -2.93] & [+2.93, +9.12], Z in [-1.99, +2.68])
+    # Twin 180°-Symmetric #20 Pyramid-Deep-R Snap Covers (X in [-9.30, -3.13] & [+3.13, +9.30], Z in [-1.99, +2.68])
+    # Section at Y = Y_AXLE: swept click-stroke tunnel (X >= -6.15, Z <= +1.83) & #07/AS5600 pocket (X in [-8.15, -5.29],
+    # Z <= +0.93); 0.40 mm gap to the #01 wheel (>= 0.30 mm at the ±0.10 mm lateral snap-leg play)
     for sgn in (-1.0, 1.0):
         cov_pts = [
-            [sgn * 2.93, 1.68],
-            [sgn * 2.93, 2.68],
-            [sgn * 5.80, 2.68],
-            [sgn * 6.55, 2.42],
-            [sgn * 8.75, 0.65],
-            [sgn * 9.12, 0.10],
-            [sgn * 9.12, -1.99],
-            [sgn * 8.13, -1.99],
-            [sgn * 8.13, 0.50],
-            [sgn * 7.60, 0.78],
-            [sgn * 5.65, 0.78],
-            [sgn * 5.65, 1.68],
+            [sgn * 3.13, 1.83],
+            [sgn * 3.13, 2.68],
+            [sgn * 8.30, 2.68],
+            [sgn * 8.60, 2.62],
+            [sgn * 8.90, 2.24],
+            [sgn * 9.10, 1.38],
+            [sgn * 9.25, 0.39],
+            [sgn * 9.30, -0.40],
+            [sgn * 9.30, -1.99],
+            [sgn * 8.15, -1.99],
+            [sgn * 8.15, 0.93],
+            [sgn * 6.15, 0.93],
+            [sgn * 6.15, 1.83],
         ]
         ax1.add_patch(patches.Polygon(cov_pts, closed=True, fc="#64748b", ec="#1e293b", lw=1.35, alpha=0.88, zorder=7))
-        # Snap-hook indicator below Top Plate (-3.60)
-        ax1.add_patch(patches.Rectangle((min(sgn * 5.80, sgn * 7.60), -4.50), 1.80, 2.51,
+        # Snap-leg indicator below the cover (X in [±3.95, ±5.29], located by 1.54 mm plate windows)
+        ax1.add_patch(patches.Rectangle((min(sgn * 3.95, sgn * 5.29), -4.55), 1.34, 2.56,
                                         fc="#94a3b8", ec="#334155", lw=0.9, linestyle="--", alpha=0.75, zorder=5))
 
     # #01 Cup-Shaped SUS304 Flywheel centered at X = 0.00 (X in [-2.73, +2.73], Z in [-10.40, +6.40])
@@ -294,22 +297,25 @@ def _draw_spec_diagram():
                  fontsize=6.6, fontweight="bold", color="#7f2704",
                  bbox=dict(boxstyle="round,pad=0.18", fc="#fff3cd", ec="#d97706", lw=0.8), zorder=9)
 
-    # #20 Pyramid-Deep-R Cover Side Silhouette (Y in [-8.30, +8.10], Z in [-1.99, +2.68]) + N/S Snap Hooks
+    # #20 Pyramid-Deep-R Cover Side Silhouette (Y in [-7.80, +7.60], Z in [-1.99, +2.68]): stays >= 0.48 mm inside
+    # the Ø16.80 mm wheel outline when viewed along the axle, + N/S Snap Hooks
+    yc = -0.10
+    cov_half = [(-1.99, 7.70), (-0.40, 7.70), (0.00, 7.66), (0.50, 7.49), (1.00, 7.25), (1.50, 7.02),
+                (2.00, 6.72), (2.40, 6.18), (2.60, 5.61), (2.68, 5.10)]
     cov_yz = patches.Polygon(
-        [[-8.30, -1.99], [-8.30, 0.10], [-7.55, 0.85], [-4.40, 2.68], [4.20, 2.68], [7.35, 0.85], [8.10, 0.10], [8.10, -1.99]],
+        [[yc - v, z] for (z, v) in cov_half] + [[yc + v, z] for (z, v) in reversed(cov_half)],
         closed=True, fc="#64748b", ec="#1e293b", lw=1.25, alpha=0.42, zorder=7,
     )
     ax2.add_patch(cov_yz)
     for sgn in (-1.0, 1.0):
-        yc = -0.10
         hk = patches.Polygon(
             [
                 [yc + sgn * 4.52, -1.99],
                 [yc + sgn * 5.37, -1.99],
                 [yc + sgn * 5.37, -3.63],
                 [yc + sgn * 5.65, -3.76],
-                [yc + sgn * 5.37, -4.50],
-                [yc + sgn * 4.52, -4.50],
+                [yc + sgn * 5.37, -4.55],
+                [yc + sgn * 4.52, -4.55],
             ],
             closed=True, fc="#475569", ec="#0f172a", lw=1.0, zorder=8,
         )
@@ -845,7 +851,7 @@ def generate_parts_guide():
             ("#03  キャリッジ (スリム丸耳)", rendered["p03"], "数量: 1個 ｜ 13.77 × 15.87 × 14.24 mm", "JLC3DP (SLA) : wheel-carriage.step", C_CUSTOM),
             ("#04A  オンボードベース枠 [基板上載せ用]", rendered["p04a"], "数量: 1個 ｜ 17.18 × 17.56 × 4.10 mm", "JLC3DP (SLA) : wheel-base-frame.step", C_CUSTOM),
             ("#04B  沈み込みベース枠 [メイン基板組込用]", rendered["p04b"], "任意: 1個 ｜ 23.35 × 23.70 × 10.14 mm (軸Z=-2.0mm)", "JLC3DP (SLA) : wheel-base-frame-sunk.step", C_CUSTOM),
-            ("#20  ホイールカバー [ツインスナップ式]", rendered["p20"], "任意: 2個 (180°回転対称の完全共通部品!) ｜ 16.4×6.19×7.23 mm", "JLC3DP (SLA) : wheel-cover.step (エッジ曲面ピラミッド)", C_CUSTOM),
+            ("#20  ホイールカバー [ツインスナップ式]", rendered["p20"], "任意: 2個 (180°回転対称の完全共通部品!) ｜ 15.4×6.17×7.23 mm", "JLC3DP (SLA) : wheel-cover.step (エッジ曲面ピラミッド)", C_CUSTOM),
             ("#05  ポッド台座", rendered["p05"], "数量: 1個 ｜ 52.0 × 36.0 × 6.6 mm", "JLC3DP (SLA) : eval-pod-stand.step", C_CUSTOM),
             ("#06  キャリア基板", ASSETS_DIR / "render_pcb_wheel_eval.png", "数量: 1枚 ｜ 48.0 × 32.0 × 板厚1.6 mm", "JLCPCB (Top PCBA) : curcur40-wheel-eval", C_ELEC),
             ("#07  センサー基板 [PCBA実装済・段付き]", ASSETS_DIR / "render_pcb_wheel_sensor.png", "数量: 1枚 ｜ 22×22枠→折って8.8/7.9×8.66 (厚0.8mm)", "JLCPCB (0.8mm Top PCBA) : #08実装済・#20カバー内格納!", C_ELEC),
