@@ -275,8 +275,9 @@ def _draw_spec_diagram():
     ax2.add_patch(patches.Rectangle((-12.3, -3.60), 6.77, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=3))
     ax2.add_patch(patches.Rectangle((5.33, -3.60), 7.97, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=3))
 
-    # #04B Sunk Base Floor & North Hinge Pin Ø2.0 mm at (Y = -6.85, Z = -10.40)
-    ax2.add_patch(patches.Rectangle((-8.80, -13.75), 17.60, 1.20, fc="#264653", ec="#111111", lw=1.0, zorder=2))
+    # #04B Sunk Base Floor (with Ø2.00 mm switch pin hole at Y = 5.70 ± 1.00) & North Hinge Pin Ø2.0 mm at (Y = -6.85, Z = -10.40)
+    ax2.add_patch(patches.Rectangle((-8.80, -13.75), 13.50, 1.20, fc="#264653", ec="#111111", lw=1.0, zorder=2))
+    ax2.add_patch(patches.Rectangle((6.70, -13.75), 2.10, 1.20, fc="#264653", ec="#111111", lw=1.0, zorder=2))
     ax2.add_patch(patches.Circle((-6.85, -10.40), 1.00, fc="#ffffff", ec="#212529", lw=1.5, zorder=6))
     ax2.text(-6.85, -11.65, "北端ヒンジ軸 Ø2.0", ha="center", va="top", fontsize=6.6, fontweight="bold", color="#212529",
              bbox=dict(boxstyle="round,pad=0.14", fc="#ffffff", ec="#adb5bd", lw=0.7), zorder=8)
@@ -288,10 +289,11 @@ def _draw_spec_diagram():
     )
     ax2.add_patch(carriage_poly)
 
-    # #10 Kailh Square Silent Switch (H=4.3mm official drawing: 6.20 x 3.35 mm body + Ø3.00 x 0.95 mm plunger = 4.30 mm FP)
+    # #10 Kailh Square Silent Switch (H=4.3mm published drawing: 6.20 x 3.35 mm body + Ø3.00 x 0.95 mm plunger = 4.30 mm FP + 2x 3.30 mm THT pins)
+    ax2.add_patch(patches.Rectangle((5.50, -15.83), 0.40, 3.30, fc="#ced4da", ec="#343a40", lw=0.9, zorder=3))
     ax2.add_patch(patches.Rectangle((2.60, -12.53), 6.20, 3.35, fc="#f4a261", ec="#9c4100", lw=1.2, zorder=4))
     ax2.add_patch(patches.Rectangle((4.20, -9.18), 3.00, 0.95, fc="#e63946", ec="#6a040f", lw=1.0, zorder=5))
-    ax2.annotate("#10 静音マイクロSW (Kailh Silent)\nプレート下へ完全沈み込み!",
+    ax2.annotate("#10 静音マイクロSW (Kailh Silent)\n底面2穴からピンが貫通＆抜け止め!",
                  xy=(5.70, -10.8), xytext=(5.6, -14.25), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#9c4100", lw=1.1),
                  fontsize=6.6, fontweight="bold", color="#7f2704",
