@@ -80,10 +80,21 @@ HINGE_Y = -6.85
 HINGE_Z = 2.15
 
 # Click-swing kinematics: the `#03` carriage (with `#01` wheel, bearings, shaft, magnets and the `#07` AS5600
-# sub-PCB) pivots about the North `#15` hinge pin. The deterministic press envelope ends where the South-East
-# striker tab corner `(Y = +7.10, Z = +4.38)` bottoms out on the `#10` switch body top (`Z = +3.82`).
+# sub-PCB) pivots about the North `#15` hinge pin. Per the Kailh Square Silent `6.2 x 6.2 x 4.3 mm` (`H=4.3mm`)
+# mechanical drawing:
+#   - Molded housing body : 6.20 x 6.20 x 3.35 mm (`Z_mod in [0.02, 3.37]`)
+#   - Actuator plunger    : Ø3.00 mm (`R = 1.50 mm`), Free Position `FP = 4.30 ± 0.15 mm` (`Z_mod = 4.32 mm`),
+#                           Operating Position `OP = 4.10 ± 0.20 mm`, Pre-Travel `PT = 0.20 ± 0.1 mm`
+#   - Striker bottom      : `Z_mod = 4.38 mm` (`0.06 mm` nominal free gap above `FP`, actuation at `0.26 mm` / `1.12°`,
+#                           deterministic full over-travel envelope to `Z_mod = 3.82 mm` = `0.50 mm` plunger compression
+#                           / `2.34°` rotation).
+SWITCH_BODY_H = 3.35
+SWITCH_PLUNGER_R = 1.50
+SWITCH_FP_H = 4.30
+SWITCH_OP_H = 4.10
+SWITCH_PT = 0.20
 STRIKER_CORNER_YZ = (7.10, 4.38)
-SWITCH_BODY_TOP_Z = 0.02 + 3.80
+SWITCH_BODY_TOP_Z = 0.02 + 3.80  # Deterministic 0.50 mm plunger bottom-out envelope (Z_mod = 3.82 mm)
 MOVE_CLR = 0.30         # JLC3DP moving-part clearance (>= 0.30 mm)
 COV_PLAY_X = 0.10       # Cover lateral play: 1.80 mm snap legs in 2.00 mm plate windows (±0.10 mm)
 COV_PLAY_Y = 0.06       # Cover longitudinal play: snap legs (Y_AXLE ± 5.37) in plate windows (Y_AXLE ± 5.43)
@@ -98,32 +109,34 @@ COV_Z_TOP = +2.68       # 0.92 mm lower than +3.60 mm Choc V2 keycaps, 3.72 mm l
 COV_SILHOUETTE_MARGIN = 0.30  # Cover side silhouette stays >= 0.30 mm inside the Ø16.80 mm wheel outline
 
 # Snap legs (sensor-side cover, mirrored by the 180° rotation for the companion cover):
-COV_LEG_X = -4.62       # Leg X center (X in [-5.29, -3.95], East of the #07 PCB / AS5600 swing pocket)
-COV_LEG_W = 1.34        # Leg width (1.54 mm plate window -> ±0.10 mm lateral play)
+COV_LEG_X = -4.85       # Leg X center (X in [-5.75, -3.95], East of the #07 PCB swing pocket)
+COV_LEG_W = 1.80        # Leg width (2.00 mm plate window [3.85, 5.85] -> ±0.10 mm lateral play)
 COV_LEG_Y_IN = 4.52     # Leg inner face |Y - Y_AXLE|
 COV_LEG_Y_OUT = 5.37    # Leg outer face |Y - Y_AXLE| (0.06 mm to the Y_AXLE ± 5.43 plate window edge)
-COV_POCKET_HALF_W = 5.11  # |Y - Y_AXLE| of the swept #07 PCB / AS5600 pocket (asserted >= the swept envelope)
+COV_POCKET_HALF_W = 5.11  # |Y - Y_AXLE| of the swept #07 PCB pocket (asserted >= the swept envelope)
 COV_LEG_CHAMFER = COV_LEG_Y_OUT - COV_POCKET_HALF_W  # 0.26 mm 45° outer-edge chamfers: clear the R = 0.45 mm
 #                                                      window corners and start flush with the pocket side wall
 COV_BARB_TIP = 5.65     # Barb tip |Y - Y_AXLE| (0.22 mm latch under the FR-4 Top Plate)
-COV_BARB_W = COV_LEG_W - 2.0 * COV_LEG_CHAMFER  # 0.82 mm barb, flush with the chamfered leg outer face
+COV_BARB_W = COV_LEG_W - 2.0 * COV_LEG_CHAMFER  # 1.28 mm barb, flush with the chamfered leg outer face
 
 # Sunk Top Plate opening, quadrant `(+u, +v)` relative to the axle `(0, Y_AXLE)` as `(u, v, corner_radius)`.
 # The full outline is mirrored into all four quadrants (identical vertex list in `scripts/generate_plates.py`).
-#   - Wheel slot      : |u| <= 3.08, |v| <= 9.08 (R = 0.55) -> >= 0.30 mm to the wheel over the full click stroke
+#   - Wheel slot      : |u| <= 3.04, |v| <= 9.08 (R = 0.55) -> >= 0.30 mm to the wheel over the full click stroke
 #   - Core window     : |u| <= 8.20, |v| <= 4.20 (bearing ears, magnets, AS5600 IC swing envelope)
 #   - #07 PCB window  : 6.65 <= |u| <= 8.20, |v| <= 5.30 (R = 0.50) -> >= 0.30 mm to the #07 PCB swing envelope
-#   - Snap windows    : 3.85 <= |u| <= 5.39, |v| <= 5.43 (R = 0.45) -> locate the 1.34 mm legs at ±0.10 mm
+#   - Snap windows    : 3.85 <= |u| <= 5.85, |v| <= 5.43 (R = 0.45) -> locate the 1.80 mm legs at ±0.10 mm
+#   - FR-4 shoulders  : inner 3.85 - 3.04 = 0.81 mm (>= 0.80 mm), outer 6.65 - 5.85 = 0.80 mm (>= 0.80 mm),
+#                       concave inner corners filleted at R = 0.25 mm (zero R = 0.00 sharp corners)
 SUNK_PLATE_OPENING_Q1 = [
     (8.20, 5.30, 0.50),
     (6.65, 5.30, 0.50),
-    (6.65, 4.20, 0.00),
-    (5.39, 4.20, 0.00),
-    (5.39, 5.43, 0.45),
+    (6.65, 4.20, 0.25),
+    (5.85, 4.20, 0.25),
+    (5.85, 5.43, 0.45),
     (3.85, 5.43, 0.45),
-    (3.85, 4.20, 0.00),
-    (3.08, 4.20, 0.00),
-    (3.08, 9.08, 0.55),
+    (3.85, 4.20, 0.25),
+    (3.04, 4.20, 0.25),
+    (3.04, 9.08, 0.55),
 ]
 
 
@@ -684,21 +697,20 @@ def build_cover_swing_voids_plate_coords() -> bd.Shape:
     (offset by `0.30 mm` + cover play) is swept over the full click-press stroke `[0, CLICK_SWEEP_DEG]` about the
     hinge axis and mirrored about `Y = Y_AXLE` (companion side), then bounded by simple analytic shapes whose
     faces never form `< 0.80 mm` internal steps:
-      1) Bearing-ear / bearing / magnet tunnel: one cylinder (`R = 3.45 + 0.36 + h`) whose centre is lowered by `h`
-         so it contains the ear circle at rest AND at both mirrored bottom-out positions (crown roof unchanged),
-         `X in [-6.55, -2.40]` (`>= 0.40 mm` axial clearance to the `#16` sensor magnet at `X = -5.49`)
-      2) `AS5600` SOIC-8 envelope box: `X in [-6.55, -5.29]`, top flush with the `#07` pocket ceiling
-      3) `#07` stepped sub-PCB envelope: `X in [-8.15, -6.55]`, YZ section = swept lower (`Y_AXLE ± 4.40`) and
-         upper (`Y_AXLE ± 3.95`, `R = 0.60 mm` top corners) PCB outlines joined by `0.80 mm`-rise slopes and
-         `0.57 mm` ceiling chamfers
+      1) Bearing-ear / bearing / magnet / `AS5600` SOIC-8 body tunnel: one cylinder (`R = 3.45 + 0.36 + h`) whose
+         centre is lowered by `h` so it contains the ear circle AND the `3.90 x 4.90 mm` `AS5600` SOIC-8 body at rest
+         AND at both mirrored bottom-out positions (crown roof unchanged), `X in [-6.61, -2.40]` (`>= 0.40 mm` axial
+         clearance to the `#08` `AS5600` body at `X = -5.69`, `#16` magnet at `X = -5.49`, and companion East ear)
+      2) `#07` stepped sub-PCB & SOIC-8 lead-frame envelope: `X in [-8.15, -5.75]` (`>= 0.40 mm` axial clearance to
+         `#07` PCB `-6.95` and SOIC-8 gull-wing leads `-6.64`), `Y = Y_AXLE ± 5.11 mm`, `0.80 mm` ceiling chamfers
     """
     zo = CZ_SUNK
     x_pcb0 = -7.75 - ENV_CLR_X   # -8.15
-    x_prof1 = -5.69 + ENV_CLR_X  # -5.29 (AS5600 IC East face + 0.40 mm); profile void spans X in [-8.15, -5.29]
+    x_prof1 = -5.75              # -5.75 (coplanar with the 1.80 mm snap leg West face; clears #07 PCB & SOIC-8 leads)
     # Tunnel starts 0.86 mm West of the profile end so its end face never forms a < 0.80 mm step with it, and so
-    # that the companion cover (180° copy) also clears the East bearing ear (X <= +5.35 -> +5.75 with 0.40 mm).
-    x_tun0 = x_prof1 - 0.86      # -6.15
-    assert x_tun0 <= -5.49 - ENV_CLR_X and x_tun0 <= -(5.35 + ENV_CLR_X)
+    # that it encloses the AS5600 SOIC-8 body (X in [-6.94, -5.69]) and companion East bearing ear (X <= +5.35).
+    x_tun0 = x_prof1 - 0.86      # -6.61
+    assert x_tun0 <= -5.69 - ENV_CLR_X and x_tun0 <= -(5.35 + ENV_CLR_X)
     # 1) Tunnel: rest centre c0 = (Y_AXLE, -2.00); bottom-out centres c1 = (Y_AXLE ± dy, -2.00 - dz)
     c1y, c1z = _press_yz(Y_AXLE, -2.00, CLICK_SWEEP_DEG, zo)
     dy, dz = abs(c1y - Y_AXLE), abs(c1z - (-2.00))
@@ -716,15 +728,15 @@ def build_cover_swing_voids_plate_coords() -> bd.Shape:
             z0_mod + zo - ENV_CLR_YZ, z1_mod + zo + ENV_CLR_YZ, zo,
         )
 
-    # 2+3) #07 PCB stepped envelope (relative half-widths about Y_AXLE), also enclosing the AS5600 IC and the
-    #      #16 sensor magnet (X in [-5.49, -4.74]) up to the tunnel start plane X = -5.29
+    # 2) #07 PCB stepped envelope (relative half-widths about Y_AXLE), also enclosing SOIC-8 gull-wing leads (Y ± 3.00)
+    #    while verify_tunnel checks that the 3.90 x 4.90 mm SOIC-8 body lies 100% inside `r_tun`
     lo_ya, lo_yb, _, _ = bounds(4.40, 4.45, 10.30)
     up_ya, up_yb, _, up_zt = bounds(3.95, 10.30, 13.11)
     w_pcb_req = max(Y_AXLE - lo_ya, lo_yb - Y_AXLE, Y_AXLE - up_ya, up_yb - Y_AXLE)
     assert w_pcb_req <= COV_POCKET_HALF_W, f"#07 pocket half-width {w_pcb_req:.3f} > {COV_POCKET_HALF_W:.2f} mm"
     w_pcb = COV_POCKET_HALF_W
-    ic_ya, ic_yb, _, ic_zt = bounds(3.00, 10.05 - 2.45, 10.05 + 2.45)
-    assert max(Y_AXLE - ic_ya, ic_yb - Y_AXLE) <= w_pcb and ic_zt <= up_zt
+    ic_body_ya, ic_body_yb, _, ic_zt = bounds(1.95, 10.05 - 2.45, 10.05 + 2.45)
+    assert math.hypot(max(Y_AXLE - ic_body_ya, ic_body_yb - Y_AXLE), ic_zt - (-2.00 - h)) <= r_tun
     z_bot = -9.50
     c_top = 0.80  # 45° ceiling chamfers (>= 0.80 mm so side wall and ceiling never form a thin step pair)
     half = [
@@ -750,8 +762,8 @@ def build_wheel_cover_plate_coords() -> bd.Solid:
         and the inner face keeps `0.40 mm` to the `#01` wheel (`>= 0.30 mm` even at the `±0.10 mm` lateral play).
       - Interior cavities: swept click-stroke envelopes of the bearing ear / magnet / `AS5600` IC / `#07` PCB
         (`build_cover_swing_voids_plate_coords`) -> `>= 0.30 mm` moving clearance from rest to switch bottom-out.
-      - Attachment: Switch-style North & South cantilever snap legs (`0.85 mm` thick, `1.34 mm` wide at `X = -4.62`,
-        `0.26 mm` outer-edge chamfers) located by `1.54 mm` wide plate windows (`±0.10 mm` play), with `0.82 mm` wide
+      - Attachment: Switch-style North & South cantilever snap legs (`0.85 mm` thick, `1.80 mm` wide at `X = -4.85`,
+        `0.26 mm` outer-edge chamfers) located by `2.00 mm` wide plate windows (`±0.10 mm` play), with `1.28 mm` wide
         `0.28 mm` latch barbs (`Z = -3.63 .. -4.55 mm`) snapping under the `1.60 mm` FR-4 Top Plate (`Z = -3.60 mm`).
     """
     outer = build_cover_outer_plate_coords()
@@ -1025,7 +1037,8 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
 
     # 9. Diametric Sensor Magnet Ø3.0 x 0.75 mm (X_mod in [-5.49, -4.74]) + Stepped Top-Side PCBA AS5600 SubPCB:
     #    - SubPCB 8.80/7.90 x 8.66 x 0.80 mm (X_mod in [-7.75, -6.95], Z_mod in [4.45, 13.11])
-    #    - U1 AS5600-ASOT SOIC-8 (X_mod in [-6.94, -5.69], Y = Y_AXLE ± 3.00, Z = 10.05 ± 2.45)
+    #    - U1 AS5600-ASOT SOIC-8 (JEDEC MS-012: 3.90 x 4.90 x 1.25 mm body at X_mod in [-6.94, -5.69], Y = Y_AXLE ± 1.95,
+    #      plus 6.00 x 4.90 x 0.30 mm gull-wing lead frame at X_mod in [-6.94, -6.64], Z = 10.05 ± 2.45)
     #    - C1 (100nF 0402) & C2 (1uF 0402) on F.Cu at Z_mod = 6.40 mm
     sens_mag = (
         bd.Cylinder(radius=1.50, height=0.75, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
@@ -1036,10 +1049,15 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
 
     as5600_pcb = build_stepped_sensor_pcb_mod()
 
-    as5600_ic = bd.Box(
-        1.25, 6.00, 4.90,
+    as5600_body = bd.Box(
+        1.25, 3.90, 4.90,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
     ).moved(bd.Location((-6.94, Y_AXLE, 10.05)))
+    as5600_leads = bd.Box(
+        0.30, 6.00, 4.90,
+        align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
+    ).moved(bd.Location((-6.94, Y_AXLE, 10.05)))
+    as5600_ic = (as5600_body + as5600_leads).solids()[0]
     as5600_ic.label = "AS5600_SOIC8_IC"
 
     as5600_c1 = bd.Box(
@@ -1054,14 +1072,17 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
     ).moved(bd.Location((-6.94, Y_AXLE + 0.10, 6.40)))
     as5600_c2.label = "AS5600_Cap_C2_1uF"
 
-    # 10. Kailh Square Silent Micro Switch (6.2 x 6.2 x 3.8 mm molded body with R=0.40mm corners + 0.46 mm red button)
+    # 10. Kailh Square Silent Micro Switch (`6.2 x 6.2 x 4.3 mm`, official H=4.3mm drawing:
+    #     6.20 x 6.20 x 3.35 mm molded housing with R=0.40 mm corners + Ø3.00 x 0.95 mm plunger -> FP = 4.30 mm)
     with bd.BuildSketch(bd.Plane.XY.offset(0.02)) as sk_sw:
         with bd.Locations([(6.20, 5.70)]):
             bd.RectangleRounded(6.20, 6.20, 0.40)
-    sw_body = bd.extrude(sk_sw.sketch, amount=3.80).solids()[0]
+    sw_body = bd.extrude(sk_sw.sketch, amount=SWITCH_BODY_H).solids()[0]
     sw_btn = bd.Cylinder(
-        radius=1.30, height=0.46, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-    ).moved(bd.Location((6.20, 5.70, 3.82)))
+        radius=SWITCH_PLUNGER_R,
+        height=SWITCH_FP_H - SWITCH_BODY_H,
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((6.20, 5.70, 0.02 + SWITCH_BODY_H)))
     silent_sw = (sw_body + sw_btn).solids()[0]
     silent_sw.label = "Kailh_Silent_Switch_6x6x4p3"
 
@@ -1271,11 +1292,11 @@ def build_sunk_plate_opening_face(z: float = 0.0) -> bd.Face:
 def _build_sunk_top_plate_twin_snap_cutter(cx_step: float, cy_step: float) -> bd.Solid:
     """
     Build Twin-Snap Top Plate cutter at `(cx_step, cy_step)` from `SUNK_PLATE_OPENING_Q1` (36-vertex outline):
-      - Central flywheel slot (`6.16 x 18.16 mm`, `R = 0.55 mm`) -> `>= 0.30 mm` to `#01` over the full click stroke
-      - Core window (`16.40 x 8.40 mm`) for the bearing ears, magnets and `AS5600` IC swing envelope
+      - Central flywheel slot (`6.08 x 18.16 mm`, `R = 0.55 mm`) -> `>= 0.30 mm` to `#01` over the full click stroke
+      - Core window (`16.40 x 8.40 mm`, concave corners `R = 0.25 mm`) for the bearing ears, magnets and `AS5600` IC
       - `#07` PCB swing windows (`6.65 <= |X_mod| <= 8.20`, `Y_mod in [Y_AXLE ± 5.30]`, `R = 0.50 mm`)
       - Symmetric snap-leg windows (`3.85 <= |X_mod| <= 5.85` = `2.00 mm`, `Y_mod in [Y_AXLE ± 5.43]`, `R = 0.45 mm`)
-        locating the `1.80 mm` legs at `±0.10 mm`, 100% hidden beneath the Twin Pyramid-Deep-R covers.
+        locating the `1.80 mm` legs at `±0.10 mm` with all FR-4 shoulders `>= 0.80 mm`, 100% hidden beneath the covers.
     """
     cutter_mod = bd.extrude(build_sunk_plate_opening_face(0.0), amount=3.00).solids()[0]
     return cutter_mod.rotate(bd.Axis.Z, 180).moved(bd.Location((cx_step, cy_step, -4.50))).solids()[0]
