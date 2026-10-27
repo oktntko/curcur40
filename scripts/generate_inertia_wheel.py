@@ -93,6 +93,10 @@ SWITCH_PLUNGER_R = 1.50
 SWITCH_FP_H = 4.30
 SWITCH_OP_H = 4.10
 SWITCH_PT = 0.20
+SWITCH_PIN_PITCH = 5.00
+SWITCH_PIN_LEN = 3.30
+SWITCH_PIN_W = 0.80
+SWITCH_PIN_T = 0.40
 STRIKER_CORNER_YZ = (7.10, 4.38)
 SWITCH_BODY_TOP_Z = 0.02 + 3.80  # Deterministic 0.50 mm plunger bottom-out envelope (Z_mod = 3.82 mm)
 MOVE_CLR = 0.30         # JLC3DP moving-part clearance (>= 0.30 mm)
@@ -499,7 +503,8 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     corresponds to `Z_global = -12.55 mm`, placing rotary axle `Z_AXLE = 10.55 mm` at `Z_global = -2.0000 mm`
     == Top Plate top surface, and wheel top at `Z_global = +6.4000 mm` == +2.80 mm natural mouse protrusion):
       - Continuous 1.20 mm bottom floor (`Z_mod = -1.20 .. 0.00 mm`) across `X in [-8.45, +9.35]`, `Y in [-8.80, +8.80]`,
-        supporting the Kailh Square Silent Switch (`+6.20, +5.70`) directly inside the sunk SE pocket (`Ø3.20 mm` wire exit)
+        supporting the Kailh Square Silent Switch (`+6.20, +5.70`) directly inside the sunk SE pocket with two
+        `Ø2.00 mm` THT pin & wire through-holes at the `5.00 mm` pin pitch (`(+3.70, +5.70)` and `(+8.70, +5.70)`)
       - Raised 2.60 mm inner floor (`Z_mod = -1.20 .. +1.40 mm`) across `Y in [-4.70, +8.80]` outside SE pocket
       - Two North Hinge Outer Ears (`Z_mod = -1.20 .. +4.18 mm`) with `Ø2.06 mm` hinge pin bore
       - East Flange (`X in [+9.35, +14.90]`, `Y in [-4.70, +8.80]`) and North Lug (`X in [-4.70, +0.70]`,
@@ -562,10 +567,11 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     )
     base = base - hinge_bore
 
-    sw_wire_hole = bd.Cylinder(
-        radius=1.60, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)
-    ).moved(bd.Location((6.20, 5.70, -0.60)))
-    base = base - sw_wire_hole
+    for px in (6.20 - 0.5 * SWITCH_PIN_PITCH, 6.20 + 0.5 * SWITCH_PIN_PITCH):
+        sw_pin_hole = bd.Cylinder(
+            radius=1.00, height=11.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        ).moved(bd.Location((px, 5.70, -2.00)))
+        base = base - sw_pin_hole
 
     for mx, my in SUNK_MOUNT_PTS_MOD:
         sh = bd.Cylinder(
@@ -1072,8 +1078,9 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
     ).moved(bd.Location((-6.94, Y_AXLE + 0.10, 6.40)))
     as5600_c2.label = "AS5600_Cap_C2_1uF"
 
-    # 10. Kailh Square Silent Micro Switch (`6.2 x 6.2 x 4.3 mm`, official H=4.3mm drawing:
-    #     6.20 x 6.20 x 3.35 mm molded housing with R=0.40 mm corners + Ø3.00 x 0.95 mm plunger -> FP = 4.30 mm)
+    # 10. Kailh Square Silent Micro Switch (`6.2 x 6.2 x 4.3 mm`, published H=4.3mm drawing:
+    #     6.20 x 6.20 x 3.35 mm molded housing with R=0.40 mm corners + Ø3.00 x 0.95 mm plunger -> FP = 4.30 mm,
+    #     plus 2x THT pins at 5.00 mm pitch `(6.20 ± 2.50, 5.70)` protruding 3.30 mm downward to `Z_mod = -3.28 mm`)
     with bd.BuildSketch(bd.Plane.XY.offset(0.02)) as sk_sw:
         with bd.Locations([(6.20, 5.70)]):
             bd.RectangleRounded(6.20, 6.20, 0.40)
@@ -1083,7 +1090,15 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
         height=SWITCH_FP_H - SWITCH_BODY_H,
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((6.20, 5.70, 0.02 + SWITCH_BODY_H)))
-    silent_sw = (sw_body + sw_btn).solids()[0]
+    sw_pin_l = bd.Box(
+        SWITCH_PIN_W, SWITCH_PIN_T, SWITCH_PIN_LEN + 0.20,
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX),
+    ).moved(bd.Location((6.20 - 0.5 * SWITCH_PIN_PITCH, 5.70, 0.22)))
+    sw_pin_r = bd.Box(
+        SWITCH_PIN_W, SWITCH_PIN_T, SWITCH_PIN_LEN + 0.20,
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX),
+    ).moved(bd.Location((6.20 + 0.5 * SWITCH_PIN_PITCH, 5.70, 0.22)))
+    silent_sw = (sw_body + sw_btn + sw_pin_l + sw_pin_r).solids()[0]
     silent_sw.label = "Kailh_Silent_Switch_6x6x4p3"
 
     # 11. Axial M2 Magnet Gap Adjustment Screw + Ø1.6 x 1.2 mm Ratchet Magnet in lower East Stem
@@ -1391,6 +1406,10 @@ def main():
         carrier_pcb = carrier_pcb - bd.Cylinder(
             radius=1.10, height=5.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
         ).moved(bd.Location((bx, by, 4.00)))
+    for px in (12.5 + 6.20 - 0.5 * SWITCH_PIN_PITCH, 12.5 + 6.20 + 0.5 * SWITCH_PIN_PITCH):
+        carrier_pcb = carrier_pcb - bd.Cylinder(
+            radius=0.55, height=5.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        ).moved(bd.Location((px, 5.70, 4.00)))
     carrier_pcb = carrier_pcb.solids()[0]
     carrier_pcb.label = "Eval_Carrier_PCB_48x32"
 
