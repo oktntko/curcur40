@@ -197,7 +197,7 @@ def _draw_spec_diagram():
     ax1.add_patch(patches.Rectangle((-5.49, z_axle - 1.50), 0.75, 3.00, fc="#e63946", ec="#6a040f", lw=1.0, zorder=6))
 
     # Twin 180°-Symmetric #20 Pyramid-Deep-R Snap Covers (X in [-9.30, -3.13] & [+3.13, +9.30], Z in [-1.99, +2.68])
-    # Section at Y = Y_AXLE: swept click-stroke tunnel (X >= -6.15, Z <= +1.83) & #07/AS5600 pocket (X in [-8.15, -5.29],
+    # Section at Y = Y_AXLE: swept click-stroke tunnel (X >= -6.61, Z <= +1.83) & #07 PCB pocket (X in [-8.15, -5.75],
     # Z <= +0.93); 0.40 mm gap to the #01 wheel (>= 0.30 mm at the ±0.10 mm lateral snap-leg play)
     for sgn in (-1.0, 1.0):
         cov_pts = [
@@ -212,12 +212,12 @@ def _draw_spec_diagram():
             [sgn * 9.30, -1.99],
             [sgn * 8.15, -1.99],
             [sgn * 8.15, 0.93],
-            [sgn * 6.15, 0.93],
-            [sgn * 6.15, 1.83],
+            [sgn * 6.61, 0.93],
+            [sgn * 6.61, 1.83],
         ]
         ax1.add_patch(patches.Polygon(cov_pts, closed=True, fc="#64748b", ec="#1e293b", lw=1.35, alpha=0.88, zorder=7))
-        # Snap-leg indicator below the cover (X in [±3.95, ±5.29], located by 1.54 mm plate windows)
-        ax1.add_patch(patches.Rectangle((min(sgn * 3.95, sgn * 5.29), -4.55), 1.34, 2.56,
+        # Snap-leg indicator below the cover (X in [±3.95, ±5.75], 1.80 mm wide located by 2.00 mm plate windows)
+        ax1.add_patch(patches.Rectangle((min(sgn * 3.95, sgn * 5.75), -4.55), 1.80, 2.56,
                                         fc="#94a3b8", ec="#334155", lw=0.9, linestyle="--", alpha=0.75, zorder=5))
 
     # #01 Cup-Shaped SUS304 Flywheel centered at X = 0.00 (X in [-2.73, +2.73], Z in [-10.40, +6.40])
@@ -288,11 +288,11 @@ def _draw_spec_diagram():
     )
     ax2.add_patch(carriage_poly)
 
-    # #10 Kailh Square Silent Switch at South-East Y = +5.70 (Z in [-12.53, -8.27])
-    ax2.add_patch(patches.Rectangle((2.60, -12.53), 6.20, 3.80, fc="#f4a261", ec="#9c4100", lw=1.2, zorder=4))
-    ax2.add_patch(patches.Rectangle((4.40, -8.73), 2.60, 0.46, fc="#e63946", ec="#6a040f", lw=1.0, zorder=5))
+    # #10 Kailh Square Silent Switch (H=4.3mm official drawing: 6.20 x 3.35 mm body + Ø3.00 x 0.95 mm plunger = 4.30 mm FP)
+    ax2.add_patch(patches.Rectangle((2.60, -12.53), 6.20, 3.35, fc="#f4a261", ec="#9c4100", lw=1.2, zorder=4))
+    ax2.add_patch(patches.Rectangle((4.20, -9.18), 3.00, 0.95, fc="#e63946", ec="#6a040f", lw=1.0, zorder=5))
     ax2.annotate("#10 静音マイクロSW (Kailh Silent)\nプレート下へ完全沈み込み!",
-                 xy=(5.70, -10.6), xytext=(5.6, -14.25), ha="center", va="center",
+                 xy=(5.70, -10.8), xytext=(5.6, -14.25), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#9c4100", lw=1.1),
                  fontsize=6.6, fontweight="bold", color="#7f2704",
                  bbox=dict(boxstyle="round,pad=0.18", fc="#fff3cd", ec="#d97706", lw=0.8), zorder=9)
@@ -498,16 +498,16 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
                 pads.append(pd)
         bd.export_step(bd.Compound(children=[pcb, usbc, mcu, btn1, btn2, rgb, *pads]), str(out / "p09_rp2040_zero.step"))
 
-        # 4. Kailh Square Silent Switch (6.2 x 6.2 x 4.3 mm)
-        sw_base = bd.Box(6.2, 6.2, 2.6, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 2.5)))
+        # 4. Kailh Square Silent Switch (6.2 x 6.2 x 4.3 mm: 3.30 mm pins, 3.35 mm housing body, Ø3.00 x 0.95 mm plunger)
+        sw_base = bd.Box(6.2, 6.2, 2.25, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 3.30)))
         sw_base.label = "SW_Base"
-        sw_top = bd.Box(6.0, 6.0, 1.2, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 5.1)))
+        sw_top = bd.Box(6.0, 6.0, 1.10, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 5.55)))
         sw_top.label = "SW_Cover"
-        sw_btn = bd.Cylinder(1.45, 0.65, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 6.3)))
+        sw_btn = bd.Cylinder(1.50, 0.95, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 6.65)))
         sw_btn.label = "SW_Red_Button"
-        pin_a = bd.Box(0.6, 0.4, 2.5, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-2.5, 0, 0.0)))
+        pin_a = bd.Box(0.75, 0.4, 3.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-2.5, 0, 0.0)))
         pin_a.label = "SW_Pin1"
-        pin_b = bd.Box(0.6, 0.4, 2.5, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((2.5, 0, 0.0)))
+        pin_b = bd.Box(0.75, 0.4, 3.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((2.5, 0, 0.0)))
         pin_b.label = "SW_Pin2"
         bd.export_step(bd.Compound(children=[sw_base, sw_top, sw_btn, pin_a, pin_b]), str(out / "p10_silent_sw.step"))
 
