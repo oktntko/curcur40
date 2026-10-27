@@ -79,11 +79,90 @@ Z_MAG_ADJ = Z_AXLE - R_BALL_ORBIT  # +6.25 mm (= Z_global -6.30 mm in Sunk Varia
 HINGE_Y = -6.85
 HINGE_Z = 2.15
 
+# Click-swing kinematics: the `#03` carriage (with `#01` wheel, bearings, shaft, magnets and the `#07` AS5600
+# sub-PCB) pivots about the North `#15` hinge pin. The deterministic press envelope ends where the South-East
+# striker tab corner `(Y = +7.10, Z = +4.38)` bottoms out on the `#10` switch body top (`Z = +3.82`).
+STRIKER_CORNER_YZ = (7.10, 4.38)
+SWITCH_BODY_TOP_Z = 0.02 + 3.80
+MOVE_CLR = 0.30         # JLC3DP moving-part clearance (>= 0.30 mm)
+COV_PLAY_X = 0.10       # Cover lateral play: 1.80 mm snap legs in 2.00 mm plate windows (±0.10 mm)
+COV_PLAY_Y = 0.06       # Cover longitudinal play: snap legs (Y_AXLE ± 5.37) in plate windows (Y_AXLE ± 5.43)
+ENV_CLR_X = MOVE_CLR + COV_PLAY_X   # 0.40 mm X-direction cover clearance to moving parts
+ENV_CLR_YZ = MOVE_CLR + COV_PLAY_Y  # 0.36 mm Y/Z-direction cover clearance to moving parts
+
 # Pyramid-Deep-R Cover (`#20`, `wheel-cover.step`) envelope in Plate-Top Z coords (`Z_plate = Z_mod + CZ_SUNK`):
-COV_X_PLANE = -2.93     # 0.20 mm clearance beside #01 Flywheel (-2.73 mm), covering carriage bearing ear!
-COV_X_WEST = -9.12      # 6.19 mm East-West width, crisp drop behind #07 Sensor PCB
+COV_X_PLANE = WHEEL_X_MIN - ENV_CLR_X  # -3.13: 0.40 mm beside #01 Flywheel (>= 0.30 mm even at max ±0.10 mm play)
+COV_X_WEST = -9.30      # 6.17 mm East-West width, steep West drop behind the #07 Sensor PCB pocket
 COV_Z_BOT = -1.99       # Sits cleanly on Top Plate top surface (Z = -2.00 mm)
 COV_Z_TOP = +2.68       # 0.92 mm lower than +3.60 mm Choc V2 keycaps, 3.72 mm lower than +6.40 mm wheel top!
+COV_SILHOUETTE_MARGIN = 0.30  # Cover side silhouette stays >= 0.30 mm inside the Ø16.80 mm wheel outline
+
+# Snap legs (sensor-side cover, mirrored by the 180° rotation for the companion cover):
+COV_LEG_X = -4.62       # Leg X center (X in [-5.29, -3.95], East of the #07 PCB / AS5600 swing pocket)
+COV_LEG_W = 1.34        # Leg width (1.54 mm plate window -> ±0.10 mm lateral play)
+COV_LEG_Y_IN = 4.52     # Leg inner face |Y - Y_AXLE|
+COV_LEG_Y_OUT = 5.37    # Leg outer face |Y - Y_AXLE| (0.06 mm to the Y_AXLE ± 5.43 plate window edge)
+COV_POCKET_HALF_W = 5.11  # |Y - Y_AXLE| of the swept #07 PCB / AS5600 pocket (asserted >= the swept envelope)
+COV_LEG_CHAMFER = COV_LEG_Y_OUT - COV_POCKET_HALF_W  # 0.26 mm 45° outer-edge chamfers: clear the R = 0.45 mm
+#                                                      window corners and start flush with the pocket side wall
+COV_BARB_TIP = 5.65     # Barb tip |Y - Y_AXLE| (0.22 mm latch under the FR-4 Top Plate)
+COV_BARB_W = COV_LEG_W - 2.0 * COV_LEG_CHAMFER  # 0.82 mm barb, flush with the chamfered leg outer face
+
+# Sunk Top Plate opening, quadrant `(+u, +v)` relative to the axle `(0, Y_AXLE)` as `(u, v, corner_radius)`.
+# The full outline is mirrored into all four quadrants (identical vertex list in `scripts/generate_plates.py`).
+#   - Wheel slot      : |u| <= 3.08, |v| <= 9.08 (R = 0.55) -> >= 0.30 mm to the wheel over the full click stroke
+#   - Core window     : |u| <= 8.20, |v| <= 4.20 (bearing ears, magnets, AS5600 IC swing envelope)
+#   - #07 PCB window  : 6.65 <= |u| <= 8.20, |v| <= 5.30 (R = 0.50) -> >= 0.30 mm to the #07 PCB swing envelope
+#   - Snap windows    : 3.85 <= |u| <= 5.39, |v| <= 5.43 (R = 0.45) -> locate the 1.34 mm legs at ±0.10 mm
+SUNK_PLATE_OPENING_Q1 = [
+    (8.20, 5.30, 0.50),
+    (6.65, 5.30, 0.50),
+    (6.65, 4.20, 0.00),
+    (5.39, 4.20, 0.00),
+    (5.39, 5.43, 0.45),
+    (3.85, 5.43, 0.45),
+    (3.85, 4.20, 0.00),
+    (3.08, 4.20, 0.00),
+    (3.08, 9.08, 0.55),
+]
+
+
+def sunk_plate_opening_full() -> list[tuple[float, float, float]]:
+    """Full counter-clockwise outline `(u, v, r)` of the sunk Top Plate opening (36 vertices)."""
+    q1 = SUNK_PLATE_OPENING_Q1
+    q2 = [(-u, v, r) for (u, v, r) in reversed(q1)]
+    q3 = [(-u, -v, r) for (u, v, r) in q1]
+    q4 = [(u, -v, r) for (u, v, r) in reversed(q1)]
+    return q1 + q2 + q3 + q4
+
+
+def click_hinge_axis(z_offset: float = 0.0) -> bd.Axis:
+    """Hinge axis of the `#03` carriage (`+X` direction) in module coords (or plate coords with `z_offset`)."""
+    return bd.Axis((0.0, HINGE_Y, HINGE_Z + z_offset), (1.0, 0.0, 0.0))
+
+
+def click_hard_stop_deg() -> float:
+    """Press angle at which the striker tab corner bottoms out on the `#10` switch body (deterministic envelope)."""
+    dy = STRIKER_CORNER_YZ[0] - HINGE_Y
+    dz = STRIKER_CORNER_YZ[1] - HINGE_Z
+    target = SWITCH_BODY_TOP_Z - HINGE_Z
+    lo, hi = 0.0, math.radians(10.0)
+    for _ in range(80):
+        mid = 0.5 * (lo + hi)
+        z_rel = -dy * math.sin(mid) + dz * math.cos(mid)
+        if z_rel > target:
+            lo = mid
+        else:
+            hi = mid
+    return math.degrees(0.5 * (lo + hi))
+
+
+CLICK_SWEEP_DEG = round(click_hard_stop_deg() + 0.05, 2)  # ~2.34° (striker travel ~0.57 mm incl. 0.10 mm free gap)
+
+
+def press_rotate(shape: bd.Shape, deg: float, z_offset: float = 0.0) -> bd.Shape:
+    """Rotate a carriage-mounted shape by `deg` degrees in the press (wheel-down) direction."""
+    return shape.rotate(click_hinge_axis(z_offset), -deg)
 
 
 def build_sus304_flywheel_centered() -> bd.Solid:
@@ -566,89 +645,169 @@ def make_rounded_pyramid_solid(
     return (body & clip).solids()[0]
 
 
+def build_cover_outer_plate_coords() -> bd.Solid:
+    """Solid exterior of the `#20` cover (sensor side, plate coords) before the interior voids and snap legs."""
+    return make_rounded_pyramid_solid(
+        COV_X_WEST, 7.70, 7.00, COV_Z_BOT, COV_Z_TOP,
+        z_skirt_end=-0.40, ux_top=0.90, uy_top=2.80,
+        r_xy_bot=1.80, r_xy_top=1.30, r_eave=3.00, r_crown=1.40,
+    )
+
+
+def _press_yz(y: float, z: float, deg: float, z_offset: float = 0.0) -> tuple[float, float]:
+    """Rotate a point `(y, z)` about the hinge axis by `deg` in the press (wheel-down) direction."""
+    hy, hz = HINGE_Y, HINGE_Z + z_offset
+    th = math.radians(deg)
+    dy, dz = y - hy, z - hz
+    return hy + dy * math.cos(th) + dz * math.sin(th), hz - dy * math.sin(th) + dz * math.cos(th)
+
+
+def _swept_mirrored_yz_bounds(y0, y1, z0, z1, z_offset: float = 0.0) -> tuple[float, float, float, float]:
+    """
+    Axis-aligned YZ bounds of a rectangle swept over `[0, CLICK_SWEEP_DEG]` and mirrored about `Y = Y_AXLE`
+    (the same cover part serves both sides via a 180° rotation, which mirrors the sweep direction).
+    """
+    pts = []
+    for deg in (0.0, 0.5 * CLICK_SWEEP_DEG, CLICK_SWEEP_DEG):
+        for y in (y0, y1):
+            for z in (z0, z1):
+                py, pz = _press_yz(y, z, deg, z_offset)
+                pts.extend([(py, pz), (2.0 * Y_AXLE - py, pz)])
+    ys = [p[0] for p in pts]
+    zs = [p[1] for p in pts]
+    return min(ys) - 0.01, max(ys) + 0.01, min(zs) - 0.01, max(zs) + 0.01
+
+
+def build_cover_swing_voids_plate_coords() -> bd.Shape:
+    """
+    Build the interior clearance voids of the `#20` cover (sensor side, plate coords). Each moving-part envelope
+    (offset by `0.30 mm` + cover play) is swept over the full click-press stroke `[0, CLICK_SWEEP_DEG]` about the
+    hinge axis and mirrored about `Y = Y_AXLE` (companion side), then bounded by simple analytic shapes whose
+    faces never form `< 0.80 mm` internal steps:
+      1) Bearing-ear / bearing / magnet tunnel: one cylinder (`R = 3.45 + 0.36 + h`) whose centre is lowered by `h`
+         so it contains the ear circle at rest AND at both mirrored bottom-out positions (crown roof unchanged),
+         `X in [-6.55, -2.40]` (`>= 0.40 mm` axial clearance to the `#16` sensor magnet at `X = -5.49`)
+      2) `AS5600` SOIC-8 envelope box: `X in [-6.55, -5.29]`, top flush with the `#07` pocket ceiling
+      3) `#07` stepped sub-PCB envelope: `X in [-8.15, -6.55]`, YZ section = swept lower (`Y_AXLE ± 4.40`) and
+         upper (`Y_AXLE ± 3.95`, `R = 0.60 mm` top corners) PCB outlines joined by `0.80 mm`-rise slopes and
+         `0.57 mm` ceiling chamfers
+    """
+    zo = CZ_SUNK
+    x_pcb0 = -7.75 - ENV_CLR_X   # -8.15
+    x_prof1 = -5.69 + ENV_CLR_X  # -5.29 (AS5600 IC East face + 0.40 mm); profile void spans X in [-8.15, -5.29]
+    # Tunnel starts 0.86 mm West of the profile end so its end face never forms a < 0.80 mm step with it, and so
+    # that the companion cover (180° copy) also clears the East bearing ear (X <= +5.35 -> +5.75 with 0.40 mm).
+    x_tun0 = x_prof1 - 0.86      # -6.15
+    assert x_tun0 <= -5.49 - ENV_CLR_X and x_tun0 <= -(5.35 + ENV_CLR_X)
+    # 1) Tunnel: rest centre c0 = (Y_AXLE, -2.00); bottom-out centres c1 = (Y_AXLE ± dy, -2.00 - dz)
+    c1y, c1z = _press_yz(Y_AXLE, -2.00, CLICK_SWEEP_DEG, zo)
+    dy, dz = abs(c1y - Y_AXLE), abs(c1z - (-2.00))
+    h = (dy * dy + dz * dz) / (2.0 * dz)
+    r_tun = 3.45 + ENV_CLR_YZ + h + 0.01
+    tunnel = (
+        bd.Cylinder(radius=r_tun, height=(-2.40) - x_tun0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        .rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((x_tun0, Y_AXLE, -2.00 - h)))
+    )
+
+    def bounds(half_y, z0_mod, z1_mod):
+        return _swept_mirrored_yz_bounds(
+            Y_AXLE - half_y - ENV_CLR_YZ, Y_AXLE + half_y + ENV_CLR_YZ,
+            z0_mod + zo - ENV_CLR_YZ, z1_mod + zo + ENV_CLR_YZ, zo,
+        )
+
+    # 2+3) #07 PCB stepped envelope (relative half-widths about Y_AXLE), also enclosing the AS5600 IC and the
+    #      #16 sensor magnet (X in [-5.49, -4.74]) up to the tunnel start plane X = -5.29
+    lo_ya, lo_yb, _, _ = bounds(4.40, 4.45, 10.30)
+    up_ya, up_yb, _, up_zt = bounds(3.95, 10.30, 13.11)
+    w_pcb_req = max(Y_AXLE - lo_ya, lo_yb - Y_AXLE, Y_AXLE - up_ya, up_yb - Y_AXLE)
+    assert w_pcb_req <= COV_POCKET_HALF_W, f"#07 pocket half-width {w_pcb_req:.3f} > {COV_POCKET_HALF_W:.2f} mm"
+    w_pcb = COV_POCKET_HALF_W
+    ic_ya, ic_yb, _, ic_zt = bounds(3.00, 10.05 - 2.45, 10.05 + 2.45)
+    assert max(Y_AXLE - ic_ya, ic_yb - Y_AXLE) <= w_pcb and ic_zt <= up_zt
+    z_bot = -9.50
+    c_top = 0.80  # 45° ceiling chamfers (>= 0.80 mm so side wall and ceiling never form a thin step pair)
+    half = [
+        (w_pcb, z_bot),
+        (w_pcb, up_zt - c_top),
+        (w_pcb - c_top, up_zt),
+    ]
+    poly = half + [(-y, z) for (y, z) in reversed(half)]
+    with bd.BuildSketch(bd.Plane.YZ.offset(x_pcb0)) as sk_pcb:
+        bd.Polygon([(Y_AXLE + y, z) for (y, z) in poly], align=None)
+    profile_env = bd.extrude(sk_pcb.sketch, amount=x_prof1 - x_pcb0).solids()[0]
+    return (tunnel + profile_env)
+
+
 def build_wheel_cover_plate_coords() -> bd.Solid:
     """
     Build Edge-Rounded Pyramid Switch-Snap Cover (`#20`, `wheel-cover.step`) in Plate-Top Z coordinates
     (`Z = -2.00 mm` == Top Plate top surface, mirror-symmetric about `Y = Y_AXLE` so 1 single part serves
     BOTH Sensor and Companion sides via a 180° XY rotation around `(0.0, Y_AXLE)`):
-      - Exterior: `16.40 -> 11.60 mm` trapezoid length x `6.19 mm` width (`X in [-9.12, -2.93]`),
-        `Z_top = +2.68 mm` (`0.92 mm` lower than `+3.60 mm` keycaps, `3.72 mm` below `+6.40 mm` wheel top!)
-      - Interior cavities (native analytic cylinders preserved so `min_bore = 1.64 mm >= 1.50 mm`!):
-          1) `ear_tunnel`: `Ø7.36 mm` (`R = 3.68 mm`) around `(Y_AXLE, -2.00)` across `X in [-5.65, -2.40]`
-          2) `pcb_pocket`: `X in [-8.13, -5.65]`, `Y in [Y_AXLE ± 4.52]`, ceiling `Z = +0.78 mm` with `R = 0.82 mm`
-             concentric eave fillet
-      - Attachment: Switch-style North & South cantilever snap legs (`0.85 mm` thick, `1.80 mm` wide at `X = -6.70`)
-        with `0.28 mm` latch barbs (`Z = -3.63 .. -4.50 mm`) snapping under the `1.60 mm` FR-4 Top Plate (`Z = -3.60 mm`).
+      - Exterior: `15.40 -> 14.00 mm` trapezoid length x `6.17 mm` width (`X in [-9.30, -3.13]`),
+        `Z_top = +2.68 mm` (`0.92 mm` lower than `+3.60 mm` keycaps, `3.72 mm` below `+6.40 mm` wheel top!).
+        Seen along the axle, the whole cover silhouette stays `>= 0.30 mm` inside the `Ø16.80 mm` wheel outline,
+        and the inner face keeps `0.40 mm` to the `#01` wheel (`>= 0.30 mm` even at the `±0.10 mm` lateral play).
+      - Interior cavities: swept click-stroke envelopes of the bearing ear / magnet / `AS5600` IC / `#07` PCB
+        (`build_cover_swing_voids_plate_coords`) -> `>= 0.30 mm` moving clearance from rest to switch bottom-out.
+      - Attachment: Switch-style North & South cantilever snap legs (`0.85 mm` thick, `1.34 mm` wide at `X = -4.62`,
+        `0.26 mm` outer-edge chamfers) located by `1.54 mm` wide plate windows (`±0.10 mm` play), with `0.82 mm` wide
+        `0.28 mm` latch barbs (`Z = -3.63 .. -4.55 mm`) snapping under the `1.60 mm` FR-4 Top Plate (`Z = -3.60 mm`).
     """
-    outer = make_rounded_pyramid_solid(
-        COV_X_WEST, 8.20, 5.80, COV_Z_BOT, COV_Z_TOP,
-        z_skirt_end=0.10, ux_top=3.00, uy_top=3.80,
-        r_xy_bot=2.10, r_xy_top=1.40, r_eave=1.15, r_crown=1.25,
-    )
+    outer = build_cover_outer_plate_coords()
 
-    ear_tunnel = (
-        bd.Cylinder(radius=3.68, height=(-2.40) - (-5.65), align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-        .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((-5.65, Y_AXLE, -2.00)))
-    )
+    dome = outer - build_cover_swing_voids_plate_coords()
+    assert len(dome.solids()) == 1, "Cover dome must remain a single solid after the clearance voids!"
+    dome = dome.solids()[0]
 
-    with bd.BuildSketch(bd.Plane.XY.offset(COV_Z_BOT - 0.30)) as sk_pcb:
-        with bd.Locations([(-6.89, Y_AXLE)]):
-            bd.Rectangle(8.13 - 5.65, 2.0 * 4.52)
-        v_west = [v for v in sk_pcb.vertices() if v.X < -6.89]
-        v_east = [v for v in sk_pcb.vertices() if v.X > -6.89]
-        bd.fillet(v_west, radius=1.18)
-        bd.fillet(v_east, radius=0.80)
-    pcb_pocket = bd.extrude(sk_pcb.sketch, amount=0.78 - (COV_Z_BOT - 0.30)).solids()[0]
-    top_edges = [
-        e for e in pcb_pocket.edges()
-        if abs(e.bounding_box().min.Z - 0.78) < 1e-2 and abs(e.bounding_box().max.Z - 0.78) < 1e-2
-    ]
-    pcb_pocket = bd.fillet(top_edges, radius=0.82).solids()[0]
-
-    dome = (outer - ear_tunnel - pcb_pocket).solids()[0]
-
+    leg_x0 = COV_LEG_X - 0.5 * COV_LEG_W
     for sgn in (-1.0, 1.0):
-        y_leg_in = Y_AXLE + sgn * 4.52
-        y_leg_out = Y_AXLE + sgn * 5.37
-        y_barb_tip = Y_AXLE + sgn * 5.65
-        ymin_l, ymax_l = min(y_leg_in, y_leg_out), max(y_leg_in, y_leg_out)
-        leg = bd.Box(
-            1.80, ymax_l - ymin_l, (-1.40) - (-4.55),
-            align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
-        ).moved(bd.Location((-6.70, ymin_l, -4.55)))
+        y_in = Y_AXLE + sgn * COV_LEG_Y_IN
+        y_out = Y_AXLE + sgn * COV_LEG_Y_OUT
+        y_barb_tip = Y_AXLE + sgn * COV_BARB_TIP
+        with bd.BuildSketch(bd.Plane.XY.offset(-4.55)) as sk_leg:
+            with bd.Locations([(COV_LEG_X, 0.5 * (y_in + y_out))]):
+                bd.Rectangle(COV_LEG_W, COV_LEG_Y_OUT - COV_LEG_Y_IN)
+            outer_vs = [v for v in sk_leg.vertices() if abs(v.Y - y_out) < 1e-6]
+            bd.chamfer(outer_vs, length=COV_LEG_CHAMFER)
+        leg = bd.extrude(sk_leg.sketch, amount=(-1.40) - (-4.55)).solids()[0]
+        assert abs(leg.bounding_box().min.X - leg_x0) < 1e-6
 
         with bd.BuildSketch(bd.Plane.YZ) as sk_barb:
             bd.Polygon(
                 [
-                    (y_leg_out, -3.63),
+                    (y_out, -3.63),
                     (y_barb_tip, -3.76),
-                    (y_leg_out, -4.50),
+                    (y_out, -4.55),
                 ],
                 align=None,
             )
-        barb = bd.extrude(sk_barb.sketch, amount=0.90, both=True).moved(bd.Location((-6.70, 0.0, 0.0))).solids()[0]
+        barb = (
+            bd.extrude(sk_barb.sketch, amount=0.5 * COV_BARB_W, both=True)
+            .moved(bd.Location((COV_LEG_X, 0.0, 0.0)))
+            .solids()[0]
+        )
         dome = (dome + leg + barb).solids()[0]
 
     dome.label = "Wheel_Pyramid_Cover"
     return dome
 
 
-def allowed_wheel_cover_thin(d: float, mx: float, my: float, mz: float) -> bool:
-    """Whitelisted geometric feather/fillet edges on print-oriented `wheel-cover` (`+90°` Y rotation)."""
-    # 1) Snap-in latch barb tip (`|my| >= 4.40`, `mx <= -1.50`): intentional triangular snap hook
-    if abs(my) >= 4.40 and mx <= -1.50:
-        return True
-    # 2) Semicircular bearing-ear arch feather rim meeting the flat Z=-1.99 bottom foot
-    if 3.0 <= abs(my) <= 4.6 and -1.7 <= mx <= -0.4:
-        return True
-    # 3) Internal pocket ceiling R=0.82mm fillet strip chord (solid roof above is >1.90 mm thick)
-    if 1.60 <= mx <= 1.80 and 3.4 <= mz <= 4.4 and 3.3 <= abs(my) <= 3.9:
-        return True
-    # 4) Exterior solid crown fillet strip chord (solid crown below is >1.90 mm thick)
-    if mx >= 3.35:
-        return True
-    return False
+def make_allowed_wheel_cover_thin(print_shift: tuple[float, float, float]):
+    """
+    Whitelist for the print-oriented `wheel-cover` (`+90°` Y rotation, then `print_shift`): only the intentional
+    switch-style snap legs below the cover bottom (`Z_plate <= -1.98`, `|Y - Y_AXLE| >= 4.10`), i.e. the `0.85 mm`
+    cantilever with its `0.30 mm` corner chamfers, the `0.28 mm` latch barb and the leg-root edge facing the
+    bearing tunnel opening. The dome itself (exterior, swept clearance voids) has zero `< 0.80 mm` face pairs.
+    """
+    sx, sy, sz = print_shift
+
+    def pred(d: float, mx: float, my: float, mz: float) -> bool:
+        z_plate = mx - sx  # print X = plate Z + sx
+        y_plate = my - sy  # print Y = plate Y + sy
+        return z_plate <= COV_Z_BOT + 0.01 and abs(y_plate - Y_AXLE) >= 4.10
+
+    return pred
 
 
 def build_stepped_sensor_pcb_mod() -> bd.Solid:
@@ -973,25 +1132,152 @@ def verify_zero_overlap(shapes: list[bd.Shape], context_name: str):
     print(f"  [PASS] {context_name}: {n} parts checked, max overlap_volume = {max_ov:.8f} mm^3 (ZERO interference!)")
 
 
+def verify_cover_silhouette(cover_plate: bd.Solid):
+    """Seen along the axle (X), the cover must stay >= 0.30 mm inside the Ø16.80 mm wheel outline."""
+    r_lim = WHEEL_R - COV_SILHOUETTE_MARGIN
+    ring = (bd.Box(30.0, 40.0, 10.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
+        bd.Location((0.0, Y_AXLE, -2.00))
+    ) - (
+        bd.Cylinder(radius=r_lim, height=30.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
+        .rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((0.0, Y_AXLE, -2.00)))
+    )).solids()[0]
+    ov = overlap_volume(cover_plate, ring)
+    assert ov < 1e-6, f"[wheel-cover] Silhouette protrudes beyond R = {r_lim:.2f} mm wheel outline ({ov:.6f} mm^3)!"
+    extra = closest_points(cover_plate, ring).distance
+    print(
+        f"  [PASS] wheel-cover silhouette: inside the Ø{WHEEL_OD:.2f} mm wheel outline by "
+        f"{COV_SILHOUETTE_MARGIN + extra:.3f} mm (>= {COV_SILHOUETTE_MARGIN:.2f} mm)"
+    )
+
+
+def verify_plate_opening_hidden():
+    """Every plate opening outside the wheel gap must lie >= 0.30 mm inside the twin cover outlines (top view)."""
+    outer = build_cover_outer_plate_coords()
+    sec = outer & bd.Box(40.0, 40.0, 0.01, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
+        bd.Location((0.0, 0.0, COV_Z_BOT + 0.005))
+    )
+    fp_face = min(sec.faces(), key=lambda f: f.center().Z)
+    fp_face = bd.Face(fp_face.outer_wire())
+    fp_in = bd.offset(fp_face, amount=-MOVE_CLR)
+    fp_in = fp_in.faces()[0] if hasattr(fp_in, "faces") else fp_in
+    fp_in_c = fp_in.moved(bd.Location((0.0, -Y_AXLE, 0.0))).rotate(bd.Axis.Z, 180).moved(bd.Location((0.0, Y_AXLE, 0.0)))
+    opening = build_sunk_plate_opening_face(fp_in.center().Z)
+    # The inner (wheel-side) cover edge borders the 0.40 mm wheel gap itself, so the 0.30 mm margin applies to
+    # the outer (North / South / West) cover edges only.
+    gap_strip = bd.Rectangle(2.0 * (abs(COV_X_PLANE) + MOVE_CLR), 40.0).moved(
+        bd.Location((0.0, Y_AXLE, fp_in.center().Z))
+    )
+    exposed = (opening - gap_strip) - fp_in - fp_in_c
+    area = sum(f.area for f in exposed.faces()) if exposed.faces() else 0.0
+    assert area < 1e-6, f"[Top Plate] {area:.6f} mm^2 of the plate opening is not hidden >= 0.30 mm under the covers!"
+    print("  [PASS] Top Plate opening 100% hidden >= 0.30 mm inside the twin cover outlines (outside the wheel gap)")
+
+
+def build_sunk_static_env_mod() -> list[bd.Solid]:
+    """Local Top Plate (with the sunk opening) and Main PCB (18.50 mm window) solids in module coords."""
+    z_plate_top = -2.00 - CZ_SUNK
+    plate = bd.Box(40.0, 40.0, 1.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)).moved(
+        bd.Location((0.0, 0.0, z_plate_top))
+    )
+    plate = plate - bd.extrude(build_sunk_plate_opening_face(z_plate_top - 2.0), amount=4.0)
+    plate = plate.solids()[0]
+    plate.label = "Local_Top_Plate"
+    z_pcb_top = -4.20 - CZ_SUNK
+    pcb = bd.Box(40.0, 40.0, 1.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)).moved(
+        bd.Location((0.0, 0.0, z_pcb_top))
+    )
+    with bd.BuildSketch(bd.Plane.XY.offset(z_pcb_top - 2.0)) as sk_win:
+        bd.RectangleRounded(18.50, 18.50, 0.50)
+        with bd.Locations(*SUNK_MOUNT_PTS_MOD):
+            bd.Circle(1.85)
+    pcb = (pcb - bd.extrude(sk_win.sketch, amount=4.0)).solids()[0]
+    pcb.label = "Local_Main_PCB"
+    return [plate, pcb]
+
+
+def verify_click_swing(mod_sunk_parts: list[bd.Shape], steps: int = 6):
+    """
+    Sweep the carriage-mounted parts over the full click stroke `[0, CLICK_SWEEP_DEG]` (striker bottom-out on the
+    `#10` switch body) and assert:
+      - Covers (nominal)                      : >= 0.30 + 0.06 mm play
+      - Covers shifted by ±0.10 X / ±0.06 Y   : >= 0.30 mm
+      - Local Top Plate / Main PCB            : >= 0.30 mm
+      - `#04B` base frame                     : no contact (sliding hinge faces only)
+    """
+    static_lbl = {"Wheel_Base_Frame_Sunk", "Hinge_Pin_SUS304_2mm", "Kailh_Silent_Switch_6x6x4p3",
+                  "Wheel_Pyramid_Cover_Sensor", "Wheel_Pyramid_Cover_Companion"}
+    by_lbl = {p.label: p for p in mod_sunk_parts}
+    moving = [p for p in mod_sunk_parts if p.label not in static_lbl
+              and not p.label.startswith("Steel_Ball") and p.label != "Ratchet_Hub_Internal_Resin"]
+    covers = [by_lbl["Wheel_Pyramid_Cover_Sensor"], by_lbl["Wheel_Pyramid_Cover_Companion"]]
+    plate, pcb = build_sunk_static_env_mod()
+    base = by_lbl["Wheel_Base_Frame_Sunk"]
+
+    def near(a, b, tol):
+        ba, bb = a.bounding_box(), b.bounding_box()
+        return not (
+            ba.max.X + tol < bb.min.X or bb.max.X + tol < ba.min.X or
+            ba.max.Y + tol < bb.min.Y or bb.max.Y + tol < ba.min.Y or
+            ba.max.Z + tol < bb.min.Z or bb.max.Z + tol < ba.min.Z
+        )
+
+    checks = []  # (static_shape, required_min, tag)
+    for c in covers:
+        checks.append((c, ENV_CLR_YZ - 1e-3, f"{c.label} (nominal)"))
+        sx = 1.0 if c.bounding_box().center().X < 0 else -1.0  # +X toward wheel for the sensor-side cover
+        for dx, dy in ((sx * COV_PLAY_X, 0.0), (0.0, COV_PLAY_Y), (0.0, -COV_PLAY_Y)):
+            checks.append((c.moved(bd.Location((dx, dy, 0.0))), MOVE_CLR - 1e-3, f"{c.label} (shift {dx:+.2f},{dy:+.2f})"))
+    checks.append((plate, MOVE_CLR - 1e-3, "Top Plate"))
+    checks.append((pcb, MOVE_CLR - 1e-3, "Main PCB"))
+    checks.append((base, 0.01, "Wheel_Base_Frame_Sunk"))
+
+    worst = {}
+    for k in range(steps + 1):
+        deg = CLICK_SWEEP_DEG * k / steps
+        for m in moving:
+            mm = press_rotate(m, deg)
+            for s, req, tag in checks:
+                if not near(mm, s, 1.0):
+                    continue
+                d = closest_points(mm, s).distance
+                key = tag
+                if key not in worst or d < worst[key][0]:
+                    worst[key] = (d, m.label, deg)
+                assert d >= req, (
+                    f"[Click Swing] {m.label} vs {tag} = {d:.3f} mm < {req:.2f} mm at {deg:.2f}° press!"
+                )
+    print(f"  [PASS] Click-swing sweep 0 -> {CLICK_SWEEP_DEG:.2f}° (striker bottom-out on #10 switch body):")
+    for tag, (d, lbl, deg) in sorted(worst.items(), key=lambda kv: kv[1][0]):
+        print(f"           min {d:.3f} mm : {tag:50s} <- {lbl} @ {deg:.2f}°")
+    return worst
+
+
+def build_sunk_plate_opening_face(z: float = 0.0) -> bd.Face:
+    """2D sunk Top Plate opening (`sunk_plate_opening_full`) around `(0, Y_AXLE)` in module XY at height `z`."""
+    pts = sunk_plate_opening_full()
+    with bd.BuildSketch(bd.Plane.XY.offset(z)) as sk:
+        bd.Polygon([(u, Y_AXLE + v) for (u, v, _) in pts], align=None)
+        for rad in sorted({r for (_, _, r) in pts if r > 0}):
+            targets = [(u, Y_AXLE + v) for (u, v, r) in pts if abs(r - rad) < 1e-9]
+            verts = [
+                vx for vx in sk.vertices()
+                if any(abs(vx.X - tu) < 1e-6 and abs(vx.Y - tv) < 1e-6 for tu, tv in targets)
+            ]
+            bd.fillet(verts, radius=rad)
+    return sk.sketch.faces()[0]
+
+
 def _build_sunk_top_plate_twin_snap_cutter(cx_step: float, cy_step: float) -> bd.Solid:
     """
-    Build Twin-Snap Top Plate cutter at `(cx_step, cy_step)`:
-      - Central flywheel slot (`6.16 x 17.56 mm`, `R = 0.55 mm` -> `>= 0.35 mm` moving clearance to `#01` Flywheel!)
-      - Symmetric West & East bearing/PCB windows (`X_mod in [-8.20, +8.20]`, `Y_mod in [Y_AXLE ± 4.75]`)
-      - Symmetric switch-style snap-hook windows (`X_mod in [±5.65, ±7.75]`, `Y_mod in [Y_AXLE ± 5.42]` = `10.84 mm`),
-        100% hidden beneath the Twin `16.40 -> 11.60 x 6.19 mm` Pyramid-Deep-R covers while engaging their `±5.65 mm`
-        snap barbs cleanly underneath the `1.60 mm` FR-4 Top Plate!
+    Build Twin-Snap Top Plate cutter at `(cx_step, cy_step)` from `SUNK_PLATE_OPENING_Q1` (36-vertex outline):
+      - Central flywheel slot (`6.16 x 18.16 mm`, `R = 0.55 mm`) -> `>= 0.30 mm` to `#01` over the full click stroke
+      - Core window (`16.40 x 8.40 mm`) for the bearing ears, magnets and `AS5600` IC swing envelope
+      - `#07` PCB swing windows (`6.65 <= |X_mod| <= 8.20`, `Y_mod in [Y_AXLE ± 5.30]`, `R = 0.50 mm`)
+      - Symmetric snap-leg windows (`3.85 <= |X_mod| <= 5.85` = `2.00 mm`, `Y_mod in [Y_AXLE ± 5.43]`, `R = 0.45 mm`)
+        locating the `1.80 mm` legs at `±0.10 mm`, 100% hidden beneath the Twin Pyramid-Deep-R covers.
     """
-    with bd.BuildSketch(bd.Plane.XY) as sk_cut:
-        with bd.Locations([(0.0, Y_AXLE)]):
-            bd.RectangleRounded(6.16, 17.56, 0.55)
-        with bd.Locations([(0.0, Y_AXLE)]):
-            bd.RectangleRounded(16.40, 9.50, 0.50)
-        for sgn_x in (-1.0, 1.0):
-            with bd.Locations([(sgn_x * 6.70, Y_AXLE)]):
-                bd.RectangleRounded(3.00, 10.86, 0.45)
-
-    cutter_mod = bd.extrude(sk_cut.sketch, amount=3.00).solids()[0]
+    cutter_mod = bd.extrude(build_sunk_plate_opening_face(0.0), amount=3.00).solids()[0]
     return cutter_mod.rotate(bd.Axis.Z, 180).moved(bd.Location((cx_step, cy_step, -4.50))).solids()[0]
 
 
@@ -1037,16 +1323,19 @@ def main():
 
     # 4c) 180°-Symmetric Edge-Rounded Pyramid Switch-Snap Cover (`#20`, flat outer wall placed on Z = 0.0000!)
     cover_plate = build_wheel_cover_plate_coords()
+    verify_cover_silhouette(cover_plate)
+    verify_plate_opening_hidden()
     cover_rot = cover_plate.rotate(bd.Axis.Y, 90)
     cov_bb = cover_rot.bounding_box()
-    cover_print = cover_rot.moved(bd.Location((-cov_bb.center().X, -cov_bb.center().Y, -cov_bb.min.Z))).solids()[0]
+    cov_shift = (-cov_bb.center().X, -cov_bb.center().Y, -cov_bb.min.Z)
+    cover_print = cover_rot.moved(bd.Location(cov_shift)).solids()[0]
     cover_print.label = "Wheel_Pyramid_Cover"
     verify_jlc3dp_part(
         cover_print,
         "wheel-cover",
         check_bores=True,
         check_wall_0p8=True,
-        allowed_thin_pred=allowed_wheel_cover_thin,
+        allowed_thin_pred=make_allowed_wheel_cover_thin(cov_shift),
     )
     bd.export_step(cover_print, str(PARTS_DIR / "wheel-cover.step"))
     bd.export_stl(cover_print, str(PARTS_DIR / "wheel-cover.stl"))
@@ -1065,6 +1354,7 @@ def main():
 
     mod_sunk_parts = assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=True, include_covers=True)
     verify_zero_overlap(mod_sunk_parts, "Inertia_Wheel_Module_Sunk")
+    verify_click_swing(mod_sunk_parts)
     mod_sunk_asm = bd.Compound(label="Inertia_Wheel_Module_Sunk_Assembly", children=mod_sunk_parts)
     bd.export_step(mod_sunk_asm, str(ASSEMBLIES_DIR / "inertia-wheel-module-sunk-assembly.step"))
 

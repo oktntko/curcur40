@@ -141,35 +141,31 @@ def make_rect_cutout(cx, cy, w, h, r=0.5):
 
 def make_inertia_wheel_top_cutout(cx_mod, cy_mod):
     """
-    Exact 2D closed boundary of the Sunk Inertia Wheel Twin-Snap Top Plate opening:
-      - Central flywheel slot: 6.16 x 17.56 mm (R = 0.55 mm) around (cx_mod, cy_mod - 0.10)
-      - Bearing / sensor PCB window: 16.40 x 9.50 mm around (cx_mod, cy_mod - 0.10)
-      - Twin switch-style snap-hook windows: 3.00 x 10.86 mm (R = 0.45 mm) at dx = ±6.70 mm
+    Exact 2D closed boundary of the Sunk Inertia Wheel Twin-Snap Top Plate opening (36 vertices, identical to
+    `SUNK_PLATE_OPENING_Q1` in `scripts/generate_inertia_wheel.py`, mirrored into all four quadrants
+    around the axle `(cx_mod, cy_mod - 0.10)`):
+      - Central flywheel slot: 6.16 x 18.16 mm (R = 0.55 mm) -> >= 0.30 mm to the wheel over the full click stroke
+      - Core window: 16.40 x 8.40 mm (bearing ears, magnets, AS5600 IC swing envelope)
+      - AS5600 sub-PCB swing windows: 6.65 <= |dx| <= 8.20 mm, |dy| <= 5.30 mm (R = 0.50 mm)
+      - Twin snap-leg windows: 1.54 x 10.86 mm (R = 0.45 mm) at dx = ±4.62 mm (locate 1.34 mm legs at ±0.10 mm)
     """
     cx = cx_mod
     cy = cy_mod - 0.1000
-    pts = [
-        (cx - 3.08, cy - 8.78, 0.55),
-        (cx + 3.08, cy - 8.78, 0.55),
-        (cx + 3.08, cy - 4.75, 0.00),
-        (cx + 5.20, cy - 4.75, 0.00),
-        (cx + 5.20, cy - 5.43, 0.45),
-        (cx + 8.20, cy - 5.43, 0.45),
-        (cx + 8.20, cy + 5.43, 0.45),
-        (cx + 5.20, cy + 5.43, 0.45),
-        (cx + 5.20, cy + 4.75, 0.00),
-        (cx + 3.08, cy + 4.75, 0.00),
-        (cx + 3.08, cy + 8.78, 0.55),
-        (cx - 3.08, cy + 8.78, 0.55),
-        (cx - 3.08, cy + 4.75, 0.00),
-        (cx - 5.20, cy + 4.75, 0.00),
-        (cx - 5.20, cy + 5.43, 0.45),
-        (cx - 8.20, cy + 5.43, 0.45),
-        (cx - 8.20, cy - 5.43, 0.45),
-        (cx - 5.20, cy - 5.43, 0.45),
-        (cx - 5.20, cy - 4.75, 0.00),
-        (cx - 3.08, cy - 4.75, 0.00),
+    q1 = [
+        (8.20, 5.30, 0.50),
+        (6.65, 5.30, 0.50),
+        (6.65, 4.20, 0.00),
+        (5.39, 4.20, 0.00),
+        (5.39, 5.43, 0.45),
+        (3.85, 5.43, 0.45),
+        (3.85, 4.20, 0.00),
+        (3.08, 4.20, 0.00),
+        (3.08, 9.08, 0.55),
     ]
+    q2 = [(-u, v, r) for (u, v, r) in reversed(q1)]
+    q3 = [(-u, -v, r) for (u, v, r) in q1]
+    q4 = [(u, -v, r) for (u, v, r) in reversed(q1)]
+    pts = [(cx + u, cy + v, r) for (u, v, r) in q1 + q2 + q3 + q4]
     return round_polygon_with_fillets(pts)
 
 
