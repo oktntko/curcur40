@@ -109,7 +109,7 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **トラックボールセンサー** | なし（親指4キー構成） | **JST SH 6ピンコネクタ (`rJ3`)** 経由で独立サブ基板 [`curcur40-pmw3360`](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（`U1`: `PMW3360DM-T2QU` ＋ `U2`: `1.8V LDO` ＋ `J1`）と接続 | トラックボールカップ開口面をトッププレート天面（$Z = -2.00\,\text{mm}$）とフラッシュに沈み込ませるため、センサー基板を $-11.80\,\text{mm}$ 下段（$Z = -16.00\,\text{mm}$）へ分離配置 |
 | **SWD デバッグ端子** | `J4` (`1x03` 2.54mm スルーホール) | `rJ4` (`1x03` 2.54mm スルーホール) | `/SWCLK`, `GND`, `/SWD`。**未実装 (`DNP`)**・BOM/Pos/3Dモデル非表示 |
 | **左右判定ピン (`GPIO21`)** | **`+3V3` (HIGH) に直結** | **`GNDR` (LOW) に直結** | QMK `split.handedness.pin = GP21` による自動左右認識 |
-| **M2 スペーサー・ポスト貫通穴** | **5 箇所**（外周 `L1`〜`L5`：$\varnothing 3.30\,\text{mm}$） | **右メイン外周 5 箇所**（`R1`〜`R5`：$\varnothing 3.30\,\text{mm}$）＋ **ホイールポスト 3 箇所**（`W1`〜`W3`：$\varnothing 3.70\,\text{mm}$）＋ **センサー基板 4 箇所**（`TB1`〜`TB4`：$\varnothing 3.30\,\text{mm}$） | すべて非スルーホール（`Edge.Cuts` 円穴）。`W1`〜`W3` は `#04B` 樹脂スペーサーポスト（$\varnothing 3.40\,\text{mm}$）貫通用 |
+| **M2 スペーサー貫通穴** | **5 箇所**（外周 `L1`〜`L5`：$\varnothing 3.30\,\text{mm}$） | **右メイン外周 5 箇所**（`R1`〜`R5`：$\varnothing 3.30\,\text{mm}$）＋ **ホイール 3 箇所**（`W1`〜`W3`：$\varnothing 3.30\,\text{mm}$）＋ **センサー基板 4 箇所**（`TB1`〜`TB4`：$\varnothing 3.30\,\text{mm}$） | 全17箇所すべて非スルーホール（`Edge.Cuts` 円穴、$\varnothing 3.30\,\text{mm}$）。共通の M2 5.50mm メス-メス スペーサー（外径 $\varnothing 3.0\,\text{mm}$）貫通用 |
 
 ---
 
@@ -182,7 +182,7 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
   * パターン・フットプリントは基板上に残しつつ、回路図および PCB の双方で **未実装（`DNP`）・部品表（BOM）除外・実装座標（CPL/Pos）除外・3Dモデル非表示** に設定しています。
 
 ### 4.4 右手専用：沈み込みパッシブ磁気慣性ホイール基板 (`curcur40-wheel-sensor`) と JST SH 6ピン接続 (`rJ5`)
-* 右手内側上部 $(14.2875, 0.0000)\,\text{mm}$ を中心に、**$18.50 \times 18.50\,\text{mm}$（四隅 $R = 0.50\,\text{mm}$）の内部 `Edge.Cuts` 切り欠き窓** と **3箇所の `#04B` ポスト貫通穴 `W1`〜`W3`（$\varnothing 3.70\,\text{mm}$）** を設け、パッシブ磁気慣性ホイール（`#01` `SUS304` カップ型フライホイール ＋ `#04B` 沈み込みベースフレーム ＋ `#20` ツインスナップカバー）を回転軸中心がトッププレート天面（$Z = -2.00\,\text{mm}$）に一致する高さまで沈み込ませて搭載します（機構詳細は [passive_inertia_wheel_spec.md](./passive_inertia_wheel_spec.md) を参照）。
+* 右手内側上部 $(14.2875, 0.0000)\,\text{mm}$ を中心に、**$18.50 \times 18.50\,\text{mm}$（四隅 $R = 0.50\,\text{mm}$）の内部 `Edge.Cuts` 切り欠き窓** と **3箇所の M2 5.50mm スペーサー貫通穴 `W1`〜`W3`（$\varnothing 3.30\,\text{mm}$）** を設け、パッシブ磁気慣性ホイール（`#01` `SUS304` カップ型フライホイール ＋ `#04B` 沈み込みベースフレーム ＋ `#20` ツインスナップカバー）を回転軸中心がトッププレート天面（$Z = -2.00\,\text{mm}$）に一致する高さまで沈み込ませて搭載します（機構詳細は [passive_inertia_wheel_spec.md](./passive_inertia_wheel_spec.md) を参照）。
 * **右メイン基板側インターフェース（`rJ5` ＋ `I2C0` プルアップ抵抗 `rR11`/`rR12` ＋ パスコン `rC18`）**:
   * **コネクタ `rJ5`**: `Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal`（`SM06B-SRSS-TB(LF)(SN)`, LCSC `C160405`、トラックボール用 `rJ3` と完全同一型番）を裏面 `B.Cu` の $(15.8000, 32.0000)\,\text{mm}$、回転 $+90^\circ$（ケーブル挿入口は西向き $-X$、直下のケース傾斜内底面とのクリアランス **$9.13\,\text{mm}$**）に配置します。
   * **ピン接続（単体評価基板 `curcur40-wheel-eval` の `J1` と 1〜6番ピン完全互換）**:
@@ -262,9 +262,9 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **L4** | 小指側下 | $(-98.0000, 38.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
 | **L5** | 親指側下（`SW8`–`SW9` 南側） | $(-62.0000, 64.6000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴（右手 `R5` と完全左右対称） |
 
-### 6.2 右手メイン PCB (`curcur40-right.kicad_pcb`) — 外周5箇所＋ホイールポスト3箇所 および センサーサブ PCB (`curcur40-pmw3360.kicad_pcb`) — 計4箇所
+### 6.2 右手メイン PCB (`curcur40-right.kicad_pcb`) — 外周5箇所＋ホイール3箇所 および センサーサブ PCB (`curcur40-pmw3360.kicad_pcb`) — 計4箇所
 
-右手メイン基板は親指トラックボール領域が分離されているため、`rSW8`–`rSW9` 南側の $(62.0000, 64.6000)$ に親指外周穴 **`R5`**（左手 `L5` と完全対称）を配置して親指キー領域のたわみを防止します。また、内側上部の $18.50 \times 18.50\,\text{mm}$ ホイール切り欠き周囲には、沈み込みベース枠 `#04B`（`wheel-base-frame-sunk.step`）の3本の一体型樹脂ポスト（外径 $\varnothing 3.40\,\text{mm}$、上端 $Z = -3.60\,\text{mm}$）を下からトッププレート裏面へ貫通させる **`W1`〜`W3`（$\varnothing 3.70\,\text{mm}$）** を配置しています。分離されたセンサーサブ基板（`curcur40-pmw3360`）は `TB1`〜`TB4` の4箇所でケース下段ボス天面（$Z = -17.60\,\text{mm}$）とトラックボールカップ底面（$Z = -16.00\,\text{mm}$）にサンドイッチ固定されます（スペーサーがセンサー基板の $\varnothing 3.30\,\text{mm}$ 穴を貫通してカップ耳下段の深さ $3.90\,\text{mm}$・穴径 $\varnothing 3.30\,\text{mm}$ 受け穴に進入）。
+右手メイン基板は親指トラックボール領域が分離されているため、`rSW8`–`rSW9` 南側の $(62.0000, 64.6000)$ に親指外周穴 **`R5`**（左手 `L5` と完全対称）を配置して親指キー領域のたわみを防止します。また、内側上部の $18.50 \times 18.50\,\text{mm}$ ホイール切り欠き周囲には、沈み込みベース枠 `#04B`（`wheel-base-frame-sunk.step`、フランジ天面 $Z = -9.10\,\text{mm}$）とトッププレート裏面（$Z = -3.60\,\text{mm}$）を繋ぐ共通の M2 5.50mm メス-メス スペーサー 3個を貫通させる **`W1`〜`W3`（$\varnothing 3.30\,\text{mm}$）** を配置しています。分離されたセンサーサブ基板（`curcur40-pmw3360`）は `TB1`〜`TB4` の4箇所でケース下段ボス天面（$Z = -17.60\,\text{mm}$）とトラックボールカップ底面（$Z = -16.00\,\text{mm}$）にサンドイッチ固定されます（スペーサーがセンサー基板の $\varnothing 3.30\,\text{mm}$ 穴を貫通してカップ耳下段の深さ $3.90\,\text{mm}$・穴径 $\varnothing 3.30\,\text{mm}$ 受け穴に進入）。
 
 | 基板 | 穴番号 | 配置箇所 | PCB座標 $(x_{\text{pcb}}, y_{\text{pcb}})$ | 穴径 (`Edge.Cuts`) | 備考 |
 | :--- | :---: | :--- | :---: | :---: | :--- |
@@ -273,9 +273,9 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 | **右メイン (`curcur40-right`)** | **R3** | 外周・小指側上 | $(101.0000, -20.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
 | **右メイン (`curcur40-right`)** | **R4** | 外周・小指側下 | $(98.0000, 38.0000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴 |
 | **右メイン (`curcur40-right`)** | **R5** | 外周・親指側下（`rSW8`–`rSW9` 南側） | $(62.0000, 64.6000)$ | $\varnothing 3.30 \, \text{mm}$ | 外周 5.50mm スペーサー貫通穴（左手 `L5` と左右対称） |
-| **右メイン (`curcur40-right`)** | **W1** | ホイール西上ポスト（`#04B` 固定脚） | $(2.0875, -1.9000)$ | $\varnothing 3.70 \, \text{mm}$ | `#04B` 一体型ポスト貫通（トッププレート側は $\varnothing 2.40$ M2穴） |
-| **右メイン (`curcur40-right`)** | **W2** | ホイール西下ポスト（`#04B` 固定脚） | $(2.0875, 5.8000)$ | $\varnothing 3.70 \, \text{mm}$ | `#04B` 一体型ポスト貫通（トッププレート側は $\varnothing 2.40$ M2穴） |
-| **右メイン (`curcur40-right`)** | **W3** | ホイール北側ポスト（`#04B` 固定脚） | $(16.2875, -12.2000)$ | $\varnothing 3.70 \, \text{mm}$ | `#04B` 一体型ポスト貫通（トッププレート側は $\varnothing 2.40$ M2穴） |
+| **右メイン (`curcur40-right`)** | **W1** | ホイール西上スペーサー（`#04B` 固定） | $(2.0875, -1.9000)$ | $\varnothing 3.30 \, \text{mm}$ | 5.50mm スペーサー貫通穴（上下 M2×4mm ネジ締結） |
+| **右メイン (`curcur40-right`)** | **W2** | ホイール西下スペーサー（`#04B` 固定） | $(2.0875, 5.8000)$ | $\varnothing 3.30 \, \text{mm}$ | 5.50mm スペーサー貫通穴（上下 M2×4mm ネジ締結） |
+| **右メイン (`curcur40-right`)** | **W3** | ホイール北側スペーサー（`#04B` 固定） | $(16.2875, -12.2000)$ | $\varnothing 3.30 \, \text{mm}$ | 5.50mm スペーサー貫通穴（上下 M2×4mm ネジ締結） |
 | **センサー (`curcur40-pmw3360`)** | **TB1** | トラックボール北西 (NW) | $(-2.4750, 41.0875)$ | $\varnothing 3.30 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, -11.3)$、5.50mm スペーサー貫通 |
 | **センサー (`curcur40-pmw3360`)** | **TB2** | トラックボール北東 (NE) | $(21.5250, 41.0875)$ | $\varnothing 3.30 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(+12.0, -11.3)$、5.50mm スペーサー貫通 |
 | **センサー (`curcur40-pmw3360`)** | **TB3** | トラックボール南西 (SW) | $(-2.4750, 63.6875)$ | $\varnothing 3.30 \, \text{mm}$ | カップ中心 $(9.525, 52.3875)$ から $(-12.0, +11.3)$、5.50mm スペーサー貫通 |
@@ -385,7 +385,7 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 2. **[`scripts/generate_trackball_cup.py`](../scripts/generate_trackball_cup.py)**: トラックボールカップ（`trackball-cup.step/.stl`）および `trackball-cup-with-ball.step/.stl`（光学基準点 `Lens_Optical_Ref_Point` 含む）を生成
 3. **[`scripts/generate_sensor_assemblies.py`](../scripts/generate_sensor_assemblies.py)**: 光学センサー検証アセンブリ（`pmw3360-lens-pcb-assembly.step`, `trackball-sensor-assembly.step`、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成
 4. **[`scripts/generate_inertia_wheel.py`](../scripts/generate_inertia_wheel.py)**: パッシブ磁気慣性ホイールの全製造パーツ（[`cases/inertia_wheel/`](../cases/inertia_wheel) 配下 7種）およびホイール検証アセンブリ 4種を生成・DfAM検証
-5. **[`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py)**: フルアセンブリ（`assembly-full.step`, `assembly-full-desk.step`、全134パーツ、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成し、全パーツ間の干渉ゼロ（`0.00000000 mm³`）を検証
+5. **[`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py)**: フルアセンブリ（`assembly-full.step`, `assembly-full-desk.step`、全140パーツ、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成し、全パーツ間の干渉ゼロ（`0.00000000 mm³`）を検証
 6. **[`scripts/generate_plates.py`](../scripts/generate_plates.py)**: 左右トッププレート（`plate-top-left.kicad_pcb`, `plate-top-right.kicad_pcb`）およびレーザーカット用 SVG（`plate-curcur40.svg`, `foam-curcur40.svg`）を生成・DRC検証
 7. **[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py)**: 全5基板（`left`, `right`, `pmw3360`, `inertia-wheel-sensor`, `inertia-wheel-eval`）および左右トッププレートの JLCPCB 発注用データ（`GERBER-*.zip`, `BOM-*.csv`, `CPL-*.csv`）を一括出力・プリフライト検証
 8. **[`scripts/generate_spec_diagrams.py`](../scripts/generate_spec_diagrams.py)**: `docs/assets/` 内のケース・光学設計図解 PNG を生成
