@@ -504,17 +504,18 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     == Top Plate top surface, and wheel top at `Z_global = +6.4000 mm` == +2.80 mm natural mouse protrusion):
       - Continuous 1.20 mm bottom floor (`Z_mod = -1.20 .. 0.00 mm`) across `X in [-8.45, +9.35]`, `Y in [-8.80, +8.80]`,
         supporting the Kailh Square Silent Switch (`+6.20, +5.70`) directly inside the sunk SE pocket with two
-        `Ø2.00 mm` THT pin & wire through-holes at the `5.00 mm` pin pitch (`(+3.70, +5.70)` and `(+8.70, +5.70)`)
+        `Ø1.60 mm` THT pin & wire through-holes at the `5.00 mm` pin pitch (`(+3.70, +5.70)` and `(+8.70, +5.70)`)
       - Raised 2.60 mm inner floor (`Z_mod = -1.20 .. +1.40 mm`) across `Y in [-4.70, +8.80]` outside SE pocket
-      - Two North Hinge Outer Ears (`Z_mod = -1.20 .. +4.18 mm`) with `Ø2.06 mm` hinge pin bore
+      - Two North Hinge Outer Ears (`Z_mod = -1.20 .. +4.30 mm`) with `Ø2.06 mm` hinge pin bore
       - East Flange (`X in [+9.35, +14.90]`, `Y in [-4.70, +8.80]`) and North Lug (`X in [-4.70, +0.70]`,
-        `Y in [-14.90, -8.80]`) rising from `Z_mod = -1.20` to `+6.74 mm` (seating against Main PCB B.Cu = +6.75 mm)
-      - Three `Ø3.40 mm` integrated spacer posts at `SUNK_MOUNT_PTS_MOD` rising from `Z_mod = +6.74` to `+8.94 mm`
-        (passing through `Ø3.70 mm` Main PCB holes to support Top Plate underside at `Z_global = -3.60 mm`),
-        with `Ø1.60 mm` (>= Ø1.50 mm JLC3DP limit!) M2 screw through-bores!
+        `Y in [-14.90, -8.80]`) with top surface at `Z_mod = +3.45 mm` (`Z_global = -9.10 mm` == outer case boss
+        height!) and bottom screw-head seating surface at `Z_mod = +1.05 mm` (`Z_global = -11.50 mm`, `2.40 mm`
+        clamping thickness!) with `Ø2.40 mm` M2 through-holes at `SUNK_MOUNT_PTS_MOD` (`W1`..`W3`) for sandwich
+        clamping against 3x common M2 5.50mm standoffs (`Z_global = -9.10 .. -3.60 mm`) with top & bottom M2x4mm screws!
     """
-    z_flange_top = -5.81 - CZ_SUNK  # +6.74 mm
-    flange_h = z_flange_top - (-1.20)  # 7.94 mm
+    z_flange_top = -9.10 - CZ_SUNK   # +3.45 mm (Z_global = -9.10 mm)
+    z_clamp_bot = -11.50 - CZ_SUNK   # +1.05 mm (Z_global = -11.50 mm -> 2.40 mm clamping web!)
+    flange_h = z_flange_top - (-1.20)  # 4.65 mm
 
     base = bd.Box(
         17.80, MOD_XY, 2.60,
@@ -528,11 +529,11 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     base = base - hinge_slot
 
     ear_l = bd.Box(
-        2.10, 4.10, 5.38,
+        2.10, 4.10, 5.50,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((-8.45, -8.80, -1.20)))
     ear_r = bd.Box(
-        2.60, 4.10, 5.38,
+        2.60, 4.10, 5.50,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((6.75, -8.80, -1.20)))
     base = base + ear_l + ear_r
@@ -541,11 +542,21 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
         5.55, 13.50, flange_h,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((9.35, -4.70, -1.20)))
+    east_bot_relief = bd.Box(
+        6.00, 14.00, z_clamp_bot - (-1.20),
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((10.17, -4.90, -1.20)))
+    east_flange = east_flange - east_bot_relief
 
     north_lug = bd.Box(
         5.40, 6.10, flange_h,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((-4.70, -14.90, -1.20)))
+    north_bot_relief = bd.Box(
+        6.00, 6.00, z_clamp_bot - (-1.20),
+        align=(bd.Align.MIN, bd.Align.MAX, bd.Align.MIN),
+    ).moved(bd.Location((-5.00, -9.80, -1.20)))
+    north_lug = north_lug - north_bot_relief
     base = base + east_flange + north_lug
 
     sw_pocket = bd.Box(
@@ -554,12 +565,6 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     ).moved(bd.Location((3.05, 2.55, 0.00)))
     base = base - sw_pocket
 
-    for mx, my in SUNK_MOUNT_PTS_MOD:
-        post = bd.Cylinder(
-            radius=1.70, height=2.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-        ).moved(bd.Location((mx, my, z_flange_top)))
-        base = base + post
-
     hinge_bore = (
         bd.Cylinder(radius=1.03, height=22.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
         .rotate(bd.Axis.Y, 90)
@@ -567,15 +572,15 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     )
     base = base - hinge_bore
 
-    for px in (6.20 - 0.5 * SWITCH_PIN_PITCH, 6.20 + 0.5 * SWITCH_PIN_PITCH):
+    for px in (3.85, 8.55):
         sw_pin_hole = bd.Cylinder(
-            radius=1.00, height=11.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-        ).moved(bd.Location((px, 5.70, -2.00)))
+            radius=0.80, height=2.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        ).moved(bd.Location((px, 5.70, -1.80)))
         base = base - sw_pin_hole
 
     for mx, my in SUNK_MOUNT_PTS_MOD:
         sh = bd.Cylinder(
-            radius=0.80, height=13.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+            radius=1.20, height=13.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
         ).moved(bd.Location((mx, my, -2.00)))
         base = base - sh
 
@@ -1116,7 +1121,28 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
         *balls,
     ]
 
-    # 12. Twin 180°-Symmetric Pyramid-Deep-R Switch-Snap Covers (`#20` x 2, identical part rotated 180° around (0, Y_AXLE)!)
+    # 12. Sunk-variant 3x M2 5.50mm Female-Female Standoffs (`W1`..`W3`, `Z_mod in [+3.46, +8.94]`, i.e. `Z_global in [-9.09, -3.61]`)
+    #     + 3x Bottom M2x4mm Screws (`Z_mod_head in [+0.24, +1.04]`, `Z_mod_shank in [+1.04, +5.04]`)
+    if sunk:
+        for idx_s, (mx, my) in enumerate(SUNK_MOUNT_PTS_MOD):
+            so = (
+                bd.Cylinder(radius=1.50, height=5.48, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+                - bd.Cylinder(radius=1.00, height=5.48, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+            ).moved(bd.Location((mx, my, 3.46))).solids()[0]
+            so.label = f"Sunk_Mount_Standoff_M2_5p5mm_{idx_s+1}"
+            raw_items.append(so)
+
+            bs_head = bd.Cylinder(
+                radius=1.80, height=0.80, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)
+            ).moved(bd.Location((mx, my, 1.04)))
+            bs_shank = bd.Cylinder(
+                radius=0.95, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+            ).moved(bd.Location((mx, my, 1.04)))
+            bs = (bs_head + bs_shank).solids()[0]
+            bs.label = f"Sunk_Mount_Bottom_Screw_M2x4_{idx_s+1}"
+            raw_items.append(bs)
+
+    # 13. Twin 180°-Symmetric Pyramid-Deep-R Switch-Snap Covers (`#20` x 2, identical part rotated 180° around (0, Y_AXLE)!)
     if sunk and include_covers:
         cov_plate = build_wheel_cover_plate_coords()
         cov_sensor = cov_plate.moved(bd.Location((0.0, 0.0, -CZ_SUNK))).solids()[0]
@@ -1226,7 +1252,7 @@ def build_sunk_static_env_mod() -> list[bd.Solid]:
     with bd.BuildSketch(bd.Plane.XY.offset(z_pcb_top - 2.0)) as sk_win:
         bd.RectangleRounded(18.50, 18.50, 0.50)
         with bd.Locations(*SUNK_MOUNT_PTS_MOD):
-            bd.Circle(1.85)
+            bd.Circle(1.65)
     pcb = (pcb - bd.extrude(sk_win.sketch, amount=4.0)).solids()[0]
     pcb.label = "Local_Main_PCB"
     return [plate, pcb]
@@ -1245,6 +1271,7 @@ def verify_click_swing(mod_sunk_parts: list[bd.Shape], steps: int = 6):
                   "Wheel_Pyramid_Cover_Sensor", "Wheel_Pyramid_Cover_Companion"}
     by_lbl = {p.label: p for p in mod_sunk_parts}
     moving = [p for p in mod_sunk_parts if p.label not in static_lbl
+              and not p.label.startswith("Sunk_Mount_")
               and not p.label.startswith("Steel_Ball") and p.label != "Ratchet_Hub_Internal_Resin"]
     covers = [by_lbl["Wheel_Pyramid_Cover_Sensor"], by_lbl["Wheel_Pyramid_Cover_Companion"]]
     plate, pcb = build_sunk_static_env_mod()
@@ -1485,10 +1512,10 @@ def main():
             radius=1.95, height=0.80, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
         ).moved(bd.Location((sx_m, sy_m, -1.99)))
         sc_shank = bd.Cylinder(
-            radius=0.78, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)
+            radius=0.95, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)
         ).moved(bd.Location((sx_m, sy_m, -1.99)))
         sc = (sc_head + sc_shank).solids()[0]
-        sc.label = f"Sunk_Mount_Screw_M2x4_{idx_m+1}"
+        sc.label = f"Sunk_Mount_Top_Screw_M2x4_{idx_m+1}"
         sunk_screws.append(sc)
 
     sunk_fit_parts = [
@@ -1503,6 +1530,12 @@ def main():
         "Kailh_Silent_Switch_6x6x4p3",
         "Wheel_Pyramid_Cover_Sensor",
         "Wheel_Pyramid_Cover_Companion",
+        "Sunk_Mount_Standoff_M2_5p5mm_1",
+        "Sunk_Mount_Standoff_M2_5p5mm_2",
+        "Sunk_Mount_Standoff_M2_5p5mm_3",
+        "Sunk_Mount_Bottom_Screw_M2x4_1",
+        "Sunk_Mount_Bottom_Screw_M2x4_2",
+        "Sunk_Mount_Bottom_Screw_M2x4_3",
     }
     sunk_fw = [s for s in sunk_dropped_parts if s.label == "SUS304_Flywheel_Cup_16p8mm"][0]
     fw_bb = sunk_fw.bounding_box()

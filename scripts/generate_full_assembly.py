@@ -11,13 +11,14 @@ and verify zero interference across all components per docs/case_spec.md:
 - Sunk Trackball Cup placed on Sensor PCB F.Cu at (23.8125, -109.5375, -16.00 mm), Rim at Z = -2.00 mm (flush with Top Plate)
 - 25mm Trackball Sphere at (23.8125, -109.5375, +2.30 mm) (Top at Z = +14.80 mm, +11.20 mm above Keycap top Z = +3.60 mm)
 - PMW3360 Sensor IC & LM19-LSI Optical Lens
-- 14x Unified M2 5.50mm Female-Female Standoffs:
+- 17x Unified M2 5.50mm Female-Female Standoffs:
     - 10x Perimeter (5 Left L1-L5 + 5 Right R1-R5, Z = -9.10 to -3.60 mm, seated under Top Plate)
     - 4x Trackball Cup (TB1-TB4, Z = -17.60 to -12.10 mm, seated on Z = -17.60 mm bosses, passing through 1.60 mm Sensor PCB and 3.90 mm into 5.50 mm Cup Ear socket)
-- 14x Bottom M2x4mm Screws (head seated against counterbore ceiling z_boss_top - 2.40 mm)
-- 14x Top M2x4mm Screws (4 on Trackball Cup ears Z = -10.50 mm, 10 on Top Plates Z = -2.00 mm)
+    - 3x Sunk Inertia Wheel (W1-W3, Z = -9.10 to -3.60 mm, seated on #04B Sunk Base Frame Z = -9.10 mm flanges, passing through Ø3.30 mm Main PCB holes under Top Plate)
+- 17x Bottom M2x4mm Screws (head seated against counterbore ceiling / flange bottom z_boss_top - 2.40 mm)
+- 17x Top M2x4mm Screws (4 on Trackball Cup ears Z = -10.50 mm, 13 on Top Plates Z = -2.00 mm)
 - Sunk Passive Magnetic Inertia Wheel Module (`#01..#19 + #04B + 2x #20` Twin Edge-Rounded Pyramid Snap Covers)
-  + 3x Top M2x4mm Wheel Mounting Screws on `curcur40-right` (`(28.5750, -57.1500)`, wheel rotary center Z = -2.00 mm)
+  on `curcur40-right` (`(28.5750, -57.1500)`, wheel rotary center Z = -2.00 mm)
 - Keycaps (Choc v2 low-profile)
 """
 import math
@@ -221,7 +222,7 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
             pcb = pcb - bd.Box(2.20, 1.25, 4.0).moved(bd.Location((sx, sy, -5.0)))
 
     # On Right Main PCB, cut the Sunk Passive Inertia Wheel window (18.50 x 18.50 mm, R=0.50 mm)
-    # and 3x Ø 3.70 mm (radius 1.85 mm) spacer-post through-holes
+    # and 3x Ø 3.30 mm (radius 1.65 mm) M2 5.50mm spacer through-holes (W1..W3)
     if is_right:
         wx, wy = to_step_right(*RIGHT_INERTIA_WHEEL)
         with bd.BuildSketch(bd.Plane.XY.offset(-6.50)) as sk_wheel_win:
@@ -230,7 +231,7 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
         pcb = pcb - bd.extrude(sk_wheel_win.sketch, amount=3.00)
         for hx, hy in (to_step_right(x, y) for x, y in RIGHT_WHEEL_HOLES_PCB):
             pcb = pcb - bd.Cylinder(
-                radius=1.85,
+                radius=1.65,
                 height=4.00,
                 align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
             ).moved(bd.Location((hx, hy, -6.50)))
@@ -338,7 +339,7 @@ def make_sunk_inertia_wheel_solids(wx: float, wy: float):
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((sx_m, sy_m, -1.99)))
         sc_shank = bd.Cylinder(
-            radius=0.78,
+            radius=0.95,
             height=4.00,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX),
         ).moved(bd.Location((sx_m, sy_m, -1.99)))
@@ -824,6 +825,12 @@ def main():
         "Kailh_Silent_Switch_6x6x4p3",
         "Wheel_Pyramid_Cover_Sensor",
         "Wheel_Pyramid_Cover_Companion",
+        "Sunk_Mount_Standoff_M2_5p5mm_1",
+        "Sunk_Mount_Standoff_M2_5p5mm_2",
+        "Sunk_Mount_Standoff_M2_5p5mm_3",
+        "Sunk_Mount_Bottom_Screw_M2x4_1",
+        "Sunk_Mount_Bottom_Screw_M2x4_2",
+        "Sunk_Mount_Bottom_Screw_M2x4_3",
     }
 
     clr_j1_case = closest_points(j1_solid, right_case).distance
