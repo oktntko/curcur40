@@ -821,7 +821,7 @@ def main():
     passive_smds = sensor_smd_solids[3:]
     sunk_static_labels = {
         "Wheel_Base_Frame_Sunk",
-        "Hinge_Pin_SUS304_2mm",
+        "Hinge_Pin_SUS303_2x16mm",
         "Kailh_Silent_Switch_6x6x4p3",
         "Wheel_Pyramid_Cover_Sensor",
         "Wheel_Pyramid_Cover_Companion",

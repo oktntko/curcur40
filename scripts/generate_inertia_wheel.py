@@ -239,17 +239,28 @@ def build_sus304_flywheel_centered() -> bd.Solid:
     ).moved(bd.Location((0, 0, (WHEEL_W - 1.30) / 2.0)))
     w = w - (groove_outer - groove_inner)
 
-    # 4. West Bearing Clearance Pocket (Z = 0.00..0.45 mm, Ø9.60 mm recess leaving Ø3.10 mm inner-race boss!)
+    # East cup cavity starts at Z = WHEEL_W - CUP_DEPTH = 2.16 mm (X_mod = -0.57 mm).
+    # 4. West DDL-520 Bearing Clearance Pocket:
+    #    - Outer Ø9.60 mm recess (Z = 0.00..0.93 mm, X_mod = -2.73..-1.80 mm -> 1.23 mm solid SUS304 web!)
+    #      clears the extended West Bearing Ear (`X_mod <= -2.15 mm`, R = 3.45 mm) by 0.35 mm axially & 1.35 mm radially
+    #    - Central Ø2.84 mm (`R = 1.42 mm <= DDL-520 Li/2 = 1.45 mm`) inner-race boss at Z = 0.60 mm (`X_mod = -2.13 mm`)
+    west_recess_inner = bd.Cylinder(
+        radius=4.80,
+        height=0.70,
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((0, 0, -0.10)))
+    w = w - west_recess_inner
+
     west_ring_out = bd.Cylinder(
         radius=4.80,
-        height=0.55,
+        height=0.43,
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((0, 0, -0.10)))
+    ).moved(bd.Location((0, 0, 0.50)))
     west_ring_in = bd.Cylinder(
-        radius=1.55,
-        height=0.55,
+        radius=1.42,
+        height=0.43,
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((0, 0, -0.10)))
+    ).moved(bd.Location((0, 0, 0.50)))
     w = w - (west_ring_out - west_ring_in)
 
     # 5. East Internal Ratchet-Hub Cup Cavity (Z = 2.16..5.46 mm, Ø12.50 mm ID -> 1.65..2.15 mm solid SUS304 rim!)
@@ -319,23 +330,24 @@ def build_wheel_carriage_assembled() -> bd.Solid:
     """
     Build Ultra-Slim Rounded-Ear Hinged Inner Carriage (`#03`) in assembled module coordinates
     (100% walls & steps >= 0.85 mm, coplanar East print bed X = +6.45 mm):
-      - North Cylindrical Hinge Barrel (`R = 1.92 mm`, `X in [-6.05, +6.45]`) at `(HINGE_Y=-6.85, HINGE_Z=2.15)`
+      - North Cylindrical Hinge Barrel (`R = 1.92 mm`, `X in [-5.55, +6.45]`) at `(HINGE_Y=-6.85, HINGE_Z=2.15)`
       - G1-tangent West Hinge Arm (`X in [-4.55, -3.05]`, `Y in [-8.77, +3.35]`, `Z in [2.15, 5.30]`)
         + Submerged West Sensor Sub-PCB L-Ledge (`X in [-7.79, -4.55]`, `Z <= 5.30 mm`)
-      - Sleek Concentric Rounded West & East Bearing Ears (`Ø6.90 mm`, `R = 3.45 mm` around `(Y_AXLE, Z_AXLE)`,
-        `Y in [-3.55, +3.35]`), enclosed under the Twin Pyramid-Deep-R Snap Covers in Variant B!
+      - Sleek Concentric Rounded West (`X in [-4.55, -2.15]`, `2.40 mm` housing extending `0.90 mm` into `#01` West
+        recess for `1.50 mm` `DDL-520` bearing + `Ø4x1mm` `#16` magnet clearance) & East (`X in [+3.10, +5.35]`)
+        Bearing Ears (`Ø6.90 mm`, `R = 3.45 mm` around `(Y_AXLE, Z_AXLE)`), enclosed under `#20` Twin Snap Covers!
       - East Hinge Riser (`X in [+3.10, +5.35]`) & South Silent-Switch Striker Tab (`X in [+3.10, +6.45]`,
         `Y in [+2.25, +7.10]`, `Z in [4.38, 5.23]`, coplanar East face `X = +6.45` with `hinge_barrel`!)
       - Axial M2 Magnet Adjuster Bore (`Ø1.76 mm` along X at `(Y = -0.10, Z = +6.25 mm)`) through the lower
-        East Bearing Stem facing `#02` Hub's 9 steel balls directly inside the East cup mouth!
+        East Bearing Stem (`#17` `NE218` `Ø1.50±0.10 mm` magnet passes freely; `#18` `M2x4mm` set screw self-taps!)
     """
     parts = []
 
-    # 1. North Cylindrical Hinge Barrel across X in [-6.05, +6.45] (R = 1.92 mm -> Y_min = -8.77, Z_min = 0.23, Z_max = 4.07)
+    # 1. North Cylindrical Hinge Barrel across X in [-5.55, +6.45] (12.00 mm wide -> 1.00 mm West of west_arm)
     hinge_barrel = (
-        bd.Cylinder(radius=1.92, height=12.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        bd.Cylinder(radius=1.92, height=12.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((-6.05, HINGE_Y, HINGE_Z)))
+        .moved(bd.Location((-5.55, HINGE_Y, HINGE_Z)))
     )
     parts.append(hinge_barrel)
 
@@ -346,13 +358,13 @@ def build_wheel_carriage_assembled() -> bd.Solid:
     ).moved(bd.Location((-4.55, -8.77, HINGE_Z)))
     parts.append(west_arm)
 
-    # 3. Sleek Rounded West Bearing Stem + Semicircular Cap (`X in [-4.55, -3.05]`, `Y in [-3.55, +3.35]`, R = 3.45 mm)
+    # 3. Sleek Rounded West Bearing Stem (`X in [-4.55, -3.05]`) + Extended Cylindrical Ear (`X in [-4.55, -2.15]`, 0.90 mm boss step!)
     west_stem = bd.Box(
         1.50, 6.90, Z_AXLE - 4.10,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((-4.55, Y_AXLE - 3.45, 4.10)))
     west_cap = (
-        bd.Cylinder(radius=3.45, height=1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        bd.Cylinder(radius=3.45, height=2.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
         .moved(bd.Location((-4.55, Y_AXLE, Z_AXLE)))
     )
@@ -400,23 +412,23 @@ def build_wheel_carriage_assembled() -> bd.Solid:
         carriage = carriage + p
 
     # --- Precision Bores ---
-    # 1) North Hinge Pin Bore: Ø2.04 mm along X at (HINGE_Y, HINGE_Z)
+    # 1) North Hinge Pin Bore: Ø2.06 mm free-pivot bore along X at (HINGE_Y, HINGE_Z)
     hinge_bore = (
-        bd.Cylinder(radius=1.02, height=20.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
+        bd.Cylinder(radius=1.03, height=20.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
         .rotate(bd.Axis.Y, 90)
         .moved(bd.Location((0.0, HINGE_Y, HINGE_Z)))
     )
     carriage = carriage - hinge_bore
 
-    # 2) West MR52 Bearing Pocket: Ø5.04 mm press-fit bore through West Ear (X = -4.55 to -3.05)
+    # 2) West DDL-520 Bearing Pocket: Ø5.04 mm press-fit bore through West Ear (X = -4.55 to -2.15)
     west_brg_seat = (
-        bd.Cylinder(radius=2.52, height=2.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        bd.Cylinder(radius=2.52, height=3.10, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
         .moved(bd.Location((-4.85, Y_AXLE, Z_AXLE)))
     )
     carriage = carriage - west_brg_seat
 
-    # 3) East MR52 Bearing Pocket: Ø5.04 mm press-fit bore through East Ear (X = +3.10 to +5.35)
+    # 3) East DDL-520 Bearing Pocket: Ø5.04 mm press-fit bore through East Ear (X = +3.10 to +5.35)
     east_brg_seat = (
         bd.Cylinder(radius=2.52, height=2.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
@@ -437,12 +449,12 @@ def build_wheel_carriage_assembled() -> bd.Solid:
 
 def build_wheel_base_frame() -> bd.Solid:
     """
-    Build Stationary 17.30 x 17.60 mm Base Frame (`#04A`, `X in [-8.45, +8.85]`, `Y in [-8.80, +8.80]`,
+    Build Stationary 17.18 x 17.56 mm Base Frame (`#04A`, `X in [-8.38, +8.80]`, `Y in [-8.78, +8.78]`,
     `Z = 0.00 mm` sits flat on Main/Carrier PCB F.Cu):
-      - Uniform 1.40 mm solid floor across Y in [-4.70, +8.80] (wheel bottom is Z = +2.15 mm -> 0.75 mm clearance!)
-      - Open North hinge swing slot at X in [-6.35, +6.75], Y in [-8.80, -4.70] (`0.30 mm` clearance to hinge barrel!)
-      - Two North Hinge Outer Ears at X in [-8.45, -6.35] and [+6.75, +8.85], Y in [-8.80, -4.70], Z in [0.00, 4.10]
-        with Ø2.06 mm hinge pin bore at (HINGE_Y=-6.85, HINGE_Z=2.15)
+      - Uniform 1.40 mm solid floor across Y in [-4.70, +8.78] (wheel bottom is Z = +2.15 mm -> 0.75 mm clearance!)
+      - Open North hinge swing slot at X in [-5.85, +6.75], Y in [-8.78, -4.70] (`0.30 mm` clearance to hinge barrel!)
+      - Two North Hinge Outer Ears at X in [-8.38, -5.85] (`2.53 mm`) and [+6.75, +8.80] (`2.05 mm`) retaining the
+        `16.00 mm` `#15` hinge pin (`Ø2.02 mm` snug stationary bore at `(HINGE_Y=-6.85, HINGE_Z=2.15)`)
       - Open South-East corner cutout (`X >= +3.05, Y >= +2.55`) for PCB-mounted Kailh Silent Switch at `(+6.20, +5.70)`
       - Two M2 mounting screw holes (Ø2.10 mm through-holes) at (-6.50, +6.50) and (-0.50, +6.50)
     """
@@ -452,13 +464,13 @@ def build_wheel_base_frame() -> bd.Solid:
     ).moved(bd.Location((-8.38, 0.00, 0.00)))
 
     hinge_slot = bd.Box(
-        13.10, 4.30, 5.00,
+        12.60, 4.30, 5.00,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-6.35, -9.00, -1.00)))
+    ).moved(bd.Location((-5.85, -9.00, -1.00)))
     base = base - hinge_slot
 
     ear_l = bd.Box(
-        2.03, 4.08, 4.10,
+        2.53, 4.08, 4.10,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((-8.38, -8.78, 0.00)))
     ear_r = bd.Box(
@@ -474,7 +486,7 @@ def build_wheel_base_frame() -> bd.Solid:
     base = base - sw_cut
 
     hinge_bore = (
-        bd.Cylinder(radius=1.03, height=22.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
+        bd.Cylinder(radius=1.01, height=22.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
         .rotate(bd.Axis.Y, 90)
         .moved(bd.Location((0.0, HINGE_Y, HINGE_Z)))
     )
@@ -504,9 +516,10 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     == Top Plate top surface, and wheel top at `Z_global = +6.4000 mm` == +2.80 mm natural mouse protrusion):
       - Continuous 1.20 mm bottom floor (`Z_mod = -1.20 .. 0.00 mm`) across `X in [-8.45, +9.35]`, `Y in [-8.80, +8.80]`,
         supporting the Kailh Square Silent Switch (`+6.20, +5.70`) directly inside the sunk SE pocket with two
-        `Ø1.60 mm` THT pin & wire through-holes at the `5.00 mm` pin pitch (`(+3.70, +5.70)` and `(+8.70, +5.70)`)
+        `Ø1.60 mm` THT pin & wire through-holes at the `5.00 mm` pin pitch (`(+3.85, +5.70)` and `(+8.55, +5.70)`)
       - Raised 2.60 mm inner floor (`Z_mod = -1.20 .. +1.40 mm`) across `Y in [-4.70, +8.80]` outside SE pocket
-      - Two North Hinge Outer Ears (`Z_mod = -1.20 .. +4.30 mm`) with `Ø2.06 mm` hinge pin bore
+      - Two North Hinge Outer Ears (`X in [-8.45, -5.85]` = `2.60 mm` and `[+6.75, +8.50]` = `1.75 mm`, `0.85 mm` step
+        to `+9.35`, `Z_mod = -1.20 .. +4.30 mm`) with `Ø2.02 mm` snug stationary bore retaining the `16.00 mm` `#15` pin
       - East Flange (`X in [+9.35, +14.90]`, `Y in [-4.70, +8.80]`) and North Lug (`X in [-4.70, +0.70]`,
         `Y in [-14.90, -8.80]`) with top surface at `Z_mod = +3.45 mm` (`Z_global = -9.10 mm` == outer case boss
         height!) and bottom screw-head seating surface at `Z_mod = +1.05 mm` (`Z_global = -11.50 mm`, `2.40 mm`
@@ -523,17 +536,17 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     ).moved(bd.Location((-8.45, 0.00, -1.20)))
 
     hinge_slot = bd.Box(
-        13.10, 4.30, 5.00,
+        12.60, 4.30, 5.00,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-6.35, -9.00, 0.00)))
+    ).moved(bd.Location((-5.85, -9.00, 0.00)))
     base = base - hinge_slot
 
     ear_l = bd.Box(
-        2.10, 4.10, 5.50,
+        2.60, 4.10, 5.50,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((-8.45, -8.80, -1.20)))
     ear_r = bd.Box(
-        2.60, 4.10, 5.50,
+        1.75, 4.10, 5.50,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((6.75, -8.80, -1.20)))
     base = base + ear_l + ear_r
@@ -566,7 +579,7 @@ def build_wheel_base_frame_sunk_assembled() -> bd.Solid:
     base = base - sw_pocket
 
     hinge_bore = (
-        bd.Cylinder(radius=1.03, height=22.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
+        bd.Cylinder(radius=1.01, height=22.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
         .rotate(bd.Axis.Y, 90)
         .moved(bd.Location((0.0, HINGE_Y, HINGE_Z)))
     )
@@ -719,9 +732,10 @@ def build_cover_swing_voids_plate_coords() -> bd.Shape:
     x_pcb0 = -7.75 - ENV_CLR_X   # -8.15
     x_prof1 = -5.75              # -5.75 (coplanar with the 1.80 mm snap leg West face; clears #07 PCB & SOIC-8 leads)
     # Tunnel starts 0.86 mm West of the profile end so its end face never forms a < 0.80 mm step with it, and so
-    # that it encloses the AS5600 SOIC-8 body (X in [-6.94, -5.69]) and companion East bearing ear (X <= +5.35).
+    # that it encloses the AS5600 SOIC-8 body (X in [-6.94, -5.39]), companion East bearing ear (X <= +5.35),
+    # and #14 10.00 mm shaft East tip (X <= +6.05 -> 0.56 mm >= 0.40 mm axial clearance!).
     x_tun0 = x_prof1 - 0.86      # -6.61
-    assert x_tun0 <= -5.69 - ENV_CLR_X and x_tun0 <= -(5.35 + ENV_CLR_X)
+    assert x_tun0 <= -5.39 - ENV_CLR_X and x_tun0 <= -(6.05 + ENV_CLR_X)
     # 1) Tunnel: rest centre c0 = (Y_AXLE, -2.00); bottom-out centres c1 = (Y_AXLE ± dy, -2.00 - dz)
     c1y, c1z = _press_yz(Y_AXLE, -2.00, CLICK_SWEEP_DEG, zo)
     dy, dz = abs(c1y - Y_AXLE), abs(c1z - (-2.00))
@@ -1017,51 +1031,60 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
         b.label = f"Steel_Ball_2mm_{i+1:02d}"
         balls.append(b)
 
-    # 6. Non-magnetic SUS304 Shaft Ø1.98 x 9.90 mm (X_mod in [-4.72, +5.18])
+    # 6. Non-magnetic SUS303 JIS B-type h7 Parallel Pin Ø1.99 x 10.00 mm (c ≈ 0.35 mm chamfers, X_mod in [-3.95, +6.05])
+    shaft_cyl = bd.Cylinder(radius=0.99, height=10.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+    shaft_cyl = bd.chamfer(shaft_cyl.edges(), length=0.33)
     shaft = (
-        bd.Cylinder(radius=0.99, height=9.90, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-        .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((-4.72, Y_AXLE, Z_AXLE)))
+        shaft_cyl.rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((-3.95, Y_AXLE, Z_AXLE)))
+        .solids()[0]
     )
-    shaft.label = "SUS304_Axle_Shaft_2mm"
+    shaft.label = "SUS303_Axle_Shaft_2x10mm"
 
-    # 7. 2x Miniature Degreased Bearings (MR52 / DDL-520 open: Ø2.04 ID x Ø5.00 OD x 2.00 W)
+    # 7. 2x MinebeaMitsumi NMB DDL-520 Open Miniature Bearings (Ø2.00 ID x Ø5.00 OD x 1.50 W):
+    #    - West bearing pressed flush with West Ear inner face (-2.15): X_mod in [-3.65, -2.15]
+    #    - East bearing pressed flush with East Ear inner face (+3.10): X_mod in [+3.10, +4.60]
     brg_w = (
-        bd.Cylinder(radius=2.49, height=1.95, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-        - bd.Cylinder(radius=1.02, height=1.95, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-    ).rotate(bd.Axis.Y, 90).moved(bd.Location((-4.70, Y_AXLE, Z_AXLE)))
-    brg_w.label = "Bearing_MR52_West"
+        bd.Cylinder(radius=2.49, height=1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        - bd.Cylinder(radius=1.02, height=1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+    ).rotate(bd.Axis.Y, 90).moved(bd.Location((-3.65, Y_AXLE, Z_AXLE))).solids()[0]
+    brg_w.label = "Bearing_DDL520_West"
 
     brg_e = (
-        bd.Cylinder(radius=2.49, height=2.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-        - bd.Cylinder(radius=1.02, height=2.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-    ).rotate(bd.Axis.Y, 90).moved(bd.Location((3.13, Y_AXLE, Z_AXLE)))
-    brg_e.label = "Bearing_MR52_East"
+        bd.Cylinder(radius=2.49, height=1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        - bd.Cylinder(radius=1.02, height=1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+    ).rotate(bd.Axis.Y, 90).moved(bd.Location((3.10, Y_AXLE, Z_AXLE))).solids()[0]
+    brg_e.label = "Bearing_DDL520_East"
 
-    # 8. North Hinge Pin Ø1.98 x 17.20 mm at (X = +0.20, HINGE_Y, HINGE_Z) -> X in [-8.40, +8.80]
+    # 8. North Hinge Pin: SUS303 JIS B-type h7 Parallel Pin Ø1.99 x 16.00 mm (c ≈ 0.35 mm chamfers, X in [-7.90, +8.10])
+    hp_cyl = bd.Cylinder(radius=0.99, height=16.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
+    hp_cyl = bd.chamfer(hp_cyl.edges(), length=0.33)
     hinge_pin = (
-        bd.Cylinder(radius=0.99, height=17.10, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
-        .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((0.21, HINGE_Y, HINGE_Z)))
+        hp_cyl.rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((0.10, HINGE_Y, HINGE_Z)))
+        .solids()[0]
     )
-    hinge_pin.label = "Hinge_Pin_SUS304_2mm"
+    hinge_pin.label = "Hinge_Pin_SUS303_2x16mm"
 
-    # 9. Diametric Sensor Magnet Ø3.0 x 0.75 mm (X_mod in [-5.49, -4.74]) + Stepped Top-Side PCBA AS5600 SubPCB:
+    # 9. Diametric Sensor Magnet D4x1mm (Ø4.00 x 1.00 mm, X_mod in [-4.95, -3.95], 0.30 mm West of DDL-520,
+    #    0.52 mm radial clearance inside Ø5.04 mm West recess, 0.44 mm nominal airgap to AS5600 / 0.25 mm at A_max=1.75)
+    #    + Stepped Top-Side PCBA AS5600 SubPCB:
     #    - SubPCB 8.80/7.90 x 8.66 x 0.80 mm (X_mod in [-7.75, -6.95], Z_mod in [4.45, 13.11])
-    #    - U1 AS5600-ASOT SOIC-8 (JEDEC MS-012: 3.90 x 4.90 x 1.25 mm body at X_mod in [-6.94, -5.69], Y = Y_AXLE ± 1.95,
-    #      plus 6.00 x 4.90 x 0.30 mm gull-wing lead frame at X_mod in [-6.94, -6.64], Z = 10.05 ± 2.45)
+    #    - U1 AS5600-ASOT SOIC-8 (JEDEC MS-012: 3.90 x 4.90 x 1.55 mm realistic mounted height at X_mod in [-6.94, -5.39],
+    #      Y = Y_AXLE ± 1.95, plus 6.00 x 4.90 x 0.30 mm gull-wing lead frame at X_mod in [-6.94, -6.64], Z = 10.05 ± 2.45)
     #    - C1 (100nF 0402) & C2 (1uF 0402) on F.Cu at Z_mod = 6.40 mm
     sens_mag = (
-        bd.Cylinder(radius=1.50, height=0.75, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        bd.Cylinder(radius=2.00, height=1.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((-5.49, Y_AXLE, Z_AXLE)))
+        .moved(bd.Location((-4.95, Y_AXLE, Z_AXLE)))
+        .solids()[0]
     )
-    sens_mag.label = "Diametric_Magnet_3x1mm"
+    sens_mag.label = "Diametric_Magnet_4x1mm"
 
     as5600_pcb = build_stepped_sensor_pcb_mod()
 
     as5600_body = bd.Box(
-        1.25, 3.90, 4.90,
+        1.55, 3.90, 4.90,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
     ).moved(bd.Location((-6.94, Y_AXLE, 10.05)))
     as5600_leads = bd.Box(
@@ -1106,12 +1129,24 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
     silent_sw = (sw_body + sw_btn + sw_pin_l + sw_pin_r).solids()[0]
     silent_sw.label = "Kailh_Silent_Switch_6x6x4p3"
 
-    # 11. Axial M2 Magnet Gap Adjustment Screw + Ø1.6 x 1.2 mm Ratchet Magnet in lower East Stem
-    m2_adj = (
-        bd.Cylinder(radius=0.82, height=2.85, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+    # 11. Axial #17 Ratchet Magnet (`NE218`, Ø1.50 x 1.50 mm at X_mod in [+2.86, +4.36], 0.45 mm nominal gap to #13 balls)
+    #     + #18 SUS304 DIN916 M2 x 4.00 mm Cup-Point Hex Set Screw (X_mod in [+4.36, +8.36]) in lower East Stem
+    adj_mag_tip = (
+        bd.Cylinder(radius=0.75, height=1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((2.85, Y_AXLE, Z_MAG_ADJ)))
+        .moved(bd.Location((2.86, Y_AXLE, Z_MAG_ADJ)))
     )
+    adj_scr_in = (
+        bd.Cylinder(radius=0.85, height=1.01, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        .rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((4.36, Y_AXLE, Z_MAG_ADJ)))
+    )
+    adj_scr_out = (
+        bd.Cylinder(radius=0.98, height=2.99, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        .rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((5.37, Y_AXLE, Z_MAG_ADJ)))
+    )
+    m2_adj = (adj_mag_tip + adj_scr_in + adj_scr_out).solids()[0]
     m2_adj.label = "M2_Magnet_Adjuster_And_NdFeB"
 
     raw_items = [
@@ -1267,7 +1302,7 @@ def verify_click_swing(mod_sunk_parts: list[bd.Shape], steps: int = 6):
       - Local Top Plate / Main PCB            : >= 0.30 mm
       - `#04B` base frame                     : no contact (sliding hinge faces only)
     """
-    static_lbl = {"Wheel_Base_Frame_Sunk", "Hinge_Pin_SUS304_2mm", "Kailh_Silent_Switch_6x6x4p3",
+    static_lbl = {"Wheel_Base_Frame_Sunk", "Hinge_Pin_SUS303_2x16mm", "Kailh_Silent_Switch_6x6x4p3",
                   "Wheel_Pyramid_Cover_Sensor", "Wheel_Pyramid_Cover_Companion"}
     by_lbl = {p.label: p for p in mod_sunk_parts}
     moving = [p for p in mod_sunk_parts if p.label not in static_lbl
@@ -1526,7 +1561,7 @@ def main():
 
     sunk_static_labels = {
         "Wheel_Base_Frame_Sunk",
-        "Hinge_Pin_SUS304_2mm",
+        "Hinge_Pin_SUS303_2x16mm",
         "Kailh_Silent_Switch_6x6x4p3",
         "Wheel_Pyramid_Cover_Sensor",
         "Wheel_Pyramid_Cover_Companion",
