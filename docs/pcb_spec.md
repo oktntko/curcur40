@@ -72,11 +72,11 @@
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **基材・層数** | FR-4 / 両面 2層 (`F.Cu`, `B.Cu`) | FR-4 / 両面 2層 (`F.Cu`, `B.Cu`) | FR-4 / 両面 2層 (`F.Cu`, `B.Cu`) | FR-4 / 両面 2層 (`F.Cu`, `B.Cu`) | 銅箔厚 1 oz (35 µm) 標準 |
 | **基板板厚** | **1.60 mm** | **1.60 mm** | **1.60 mm** | **0.80 mm** | ホイールセンサーのみ `#20` カバー内格納のため **0.8 mm 指定** |
-| **外形バウンディングボックス** | **124.325 × 91.8125 mm** | **124.325 × 91.8125 mm** | **29.575 × 29.200 mm** | **22.000 × 22.000 mm**<br>（折り取り後 **8.80/7.90 × 8.66 mm**） | ホイールセンサーは JLCPCB PCBA 下限（$20\times 20\text{ mm}$）を満たすブレークアウェイ外枠付き |
-| **PCB座標範囲 ($X$)** | $-119.0625 \sim +5.2625 \, \text{mm}$ | $-5.2625 \sim +119.0625 \, \text{mm}$ | $-5.2625 \sim +24.3125 \, \text{mm}$ | $-11.0000 \sim +11.0000 \, \text{mm}$ | |
-| **PCB座標範囲 ($Y$)** | $-24.3125 \sim +67.5000 \, \text{mm}$ | $-24.3125 \sim +67.5000 \, \text{mm}$ | $+38.3000 \sim +67.5000 \, \text{mm}$ | $-11.0000 \sim +11.0000 \, \text{mm}$ | |
-| **内部切り欠き穴** | なし | **$18.50 \times 18.50 \, \text{mm}$ ($R=0.50$) 角穴** | **$8.70 \times 16.90 \, \text{mm}$ 角穴** | 枠内スナップスリット 2箇所 | 右メイン $(14.2875, 0.0000)$ に沈み込みホイール窓、センサーサブ中央 $(9.525, 52.3875)$ に光学角穴 |
-| **総フットプリント数** | 82 点（PCBA 81 点） | 83 点（PCBA 82 点） | 13 点（PCBA 9 点） | 7 点（PCBA 3 点＋ワイヤパッド 4 点） | `DNP` 部品（左右 `J4`/`rJ4`、センサー基板 `R4`/`C5`）および `JP1` を含む |
+| **外形バウンディングボックス** | **124.325 × 91.8125 mm** | **124.325 × 91.8125 mm** | **29.575 × 29.200 mm** | **22.000 × 22.000 mm**<br>（折り取り後 **8.20/8.00 × 9.40 mm**） | ホイールセンサーは JLCPCB PCBA 下限（$20\times 20\text{ mm}$）を満たすインセットブレークアウェイ外枠付き |
+| **PCB座標範囲 ($X$)** | $-119.0625 \sim +5.2625 \, \text{mm}$ | $-5.2625 \sim +119.0625 \, \text{mm}$ | $-5.2625 \sim +24.3125 \, \text{mm}$ | $89.0000 \sim 111.0000 \, \text{mm}$（中心 $\pm 11.0$） | |
+| **PCB座標範囲 ($Y$)** | $-24.3125 \sim +67.5000 \, \text{mm}$ | $-24.3125 \sim +67.5000 \, \text{mm}$ | $+38.3000 \sim +67.5000 \, \text{mm}$ | $89.0000 \sim 111.0000 \, \text{mm}$（中心 $\pm 11.0$） | |
+| **内部切り欠き穴** | なし | **$18.50 \times 18.50 \, \text{mm}$ ($R=0.50$) 角穴** | **$8.70 \times 16.90 \, \text{mm}$ 角穴** | 枠内スナップスリット 4箇所 | 右メイン $(14.2875, 0.0000)$ に沈み込みホイール窓、センサーサブ中央 $(9.525, 52.3875)$ に光学角穴 |
+| **総フットプリント数** | 82 点（PCBA 81 点） | 83 点（PCBA 82 点） | 13 点（PCBA 9 点） | 4 点（PCBA 3 点＋4極ワイヤランド `J1` 1 点） | `DNP` 部品（左右 `J4`/`rJ4`、センサー基板 `R4`/`C5`）および `JP1` を含む |
 | **総ネット数** | 88 ネット（実配線 70） | 87 ネット（実配線 74） | 18 ネット（実配線 12） | 7 ネット（実配線 5） | 未接続パッド（`NC`）ネットを含む |
 
 ### 2.2 DRC デザインルール（製造制約）
@@ -194,8 +194,8 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
     * **Pin 6**: `GNDR`（静音中クリックスイッチ GND リターン）
     * **Pin MP (補強タブ)**: `GNDR`
 * **ホイールセンサー極小サブ基板 [`curcur40-wheel-sensor`](../pcbs/inertia-wheel-sensor/curcur40-wheel-sensor.kicad_pcb)（`#07`、板厚 $0.80\,\text{mm}$ Top PCBA）**:
-  * JLCPCB Economic PCBA の最小基板寸法（$20 \times 20\,\text{mm}$）を満たすため **$22.0 \times 22.0\,\text{mm}$ のブレークアウェイ（捨て基板）外枠** 付きで製造し、組み立て時に上下のスナップタブを手で折り取ることで **段付き $8.80/7.90 \times 8.66 \times 0.80\,\text{mm}$** の極小基板となって西側 `#20` カバー（`wheel-cover.step`）内部へ垂直格納されます。
-  * 表面（`F.Cu`）に非接触 12bit 磁気角度センサ **`U1` (`AS5600-ASOT`, SOIC-8, LCSC `C499458`)** およびパスコン **`C1` (`100nF`, `0402`)・`C2` (`1uF`, `0402`)** を PCBA 自動実装済みとし、データシートの **3.3V 単一電源動作仕様** に従い `VDD5V` (Pin 1) と `VDD3V3` (Pin 2) を基板上で `+3V3` に共通接続、`DIR` (Pin 8) を `GND` 直結、`PGO` (Pin 5) を未接続（`NC`）としています。下部4箇所のワイヤパッド（`1:+3V3`, `2:GND`, `3:SDA`, `4:SCL`, ドリル径 $\varnothing 0.65\,\text{mm}$）から極細線を引き出し、静音スイッチ `#10` の2線と合わせて 6ピン JST SH ハーネスで `rJ5` に接続します。
+  * JLCPCB Economic PCBA の最小基板寸法（$20 \times 20\,\text{mm}$）を満たすため **$22.0 \times 22.0\,\text{mm}$ のブレークアウェイ（捨て基板）外枠** 付きで製造し、組み立て時に左右のインセットスナップタブ（`SNAP`、$0.35\,\text{mm}$ 内側退避）を手で折り取ることで **段付き $8.20/8.00 \times 9.40 \times 0.80\,\text{mm}$** の極小基板となって東側 `#20` カバー（`wheel-cover.step`）内部へ垂直格納されます。
+  * 表面（`F.Cu`）の回転軸同軸位置（$(100.00, 98.30) \to Z_{\text{mod}} = 10.55\,\text{mm} = Z_{\text{AXLE}}$）に非接触 12bit 磁気角度センサ **`U1` (`AS5600-ASOT`, SOIC-8, LCSC `C499458`)** およびパスコン **`C1` (`100nF`, `0402`)・`C2` (`1uF`, `0402`)** を PCBA 自動実装済みとし、データシートの **3.3V 単一電源動作仕様** に従い `VDD5V` (Pin 1) と `VDD3V3` (Pin 2) を基板上で `+3V3` に共通接続、`DIR` (Pin 8) を `GND` 直結、`PGO` (Pin 5) を未接続（`NC`）としています。下部4極スルーホールランド **`J1` (`1:+3V3`, `2:GND`, `3:SDA`, `4:SCL`, ドリル径 $\varnothing 0.65\,\text{mm}$ PTH)** から極細線を引き出し、静音スイッチ `#10` の2線と合わせて 6ピン JST SH ハーネスで `rJ5` に接続します。
 
 ### 4.5 SWD デバッグ用スルーホール端子 (`J4` / `rJ4`)
 * ベース基板（Corne Chocolate v4）由来の RP2040 SWD デバッグ端子（Pad 1: `/SWCLK`, Pad 2: `GND`/`GNDR`, Pad 3: `/SWD`）として、小指側外周付近（左 `J4`: `(-106.8675, 22.37625)`、右 `rJ4`: `(111.8475, 22.43125)`）に `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` フットプリントが配置されています。
@@ -385,7 +385,7 @@ curcur40 は Corne Chocolate (v4系 RP2040 オンボード設計) をベース�
 2. **[`scripts/generate_trackball_cup.py`](../scripts/generate_trackball_cup.py)**: トラックボールカップ（`trackball-cup.step/.stl`）および `trackball-cup-with-ball.step/.stl`（光学基準点 `Lens_Optical_Ref_Point` 含む）を生成
 3. **[`scripts/generate_sensor_assemblies.py`](../scripts/generate_sensor_assemblies.py)**: 光学センサー検証アセンブリ（`pmw3360-lens-pcb-assembly.step`, `trackball-sensor-assembly.step`、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成
 4. **[`scripts/generate_inertia_wheel.py`](../scripts/generate_inertia_wheel.py)**: パッシブ磁気慣性ホイールの全製造パーツ（[`cases/inertia_wheel/`](../cases/inertia_wheel) 配下 7種）およびホイール検証アセンブリ 4種を生成・DfAM検証
-5. **[`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py)**: フルアセンブリ（`assembly-full.step`, `assembly-full-desk.step`、全140パーツ、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成し、全パーツ間の干渉ゼロ（`0.00000000 mm³`）を検証
+5. **[`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py)**: フルアセンブリ（`assembly-full.step`, `assembly-full-desk.step`、全141パーツ、光学基準点 `Lens_Optical_Ref_Point` 含む）を生成し、全パーツ間の干渉ゼロ（`0.00000000 mm³`）を検証
 6. **[`scripts/generate_plates.py`](../scripts/generate_plates.py)**: 左右トッププレート（`plate-top-left.kicad_pcb`, `plate-top-right.kicad_pcb`）およびレーザーカット用 SVG（`plate-curcur40.svg`, `foam-curcur40.svg`）を生成・DRC検証
 7. **[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py)**: 全5基板（`left`, `right`, `pmw3360`, `inertia-wheel-sensor`, `inertia-wheel-eval`）および左右トッププレートの JLCPCB 発注用データ（`GERBER-*.zip`, `BOM-*.csv`, `CPL-*.csv`）を一括出力・プリフライト検証
 8. **[`scripts/generate_spec_diagrams.py`](../scripts/generate_spec_diagrams.py)**: `docs/assets/` 内のケース・光学設計図解 PNG を生成

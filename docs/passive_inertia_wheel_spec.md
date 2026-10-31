@@ -10,7 +10,7 @@
 
 | 階層 | 役割・対象読者 | 構成パーツ | 詳細セクション |
 | :--- | :--- | :--- | :--- |
-| **① ホイールコアユニット**<br>*(共通モジュール本体)* | 単独で成立する高速慣性スクロール＋静音ミドルクリック機構（1U枠 $18 \times 18\,\text{mm}$ 相当に収まる共通コア） | `#01` カップ型 `SUS304` ホイール、`#02` 内蔵9球ハブ＋`#13` 鋼球×9、`#03` 揺動キャリッジ、`#07`＋`#08` `AS5600` 段付きセンサー基板、`#10` 静音スイッチ、`#12` ベアリング×2、`#14`/`#15` ピン、`#16`/`#17`/`#18` 磁石・M2磁力調整ネジ | **[第2章](#2-ホイールコアユニット仕様単独モジュール定義)** |
+| **① ホイールコアユニット**<br>*(共通モジュール本体)* | 単独で成立する高速慣性スクロール＋静音ミドルクリック機構（1U枠 $18 \times 18\,\text{mm}$ 相当に収まる共通コア） | `#01` カップ型 `SUS304` ホイール、`#02` 内蔵9球ハブ＋`#13` 鋼球×9、`#03` 揺動キャリッジ、`#07`＋`#08` `AS5600` 段付きセンサー基板、`#10` 静音スイッチ、`#12` ベアリング×2＋`SUS304` 内輪シム1枚、`#14`/`#15` ピン、`#16`/`#17`/`#18` 磁石・M2磁力調整ネジ | **[第2章](#2-ホイールコアユニット仕様単独モジュール定義)** |
 | **② オンボード実装**<br>*(テスト基板・利用者向けサンプル)* | 平坦なプリント基板の表面へそのままネジ2本で載せる標準実装サンプル・単体 USB-C 評価ポッド | **① コアユニット** ＋ **`#04A` オンボードベース枠**（[`wheel-base-frame.step`](../cases/inertia_wheel/wheel-base-frame.step)）<br>*(＋単体評価用 `#06` キャリア基板・`#09` RP2040-Zero・`#05` 台座)* | **[第3章](#3-テスト基板によるオンボード実装サンプルと利用手順)** ＆<br>**[専用ビルドガイド](./inertia_wheel_eval_buildguide_jp.md)** |
 | **③ 沈み込み実装**<br>*(キーボードメイン基板への最適化)* | 薄型キーボード（`curcur40-right`）の基板内窓へ沈み込ませ、キーキャップ高さと調和させた低背・目隠し実装 | **① コアユニット（100%共通）** ＋ **`#04B` 沈み込みベース枠**（[`wheel-base-frame-sunk.step`](../cases/inertia_wheel/wheel-base-frame-sunk.step)） ＋ **`#20` ホイールカバー×2個**（[`wheel-cover.step`](../cases/inertia_wheel/wheel-cover.step)） | **[第4章](#4-キーボードメイン基板への組み込み最適化沈み込みフレームツインカバー)** |
 
@@ -48,7 +48,7 @@
 
 ## 2. ホイールコアユニット仕様（単独モジュール定義）
 
-| `#01` カップ型 `SUS304` フライホイール単体 | ホイールコア＋オンボード枠アセンブリ (`24` パーツ) |
+| `#01` カップ型 `SUS304` フライホイール単体 | ホイールコア＋オンボード枠アセンブリ (`25` パーツ) |
 | :---: | :---: |
 | ![SUS304 Flywheel](assets/render_inertia_wheel_flywheel.png) | ![Inertia Wheel Module](assets/render_inertia_wheel_module.png) |
 
@@ -65,24 +65,24 @@
 | **ホイール外径 × リム幅** | $\varnothing 16.80\,\text{mm} \times 5.46\,\text{mm}$ | 外周36フルート溝 ＋ 中央Oリング溝（幅 $1.30 \times$ 深さ $0.50\,\text{mm}$） |
 | **ホイール回転軸位置** | $(Y_{\text{mod}}, Z_{\text{mod}}) = (-0.10, +10.55)\,\text{mm}$ | ホイール下端 $Z_{\text{mod}} = +2.15\,\text{mm}$ 〜 ホイール頂点 **$Z_{\text{mod}} = +18.95\,\text{mm}$** |
 | **揺動ヒンジピン軸位置** | $(Y_{\text{mod}}, Z_{\text{mod}}) = (-6.85, +2.15)\,\text{mm}$ | 北端 $\varnothing 2.00\,\text{mm}$ 平行ピン（`#15`）で任意のベースフレームと1軸連結 |
-| **静音クリックスイッチ中心** | $(X_{\text{mod}}, Y_{\text{mod}}, Z_{\text{mod}}) = (+6.20, +5.70, +0.02)\,\text{mm}$ | 南東コーナーで `#03` キャリッジのストライカーを受け止める |
-| **キャリッジ＋基板占有幅** | $X_{\text{mod}} \in [-7.79, +7.50]\,\text{mm}$（全幅 $15.29\,\text{mm}$） | `#07` センサー基板（$X_{\text{mod}} \in [-7.75, -6.95]$）および `#10` スイッチを含む |
-| **オンボード枠込み外形** | **$17.18 \times 17.56 \times 18.95\,\text{mm}$** | 1U キー枠（$18 \times 18\,\text{mm}$）以内に収まる平面フットプリント |
+| **静音クリックスイッチ中心** | $(X_{\text{mod}}, Y_{\text{mod}}, Z_{\text{mod}}) = (+6.20, +5.70, +0.02)\,\text{mm}$ | コーナーで `#03` キャリッジのストライカーを受け止める |
+| **キャリッジ＋基板占有幅** | $X_{\text{mod}} \in [-7.84, +7.50]\,\text{mm}$（全幅 $15.34\,\text{mm}$） | `#07` センサー基板（$X_{\text{mod}} \in [-7.80, -7.00]$）および `#10` スイッチを含む |
+| **オンボード枠込み外形** | **$18.83 \times 17.78 \times 18.95\,\text{mm}$** | 対角2点M2固定ラグ（`H5`, `H6`、スパン $17.50\,\text{mm}$）込みの外形寸法 |
 
 ### 2.2 コア内部の4つの機構要素
 1. **中空カップ型 `SUS304` フライホイール（`#01` [`sus304-flywheel.step`](../cases/inertia_wheel/sus304-flywheel.step)）**:
-   * 非磁性オーステナイト系ステンレス `SUS304` 削り出し（比重 $7.93\,\text{g/cm}^3$、単体質量 **$5.39\,\text{g}$**、`#02` ハブ＋`#13` 鋼球9個＋`#14` 軸＋`#16` 磁石を含む一体ローター質量 **$6.39\,\text{g}$**）。
+   * 非磁性オーステナイト系ステンレス `SUS304` 削り出し（比重 $7.93\,\text{g/cm}^3$、単体質量 **$5.39\,\text{g}$**、`#02` ハブ＋`#13` 鋼球9個＋`#14` 軸＋内輪シム＋`#16` 磁石を含む一体ローター質量 **$6.40\,\text{g}$**）。
    * 東面に **内径 $\varnothing 12.50 \times$ 深さ $3.30\,\text{mm}$ の中空カップ**、西面に `#03` 西側丸耳先端を $0.58\,\text{mm}$ 受け入れる **$\varnothing 9.60 \times$ 深さ $0.93\,\text{mm}$ の軸受逃がしポケット**（中央に `DDL-520` 内輪端面のみを受ける $\varnothing 2.84\,\text{mm}$ ボス付）を設けつつ、慣性モーメント（$J \propto R^4$）の大部分を担う外周リム（$R = 6.25 \sim 8.40\,\text{mm}$）を無垢のまま残すことで、スリムな幅（$5.46\,\text{mm}$）と高い回転慣性を両立しています。金属そのままでも市販Oリング（$\varnothing 15.0 \times 1.0\,\text{mm}$）を装着しても使える 2way 外周プロファイルです。
 2. **カップ内部格納・9球磁気ラチェットハブ（`#02` [`ratchet-hub.step`](../cases/inertia_wheel/ratchet-hub.step) ＋ `#13` 精密鋼球9個）**:
-   * 非導電 SLA レジン製ハブ（$\varnothing 12.40 \times 3.10\,\text{mm}$）を `#01` カップ内部へ同軸格納（東リム端面から $0.12\,\text{mm}$ 奥へ退避し、外部からラチェットハブが一切見えない構造）。
+   * 非導電 SLA レジン製ハブ（$\varnothing 12.40 \times 3.10\,\text{mm}$）を `#01` カップ内部へ同軸格納（東リム端面から $0.12\,\text{mm}$ 奥へ退避し、外部からラチェットハブが一切見えない構造）。さらに `#02` ハブ東端（$X_{\text{mod}} = +2.61\,\text{mm}$）と東側 `DDL-520` ベアリング回転内輪（$X_{\text{mod}} = +3.10\,\text{mm}$）の間に **`SUS304` 精密内輪シムリング（`M2 × Ø3.0 × 0.5 mm`、`#12` 付属）** を1枚挟むことで、外輪には一切触れずに一体ローター（ホイール・シャフト・角度磁石）の軸方向ガタを **$0.04\,\text{mm}$** 以内に拘束し、`AS5600` エアギャップと磁気ラチェット距離を常に一定に保ちます。
    * 軌道半径 $R = 4.30\,\text{mm}$ 上に $\varnothing 2.00\,\text{mm}$ 磁性鋼球（`SUJ2` G20）× 9個を軸方向スナップイン保持します（最小穴径 $\varnothing 1.94\,\text{mm} \ge 1.50\,\text{mm}$、最小肉厚 $0.854\,\text{mm} \ge 0.80\,\text{mm}$ で JLC3DP 造形基準を除外ゼロでクリア）。
-3. **スリム丸耳・一体揺動キャリッジ ＆ 軸方向 M2 磁力調整（`#03` [`wheel-carriage.step`](../cases/inertia_wheel/wheel-carriage.step)）**:
-   * 左右の脱脂ミニチュアベアリング（NMB ミネベアミツミ `DDL-520` オープン形：内径 $\varnothing 2.0 \times$ 外径 $\varnothing 5.0 \times$ 幅 $1.5\,\text{mm}$、`#12`）、西側の `#07` センサー基板保持棚、および東側丸耳支柱下部（$Y_{\text{mod}} = -0.10, Z_{\text{mod}} = +6.25\,\text{mm}$）の **軸方向 M2 磁力調整ネジ穴（$\varnothing 1.76\,\text{mm}$ セルフタッピング下穴）** を単一フレームに統合。北端ヒンジバレル幅は $12.00\,\text{mm}$（$X_{\text{mod}} \in [-5.55, +6.45]\,\text{mm}$、内径 $\varnothing 2.06\,\text{mm}$）で、`#15` 平行ピン B種h7（$\varnothing 2.0 \times 16.0\,\text{mm}$、端面面取り $c \approx 0.35\,\text{mm}$）に対してベース枠左右耳への十分な掛かり代と抜け止めマージンを確保しています。
-   * 先端に `#17` ネオジム磁石（二六製作所 `NE218` $\varnothing 1.50 \times 1.50\,\text{mm}$, N40）を付けた `#18` `SUS304` `DIN916` 六角穴付きホーローセット（`M2 × 4.0mm`、メイン基板内窓に対して $0.89\,\text{mm}$ クリアランス）のねじ込み量だけで、磁気ノッチの強さとフリースピン持続時間のバランスを無段階にチューニングできます。
-   * ホイールを上から押すと北端 `#15` ヒンジピンを支点にキャリッジ全体が微小揺動し、南東の `#10` `Kailh Square Silent (6.2 × 6.2 × 4.3 mm)`（公表寸法図：ハウジング厚 $3.35\,\text{mm}$、プランジャ $\varnothing 3.00\,\text{mm}$、自由位置 $FP = 4.30 \pm 0.15\,\text{mm}$、動作位置 $OP = 4.10 \pm 0.20\,\text{mm}$、プリトラベル $PT = 0.20 \pm 0.1\,\text{mm}$、端子ピッチ $5.00 \pm 0.18\,\text{mm}$・長さ $3.30 \pm 0.2\,\text{mm}$、公称作動ストローク $0.26\,\text{mm} / 1.12^\circ$）を静かにクリックします（クラッチ電流 **`0.0 mA`**）。`#04B` 沈み込みベース枠のポケット底面には端子ピッチ $5.00\,\text{mm}$ の2本のTHT端子（`(+3.70, +5.70)` / `(+8.70, +5.70)`）が余裕をもって貫通する $\varnothing 1.60\,\text{mm} \times 2$ ピン貫通穴（中心 `(+3.85, +5.70)` / `(+8.55, +5.70)`、ポケット東西壁面と段差なし）があり、スイッチの2本の金属端子が底面下へ貫通して前後・左右の抜け止め（ダボ）として機能するとともに、底面側でそのままリード線2本をハンダ付けできます。
-4. **`AS5600` 段付きセンサーサブ基板（`#07` [`curcur40-wheel-sensor`](../pcbs/inertia-wheel-sensor/) ＋ `#08` IC）**:
-   * 板厚 **`0.8 mm`**・表面片面 `Top Side` PCBA で `AS5600-ASOT`（12-bit 非接触磁気角度センサー、I2C 固定アドレス `0x36`）とパスコン2個を工場実装済み。
-   * $22.0 \times 22.0\,\text{mm}$ の捨て基板枠から左右のマウスバイトタブを折り取ると、下部幅 $8.80\,\text{mm}$・上部幅 $7.90\,\text{mm} \times$ 高さ $8.66\,\text{mm}$ の段付き小型基板となり、`#14` シャフト（`SUS303` 平行ピン B種h7 $\varnothing 2.0 \times 10.0\,\text{mm}$）西端の `#16` 径方向2極着磁磁石（**$\varnothing 4.0 \times 1.0\,\text{mm}$**）と公称 $0.44\,\text{mm}$（JEDEC 最大パッケージ厚 $A_{\max} = 1.75\,\text{mm}$ 時でも $\ge 0.25\,\text{mm}$）の非接触エアギャップで同軸対向します。
+3. **スリム丸耳・一体揺動キャリッジ ＆ 抜け止めテーパー M2 磁力調整（`#03` [`wheel-carriage.step`](../cases/inertia_wheel/wheel-carriage.step)）**:
+   * 左右の脱脂ミニチュアベアリング（NMB ミネベアミツミ `DDL-520` オープン形：内径 $\varnothing 2.0 \times$ 外径 $\varnothing 5.0 \times$ 幅 $1.5\,\text{mm}$、`#12`）、西側の `#07` センサー基板保持棚（南北Y方向の位置決めチーク＋中央 $5.10\,\text{mm}$ `J1` ハンダ逃げ窓付）、および東側丸耳支柱下部（$Y_{\text{mod}} = -0.10, Z_{\text{mod}} = +6.25\,\text{mm}$）の **連続テーパー軸方向 M2 磁力調整ネジ穴（東口 $\varnothing 1.82 \rightarrow$ 西口 $\varnothing 1.52\,\text{mm}$ セルフタッピング＆磁石抜け止めテーパー穴）** を単一フレームに統合。北端ヒンジバレル幅は $12.00\,\text{mm}$（$X_{\text{mod}} \in [-5.55, +6.45]\,\text{mm}$、内径 $\varnothing 2.06\,\text{mm}$）で、`#15` 平行ピン B種h7（$\varnothing 2.0 \times 16.0\,\text{mm}$、端面面取り $c \approx 0.35\,\text{mm}$）に対してベース枠左右耳への十分な掛かり代と抜け止めマージンを確保しています。
+   * 先端に `#17` ネオジム磁石（二六製作所 `NE218` $\varnothing 1.50 \times 1.50\,\text{mm}$, N40）を付けた `#18` `SUS304` `DIN916` 六角穴付きホーローセット（`M2 × 4.0mm`、メイン基板内窓に対して $0.60\,\text{mm}$ クリアランス）のねじ込み量だけで、磁気ノッチの強さとフリースピン持続時間のバランスを無段階にチューニングできます（西口が $\varnothing 1.52\,\text{mm}$ に絞られているため、イモネジがテーパーで確実に止まり `#17` 磁石がホイールカップ内へ脱落するのを防ぎます）。
+   * ホイールを上から押すと北端 `#15` ヒンジピンを支点にキャリッジ全体が微小揺動し、`#10` `Kailh Square Silent (6.2 × 6.2 × 4.3 mm)`（公表寸法図：ハウジング厚 $3.35\,\text{mm}$、プランジャ $\varnothing 3.00\,\text{mm}$、自由位置 $FP = 4.30 \pm 0.15\,\text{mm}$、動作位置 $OP = 4.10 \pm 0.20\,\text{mm}$、プリトラベル $PT = 0.20 \pm 0.1\,\text{mm}$、端子ピッチ $5.00 \pm 0.18\,\text{mm}$・長さ $3.30 \pm 0.2\,\text{mm}$、公称作動ストローク $0.26\,\text{mm} / 1.12^\circ$）を静かにクリックします（クラッチ電流 **`0.0 mA`**）。`#04B` 沈み込みベース枠のポケット底面には端子ピッチ $5.00\,\text{mm}$ の2本のTHT端子（`(+3.70, +5.70)` / `(+8.70, +5.70)`）が余裕をもって貫通する $\varnothing 1.60\,\text{mm} \times 2$ ピン貫通穴（中心 `(+3.85, +5.70)` / `(+8.55, +5.70)`、ポケット東西壁面と段差なし）があり、スイッチの2本の金属端子が底面下へ貫通して前後・左右の抜け止め（ダボ）として機能するとともに、底面側でそのままリード線2本をハンダ付けできます。
+4. **`AS5600` 同軸段付きセンサーサブ基板（`#07` [`curcur40-wheel-sensor`](../pcbs/inertia-wheel-sensor/) ＋ `#08` IC）**:
+   * 板厚 **`0.8 mm`**・表面片面 `Top Side` PCBA で `AS5600-ASOT`（12-bit 非接触磁気角度センサー、I2C 固定アドレス `0x36`）とパスコン2個を工場実装済み。下端 `J1` の4極ワイヤパッドは揺動クリックの繰り返し屈曲に強い **$\varnothing 0.65\,\text{mm}$ スルーホール（PTH）ランド** 仕様です。
+   * $22.0 \times 22.0\,\text{mm}$ の捨て基板枠からインセット配置された左右のマウスバイトタブ（折れ残り耳が外周から飛び出さない設計）を折り取ると、下部幅 $8.20\,\text{mm}$・上部幅 $8.00\,\text{mm} \times$ 高さ $9.40\,\text{mm}$ の段付き小型基板となります。`U1` パッケージ中心が回転軸高さ $Z_{\text{mod}} = +10.55\,\text{mm}$ と完全同軸（偏心 **`0.00 mm`**）に配置され、`#14` シャフト（`SUS303` 平行ピン B種h7 $\varnothing 2.0 \times 10.0\,\text{mm}$、$X_{\text{mod}} \in [-3.85, +6.15]\,\text{mm}$）西端の `#16` 径方向2極着磁磁石（**$\varnothing 4.0 \times 1.0\,\text{mm}$**、$X_{\text{mod}} \in [-4.85, -3.85]\,\text{mm}$）と公称 **`0.59 mm`**（JEDEC 最大パッケージ厚 $A_{\max} = 1.75\,\text{mm}$ 時でも **`0.39 mm`**）の非接触エアギャップで同軸対向します。
 
 | `#07` センサー基板 表面（`0.8mm` Top PCBA・段付き輪郭） | `#07` センサー基板 裏面（4極ワイヤパッド） |
 | :---: | :---: |
@@ -113,17 +113,20 @@
 * キーボード本体へ組み込む前の **単体での回転感触・磁力バランス調整のテストベッド** として機能するとともに、`#05` ポッド台座（[`eval-pod-stand.step`](../cases/inertia_wheel/eval-pod-stand.step)）に収めることで **単体 USB-C デスクトップ高速スクロールデバイス** としてそのまま実用できます。
 
 ### 3.2 任意の平坦な基板へオンボード実装する際のフットプリント設計寸法（`#04A` 使用時）
-テスト基板と同様に、自作キーボードやマクロパッドの平坦な基板表面（開口なし）へ `#04A` オンボードベース枠でコアユニットを搭載する場合、モジュール原点 $(X_{\text{mod}}, Y_{\text{mod}}) = (0, 0)$ に対して以下の穴・パッドを配置します：
+テスト基板（`#06` `curcur40-wheel-eval`）では、`curcur40-right` と同じ向き（北側 `-Y_kicad` に `#15` ヒンジピンが来る `rot180` 配置：基板上のモジュール中心 $(X_0, Y_0)$ に対して $(X_{\text{pcb}}, Y_{\text{pcb}}) = (X_0 - X_{\text{mod}}, Y_0 + Y_{\text{mod}})$）で以下の穴・パッドを配置しています：
 
-* **占有コートヤード**: $X_{\text{mod}} \in [-8.38, +8.80]\,\text{mm}$、$Y_{\text{mod}} \in [-8.78, +8.78]\,\text{mm}$（$17.18 \times 17.56\,\text{mm}$）
-* **`#04A` 固定用 M2 ネジ貫通穴（2箇所）**: $(-6.50, +6.50)\,\text{mm}$ および $(-0.50, +6.50)\,\text{mm}$（推奨基板ドリル径 $\varnothing 2.20\,\text{mm}$ NPTH/PTH）
-* **`#10` 静音スイッチ（`SW1`）スルーホールパッド（2箇所）**: スイッチ中心 $(+6.20, +5.70)\,\text{mm}$ に対し、端子ピッチ $5.00\,\text{mm}$（$(+3.70, +5.70)$ および $(+8.70, +5.70)$、ドリル径 $\varnothing 1.10\,\text{mm}$）
+* **占有コートヤード**: $X_{\text{mod}} \in [-8.38, +10.45]\,\text{mm}$、$Y_{\text{mod}} \in [-8.78, +9.00]\,\text{mm}$（$18.83 \times 17.78\,\text{mm}$）
+* **`#04A` 対角2点 M2 ネジ貫通穴（重心・クリック荷重点を跨ぐ $17.50\,\text{mm}$ スパン）**:
+  * `H5`: $(X_{\text{mod}}, Y_{\text{mod}}) = (-4.85, +7.05)\,\text{mm}$ ／ `rot180` 基板相対 $(+4.85, +7.05)\,\text{mm}$（推奨基板ドリル径 $\varnothing 2.20\,\text{mm}$ NPTH、裏面M2ナット締結）
+  * `H6`: $(X_{\text{mod}}, Y_{\text{mod}}) = (+8.50, -1.10)\,\text{mm}$ ／ `rot180` 基板相対 $(-8.50, -1.10)\,\text{mm}$（推奨基板ドリル径 $\varnothing 2.20\,\text{mm}$ NPTH、裏面M2ナット締結）
+* **`#10` 静音スイッチ（`SW1`）スルーホールパッド（2箇所）**: スイッチ中心 $(X_{\text{mod}}, Y_{\text{mod}}) = (+6.20, +5.70)\,\text{mm}$（`rot180` 基板相対 $(-6.20, +5.70)\,\text{mm}$）に対し、端子ピッチ $5.00\,\text{mm}$、平ピン（$0.80 \times 0.40\,\text{mm}$、対角 $0.894\,\text{mm}$）に対応する推奨ドリル径 **$\varnothing 1.10\,\text{mm}$**
+* **テスト基板 `#06` 固有の実装配慮**: `U1`（`Waveshare RP2040-Zero`）は端面キャスタレーション表面実装と `2.54 mm` ピンヘッダ実装（$\varnothing 0.85\,\text{mm}$ PTH）の両方に対応するデュアルフットプリントとし、基板中央に `RP2040-Zero` 裏面部品の浮きを防ぐ **$17.20 \times 11.20\,\text{mm}$ 逃がしくり抜き窓** を設けています。
 
 ### 3.3 リファレンス QMK ファームウェア仕様（[`kbd_firmware/keyboards/curcur40_wheel_eval/`](../kbd_firmware/keyboards/curcur40_wheel_eval/qmk/qmk_firmware/)）
 `Waveshare RP2040-Zero` 向けに実装済みのカスタムポインティングドライバ（[`wheel_eval.c`](../kbd_firmware/keyboards/curcur40_wheel_eval/qmk/qmk_firmware/rev1/wheel_eval.c)）を収録しており、他の QMK キーボードへもそのまま移植できます：
-* **`1 kHz` 高速ポーリング ＆ 角度ラップアラウンド処理**: `AS5600` の `RAW ANGLE (0x0C..0x0D)` 12-bit 値（`0..4095`）を `400 kHz` I2C で読み取り、`0 ⇔ 4095` 境界を跨ぐ高速フリック回転でも符号反転しない差分計算を実装。
+* **`1 kHz` 高速ポーリング（`1 ms` レートリミッタ付）＆ 角度ラップアラウンド処理**: `AS5600` の `RAW ANGLE (0x0C..0x0D)` 12-bit 値（`0..4095`）を `400 kHz` I2C（`I2CD0`）で `1 ms` 周期で読み取り、`0 ⇔ 4095` 境界を跨ぐ高速フリック回転でも符号反転しない差分計算を実装。回転方向（`WHEEL_INVERT_DIR = 1` 既定）も `curcur40-right` と完全一致しています。
 * **微小振動デッドバンド（`WHEEL_DEADBAND_LSB = 6`）＋ 分数アキュムレータ**: 磁気デテント頂点付近での静止時ジッタを抑えつつ、1回転あたりの出力ステップ数（`WHEEL_NOTCHES_PER_REV = 9 / 18 / 36`、既定値 `18`）を端数切り捨て誤差なく蓄積出力。
-* **I2C タイムアウト保護（`20 ms`）**: センサー未接続の単体マイコン書き込みテスト時にもファームウェアがハングアップしない安全設計。
+* **短縮 I2C タイムアウト（`2 ms`）＋ 自動バスリカバリ**: タイムアウトを `2 ms` に抑えてミドルクリック応答の遅延を防ぎつつ、センサー未接続起動やホットプラグ・ノイズによる連続通信エラー時には `200 ms` バックオフ周期で `i2c_init()` バス再初期化と `AS5600` 再設定を自動実行します。
 
 ### 3.4 資材調達・組み立て・チューニング手順（利用者向けビルドガイド）
 部品の購入先リスト、JLCPCB / JLCCNC / JLC3DP への発注設定、`#12` ベアリングの脱脂洗浄、ハンダ付け、QMK 書き込み、`#18` ネジによる磁力チューニングの全手順は、以下の専用ビルドガイドにまとめています：
@@ -157,9 +160,9 @@
 ![Sunk Cross-Section and Mechanism](assets/passive_inertia_wheel_spec.png)
 
 * **主張を抑えたエッジ曲面ピラミッド造形（ホイール外形からはみ出さない）**:
-  トッププレート（$Z = -2.00\,\text{mm}$）より上に出る `#07` 段付きセンサー基板上端（$Z = +0.56\,\text{mm}$）と `#03` キャリッジの軸受丸耳を覆い隠すため、ホイール際（南北長 $15.40\,\text{mm}$）から外側端（$14.00\,\text{mm}$、片側幅 $6.17\,\text{mm}$）へ絞った台形ピラミッドの全稜線を滑らかな曲面（軒 $R = 3.00\,\text{mm}$、稜 $R = 1.30 \sim 1.80\,\text{mm}$、頂部 $R = 1.40\,\text{mm}$）で繋いでいます。**軸方向から見たカバーの側面シルエットは $\varnothing 16.80\,\text{mm}$ ホイール外形より全高にわたって $0.48\,\text{mm}$ 内側**（自動検証の下限 $0.30\,\text{mm}$）に収まり、上から見てもホイールからはみ出しません。カバー頂点は **$Z = +2.68\,\text{mm}$**（隣接キーキャップ上面 $+3.60\,\text{mm}$ より **$0.92\,\text{mm}$ 低く**、ホイール頂点 $+6.40\,\text{mm}$ より **$3.72\,\text{mm}$ 低い**）のため、スクロール操作時に指へ一切引っ掛かりません。
+  トッププレート（$Z = -2.00\,\text{mm}$）より上に出る `#07` 段付きセンサー基板上端（$Z = +1.30\,\text{mm}$）と `#03` キャリッジの軸受丸耳を覆い隠すため、ホイール際（南北長 $15.40\,\text{mm}$）から外側端（$14.00\,\text{mm}$、片側幅 $6.17\,\text{mm}$）へ絞った台形ピラミッドの全稜線を滑らかな曲面（軒 $R = 3.00\,\text{mm}$、稜 $R = 1.30 \sim 1.80\,\text{mm}$、頂部 $R = 1.40\,\text{mm}$）で繋いでいます。**軸方向から見たカバーの側面シルエットは $\varnothing 16.80\,\text{mm}$ ホイール外形より全高にわたって $0.48\,\text{mm}$ 内側**（自動検証の下限 $0.30\,\text{mm}$）に収まり、上から見てもホイールからはみ出しません。カバー頂点は **$Z = +2.68\,\text{mm}$**（隣接キーキャップ上面 $+3.60\,\text{mm}$ より **$0.92\,\text{mm}$ 低く**、ホイール頂点 $+6.40\,\text{mm}$ より **$3.72\,\text{mm}$ 低い**）のため、スクロール操作時に指へ一切引っ掛かりません。
 * **クリック揺動の全ストロークを逃がす内部形状**:
-  ホイールを押すとキャリッジが北端ヒンジ周りに揺動し、軸受丸耳・`#16` 磁石・`AS5600`・`#07` 基板が一緒に動きます（`#10` 静音スイッチのプランジャ自由位置 $FP = 4.30\,\text{mm}$ に対し公称 $0.26\,\text{mm}$ / $1.12^\circ$ でスイッチON、さらにプランジャを $0.50\,\text{mm}$ 押し切ったフルオーバートラベル角 $2.34^\circ$、ストライカー移動量 $0.56\,\text{mm}$）。カバー内部の軸受丸耳トンネル（$R = 4.16\,\text{mm}$、中心を $0.35\,\text{mm}$ 下げた円筒）と基板・IC 収納ポケット（$Y_{\text{axle}} \pm 5.11\,\text{mm}$、天井 $0.80\,\text{mm}$ 面取り）は、この揺動の全ストロークを掃引した包絡＋クリアランス（$0.30\,\text{mm}$ ＋ カバーの遊び）で形成しており、静止〜フルオーバートラベルまで可動部とカバー・トッププレート・メイン基板の隙間を **$\ge 0.30\,\text{mm}$** に保ちます（`generate_inertia_wheel.py` の `verify_click_swing` で自動検証）。
+  ホイールを押すとキャリッジが北端ヒンジ周りに揺動し、軸受丸耳・`#16` 磁石・`AS5600`・`#07` 基板が一緒に動きます（`#10` 静音スイッチのプランジャ自由位置 $FP = 4.30\,\text{mm}$ に対し公称 $0.26\,\text{mm}$ / $1.12^\circ$ でスイッチON、さらにプランジャを $0.50\,\text{mm}$ 押し切ったフルオーバートラベル角 $2.34^\circ$、ストライカー移動量 $0.56\,\text{mm}$）。カバー内部の軸受丸耳トンネル（$R = 4.21\,\text{mm}$、中心を $0.34\,\text{mm}$ 下げた円筒）と基板・IC 収納ポケット（$Y_{\text{axle}} \pm 5.11\,\text{mm}$、天井 $0.85\,\text{mm}$ 面取り）は、この揺動の全ストロークを掃引した包絡＋クリアランス（$0.30\,\text{mm}$ ＋ カバーの遊び）で形成しており、静止〜フルオーバートラベルまで可動部とカバー・トッププレート・メイン基板の隙間を **$\ge 0.30\,\text{mm}$** に保ちます（`generate_inertia_wheel.py` の `verify_click_swing` で自動検証）。
 * **同一1部品の $180^\circ$ 水平回転による左右対称共用**:
   上記トンネル・ポケットは $Y = Y_{\text{axle}}$ に関して完全鏡面対称（揺動方向の反転も包絡に含む）に設計されているため、**左右別パーツを作る必要がなく、同一の `wheel-cover.step` を2個プリントして片方を $180^\circ$ 水平回転させるだけ** でホイールの東西両側（西側：基板目隠し、東側：シンメトリー外観カバー）にそのまま装着できます。
 * **キースイッチ方式のワンタッチスナップ固定と ±0.10 mm 位置決め**:
@@ -187,20 +190,20 @@
 | :--- | :--- | :--- | :---: | :--- |
 | **① コア共通** | [`sus304-flywheel.step`](../cases/inertia_wheel/sus304-flywheel.step) / `.stl` | `#01` JLCCNC `SUS304` カップ型ホイール (`5.39 g`) | $16.77 \times 16.77 \times 5.46$ | 水密単一ソリッド・最小穴径 $1.60\,\text{mm}$ **PASS** |
 | **① コア共通** | [`ratchet-hub.step`](../cases/inertia_wheel/ratchet-hub.step) / `.stl` | `#02` JLC3DP SLA 内蔵9球ラチェットハブ | $12.40 \times 12.40 \times 3.10$ | 最小穴径 $1.94\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
-| **① コア共通** | [`wheel-carriage.step`](../cases/inertia_wheel/wheel-carriage.step) / `.stl` | `#03` JLC3DP SLA スリム丸耳・揺動キャリッジ | $13.77 \times 15.87 \times 14.24$ | 最小穴径 $1.76\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
-| **② オンボード** | [`wheel-base-frame.step`](../cases/inertia_wheel/wheel-base-frame.step) / `.stl` | `#04A` JLC3DP SLA オンボードベース枠（基板上載せ） | $17.18 \times 17.56 \times 4.10$ | 最小穴径 $2.02\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
-| **② 評価ポッド** | [`eval-pod-stand.step`](../cases/inertia_wheel/eval-pod-stand.step) / `.stl` | `#05` JLC3DP SLA/MJF 単体評価ポッド台座 | $52.00 \times 36.00 \times 6.60$ | 最小穴径 $2.00\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
+| **① コア共通** | [`wheel-carriage.step`](../cases/inertia_wheel/wheel-carriage.step) / `.stl` | `#03` JLC3DP SLA スリム丸耳・揺動キャリッジ | $13.77 \times 15.87 \times 14.30$ | 最小穴径 $1.52\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
+| **② オンボード** | [`wheel-base-frame.step`](../cases/inertia_wheel/wheel-base-frame.step) / `.stl` | `#04A` JLC3DP SLA オンボードベース枠（対角2点M2固定） | $18.83 \times 17.78 \times 4.10$ | 最小穴径 $2.02\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
+| **② 評価ポッド** | [`eval-pod-stand.step`](../cases/inertia_wheel/eval-pod-stand.step) / `.stl` | `#05` JLC3DP SLA/MJF 単体評価ポッド台座（`M2×6mm` 対応） | $52.00 \times 36.00 \times 7.60$ | 最小穴径 $1.76\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
 | **③ 沈み込み** | [`wheel-base-frame-sunk.step`](../cases/inertia_wheel/wheel-base-frame-sunk.step) / `.stl` | `#04B` JLC3DP SLA 沈み込みベース枠（メイン基板用） | $23.35 \times 23.70 \times 5.50$ | 最小穴径 $1.60\,\text{mm}$・薄肉違反 `0` (除外 `0`) **PASS** |
 | **③ 沈み込み** | [`wheel-cover.step`](../cases/inertia_wheel/wheel-cover.step) / `.stl` | `#20` JLC3DP SLA ホイールカバー（×2個・180°対称共用） | $7.23 \times 15.40 \times 6.17$ | 最小穴径 $3.60\,\text{mm}$・薄肉違反 `0` (除外 `30`：スナップ脚のみ)・側面シルエット ホイール外形内 $0.48\,\text{mm}$ **PASS** |
-| **検証モデル** | [`inertia-wheel-module-assembly.step`](../cases/assemblies/inertia-wheel-module-assembly.step) | コア＋`#04A` オンボード枠アセンブリ (`24` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
-| **検証モデル** | [`inertia-wheel-module-sunk-assembly.step`](../cases/assemblies/inertia-wheel-module-sunk-assembly.step) | コア＋`#04B` 沈み込み枠＋`#20` カバー＋スペーサー/下部ネジ (`32` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
-| **検証モデル** | [`inertia-wheel-eval-pod-assembly.step`](../cases/assemblies/inertia-wheel-eval-pod-assembly.step) | 単体デスクトップ評価ポッド全体 (`28` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
-| **検証モデル** | [`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) | `curcur40-right` 右手単体沈み込み検証 (`61` パーツ) | ― | 全ペア干渉 `0.00000000 mm³`・可動隙間（クリック全ストローク $0 \sim 2.34^\circ$）$\ge 0.30\,\text{mm}$ **PASS** |
-| **検証モデル** | [`assembly-full-desk.step`](../cases/assemblies/assembly-full-desk.step) / [`assembly-full.step`](../cases/assemblies/assembly-full.step) | `curcur40` 左右フルアセンブリ統合検証 (`140` パーツ) | ― | 全ペア干渉 `0.00000000 mm³`・`rJ5`/ケース隙間 $9.13\,\text{mm}$ **PASS** |
+| **検証モデル** | [`inertia-wheel-module-assembly.step`](../cases/assemblies/inertia-wheel-module-assembly.step) | コア＋`#04A` オンボード枠アセンブリ (`25` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
+| **検証モデル** | [`inertia-wheel-module-sunk-assembly.step`](../cases/assemblies/inertia-wheel-module-sunk-assembly.step) | コア＋`#04B` 沈み込み枠＋`#20` カバー＋スペーサー/下部ネジ (`33` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
+| **検証モデル** | [`inertia-wheel-eval-pod-assembly.step`](../cases/assemblies/inertia-wheel-eval-pod-assembly.step) | 単体デスクトップ評価ポッド全体 (`37` パーツ) | ― | 全ペア干渉 `0.00000000 mm³` **PASS** |
+| **検証モデル** | [`curcur40-right-with-inertia-wheel-sunk.step`](../cases/assemblies/curcur40-right-with-inertia-wheel-sunk.step) | `curcur40-right` 右手単体沈み込み検証 (`62` パーツ) | ― | 全ペア干渉 `0.00000000 mm³`・可動隙間（クリック全ストローク $0 \sim 2.34^\circ$）$\ge 0.30\,\text{mm}$ **PASS** |
+| **検証モデル** | [`assembly-full-desk.step`](../cases/assemblies/assembly-full-desk.step) / [`assembly-full.step`](../cases/assemblies/assembly-full.step) | `curcur40` 左右フルアセンブリ統合検証 (`141` パーツ) | ― | 全ペア干渉 `0.00000000 mm³`・`rJ5`/ケース隙間 $9.13\,\text{mm}$ **PASS** |
 
 ### 5.2 KiCad 10.0 回路図・基板データ（発注データ一括生成：[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py)）
-* **`#07` センサー基板（[`pcbs/inertia-wheel-sensor/`](../pcbs/inertia-wheel-sensor/)）**: 【① コア共通】$22.00 \times 22.00\,\text{mm}$ 捨て基板枠付 $\rightarrow$ 折り取り後 $8.80/7.90 \times 8.66 \times 0.80\,\text{mm}$、表面片面 `Top Side` Economic PCBA（`U1 AS5600-ASOT` `C499458`、`C1 100nF` `C1525`、`C2 1μF` `C52923` 工場実装済）、ERC `0/0`・DRC `0/0/0`。
-* **`#06` キャリア基板（[`pcbs/inertia-wheel-eval/`](../pcbs/inertia-wheel-eval/)）**: 【② テスト基板】$48.00 \times 32.00 \times 1.60\,\text{mm}$、表面片面 `Top Side` Economic PCBA（`J1 SM06B-SRSS-TB` `C160405`、`R1/R2 4.7kΩ` `C25900`、`C1 100nF` `C1525` 工場実装済）、ERC `0/0`・DRC `0/0/0`。
+* **`#07` センサー基板（[`pcbs/inertia-wheel-sensor/`](../pcbs/inertia-wheel-sensor/)）**: 【① コア共通】$22.00 \times 22.00\,\text{mm}$ 捨て基板枠付 $\rightarrow$ インセットマウスバイト折り取り後 $8.20/8.00 \times 9.40 \times 0.80\,\text{mm}$、表面片面 `Top Side` Economic PCBA（`U1 AS5600-ASOT` `C499458` 回転軸同軸配置、`C1 100nF` `C1525`、`C2 1μF` `C52923` 工場実装済、`J1` $\varnothing 0.65\,\text{mm}$ PTH ワイヤパッド）、ERC `0/0`・DRC `0/0/0`。
+* **`#06` キャリア基板（[`pcbs/inertia-wheel-eval/`](../pcbs/inertia-wheel-eval/)）**: 【② テスト基板】$48.00 \times 32.00 \times 1.60\,\text{mm}$（`U1` 裏面部品逃がし用 $17.20 \times 11.20\,\text{mm}$ くり抜き窓付）、表面片面 `Top Side` Economic PCBA（`J1 SM06B-SRSS-TB` `C160405`、`R1/R2 4.7kΩ` `C25900`、`C1 100nF` `C1525` 工場実装済）、ERC `0/0`・DRC `0/0/0`。
 
 ### 5.3 構成別部品表（BOM ＆ 概算コスト）
 
@@ -208,24 +211,24 @@
 | 番号・呼称 | 部品名・型番 | 仕様・寸法 | 主な入手先 | 単価目安 |
 | :--- | :--- | :--- | :--- | :---: |
 | **`#01` カップ型フライホイール** | 特注ステンレスホイール (`SUS304`) | $\varnothing 16.80 \times 5.46\,\text{mm}$ ($5.39\,\text{g}$) | JLCCNC (`sus304-flywheel.step`) | 約 ¥900 |
-| **`#02` 内蔵9球ハブ ＋ `#03` キャリッジ** | SLA レジン造形コア樹脂部品 2点 | ハブ $\varnothing 12.4\times 3.1$ ＋ キャリッジ | JLC3DP SLA (`ratchet-hub`, `wheel-carriage`) | 約 ¥200 |
-| **`#07`＋`#08` センサー基板 PCBA** | `curcur40-wheel-sensor` (`AS5600` 実装済) | 折って段付き $8.8/7.9\times 8.66\times 0.8\,\text{mm}$ | JLCPCB `0.8mm` Top PCBA (`C499458`) | 約 ¥270 |
+| **`#02` 内蔵9球ハブ ＋ `#03` キャリッジ** | SLA レジン造形コア樹脂部品 2点 | ハブ $\varnothing 12.4\times 3.1$ ＋ キャリッジ $13.8\times 15.9\times 14.3$ | JLC3DP SLA (`ratchet-hub`, `wheel-carriage`) | 約 ¥200 |
+| **`#07`＋`#08` センサー基板 PCBA** | `curcur40-wheel-sensor` (`AS5600` 実装済) | 折って段付き $8.2/8.0\times 9.40\times 0.8\,\text{mm}$ | JLCPCB `0.8mm` Top PCBA (`C499458`) | 約 ¥270 |
 | **`#10` 静音スイッチ** | `Kailh Square Silent 6.2×6.2×4.3mm` | 2ピン静音角形マイクロスイッチ (`Red Dot`) | Amazon / 遊舎工房 / AliExpress | 約 ¥55 |
 | **`#11` センサー6芯線** | JST SH 1.0mm 6P 片側ハウジング端子付ケーブル | 長さ約 $60\text{〜}75\,\text{mm}$ にカットして使用 | Amazon (`Moechando SH1.0mm 6P` 等) | 約 ¥60 |
-| **`#12` ベアリング (×2)** | NMB ミネベアミツミ `DDL-520` オープン形 | $\varnothing 2.0 \times \varnothing 5.0 \times 1.5\,\text{mm}$ × 2個（要脱脂） | モノタロウ (`09538112`) | 約 ¥400 |
+| **`#12` ベアリング (×2) ＋ 内輪シム (×1)** | NMB `DDL-520` オープン形 ＋ `SUS304` 精密シムリング | $\varnothing 2.0 \times \varnothing 5.0 \times 1.5\,\text{mm}$ × 2個（要脱脂）＋ `M2 × Ø3.0 × 0.5mm` シム 1枚 | モノタロウ (`09538112` ＋ `M2×3×0.5` シム) | 約 ¥450 |
 | **`#13` ラチェット鋼球 (×9)** | 精密ベアリング磁性鋼球 (`SUJ2` G20) | $\varnothing 2.00\,\text{mm}$ × 9個（※セラミック不可） | モノタロウ (`40413721`) | 約 ¥30 |
 | **`#14`/`#15` シャフト・ピン** | ステンレス平行ピン B種h7 (`SUS303`) | 回転軸 $\varnothing 2\times 10\,\text{mm}$、ヒンジ軸 $\varnothing 2\times 16\,\text{mm}$ | モノタロウ (`42155775` / `42155811`) | 約 ¥150 |
 | **`#16` 角度磁石 ＋ `#17` ラチェット磁石** | 径方向着磁 $\varnothing 4.0\times 1.0$ ＋ 軸方向着磁 $\varnothing 1.5\times 1.5$ | `AS5600` 用 Diametric `D4x1mm` ＋ 二六製作所 `NE218` (N40) | AliExpress ＋ 二六製作所 (`NE218`) | 約 ¥150 |
 | **`#18` 磁力調整ネジ** | 非磁性ステンレス `SUS304` `DIN916` `M2 × 4mm` | 六角穴付きホーローセット（イモネジ）× 1本 | AliExpress / 通販 | 約 ¥30 |
 | *(任意)* **2way比較用 Oリング** | 極細シリコン / NBR Oリング | 内径 $\varnothing 15.0 \times$ 線径 $1.0\,\text{mm}$ | Amazon / MonotaRO | *(約 ¥30)* |
 
-#### B. オンボード実装・単体テスト基板用 追加部品（評価ポッドとして組む場合：＋約 ¥900）
+#### B. オンボード実装・単体テスト基板用 追加部品（評価ポッドとして組む場合：＋約 ¥920）
 | 番号・呼称 | 部品名・型番 | 仕様・寸法 | 主な入手先 | 単価目安 |
 | :--- | :--- | :--- | :--- | :---: |
-| **`#04A` オンボードベース枠** | `wheel-base-frame.step` | $17.18 \times 17.56 \times 4.10\,\text{mm}$（基板上載せ枠） | JLC3DP SLA | 約 ¥100 |
-| **`#05` ポッド台座** | `eval-pod-stand.step` | $52.0 \times 36.0 \times 6.60\,\text{mm}$（卓上ケース） | JLC3DP SLA / MJF | 約 ¥200 |
-| **`#06` キャリア基板 ＋ `#09` マイコン** | `curcur40-wheel-eval` ＋ `Waveshare RP2040-Zero` | $48 \times 32 \times 1.6\,\text{mm}$ Top PCBA ＋ USB-C マイコン | JLCPCB ＋ Amazon / 秋月電子 | 約 ¥550 |
-| **`#19` 固定M2ネジ ＆ ゴム足** | `M2 × 4.0mm` ネジ × 6本 ＋ ゴム足 × 4個 | `#04A` 固定2本 ＋ `#05` 台座固定4本 | Amazon / ホームセンター | 約 ¥50 |
+| **`#04A` オンボードベース枠** | `wheel-base-frame.step` | $18.83 \times 17.78 \times 4.10\,\text{mm}$（対角2点M2固定・基板上載せ枠） | JLC3DP SLA | 約 ¥100 |
+| **`#05` ポッド台座** | `eval-pod-stand.step` | $52.0 \times 36.0 \times 7.60\,\text{mm}$（`M2×6mm` 対応卓上ケース） | JLC3DP SLA / MJF | 約 ¥200 |
+| **`#06` キャリア基板 ＋ `#09` マイコン** | `curcur40-wheel-eval` ＋ `Waveshare RP2040-Zero` | $48 \times 32 \times 1.6\,\text{mm}$ Top PCBA ＋ USB-C マイコン | JLCPCB ＋ スイッチサイエンス / Amazon | 約 ¥550 |
+| **`#19` 固定M2ネジ・ナット ＆ ゴム足** | `M2 × 6.0mm` ネジ × 6本 ＋ `M2` ナット × 2個 ＋ ゴム足 × 4個 | `#04A` 対角固定2組（`H5`/`H6`＋M2ナット）＋ `#05` 台座四隅固定4本 | Amazon / モノタロウ / ホームセンター | 約 ¥70 |
 
 #### C. キーボードメイン基板（沈み込み実装）用 追加部品（`curcur40-right` へ組む場合：＋約 ¥340）
 | 番号・呼称 | 部品名・型番 | 仕様・寸法 | 主な入手先 | 単価目安 |
