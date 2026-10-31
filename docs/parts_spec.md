@@ -46,8 +46,8 @@
   - 長さ（高さ $L$）：**$3.0\,\text{mm}$**
   - 外径（$OD$）：**$\varnothing 3.2\,\text{mm}$**（3Dプリント側の下穴設計径：$\varnothing 2.85\,\text{mm}$）
 - **使用箇所内訳（計 17個）**:
-  - 左ケース外周ボス `L1`〜`L5`：5個（うち `L1, L2, L3, L5` は段付きボス上面 $Z = -3.60\,\text{mm}$、`L4` は $Z = -5.80\,\text{mm}$）
-  - 右ケース外周ボス `R1`〜`R5`：5個（うち `R1, R2, R3, R5` は段付きボス上面 $Z = -3.60\,\text{mm}$、`R4` は $Z = -5.80\,\text{mm}$）
+  - 左ケース外周ボス `L1`〜`L5`：5個（うち `L1, L2, L3, L5` は太径段付きボス上面 $Z = -3.60\,\text{mm}$・肉厚 $1.575\,\text{mm}$、`L4` はフラット円筒ボス上面 $Z = -5.80\,\text{mm}$・肉厚 $1.025\,\text{mm}$ — 全箇所とも狭いカラーを通さず天面へ直接ツライチ熱圧入！）
+  - 右ケース外周ボス `R1`〜`R5`：5個（うち `R1, R2, R3, R5` は太径段付きボス上面 $Z = -3.60\,\text{mm}$、`R4` はフラット円筒ボス上面 $Z = -5.80\,\text{mm}$）
   - 右ケーストラックボールカップ固定ボス `TB1`〜`TB4`：4個（ボス上面 $Z = -17.60\,\text{mm}$）
   - ホイールクレードル `WC1`, `WC2`：2個
   - ホイールロッカー南ラチェット調整ボス：1個
@@ -94,7 +94,7 @@
 | [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（高さ $2.0\,\text{mm}$ フラット固定耳・$\varnothing 2.4\,\text{mm}$ 直穴×4） |
 | [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（東側 $\varnothing 2.00\,\text{mm}$ D穴圧入、$\varnothing 5.72 \times 2.05\,\text{mm}$） |
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・西キーパータブ・南ラチェットボス） |
-| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定クレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.08\,\text{mm}$ U字軸受） |
+| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定クレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |
 
 ### 2-3. 基板製造・PCBA 実装（JLCPCB）：計 5種（すべて板厚 `1.6mm` 標準 FR-4）
 - **PCBA 実装基板（3種）**: `curcur40-left`, `curcur40-right`（裏面 `B.Cu` に 3D ホールセンサー `rU6: TMAG5273A1QDBVR` LCSC `C3716049` 自動実装済み！）, `curcur40-pmw3360`

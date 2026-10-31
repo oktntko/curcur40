@@ -56,7 +56,7 @@
 | **[`TS-1088R-02026.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/TS-1088R-02026.kicad_mod)** | SMD タクトSW (`TS-1088R-02026`)<br>`Switch:SW_Push` | **foostan/kbd** ([MIT License](../pcbs/common/kbd/LICENSE)) | 相対3Dモデルパス化 |
 | **[`USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod)** | USB-C 16ピン (`TYPE-C-31-M-13C`)<br>`Connector:USB_C_Receptacle_USB2.0_16P` | **foostan/kbd** ([MIT License](../pcbs/common/kbd/LICENSE)) | 標準シンボルのフィルタ適合リネーム、シールド脚 `SH` ピン名整合、相対3Dモデルパス化 |
 | **[`PMW3360DM-T2QU_16Pin.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/PMW3360DM-T2QU_16Pin.kicad_mod)** | 光学センサー (`PMW3360DM-T2QU`)<br>`PMW3360_PCB:PMW3360DM-T2QU` | **siderakb/pmw3360-pcb** ([CERN-OHL-P v2](../LICENSE_CERN_OHL_P_V2)) | KiCad 10.0 向けにスルーホールパッド層 `(layers "*.Cu" "*.Mask")` を補完 |
-| **[`Kailh_Square_Silent_6.2x6.2mm.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/Kailh_Square_Silent_6.2x6.2mm.kicad_mod)** | 静音角形マイクロスイッチ (`rEXSW1`: `Kailh Square Silent 6.2×6.2×4.3mm`)<br>`Switch:SW_Push` | Kailh 公式データシート公表寸法（本体 $6.2 \times 6.2\,\text{mm}$、2ピンピッチ $5.00\,\text{mm}$、平端子 $0.8 \times 0.4\,\text{mm}$）に基づき新規作成 | ドリル径 $\varnothing 1.10\,\text{mm}$ PTH 2穴（`curcur40-right` 裏面 `B.Cu` `(-0.85, -2.00)` に直付け実装） |
+| **[`Kailh_Square_Silent_6.2x6.2mm.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/Kailh_Square_Silent_6.2x6.2mm.kicad_mod)** | 静音角形マイクロスイッチ (`rEXSW1`: `Kailh Square Silent 6.2×6.2×4.3mm`)<br>`Switch:SW_Push` | Kailh 公式データシート公表寸法（本体 $6.2 \times 6.2\,\text{mm}$、2ピンピッチ $5.00\,\text{mm}$、平端子 $0.8 \times 0.4\,\text{mm}$）に基づき新規作成 | ドリル径 $\varnothing 1.10\,\text{mm}$ PTH 2穴（`curcur40-right` 裏面 `B.Cu` `(-2.0125, -2.00)` に直付け実装） |
 
 ---
 
@@ -72,8 +72,8 @@
 | **外形バウンディングボックス** | **124.325 × 91.8125 mm** | **124.325 × 91.8125 mm** | **29.575 × 29.200 mm** | JLCPCB PCBA 下限（$20\times 20\text{ mm}$）に余裕で適合 |
 | **PCB座標範囲 ($X$)** | $-119.0625 \sim +5.2625 \, \text{mm}$ | $-5.2625 \sim +119.0625 \, \text{mm}$ | $-5.2625 \sim +24.3125 \, \text{mm}$ | |
 | **PCB座標範囲 ($Y$)** | $-24.3125 \sim +67.5000 \, \text{mm}$ | $-24.3125 \sim +67.5000 \, \text{mm}$ | $+38.3000 \sim +67.5000 \, \text{mm}$ | |
-| **内部切り欠き穴** | なし | **十字形ホイール窓**<br>（縦 $7.70 \times 22.50\,\text{mm}$ ＋ 横翼 $[6.00..22.50] \times [-5.75..+1.75]\,\text{mm}$） | **$8.70 \times 16.90 \, \text{mm}$ 角穴** | 右メイン $(15.4500, -2.0000)$ に幅 $6.50\,\text{mm}$ アンダープレートホイール窓、センサーサブ中央 $(9.525, 52.3875)$ に光学角穴 |
-| **固定穴・ボス逃げ穴 (`Edge.Cuts`)** | **$\varnothing 4.66$ 穴×3 (`L1..L3`)＋南U溝 (`L5`)＋$\varnothing 2.40$ 穴×1 (`L4`)** | **$\varnothing 4.66$ 穴×3 (`R1..R3`)＋南U溝 (`R5`)＋$\varnothing 2.40$ 穴×3 (`R4, WC1, WC2`)** | **4 箇所** (`TB1`〜`TB4`: $\varnothing 2.40\,\text{mm}$) | 四隅計8箇所は段付きボス上段首（$\varnothing 4.46\,\text{mm}$）が通過しトッププレートを直接固定、残り8箇所は $\varnothing 2.40\,\text{mm}$ M2ネジ貫通 |
+| **内部切り欠き穴** | なし | **十字形ホイール窓**<br>（縦 $7.70 \times 23.00\,\text{mm}$ ＋ 横翼 $[4.8375..21.3375] \times [-5.75..+1.75]\,\text{mm}$） | **$8.70 \times 16.90 \, \text{mm}$ 角穴** | 右メイン $(14.2875, -2.0000)$（南キー `rEXSW2` と同軸）に幅 $6.50\,\text{mm}$ アンダープレートホイール窓、センサーサブ中央 $(9.525, 52.3875)$ に光学角穴 |
+| **固定穴・ボス逃げ穴 (`Edge.Cuts`)** | **$\varnothing 6.20$ 穴×3 (`L1..L3`)＋南U溝 (`L5`)＋$\varnothing 2.40$ 穴×1 (`L4`)** | **$\varnothing 6.20$ 穴×3 (`R1..R3`)＋南U溝 (`R5`)＋$\varnothing 2.40$ 穴×3 (`R4, WC1, WC2`)** | **4 箇所** (`TB1`〜`TB4`: $\varnothing 2.40\,\text{mm}$) | 四隅計8箇所は太径段付きボス上段首（$\varnothing 6.00\,\text{mm}$・肉厚 $1.575\,\text{mm}$）が通過しトッププレートを直接固定、残り8箇所は $\varnothing 2.40\,\text{mm}$ M2ネジ貫通 |
 | **総フットプリント数** | 82 点（PCBA **81 点**） | 85 点（PCBA **83 点** / 24 BOMグループ） | 13 点（PCBA **9 点** / 7 BOMグループ） | 手ハンダ THT（右 `rEXSW1`、TBセンサー `U1`）および `DNP`（`J4`/`rJ4`, `R4`/`C5`）を除く全SMDをPCBA自動実装 |
 
 ### 2.2 DRC デザインルール（製造制約）
@@ -101,7 +101,7 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 | **トラックボールセンサー** | なし（親指4キー構成） | **JST SH 6ピンコネクタ (`rJ3`)** 経由で独立サブ基板 [`curcur40-pmw3360`](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（`U1`: `PMW3360DM-T2QU` ＋ `U2`: `1.8V LDO` ＋ `J1`）と接続 | トラックボールカップ開口面をトッププレート天面（$Z = -2.00\,\text{mm}$）とフラッシュに沈み込ませるため、センサー基板のみ $-11.80\,\text{mm}$ 下段（$Z = -16.00\,\text{mm}$）へ分離配置 |
 | **SWD デバッグ端子** | `J4` (`1x03` 2.54mm スルーホール) | `rJ4` (`1x03` 2.54mm スルーホール) | `/SWCLK`, `GND`, `/SWD`。**未実装 (`DNP`)**・BOM/Pos/3Dモデル非表示 |
 | **左右判定ピン (`GPIO21`)** | **`+3V3` (HIGH) に直結** | **`GNDR` (LOW) に直結** | QMK `split.handedness.pin = GP21` による自動左右認識 |
-| **固定穴・ボス通過穴 (`Edge.Cuts`)** | **5 箇所**（`L1..L3`: $\varnothing 4.66$、`L5`: 幅 $4.66$ 南U溝、`L4`: $\varnothing 2.40\,\text{mm}$） | **右メイン 7 箇所**（`R1..R3`: $\varnothing 4.66$、`R5`: 幅 $4.66$ 南U溝、`R4, WC1, WC2`: $\varnothing 2.40\,\text{mm}$）＋ **TBセンサー基板 4 箇所**（`TB1`〜`TB4`: $\varnothing 2.40\,\text{mm}$） | 四隅8箇所はケース段付きボス（上段 $\varnothing 4.46\,\text{mm}$）が通過してトッププレートを直接固定、他は統一 `M2×6.0mm` ネジで基板を直接クランプ |
+| **固定穴・ボス通過穴 (`Edge.Cuts`)** | **5 箇所**（`L1..L3`: $\varnothing 6.20$、`L5`: 幅 $6.20$ 南U溝、`L4`: $\varnothing 2.40\,\text{mm}$） | **右メイン 7 箇所**（`R1..R3`: $\varnothing 6.20$、`R5`: 幅 $6.20$ 南U溝、`R4, WC1, WC2`: $\varnothing 2.40\,\text{mm}$）＋ **TBセンサー基板 4 箇所**（`TB1`〜`TB4`: $\varnothing 2.40\,\text{mm}$） | 四隅8箇所はケース太径段付きボス（上段 $\varnothing 6.00\,\text{mm}$）が通過してトッププレートを直接固定、他は統一 `M2×6.0mm` ネジで基板を直接クランプ |
 
 ---
 
@@ -125,12 +125,12 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 * **`VDDPIX` 分離・`JP1` 銅箔ブリッジ・`R4`/`C5` DNP**: `U1` Pin 3 (`VDDPIX`) は `C1`/`C2` のみの独立ネット（`Net-(U1-VDDPIX)`）に保ち、`JP1` は `SolderJumper_3_Bridged12`（Pad 1 `+3V3R` – Pad 2 `/V_{IO}` 基板内銅箔直結）、`R4` (`28kΩ`) / `C5` (`22nF`) は `DNP` とします。
 
 ### 4.4 右手専用：アンダープレート一体軸慣性ホイール オンボード検出・クリック回路 (`rU6` / `rEXSW1`)
-* **十字形ホイール開口と `WC1`/`WC2` 固定穴**:
-  * ホイール回転軸中心 $(15.4500, -2.0000)\,\text{mm}$ を基準に、$\varnothing 22.00 \times 6.50\,\text{mm}$ スチールホイール用の縦スロット（$7.70 \times 22.50\,\text{mm}$、$x_{\text{pcb}} \in [11.6000, 19.3000]$, $y_{\text{pcb}} \in [-13.50, +9.00]$）と、一体軸受 `DDL-520ZZ`・PA12 マグネットホルダー逃がし用の横翼（$x_{\text{pcb}} \in [6.0000, 22.5000]$, $y_{\text{pcb}} \in [-5.75, +1.75]$）を組み合わせた十字形切り欠きを設けています。
-  * 周囲対角2箇所に [`wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) 固定用の $\varnothing 2.40\,\text{mm}$ 貫通穴 **`WC1` $(7.8000, -9.8000)$** および **`WC2` $(22.4000, +6.0000)$** を配置しています。
+* **十字形ホイール開口と `WC1`/`WC2` 固定穴（南隣接キー `rEXSW2` と中心軸完全一致）**:
+  * ホイール回転軸中心 **$(14.2875, -2.0000)\,\text{mm}$**（南キー `rEXSW2` $(14.2875, 19.0500)$ と左右中心軸一致）を基準に、$\varnothing 22.00 \times 6.50\,\text{mm}$ スチールホイール用の縦スロット（$7.70 \times 23.00\,\text{mm}$、$x_{\text{pcb}} \in [10.4375, 18.1375]$, $y_{\text{pcb}} \in [-13.50, +9.50]$）と、一体軸受 `DDL-520ZZ`・PA12 マグネットホルダー逃がし用の横翼（$x_{\text{pcb}} \in [4.8375, 21.3375]$, $y_{\text{pcb}} \in [-5.75, +1.75]$）を組み合わせた十字形切り欠きを設けています。
+  * 周囲対角2箇所に [`wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) 固定用の $\varnothing 2.40\,\text{mm}$ 貫通穴 **`WC1` $(6.6375, -9.8000)$** および **`WC2` $(21.2375, +6.0000)$** を配置しています。
 * **オンボード 3軸リニアホール磁気センサー `rU6`（PCBA自動実装済・手配線ゼロ）**:
   * **採用素子**: Texas Instruments **`TMAG5273A1QDBVR`**（`SOT-23-6`、LCSC **`C3716049`**、回路図シンボル `Sensor_Magnetic:TMAG5273x1QDBV`）
-  * **配置座標**: 右メイン基板 `B.Cu` の **`(4.1800, -2.0000)`**（回転 $-90^\circ$）。西側の `D4×1mm` 径方向2極着磁ネオジム磁石（$x_{\text{pcb}} \in [6.36, 7.36]\,\text{mm}, y_{\text{pcb}} = -2.00\,\text{mm}, Z = -6.90\,\text{mm}$）と $2.18 \sim 3.18\,\text{mm}$ の距離で対向し、回転磁界ベクトル $(B_x, B_z)$ を高S/N比で検出します。
+  * **配置座標**: 右メイン基板 `B.Cu` の **`(3.0175, -2.0000)`**（回転 $-90^\circ$）。西側の `D4×1mm` 径方向2極着磁ネオジム磁石（$x_{\text{pcb}} \in [5.2675, 6.2675]\,\text{mm}, y_{\text{pcb}} = -2.00\,\text{mm}, Z = -6.90\,\text{mm}$）と $2.25 \sim 3.25\,\text{mm}$ の距離で対向し、回転磁界ベクトル $(B_x, B_z)$ を高S/N比で検出します。
   * **ピン結線とピン互換フォールバック設計（`TLV493D-A1B6` 無改造対応）**:
     * **Pin 1 (`SCL`)**: `/WHEEL_SCL` → `rU1` Pin 37 (`GPIO25` / ハードウェア `I2C0 SCL`、`rR12` `4.7kΩ` で `+3V3R` へプルアップ)
     * **Pin 2 (`GND`)**: `GNDR`
@@ -140,7 +140,7 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
     * **Pin 6 (`GND`)**: `GNDR`
 * **オンボード静音ミドルクリックスイッチ `rEXSW1`（基板 `B.Cu` 直付け THT）**:
   * **採用素子**: **`Kailh Square Silent 6.2×6.2×4.3mm`**（フットプリント `kbd:Kailh_Square_Silent_6.2x6.2mm`）
-  * **配置座標**: 右メイン基板 `B.Cu` の **`(-0.8500, -2.0000)`**。Pin 1 を `/KEYEX1`（`rU1` Pin 9 `GPIO7`, マトリクス `[4, 6]`）、Pin 2 を `GNDR` へ基板内パターンで直結しています。
+  * **配置座標**: 右メイン基板 `B.Cu` の **`(-2.0125, -2.0000)`**。Pin 1 を `/KEYEX1`（`rU1` Pin 9 `GPIO7`, マトリクス `[4, 6]`）、Pin 2 を `GNDR` へ基板内パターンで直結しています。
   * **実装方法**: THT 部品のため PCBA（BOM/CPL）からは自動除外されます。組み立て時に裏面 `B.Cu` へ密着挿入し、表面 `F.Cu` 側で2ピンをはんだ付けした後、Switch Gap（$0.60\,\text{mm}$）内でトッププレート裏面（$Z = -3.60\,\text{mm}$）に触れないよう飛び出しピン先端をニッパーで平切りします。
 
 ---
@@ -190,22 +190,22 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 
 ## 6. 固定穴・機械的インターフェース仕様 (Mechanical Mounting & Holes)
 
-ケース設計仕様書（[case_spec.md](./case_spec.md) 第2.3節）と完全一致する、段付きボス通過穴・U溝（$\varnothing 4.66\,\text{mm}$）および統一 `M2 × 6.0mm` ネジ貫通穴（$\varnothing 2.40\,\text{mm}$）の配置定義です。
+ケース設計仕様書（[case_spec.md](./case_spec.md) 第2.3節）と完全一致する、太径段付きボス通過穴・U溝（$\varnothing 6.20\,\text{mm}$）および統一 `M2 × 6.0mm` ネジ貫通穴（$\varnothing 2.40\,\text{mm}$）の配置定義です（全12箇所ともケース受けボス外径範囲内に SMD 部品・パッドが存在しない干渉ゼロ配置）。
 
 | 基板 | 穴番号 | 配置箇所 | PCB座標 $(x_{\text{pcb}}, y_{\text{pcb}})$ | 形状・寸法 (`Edge.Cuts`) | インターフェース相手（`M2×L3.0×OD3.2mm` 真鍮インサート） |
 | :--- | :---: | :--- | :---: | :---: | :--- |
-| **左メイン (`curcur40-left`)** | **L1** | 内側上（PC側 USB-C 横） | $(0.0000, -15.0000)$ | $\varnothing 4.66 \, \text{mm}$ 円穴 | 左ケース段付きボス上段首 ($\varnothing 4.46$, $Z=-3.60$) 通過 |
-| **左メイン (`curcur40-left`)** | **L2** | 内側下（左右間 USB-C 上） | $(0.0000, 20.0000)$ | $\varnothing 4.66 \, \text{mm}$ 円穴 | 左ケース段付きボス上段首 ($\varnothing 4.46$, $Z=-3.60$) 通過 |
-| **左メイン (`curcur40-left`)** | **L3** | 小指側上 | $(-101.0000, -20.0000)$ | $\varnothing 4.66 \, \text{mm}$ 円穴 | 左ケース段付きボス上段首 ($\varnothing 4.46$, $Z=-3.60$) 通過 |
-| **左メイン (`curcur40-left`)** | **L4** | 小指側下（側面SW横） | $(-98.0000, 38.0000)$ | $\varnothing 2.40 \, \text{mm}$ 円穴 | 左ケース段下げインサートボス ($Z=-8.10$) へ基板クランプ |
-| **左メイン (`curcur40-left`)** | **L5** | 親指側下（`SW8`–`SW9` 南側） | $(-62.0000, 65.1500)$ | 幅 $4.66 \, \text{mm}$ 南開放U溝 | 左ケース段付きボス上段首 ($\varnothing 4.46$, $Z=-3.60$) 通過 |
-| **右メイン (`curcur40-right`)** | **R1** | 外周・内側上（PC側 USB-C 横） | $(0.0000, -15.0000)$ | $\varnothing 4.66 \, \text{mm}$ 円穴 | 右ケース段付きボス上段首 ($\varnothing 4.46$, $Z=-3.60$) 通過 |
-| **右メイン (`curcur40-right`)** | **R2** | 外周・内側下（左右間 USB-C 上） | $(0.0000, 20.0000)$ | $\varnothing 4.66 \, \text{mm}$ 円穴 | 右ケース段付きボス上段首 ($\varnothing 4.46$, $Z=-3.60$) 通過 |
-| **右メイン (`curcur40-right`)** | **R3** | 外周・小指側上 | $(101.0000, -20.0000)$ | $\varnothing 4.66 \, \text{mm}$ 円穴 | 右ケース段付きボス上段首 ($\varnothing 4.46$, $Z=-3.60$) 通過 |
-| **右メイン (`curcur40-right`)** | **R4** | 外周・小指側下（側面SW横） | $(98.0000, 38.0000)$ | $\varnothing 2.40 \, \text{mm}$ 円穴 | 右ケース段下げインサートボス ($Z=-8.10$) へ基板クランプ |
-| **右メイン (`curcur40-right`)** | **R5** | 外周・親指側下（`rSW8`–`rSW9` 南側） | $(62.0000, 65.1500)$ | 幅 $4.66 \, \text{mm}$ 南開放U溝 | 右ケース段付きボス上段首 ($\varnothing 4.46$, $Z=-3.60$) 通過 |
-| **右メイン (`curcur40-right`)** | **WC1** | ホイールクレードル北西固定 | $(7.8000, -9.8000)$ | $\varnothing 2.40 \, \text{mm}$ 円穴 | `wheel-cradle.step` 北西ボス ($Z=-5.80$) へ基板クランプ |
-| **右メイン (`curcur40-right`)** | **WC2** | ホイールクレードル南東固定 | $(22.4000, 6.0000)$ | $\varnothing 2.40 \, \text{mm}$ 円穴 | `wheel-cradle.step` 南東ボス ($Z=-5.80$) へ基板クランプ |
+| **左メイン (`curcur40-left`)** | **L1** | 内側上（PC側 USB-C 横） | $(0.0000, -15.0000)$ | $\varnothing 6.20 \, \text{mm}$ 円穴 | 左ケース太径段付きボス上段首 ($\varnothing 6.00$, $Z=-3.60$ / 肩 $\varnothing 7.84$) 通過 |
+| **左メイン (`curcur40-left`)** | **L2** | 内側下（左右間 USB-C 上） | $(0.0000, 18.0000)$ | $\varnothing 6.20 \, \text{mm}$ 円穴 | 左ケース太径段付きボス上段首 ($\varnothing 6.00$, $Z=-3.60$ / 肩 $\varnothing 7.84$) 通過 |
+| **左メイン (`curcur40-left`)** | **L3** | 小指側上 | $(-101.0000, -20.0000)$ | $\varnothing 6.20 \, \text{mm}$ 円穴 | 左ケース太径段付きボス上段首 ($\varnothing 6.00$, $Z=-3.60$ / 肩 $\varnothing 7.84$) 通過 |
+| **左メイン (`curcur40-left`)** | **L4** | 小指側下（側面SW横） | $(-98.4500, 38.1500)$ | $\varnothing 2.40 \, \text{mm}$ 円穴 | 左ケースフラット円筒ボス ($\varnothing 4.90$, $Z=-5.80$) へ基板クランプ |
+| **左メイン (`curcur40-left`)** | **L5** | 親指側下（`SW8`–`SW9` 南側） | $(-62.0000, 65.1500)$ | 幅 $6.20 \, \text{mm}$ 南開放U溝 | 左ケース太径段付きボス上段首 ($\varnothing 6.00$, $Z=-3.60$ / 肩 $\varnothing 7.84$) 通過 |
+| **右メイン (`curcur40-right`)** | **R1** | 外周・内側上（PC側 USB-C 横） | $(0.0000, -15.0000)$ | $\varnothing 6.20 \, \text{mm}$ 円穴 | 右ケース太径段付きボス上段首 ($\varnothing 6.00$, $Z=-3.60$ / 肩 $\varnothing 7.84$) 通過 |
+| **右メイン (`curcur40-right`)** | **R2** | 外周・内側下（左右間 USB-C 上） | $(0.0000, 18.0000)$ | $\varnothing 6.20 \, \text{mm}$ 円穴 | 右ケース太径段付きボス上段首 ($\varnothing 6.00$, $Z=-3.60$ / 肩 $\varnothing 7.84$) 通過 |
+| **右メイン (`curcur40-right`)** | **R3** | 外周・小指側上 | $(101.0000, -20.0000)$ | $\varnothing 6.20 \, \text{mm}$ 円穴 | 右ケース太径段付きボス上段首 ($\varnothing 6.00$, $Z=-3.60$ / 肩 $\varnothing 7.84$) 通過 |
+| **右メイン (`curcur40-right`)** | **R4** | 外周・小指側下（側面SW横） | $(98.4500, 38.1500)$ | $\varnothing 2.40 \, \text{mm}$ 円穴 | 右ケースフラット円筒ボス ($\varnothing 4.90$, $Z=-5.80$) へ基板クランプ |
+| **右メイン (`curcur40-right`)** | **R5** | 外周・親指側下（`rSW8`–`rSW9` 南側） | $(62.0000, 65.1500)$ | 幅 $6.20 \, \text{mm}$ 南開放U溝 | 右ケース太径段付きボス上段首 ($\varnothing 6.00$, $Z=-3.60$ / 肩 $\varnothing 7.84$) 通過 |
+| **右メイン (`curcur40-right`)** | **WC1** | ホイールクレードル北西固定 | $(6.6375, -9.8000)$ | $\varnothing 2.40 \, \text{mm}$ 円穴 | `wheel-cradle.step` 北西ボス ($Z=-5.80$) へ基板クランプ |
+| **右メイン (`curcur40-right`)** | **WC2** | ホイールクレードル南東固定 | $(21.2375, 6.0000)$ | $\varnothing 2.40 \, \text{mm}$ 円穴 | `wheel-cradle.step` 南東ボス ($Z=-5.80$) へ基板クランプ |
 | **TBセンサー (`curcur40-pmw3360`)** | **TB1〜TB4** | トラックボール四隅 (`NW`, `NE`, `SW`, `SE`) | $(-2.475 / 21.525,\ 41.0875 / 63.6875)$ | $\varnothing 2.40 \, \text{mm}$ 円穴 | カップ $2.0\,\text{mm}$ 耳と共締めで右ケース下段ボス ($Z=-17.60$) |
 
 ---

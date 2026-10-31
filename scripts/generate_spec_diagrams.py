@@ -32,27 +32,27 @@ def generate_vertical_stackup_diagram():
     ax.text(60, -2.8, "Top Plate (FR4, 1.60mm — Directly Screw-Clamped!)", ha='center', va='center', fontsize=10.2, fontweight='bold', color='#ffffff')
 
     # Switch Gap (Z = -4.2 to -3.6)
-    ax.add_patch(patches.Rectangle((20, -4.2), 87.3, 0.6, linewidth=1.2, edgecolor='#778da9', facecolor='#e0e1dd', alpha=0.45))
-    ax.add_patch(patches.Rectangle((116.7, -4.2), 9.3, 0.6, linewidth=1.2, edgecolor='#778da9', facecolor='#e0e1dd', alpha=0.45))
+    ax.add_patch(patches.Rectangle((20, -4.2), 85.8, 0.6, linewidth=1.2, edgecolor='#778da9', facecolor='#e0e1dd', alpha=0.45))
+    ax.add_patch(patches.Rectangle((118.2, -4.2), 7.8, 0.6, linewidth=1.2, edgecolor='#778da9', facecolor='#e0e1dd', alpha=0.45))
     ax.text(60, -3.9, "Switch Gap (Kailh Choc v2: 0.60mm)", ha='center', va='center', fontsize=8.8, fontweight='bold', color='#111111')
 
-    # Main PCB (FR4, Z = -5.8 to -4.2) with Ø4.66mm boss-pass hole around X = 112 (X in [107.3, 116.7] scaled)
-    ax.add_patch(patches.Rectangle((20, -5.8), 87.3, 1.6, linewidth=1.5, edgecolor='#1b4332', facecolor='#2a9d8f', alpha=0.88))
-    ax.add_patch(patches.Rectangle((116.7, -5.8), 9.3, 1.6, linewidth=1.5, edgecolor='#1b4332', facecolor='#2a9d8f', alpha=0.88))
+    # Main PCB (FR4, Z = -5.8 to -4.2) with Ø6.20mm boss-pass hole around X = 112 (X in [105.8, 118.2] scaled)
+    ax.add_patch(patches.Rectangle((20, -5.8), 85.8, 1.6, linewidth=1.5, edgecolor='#1b4332', facecolor='#2a9d8f', alpha=0.88))
+    ax.add_patch(patches.Rectangle((118.2, -5.8), 7.8, 1.6, linewidth=1.5, edgecolor='#1b4332', facecolor='#2a9d8f', alpha=0.88))
     ax.text(60, -5.0, "Main PCB (FR4, 1.60mm)", ha='center', va='center', fontsize=10.5, fontweight='bold', color='#ffffff')
 
     # Component Cavity (Z = -11.2 to -5.8)
-    ax.add_patch(patches.Rectangle((20, -11.2), 84.4, 5.4, linewidth=1.3, edgecolor='#e07a5f', facecolor='#f4f1de', alpha=0.42))
+    ax.add_patch(patches.Rectangle((20, -11.2), 83.2, 5.4, linewidth=1.3, edgecolor='#e07a5f', facecolor='#f4f1de', alpha=0.42))
     ax.text(32, -8.5, "Component\nCavity\n(Tilted Floor)", ha='center', va='center', fontsize=9.5, fontweight='bold', color='#333333')
 
-    # Sealed Case Floor (2.40mm uniform wall, 100% hole-free outer bottom!) + Stepped Boss:
-    # Lower Ø6.10mm shoulder to Z = -5.80mm (supports Main PCB B.Cu) + Upper Ø4.46mm neck to Z = -3.60mm (supports Top Plate!)
+    # Sealed Case Floor (2.40mm uniform wall, 100% hole-free outer bottom!) + Wide Stepped Boss:
+    # Lower Ø7.84mm shoulder to Z = -5.80mm (supports Main PCB B.Cu) + Upper Ø6.00mm neck to Z = -3.60mm (1.575mm thick wall!)
     case_poly = patches.Polygon(
         [
             (20.0, -13.6), (126.0, -13.6), (126.0, -11.2),
-            (119.6, -11.2), (119.6, -5.8), (116.5, -5.8), (116.5, -3.6),
+            (120.8, -11.2), (120.8, -5.8), (118.0, -5.8), (118.0, -3.6),
             (114.8, -3.6), (114.8, -9.6), (109.2, -9.6), (109.2, -3.6),
-            (107.5, -3.6), (107.5, -5.8), (104.4, -5.8), (104.4, -11.2),
+            (106.0, -3.6), (106.0, -5.8), (103.2, -5.8), (103.2, -11.2),
             (20.0, -11.2),
         ],
         closed=True, linewidth=1.6, edgecolor='#212529', facecolor='#495057', alpha=0.88, zorder=3
@@ -102,10 +102,10 @@ def generate_vertical_stackup_diagram():
 
     draw_dim(7.5, 0.0, -11.2, "Pinky: 10.0 mm\n(Thumb: 26.9 mm)", offset_text=1.0)
 
-    ax.annotate('Stepped Boss (8x: L1..L3,L5 / R1..R3,R5)\n• Ø4.46mm neck clamps Top Plate (Ø2.4mm hole)\n• Ø6.10mm shoulder supports Main PCB (-5.80)\n• L4,R4,WC1,WC2: Ø4.4mm hole -> clamps PCB',
-                xy=(116.2, -2.00), xytext=(126.5, -2.6),
+    ax.annotate('Wide Stepped Boss (8x: L1..L3,L5 / R1..R3,R5)\n• Ø6.00mm neck (1.575mm wall!) clamps Top Plate\n• Ø7.84mm shoulder supports Main PCB (-5.80)\n• L4,R4 (Ø4.9mm flat) & WC1,WC2: Ø4.4mm -> PCB',
+                xy=(117.2, -2.00), xytext=(126.5, -2.6),
                 arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=5),
-                fontsize=7.4, fontweight='bold', color='#1d3557',
+                fontsize=7.3, fontweight='bold', color='#1d3557',
                 bbox=dict(boxstyle="round,pad=0.25", fc="#e0f2fe", ec="#1d3557", lw=0.9))
 
     ax.annotate('M2 × L3.0 × OD3.2mm Brass Insert\n• Pressed into Ø2.85mm blind bore\n• Unified M2×6.0mm screws (zero standoffs!)',
@@ -238,19 +238,19 @@ def generate_ports_and_screws_diagram():
     ax3.add_patch(patches.Rectangle((1.20, -3.60), 6.80, 1.60, lw=1.2, ec='#16425b', fc='#3a7ca5', alpha=0.88))
     ax3.text(-4.8, -2.80, "Top Plate", ha='center', va='center', fontsize=6.8, color='white', fontweight='bold')
 
-    # Main PCB (Z = -5.80 to -4.20) with Ø4.66mm boss-pass hole (X = ±2.33)
-    ax3.add_patch(patches.Rectangle((-8.0, -5.80), 5.67, 1.60, lw=1.2, ec='#1b4332', fc='#2a9d8f', alpha=0.88))
-    ax3.add_patch(patches.Rectangle((2.33, -5.80), 5.67, 1.60, lw=1.2, ec='#1b4332', fc='#2a9d8f', alpha=0.88))
-    ax3.text(-5.2, -5.00, "Main PCB", ha='center', va='center', fontsize=6.8, color='white', fontweight='bold')
+    # Main PCB (Z = -5.80 to -4.20) with Ø6.20mm boss-pass hole (X = ±3.10)
+    ax3.add_patch(patches.Rectangle((-8.0, -5.80), 4.90, 1.60, lw=1.2, ec='#1b4332', fc='#2a9d8f', alpha=0.88))
+    ax3.add_patch(patches.Rectangle((3.10, -5.80), 4.90, 1.60, lw=1.2, ec='#1b4332', fc='#2a9d8f', alpha=0.88))
+    ax3.text(-5.55, -5.00, "Main PCB", ha='center', va='center', fontsize=6.8, color='white', fontweight='bold')
 
-    # Case Stepped Boss: Ø6.10mm lower shoulder (X = ±3.05, Z = -11.00..-5.80) + Ø4.46mm upper neck (X = ±2.23, Z = -5.80..-3.60)
-    # + Ø2.85mm blind bore (X = ±1.425, Z = -9.60..-3.60) + 2.40mm Sealed Floor (-13.40..-11.00)
+    # Case Wide Stepped Boss: Ø7.84mm lower shoulder (X = ±3.92, Z = -11.00..-5.80) + Ø6.00mm upper neck (X = ±3.00, Z = -5.80..-3.60)
+    # + Ø2.85mm blind bore (X = ±1.425, Z = -9.60..-3.60 -> 1.575mm thick wall!) + 2.40mm Sealed Floor (-13.40..-11.00)
     boss_floor = patches.Polygon(
         [
             (-8.0, -13.40), (8.0, -13.40), (8.0, -11.00),
-            (3.05, -11.00), (3.05, -5.80), (2.23, -5.80), (2.23, -3.60),
+            (3.92, -11.00), (3.92, -5.80), (3.00, -5.80), (3.00, -3.60),
             (1.425, -3.60), (1.425, -9.60), (-1.425, -9.60), (-1.425, -3.60),
-            (-2.23, -3.60), (-2.23, -5.80), (-3.05, -5.80), (-3.05, -11.00),
+            (-3.00, -3.60), (-3.00, -5.80), (-3.92, -5.80), (-3.92, -11.00),
             (-8.0, -11.00),
         ],
         closed=True, lw=1.4, ec='#212529', fc='#dee2e6', zorder=2
@@ -266,12 +266,12 @@ def generate_ports_and_screws_diagram():
     ax3.add_patch(patches.Rectangle((-1.90, -2.00), 3.80, 1.20, lw=1.2, ec='#343a40', fc='#adb5bd', zorder=6))
     ax3.add_patch(patches.Rectangle((-1.00, -8.00), 2.00, 6.00, lw=1.2, ec='#343a40', fc='#ced4da', zorder=5))
 
-    ax3.text(0.0, -0.35, "8x Stepped Boss (Plate Ø2.4mm Clamped)\n[L4/R4/WC1/WC2: Plate Ø4.4mm -> PCB Clamped]",
-             ha='center', va='bottom', fontsize=6.6, fontweight='bold', color='#16425b')
+    ax3.text(0.0, -0.35, "8x Wide Stepped Boss (Plate Ø2.4mm Clamped)\n[L4/R4 Flat Ø4.9mm & WC1/WC2: Plate Ø4.4mm]",
+             ha='center', va='bottom', fontsize=6.5, fontweight='bold', color='#16425b')
 
-    ax3.annotate('Ø4.46 Neck (-3.6)\nØ6.10 Shoulder (-5.8)\n+ M2×L3.0 Insert', xy=(2.23, -5.20), xytext=(3.65, -8.50),
+    ax3.annotate('Ø6.00 Neck (1.575mm wall!)\nØ7.84 Shoulder (-5.8)\n+ Flush M2×L3.0 Insert', xy=(3.00, -5.00), xytext=(4.05, -8.60),
                  arrowprops=dict(arrowstyle='->', color='#7f5539', lw=1.1),
-                 fontsize=6.8, fontweight='bold', color='#7f5539',
+                 fontsize=6.5, fontweight='bold', color='#7f5539',
                  bbox=dict(boxstyle="round,pad=0.18", fc="#fefae0", ec="#7f5539", lw=0.7))
 
     ax3.axis('off')
