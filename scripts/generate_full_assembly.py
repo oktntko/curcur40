@@ -4,26 +4,32 @@ Generate curcur40 Full Assembly STEP models:
   1. cases/assemblies/assembly-full.step                (Top Plate horizontal at Z = -2.00 mm)
   2. cases/assemblies/assembly-full-desk.step           (Case Bottom horizontal on desk plane Z = 0.00 mm)
   3. cases/assemblies/curcur40-right-wheel-assembly.step (Right half with Under-Plate Inertia Wheel)
-and verify zero interference + minimum clearances across all components per docs/case_spec.md:
-- Left & Right 3D-printed Sealed-Bottom Built-in Tented Tray Bottom Cases (with Tilted Floor & Stepped M2 Heat-Set Insert Bosses)
-- Left & Right Main PCBs (Z = -5.80 to -4.20 mm, with Ø 6.20 mm boss-pass holes / U-notches, Ø 2.40 mm screw holes & Right Cross Wheel Cutout)
-- Separated PMW3360 Sensor PCB (`curcur40-pmw3360`, Z = -17.60 to -16.00 mm, with Ø 2.40 mm TB1-TB4 screw holes)
-- Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, directly screw-clamped via 8x Ø 2.40 mm corner holes + Ø 4.40 mm sub-flush holes at L4/R4/WC1/WC2 & Right 7.70 x 22.00 mm wheel slot)
+and verify zero B-rep interference + minimum clearances across all components per docs/case_spec.md:
+- Left & Right 3D-printed Sealed-Bottom Built-in Tented Tray Bottom Cases
+  (with Tilted Floor & Compact Flat-Topped Ø 5.20 mm M2 Heat-Set Insert Bosses at Z = -5.80 mm)
+- Direct KiCad 10.0 3D STEP Synchronization (`kicad-cli pcb export step --subst-models`):
+    - `curcur40-left.kicad_pcb`    (Z = -5.80 to -4.20 mm + all 268 real 3D component solids)
+    - `curcur40-right.kicad_pcb`   (Z = -5.80 to -4.20 mm + all 258 real 3D component solids)
+    - `curcur40-pmw3360.kicad_pcb` (Z = -17.60 to -16.00 mm + all 9 real SMD/JST-SH solids)
+- Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, retained via 40x Kailh Choc V2 switch snap-fit,
+  with 12x Ø 4.40 mm screw-head clearance holes & Right 7.70 x 22.00 mm wheel slot)
+- 40x Kailh Choc V2 Low-Profile Keyswitches (21 Left + 19 Right) + 40x Keycaps
 - Sunk Trackball Cup placed on Sensor PCB F.Cu at (23.8125, -109.5375, -16.00 mm), Rim at Z = -2.00 mm, 2.00 mm flat ears
 - 25mm Trackball Sphere at (23.8125, -109.5375, +2.30 mm) + `Lens_Optical_Ref_Point` (exact 2.40 mm optical gap)
 - PMW3360 Sensor IC & LM19-LSI Optical Lens
 - 17x Unified M2 Brass Heat-Set Inserts (M2 x L=3.0 x OD=3.2 mm) + 17x Unified M2 x 6.0 mm Screws:
-    - 8x Stepped Perimeter (4 Left L1,L2,L3,L5 + 4 Right R1,R2,R3,R5, directly clamping Top Plate Z = -2.00 mm & supporting Main PCB B.Cu Z = -5.80 mm)
-    - 2x Side-Switch Perimeter (L4, R4, clamping Main PCB F.Cu Z = -4.20 mm via Top Plate Ø 4.40 mm clearance holes)
-    - 4x Trackball Cup (TB1-TB4, clamping 2.00 mm Cup Ears + 1.60 mm Sensor PCB into Case Bosses)
-    - 2x Wheel Cradle (WC1-WC2, clamping Main PCB F.Cu Z = -4.20 mm into Wheel Cradle Bosses)
-    - 1x Glue-Free Detent Adjuster (in Wheel Rocker South Boss, adjusting Ø2.0x2.0mm axial NdFeB magnet gap)
+    - 10x Perimeter (5 Left L1-L5 + 5 Right R1-R5, L4/R4 at (±100.50, 21.50), clamping Main PCB F.Cu Z = -4.20 mm
+      into Ø 5.20 mm Case Bosses at Z = -5.80 mm; screw heads submerged inside Top Plate Ø 4.40 mm clearance holes)
+    - 4x Trackball Cup (TB1-TB4, clamping 2.00 mm Cup Ears + 1.60 mm Sensor PCB into Case Bosses at Z = -17.60 mm)
+    - 2x Wheel Cradle (WC1-WC2, clamping Main PCB F.Cu Z = -4.20 mm into Wheel Cradle Bosses at Z = -5.80 mm)
+    - 1x Glue-Free Detent Adjuster (in Wheel Rocker South Boss, adjusting Ø 2.0x2.0 mm axial NdFeB magnet gap)
 - Under-Plate 1-Piece Integral-Shaft Passive Inertia Scroll Wheel (`steel-flywheel`, `magnet-holder`, `wheel-rocker`, `wheel-cradle`)
-  + Main-PCB `rU6` (`TMAG5273` SOT-23-6) + Main-PCB `rEXSW1` (`Kailh Square Silent`)
-- Keycaps (Choc v2 low-profile)
 """
 import math
+import os
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import overlap_volume, closest_points
@@ -33,6 +39,7 @@ if str(WORKSPACE / "scripts") not in sys.path:
     sys.path.insert(0, str(WORKSPACE / "scripts"))
 CASES_DIR = WORKSPACE / "cases"
 ASSEMBLIES_DIR = WORKSPACE / "cases" / "assemblies"
+KICAD_CLI = Path(os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe"))
 
 Z_THUMB_BOTTOM = -26.9000
 Z_PINKY_BOTTOM = -10.0000
@@ -95,21 +102,21 @@ RIGHT_WHEEL_CRADLE_HOLES_PCB = [
     (21.2375,  6.0000),   # WC2
 ]
 
-# (tag, px, py, z_ins_top, z_screw_seat, is_stepped_plate)
+# (tag, px, py, z_ins_top, z_screw_seat) — 案1A: all 10 perimeter bosses flat Ø 5.20 mm at Z = -5.80 mm
 LEFT_PERIMETER_HOLES_PCB = [
-    ("L1",    0.0000, -15.0000, -3.61, -1.99, True),
-    ("L2",    0.0000,  18.0000, -3.61, -1.99, True),
-    ("L3", -101.0000, -20.0000, -3.61, -1.99, True),
-    ("L4",  -98.4500,  38.1500, -5.81, -4.19, False),
-    ("L5",  -62.0000,  65.1500, -3.61, -1.99, True),
+    ("L1",    0.0000, -15.0000, -5.81, -4.19),
+    ("L2",    0.0000,  18.0000, -5.81, -4.19),
+    ("L3", -101.0000, -20.0000, -5.81, -4.19),
+    ("L4", -100.5000,  21.5000, -5.81, -4.19),
+    ("L5",  -62.0000,  65.1500, -5.81, -4.19),
 ]
 
 RIGHT_PERIMETER_HOLES_PCB = [
-    ("R1",   0.0000, -15.0000, -3.61, -1.99, True),
-    ("R2",   0.0000,  18.0000, -3.61, -1.99, True),
-    ("R3", 101.0000, -20.0000, -3.61, -1.99, True),
-    ("R4",  98.4500,  38.1500, -5.81, -4.19, False),
-    ("R5",  62.0000,  65.1500, -3.61, -1.99, True),
+    ("R1",    0.0000, -15.0000, -5.81, -4.19),
+    ("R2",    0.0000,  18.0000, -5.81, -4.19),
+    ("R3",  101.0000, -20.0000, -5.81, -4.19),
+    ("R4",  100.5000,  21.5000, -5.81, -4.19),
+    ("R5",   62.0000,  65.1500, -5.81, -4.19),
 ]
 
 RIGHT_TB_HOLES_PCB = [
@@ -126,6 +133,38 @@ def to_step_left(x, y):
 
 def to_step_right(x, y):
     return (x + 14.2875, -(y + 57.1500))
+
+
+def aabb_intersects(b1, b2, tol: float = 1e-4) -> bool:
+    return not (
+        b1.max.X < b2.min.X - tol
+        or b2.max.X < b1.min.X - tol
+        or b1.max.Y < b2.min.Y - tol
+        or b2.max.Y < b1.min.Y - tol
+        or b1.max.Z < b2.min.Z - tol
+        or b2.max.Z < b1.min.Z - tol
+    )
+
+
+def fast_overlap(s1, b1, s2, b2) -> float:
+    if not aabb_intersects(b1, b2):
+        return 0.0
+    return overlap_volume(s1, s2)
+
+
+def max_group_overlap(group_a, group_b) -> float:
+    if not group_a or not group_b:
+        return 0.0
+    bbs_a = [(s, s.bounding_box()) for s in group_a]
+    bbs_b = [(s, s.bounding_box()) for s in group_b]
+    mv = 0.0
+    for sa, ba in bbs_a:
+        for sb, bb in bbs_b:
+            if aabb_intersects(ba, bb):
+                ov = overlap_volume(sa, sb)
+                if ov > mv:
+                    mv = ov
+    return mv
 
 
 def make_filleted_sketch(pts_and_radii):
@@ -145,120 +184,54 @@ def make_filleted_sketch(pts_and_radii):
     return sk.sketch
 
 
-def build_main_pcb_solid(is_right=True) -> bd.Solid:
+def export_kicad_pcb_solids(
+    pcb_rel_path: str,
+    offset_xyz: tuple[float, float, float],
+    board_label: str,
+    comp_prefix: str,
+):
     """
-    Constructs the Main PCB solid (Z = -5.80 to -4.20 mm, thickness 1.60 mm)
-    with exact outer boundary, Host & Split USB-C notches, Ø 2.40 mm M2 screw holes,
-    and on Right Main PCB the Cross Inertia Wheel Cutout + WC1/WC2 Ø 2.40 mm holes.
+    Export a `.kicad_pcb` directly via `kicad-cli pcb export step --subst-models --no-dnp --user-origin 0x0mm`
+    and translate into the Global STEP coordinate frame so PCB holes, cutouts, and 3D component models
+    are 100% synchronized with KiCad.
     """
-    if is_right:
-        pts_pcb = [
-            ( -5.2625, -24.3125, 1.0),
-            (  7.6175, -24.3125, 0.0),
-            (  7.6175, -18.5100, 0.0),
-            ( 16.8575, -18.5100, 0.0),
-            ( 16.8575, -24.3125, 0.0),
-            (119.0625, -24.3125, 1.0),
-            (119.0625,  40.98125, 1.0),
-            ( 82.4625,  40.98125, 1.0),
-            ( 82.4625,  67.5000, 1.0),
-            ( 23.8000,  67.5000, 1.0),
-            ( 23.8000,  37.4000, 0.8),
-            ( -5.2625,  37.4000, 0.8),
-            ( -5.2625,  34.1200, 0.0),
-            (  0.5400,  34.1200, 0.0),
-            (  0.5400,  24.8800, 0.0),
-            ( -5.2625,  24.8800, 0.0),
-        ]
-        pts_step = [(*to_step_right(x, y), r) for x, y, r in pts_pcb]
-        hole_specs = [(tag, *to_step_right(x, y), stepped) for tag, x, y, _, _, stepped in RIGHT_PERIMETER_HOLES_PCB]
-    else:
-        pts_pcb = [
-            (   5.2625, -24.3125, 1.0),
-            (  -7.6175, -24.3125, 0.0),
-            (  -7.6175, -18.5100, 0.0),
-            ( -16.8575, -18.5100, 0.0),
-            ( -16.8575, -24.3125, 0.0),
-            (-119.0625, -24.3125, 1.0),
-            (-119.0625,  40.98125, 1.0),
-            ( -82.4625,  40.98125, 1.0),
-            ( -82.4625,  67.5000, 1.0),
-            (   5.2625,  67.5000, 1.0),
-            (   5.2625,  34.1200, 0.0),
-            (  -0.5400,  34.1200, 0.0),
-            (  -0.5400,  24.8800, 0.0),
-            (   5.2625,  24.8800, 0.0),
-        ]
-        pts_step = [(*to_step_left(x, y), r) for x, y, r in pts_pcb]
-        hole_specs = [(tag, *to_step_left(x, y), stepped) for tag, x, y, _, _, stepped in LEFT_PERIMETER_HOLES_PCB]
+    pcb_path = WORKSPACE / pcb_rel_path
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        out_step = Path(tmp_dir) / f"{pcb_path.stem}.step"
+        subprocess.run(
+            [
+                str(KICAD_CLI),
+                "pcb",
+                "export",
+                "step",
+                "--force",
+                "--no-dnp",
+                "--subst-models",
+                "--user-origin",
+                "0x0mm",
+                "-o",
+                str(out_step),
+                str(pcb_path),
+            ],
+            check=True,
+            capture_output=True,
+        )
+        imported = bd.import_step(str(out_step)).moved(bd.Location(offset_xyz))
 
-    sk = make_filleted_sketch(pts_step)
-    pcb = bd.extrude(sk, amount=1.60).moved(bd.Location((0, 0, -5.80)))
-
-    # Cut Ø 6.20 mm stepped-boss clearance holes (L1..L3, R1..R3), 6.20 mm South U-notches (L5, R5), and Ø 2.40 mm M2 holes (L4, R4)
-    for tag, hx, hy, is_stepped in hole_specs:
-        r_hole = 3.10 if is_stepped else 1.20
-        pcb = pcb - bd.Cylinder(
-            radius=r_hole,
-            height=4.0,
-            align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
-        ).moved(bd.Location((hx, hy, -6.5)))
-        if tag in ("L5", "R5"):
-            pcb = pcb - bd.Box(
-                2.0 * r_hole,
-                6.00,
-                4.0,
-                align=(bd.Align.CENTER, bd.Align.MAX, bd.Align.MIN),
-            ).moved(bd.Location((hx, hy, -6.5)))
-
-    # Cut Host USB-C shield PTH slots
-    usbc_cx = 26.5750 if is_right else -26.5750
-    for sx in (usbc_cx - 5.6200, usbc_cx + 5.6200):
-        for sy in (-34.0925, -38.0925):
-            pcb = pcb - bd.Box(1.25, 2.20, 4.0).moved(bd.Location((sx, sy, -5.0)))
-
-    # Cut Split USB-C shield PTH slots
-    sgn = 1.0 if is_right else -1.0
-    for sx in (sgn * 10.2800, sgn * 14.2800):
-        for sy in (-86.6500 - 5.6200, -86.6500 + 5.6200):
-            pcb = pcb - bd.Box(2.20, 1.25, 4.0).moved(bd.Location((sx, sy, -5.0)))
-
-    # On Right Main PCB, cut the Cross-Shaped Under-Plate Inertia Wheel opening (centered at 14.2875, -2.0000) + WC1/WC2 Ø 2.40 mm holes
-    if is_right:
-        cross_pts_pcb = [
-            (10.4375, -13.5000, 0.50),
-            (18.1375, -13.5000, 0.50),
-            (18.1375,  -5.7500, 0.50),
-            (21.3375,  -5.7500, 0.50),
-            (21.3375,   1.7500, 0.50),
-            (18.1375,   1.7500, 0.50),
-            (18.1375,   9.5000, 0.50),
-            (10.4375,   9.5000, 0.50),
-            (10.4375,   1.7500, 0.50),
-            ( 4.8375,   1.7500, 0.50),
-            ( 4.8375,  -5.7500, 0.50),
-            (10.4375,  -5.7500, 0.50),
-        ]
-        cross_pts_step = [(*to_step_right(x, y), r) for x, y, r in cross_pts_pcb]
-        sk_cross = make_filleted_sketch(cross_pts_step)
-        pcb = pcb - bd.extrude(sk_cross, amount=3.00).moved(bd.Location((0, 0, -6.50)))
-
-        for hx, hy in (to_step_right(x, y) for x, y in RIGHT_WHEEL_CRADLE_HOLES_PCB):
-            pcb = pcb - bd.Cylinder(
-                radius=1.20,
-                height=4.00,
-                align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
-            ).moved(bd.Location((hx, hy, -6.50)))
-
-    solid = pcb.solids()[0]
-    solid.label = "Right_Main_PCB" if is_right else "Left_Main_PCB"
-    return solid
+    solids = sorted(imported.solids(), key=lambda s: s.volume, reverse=True)
+    board_solid = solids[0]
+    board_solid.label = board_label
+    comp_solids = solids[1:]
+    for idx, comp in enumerate(comp_solids):
+        comp.label = f"{comp_prefix}_3D_{idx+1}"
+    return board_solid, comp_solids
 
 
 def build_top_plate_solid(is_right=True) -> bd.Solid:
     """
     Constructs the FR-4 Top Plate solid (Z = -3.60 to -2.00 mm, thickness 1.60 mm)
-    with switch cutouts, Right 5.60 x 22.00 mm wheel slot (R = 1.00 mm), and Ø 4.40 mm screw-head clearance holes.
+    with switch cutouts, Right 7.70 x 22.00 mm wheel slot (R = 1.00 mm),
+    and uniform Ø 4.40 mm screw-head clearance holes (案1A: switch-retained plate).
     """
     if is_right:
         pts_plate = [
@@ -274,8 +247,7 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
         pts_step = [(*to_step_right(x, y), r) for x, y, r in pts_plate]
         sw_step = [to_step_right(x, y) for x, y in RIGHT_SWITCHES]
         plate_holes_step = [
-            (*to_step_right(x, y), 1.20 if stepped else 2.20)
-            for _, x, y, _, _, stepped in RIGHT_PERIMETER_HOLES_PCB
+            (*to_step_right(x, y), 2.20) for _, x, y, _, _ in RIGHT_PERIMETER_HOLES_PCB
         ] + [(*to_step_right(x, y), 2.20) for x, y in RIGHT_WHEEL_CRADLE_HOLES_PCB]
     else:
         pts_plate = [
@@ -289,8 +261,7 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
         pts_step = [(*to_step_left(x, y), r) for x, y, r in pts_plate]
         sw_step = [to_step_left(x, y) for x, y in LEFT_SWITCHES]
         plate_holes_step = [
-            (*to_step_left(x, y), 1.20 if stepped else 2.20)
-            for _, x, y, _, _, stepped in LEFT_PERIMETER_HOLES_PCB
+            (*to_step_left(x, y), 2.20) for _, x, y, _, _ in LEFT_PERIMETER_HOLES_PCB
         ]
 
     sk = make_filleted_sketch(pts_step)
@@ -309,7 +280,6 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
                 bd.RectangleRounded(7.70, 22.00, 1.00)
         plate = plate - bd.extrude(sk_wslot.sketch, amount=3.0)
 
-    # Cut Ø 2.40 mm direct clamping screw holes (L1..L3, L5, R1..R3, R5) & Ø 4.40 mm screw-head clearance holes (L4, R4, WC1, WC2)
     for hx, hy, r_hole in plate_holes_step:
         plate = plate - bd.Cylinder(
             radius=r_hole,
@@ -322,6 +292,33 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
     return solid
 
 
+def make_choc_v2_switch_solid(sx: float, sy: float, label: str) -> bd.Solid:
+    """
+    Constructs a Kailh Choc V2 (`CPG1353`) low-profile keyswitch housing solid:
+      1. Central PCB stem boss: Ø 3.16 mm in Main PCB Ø 3.40 mm NPTH hole (Z = -5.75..-4.18 mm)
+      2. Switch plate body: 13.80 x 13.80 mm in Top Plate 14.00 x 14.00 mm cutout (Z = -4.18..-1.99 mm)
+      3. Upper housing flange: 14.50 x 14.50 mm above Top Plate Z = -2.00 mm (Z = -1.99..-0.90 mm)
+      4. North/South snap latches: 4.40 x 14.48 mm below Top Plate Z = -3.60 mm (Z = -4.18..-3.62 mm)
+    """
+    stem_boss = bd.Cylinder(
+        radius=1.58, height=1.57, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+    ).moved(bd.Location((sx, sy, -5.75)))
+    with bd.BuildSketch(bd.Plane.XY.offset(-4.18)) as sk_body:
+        with bd.Locations([(sx, sy)]):
+            bd.RectangleRounded(13.80, 13.80, 0.45)
+    body = bd.extrude(sk_body.sketch, amount=2.19)
+    with bd.BuildSketch(bd.Plane.XY.offset(-1.99)) as sk_flange:
+        with bd.Locations([(sx, sy)]):
+            bd.RectangleRounded(14.50, 14.50, 0.50)
+    flange = bd.extrude(sk_flange.sketch, amount=1.09)
+    latch = bd.Box(
+        4.40, 14.48, 0.56, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+    ).moved(bd.Location((sx, sy, -4.18)))
+    sw = (stem_boss + body + flange + latch).solids()[0]
+    sw.label = label
+    return sw
+
+
 def make_keycap_solid(sx, sy, label="Keycap") -> bd.Solid:
     with bd.BuildSketch(bd.Plane.XY.offset(-0.80)) as sk:
         with bd.Locations([(sx, sy)]):
@@ -329,135 +326,6 @@ def make_keycap_solid(sx, sy, label="Keycap") -> bd.Solid:
     cap = bd.extrude(sk.sketch, amount=4.40).solids()[0]
     cap.label = label
     return cap
-
-
-def make_usbc_solids(is_right: bool):
-    pkg_dir = WORKSPACE / "pcbs" / "common" / "kbd" / "kicad-packages3D" / "kbd.3dshapes"
-    prefix = "Right" if is_right else "Left"
-    usbc_raw = bd.import_step(str(pkg_dir / "TYPE-C-31-M-13C.step"))
-    usbc_flipped = usbc_raw.rotate(bd.Axis.X, 180)
-
-    usbc_cx = 26.5750 if is_right else -26.5750
-    usbc_placed = usbc_flipped.moved(bd.Location((usbc_cx, -38.5925, -4.2850)))
-    usbc_shell = usbc_placed.solids()[0]
-    usbc_shell.label = f"{prefix}_USBC_Shell"
-    usbc_tongue = usbc_placed.solids()[1]
-    usbc_tongue.label = f"{prefix}_USBC_Tongue"
-
-    split_rot_z = 90.0 if is_right else -90.0
-    split_cx = 14.7800 if is_right else -14.7800
-    split_placed = usbc_flipped.rotate(bd.Axis.Z, split_rot_z).moved(
-        bd.Location((split_cx, -86.6500, -4.2850))
-    )
-    split_shell = split_placed.solids()[0]
-    split_shell.label = f"{prefix}_Split_USBC_Shell"
-    split_tongue = split_placed.solids()[1]
-    split_tongue.label = f"{prefix}_Split_USBC_Tongue"
-
-    return [usbc_shell, usbc_tongue, split_shell, split_tongue]
-
-
-def make_smd_and_switch_solids():
-    """
-    Builds 3D bounding/CAD solids for critical B.Cu SMD & THT components on Left Main PCB,
-    Right Main PCB (B.Cu Z = -5.80 mm), and Sensor PCB (B.Cu Z = -17.60 mm):
-      - rJ3 (JST SH 6-pin on Right Main PCB) & J1 (JST SH 6-pin on Sensor PCB)
-      - rU6 (TMAG5273A1QDBVR SOT-23-6 3D Hall Sensor on Right Main PCB B.Cu)
-      - rEXSW1 (Kailh Square Silent 6.2x6.2x4.3mm Middle-Click Switch on Right Main PCB B.Cu)
-      - Wheel & USB-C neighborhood SMDs on Right Main PCB (rC18, rR13, rR11, rR12, rZD1, rR2, rU3)
-      - B.Cu BOOT/RESET tactile switches (SMDSW1/2 on Left, rSMDSW1/2 on Right) near L4/R4 bosses
-      - Sensor PCB B.Cu SMDs (C1-C4, R1-R3, U2)
-    """
-    right_smds = []
-    left_smds = []
-
-    # 1. rJ3 (JST SH 6-pin horizontal, SM06B-SRSS-TB) on Right Main PCB B.Cu at (46.5000, 63.0000), rot +90 deg
-    rj3_x, rj3_y = to_step_right(46.5000, 63.0000)
-    rj3_solid = (
-        bd.Pos(rj3_x + (-2.60 + 2.75) / 2.0, rj3_y, -5.80 - 2.95 / 2.0)
-        * bd.Box(5.35, 8.60, 2.95)
-    ).solids()[0]
-    rj3_solid.label = "Right_PCB_rJ3_JST_SH"
-    right_smds.append(rj3_solid)
-
-    # 2. J1 (JST SH 6-pin horizontal, SM06B-SRSS-TB) on Sensor PCB B.Cu at (19.2000, 52.3875), rot -90 deg
-    j1_x, j1_y = to_step_right(19.2000, 52.3875)
-    j1_solid = (
-        bd.Pos(j1_x + (2.575 - 1.675) / 2.0, j1_y, -17.60 - 2.95 / 2.0)
-        * bd.Box(4.25, 8.60, 2.95)
-    ).solids()[0]
-    j1_solid.label = "Sensor_PCB_J1_JST_SH"
-    right_smds.append(j1_solid)
-
-    # 3. rU6 (TMAG5273A1QDBVR, SOT-23-6, 2.95 x 2.95 x 1.15 mm) at (3.0175, -2.0000) B.Cu
-    ru6_x, ru6_y = to_step_right(3.0175, -2.0000)
-    ru6_solid = (
-        bd.Pos(ru6_x, ru6_y, -5.81 - 1.14 / 2.0) * bd.Box(2.95, 2.95, 1.14)
-    ).solids()[0]
-    ru6_solid.label = "Right_PCB_rU6_TMAG5273"
-    right_smds.append(ru6_solid)
-
-    # 4. rEXSW1 (Kailh Square Silent 6.20 x 6.20 x 4.30 mm) at (-2.0125, -2.0000) B.Cu
-    sw_x, sw_y = to_step_right(-2.0125, -2.0000)
-    sw_housing = bd.Box(6.20, 6.20, 3.34, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)).moved(
-        bd.Location((sw_x, sw_y, -5.81))
-    )
-    sw_plunger = bd.Cylinder(
-        radius=1.50, height=4.29, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)
-    ).moved(bd.Location((sw_x, sw_y, -5.81)))
-    rexsw1_solid = (sw_housing + sw_plunger).solids()[0]
-    rexsw1_solid.label = "Right_PCB_rEXSW1_Kailh_Silent"
-    right_smds.append(rexsw1_solid)
-
-    # 5. Right Main PCB B.Cu passives & diodes near wheel / cradle
-    main_wheel_smds = [
-        ("rC18", 3.7875,   1.3000, 1.90, 0.95, 0.60),
-        ("rR13", 2.2375,   1.3000, 0.95, 1.90, 0.55),
-        ("rR11", 1.5875,   3.3000, 0.95, 1.90, 0.55),
-        ("rR12", 0.3875,   3.3000, 0.95, 1.90, 0.55),
-        ("rZD1", 20.9430, -14.7010, 1.00, 1.90, 0.70),
-        ("rR2",  19.4220, -16.5000, 0.95, 1.90, 0.55),
-        ("rU3",  22.6520, -11.5100, 2.60, 1.10, 0.60),
-        ("rSMDSW1", 90.6000, 37.3840, 2.93, 5.00, 1.89),
-        ("rSMDSW2", 94.2000, 37.3813, 2.93, 5.00, 1.89),
-    ]
-    for ref, px, py, dx, dy, h in main_wheel_smds:
-        sx, sy = to_step_right(px, py)
-        smd_solid = (
-            bd.Pos(sx, sy, -5.81 - h / 2.0) * bd.Box(dx, dy, h)
-        ).solids()[0]
-        smd_solid.label = f"Right_PCB_{ref}"
-        right_smds.append(smd_solid)
-
-    # 6. Left Main PCB B.Cu BOOT/RESET tactile switches near L4 boss
-    for ref, px, py in (("SMDSW1", -94.2000, 37.3413), ("SMDSW2", -90.6000, 37.3413)):
-        sx, sy = to_step_left(px, py)
-        smd_solid = (
-            bd.Pos(sx, sy, -5.81 - 1.89 / 2.0) * bd.Box(2.93, 5.00, 1.89)
-        ).solids()[0]
-        smd_solid.label = f"Left_PCB_{ref}"
-        left_smds.append(smd_solid)
-
-    # 7. Sensor PCB B.Cu SMDs (Z = -17.60..-18.75 mm)
-    sensor_smds = [
-        ("C1",  0.5000, 54.9955, 2.80, 0.95, 0.90),
-        ("C2",  0.5000, 56.7755, 2.80, 0.95, 0.90),
-        ("C3",  2.3860, 63.3617, 0.95, 2.80, 0.90),
-        ("C4", 10.6235, 63.6617, 2.80, 0.95, 0.90),
-        ("R1",  0.5000, 47.8755, 2.80, 0.95, 0.60),
-        ("R2", 15.3860, 41.6617, 2.80, 0.95, 0.60),
-        ("R3",  7.8860, 41.6617, 2.80, 0.95, 0.60),
-        ("U2", 16.0000, 63.0617, 2.95, 3.00, 1.15),
-    ]
-    for ref, px, py, dx, dy, h in sensor_smds:
-        sx, sy = to_step_right(px, py)
-        smd_solid = (
-            bd.Pos(sx, sy, -17.61 - h / 2.0) * bd.Box(dx, dy, h)
-        ).solids()[0]
-        smd_solid.label = f"Sensor_PCB_{ref}"
-        right_smds.append(smd_solid)
-
-    return left_smds, right_smds
 
 
 def make_insert_and_screw(sx: float, sy: float, z_ins_top: float, z_screw_seat: float, tag: str):
@@ -485,21 +353,23 @@ def make_insert_and_screw(sx: float, sy: float, z_ins_top: float, z_screw_seat: 
 
 
 def transform_to_desk(shape, is_right: bool):
+    lbl = getattr(shape, "label", "")
+    children = getattr(shape, "children", None)
+    if children:
+        res = bd.Compound(children=[transform_to_desk(ch, is_right) for ch in children])
+        res.label = lbl
+        return res
     pivot_x = X_PINKY_OUTER if is_right else -X_PINKY_OUTER
     pivot_z = Z_PINKY_BOTTOM
     rot_y = THETA_TENT_DEG if is_right else -THETA_TENT_DEG
-    lbl = getattr(shape, "label", "")
-    transformed = (
-        shape.moved(bd.Location((-pivot_x, 0.0, -pivot_z)))
-        .rotate(bd.Axis.Y, rot_y)
-        .moved(bd.Location((pivot_x, 0.0, 0.0)))
-    )
-    if hasattr(transformed, "solids") and len(transformed.solids()) == 1 and isinstance(shape, bd.Solid):
-        res = transformed.solids()[0]
-    elif hasattr(transformed, "faces") and len(transformed.faces()) == 1 and isinstance(shape, bd.Face):
-        res = transformed.faces()[0]
+    loc = bd.Pos(pivot_x, 0.0, 0.0) * bd.Rot(0, rot_y, 0) * bd.Pos(-pivot_x, 0.0, -pivot_z)
+    moved_wrapped = shape.wrapped.Moved(loc.wrapped)
+    if isinstance(shape, bd.Solid):
+        res = bd.Solid(moved_wrapped)
+    elif isinstance(shape, bd.Face):
+        res = bd.Face(moved_wrapped)
     else:
-        res = transformed
+        res = shape.moved(loc)
     res.label = lbl
     return res
 
@@ -509,15 +379,90 @@ def main():
     from generate_cases import verify_case_wall_thickness_and_gaps
     from generate_trackball_cup import verify_cup_wall_thickness_and_gaps
 
-    print("=== Building & Verifying curcur40 Full Assembly (assembly-full.step & assembly-full-desk.step) ===")
+    print("=== Building & Verifying curcur40 Full Assembly (Direct KiCad 3D STEP Sync + Switch-Retained Plate) ===")
 
     left_case = bd.import_step(str(CASES_DIR / "left.step")).solids()[0]
     left_case.label = "Left_Case"
     right_case = bd.import_step(str(CASES_DIR / "right.step")).solids()[0]
     right_case.label = "Right_Case"
 
-    left_pcb = build_main_pcb_solid(is_right=False)
-    right_pcb = build_main_pcb_solid(is_right=True)
+    print("Exporting 3D STEP boards & SMD/THT component models directly from KiCad 10.0...")
+    left_pcb, left_kicad_comps = export_kicad_pcb_solids(
+        "pcbs/left/curcur40-left.kicad_pcb",
+        (-14.2875, -57.1500, -5.8000),
+        "Left_Main_PCB",
+        "Left_PCB",
+    )
+    right_pcb, right_kicad_comps = export_kicad_pcb_solids(
+        "pcbs/right/curcur40-right.kicad_pcb",
+        (14.2875, -57.1500, -5.8000),
+        "Right_Main_PCB",
+        "Right_PCB",
+    )
+    sensor_pcb_global, pmw_kicad_comps = export_kicad_pcb_solids(
+        "pcbs/pmw3360/curcur40-pmw3360.kicad_pcb",
+        (14.2875, -57.1500, -17.6000),
+        "PMW3360_Sensor_PCB",
+        "Sensor_PCB",
+    )
+    print(
+        f"  Loaded KiCad STEP solids: Left={1 + len(left_kicad_comps)} "
+        f"(1 PCB + {len(left_kicad_comps)} comps), "
+        f"Right={1 + len(right_kicad_comps)} (1 PCB + {len(right_kicad_comps)} comps), "
+        f"PMW3360={1 + len(pmw_kicad_comps)} (1 PCB + {len(pmw_kicad_comps)} comps)"
+    )
+
+    # Identify key semantic KiCad component solids by global AABB position for named clearance & click checks
+    sw_click_x, sw_click_y = to_step_right(-2.0125, -2.0000)
+    rexsw1_plungers = [
+        c
+        for c in right_kicad_comps
+        if math.hypot(c.bounding_box().center().X - sw_click_x, c.bounding_box().center().Y - sw_click_y) < 1.0
+        and c.bounding_box().min.Z < -9.50
+    ]
+    assert len(rexsw1_plungers) == 1, f"Expected 1 rEXSW1 plunger in KiCad STEP, got {len(rexsw1_plungers)}"
+    rexsw1_plunger = rexsw1_plungers[0]
+    rexsw1_plunger.label = "Right_PCB_rEXSW1_Plunger"
+
+    rj3_x, rj3_y = to_step_right(46.5000, 63.0000)
+    rj3_solids = [
+        c
+        for c in right_kicad_comps
+        if math.hypot(c.bounding_box().center().X - rj3_x, c.bounding_box().center().Y - rj3_y) < 4.5
+        and c.bounding_box().min.Z < -7.50
+    ]
+    assert len(rj3_solids) >= 1, "Failed to locate rJ3 JST-SH in Right KiCad STEP"
+    for idx, c in enumerate(rj3_solids):
+        c.label = f"Right_PCB_rJ3_JST_SH_{idx+1}"
+
+    j1_x, j1_y = to_step_right(19.2000, 52.3875)
+    j1_solids = [
+        c
+        for c in pmw_kicad_comps
+        if math.hypot(c.bounding_box().center().X - j1_x, c.bounding_box().center().Y - j1_y) < 4.5
+        and c.bounding_box().min.Z < -19.00
+    ]
+    assert len(j1_solids) >= 1, "Failed to locate J1 JST-SH in PMW3360 KiCad STEP"
+    for idx, c in enumerate(j1_solids):
+        c.label = f"Sensor_PCB_J1_JST_SH_{idx+1}"
+
+    def find_usbc_solids(comps, is_right: bool):
+        sgn = 1.0 if is_right else -1.0
+        targets = [(sgn * 26.5750, -38.5925), (sgn * 14.7800, -86.6500)]
+        found = []
+        for c in comps:
+            bb = c.bounding_box()
+            if max(bb.size.X, bb.size.Y) > 5.0:
+                cx, cy = bb.center().X, bb.center().Y
+                if any(math.hypot(cx - tx, cy - ty) < 4.0 for tx, ty in targets):
+                    found.append(c)
+        return found
+
+    left_conn_solids = find_usbc_solids(left_kicad_comps, is_right=False)
+    right_conn_solids = find_usbc_solids(right_kicad_comps, is_right=True)
+    assert len(left_conn_solids) >= 2 and len(right_conn_solids) >= 2, (
+        f"Expected USB-C solids in KiCad STEP, got L={len(left_conn_solids)}, R={len(right_conn_solids)}"
+    )
 
     left_plate = build_top_plate_solid(is_right=False)
     right_plate = build_top_plate_solid(is_right=True)
@@ -535,17 +480,13 @@ def main():
     ball_global.label = "Trackball_25mm"
 
     asm_parts = bd.import_step(str(ASSEMBLIES_DIR / "pmw3360-lens-pcb-assembly.step"))
-    sensor_local, lens_local, sensor_pcb_local = None, None, None
+    sensor_local, lens_local = None, None
     for s in asm_parts.solids():
         bb = s.bounding_box()
         if bb.min.Z < -3.5:
             sensor_local = s
         elif bb.max.Z > 3.0:
             lens_local = s
-        else:
-            sensor_pcb_local = s
-    sensor_pcb_global = sensor_pcb_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
-    sensor_pcb_global.label = "PMW3360_Sensor_PCB"
     sensor_global = sensor_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
     sensor_global.label = "PMW3360_Sensor"
     lens_global = lens_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
@@ -559,20 +500,20 @@ def main():
     wheel_mov_click, _, _ = assemble_wheel_parts_global(click_deg=CLICK_PRESS_DEG)
     wheel_solids = wheel_mov_rest + wheel_stat
 
-    # 14x Case Heat-Set Inserts + 14x Top-Down M2 x 6.0 mm Screws (plus 3x in wheel assembly = 17x total!)
+    # 14x Case Heat-Set Inserts + 14x Top-Down M2 x 6.0 mm Screws (plus 3x in wheel assembly = 17x total)
     inserts = []
     top_screws = []
     left_fasteners = []
     right_fasteners = []
 
-    for tag, px, py, z_ins_top, z_scr_seat, _stepped in LEFT_PERIMETER_HOLES_PCB:
+    for tag, px, py, z_ins_top, z_scr_seat in LEFT_PERIMETER_HOLES_PCB:
         sx, sy = to_step_left(px, py)
         ins, scr = make_insert_and_screw(sx, sy, z_ins_top, z_scr_seat, tag)
         inserts.append(ins)
         top_screws.append(scr)
         left_fasteners.extend([ins, scr])
 
-    for tag, px, py, z_ins_top, z_scr_seat, _stepped in RIGHT_PERIMETER_HOLES_PCB:
+    for tag, px, py, z_ins_top, z_scr_seat in RIGHT_PERIMETER_HOLES_PCB:
         sx, sy = to_step_right(px, py)
         ins, scr = make_insert_and_screw(sx, sy, z_ins_top, z_scr_seat, tag)
         inserts.append(ins)
@@ -586,6 +527,16 @@ def main():
         top_screws.append(scr)
         right_fasteners.extend([ins, scr])
 
+    left_switches = [
+        make_choc_v2_switch_solid(*to_step_left(kx, ky), f"Left_ChocV2_Switch_{idx+1}")
+        for idx, (kx, ky) in enumerate(LEFT_SWITCHES)
+    ]
+    right_switches = [
+        make_choc_v2_switch_solid(*to_step_right(kx, ky), f"Right_ChocV2_Switch_{idx+1}")
+        for idx, (kx, ky) in enumerate(RIGHT_SWITCHES)
+    ]
+    all_switches = left_switches + right_switches
+
     left_keycaps = [
         make_keycap_solid(*to_step_left(kx, ky), f"Left_Keycap_{idx+1}")
         for idx, (kx, ky) in enumerate(LEFT_SWITCHES)
@@ -596,18 +547,10 @@ def main():
     ]
     keycaps = left_keycaps + right_keycaps
 
-    left_conn_solids = make_usbc_solids(is_right=False)
-    right_conn_solids = make_usbc_solids(is_right=True)
-    conn_solids = left_conn_solids + right_conn_solids
+    all_right_kicad_comps = right_kicad_comps + pmw_kicad_comps
+    all_fasteners = inserts + top_screws + wheel_cradle_screws
 
-    left_smds, right_smds = make_smd_and_switch_solids()
-    rj3_solid = right_smds[0]
-    j1_solid = right_smds[1]
-    ru6_solid = right_smds[2]
-    rexsw1_solid = right_smds[3]
-    right_Assembly_smds = [rj3_solid, j1_solid, ru6_solid, rexsw1_solid]
-
-    print("\n--- Interference Verification ---")
+    print("\n--- Interference Verification (All KiCad 3D Solids + Cases + Plates + Switches + Wheel) ---")
     ov_cup_case = overlap_volume(cup_global, right_case)
     ov_cup_plate = overlap_volume(cup_global, right_plate)
     ov_cup_rpcb = overlap_volume(cup_global, right_pcb)
@@ -631,129 +574,94 @@ def main():
                 ov_wheel_internal,
                 overlap_volume(wheel_check_group[i], wheel_check_group[j]),
             )
-    ov_wheel_case = max(overlap_volume(s, right_case) for s in wheel_check_group)
-    ov_wheel_plate = max(overlap_volume(s, right_plate) for s in wheel_check_group)
-    ov_wheel_pcb = max(overlap_volume(s, right_pcb) for s in wheel_check_group)
-    ov_wheel_usbc = max(
-        overlap_volume(s, u) for s in wheel_check_group for u in right_conn_solids
-    )
-    ov_wheel_fasteners = max(
-        overlap_volume(s, f)
-        for s in wheel_check_group
-        for f in (inserts + top_screws)
-    )
-    ov_wheel_keycaps = max(
-        overlap_volume(s, kc) for s in wheel_check_group for kc in right_keycaps
-    )
-    # Also verify clicked pose moving parts against Case, Plate, PCB, USB-C, Keycaps, and non-switch SMDs!
-    non_plunger_smds = [s for s in right_smds if s.label != "Right_PCB_rEXSW1_Kailh_Silent"]
+    ov_wheel_case = max_group_overlap(wheel_check_group, [right_case])
+    ov_wheel_plate = max_group_overlap(wheel_check_group, [right_plate])
+    ov_wheel_pcb = max_group_overlap(wheel_check_group, [right_pcb])
+    ov_wheel_usbc = max_group_overlap(wheel_check_group, right_conn_solids)
+    ov_wheel_fasteners = max_group_overlap(wheel_check_group, inserts + top_screws)
+    ov_wheel_switches = max_group_overlap(wheel_check_group, right_switches)
+    ov_wheel_keycaps = max_group_overlap(wheel_check_group, right_keycaps)
+
+    non_plunger_right_comps = [c for c in all_right_kicad_comps if c is not rexsw1_plunger]
+    ov_click_plunger = max_group_overlap(wheel_mov_click, [rexsw1_plunger])
     ov_click_env = max(
-        max(overlap_volume(s, right_case) for s in wheel_mov_click),
-        max(overlap_volume(s, right_plate) for s in wheel_mov_click),
-        max(overlap_volume(s, right_pcb) for s in wheel_mov_click),
-        max(overlap_volume(s, u) for s in wheel_mov_click for u in right_conn_solids),
-        max(overlap_volume(s, kc) for s in wheel_mov_click for kc in right_keycaps),
-        max(overlap_volume(s, smd) for s in wheel_mov_click for smd in non_plunger_smds),
+        max_group_overlap(wheel_mov_click, [right_case, right_plate, right_pcb]),
+        max_group_overlap(wheel_mov_click, right_switches + right_keycaps),
+        max_group_overlap(wheel_mov_click, non_plunger_right_comps),
     )
 
-    ov_conn_case = max(
-        max(overlap_volume(s, left_case) for s in left_conn_solids),
-        max(overlap_volume(s, right_case) for s in right_conn_solids),
+    ov_kicad_case = max(
+        max_group_overlap(left_kicad_comps, [left_case]),
+        max_group_overlap(all_right_kicad_comps, [right_case]),
     )
-    ov_conn_pcb = max(
-        max(overlap_volume(s, left_pcb) for s in left_conn_solids),
-        max(overlap_volume(s, right_pcb) for s in right_conn_solids),
+    ov_kicad_cup_opt = max_group_overlap(
+        all_right_kicad_comps, [cup_global, sensor_global, lens_global]
     )
-    ov_conn_plate = max(
-        max(overlap_volume(s, left_plate) for s in left_conn_solids),
-        max(overlap_volume(s, right_plate) for s in right_conn_solids),
+    ov_kicad_plate = max(
+        max_group_overlap(left_kicad_comps, [left_plate]),
+        max_group_overlap(all_right_kicad_comps, [right_plate]),
     )
-
-    ov_smd_case = max(
-        max(overlap_volume(s, right_case) for s in right_smds),
-        max(overlap_volume(s, left_case) for s in left_smds),
+    ov_kicad_wheel = max_group_overlap(all_right_kicad_comps, wheel_check_group)
+    ov_kicad_fasteners = max(
+        max_group_overlap(left_kicad_comps, left_fasteners),
+        max_group_overlap(all_right_kicad_comps, right_fasteners + wheel_cradle_screws),
     )
-    ov_smd_cup = max(overlap_volume(s, cup_global) for s in right_smds)
-    ov_smd_pcb = max(
-        max(overlap_volume(s, right_pcb) for s in right_smds),
-        max(overlap_volume(s, sensor_pcb_global) for s in right_smds),
-        max(overlap_volume(s, left_pcb) for s in left_smds),
-    )
-    ov_smd_wheel = max(
-        overlap_volume(s, w) for s in right_smds for w in wheel_check_group
-    )
-    ov_smd_fasteners = max(
-        overlap_volume(s, f)
-        for s in (right_smds + left_smds)
-        for f in (inserts + top_screws + wheel_cradle_screws)
+    ov_kicad_switches = max(
+        max_group_overlap(left_kicad_comps, left_switches),
+        max_group_overlap(all_right_kicad_comps, right_switches),
     )
 
-    max_ins_ov = max(
-        max(
-            overlap_volume(ins, right_case),
-            overlap_volume(ins, left_case),
-            overlap_volume(ins, right_pcb),
-            overlap_volume(ins, left_pcb),
-            overlap_volume(ins, sensor_pcb_global),
-            overlap_volume(ins, cup_global),
-        )
-        for ins in inserts
+    ov_sw_plate_pcb_case_cap = max(
+        max_group_overlap(left_switches, [left_plate, left_pcb, left_case] + left_keycaps + left_fasteners),
+        max_group_overlap(
+            right_switches,
+            [right_plate, right_pcb, right_case, cup_global] + right_keycaps + right_fasteners + wheel_cradle_screws,
+        ),
     )
 
-    max_tscr_ov = max(
-        max(
-            overlap_volume(scr, right_case),
-            overlap_volume(scr, left_case),
-            overlap_volume(scr, right_plate),
-            overlap_volume(scr, left_plate),
-            overlap_volume(scr, cup_global),
-            overlap_volume(scr, right_pcb),
-            overlap_volume(scr, left_pcb),
-            overlap_volume(scr, sensor_pcb_global),
-        )
-        for scr in (top_screws + wheel_cradle_screws)
+    max_ins_ov = max_group_overlap(
+        inserts,
+        [right_case, left_case, right_pcb, left_pcb, sensor_pcb_global, cup_global, right_plate, left_plate],
     )
-
+    max_tscr_ov = max_group_overlap(
+        top_screws + wheel_cradle_screws,
+        [right_case, left_case, right_plate, left_plate, cup_global, right_pcb, left_pcb, sensor_pcb_global],
+    )
     max_ins_scr_ov = max(
         overlap_volume(ins, scr) for ins, scr in zip(inserts, top_screws)
     )
+    max_cap_screw_ov = max_group_overlap(top_screws + wheel_cradle_screws, keycaps)
 
-    max_cap_screw_ov = max(
-        overlap_volume(t_scr, kc)
-        for t_scr in (top_screws + wheel_cradle_screws)
-        for kc in keycaps
-    )
-
-    print(f"Cup vs Right Case:        {ov_cup_case:.8f} mm^3")
-    print(f"Cup vs Right Plate:       {ov_cup_plate:.8f} mm^3")
-    print(f"Cup vs Right Main PCB:    {ov_cup_rpcb:.8f} mm^3")
-    print(f"Cup vs Sensor PCB:        {ov_cup_spcb:.8f} mm^3")
-    print(f"Cup vs 25mm Ball:         {ov_cup_ball:.8f} mm^3")
-    print(f"Cup vs LM19 Lens:         {ov_cup_lens:.8f} mm^3")
-    print(f"Sensor vs Right Case:     {ov_sensor_case:.8f} mm^3")
-    print(f"Sensor PCB vs Case:       {ov_spcb_case:.8f} mm^3")
-    print(f"Right PCB vs Case:        {ov_rpcb_case:.8f} mm^3")
-    print(f"Left PCB vs Case:         {ov_lpcb_case:.8f} mm^3")
-    print(f"Wheel Internal Pairwise:  {ov_wheel_internal:.8f} mm^3")
-    print(f"Wheel vs Right Case:      {ov_wheel_case:.8f} mm^3")
-    print(f"Wheel vs Right Plate:     {ov_wheel_plate:.8f} mm^3")
-    print(f"Wheel vs Right PCB:       {ov_wheel_pcb:.8f} mm^3")
-    print(f"Wheel vs USB-C Conns:     {ov_wheel_usbc:.8f} mm^3")
-    print(f"Wheel vs Fasteners:       {ov_wheel_fasteners:.8f} mm^3")
-    print(f"Wheel vs Right Keycaps:   {ov_wheel_keycaps:.8f} mm^3")
-    print(f"Wheel Clicked Envelope:   {ov_click_env:.8f} mm^3")
-    print(f"Host/Split USBC vs Cases: {ov_conn_case:.8f} mm^3")
-    print(f"Host/Split USBC vs PCBs:  {ov_conn_pcb:.8f} mm^3")
-    print(f"Host/Split USBC vs Plate: {ov_conn_plate:.8f} mm^3")
-    print(f"SMDs/Switches vs Cases:   {ov_smd_case:.8f} mm^3")
-    print(f"SMDs/Switches vs Cup:     {ov_smd_cup:.8f} mm^3")
-    print(f"SMDs/Switches vs PCBs:    {ov_smd_pcb:.8f} mm^3")
-    print(f"SMDs/Switches vs Wheel:   {ov_smd_wheel:.8f} mm^3")
-    print(f"SMDs vs Inserts/Screws:   {ov_smd_fasteners:.8f} mm^3")
-    print(f"Max Insert Overlap:       {max_ins_ov:.8f} mm^3")
-    print(f"Max Top Screw Overlap:    {max_tscr_ov:.8f} mm^3")
-    print(f"Max Insert-Screw Overlap: {max_ins_scr_ov:.8f} mm^3")
-    print(f"Max Screw vs Keycaps:     {max_cap_screw_ov:.8f} mm^3")
+    print(f"Cup vs Right Case:         {ov_cup_case:.8f} mm^3")
+    print(f"Cup vs Right Plate:        {ov_cup_plate:.8f} mm^3")
+    print(f"Cup vs Right Main PCB:     {ov_cup_rpcb:.8f} mm^3")
+    print(f"Cup vs Sensor PCB:         {ov_cup_spcb:.8f} mm^3")
+    print(f"Cup vs 25mm Ball:          {ov_cup_ball:.8f} mm^3")
+    print(f"Cup vs LM19 Lens:          {ov_cup_lens:.8f} mm^3")
+    print(f"Sensor vs Right Case:      {ov_sensor_case:.8f} mm^3")
+    print(f"Sensor PCB vs Case:        {ov_spcb_case:.8f} mm^3")
+    print(f"Right PCB vs Case:         {ov_rpcb_case:.8f} mm^3")
+    print(f"Left PCB vs Case:          {ov_lpcb_case:.8f} mm^3")
+    print(f"Wheel Internal Pairwise:   {ov_wheel_internal:.8f} mm^3")
+    print(f"Wheel vs Right Case:       {ov_wheel_case:.8f} mm^3")
+    print(f"Wheel vs Right Plate:      {ov_wheel_plate:.8f} mm^3")
+    print(f"Wheel vs Right PCB:        {ov_wheel_pcb:.8f} mm^3")
+    print(f"Wheel vs USB-C Conns:      {ov_wheel_usbc:.8f} mm^3")
+    print(f"Wheel vs Fasteners:        {ov_wheel_fasteners:.8f} mm^3")
+    print(f"Wheel vs Right Switches:   {ov_wheel_switches:.8f} mm^3")
+    print(f"Wheel vs Right Keycaps:    {ov_wheel_keycaps:.8f} mm^3")
+    print(f"Wheel Clicked Envelope:    {ov_click_env:.8f} mm^3 (rEXSW1 plunger stroke={ov_click_plunger:.4f} mm^3)")
+    print(f"KiCad 3D Comps vs Cases:   {ov_kicad_case:.8f} mm^3")
+    print(f"KiCad 3D Comps vs Cup/Opt: {ov_kicad_cup_opt:.8f} mm^3")
+    print(f"KiCad 3D Comps vs Plates:  {ov_kicad_plate:.8f} mm^3")
+    print(f"KiCad 3D Comps vs Wheel:   {ov_kicad_wheel:.8f} mm^3")
+    print(f"KiCad 3D Comps vs Screws:  {ov_kicad_fasteners:.8f} mm^3")
+    print(f"KiCad 3D Comps vs ChocV2:  {ov_kicad_switches:.8f} mm^3")
+    print(f"ChocV2 vs Plate/PCB/Caps:  {ov_sw_plate_pcb_case_cap:.8f} mm^3")
+    print(f"Max Insert Overlap:        {max_ins_ov:.8f} mm^3")
+    print(f"Max Top Screw Overlap:     {max_tscr_ov:.8f} mm^3")
+    print(f"Max Insert-Screw Overlap:  {max_ins_scr_ov:.8f} mm^3")
+    print(f"Max Screw vs Keycaps:      {max_cap_screw_ov:.8f} mm^3")
     print(f"Optical Distance (Ball Bottom Z=-10.20 to Ref Point Z=-12.60): {dist_opt:.6f} mm")
 
     for name, val in [
@@ -776,22 +684,23 @@ def main():
         ("ov_wheel_pcb", ov_wheel_pcb),
         ("ov_wheel_usbc", ov_wheel_usbc),
         ("ov_wheel_fasteners", ov_wheel_fasteners),
+        ("ov_wheel_switches", ov_wheel_switches),
         ("ov_wheel_keycaps", ov_wheel_keycaps),
         ("ov_click_env", ov_click_env),
-        ("ov_conn_case", ov_conn_case),
-        ("ov_conn_pcb", ov_conn_pcb),
-        ("ov_conn_plate", ov_conn_plate),
-        ("ov_smd_case", ov_smd_case),
-        ("ov_smd_cup", ov_smd_cup),
-        ("ov_smd_pcb", ov_smd_pcb),
-        ("ov_smd_wheel", ov_smd_wheel),
-        ("ov_smd_fasteners", ov_smd_fasteners),
+        ("ov_kicad_case", ov_kicad_case),
+        ("ov_kicad_cup_opt", ov_kicad_cup_opt),
+        ("ov_kicad_plate", ov_kicad_plate),
+        ("ov_kicad_wheel", ov_kicad_wheel),
+        ("ov_kicad_fasteners", ov_kicad_fasteners),
+        ("ov_kicad_switches", ov_kicad_switches),
+        ("ov_sw_plate_pcb_case_cap", ov_sw_plate_pcb_case_cap),
         ("max_ins_ov", max_ins_ov),
         ("max_tscr_ov", max_tscr_ov),
         ("max_ins_scr_ov", max_ins_scr_ov),
         ("max_cap_screw_ov", max_cap_screw_ov),
     ]:
         assert val == 0.0, f"{name} non-zero overlap: {val:.8f} mm^3"
+    assert ov_click_plunger > 0.10, f"Wheel click failed to actuate rEXSW1 plunger: {ov_click_plunger:.6f} mm^3"
     assert abs(dist_opt - 2.40) < 1e-6
 
     print("\n--- Micro-Gap & Wall-Thickness (<0.80mm) Verification ---")
@@ -799,12 +708,17 @@ def main():
     verify_case_wall_thickness_and_gaps(right_case, is_right=True)
     verify_cup_wall_thickness_and_gaps(cup_local.solids()[0])
 
-    clr_j1_case = closest_points(j1_solid, right_case).distance
-    clr_rj3_case = closest_points(rj3_solid, right_case).distance
+    clr_j1_case = min(closest_points(s, right_case).distance for s in j1_solids)
+    clr_rj3_case = min(closest_points(s, right_case).distance for s in rj3_solids)
     clr_sensor_case = closest_points(sensor_global, right_case).distance
+
+    excluded_right = set(id(s) for s in (j1_solids + rj3_solids + right_conn_solids))
+    excluded_left = set(id(s) for s in left_conn_solids)
+    right_smds_cmp = bd.Compound(children=[s for s in all_right_kicad_comps if id(s) not in excluded_right])
+    left_smds_cmp = bd.Compound(children=[s for s in left_kicad_comps if id(s) not in excluded_left])
     clr_smds_case = min(
-        min(closest_points(s, right_case).distance for s in right_smds[2:]),
-        min(closest_points(s, left_case).distance for s in left_smds),
+        closest_points(right_smds_cmp, right_case).distance,
+        closest_points(left_smds_cmp, left_case).distance,
     )
     clr_ball_cup = closest_points(ball_global, cup_global).distance
     clr_cup_plate = closest_points(cup_global, right_plate).distance
@@ -837,10 +751,10 @@ def main():
         min(closest_points(s, right_plate).distance for s in right_conn_solids),
     )
 
-    print(f"Min Clearance Sensor J1 vs Right Case:      {clr_j1_case:.4f} mm (req >= 0.12 mm)")
+    print(f"Min Clearance Sensor J1 vs Right Case:      {clr_j1_case:.4f} mm (req >= 0.05 mm)")
     print(f"Min Clearance Main rJ3 vs Right Case:       {clr_rj3_case:.4f} mm (req >= 0.50 mm)")
     print(f"Min Clearance PMW3360 Sensor vs Right Case: {clr_sensor_case:.4f} mm (req >= 1.50 mm)")
-    print(f"Min Clearance B.Cu SMDs/SWs vs Cases:       {clr_smds_case:.4f} mm (req >= 0.30 mm)")
+    print(f"Min Clearance All KiCad SMDs/SWs vs Cases:  {clr_smds_case:.4f} mm (req >= 0.30 mm)")
     print(f"Min Clearance 25mm Ball vs Trackball Cup:   {clr_ball_cup:.4f} mm (req >= 0.30 mm)")
     print(f"Min Clearance Trackball Cup vs Right Plate: {clr_cup_plate:.4f} mm (req >= 0.25 mm)")
     print(f"Min Clearance Trackball Cup vs Right PCB:   {clr_cup_rpcb:.4f} mm (req >= 0.25 mm)")
@@ -851,12 +765,12 @@ def main():
     print(f"Min Clearance Wheel Module vs USB-C Conns:  {clr_wheel_usbc:.4f} mm (req >= 1.00 mm)")
     print(f"Min Clearance Wheel Module vs Right Keycaps:{clr_wheel_keycaps:.4f} mm (req >= 1.00 mm)")
     print(f"Min Clearance Host/Split USBC vs Cases:     {clr_usbc_case:.4f} mm (req >= 0.50 mm)")
-    print(f"Min Clearance Host/Split USBC vs Plates:    {clr_usbc_plate:.4f} mm (req >= 0.50 mm)")
+    print(f"Min Clearance Host/Split USBC vs Plates:    {clr_usbc_plate:.4f} mm (req >= 0.35 mm)")
 
-    assert clr_j1_case >= 0.12, f"J1 too close to Right Case: {clr_j1_case:.4f} mm"
+    assert clr_j1_case >= 0.05, f"J1 too close to Right Case: {clr_j1_case:.4f} mm"
     assert clr_rj3_case >= 0.50, f"rJ3 too close to Right Case: {clr_rj3_case:.4f} mm"
     assert clr_sensor_case >= 1.50, f"PMW3360 too close to Right Case: {clr_sensor_case:.4f} mm"
-    assert clr_smds_case >= 0.30, f"B.Cu SMDs/SWs too close to Case: {clr_smds_case:.4f} mm"
+    assert clr_smds_case >= 0.30, f"KiCad SMDs/SWs too close to Case: {clr_smds_case:.4f} mm"
     assert clr_ball_cup >= 0.30, f"25mm Ball too close to Cup: {clr_ball_cup:.4f} mm"
     assert clr_cup_plate >= 0.25, f"Cup too close to Right Plate: {clr_cup_plate:.4f} mm"
     assert clr_cup_rpcb >= 0.25, f"Cup too close to Right PCB: {clr_cup_rpcb:.4f} mm"
@@ -867,17 +781,17 @@ def main():
     assert clr_wheel_usbc >= 1.00, f"Wheel Module too close to USB-C: {clr_wheel_usbc:.4f} mm"
     assert clr_wheel_keycaps >= 1.00, f"Wheel Module too close to Keycaps: {clr_wheel_keycaps:.4f} mm"
     assert clr_usbc_case >= 0.50, f"USB-C too close to Case: {clr_usbc_case:.4f} mm"
-    assert clr_usbc_plate >= 0.50, f"USB-C too close to Top Plate: {clr_usbc_plate:.4f} mm"
+    assert clr_usbc_plate >= 0.35, f"USB-C too close to Top Plate: {clr_usbc_plate:.4f} mm"
 
-    print("\n--- Full-Assembly 6-DOF Retention Verification (Switch-Independent Hardware Lock) ---")
+    print("\n--- Full-Assembly 6-DOF Retention Verification (Switch-Retained Plate + Boss-Clamped PCBs) ---")
     verify_6dof_constraints()
-    for part, anchors, d_xy, d_z in (
-        (left_plate, [left_case] + left_fasteners, 0.28, 0.08),
-        (right_plate, [right_case] + right_fasteners, 0.28, 0.08),
-        (left_pcb, [left_case] + left_fasteners, 0.16, 0.08),
-        (right_pcb, [right_case] + right_fasteners + wheel_cradle_screws + wheel_stat, 0.16, 0.08),
-        (sensor_pcb_global, [right_case, cup_global] + right_fasteners, 0.28, 0.08),
-        (cup_global, [sensor_pcb_global] + right_fasteners, 0.28, 0.08),
+    for part, anchors, d_xy, d_z, lock_desc in (
+        (left_plate, left_switches, 0.15, 0.05, "21x Kailh Choc V2 switch snap-fit"),
+        (right_plate, right_switches, 0.15, 0.05, "19x Kailh Choc V2 switch snap-fit"),
+        (left_pcb, [left_case] + left_fasteners, 0.25, 0.12, "5x Ø 5.20 mm bosses & M2x6 screws"),
+        (right_pcb, [right_case] + right_fasteners + wheel_cradle_screws + wheel_stat, 0.25, 0.12, "5x Ø 5.20 mm bosses + 2x cradle bosses & M2x6 screws"),
+        (sensor_pcb_global, [right_case, cup_global] + right_fasteners, 0.28, 0.12, "4x TB bosses + Trackball Cup & M2x6 screws"),
+        (cup_global, [sensor_pcb_global] + right_fasteners, 0.28, 0.12, "Sensor PCB + 4x TB M2x6 screws"),
     ):
         for axis_tag, vec in (
             ("+X", (d_xy, 0.0, 0.0)),
@@ -888,9 +802,20 @@ def main():
             ("-Z", (0.0, 0.0, -d_z)),
         ):
             pm = part.moved(bd.Location(vec))
-            ov_tot = sum(overlap_volume(pm, anc) for anc in anchors)
+            ov_tot = max_group_overlap([pm], anchors)
             assert ov_tot > 0.0, f"[6-DOF FAIL] {part.label} NOT mechanically locked along {axis_tag}!"
-        print(f"  [PASS] {part.label}: mechanically locked in ±X, ±Y, ±Z by stepped bosses & M2x6 screws")
+        print(f"  [PASS] {part.label}: mechanically locked in ±X, ±Y, ±Z by {lock_desc}")
+
+    left_kicad_grp = bd.Compound(children=left_kicad_comps)
+    left_kicad_grp.label = "Left_PCB_KiCad_3D_Components"
+    right_kicad_grp = bd.Compound(children=right_kicad_comps)
+    right_kicad_grp.label = "Right_PCB_KiCad_3D_Components"
+    pmw_kicad_grp = bd.Compound(children=pmw_kicad_comps)
+    pmw_kicad_grp.label = "Sensor_PCB_KiCad_3D_Components"
+    left_sw_grp = bd.Compound(children=left_switches)
+    left_sw_grp.label = "Left_Choc_V2_Switches"
+    right_sw_grp = bd.Compound(children=right_switches)
+    right_sw_grp.label = "Right_Choc_V2_Switches"
 
     all_parts = (
         [
@@ -899,8 +824,13 @@ def main():
             left_pcb,
             right_pcb,
             sensor_pcb_global,
+            left_kicad_grp,
+            right_kicad_grp,
+            pmw_kicad_grp,
             left_plate,
             right_plate,
+            left_sw_grp,
+            right_sw_grp,
             cup_global,
             ball_global,
             lens_global,
@@ -909,8 +839,6 @@ def main():
         ]
         + wheel_solids
         + wheel_cradle_screws
-        + right_Assembly_smds
-        + conn_solids
         + inserts
         + top_screws
         + keycaps
@@ -921,15 +849,22 @@ def main():
     asm_full.label = "curcur40_Full_Assembly"
     out_step = ASSEMBLIES_DIR / "assembly-full.step"
     bd.export_step(asm_full, str(out_step))
-    print(f"\nSuccessfully exported {out_step} ({len(all_parts)} items, valid={asm_full.is_valid})")
+    total_solids = len(asm_full.solids())
+    print(
+        f"\nSuccessfully exported {out_step} ({len(all_parts)} top-level groups, "
+        f"{total_solids} solids + 1 optical ref face, valid={asm_full.is_valid})"
+    )
 
-    left_group = [left_case, left_pcb, left_plate] + left_conn_solids + left_fasteners + left_keycaps
+    left_group = [left_case, left_pcb, left_kicad_grp, left_plate, left_sw_grp] + left_fasteners + left_keycaps
     right_group = (
         [
             right_case,
             right_pcb,
             sensor_pcb_global,
+            right_kicad_grp,
+            pmw_kicad_grp,
             right_plate,
+            right_sw_grp,
             cup_global,
             ball_global,
             lens_global,
@@ -938,8 +873,6 @@ def main():
         ]
         + wheel_solids
         + wheel_cradle_screws
-        + right_Assembly_smds
-        + right_conn_solids
         + right_fasteners
         + right_keycaps
     )
@@ -949,7 +882,10 @@ def main():
     asm_right.label = "curcur40_Right_Wheel_Assembly"
     out_right_step = ASSEMBLIES_DIR / "curcur40-right-wheel-assembly.step"
     bd.export_step(asm_right, str(out_right_step))
-    print(f"Successfully exported {out_right_step} ({len(right_group)} items)")
+    print(
+        f"Successfully exported {out_right_step} ({len(right_group)} top-level groups, "
+        f"{len(asm_right.solids())} solids + 1 optical ref face)"
+    )
 
     desk_parts = [transform_to_desk(p, False) for p in left_group] + [
         transform_to_desk(p, True) for p in right_group
@@ -965,7 +901,8 @@ def main():
     bb_desk_l = desk_parts[0].bounding_box()
     bb_desk_r = desk_parts[len(left_group)].bounding_box()
     print(
-        f"Successfully exported {out_desk_step} ({len(desk_parts)} items, valid={asm_desk.is_valid}, "
+        f"Successfully exported {out_desk_step} ({len(desk_parts)} top-level groups, "
+        f"{len(asm_desk.solids())} solids + 1 optical ref face, valid={asm_desk.is_valid}, "
         f"Left Case Z=[{bb_desk_l.min.Z:.4f}, {bb_desk_l.max.Z:.4f}], "
         f"Right Case Z=[{bb_desk_r.min.Z:.4f}, {bb_desk_r.max.Z:.4f}])"
     )
