@@ -287,7 +287,7 @@ def _draw_spec_diagram():
                  fontsize=6.2, fontweight="bold", color="#9d0208",
                  bbox=dict(boxstyle="round,pad=0.22", fc="#ffe5ec", ec="#d90429", lw=0.9), zorder=10)
 
-    ax2.annotate("#04 クレードル WC1/WC2 締結（#10 ＋ #11 M2×6mm）\n• #12 プレート Ø4.4mm 頭逃げ穴でネジ頭沈み込み\n• 外周8箇所(R1..R3,R5)は段付きボスでプレート直ネジ固定!",
+    ax2.annotate("#04 クレードル WC1/WC2 締結（#10 ＋ #11 M2×6mm）\n• 全12箇所 プレート Ø4.4mm 穴でネジ頭は完全沈み込み!\n• メイン基板を直接ネジ固定・プレートはスイッチ嵌合保持",
                  xy=(13.7, -4.20), xytext=(5.2, 6.20), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#1d3557", lw=1.15),
                  fontsize=6.3, fontweight="bold", color="#1d3557",
@@ -987,7 +987,7 @@ def _draw_parts_guide_diagram():
         ax_top_l.set_xticks([])
         ax_top_l.set_yticks([])
         ax_top_l.set_title(
-            "A. 右キーボード 実装外観（幅6.50mmホイール・段付きボスでトッププレート直接ネジ固定）",
+            "A. 右キーボード 実装外観（幅6.50mmホイール・Ø5.2mmフラットボスで基板直締結＋スイッチ嵌合プレート）",
             fontsize=10.0,
             fontweight="bold",
             color="#0f172a",
@@ -1084,14 +1084,14 @@ def _draw_parts_guide_diagram():
                 "市販購入品 (ホイール3本 / 全体17本)",
                 "#7c2d12",
                 "p11",
-                "キーボード全17箇所すべて同一 M2×6.0mm!\n外周8箇所はトッププレートを直接ネジ固定\n(南ラチェット用1本は磁石が付く鉄/鋼製)",
+                "キーボード全17箇所すべて同一 M2×6.0mm!\n外周10箇所＋WC1/WC2でメイン基板を直接固定\n(南ラチェット用1本は磁石が付く鉄/鋼製)",
             ),
             (
                 "#12 右プレート＆右メイン基板窓",
                 "JLCPCB 基板・プレート (カバー不要)",
                 "#334155",
                 "p12",
-                "プレート: 7.7×22.0mm ゆとりある幅広窓\n外周4隅はØ2.4mm直締結・WC1/WC2はØ4.4mm\nスイッチなしでもプレートが単体でガッチリ固定!",
+                "プレート: 7.7×22.0mm ゆとりある幅広窓\n全12箇所 Ø4.4mm ネジ頭沈み込み穴でキー干渉ゼロ\nトッププレートはChoc V2スイッチでパチンと保持!",
             ),
         ]
 
