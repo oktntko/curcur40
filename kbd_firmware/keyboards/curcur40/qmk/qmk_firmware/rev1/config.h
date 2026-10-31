@@ -16,7 +16,9 @@
 #define PMW33XX_CS_PIN GP6
 
 /*
- * I2C0 & AS5600 Passive Magnetic Inertia Wheel Configuration (Right Half, rJ5):
+ * I2C0 & 3D Hall Passive Magnetic Inertia Wheel Configuration (Right Half B.Cu, rU6):
+ * Primary IC: TI TMAG5273A1QDBVR (0x35, or A2/B/C/D variants 0x22/0x44/0x78)
+ * Fallback IC: Infineon TLV493D-A1B6 (0x5E / 0x1F, pin-compatible SOT-23-6)
  * Note: QMK's ChibiOS RP2040 i2c_master driver uses 1-indexed `I2C1_*` config macros
  * regardless of whether `I2C_DRIVER` selects hardware `I2CD0` or `I2CD1`.
  */
