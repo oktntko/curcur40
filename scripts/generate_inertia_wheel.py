@@ -399,19 +399,19 @@ def build_wheel_cradle_local() -> bd.Solid:
     w_bridge_top = -0.30   # 1.40 mm step below B.Cu (+1.10) so North-East bridge clears rZD1/rR2/rU3 by >= 0.69 mm!
     w_boss_bot = -3.90
 
-    # 1) North-West Block (North C-clip Saddle + WC1 + North-West Riser stepped to clear Ø7.84 mm R1 boss by >= 0.66 mm):
+    # 1) North-West Block (North C-clip Saddle + WC1 + stepped North-West Riser clearing rR1 & R1 boss):
     block_n_saddle = bd.Box(
         (-5.02) - (-11.65), 6.50 - 4.32, w_top - w_boss_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((-11.65, 4.32, w_boss_bot)))
     block_n_wc1 = bd.Box(
-        (-5.02) - (-10.52), 10.15 - 6.50, w_top - w_boss_bot,
+        (-5.02) - (-10.52), 10.50 - 6.50, w_top - w_boss_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((-10.52, 6.50, w_boss_bot)))
     block_n_riser = bd.Box(
-        (-5.02) - (-9.40), 13.80 - 10.15, w_top - w_boss_bot,
+        (-5.02) - (-8.40), 13.80 - 10.50, w_bridge_top - w_boss_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-9.40, 10.15, w_boss_bot)))
+    ).moved(bd.Location((-8.40, 10.50, w_boss_bot)))
     block_n = block_n_saddle + block_n_wc1 + block_n_riser
 
     # 2) South-West C-Clip Saddle Block: u in [-11.65, -5.02], v in [-8.50, -4.32], w in [-3.90, +1.10]
@@ -702,7 +702,7 @@ def verify_6dof_constraints():
 def assemble_wheel_parts_global(click_deg: float = 0.0):
     """
     Returns `(moving_solids, static_solids, cradle_top_screws)` placed in Global STEP coordinates
-    (`X_AXLE_STEP = 29.7375, Y_AXLE_STEP = -55.1500, Z_AXLE_STEP = -6.9000`).
+    (`X_AXLE_STEP = 28.5750, Y_AXLE_STEP = -55.1500, Z_AXLE_STEP = -6.9000`).
     When `click_deg > 0`, `moving_solids` are rotated around the seesaw pivot axis `(U_PIV, W_PIV)`
     so East (`u > U_PIV`, wheel) moves DOWN (`-Z`) and West (`u < U_PIV`, striker) moves UP (`+Z`).
     """
