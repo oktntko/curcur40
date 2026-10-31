@@ -103,9 +103,9 @@ def _draw_spec_diagram():
 
     # =========================================================================
     # Panel 1: X–Z Front Cross-Section along Axle (Y_pcb = -2.00 mm)
-    # Local u = x_pcb - 15.4500 mm (+u = East, -u = West)
+    # Local u = x_pcb - 14.2875 mm (+u = East, -u = West; wheel aligned with south key rEXSW2!)
     # =========================================================================
-    ax1.set_title("① 正面断面図 (X–Z 断面：幅6.5mm一体軸ホイール × #02マグネットホルダー × 静音シーソークリック)", fontsize=10.2, fontweight="bold", pad=10)
+    ax1.set_title("① 正面断面図 (X–Z 断面：幅6.5mm一体軸ホイール × #02マグネットホルダー × Cクリップ連結シーソークリック)", fontsize=9.9, fontweight="bold", pad=10)
     ax1.set_xlim(-21.2, 11.6)
     ax1.set_ylim(-23.2, 8.8)
     ax1.set_aspect("equal")
@@ -133,12 +133,12 @@ def _draw_spec_diagram():
                                   closed=True, fc="#495057", ec="#212529", lw=1.1, alpha=0.85, zorder=2))
     ax1.text(-4.5, -21.2, "100% 密閉・穴なし傾斜ボトムケース床（肉厚 2.40 mm）", ha="center", va="center", fontsize=6.7, color="white", fontweight="bold", zorder=3)
 
-    # #04 Wheel Cradle (static under-PCB bracket: Ø3.08 U-saddle around u = -8.12, Z = -7.35 + West rest-stop bridge u in [-11.75, -10.55], Z in [-13.40, -12.06])
-    ax1.add_patch(patches.Rectangle((-11.75, -9.70), 6.20, 3.90, fc="#cbd5e1", ec="#334155", lw=1.0, alpha=0.68, linestyle="--", zorder=2))
-    ax1.add_patch(patches.Rectangle((-11.75, -13.40), 1.20, 7.60, fc="#94a3b8", ec="#334155", lw=1.0, zorder=3))
+    # #04 Wheel Cradle (static under-PCB bracket: Captive Ø3.06 C-clip snap-in hinge around u = -8.12, Z = -8.15 + West rest-stop bridge u in [-11.65, -10.52])
+    ax1.add_patch(patches.Rectangle((-11.65, -10.80), 6.10, 5.00, fc="#cbd5e1", ec="#334155", lw=1.0, alpha=0.68, linestyle="--", zorder=2))
+    ax1.add_patch(patches.Rectangle((-11.65, -13.40), 1.13, 7.60, fc="#94a3b8", ec="#334155", lw=1.0, zorder=3))
 
     # #03 Wheel Rocker (West ear [-6.62, -3.55], East ear [+3.55, +6.62], C-clip top Z = -4.55, bottom stirrup [-19.70, -18.35],
-    # West striker arm [-17.65, -6.62] at Z in [-12.00, -10.25] + integral West Keeper Tab [-10.50, -9.62] rising to Z = -8.05)
+    # West striker arm [-17.65, -6.62] at Z in [-12.00, -10.30] + integral West Keeper Tab [-10.50, -9.62] rising to Z = -8.05)
     rocker_poly = patches.Polygon(
         [
             [-6.62, -19.70], [6.62, -19.70], [6.62, -4.55], [3.55, -4.55],
@@ -147,12 +147,12 @@ def _draw_spec_diagram():
         closed=True, fc="#dee2e6", ec="#495057", lw=1.1, zorder=4,
     )
     ax1.add_patch(rocker_poly)
-    ax1.add_patch(patches.Rectangle((-17.65, -12.00), 11.03, 1.75, fc="#dee2e6", ec="#495057", lw=1.1, zorder=4))
-    # Integral West Keeper Tab on #03 (u in [-10.50, -9.62], Z in [-10.25, -8.05])
-    ax1.add_patch(patches.Rectangle((-10.50, -10.25), 0.88, 2.20, fc="#adb5bd", ec="#212529", lw=1.15, zorder=6))
-    # Integral Ø3.00 mm Pivot Trunnion at (u = -8.12, Z = -7.35 -> top Z = -5.85, 0.05 mm below B.Cu!)
-    ax1.add_patch(patches.Circle((-8.12, -7.35), 1.50, fc="#f8fafc", ec="#0f172a", lw=1.4, zorder=7))
-    ax1.plot([-8.12], [-7.35], marker="+", color="#0f172a", markersize=6, zorder=8)
+    ax1.add_patch(patches.Rectangle((-17.65, -12.00), 11.03, 1.70, fc="#dee2e6", ec="#495057", lw=1.1, zorder=4))
+    # Integral West Keeper Tab on #03 (u in [-10.50, -9.62], Z in [-10.30, -8.05])
+    ax1.add_patch(patches.Rectangle((-10.50, -10.30), 0.88, 2.25, fc="#adb5bd", ec="#212529", lw=1.15, zorder=6))
+    # Integral Ø3.00 mm Pivot Trunnion at (u = -8.12, Z = -8.15 -> snapped into #04 Ø3.06 C-clip saddle!)
+    ax1.add_patch(patches.Circle((-8.12, -8.15), 1.50, fc="#f8fafc", ec="#0f172a", lw=1.4, zorder=7))
+    ax1.plot([-8.12], [-8.15], marker="+", color="#0f172a", markersize=6, zorder=8)
 
     # #01 1-Piece Integral-Shaft 45# Steel Flywheel:
     # Rim u in [-3.25, +3.25], Z in [-17.90, +4.10]; Integral Ø2.90mm shoulders [-3.45, +3.45]; Integral Ø1.98mm shaft [-7.98, +5.72]
@@ -203,8 +203,8 @@ def _draw_spec_diagram():
                  fontsize=6.1, fontweight="bold", color="#7f2704",
                  bbox=dict(boxstyle="round,pad=0.20", fc="#fff3cd", ec="#d97706", lw=0.85), zorder=10)
 
-    ax1.annotate("#04 アンダーPCBクレードル\nØ3.08 U溝＋基板B.Cu(隙間0.05mm)で\n支点軸を保持＆西ストッパーで静止受け",
-                 xy=(-11.15, -13.40), xytext=(-6.4, -17.1), ha="center", va="center",
+    ax1.annotate("#04 アンダーPCBクレードル\nØ3.06 Cクリップ軸受(開口2.66mm)へ\nパチン連結! 単体で抜けず西受け台で静止保持",
+                 xy=(-11.10, -13.40), xytext=(-6.4, -17.1), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#334155", lw=1.1),
                  fontsize=6.0, fontweight="bold", color="#1e293b",
                  bbox=dict(boxstyle="round,pad=0.20", fc="#e2e8f0", ec="#475569", lw=0.85), zorder=10)
@@ -241,9 +241,9 @@ def _draw_spec_diagram():
     # Sealed Case Floor
     ax2.add_patch(patches.Rectangle((-21.5, -22.0), 38.0, 2.2, fc="#495057", ec="#212529", lw=1.1, alpha=0.85, zorder=2))
 
-    # Adjacent South Keycap (rSW16 at y_pcb = +19.05 -> v = -21.05, North edge ~ v = -12.0)
+    # Adjacent South Keycap (rEXSW2 at x_pcb = 14.2875, y_pcb = +19.05 -> v = -21.05, 100% aligned with wheel center!)
     ax2.add_patch(patches.Rectangle((-21.3, -0.80), 8.80, 4.40, fc="#e9ecef", ec="#495057", lw=1.2, zorder=4))
-    ax2.text(-16.9, 1.40, "南隣接キー\nrSW16", ha="center", va="center", fontsize=6.6, fontweight="bold", color="#343a40", zorder=5)
+    ax2.text(-16.9, 1.40, "南隣接キー\nrEXSW2\n(X軸一致!)", ha="center", va="center", fontsize=6.4, fontweight="bold", color="#343a40", zorder=5)
 
     # Projected #04 Cradle Boss (WC1/WC2) + #10 Brass Insert (M2xL3.0) + #11 Sub-Flush Top-Down M2x6.0mm Screw
     ax2.add_patch(patches.Rectangle((11.6, -9.70), 4.2, 3.90, fc="#cbd5e1", ec="#334155", lw=1.1, zorder=3))
@@ -590,7 +590,7 @@ def _draw_easy_guide_diagram():
     ax3_l.add_patch(patches.Circle((-4.0, 1.55), 0.98, fc="#fef08a", ec="#854d0e", lw=1.8, zorder=8))
     ax3_l.plot([-4.0], [1.55], marker="+", color="#854d0e", markersize=8, zorder=9)
 
-    ax3_l.annotate("支点！(#03 丸棒 Ø3.0mm)\n上は基板ウラ(すき間0.05mm!)\n下は #04 のU字みぞでキャッチ!",
+    ax3_l.annotate("支点！(#03 丸棒 Ø3.0mm)\n#04 のCクリップ軸受けへ\n「パチン！」と嵌まって抜けない!",
                    xy=(-4.0, 2.5), xytext=(-2.6, 5.45), ha="center", va="center",
                    arrowprops=dict(arrowstyle="->", color="#854d0e", lw=1.5),
                    fontsize=7.3, fontweight="bold", color="#713f12",
@@ -600,7 +600,7 @@ def _draw_easy_guide_diagram():
     ax3_l.add_patch(patches.Circle((3.2, 0.2), 4.2, fc="#94a3b8", ec="#0f172a", lw=1.8, alpha=0.9, zorder=7))
     ax3_l.text(3.2, 0.2, "#01 ホイール\n(シーソー右側)", ha="center", va="center", fontsize=8.0, fontweight="bold", color="#0f172a",
                bbox=dict(boxstyle="round,pad=0.18", fc="#f8fafc", ec="#334155", lw=0.9), zorder=8)
-    ax3_l.annotate("① 指でホイールを\n下にグッと押す！\n(わずか 0.26mm 沈む)",
+    ax3_l.annotate("① 指でホイールを\n下にグッと押す！\n(わずか 0.31mm 沈む)",
                    xy=(3.2, 4.4), xytext=(5.6, 5.75), ha="center", va="center",
                    arrowprops=dict(arrowstyle="->", color="#dc2626", lw=2.2),
                    fontsize=7.6, fontweight="bold", color="#991b1b",
@@ -642,9 +642,9 @@ def _draw_easy_guide_diagram():
         "② クリックの重さはどれくらい？\n"
         "   支点から右（8.1mm）と左（8.2mm）の長さがほぼ同じ「1 : 1 のてこ」なので、\n"
         "   約 70g の軽快な力で「コトッ」と静かにミドルクリックできます（配線もゼロ！）。\n\n"
-        "③ 普段スクロールしているときにグラグラしないの？\n"
-        "   • 支点の丸棒（Ø3.0mm）は #04 のU字みぞと基板ウラ面（すき間 0.05mm！）でピタッと保持\n"
-        "   • 押していない時は左うでが #04 の「やすみ台」にちょこんと乗って待機\n"
+        "③ 外れたりグラグラしたりしないの？（Cクリップでパチンと機械連結！）\n"
+        "   • 支点の丸棒（Ø3.0mm）は #04 の「Cクリップ軸受け(239°抱え込み)」にパチンと連結！\n"
+        "   • 基板がなくても単体で上にも横にも抜けず、左うでは #04 の「やすみ台」に着地\n"
         "   だから回すときはガタつきゼロで、押したときだけ 2.2° シーソーが動きます！",
         transform=ax3_r.transAxes,
         fontsize=8.65,
@@ -1035,7 +1035,7 @@ def _draw_parts_guide_diagram():
                 "JLC3DP 造形 (MJF/SLS PA12)",
                 "#1d4ed8",
                 "p04",
-                "cases/inertia_wheel/wheel-cradle.step\nWC1/WC2の2箇所で右メイン基板裏面へ固定\nØ3.08 U溝＋基板B.Cu(隙間0.05mm)で保持",
+                "cases/inertia_wheel/wheel-cradle.step\nWC1/WC2の2箇所で右メイン基板裏面へ固定\nØ3.06 Cクリップ軸受へ#03をパチンと機械連結!",
             ),
             (
                 "#05 3Dホールセンサー (rU6)",
