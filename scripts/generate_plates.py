@@ -12,22 +12,26 @@ import pcbnew
 WORKSPACE = Path(__file__).resolve().parent.parent
 KICAD_CLI = os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe")
 
-# Left perimeter screw-head clearance holes (5 holes, Ø 4.40 mm -> radius 2.20 mm; sub-flush M2 screw head)
+# Left perimeter holes:
+#   - L1, L2, L3, L5 (Ø 2.40 mm -> r = 1.20 mm): clamped directly onto stepped case bosses (Z = -3.60 mm) by M2 x 6.0 mm screws
+#   - L4 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance hole (screw clamps Left Main PCB F.Cu Z = -4.20 mm)
 LEFT_MOUNTING_HOLES = [
-    (   0.0000, -15.0000, 2.20),
-    (   0.0000,  20.0000, 2.20),
-    (-101.0000, -20.0000, 2.20),
+    (   0.0000, -15.0000, 1.20),
+    (   0.0000,  20.0000, 1.20),
+    (-101.0000, -20.0000, 1.20),
     ( -98.0000,  38.0000, 2.20),
-    ( -62.0000,  64.6000, 2.20),
+    ( -62.0000,  65.1500, 1.20),
 ]
 
-# Right perimeter screw-head clearance holes (5 holes, Ø 4.40 mm -> radius 2.20 mm, symmetric with Left)
+# Right perimeter holes (symmetric with Left):
+#   - R1, R2, R3, R5 (Ø 2.40 mm -> r = 1.20 mm): clamped directly onto stepped case bosses (Z = -3.60 mm) by M2 x 6.0 mm screws
+#   - R4 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance hole (screw clamps Right Main PCB F.Cu Z = -4.20 mm)
 RIGHT_MOUNTING_HOLES = [
-    (  0.0000, -15.0000, 2.20),
-    (  0.0000,  20.0000, 2.20),
-    (101.0000, -20.0000, 2.20),
+    (  0.0000, -15.0000, 1.20),
+    (  0.0000,  20.0000, 1.20),
+    (101.0000, -20.0000, 1.20),
     ( 98.0000,  38.0000, 2.20),
-    ( 62.0000,  64.6000, 2.20),
+    ( 62.0000,  65.1500, 1.20),
 ]
 
 LEFT_SWITCHES = [
@@ -85,10 +89,10 @@ RIGHT_SWITCHES = [
 # Right Under-Plate Inertia Wheel 2-point cradle screw-head clearance holes (WC1, WC2: Ø 4.40 mm -> radius 2.20 mm)
 RIGHT_WHEEL_HOLES = [
     ( 7.8000, -9.8000, 2.20),
-    (20.4000,  5.8000, 2.20),
+    (22.4000,  6.0000, 2.20),
 ]
 
-RIGHT_INERTIA_WHEEL = (14.2875, -2.00000)  # Under-Plate Passive Magnetic Inertia Wheel axle center
+RIGHT_INERTIA_WHEEL = (15.4500, -2.00000)  # Under-Plate Passive Magnetic Inertia Wheel axle center (Ø 22.00 x 6.50 mm)
 
 
 def round_polygon_with_fillets(pts_and_radii):
@@ -140,27 +144,27 @@ def make_rect_cutout(cx, cy, w, h, r=0.5):
 
 def make_inertia_wheel_top_cutout(cx, cy):
     """
-    Clean rounded-rectangle Top Plate slot (5.60 x 22.00 mm, R = 1.00 mm) centered at `(cx, cy)`
-    for the Ø 22.00 x 4.40 mm 1-piece integral-shaft under-plate wheel (`>= 0.50 mm` clearance all around).
+    Clean rounded-rectangle Top Plate slot (7.70 x 22.00 mm, R = 1.00 mm) centered at `(cx, cy)`
+    for the Ø 22.00 x 6.50 mm 1-piece integral-shaft under-plate wheel (`0.60 mm/side` clearance).
     """
-    return make_rect_cutout(cx, cy, 5.60, 22.00, 1.00)
+    return make_rect_cutout(cx, cy, 7.70, 22.00, 1.00)
 
 
 def make_inertia_wheel_foam_cutout():
     """Cross-shaped switch-foam cutout matching the Right Main PCB wheel & bearing/magnet opening."""
     pts = [
-        (11.4875, -13.5000, 0.50),
-        (17.0875, -13.5000, 0.50),
-        (17.0875,  -5.7500, 0.50),
-        (20.4075,  -5.7500, 0.50),
-        (20.4075,   1.7500, 0.50),
-        (17.0875,   1.7500, 0.50),
-        (17.0875,   9.5000, 0.50),
-        (11.4875,   9.5000, 0.50),
-        (11.4875,   1.7500, 0.50),
+        (11.6000, -13.5000, 0.50),
+        (19.3000, -13.5000, 0.50),
+        (19.3000,  -5.7500, 0.50),
+        (22.5000,  -5.7500, 0.50),
+        (22.5000,   1.7500, 0.50),
+        (19.3000,   1.7500, 0.50),
+        (19.3000,   9.5000, 0.50),
+        (11.6000,   9.5000, 0.50),
+        (11.6000,   1.7500, 0.50),
         ( 6.0000,   1.7500, 0.50),
         ( 6.0000,  -5.7500, 0.50),
-        (11.4875,  -5.7500, 0.50),
+        (11.6000,  -5.7500, 0.50),
     ]
     return round_polygon_with_fillets(pts)
 
@@ -335,8 +339,8 @@ def main():
         height_mm=120.0,
     )
 
-    left_foam_holes = [(x, y, 2.2) for (x, y, _) in LEFT_MOUNTING_HOLES]
-    right_foam_holes = [(x, y, 2.2) for (x, y, _) in right_all_holes]
+    left_foam_holes = [(x, y, 2.45) for (x, y, _) in LEFT_MOUNTING_HOLES]
+    right_foam_holes = [(x, y, 2.45) for (x, y, _) in right_all_holes]
     right_foam_cutouts = right_switch_cutouts + [
         make_inertia_wheel_foam_cutout()
     ]
