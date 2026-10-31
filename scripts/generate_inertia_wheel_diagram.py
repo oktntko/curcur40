@@ -554,12 +554,17 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
                 ball = bd.Sphere(0.32).moved(bd.Location((bx + 1.72 * math.cos(a), 1.72 * math.sin(a), 0.75)))
                 ball.label = f"BrgBall_{{bi}}_{{k}}"
                 brg_parts.append(ball)
-        shim_r = (
-            bd.Cylinder(1.50, 0.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-            - bd.Cylinder(1.01, 0.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
-        )
-        shim_r.label = "SUS304_Shim_M2x3x0p5"
-        brg_parts.append(shim_r)
+        shim_02 = (
+            bd.Cylinder(1.50, 0.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+            - bd.Cylinder(1.01, 0.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
+        ).moved(bd.Location((0, -1.9, 0)))
+        shim_02.label = "SUS304_Shim_BRS002003020"
+        shim_03 = (
+            bd.Cylinder(1.50, 0.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+            - bd.Cylinder(1.01, 0.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
+        ).moved(bd.Location((0, 1.9, 0)))
+        shim_03.label = "SUS304_Shim_BRS002003030"
+        brg_parts.extend([shim_02, shim_03])
         bd.export_step(bd.Compound(children=brg_parts), str(out / "p12_bearings.step"))
 
         # 6. 9x Ø2.00 mm SUJ2 Steel Balls in ring
@@ -905,7 +910,7 @@ def generate_parts_guide():
             ("#09  RP2040-Zero", rendered["p09"], "数量: 1個 ｜ ピンヘッダ未実装タイプ", "スイッチサイエンス等 : Waveshare RP2040-Zero", C_ELEC),
             ("#10  静音スイッチ", rendered["p10"], "数量: 1個 ｜ 6.2 × 6.2 × 高4.3 mm (Red Dot)", "Amazon/通販 : Kailh Square Silent (2ピン)", C_ELEC),
             ("#11  センサー6芯線 [JST SH 6P]", "CUSTOM_WIRE", "数量: 1式 ｜ SH 1.0mm 6P 片側ハウジング端子付ケーブル", "Amazon : Moechando SH1.0mm 6P 延長ケーブル等", C_ELEC),
-            ("#12  ベアリング [要脱脂] ＋ 内輪シム", rendered["p12"], "数量: 2個＋1枚 ｜ DDL-520(Ø2×Ø5×1.5) ＋ シム(M2×Ø3×0.5)", "モノタロウ : NMB DDL-520 オープン形 ＋ SUS304シムリング", C_MECH),
+            ("#12  ベアリング [要脱脂] ＋ 内輪シム", rendered["p12"], "数量: 2個＋シム2枚 ｜ DDL-520 ＋ シム(Ø2×Ø3×0.2＋0.3)", "モノタロウ : DDL-520 ＋ 岩田シム BRS002003020/030", C_MECH),
             ("#13  ラチェット鋼球", rendered["p13"], "数量: 9個 ｜ 直径 Ø2.00 mm 精密球 (G20)", "モノタロウ : SUJ2 高炭素クロム軸受鋼球 (セラミック不可)", C_MECH),
             ("#14  回転シャフト", rendered["p14"], "数量: 1本 ｜ Ø2.0 × 長さ 10 mm (B種h7)", "モノタロウ : SUS303 平行ピン B種h7 2×10", C_MECH),
             ("#15  ヒンジピン", rendered["p15"], "数量: 1本 ｜ Ø2.0 × 長さ 16 mm (B種h7)", "モノタロウ : SUS303 平行ピン B種h7 2×16", C_MECH),
