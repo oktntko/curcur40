@@ -12,26 +12,25 @@ import pcbnew
 WORKSPACE = Path(__file__).resolve().parent.parent
 KICAD_CLI = os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe")
 
-# Left perimeter holes:
-#   - L1, L2, L3, L5 (Ø 2.40 mm -> r = 1.20 mm): clamped directly onto stepped case bosses (Z = -3.60 mm) by M2 x 6.0 mm screws
-#   - L4 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance hole (screw clamps Left Main PCB F.Cu Z = -4.20 mm)
+# Left perimeter holes (Switch-Retained Top Plate 1A):
+#   - All 5 holes L1..L5 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance holes
+#     (M2 x 6.0 mm screws clamp Left Main PCB F.Cu Z = -4.20 mm directly into Ø 5.20 mm flat case bosses; screw head top Z = -3.00 mm sits 1.00 mm below Top Plate top Z = -2.00 mm)
 LEFT_MOUNTING_HOLES = [
-    (   0.0000, -15.0000, 1.20),
-    (   0.0000,  18.0000, 1.20),
-    (-101.0000, -20.0000, 1.20),
-    ( -98.4500,  38.1500, 2.20),
-    ( -62.0000,  65.1500, 1.20),
+    (   0.0000, -15.0000, 2.20),
+    (   0.0000,  18.0000, 2.20),
+    (-101.0000, -20.0000, 2.20),
+    (-100.5000,  21.5000, 2.20),
+    ( -62.0000,  65.1500, 2.20),
 ]
 
-# Right perimeter holes (symmetric with Left):
-#   - R1, R2, R3, R5 (Ø 2.40 mm -> r = 1.20 mm): clamped directly onto stepped case bosses (Z = -3.60 mm) by M2 x 6.0 mm screws
-#   - R4 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance hole (screw clamps Right Main PCB F.Cu Z = -4.20 mm)
+# Right perimeter holes (symmetric with Left, Switch-Retained Top Plate 1A):
+#   - All 5 holes R1..R5 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance holes
 RIGHT_MOUNTING_HOLES = [
-    (  0.0000, -15.0000, 1.20),
-    (  0.0000,  18.0000, 1.20),
-    (101.0000, -20.0000, 1.20),
-    ( 98.4500,  38.1500, 2.20),
-    ( 62.0000,  65.1500, 1.20),
+    (  0.0000, -15.0000, 2.20),
+    (  0.0000,  18.0000, 2.20),
+    (101.0000, -20.0000, 2.20),
+    (100.5000,  21.5000, 2.20),
+    ( 62.0000,  65.1500, 2.20),
 ]
 
 LEFT_SWITCHES = [
@@ -308,7 +307,7 @@ def main():
     p_top_left = os.path.join(out_pcb_dir, "plate-top-left.kicad_pcb")
     write_plate_kicad_pcb(p_top_left, left_outer, left_cutouts, LEFT_MOUNTING_HOLES)
 
-    # 2. Right Top Plate (with Sunk Inertia Wheel twin-snap opening + 3x Ø2.40 mm M2 holes)
+    # 2. Right Top Plate (with Under-Plate Inertia Wheel 7.70 x 22.00 mm slot + 7x Ø 4.40 mm screw-head clearance holes)
     right_outer_notched = round_polygon_with_fillets(get_right_outer_pts(notched_trackball=True))
     right_switch_cutouts = [make_rect_cutout(cx, cy, 14.0, 14.0, 0.5) for (cx, cy) in RIGHT_SWITCHES]
     right_cutouts = right_switch_cutouts + [
@@ -328,7 +327,7 @@ def main():
             subprocess.run([KICAD_CLI, "pcb", "drc", "--format", "json", "-o", rpt, pcb_path], check=True)
             print(f"Verified DRC for {name}.")
 
-    # 3. SVGs (Top Plates & Switch Foam only)
+    # 3. SVGs (Top Plates & Switch Foam — uniform Ø 4.40 mm / r = 2.20 mm screw-head clearance holes)
     write_laser_svg(
         os.path.join(out_svg_dir, "plate-curcur40.svg"),
         [
@@ -339,8 +338,8 @@ def main():
         height_mm=120.0,
     )
 
-    left_foam_holes = [(x, y, 2.45) for (x, y, _) in LEFT_MOUNTING_HOLES]
-    right_foam_holes = [(x, y, 2.45) for (x, y, _) in right_all_holes]
+    left_foam_holes = [(x, y, 2.20) for (x, y, _) in LEFT_MOUNTING_HOLES]
+    right_foam_holes = [(x, y, 2.20) for (x, y, _) in right_all_holes]
     right_foam_cutouts = right_switch_cutouts + [
         make_inertia_wheel_foam_cutout()
     ]
