@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Render all PCB/3D CAD preview images and generate engineering & visual BOM diagrams for the
-Passive Magnetic Inertia Wheel Module (`curcur40-inertia-wheel`: Cup-Shaped SUS304 Flywheel +
-Internal 9-Ball Eddy-Current-Free Ratchet + Twin 180°-Symmetric Pyramid-Deep-R Snap Covers).
+Render 3D CAD preview images and generate engineering cross-section & visual BOM diagrams
+for the Under-Plate 1-Piece Integral-Shaft Passive Magnetic Inertia Wheel (`curcur40-inertia-wheel`).
 
 Outputs into `docs/assets/`:
-  1. render_pcb_wheel_sensor.png / render_pcb_wheel_sensor_back.png / render_pcb_wheel_eval.png
-  2. render_inertia_wheel_flywheel.png / render_inertia_wheel_module.png / render_inertia_wheel_eval_pod.png
-  3. render_curcur40_right_inertia_wheel_sunk.png
+  1. render_inertia_wheel_flywheel.png
+  2. render_inertia_wheel_module.png
+  3. render_curcur40_right_wheel.png
   4. passive_inertia_wheel_spec.png
   5. inertia_wheel_parts_guide.png
 """
@@ -25,7 +24,6 @@ import matplotlib.patches as patches
 WORKSPACE = Path(__file__).resolve().parent.parent
 ASSETS_DIR = WORKSPACE / "docs" / "assets"
 ASSETS_DIR.mkdir(parents=True, exist_ok=True)
-KICAD_CLI = Path(os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe"))
 UVX_EXE = Path(os.path.expandvars(r"%USERPROFILE%\.local\bin\uvx.exe"))
 
 plt.rcParams["font.sans-serif"] = [
@@ -38,64 +36,26 @@ plt.rcParams["font.sans-serif"] = [
 plt.rcParams["axes.unicode_minus"] = False
 
 
-def render_pcb_and_step_previews():
-    """Render updated KiCad PCBs and 3D CAD STEP models into `docs/assets/`."""
-    sensor_pcb = WORKSPACE / "pcbs" / "inertia-wheel-sensor" / "curcur40-wheel-sensor.kicad_pcb"
-    eval_pcb = WORKSPACE / "pcbs" / "inertia-wheel-eval" / "curcur40-wheel-eval.kicad_pcb"
-
-    pcb_jobs = [
-        (sensor_pcb, "top", ASSETS_DIR / "render_pcb_wheel_sensor.png", 1200, 900),
-        (sensor_pcb, "bottom", ASSETS_DIR / "render_pcb_wheel_sensor_back.png", 1200, 900),
-        (eval_pcb, "top", ASSETS_DIR / "render_pcb_wheel_eval.png", 1400, 1000),
-    ]
-    for pcb_path, side, out_png, w, h in pcb_jobs:
-        print(f"Rendering {out_png.name} ({side})...")
-        subprocess.run(
-            [
-                str(KICAD_CLI),
-                "pcb",
-                "render",
-                "--quality",
-                "high",
-                "--preset",
-                "follow_pcb_editor",
-                "--side",
-                side,
-                "--width",
-                str(w),
-                "--height",
-                str(h),
-                "-o",
-                str(out_png),
-                str(pcb_path),
-            ],
-            check=True,
-        )
-
+def render_step_previews():
+    """Render 3D CAD STEP previews for the wheel flywheel, sub-assembly, and right keyboard integration."""
     parts_dir = WORKSPACE / "cases" / "inertia_wheel"
     asm_dir = WORKSPACE / "cases" / "assemblies"
     step_jobs = [
         {
-            "input": str(parts_dir / "sus304-flywheel.step"),
+            "input": str(parts_dir / "steel-flywheel.step"),
             "outputs": [str(ASSETS_DIR / "render_inertia_wheel_flywheel.png")],
             "camera": "iso",
             "display": "shaded",
         },
         {
-            "input": str(asm_dir / "inertia-wheel-module-assembly.step"),
+            "input": str(asm_dir / "inertia-wheel-assembly.step"),
             "outputs": [str(ASSETS_DIR / "render_inertia_wheel_module.png")],
             "camera": "iso",
             "display": "parts",
         },
         {
-            "input": str(asm_dir / "inertia-wheel-eval-pod-assembly.step"),
-            "outputs": [str(ASSETS_DIR / "render_inertia_wheel_eval_pod.png")],
-            "camera": "iso",
-            "display": "parts",
-        },
-        {
-            "input": str(asm_dir / "curcur40-right-with-inertia-wheel-sunk.step"),
-            "outputs": [str(ASSETS_DIR / "render_curcur40_right_inertia_wheel_sunk.png")],
+            "input": str(asm_dir / "curcur40-right-wheel-assembly.step"),
+            "outputs": [str(ASSETS_DIR / "render_curcur40_right_wheel.png")],
             "camera": "iso",
             "display": "parts",
         },
@@ -103,7 +63,7 @@ def render_pcb_and_step_previews():
     with tempfile.TemporaryDirectory() as tmp_s:
         job_path = Path(tmp_s) / "preview_jobs.json"
         job_path.write_text(json.dumps({"jobs": step_jobs}, ensure_ascii=False, indent=2), encoding="utf-8")
-        print("Rendering 4 STEP previews into docs/assets/...")
+        print("Rendering 3 STEP previews into docs/assets/...")
         subprocess.run(
             [
                 str(UVX_EXE),
@@ -127,253 +87,194 @@ def render_pcb_and_step_previews():
 
 
 def _draw_spec_diagram():
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16.0, 7.6), dpi=200)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(17.2, 8.2), dpi=200)
     fig.patch.set_facecolor("#ffffff")
     fig.suptitle(
-        "パッシブ磁気慣性ホイール 内部断面・機構図（共通コアユニット ＋ #04B 沈み込み枠 ＋ #20 ツインカバー実装時）",
-        fontsize=12.4,
+        "アンダープレート一体軸パッシブ磁気慣性ホイール 内部断面・機構図（接着剤ゼロ・シムゼロ・サブ基板ゼロ・カバーゼロ）",
+        fontsize=12.6,
         fontweight="bold",
         y=0.97,
         color="#1a1a1a",
     )
 
-    z_axle = -2.00  # Sunk mount: rotary center aligned to Top Plate top surface Z = -2.00 mm (wheel top Z = +6.40 mm)
+    z_axle = -6.90  # Global Z of wheel rotary axis (wheel OD Ø22.00 mm -> top Z = +4.10 mm, bottom Z = -17.90 mm)
 
     # =========================================================================
-    # Panel 1: X-Z Front Cross-Section (Centered Cup Wheel + Twin Symmetric Snap Covers)
+    # Panel 1: X–Z Front Cross-Section along Axle (Y_pcb = -2.00 mm)
+    # Local u = x_pcb - 14.2875 mm (+u = East, -u = West)
     # =========================================================================
-    ax1.set_title("① 正面断面図 (X–Z 断面：中央揃えカップ型ホイール × 左右対称スナップカバー)", fontsize=10.5, fontweight="bold", pad=10)
-    ax1.set_xlim(-12.2, 12.2)
-    ax1.set_ylim(-15.0, 9.2)
+    ax1.set_title("① 正面断面図 (X–Z 断面：一体軸スチールホイール × 基板直付け3Dホール＆静音クリック)", fontsize=10.4, fontweight="bold", pad=10)
+    ax1.set_xlim(-19.5, 10.2)
+    ax1.set_ylim(-22.5, 7.6)
     ax1.set_aspect("equal")
     ax1.set_facecolor("#f8f9fa")
     ax1.grid(True, linestyle=":", linewidth=0.5, color="#cccccc")
-    ax1.set_xlabel("モジュール X 座標 [mm]（ホイール中心 X=0.00 ＝ 直下キー rEXSW2 左右中央と完全一致！）", fontsize=9.1)
-    ax1.set_ylabel("curcur40 グローバル Z 座標 [mm]（プレート上面 = -2.00 mm）", fontsize=9.1)
+    ax1.set_xlabel("ホイール軸方向ローカル座標 u [mm]（u = 0.00 がホイール中心 / 西 -u 側がセンサー＆スイッチ）", fontsize=8.8)
+    ax1.set_ylabel("curcur40 グローバル Z 座標 [mm]（ケース上縁 = 0.00 / プレート上面 = -2.00）", fontsize=8.8)
 
     ax1.axvline(0.0, color="#64748b", linestyle="-.", linewidth=0.9, zorder=1)
     ax1.axhline(3.60, color="#0077b6", linestyle=":", linewidth=1.1, zorder=2)
-    ax1.text(-11.9, 3.82, "隣接キーキャップ上面 Z = +3.60 mm", fontsize=7.1, fontweight="bold", color="#0077b6")
+    ax1.text(-19.1, 3.85, "隣接 Choc V2 キーキャップ天面 Z = +3.60 mm", fontsize=7.0, fontweight="bold", color="#0077b6")
 
-    # Main PCB (-5.80..-4.20) with 18.50 mm inner cutout (±9.25 mm)
-    ax1.add_patch(patches.Rectangle((-12.0, -5.80), 2.75, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
-    ax1.add_patch(patches.Rectangle((9.25, -5.80), 2.75, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
-    ax1.text(-10.6, -6.55, "メインPCB\n(-5.8〜-4.2)", ha="center", va="top", fontsize=6.6, color="#1b4332", fontweight="bold")
+    # Top Plate (-3.60..-2.00) with clean 5.60 mm slot (u in [-2.80, +2.80]) — NO COVERS!
+    ax1.add_patch(patches.Rectangle((-19.0, -3.60), 16.20, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.2, zorder=3))
+    ax1.add_patch(patches.Rectangle((2.80, -3.60), 7.00, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.2, zorder=3))
+    ax1.text(-11.2, -2.80, "右トッププレート (-3.6〜-2.0 / 5.6×22.0mm 窓)", ha="center", va="center", fontsize=6.6, color="white", fontweight="bold", zorder=4)
 
-    # Top Plate (-3.60..-2.00) with Twin-Snap window (±8.20 mm hidden under ±9.30 mm Twin Covers!)
-    ax1.add_patch(patches.Rectangle((-12.0, -3.60), 3.80, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
-    ax1.add_patch(patches.Rectangle((8.20, -3.60), 3.80, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=2))
+    # Right Main PCB (-5.80..-4.20) with cross cutout (u in [-8.29, +6.12] open at v = 0)
+    ax1.add_patch(patches.Rectangle((-19.0, -5.80), 10.71, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.2, zorder=3))
+    ax1.add_patch(patches.Rectangle((6.12, -5.80), 3.68, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.2, zorder=3))
+    ax1.text(-13.6, -5.00, "右メイン基板 (-5.8〜-4.2)", ha="center", va="center", fontsize=6.4, color="white", fontweight="bold", zorder=4)
 
-    # #04B Sunk Base Frame (-13.75..-11.15 floor + East flange [9.35..12.0] at Z = -11.50..-9.10)
-    # + Common M2 5.50mm Standoff (Z = -9.10..-3.60) + Top & Bottom M2x4mm Screws
-    sunk_base_poly = patches.Polygon(
+    # Sealed Tilted Case Floor (~Z = -21.8 to -19.4 in wheel region — 100% hole-free)
+    ax1.add_patch(patches.Polygon([[-19.0, -22.2], [9.8, -21.2], [9.8, -19.2], [-19.0, -20.2]],
+                                  closed=True, fc="#495057", ec="#212529", lw=1.1, alpha=0.85, zorder=2))
+    ax1.text(-4.5, -21.0, "100% 密閉・穴なし傾斜ボトムケース床（肉厚 2.40 mm）", ha="center", va="center", fontsize=6.8, color="white", fontweight="bold", zorder=3)
+
+    # #04 Wheel Cradle (static under-PCB bracket: U-saddle around u = -6.95, Z = -7.55 + West rest-stop bridge u in [-10.55, -9.35], Z in [-13.90, -12.45])
+    ax1.add_patch(patches.Rectangle((-10.55, -9.70), 6.70, 3.90, fc="#cbd5e1", ec="#334155", lw=1.0, alpha=0.65, linestyle="--", zorder=2))
+    ax1.add_patch(patches.Rectangle((-10.55, -13.90), 1.20, 8.10, fc="#94a3b8", ec="#334155", lw=1.0, zorder=3))
+
+    # #03 Wheel Rocker (West ear [-5.60, -2.55], East ear [+2.55, +5.65], bottom stirrup [-19.70, -18.35], West striker arm [-16.50, -5.60] at Z in [-12.00, -10.25])
+    rocker_poly = patches.Polygon(
         [
-            [-8.45, -13.75], [10.17, -13.75], [10.17, -11.50], [11.95, -11.50],
-            [11.95, -9.10], [9.35, -9.10], [9.35, -11.15], [-8.45, -11.15],
+            [-5.60, -19.70], [5.65, -19.70], [5.65, -5.35], [2.55, -5.35],
+            [2.55, -18.35], [-2.55, -18.35], [-2.55, -5.35], [-5.60, -5.35],
         ],
-        closed=True, fc="#264653", ec="#111111", lw=1.0, zorder=3,
+        closed=True, fc="#dee2e6", ec="#495057", lw=1.1, zorder=4,
     )
-    ax1.add_patch(sunk_base_poly)
-    # M2 5.50mm Female-Female Standoff (OD Ø3.0 mm, Z = -9.10..-3.60)
-    ax1.add_patch(patches.Rectangle((10.40, -9.10), 1.50, 5.50, fc="#e9c46a", ec="#7f5539", lw=1.0, zorder=4))
-    # Top M2x4mm Screw (head Z = -2.00..-1.00, shank Z = -6.00..-2.00)
-    ax1.add_patch(patches.Rectangle((10.20, -2.00), 1.85, 0.95, fc="#adb5bd", ec="#212529", lw=0.9, zorder=6))
-    ax1.add_patch(patches.Rectangle((10.65, -6.00), 1.00, 4.00, fc="#ced4da", ec="#212529", lw=0.8, hatch="///", zorder=5))
-    # Bottom M2x4mm Screw (head Z = -12.45..-11.50, shank Z = -11.50..-7.50)
-    ax1.add_patch(patches.Rectangle((10.20, -12.45), 1.85, 0.95, fc="#adb5bd", ec="#212529", lw=0.9, zorder=6))
-    ax1.add_patch(patches.Rectangle((10.65, -11.50), 1.00, 4.00, fc="#ced4da", ec="#212529", lw=0.8, hatch="///", zorder=5))
-    ax1.text(-0.2, -12.45, "#04B 沈み込みベース枠（M2 5.5mmスペーサー＋上下ネジ締結・ケース無改造）",
-             ha="center", va="center", fontsize=6.4, color="white", fontweight="bold", zorder=4)
+    ax1.add_patch(rocker_poly)
+    ax1.add_patch(patches.Rectangle((-16.50, -12.00), 10.90, 1.75, fc="#dee2e6", ec="#495057", lw=1.1, zorder=4))
+    # Integral Ø2.70 mm Pivot Trunnion at (u = -6.95, Z = -7.55)
+    ax1.add_patch(patches.Circle((-6.95, -7.55), 1.35, fc="#f8fafc", ec="#0f172a", lw=1.4, zorder=7))
+    ax1.plot([-6.95], [-7.55], marker="+", color="#0f172a", markersize=6, zorder=8)
 
-    # #03 Slim Rounded-Ear Carriage Pillars (West stepped ear [-4.55..-2.15] & East ear [+3.10..+5.35], Z in [-10.40, +1.45])
-    west_ear_poly = patches.Polygon(
-        [
-            [-4.55, -10.40], [-3.05, -10.40], [-3.05, -5.45],
-            [-2.15, -5.45], [-2.15, 1.45], [-4.55, 1.45],
-        ],
-        closed=True, fc="#dee2e6", ec="#495057", lw=1.0, zorder=3,
-    )
-    ax1.add_patch(west_ear_poly)
-    ax1.add_patch(patches.Rectangle((-7.84, -9.10), 3.29, 1.00, fc="#dee2e6", ec="#495057", lw=0.9, zorder=3))
-    ax1.add_patch(patches.Rectangle((3.10, -10.40), 2.25, 11.85, fc="#dee2e6", ec="#495057", lw=1.0, zorder=3))
+    # #01 1-Piece Integral-Shaft 45# Steel Flywheel:
+    # Rim u in [-2.20, +2.20], Z in [-17.90, +4.10]; Integral Ø2.90mm shoulders [-2.45, +2.45]; Integral Ø1.98mm shaft [-6.90, +4.72]
+    ax1.add_patch(patches.Rectangle((-6.90, z_axle - 0.99), 11.62, 1.98, fc="#e2e8f0", ec="#334155", lw=1.1, zorder=6))
+    ax1.add_patch(patches.Rectangle((-2.45, z_axle - 1.45), 4.90, 2.90, fc="#cbd5e1", ec="#334155", lw=1.0, zorder=6))
+    ax1.add_patch(patches.Rectangle((-2.20, z_axle - 11.00), 4.40, 22.00, fc="#b8c4d0", ec="#1e293b", lw=1.5, zorder=7))
+    ax1.text(0.0, -1.2, "#01 一体軸\n45#鋼ホイール\nØ22.0×4.4\n(13.12g)", ha="center", va="center", fontsize=6.5, fontweight="bold", color="#0f172a", zorder=8)
 
-    # #14 Shaft Ø2.0 x 10.0 mm SUS303 (X in [-3.85, +6.15], Z = -2.00 ± 1.00)
-    ax1.add_patch(patches.Rectangle((-3.85, z_axle - 1.0), 10.00, 2.0, fc="#f8f9fa", ec="#343a40", lw=1.1, zorder=5))
-    ax1.text(0.55, z_axle, "SUS303軸 Ø2.0", ha="center", va="center", fontsize=6.1, fontweight="bold", color="#212529", zorder=9)
+    # #07 2x NMB DDL-520ZZ Bearings (Ø2 x Ø5 x 2.30 mm at [-4.75, -2.45] & [+2.45, +4.75])
+    for bu in (-4.75, 2.45):
+        ax1.add_patch(patches.Rectangle((bu, z_axle - 2.50), 2.30, 5.00, fc="#ffffff", ec="#0077b6", lw=1.2, zorder=5))
 
-    # #12 Miniature Degreased Bearings (DDL-520 Ø5xØ2x1.5mm: [-3.65, -2.15] & [+3.10, +4.60]) + East SUS304 Shim Ring ([+2.63, +3.08])
-    ax1.add_patch(patches.Rectangle((-3.65, z_axle - 2.5), 1.50, 5.0, fc="#ffffff", ec="#0077b6", lw=1.2, zorder=4))
-    ax1.add_patch(patches.Rectangle((2.63, z_axle - 1.45), 0.45, 2.90, fc="#ffd166", ec="#7f5539", lw=0.85, zorder=6))
-    ax1.add_patch(patches.Rectangle((3.10, z_axle - 2.5), 1.50, 5.0, fc="#ffffff", ec="#0077b6", lw=1.2, zorder=4))
+    # #02 PA12 Magnet Holder (u in [-7.97, -5.92], Ø5.68 mm) + #08 D4x1mm Diametric Magnet (u in [-7.94, -6.94])
+    ax1.add_patch(patches.Rectangle((-7.97, z_axle - 2.84), 2.05, 5.68, fc="#94d2bd", ec="#005f73", lw=1.1, zorder=6))
+    ax1.add_patch(patches.Rectangle((-7.94, z_axle - 2.00), 1.00, 4.00, fc="#e63946", ec="#6a040f", lw=1.1, zorder=7))
 
-    # #07 Stepped Sensor Sub-PCB (X in [-7.80, -7.00], Z in [-8.10, +1.30]) + Coaxial #08 AS5600 (1.55mm at Z = z_axle) + #16 Diametric Magnet (D4x1mm)
-    ax1.add_patch(patches.Rectangle((-7.80, -8.10), 0.80, 9.40, fc="#2a9d8f", ec="#1b4332", lw=1.0, zorder=4))
-    ax1.add_patch(patches.Rectangle((-6.99, z_axle - 2.45), 1.55, 4.90, fc="#212529", ec="#000000", lw=1.0, zorder=5))
-    ax1.text(-6.21, z_axle, "AS5600", ha="center", va="center", fontsize=5.3, color="white", rotation=90, zorder=6)
-    ax1.add_patch(patches.Rectangle((-4.85, z_axle - 2.00), 1.00, 4.00, fc="#e63946", ec="#6a040f", lw=1.0, zorder=6))
+    # #05 Onboard rU6: TMAG5273A1QDBVR 3D Hall Sensor on Main PCB B.Cu (u = -10.11, Z = -6.95..-5.80)
+    ax1.add_patch(patches.Rectangle((-10.95, -6.95), 1.70, 1.15, fc="#1e293b", ec="#000000", lw=1.0, zorder=6))
+    ax1.text(-10.11, -6.38, "rU6", ha="center", va="center", fontsize=5.6, color="white", fontweight="bold", zorder=7)
 
-    # Twin 180°-Symmetric #20 Pyramid-Deep-R Snap Covers (X in [-9.30, -3.13] & [+3.13, +9.30], Z in [-1.99, +2.68])
-    # Section at Y = Y_AXLE: swept click-stroke tunnel (X >= -6.61, Z <= +1.87) & #07 PCB pocket (X in [-8.20, -5.75],
-    # Z <= +1.66); 0.40 mm gap to the #01 wheel (>= 0.30 mm at the ±0.10 mm lateral snap-leg play)
-    for sgn in (-1.0, 1.0):
-        cov_pts = [
-            [sgn * 3.13, 1.87],
-            [sgn * 3.13, 2.68],
-            [sgn * 8.30, 2.68],
-            [sgn * 8.60, 2.62],
-            [sgn * 8.90, 2.24],
-            [sgn * 9.10, 1.38],
-            [sgn * 9.25, 0.39],
-            [sgn * 9.30, -0.40],
-            [sgn * 9.30, -1.99],
-            [sgn * 8.20, -1.99],
-            [sgn * 8.20, 1.66],
-            [sgn * 6.61, 1.66],
-            [sgn * 6.61, 1.87],
-        ]
-        ax1.add_patch(patches.Polygon(cov_pts, closed=True, fc="#64748b", ec="#1e293b", lw=1.35, alpha=0.88, zorder=7))
-        # Snap-leg indicator below the cover (X in [±3.95, ±5.75], 1.80 mm wide located by 2.00 mm plate windows)
-        ax1.add_patch(patches.Rectangle((min(sgn * 3.95, sgn * 5.75), -4.55), 1.80, 2.56,
-                                        fc="#94a3b8", ec="#334155", lw=0.9, linestyle="--", alpha=0.75, zorder=5))
+    # #06 Onboard rEXSW1: Kailh Square Silent Switch on Main PCB B.Cu (u = -15.14, body Z = -9.15..-5.80, plunger Z = -10.10..-9.15)
+    ax1.add_patch(patches.Rectangle((-18.24, -9.15), 6.20, 3.35, fc="#f4a261", ec="#9c4100", lw=1.2, zorder=5))
+    ax1.add_patch(patches.Rectangle((-16.64, -10.10), 3.00, 0.95, fc="#e63946", ec="#6a040f", lw=1.0, zorder=6))
 
-    # #01 Cup-Shaped SUS304 Flywheel centered at X = 0.00 (X in [-2.73, +2.73], Z in [-10.40, +6.40], Ø9.6mm West pocket)
-    cup_poly = patches.Polygon(
-        [
-            [-2.73, z_axle - 8.40], [2.73, z_axle - 8.40], [2.73, z_axle - 6.25], [-0.57, z_axle - 6.25],
-            [-0.57, z_axle + 6.25], [2.73, z_axle + 6.25], [2.73, z_axle + 8.40], [-2.73, z_axle + 8.40],
-            [-2.73, z_axle + 4.80], [-1.80, z_axle + 4.80], [-1.80, z_axle - 4.80], [-2.73, z_axle - 4.80],
-        ],
-        closed=True, fc="#d8dee9", ec="#4c566a", lw=1.5, zorder=6,
-    )
-    ax1.add_patch(cup_poly)
-    ax1.add_patch(patches.Rectangle((-0.65, z_axle + 7.90), 1.30, 0.52, fc="#f8f9fa", ec="#4c566a", lw=0.9, zorder=7))
-    ax1.add_patch(patches.Rectangle((-0.65, z_axle - 8.42), 1.30, 0.52, fc="#f8f9fa", ec="#4c566a", lw=0.9, zorder=7))
-
-    # #02 Internal 9-Ball Hub (X in [-0.49, +2.61]) + #13 Balls + #17 NE218 (1.5x1.5) & #18 DIN916 M2x4mm Adjuster (Z = -6.30)
-    ax1.add_patch(patches.Rectangle((-0.49, z_axle - 6.20), 3.10, 12.40, fc="#a8dadc", ec="#1d3557", lw=1.2, zorder=6))
-    ax1.add_patch(patches.Circle((1.41, z_axle + 4.30), 1.00, fc="#495057", ec="#111111", lw=0.9, zorder=7))
-    ax1.add_patch(patches.Circle((1.41, z_axle - 4.30), 1.00, fc="#495057", ec="#111111", lw=0.9, zorder=7))
-    ax1.add_patch(patches.Rectangle((3.15, z_axle - 4.30 - 0.75), 1.50, 1.50, fc="#e63946", ec="#6a040f", lw=1.0, zorder=8))
-    ax1.add_patch(patches.Rectangle((4.65, z_axle - 4.30 - 0.95), 4.00, 1.90, fc="#adb5bd", ec="#212529", lw=1.0, hatch="///", zorder=8))
-
-    ax1.annotate("#01 カップ型SUS304 (X=0中央揃え)\n頂点 Z=+6.40mm (キー上 +2.8mm)",
-                 xy=(0.0, 6.40), xytext=(0.0, 8.15), ha="center", va="center",
-                 arrowprops=dict(arrowstyle="->", color="#1f2937", lw=1.15),
-                 fontsize=6.9, fontweight="bold", color="#1f2937",
-                 bbox=dict(boxstyle="round,pad=0.22", fc="#f1f5f9", ec="#4c566a", lw=0.9), zorder=10)
-    ax1.annotate("#20 ホイールカバー (エッジ曲面ピラミッド)\n(180°対称共通部品×2 / 頂点 +2.68mm)\n#07基板＆軸受丸耳を完全目隠し!",
-                 xy=(-6.2, 2.55), xytext=(-7.8, 6.75), ha="center", va="center",
+    # Callouts on Panel 1
+    ax1.annotate("#01 1ピースCNC一体軸ホイール\n頂点 Z=+4.10mm（キー上わずか +0.50mm!）\n段付き軸一体削り出し＝シムリング不要",
+                 xy=(0.0, 4.10), xytext=(2.8, 5.85), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#1e293b", lw=1.15),
-                 fontsize=6.7, fontweight="bold", color="#0f172a",
-                 bbox=dict(boxstyle="round,pad=0.22", fc="#e2e8f0", ec="#334155", lw=0.9), zorder=10)
-    ax1.annotate("#02 内蔵9球ハブ\n(#01カップ内へ100%格納)",
-                 xy=(1.5, 3.6), xytext=(7.8, 6.85), ha="center", va="center",
-                 arrowprops=dict(arrowstyle="->", color="#1d3557", lw=1.15),
-                 fontsize=6.8, fontweight="bold", color="#1d3557",
-                 bbox=dict(boxstyle="round,pad=0.22", fc="#e0fbfc", ec="#1d3557", lw=0.9), zorder=10)
+                 fontsize=6.6, fontweight="bold", color="#0f172a",
+                 bbox=dict(boxstyle="round,pad=0.22", fc="#f1f5f9", ec="#475569", lw=0.9), zorder=10)
+
+    ax1.annotate("#05 rU6: TMAG5273 (PCBA実装済)\n＋ #08 D4×1mm磁石（#02 D穴圧入・接着不要）\nサブ基板・手配線ハーネスを完全廃止!",
+                 xy=(-8.5, -6.5), xytext=(-11.6, 5.85), ha="center", va="center",
+                 arrowprops=dict(arrowstyle="->", color="#005f73", lw=1.15),
+                 fontsize=6.5, fontweight="bold", color="#005f73",
+                 bbox=dict(boxstyle="round,pad=0.22", fc="#e0fbfc", ec="#005f73", lw=0.9), zorder=10)
+
+    ax1.annotate("#06 rEXSW1 静音SW（B.Cu直付け）\n一体トラニオン支点(u=-6.95)のてこ比で\n約68gfの軽快な静音ミドルクリック",
+                 xy=(-15.14, -10.10), xytext=(-13.8, -16.8), ha="center", va="center",
+                 arrowprops=dict(arrowstyle="->", color="#9c4100", lw=1.15),
+                 fontsize=6.5, fontweight="bold", color="#7f2704",
+                 bbox=dict(boxstyle="round,pad=0.22", fc="#fff3cd", ec="#d97706", lw=0.85), zorder=10)
+
+    ax1.annotate("#07 DDL-520ZZ×2\n(標準2.3mm厚・脱脂)",
+                 xy=(3.60, -6.90), xytext=(6.6, -12.6), ha="center", va="center",
+                 arrowprops=dict(arrowstyle="->", color="#0077b6", lw=1.1),
+                 fontsize=6.5, fontweight="bold", color="#023e8a",
+                 bbox=dict(boxstyle="round,pad=0.20", fc="#e0f2fe", ec="#0077b6", lw=0.85), zorder=10)
 
     # =========================================================================
-    # Panel 2: Y-Z Side Section (Hinged Silent Click + Switch-Style Cover Snap Hooks)
+    # Panel 2: Y–Z Side Cross-Section along Wheel Plane (u = 0.00 mm)
+    # Local v = -(y_pcb + 2.00 mm) (+v = North, -v = South)
     # =========================================================================
-    ax2.set_title("② 側面機構図 (Y–Z 断面：スイッチ式カバー爪締結 × 一体揺動静音クリック)", fontsize=10.5, fontweight="bold", pad=10)
-    ax2.set_xlim(-12.5, 13.5)
-    ax2.set_ylim(-15.0, 9.2)
+    ax2.set_title("② 側面機構図 (Y–Z 断面：24溝磁気デテント無段階調整 × 上方向M2×6mmヒートセット締結)", fontsize=10.4, fontweight="bold", pad=10)
+    ax2.set_xlim(-21.5, 16.5)
+    ax2.set_ylim(-22.5, 7.6)
     ax2.set_aspect("equal")
     ax2.set_facecolor("#f8f9fa")
     ax2.grid(True, linestyle=":", linewidth=0.5, color="#cccccc")
-    ax2.set_xlabel("モジュール Y 座標 [mm]（北 -Y ヒンジ軸 ／ 南 +Y 静音スイッチ ＆ 隣接キー rEXSW2）", fontsize=9.1)
-    ax2.set_ylabel("curcur40 グローバル Z 座標 [mm]", fontsize=9.1)
+    ax2.set_xlabel("南北ローカル座標 v [mm]（南 -v 側：接着不要ラチェット磁力調整ネジ ／ 北 +v 側）", fontsize=8.8)
+    ax2.set_ylabel("curcur40 グローバル Z 座標 [mm]", fontsize=8.8)
 
     ax2.axhline(3.60, color="#0077b6", linestyle=":", linewidth=1.1, zorder=2)
 
-    # Main PCB (-5.80..-4.20) & Top Plate (-3.60..-2.00, snap-window ±5.43 mm)
-    ax2.add_patch(patches.Rectangle((-12.3, -5.80), 3.05, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
-    ax2.add_patch(patches.Rectangle((9.25, -5.80), 4.05, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.1, zorder=2))
-    ax2.add_patch(patches.Rectangle((-12.3, -3.60), 6.77, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=3))
-    ax2.add_patch(patches.Rectangle((5.33, -3.60), 7.97, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.1, zorder=3))
+    # Top Plate (-3.60..-2.00, 22.00 mm window v in [-11.00, +11.00]) + WC1/WC2 Ø4.40mm clearance bore shown at v = +7.80 (projected)
+    ax2.add_patch(patches.Rectangle((-21.0, -3.60), 10.00, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.2, zorder=3))
+    ax2.add_patch(patches.Rectangle((11.00, -3.60), 5.00, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.2, zorder=3))
 
-    # #04B Sunk Base Floor (with Ø2.00 mm switch pin hole at Y = 5.70 ± 1.00) & North Hinge Pin Ø2.0 mm at (Y = -6.85, Z = -10.40)
-    ax2.add_patch(patches.Rectangle((-8.80, -13.75), 13.50, 1.20, fc="#264653", ec="#111111", lw=1.0, zorder=2))
-    ax2.add_patch(patches.Rectangle((6.70, -13.75), 2.10, 1.20, fc="#264653", ec="#111111", lw=1.0, zorder=2))
-    ax2.add_patch(patches.Circle((-6.85, -10.40), 1.00, fc="#ffffff", ec="#212529", lw=1.5, zorder=6))
-    ax2.text(-6.85, -11.65, "北端ヒンジ軸 Ø2.0", ha="center", va="top", fontsize=6.6, fontweight="bold", color="#212529",
-             bbox=dict(boxstyle="round,pad=0.14", fc="#ffffff", ec="#adb5bd", lw=0.7), zorder=8)
+    # Main PCB (-5.80..-4.20, 23.00 mm window v in [-11.50, +11.50])
+    ax2.add_patch(patches.Rectangle((-21.0, -5.80), 9.50, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.2, zorder=3))
+    ax2.add_patch(patches.Rectangle((11.50, -5.80), 4.50, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.2, zorder=3))
 
-    # Unitized Inner Carriage
-    carriage_poly = patches.Polygon(
-        [[-8.77, -10.40], [7.10, -8.17], [7.10, -7.32], [3.35, -7.32], [3.35, 1.45], [-3.55, 1.45], [-8.77, -7.25]],
-        closed=True, fc="#dee2e6", ec="#495057", lw=1.1, alpha=0.55, zorder=2,
+    # Sealed Case Floor
+    ax2.add_patch(patches.Rectangle((-21.0, -21.8), 37.0, 2.2, fc="#495057", ec="#212529", lw=1.1, alpha=0.85, zorder=2))
+
+    # Adjacent South Keycap (rEXSW2 at y_pcb = +16.05 -> v = -18.05, North edge around v = -10.5 below / keycap North edge v = -11.45)
+    ax2.add_patch(patches.Rectangle((-20.8, -0.80), 8.80, 4.40, fc="#e9ecef", ec="#495057", lw=1.2, zorder=4))
+    ax2.text(-16.4, 1.40, "南隣接キー\nrEXSW2", ha="center", va="center", fontsize=6.6, fontweight="bold", color="#343a40", zorder=5)
+
+    # Projected WC1 Cradle Boss + Brass Insert (M2xL3.0) + Sub-Flush Top-Down M2x6.0mm Screw at North (v = +13.2 schematic)
+    ax2.add_patch(patches.Rectangle((11.6, -9.70), 4.2, 3.90, fc="#cbd5e1", ec="#334155", lw=1.1, zorder=3))
+    ax2.add_patch(patches.Rectangle((12.9, -8.80), 1.6, 3.00, fc="#e9c46a", ec="#7f5539", lw=1.0, hatch="///", zorder=4))
+    ax2.add_patch(patches.Rectangle((12.3, -4.20), 2.8, 1.15, fc="#adb5bd", ec="#212529", lw=1.0, zorder=6))
+    ax2.add_patch(patches.Rectangle((13.1, -10.20), 1.2, 6.00, fc="#ced4da", ec="#212529", lw=0.9, zorder=5))
+
+    # #01 Ø22.00 mm 24-Flute Ferromagnetic 45# Steel Wheel (centered at v = 0.00, Z = -6.90)
+    ax2.add_patch(patches.Circle((0.0, z_axle), 11.00, fc="#b8c4d0", ec="#1e293b", lw=1.6, alpha=0.85, zorder=5))
+    for i in range(24):
+        ang = np.deg2rad(i * 15.0)
+        ax2.plot([10.50 * np.cos(ang), 11.00 * np.cos(ang)],
+                 [z_axle + 10.50 * np.sin(ang), z_axle + 11.00 * np.sin(ang)],
+                 color="#1e293b", lw=1.0, zorder=6)
+    ax2.add_patch(patches.Circle((0.0, z_axle), 1.45, fc="#cbd5e1", ec="#334155", lw=1.0, zorder=6))
+    ax2.add_patch(patches.Circle((0.0, z_axle), 0.99, fc="#f8fafc", ec="#0f172a", lw=1.2, zorder=7))
+    ax2.text(0.0, -5.2, "Ø22.0mm 一体軸45#鋼ホイール\n外周24フルート溝 (15°ピッチ)\nJ ≈ 790 g·mm² の大慣性スピン",
+             ha="center", va="center", fontsize=6.7, fontweight="bold", color="#0f172a",
+             bbox=dict(boxstyle="round,pad=0.20", fc="#f8fafc", ec="#475569", lw=0.8, alpha=0.92), zorder=8)
+
+    # #03 Rocker Bottom Bridge & South Glue-Free Magnetic Detent Boss (v in [-16.40, -11.40], bore at Z = -11.30 mm)
+    rocker_yz = patches.Polygon(
+        [
+            [-16.40, -19.70], [3.40, -19.70], [3.40, -18.35],
+            [-11.40, -18.35], [-11.40, -8.50], [-16.40, -8.50],
+        ],
+        closed=True, fc="#dee2e6", ec="#495057", lw=1.2, zorder=4,
     )
-    ax2.add_patch(carriage_poly)
+    ax2.add_patch(rocker_yz)
+    # Bore at Z = -11.30 mm (w = -4.40) + M2xL3.0 Brass Insert (v in [-16.40, -13.40]) + Steel M2x6mm Screw + Ø2x2mm Axial Magnet (v in [-13.08, -11.08])
+    z_det = -11.30
+    ax2.add_patch(patches.Rectangle((-16.40, z_det - 1.425), 5.00, 2.85, fc="#ffffff", ec="#495057", lw=0.9, zorder=5))
+    ax2.add_patch(patches.Rectangle((-16.40, z_det - 1.55), 3.00, 3.10, fc="#e9c46a", ec="#7f5539", lw=1.0, hatch="///", zorder=6))
+    ax2.add_patch(patches.Rectangle((-19.10, z_det - 0.98), 6.00, 1.96, fc="#ced4da", ec="#212529", lw=1.0, hatch="//", zorder=7))
+    ax2.add_patch(patches.Rectangle((-20.30, z_det - 1.90), 1.20, 3.80, fc="#adb5bd", ec="#212529", lw=1.1, zorder=7))
+    ax2.add_patch(patches.Rectangle((-13.08, z_det - 1.00), 2.00, 2.00, fc="#e63946", ec="#6a040f", lw=1.2, zorder=8))
 
-    # #10 Kailh Square Silent Switch (H=4.3mm published drawing: 6.20 x 3.35 mm body + Ø3.00 x 0.95 mm plunger = 4.30 mm FP + 2x 3.30 mm THT pins)
-    ax2.add_patch(patches.Rectangle((5.50, -15.83), 0.40, 3.30, fc="#ced4da", ec="#343a40", lw=0.9, zorder=3))
-    ax2.add_patch(patches.Rectangle((2.60, -12.53), 6.20, 3.35, fc="#f4a261", ec="#9c4100", lw=1.2, zorder=4))
-    ax2.add_patch(patches.Rectangle((4.20, -9.18), 3.00, 0.95, fc="#e63946", ec="#6a040f", lw=1.0, zorder=5))
-    ax2.annotate("#10 静音マイクロSW (Kailh Silent)\n底面2穴からピンが貫通＆抜け止め!",
-                 xy=(5.70, -10.8), xytext=(5.6, -14.25), ha="center", va="center",
-                 arrowprops=dict(arrowstyle="->", color="#9c4100", lw=1.1),
-                 fontsize=6.6, fontweight="bold", color="#7f2704",
-                 bbox=dict(boxstyle="round,pad=0.18", fc="#fff3cd", ec="#d97706", lw=0.8), zorder=9)
+    # Callouts on Panel 2
+    ax2.annotate("接着剤ゼロ! 磁気デテント調整機構\n• 真鍮インサート(#10)＋鉄M2×6mmネジ(#11)\n• ネジ先端に #09 Ø2×2mm磁石が自己吸着!\n• 45#鋼24溝とのギャップ加減で\n  完全フリースピン〜明快ノッチを自在調整",
+                 xy=(-12.1, z_det), xytext=(-14.2, -15.8), ha="center", va="center",
+                 arrowprops=dict(arrowstyle="->", color="#d90429", lw=1.2),
+                 fontsize=6.4, fontweight="bold", color="#9d0208",
+                 bbox=dict(boxstyle="round,pad=0.22", fc="#ffe5ec", ec="#d90429", lw=0.9), zorder=10)
 
-    # #20 Pyramid-Deep-R Cover Side Silhouette (Y in [-7.80, +7.60], Z in [-1.99, +2.68]): stays >= 0.48 mm inside
-    # the Ø16.80 mm wheel outline when viewed along the axle, + N/S Snap Hooks
-    yc = -0.10
-    cov_half = [(-1.99, 7.70), (-0.40, 7.70), (0.00, 7.66), (0.50, 7.49), (1.00, 7.25), (1.50, 7.02),
-                (2.00, 6.72), (2.40, 6.18), (2.60, 5.61), (2.68, 5.10)]
-    cov_yz = patches.Polygon(
-        [[yc - v, z] for (z, v) in cov_half] + [[yc + v, z] for (z, v) in reversed(cov_half)],
-        closed=True, fc="#64748b", ec="#1e293b", lw=1.25, alpha=0.42, zorder=7,
-    )
-    ax2.add_patch(cov_yz)
-    for sgn in (-1.0, 1.0):
-        hk = patches.Polygon(
-            [
-                [yc + sgn * 4.52, -1.99],
-                [yc + sgn * 5.37, -1.99],
-                [yc + sgn * 5.37, -3.63],
-                [yc + sgn * 5.65, -3.76],
-                [yc + sgn * 5.37, -4.55],
-                [yc + sgn * 4.52, -4.55],
-            ],
-            closed=True, fc="#475569", ec="#0f172a", lw=1.0, zorder=8,
-        )
-        ax2.add_patch(hk)
-    ax2.annotate("キースイッチ方式スナップ爪\n(1.6mmプレート裏面へパチン固定!)",
-                 xy=(-5.65, -3.75), xytext=(-7.2, 6.80), ha="center", va="center",
-                 arrowprops=dict(arrowstyle="->", color="#0f172a", lw=1.1),
-                 fontsize=6.8, fontweight="bold", color="#0f172a",
-                 bbox=dict(boxstyle="round,pad=0.22", fc="#e2e8f0", ec="#334155", lw=0.9), zorder=10)
-
-    # Adjacent South Keycap (rEXSW2 North edge at Y = +10.95 mm, Z in [-0.80, +3.60])
-    ax2.add_patch(patches.Rectangle((10.95, -0.80), 2.35, 4.40, fc="#e9ecef", ec="#495057", lw=1.2, zorder=5))
-    ax2.annotate("南キー余裕\n2.72mm", xy=(8.30, 1.40), xytext=(9.65, 5.50),
-                 arrowprops=dict(arrowstyle="<->", color="#2b9348", lw=1.1),
-                 fontsize=6.8, fontweight="bold", color="#1b4332", ha="center", zorder=9)
-
-    # Wheel Circle (Ø16.80 mm at Y = -0.10, Z = -2.00) + Internal 9-Ball Hub
-    wy, wz = -0.10, z_axle
-    ax2.add_patch(patches.Circle((wy, wz), 8.40, fc="#d8dee9", ec="#4c566a", lw=1.6, alpha=0.65, zorder=4))
-    for a in np.linspace(0, 2 * np.pi, 36, endpoint=False):
-        ax2.plot([wy + 7.95 * np.cos(a), wy + 8.40 * np.cos(a)],
-                 [wz + 7.95 * np.sin(a), wz + 8.40 * np.sin(a)], color="#4c566a", lw=0.8, zorder=5)
-    ax2.add_patch(patches.Circle((wy, wz), 6.20, fc="#a8dadc", ec="#1d3557", lw=1.1, linestyle="--", alpha=0.85, zorder=5))
-    for a in np.linspace(0, 2 * np.pi, 9, endpoint=False):
-        bx = wy + 4.30 * np.sin(a)
-        bz = wz - 4.30 * np.cos(a)
-        ax2.add_patch(patches.Circle((bx, bz), 1.00, fc="#495057", ec="#111111", lw=0.75, zorder=6))
-    ax2.add_patch(patches.Circle((wy, wz), 1.00, fc="#ffffff", ec="#212529", lw=1.2, zorder=6))
-    ax2.text(wy, 4.65, "Ø16.8 カップ型SUS304\n(中心 Z = -2.00 mm)", ha="center", va="center",
-             fontsize=6.9, fontweight="bold", color="#1f2937", zorder=9)
-
-    # Bottom Axial M2 Magnet Gap Adjuster at 6 o'clock (Y = -0.10, Z = -6.30)
-    mz = wz - 4.30
-    ax2.add_patch(patches.Circle((wy, mz), 1.05, fc="#e63946", ec="#6a040f", lw=1.3, zorder=8))
-    ax2.annotate("#18 東軸受下部 M2磁力調整ネジ\n(基板下 Z=-6.30mm へ完全隠蔽)",
-                 xy=(wy - 0.9, mz), xytext=(-8.2, -8.35), ha="center", va="center",
-                 arrowprops=dict(arrowstyle="->", color="#d90429", lw=1.15),
-                 fontsize=6.6, fontweight="bold", color="#9d0208",
-                 bbox=dict(boxstyle="round,pad=0.20", fc="#ffe5ec", ec="#d90429", lw=0.85), zorder=9)
+    ax2.annotate("WC1/WC2 上方向 M2×6mm 締結\n• プレート Ø4.4mm 頭逃げ穴でネジ頭沈み込み\n• #04 クレードルの真鍮インサートへ直締結\n• スナップカバー・5.5mmスペーサー完全廃止!",
+                 xy=(13.7, -4.20), xytext=(5.8, 5.55), ha="center", va="center",
+                 arrowprops=dict(arrowstyle="->", color="#1d3557", lw=1.15),
+                 fontsize=6.5, fontweight="bold", color="#1d3557",
+                 bbox=dict(boxstyle="round,pad=0.22", fc="#e0f2fe", ec="#1d3557", lw=0.9), zorder=10)
 
     plt.tight_layout(rect=[0, 0.01, 1, 0.94])
     out_path = ASSETS_DIR / "passive_inertia_wheel_spec.png"
@@ -382,8 +283,10 @@ def _draw_spec_diagram():
     print(f"Saved {out_path}")
 
 
-def _autocrop_pil(img_path: Path, pad_frac: float = 0.08) -> tuple[np.ndarray, tuple[float, float, float]]:
-    """Crop uniform background around rendered object."""
+def _autocrop_pil(
+    img_path: Path, pad_frac: float = 0.08, target_aspect: float | None = None
+) -> tuple[np.ndarray, tuple[float, float, float]]:
+    """Crop uniform background around rendered object, optionally letterboxing to `target_aspect` (w/h)."""
     raw = Image.open(img_path)
     if raw.mode in ("RGBA", "LA"):
         white = Image.new("RGBA", raw.size, (255, 255, 255, 255))
@@ -392,251 +295,183 @@ def _autocrop_pil(img_path: Path, pad_frac: float = 0.08) -> tuple[np.ndarray, t
         im = raw.convert("RGB")
     arr = np.asarray(im, dtype=np.uint8)
     bg = arr[2, 2].astype(np.int16)
+    bg_u8 = arr[2, 2]
     thresh = 35 if int(bg.min()) > 245 else 8
     diff = np.abs(arr.astype(np.int16) - bg).max(axis=2)
     ys, xs = np.where(diff > thresh)
     if len(xs) == 0:
-        return arr.astype(np.float32) / 255.0, tuple((bg / 255.0).tolist())
-    x0, x1 = int(xs.min()), int(xs.max())
-    y0, y1 = int(ys.min()), int(ys.max())
-    bw = max(1, x1 - x0)
-    bh = max(1, y1 - y0)
-    px = int(bw * pad_frac)
-    py = int(bh * pad_frac)
-    x0 = max(0, x0 - px)
-    x1 = min(arr.shape[1] - 1, x1 + px)
-    y0 = max(0, y0 - py)
-    y1 = min(arr.shape[0] - 1, y1 + py)
-    cropped = arr[y0 : y1 + 1, x0 : x1 + 1].astype(np.float32) / 255.0
+        cropped_u8 = arr
+    else:
+        x0, x1 = int(xs.min()), int(xs.max())
+        y0, y1 = int(ys.min()), int(ys.max())
+        bw = max(1, x1 - x0)
+        bh = max(1, y1 - y0)
+        px = int(bw * pad_frac)
+        py = int(bh * pad_frac)
+        x0 = max(0, x0 - px)
+        x1 = min(arr.shape[1] - 1, x1 + px)
+        y0 = max(0, y0 - py)
+        y1 = min(arr.shape[0] - 1, y1 + py)
+        cropped_u8 = arr[y0 : y1 + 1, x0 : x1 + 1]
+
+    if target_aspect is not None:
+        ch, cw = cropped_u8.shape[:2]
+        cur_asp = cw / max(1, ch)
+        if cur_asp < target_aspect:
+            new_w = int(round(ch * target_aspect))
+            canvas = np.broadcast_to(bg_u8, (ch, new_w, 3)).copy()
+            ox = (new_w - cw) // 2
+            canvas[:, ox : ox + cw, :] = cropped_u8
+            cropped_u8 = canvas
+        elif cur_asp > target_aspect:
+            new_h = int(round(cw / target_aspect))
+            canvas = np.broadcast_to(bg_u8, (new_h, cw, 3)).copy()
+            oy = (new_h - ch) // 2
+            canvas[oy : oy + ch, :, :] = cropped_u8
+            cropped_u8 = canvas
+
+    cropped = cropped_u8.astype(np.float32) / 255.0
     return cropped, tuple((bg / 255.0).tolist())
 
 
 def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
-    """Build helper 3D STEP models for off-the-shelf & upright components & render all thumbnails in one cadgen job."""
+    """Build helper 3D STEP models for off-the-shelf & exploded components and render thumbnails in one cadgen job."""
     gen_code = textwrap.dedent(
         f"""
         import math, sys
         from pathlib import Path
-        import build123d as bd
+        from cadgen import build123d as bd
 
         sys.path.insert(0, {repr(str(WORKSPACE / "scripts"))})
         import generate_inertia_wheel as giw
 
         out = Path({repr(str(tmp_dir))})
 
-        # 1. Upright Carriage (assembled orientation)
-        car = giw.build_wheel_carriage_assembled()
-        c_bb = car.bounding_box()
-        car = car.moved(bd.Location((0, 0, -c_bb.min.Z)))
-        bd.export_step(car, str(out / "p03_carriage.step"))
-
-        # 1b. Upright #20 Pyramid-Deep-R Cover Pair (showing exterior pyramid curves + interior tunnel/snap hooks!)
-        cov_w = giw.build_wheel_cover_plate_coords()
-        cov_e = cov_w.moved(bd.Location((0.0, -giw.Y_AXLE, 0.0))).rotate(bd.Axis.Z, 180).moved(bd.Location((5.5, giw.Y_AXLE, 0.0))).solids()[0]
-        cov_e.label = "Wheel_Pyramid_Cover_Companion"
-        cov_w_shifted = cov_w.moved(bd.Location((-2.5, 0.0, 0.0))).solids()[0]
-        cov_w_shifted.label = "Wheel_Pyramid_Cover_Sensor"
-        bd.export_step(bd.Compound(children=[cov_w_shifted, cov_e]), str(out / "p20_cover_pair.step"))
-
-        # 1c. 3D Exploded Module Assembly (including lifted #20 Twin Pyramid-Deep-R Covers!)
-        mod_parts = giw.assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=True, include_covers=True)
+        # 0. Exploded 3D Assembly of the Under-Plate Inertia Wheel
+        mov, stat, screws = giw.assemble_wheel_parts_global(click_deg=0.0)
         exp_offsets = {{
-            "Wheel_Pyramid_Cover_Sensor": (-11.0, 0.0, 15.0),
-            "Wheel_Pyramid_Cover_Companion": (11.0, 0.0, 15.0),
-            "AS5600_Sensor_SubPCB": (-13.5, 0.0, 6.5),
-            "AS5600_SOIC8_IC": (-12.5, 0.0, 6.5),
-            "AS5600_Cap_C1_100nF": (-12.5, 0.0, 6.5),
-            "AS5600_Cap_C2_1uF": (-12.5, 0.0, 6.5),
-            "Diametric_Magnet_4x1mm": (-8.5, 0.0, 6.5),
-            "Bearing_DDL520_West": (-5.2, 0.0, 6.5),
-            "SUS304_Flywheel_Cup_16p8mm": (-1.2, 0.0, 6.5),
-            "SUS303_Axle_Shaft_2x10mm": (1.5, 0.0, 6.5),
-            "Ratchet_Hub_Internal_Resin": (7.5, 0.0, 6.5),
-            "SUS304_Inner_Race_Shim_M2x3x0p5": (12.8, 0.0, 6.5),
-            "Bearing_DDL520_East": (15.5, 0.0, 6.5),
-            "Wheel_Hinged_Carriage": (0.0, 0.0, -3.0),
-            "M2_Magnet_Adjuster_And_NdFeB": (8.8, 0.0, -3.0),
-            "Wheel_Base_Frame_Sunk": (0.0, 0.0, -12.5),
-            "Kailh_Silent_Switch_6x6x4p3": (0.0, 0.0, -9.5),
-            "Hinge_Pin_SUS303_2x16mm": (-10.5, 0.0, -11.5),
+            "Magnet_D4x1mm_Diametric": (-11.5, 0.0, 9.0),
+            "Magnet_Holder_PA12": (-7.5, 0.0, 9.0),
+            "Bearing_DDL520ZZ_West": (-3.8, 0.0, 9.0),
+            "Steel_Flywheel_22mm": (1.5, 0.0, 9.0),
+            "Bearing_DDL520ZZ_East": (8.5, 0.0, 9.0),
+            "Wheel_Rocker_PA12": (0.0, 0.0, -2.5),
+            "Magnet_D2x2mm_Axial_Detent": (0.0, -5.5, -2.5),
+            "HeatSet_Insert_M2_Detent": (0.0, -9.5, -2.5),
+            "Screw_M2x6_Detent_Adjuster": (0.0, -14.5, -2.5),
+            "Wheel_Cradle_PA12": (0.0, 0.0, -13.5),
+            "HeatSet_Insert_M2_WC1": (0.0, 0.0, -9.5),
+            "HeatSet_Insert_M2_WC2": (0.0, 0.0, -9.5),
+            "Top_Screw_M2x6_WC1": (0.0, 0.0, 15.5),
+            "Top_Screw_M2x6_WC2": (0.0, 0.0, 15.5),
         }}
-        exploded_children = []
-        for s in mod_parts:
+        exp_children = []
+        for s in mov + stat + screws:
             lbl = s.label
-            if lbl.startswith("Steel_Ball_2mm_"):
-                dx, dy, dz = (10.2, 0.0, 6.5)
-            elif lbl.startswith("Sunk_Mount_Standoff_"):
-                dx, dy, dz = (0.0, 0.0, -5.0)
-            elif lbl.startswith("Sunk_Mount_Bottom_Screw_"):
-                dx, dy, dz = (0.0, 0.0, -16.5)
-            else:
-                dx, dy, dz = exp_offsets.get(lbl, (0.0, 0.0, 0.0))
+            dx, dy, dz = exp_offsets.get(lbl, (0.0, 0.0, 0.0))
             ms = s.moved(bd.Location((dx, dy, dz))).solids()[0]
             ms.label = lbl
-            exploded_children.append(ms)
-        bd.export_step(bd.Compound(children=exploded_children), str(out / "mod_exploded.step"))
+            exp_children.append(ms)
+        bd.export_step(bd.Compound(children=exp_children), str(out / "mod_exploded.step"))
 
-        # 2. AS5600-ASOT (SOIC-8) + 2x SMD Capacitors (100nF, 1uF)
-        ic_body = bd.Box(3.9, 4.9, 1.35, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-1.5, 0, 0.25)))
-        ic_body = ic_body - bd.Cylinder(0.35, 0.3, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-2.7, 1.6, 1.40)))
-        ic_body.label = "AS5600_Body"
-        pins = []
-        for idx, py in enumerate([-1.905, -0.635, 0.635, 1.905]):
+        # 1. Assembled-orientation Flywheel (axle horizontal)
+        fw = giw.build_steel_flywheel_local()
+        fw = fw.moved(bd.Location((0, 0, -fw.bounding_box().min.Z))).solids()[0]
+        fw.label = "Steel_Flywheel_22mm"
+        bd.export_step(fw, str(out / "p01_flywheel.step"))
+
+        # 2. Upright Cradle (showing upward U-saddles & WC1/WC2 bosses)
+        cr = giw.build_wheel_cradle_local()
+        cr = cr.moved(bd.Location((0, 0, -cr.bounding_box().min.Z))).solids()[0]
+        cr.label = "Wheel_Cradle_PA12"
+        bd.export_step(cr, str(out / "p04_cradle_upright.step"))
+
+        # 3. Onboard rU6: TMAG5273A1QDBVR (SOT-23-6) + SMD Passives (rC18, rR11..rR13)
+        ic = bd.Box(1.70, 2.95, 0.95, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-1.4, 0.0, 0.15)))
+        ic = ic - bd.Cylinder(0.22, 0.25, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-1.95, 1.05, 0.92)))
+        ic.label = "TMAG5273_SOT23_6"
+        sot_parts = [ic]
+        for idx, py in enumerate([-0.95, 0.0, 0.95]):
             for side, sx in [("L", -1.0), ("R", 1.0)]:
-                p1 = bd.Box(0.95, 0.42, 0.22, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-1.5 + sx * 2.35, py, 0.0)))
-                p2 = bd.Box(0.35, 0.42, 0.85, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-1.5 + sx * 2.02, py, 0.0)))
-                p = (p1 + p2).solids()[0]
-                p.label = f"Pin_{{side}}_{{idx}}"
-                pins.append(p)
-        caps = []
-        for ci, cy in enumerate([-1.2, 1.2]):
-            cb = bd.Box(1.0, 1.6, 0.8, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((3.2, cy, 0.0)))
-            cb.label = f"Cap_Body_{{ci}}"
-            ct1 = bd.Box(1.04, 0.35, 0.82, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((3.2, cy - 0.65, 0.0)))
-            ct1.label = f"Cap_T1_{{ci}}"
-            ct2 = bd.Box(1.04, 0.35, 0.82, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((3.2, cy + 0.65, 0.0)))
-            ct2.label = f"Cap_T2_{{ci}}"
-            caps.extend([cb, ct1, ct2])
-        bd.export_step(bd.Compound(children=[ic_body, *pins, *caps]), str(out / "p08_as5600.step"))
+                lead = bd.Box(0.65, 0.36, 0.22, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-1.4 + sx * 1.12, py, 0.0)))
+                lead.label = f"Lead_{{side}}_{{idx}}"
+                sot_parts.append(lead)
+        for ci, cy in enumerate([-1.3, 0.0, 1.3]):
+            sm = bd.Box(1.0, 1.6, 0.55, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((2.2, cy, 0.0)))
+            sm.label = f"SMD_0603_{{ci}}"
+            sot_parts.append(sm)
+        bd.export_step(bd.Compound(children=sot_parts), str(out / "p05_tmag5273.step"))
 
-        # 3. Waveshare RP2040-Zero (23.5 x 18.0 mm)
-        pcb = bd.Box(23.5, 18.0, 1.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-        pcb.label = "RP2040_PCB"
-        usbc = bd.Box(7.4, 8.9, 3.2, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-12.8, 0.0, 1.0)))
-        usbc = usbc - bd.Box(5.5, 7.6, 2.2, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER)).moved(bd.Location((-13.0, 0.0, 2.6)))
-        usbc.label = "USBC_Receptacle"
-        mcu = bd.Box(7.0, 7.0, 0.9, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((1.8, 0.0, 1.0)))
-        mcu.label = "RP2040_Chip"
-        btn1 = bd.Box(2.6, 3.4, 1.3, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-2.8, 5.2, 1.0)))
-        btn1.label = "BOOT_Btn"
-        btn2 = bd.Box(2.6, 3.4, 1.3, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-2.8, -5.2, 1.0)))
-        btn2.label = "RESET_Btn"
-        rgb = bd.Box(2.0, 2.0, 0.8, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((8.2, 0.0, 1.0)))
-        rgb.label = "RGB_LED"
-        pads = []
-        for pi in range(9):
-            px = -9.5 + pi * 2.54
-            for sy in [-8.7, 8.7]:
-                pd = bd.Cylinder(0.75, 1.04, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((px, sy, -0.02)))
-                pd.label = f"Pad_{{pi}}_{{int(sy)}}"
-                pads.append(pd)
-        bd.export_step(bd.Compound(children=[pcb, usbc, mcu, btn1, btn2, rgb, *pads]), str(out / "p09_rp2040_zero.step"))
-
-        # 4. Kailh Square Silent Switch (6.2 x 6.2 x 4.3 mm: 3.30 mm pins, 3.35 mm housing body, Ø3.00 x 0.95 mm plunger)
-        sw_base = bd.Box(6.2, 6.2, 2.25, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 3.30)))
+        # 4. rEXSW1: Kailh Square Silent Switch (6.2 x 6.2 x 4.3 mm)
+        sw_base = bd.Box(6.2, 6.2, 2.25, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 2.0)))
         sw_base.label = "SW_Base"
-        sw_top = bd.Box(6.0, 6.0, 1.10, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 5.55)))
+        sw_top = bd.Box(6.0, 6.0, 1.10, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 4.25)))
         sw_top.label = "SW_Cover"
-        sw_btn = bd.Cylinder(1.50, 0.95, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 6.65)))
+        sw_btn = bd.Cylinder(1.50, 0.95, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, 5.35)))
         sw_btn.label = "SW_Red_Button"
-        pin_a = bd.Box(0.75, 0.4, 3.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-2.5, 0, 0.0)))
+        pin_a = bd.Box(0.75, 0.4, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-2.5, 0, 0.0)))
         pin_a.label = "SW_Pin1"
-        pin_b = bd.Box(0.75, 0.4, 3.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((2.5, 0, 0.0)))
+        pin_b = bd.Box(0.75, 0.4, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((2.5, 0, 0.0)))
         pin_b.label = "SW_Pin2"
-        bd.export_step(bd.Compound(children=[sw_base, sw_top, sw_btn, pin_a, pin_b]), str(out / "p10_silent_sw.step"))
+        bd.export_step(bd.Compound(children=[sw_base, sw_top, sw_btn, pin_a, pin_b]), str(out / "p06_silent_sw.step"))
 
-        # 5. 2x Open Degreased Miniature Bearings (DDL-520: Ø5 x Ø2 x 1.5 mm) + 1x SUS304 Inner-Race Shim Ring (M2 x Ø3.0 x 0.5 mm)
+        # 5. 2x NMB DDL-520ZZ Shielded Miniature Bearings (Ø2 x Ø5 x 2.30 mm — zero shims!)
         brg_parts = []
-        for bi, bx in enumerate([-4.1, 4.1]):
+        for bi, bx in enumerate([-3.4, 3.4]):
             outer_r = (
-                bd.Cylinder(2.50, 1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-                - bd.Cylinder(2.02, 1.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
-            ).moved(bd.Location((bx, 0, 0)))
+                bd.Cylinder(2.50, 2.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+                - bd.Cylinder(2.05, 2.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
+            ).moved(bd.Location((bx, 0, 0))).solids()[0]
             outer_r.label = f"OuterRace_{{bi}}"
+            shield = (
+                bd.Cylinder(2.05, 2.06, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+                - bd.Cylinder(1.42, 2.16, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
+            ).moved(bd.Location((bx, 0, 0.12))).solids()[0]
+            shield.label = f"MetalShieldZZ_{{bi}}"
             inner_r = (
-                bd.Cylinder(1.42, 1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-                - bd.Cylinder(1.00, 1.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
-            ).moved(bd.Location((bx, 0, 0)))
+                bd.Cylinder(1.42, 2.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+                - bd.Cylinder(1.00, 2.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
+            ).moved(bd.Location((bx, 0, 0))).solids()[0]
             inner_r.label = f"InnerRace_{{bi}}"
-            brg_parts.extend([outer_r, inner_r])
-            for k in range(8):
-                a = math.radians(k * 45.0)
-                ball = bd.Sphere(0.32).moved(bd.Location((bx + 1.72 * math.cos(a), 1.72 * math.sin(a), 0.75)))
-                ball.label = f"BrgBall_{{bi}}_{{k}}"
-                brg_parts.append(ball)
-        shim_02 = (
-            bd.Cylinder(1.50, 0.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-            - bd.Cylinder(1.01, 0.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
-        ).moved(bd.Location((0, -1.9, 0)))
-        shim_02.label = "SUS304_Shim_BRS002003020"
-        shim_03 = (
-            bd.Cylinder(1.50, 0.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-            - bd.Cylinder(1.01, 0.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
-        ).moved(bd.Location((0, 1.9, 0)))
-        shim_03.label = "SUS304_Shim_BRS002003030"
-        brg_parts.extend([shim_02, shim_03])
-        bd.export_step(bd.Compound(children=brg_parts), str(out / "p12_bearings.step"))
+            brg_parts.extend([outer_r, shield, inner_r])
+        bd.export_step(bd.Compound(children=brg_parts), str(out / "p07_bearings_zz.step"))
 
-        # 6. 9x Ø2.00 mm SUJ2 Steel Balls in ring
-        balls_9 = []
-        for k in range(9):
-            a = math.radians(k * (360.0 / 9.0))
-            sp = bd.Sphere(1.00).moved(bd.Location((4.3 * math.cos(a), 4.3 * math.sin(a), 1.00)))
-            sp.label = f"SUJ2_Ball_{{k:02d}}"
-            balls_9.append(sp)
-        bd.export_step(bd.Compound(children=balls_9), str(out / "p13_steel_balls.step"))
+        # 6. M2 x L=3.0 x OD=3.2 mm Knurled Brass Heat-Set Inserts (3x shown)
+        inserts = []
+        for ii, ix in enumerate([-4.5, 0.0, 4.5]):
+            band1 = bd.Cylinder(1.62, 1.05, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((ix, 0, 0.35)))
+            band2 = bd.Cylinder(1.62, 1.05, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((ix, 0, 1.75)))
+            pilot = bd.Cylinder(1.42, 3.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((ix, 0, 0.0)))
+            ins = (pilot + band1 + band2 - bd.Cylinder(1.00, 3.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((ix, 0, -0.1)))).solids()[0]
+            ins.label = f"Brass_Insert_{{ii}}"
+            inserts.append(ins)
+        bd.export_step(bd.Compound(children=inserts), str(out / "p10_inserts.step"))
 
-        # 7. Axle Shaft (SUS303 B-h7 Ø2.0 x 10.0 mm) & Hinge Pin (SUS303 B-h7 Ø2.0 x 16.0 mm)
-        sh = bd.Cylinder(1.00, 10.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)).rotate(bd.Axis.Y, 90)
-        sh = bd.chamfer(sh.edges(), length=0.33)
-        sh.label = "Axle_Shaft"
-        bd.export_step(sh, str(out / "p14_axle_shaft.step"))
+        # 7. Unified M2 x 6.0 mm Pan/Low-Head Steel Screws (3x shown)
+        screws_3 = []
+        for si, sx in enumerate([-5.2, 0.0, 5.2]):
+            shk = bd.Cylinder(0.98, 6.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((sx, 0, 0.0)))
+            hd = bd.Cylinder(1.90, 1.15, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((sx, 0, 6.00)))
+            slt1 = bd.Box(2.1, 0.45, 0.6, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((sx, 0, 6.60)))
+            slt2 = bd.Box(0.45, 2.1, 0.6, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((sx, 0, 6.60)))
+            sc = (shk + hd - slt1 - slt2).solids()[0]
+            sc.label = f"M2x6_Screw_{{si}}"
+            screws_3.append(sc)
+        bd.export_step(bd.Compound(children=screws_3), str(out / "p11_screws.step"))
 
-        hp = bd.Cylinder(1.00, 16.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)).rotate(bd.Axis.Y, 90)
-        hp = bd.chamfer(hp.edges(), length=0.33)
-        hp.label = "Hinge_Pin"
-        bd.export_step(hp, str(out / "p15_hinge_pin.step"))
-
-        # 8. M2 Stainless Set Screw (SUS304 DIN916 M2 x 4.0 mm)
-        ss = bd.Cylinder(1.00, 4.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-        with bd.BuildPart() as hex_bp:
-            with bd.BuildSketch(bd.Plane.XY.offset(2.6)):
-                bd.RegularPolygon(radius=0.55, side_count=6)
-            bd.extrude(amount=1.6)
-        ss = ss - hex_bp.part
-        for ti in range(5):
-            groove = (
-                bd.Cylinder(1.05, 0.22, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-                - bd.Cylinder(0.86, 0.22, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-            ).moved(bd.Location((0, 0, 0.45 + ti * 0.62)))
-            ss = ss - groove
-        ss = ss.rotate(bd.Axis.X, -65)
-        ss.label = "M2_Set_Screw"
-        bd.export_step(ss, str(out / "p18_m2_adjuster.step"))
-
-        # 9. 6x M2 x 6.0mm Mounting Screws + 2x M2 Hex Nuts + 4x Rubber Feet
-        hw = []
-        for si in range(6):
-            sx = -7.5 + (si % 3) * 4.5
-            sy = -2.5 + (si // 3) * 5.0
-            shk = bd.Cylinder(0.95, 6.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((sx, sy, 0.0)))
-            hd = bd.Cylinder(1.75, 1.1, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((sx, sy, 6.0)))
-            slt = bd.Box(2.0, 0.45, 0.6, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((sx, sy, 6.6)))
-            slt2 = bd.Box(0.45, 2.0, 0.6, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((sx, sy, 6.6)))
-            scr = (shk + hd - slt - slt2).solids()[0]
-            scr.label = f"M2_Screw_{{si}}"
-            hw.append(scr)
-        for ni in range(2):
-            nx = 5.5
-            ny = -2.5 + ni * 5.0
-            with bd.BuildPart() as nut_bp:
-                with bd.BuildSketch(bd.Plane.XY):
-                    bd.RegularPolygon(radius=2.30, side_count=6)
-                bd.extrude(amount=1.60)
-            nut = (
-                nut_bp.part
-                - bd.Cylinder(1.00, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.2)))
-            ).moved(bd.Location((nx, ny, 0.0))).solids()[0]
-            nut.label = f"M2_Hex_Nut_{{ni}}"
-            hw.append(nut)
-        for fi in range(4):
-            fx = 11.2 + (fi % 2) * 7.8
-            fy = -3.8 + (fi // 2) * 7.6
-            ft = bd.Cylinder(3.2, 1.8, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((fx, fy, 0.0)))
-            ft = bd.fillet(ft.edges().filter_by(lambda e: e.bounding_box().min.Z > 1.5), radius=0.6)
-            ft.label = f"Rubber_Foot_{{fi}}"
-            hw.append(ft)
-        bd.export_step(bd.Compound(children=hw), str(out / "p19_screws_feet.step"))
+        # 8. Right Top Plate + Right Main PCB Wheel Slot Cutout Close-Up
+        tp = bd.Box(24.0, 30.0, 1.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-2.0, 0.0, 2.20)))
+        tp = (tp - bd.Box(5.60, 22.00, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((2.0, 0.0, 2.00)))
+                 - bd.Cylinder(2.20, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-4.5, 7.8, 2.00)))
+                 - bd.Cylinder(2.20, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((8.1, -7.8, 2.00)))).solids()[0]
+        tp.label = "Right_Top_Plate_Window"
+        mp = bd.Box(24.0, 30.0, 1.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-2.0, 0.0, 0.0)))
+        mp = (mp - bd.Box(5.60, 23.00, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((2.0, 0.0, -0.20)))
+                 - bd.Box(14.4, 7.50, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0.9, 0.0, -0.20)))
+                 - bd.Cylinder(1.20, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-4.5, 7.8, -0.20)))
+                 - bd.Cylinder(1.20, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((8.1, -7.8, -0.20)))).solids()[0]
+        mp.label = "Right_Main_PCB_Window"
+        bd.export_step(bd.Compound(children=[tp, mp]), str(out / "p12_plate_pcb.step"))
         """
     )
     helper_py = tmp_dir / "build_thumbs.py"
@@ -659,23 +494,17 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
 
     parts_dir = WORKSPACE / "cases" / "inertia_wheel"
     render_specs = [
-        ("mod_west", tmp_dir / "mod_exploded.step", "iso", "parts"),
-        ("p01", parts_dir / "sus304-flywheel.step", "iso", "shaded"),
-        ("p02", parts_dir / "ratchet-hub.step", "iso", "shaded"),
-        ("p03", tmp_dir / "p03_carriage.step", "iso", "shaded"),
-        ("p04a", parts_dir / "wheel-base-frame.step", "iso", "shaded"),
-        ("p04b", parts_dir / "wheel-base-frame-sunk.step", "iso", "shaded"),
-        ("p20", tmp_dir / "p20_cover_pair.step", "iso", "parts"),
-        ("p05", parts_dir / "eval-pod-stand.step", "iso", "shaded"),
-        ("p08", tmp_dir / "p08_as5600.step", "iso", "parts"),
-        ("p09", tmp_dir / "p09_rp2040_zero.step", "iso", "parts"),
-        ("p10", tmp_dir / "p10_silent_sw.step", "iso", "parts"),
-        ("p12", tmp_dir / "p12_bearings.step", "35:48", "parts"),
-        ("p13", tmp_dir / "p13_steel_balls.step", "35:45", "parts"),
-        ("p14", tmp_dir / "p14_axle_shaft.step", "iso", "shaded"),
-        ("p15", tmp_dir / "p15_hinge_pin.step", "iso", "shaded"),
-        ("p18", tmp_dir / "p18_m2_adjuster.step", "iso", "shaded"),
-        ("p19", tmp_dir / "p19_screws_feet.step", "35:42", "parts"),
+        ("exploded", tmp_dir / "mod_exploded.step", "iso", "parts"),
+        ("p01", tmp_dir / "p01_flywheel.step", "iso", "shaded"),
+        ("p02", parts_dir / "magnet-holder.step", "iso", "shaded"),
+        ("p03", parts_dir / "wheel-rocker.step", "iso", "shaded"),
+        ("p04", tmp_dir / "p04_cradle_upright.step", "iso", "shaded"),
+        ("p05", tmp_dir / "p05_tmag5273.step", "iso", "parts"),
+        ("p06", tmp_dir / "p06_silent_sw.step", "iso", "parts"),
+        ("p07", tmp_dir / "p07_bearings_zz.step", "35:45", "parts"),
+        ("p10", tmp_dir / "p10_inserts.step", "35:42", "parts"),
+        ("p11", tmp_dir / "p11_screws.step", "35:42", "parts"),
+        ("p12", tmp_dir / "p12_plate_pcb.step", "iso", "parts"),
     ]
 
     jobs = []
@@ -717,281 +546,244 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
     return out_map
 
 
-def _draw_wire_card(ax):
-    """Custom crisp illustration for #11 センサー6芯線 (JST SH 1.0mm 6P single-ended harness)."""
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 6.5)
-    ax.set_facecolor("#eff2f6")
-    ax.axis("off")
-    ax.add_patch(patches.FancyBboxPatch((0.45, 1.35), 1.75, 4.10, boxstyle="round,pad=0.1", fc="#ffffff", ec="#334155", lw=1.4, zorder=4))
-    ax.text(1.32, 3.40, "JST SH\n1.0mm\n6Pプラグ", ha="center", va="center", fontsize=6.5, fontweight="bold", color="#1e293b", zorder=5)
-    wire_defs = [
-        (5.05, "#dc2626", "1: +3V3 (#07)"),
-        (4.39, "#1e293b", "2: GND  (#07)"),
-        (3.73, "#2563eb", "3: SDA  (#07)"),
-        (3.07, "#d97706", "4: SCL  (#07)"),
-        (2.41, "#16a34a", "5: SW   (#10)"),
-        (1.75, "#475569", "6: GND  (#10)"),
-    ]
-    xs = np.linspace(2.2, 6.95, 80)
-    for wy, col, lbl in wire_defs:
-        ys = wy + 0.11 * np.sin((xs - 2.2) * 1.25)
-        ax.plot(xs, ys, color=col, lw=2.3, solid_capstyle="round", zorder=3)
-        ax.plot([6.95, 7.45], [ys[-1], ys[-1]], color="#94a3b8", lw=2.1, zorder=4)
-        ax.text(7.60, ys[-1], lbl, ha="left", va="center", fontsize=6.1, fontweight="bold", color=col)
-    ax.text(5.0, 0.50, "SH1.0mm 6P 片側ハウジング端子付ケーブル（約60〜75mmにカット）", ha="center", va="center", fontsize=6.4, fontweight="bold", color="#334155")
-
-
 def _draw_magnet_card(ax, diametric: bool):
-    """Clear N/S polarity diagram for #16 角度磁石 (Diametric) vs #17 ラチェット磁石 (Axial)."""
+    """Clear N/S polarity diagram for #08 Diametric Magnet vs #09 Axial Detent Magnet."""
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 6.5)
     ax.set_facecolor("#eff2f6")
     ax.axis("off")
     if diametric:
-        ax.add_patch(patches.Wedge((3.1, 3.45), 1.85, 90, 270, fc="#ef4444", ec="#7f1d1d", lw=1.4, zorder=4))
-        ax.add_patch(patches.Wedge((3.1, 3.45), 1.85, -90, 90, fc="#3b82f6", ec="#1e3a8a", lw=1.4, zorder=4))
-        ax.plot([3.1, 3.1], [1.60, 5.30], color="#ffffff", lw=1.6, linestyle="--", zorder=5)
-        ax.text(2.18, 3.45, "N", ha="center", va="center", fontsize=12, fontweight="bold", color="white", zorder=6)
-        ax.text(4.02, 3.45, "S", ha="center", va="center", fontsize=12, fontweight="bold", color="white", zorder=6)
-        ax.annotate("", xy=(5.15, 3.45), xytext=(1.05, 3.45), arrowprops=dict(arrowstyle="<->", color="#111827", lw=1.2), zorder=3)
-        ax.text(3.1, 1.02, "Ø4.0 × 厚1.0 mm", ha="center", va="center", fontsize=7.3, fontweight="bold", color="#1e293b")
-        ax.add_patch(patches.FancyBboxPatch((5.55, 1.55), 4.05, 3.75, boxstyle="round,pad=0.18", fc="#fff1f2", ec="#be123c", lw=1.2))
-        ax.text(7.58, 3.42, "【重要】径方向着磁\n(Diametric 2極)\n\n直径の左右で N/S が\n分かれた AS5600専用品!", ha="center", va="center", fontsize=6.9, fontweight="bold", color="#9f1239")
+        ax.add_patch(patches.Wedge((3.0, 3.45), 1.85, 90, 270, fc="#ef4444", ec="#7f1d1d", lw=1.4, zorder=4))
+        ax.add_patch(patches.Wedge((3.0, 3.45), 1.85, -90, 90, fc="#3b82f6", ec="#1e3a8a", lw=1.4, zorder=4))
+        ax.plot([3.0, 3.0], [1.60, 5.30], color="#ffffff", lw=1.6, linestyle="--", zorder=5)
+        ax.text(2.08, 3.45, "N", ha="center", va="center", fontsize=12, fontweight="bold", color="white", zorder=6)
+        ax.text(3.92, 3.45, "S", ha="center", va="center", fontsize=12, fontweight="bold", color="white", zorder=6)
+        ax.annotate("", xy=(5.05, 3.45), xytext=(0.95, 3.45), arrowprops=dict(arrowstyle="<->", color="#111827", lw=1.2), zorder=3)
+        ax.text(3.0, 1.00, "Ø4.0 × 厚1.0 mm", ha="center", va="center", fontsize=7.3, fontweight="bold", color="#1e293b")
+        ax.add_patch(patches.FancyBboxPatch((5.45, 1.45), 4.15, 3.90, boxstyle="round,pad=0.18", fc="#fff1f2", ec="#be123c", lw=1.2))
+        ax.text(7.52, 3.40, "【重要】径方向着磁\n(Diametric 2極)\n\n#02 ポケットへ押し込む\nだけで接着剤ゼロ固定!", ha="center", va="center", fontsize=6.7, fontweight="bold", color="#9f1239")
     else:
-        ax.add_patch(patches.Rectangle((1.75, 3.45), 2.7, 1.45, fc="#ef4444", ec="#7f1d1d", lw=1.4, zorder=4))
-        ax.add_patch(patches.Rectangle((1.75, 2.00), 2.7, 1.45, fc="#3b82f6", ec="#1e3a8a", lw=1.4, zorder=4))
-        ax.add_patch(patches.Ellipse((3.10, 4.90), 2.7, 0.68, fc="#f87171", ec="#7f1d1d", lw=1.3, zorder=5))
-        ax.text(3.10, 4.10, "N", ha="center", va="center", fontsize=11.5, fontweight="bold", color="white", zorder=6)
-        ax.text(3.10, 2.68, "S", ha="center", va="center", fontsize=11.5, fontweight="bold", color="white", zorder=6)
-        ax.text(3.10, 1.02, "NE218 Ø1.5 × 厚1.5mm", ha="center", va="center", fontsize=7.1, fontweight="bold", color="#1e293b")
-        ax.add_patch(patches.FancyBboxPatch((5.35, 1.55), 4.25, 3.75, boxstyle="round,pad=0.18", fc="#eff6ff", ec="#1d4ed8", lw=1.2))
-        ax.text(7.48, 3.42, "通常の軸方向着磁\n(Axial 円柱ネオジム N40)\n\n厚みの上下で N/S が\n分かれた一般的な磁石", ha="center", va="center", fontsize=6.9, fontweight="bold", color="#1e3a8a")
+        ax.add_patch(patches.Rectangle((1.70, 3.45), 2.6, 1.45, fc="#ef4444", ec="#7f1d1d", lw=1.4, zorder=4))
+        ax.add_patch(patches.Rectangle((1.70, 2.00), 2.6, 1.45, fc="#3b82f6", ec="#1e3a8a", lw=1.4, zorder=4))
+        ax.add_patch(patches.Ellipse((3.00, 4.90), 2.6, 0.65, fc="#f87171", ec="#7f1d1d", lw=1.3, zorder=5))
+        ax.text(3.00, 4.10, "N", ha="center", va="center", fontsize=11.5, fontweight="bold", color="white", zorder=6)
+        ax.text(3.00, 2.68, "S", ha="center", va="center", fontsize=11.5, fontweight="bold", color="white", zorder=6)
+        ax.text(3.0, 1.00, "Ø2.0 × 長2.0 mm", ha="center", va="center", fontsize=7.3, fontweight="bold", color="#1e293b")
+        ax.add_patch(patches.FancyBboxPatch((5.45, 1.45), 4.15, 3.90, boxstyle="round,pad=0.18", fc="#eff6ff", ec="#1d4ed8", lw=1.2))
+        ax.text(7.52, 3.40, "軸方向着磁 (標準品)\n二六製作所 NE280 等\n\n鉄M2×6mmネジ先端に\n磁力で自己吸着・接着不要!", ha="center", va="center", fontsize=6.6, fontweight="bold", color="#1e3a8a")
 
 
-def generate_parts_guide():
-    """Generate `docs/assets/inertia_wheel_parts_guide.png` with 3D callouts + 21-card (7x3) visual BOM."""
+def _draw_parts_guide_diagram():
     with tempfile.TemporaryDirectory() as tmp_s:
         tmp_dir = Path(tmp_s)
-        rendered = _build_temp_part_renders(tmp_dir)
+        print("Building & rendering 3D component thumbnails for parts guide...")
+        thumbs = _build_temp_part_renders(tmp_dir)
 
-        fig = plt.figure(figsize=(16.8, 25.4), dpi=160)
+        fig = plt.figure(figsize=(18.5, 19.5), dpi=180)
         fig.patch.set_facecolor("#ffffff")
-
-        fig.text(
-            0.50,
-            0.985,
-            "パッシブ磁気慣性ホイール 部品名称・構成図鑑（共通呼称マップ #01〜#20）",
-            ha="center",
-            va="center",
-            fontsize=16.0,
+        fig.suptitle(
+            "curcur40 アンダープレート一体軸慣性ホイール 部品構成・組立ビジュアルガイド（全12要素・接着剤＆シム＆配線ゼロ）",
+            fontsize=14.2,
             fontweight="bold",
+            y=0.985,
             color="#0f172a",
         )
-        fig.text(
-            0.50,
-            0.972,
-            "本ビルドガイドおよび設計・組み立ての会話では、以下の「番号＋太字の部品名（例：#03 キャリッジ、#20 ホイールカバー）」を共通名称として使用します",
-            ha="center",
-            va="center",
-            fontsize=10.0,
-            fontweight="bold",
-            color="#475569",
+
+        gs = fig.add_gridspec(
+            nrows=5,
+            ncols=3,
+            height_ratios=[1.42, 1.0, 1.0, 1.0, 1.0],
+            hspace=0.30,
+            wspace=0.16,
+            left=0.03,
+            right=0.97,
+            top=0.952,
+            bottom=0.02,
         )
 
-        # =====================================================================
-        # Upper Section: 2 Assembly Callout Panels (Standalone Pod + Sunk Exploded Module)
-        # =====================================================================
-        ax_pod = fig.add_axes([0.020, 0.735, 0.470, 0.222])
-        ax_mod = fig.add_axes([0.510, 0.735, 0.470, 0.222])
+        # Top Left (cols 0..1? Let's make 2 equal wide panels using subgridspec on row 0!)
+        gs_top = gs[0, :].subgridspec(1, 2, wspace=0.10)
 
-        pod_img, pod_bg = _autocrop_pil(ASSETS_DIR / "render_inertia_wheel_eval_pod.png", pad_frac=0.22)
-        ax_pod.set_facecolor(pod_bg)
-        ax_pod.imshow(pod_img, extent=[0, 100, 0, 100], aspect="auto", zorder=1)
-        ax_pod.set_xlim(-6, 106)
-        ax_pod.set_ylim(-6, 106)
-        ax_pod.set_xticks([])
-        ax_pod.set_yticks([])
-        for sp in ax_pod.spines.values():
-            sp.set_edgecolor("#94a3b8")
-            sp.set_linewidth(1.3)
-        ax_pod.set_title("【構成例 A】オンボード実装：単体評価ポッド全体（#04A 枠使用）", fontsize=11.5, fontweight="bold", color="#0f172a", pad=7)
+        ax_top_l = fig.add_subplot(gs_top[0, 0])
+        img_r, bg_r = _autocrop_pil(ASSETS_DIR / "render_curcur40_right_wheel.png", pad_frac=0.04, target_aspect=2.05)
+        ax_top_l.set_facecolor(bg_r)
+        ax_top_l.imshow(img_r, aspect="auto")
+        ax_top_l.set_xticks([])
+        ax_top_l.set_yticks([])
+        ax_top_l.set_title(
+            "A. 右キーボード アンダープレート実装外観（カバー不要・キー天面比 +0.50mm 低背プロファイル）",
+            fontsize=10.2,
+            fontweight="bold",
+            color="#0f172a",
+            pad=7,
+        )
 
-        pod_callouts = [
-            (60.5, 77.0, 52.0, 97.5, "#01 カップ型フライホイール", "#1d3557"),
-            (56.5, 70.0, 84.5, 97.0, "#02 内蔵9球ハブ (#01内部格納)", "#1d3557"),
-            (66.5, 65.5, 86.5, 83.5, "#12 ベアリング + シム + #14 軸", "#005f73"),
-            (71.5, 54.5, 87.5, 69.5, "#07 センサー基板 (+#08 IC)", "#1b4332"),
-            (64.5, 44.5, 88.5, 55.5, "#03 キャリッジ (スリム丸耳)", "#1d3557"),
-            (77.5, 48.5, 86.5, 38.5, "#04A オンボード枠 + #15 ピン", "#1d3557"),
-            (58.0, 25.2, 83.5, 19.5, "#19 固定M2ネジ (対角2点+四隅)", "#9b2226"),
-            (55.0, 16.5, 53.0, 2.0, "#05 ポッド台座", "#1d3557"),
-            (41.0, 35.5, 13.0, 7.5, "#06 キャリア基板", "#1b4332"),
-            (50.2, 47.2, 14.5, 25.0, "#10 静音スイッチ", "#1b4332"),
-            (52.5, 56.5, 17.5, 44.0, "#18 磁力調整ネジ (+#17 磁石)", "#9b2226"),
-            (31.0, 66.0, 11.5, 83.5, "#09 RP2040-Zero", "#1b4332"),
-            (49.5, 76.2, 18.5, 97.0, "#11 6Pハーネス接続先(J1)", "#1b4332"),
-        ]
-        for tx, ty, lx, ly, txt, col in pod_callouts:
-            ax_pod.annotate(
-                txt,
-                xy=(tx, ty),
-                xytext=(lx, ly),
-                ha="center",
-                va="center",
-                fontsize=7.5,
-                fontweight="bold",
-                color="#0f172a",
-                bbox=dict(boxstyle="round,pad=0.24", fc="#ffffff", ec=col, lw=1.3),
-                arrowprops=dict(arrowstyle="-|>", color=col, lw=1.35, shrinkA=0, shrinkB=1),
-                zorder=8,
-            )
-
-        mod_img, mod_bg = _autocrop_pil(rendered["mod_west"], pad_frac=0.20)
-        ax_mod.set_facecolor(mod_bg)
-        ax_mod.imshow(mod_img, extent=[0, 100, 0, 100], aspect="auto", zorder=1)
-        ax_mod.set_xlim(-6, 106)
-        ax_mod.set_ylim(-6, 106)
-        ax_mod.set_xticks([])
-        ax_mod.set_yticks([])
-        for sp in ax_mod.spines.values():
-            sp.set_edgecolor("#94a3b8")
-            sp.set_linewidth(1.3)
-        ax_mod.set_title("【構成例 B】沈み込み実装：コア ＋ #04B 枠 ＋ #20 ツインカバー分解図", fontsize=11.5, fontweight="bold", color="#0f172a", pad=7)
-
-        mod_callouts = [
-            (33.0, 84.0, 14.5, 97.0, "#20 ホイールカバー (西:基板側)", "#1d3557"),
-            (73.0, 77.0, 86.0, 97.0, "#20 ホイールカバー (東:180°反転)", "#1d3557"),
-            (28.5, 73.0, 13.5, 82.5, "#07 段付きセンサー基板 + #08 IC", "#1b4332"),
-            (38.0, 68.0, 12.5, 67.5, "#16 角度磁石 (径方向)", "#9b2226"),
-            (49.5, 70.0, 49.0, 97.0, "#01 カップ型フライホイール", "#1d3557"),
-            (63.5, 63.5, 86.5, 82.0, "#02 内蔵9球ハブ + #13 鋼球", "#005f73"),
-            (78.5, 55.5, 88.0, 66.5, "#12 ベアリング + シム + #14 軸", "#005f73"),
-            (56.5, 42.0, 88.5, 48.0, "#03 キャリッジ (スリム丸耳)", "#1d3557"),
-            (66.5, 39.5, 15.5, 49.5, "#18 磁力調整ネジ + #17 磁石", "#9b2226"),
-            (34.5, 25.0, 13.5, 29.0, "#15 ヒンジピン (北端軸)", "#005f73"),
-            (55.0, 14.0, 49.0, 1.5, "#04B 沈み込みベース枠", "#1d3557"),
-            (66.5, 21.0, 88.0, 21.0, "#10 静音スイッチ (南東)", "#1b4332"),
-        ]
-        for tx, ty, lx, ly, txt, col in mod_callouts:
-            ax_mod.annotate(
-                txt,
-                xy=(tx, ty),
-                xytext=(lx, ly),
-                ha="center",
-                va="center",
-                fontsize=7.5,
-                fontweight="bold",
-                color="#0f172a",
-                bbox=dict(boxstyle="round,pad=0.24", fc="#ffffff", ec=col, lw=1.3),
-                arrowprops=dict(arrowstyle="-|>", color=col, lw=1.35, shrinkA=0, shrinkB=2),
-                zorder=8,
-            )
-
-        # =====================================================================
-        # Lower Section: 7 Rows x 3 Columns = 21 Individual Part Cards (#01..#20)
-        # =====================================================================
-        C_CUSTOM = ("#1d3557", "#f1f5f9")
-        C_ELEC = ("#1b4332", "#ecfdf5")
-        C_MECH = ("#005f73", "#ecfeff")
-        C_MAG = ("#9b2226", "#fff1f2")
+        ax_top_r = fig.add_subplot(gs_top[0, 1])
+        img_e, bg_e = _autocrop_pil(thumbs["exploded"], pad_frac=0.05, target_aspect=2.05)
+        ax_top_r.set_facecolor(bg_e)
+        ax_top_r.imshow(img_e, aspect="auto")
+        ax_top_r.set_xticks([])
+        ax_top_r.set_yticks([])
+        ax_top_r.set_title(
+            "B. アンダープレート一体軸ホイール 3D分解斜視図（4造形部品＋市販ベアリング・磁石・共通M2×6mmネジ）",
+            fontsize=10.2,
+            fontweight="bold",
+            color="#0f172a",
+            pad=7,
+        )
 
         cards = [
-            ("#01  カップ型フライホイール", rendered["p01"], "数量: 1個 ｜ Ø16.8 × 幅5.46 mm (5.39g / X=0中央揃え)", "JLCCNC (SUS304) : sus304-flywheel.step", C_CUSTOM),
-            ("#02  内蔵9球ハブ", rendered["p02"], "数量: 1個 ｜ Ø12.4 × 3.10 mm (#01カップ内部へ完全格納)", "JLC3DP (SLA) : ratchet-hub.step", C_CUSTOM),
-            ("#03  キャリッジ (スリム丸耳)", rendered["p03"], "数量: 1個 ｜ 13.77 × 15.87 × 14.30 mm", "JLC3DP (SLA) : wheel-carriage.step", C_CUSTOM),
-            ("#04A  オンボードベース枠 [基板上載せ用]", rendered["p04a"], "数量: 1個 ｜ 18.83 × 17.78 × 4.10 mm (対角2点M2固定)", "JLC3DP (SLA) : wheel-base-frame.step", C_CUSTOM),
-            ("#04B  沈み込みベース枠 [メイン基板組込用]", rendered["p04b"], "任意: 1個 ｜ 23.35 × 23.70 × 5.50 mm (軸Z=-2.0mm)", "JLC3DP (SLA) : wheel-base-frame-sunk.step", C_CUSTOM),
-            ("#20  ホイールカバー [ツインスナップ式]", rendered["p20"], "任意: 2個 (180°回転対称の完全共通部品!) ｜ 15.4×6.17×7.23 mm", "JLC3DP (SLA) : wheel-cover.step (エッジ曲面ピラミッド)", C_CUSTOM),
-            ("#05  ポッド台座", rendered["p05"], "数量: 1個 ｜ 52.0 × 36.0 × 7.6 mm (M2×6mmセルフタップ)", "JLC3DP (SLA) : eval-pod-stand.step", C_CUSTOM),
-            ("#06  キャリア基板", ASSETS_DIR / "render_pcb_wheel_eval.png", "数量: 1枚 ｜ 48.0 × 32.0 × 板厚1.6 mm", "JLCPCB (Top PCBA) : curcur40-wheel-eval", C_ELEC),
-            ("#07  センサー基板 [PCBA実装済・段付き]", ASSETS_DIR / "render_pcb_wheel_sensor.png", "数量: 1枚 ｜ 22×22枠→折って8.2/8.0×9.40 (厚0.8mm)", "JLCPCB (0.8mm Top PCBA) : #08同軸配置・#20カバー内格納!", C_ELEC),
-            ("#08  AS5600 IC [個別購入不要]", rendered["p08"], "PCBA実装済 ｜ U1(C499458)＋C1/C2パスコン", "JLCPCB PCBA : #07の表面へ自動実装済!", C_ELEC),
-            ("#09  RP2040-Zero", rendered["p09"], "数量: 1個 ｜ ピンヘッダ未実装タイプ", "スイッチサイエンス等 : Waveshare RP2040-Zero", C_ELEC),
-            ("#10  静音スイッチ", rendered["p10"], "数量: 1個 ｜ 6.2 × 6.2 × 高4.3 mm (Red Dot)", "Amazon/通販 : Kailh Square Silent (2ピン)", C_ELEC),
-            ("#11  センサー6芯線 [JST SH 6P]", "CUSTOM_WIRE", "数量: 1式 ｜ SH 1.0mm 6P 片側ハウジング端子付ケーブル", "Amazon : Moechando SH1.0mm 6P 延長ケーブル等", C_ELEC),
-            ("#12  ベアリング [要脱脂] ＋ 内輪シム", rendered["p12"], "数量: 2個＋シム2枚 ｜ DDL-520 ＋ シム(Ø2×Ø3×0.2＋0.3)", "モノタロウ : DDL-520 ＋ 岩田シム BRS002003020/030", C_MECH),
-            ("#13  ラチェット鋼球", rendered["p13"], "数量: 9個 ｜ 直径 Ø2.00 mm 精密球 (G20)", "モノタロウ : SUJ2 高炭素クロム軸受鋼球 (セラミック不可)", C_MECH),
-            ("#14  回転シャフト", rendered["p14"], "数量: 1本 ｜ Ø2.0 × 長さ 10 mm (B種h7)", "モノタロウ : SUS303 平行ピン B種h7 2×10", C_MECH),
-            ("#15  ヒンジピン", rendered["p15"], "数量: 1本 ｜ Ø2.0 × 長さ 16 mm (B種h7)", "モノタロウ : SUS303 平行ピン B種h7 2×16", C_MECH),
-            ("#16  角度磁石 [径方向着磁]", "CUSTOM_MAG_DIAM", "数量: 1個 ｜ Ø4.0 × 厚1.0 mm (D4×1mm)", "AliExpress : 径方向2極着磁ネオジム (AS5600用)", C_MAG),
-            ("#17  ラチェット磁石 [軸方向]", "CUSTOM_MAG_AXIAL", "数量: 1個 ｜ Ø1.50 × 厚1.50 mm (N40)", "二六製作所 : NE218 丸型ネオジム磁石", C_MAG),
-            ("#18  磁力調整ネジ", rendered["p18"], "数量: 1本 ｜ M2 × 長さ 4.0 mm (DIN916)", "AliExpress/通販 : SUS304 六角穴付イモネジ M2×4mm", C_MAG),
-            ("#19  固定M2ネジ・ナット・スペーサー ＆ 足", rendered["p19"], "ポッド: M2×6mm 6本＋ナット2＋足4 ／ 沈み込み: 5.5mmスペーサー3＋M2×4mm 6本", "ポッド用M2×6mmネジ・ナット ／ 本体共通5.5mmスペーサー＆M2×4mm", C_MAG),
+            (
+                "#01 一体軸スチールホイール ×1",
+                "JLCCNC 切削 (45#鋼+無電解Ni)",
+                "#0f766e",
+                "p01",
+                "cases/inertia_wheel/steel-flywheel.step\nØ22.0×4.4mm・外周24溝・質量 13.12g\nØ2.90段付き肩＆Dカット軸一体＝シム不要!",
+            ),
+            (
+                "#02 マグネットホルダー ×1",
+                "JLC3DP 造形 (MJF/SLS PA12)",
+                "#1d4ed8",
+                "p02",
+                "cases/inertia_wheel/magnet-holder.step\nØ5.68×2.05mm・東側D穴を#01西軸へ圧入\n西ポケットに#08磁石を接着剤なしで保持",
+            ),
+            (
+                "#03 シーソーロッカー ×1",
+                "JLC3DP 造形 (MJF/SLS PA12)",
+                "#1d4ed8",
+                "p03",
+                "cases/inertia_wheel/wheel-rocker.step\n左右DDL-520ZZ軸受＋一体Ø2.7トラニオン支点\n西アームで静音SW押下・南ボスで磁力調整",
+            ),
+            (
+                "#04 アンダーPCBクレードル ×1",
+                "JLC3DP 造形 (MJF/SLS PA12)",
+                "#1d4ed8",
+                "p04",
+                "cases/inertia_wheel/wheel-cradle.step\nWC1/WC2の2箇所で右メイン基板裏面へ固定\n上開きU字溝と基板裏面で支点軸を挟み保持",
+            ),
+            (
+                "#05 3Dホールセンサー (rU6)",
+                "PCBA自動実装済 (手配・配線不要)",
+                "#15803d",
+                "p05",
+                "TI TMAG5273A1QDBVR (SOT-23-6 / C3716049)\n右メイン基板 B.Cu にJLCPCB実装済!\nサブ基板・SH 6P手配線ケーブル完全不要",
+            ),
+            (
+                "#06 静音ミドルクリックSW (rEXSW1)",
+                "市販購入品 ×1 (基板B.Cu直付け)",
+                "#b45309",
+                "p06",
+                "Kailh Square Silent 6.2×6.2×4.3mm (赤軸)\n右メイン基板 B.Cu へ挿しF.Cu側2ピンはんだ\n(飛び出しピン先端のみニッパーで平切り)",
+            ),
+            (
+                "#07 ミニチュアベアリング ×2",
+                "市販購入品 ×2 (脱脂して使用)",
+                "#b45309",
+                "p07",
+                "NMB ミネベアミツミ DDL-520ZZ\n内径Ø2×外径Ø5×幅2.3mm 標準両シールド\nパーツクリーナー脱脂で軽快回転・シム不要",
+            ),
+            (
+                "#08 角度検出磁石 (D4×1mm) ×1",
+                "市販購入品 ×1 (径方向2極着磁)",
+                "#be123c",
+                "mag_diam",
+                "Ø4.0×厚1.0mm ネオジム磁石 (Diametric)\n#02ホルダー西穴へ入れるだけで軸端と基板窓\nで抜け止めされ接着剤ゼロで確実に保持!",
+            ),
+            (
+                "#09 ラチェット磁石 (Ø2×2mm) ×1",
+                "市販購入品 ×1 (軸方向着磁)",
+                "#be123c",
+                "mag_axial",
+                "Ø2.0×長2.0mm 円柱ネオジム (NE280等)\n45#鋼製ホイールの24溝を直接磁気吸引!\n9個鋼球ハブ廃止＝部品1個で無摩耗ノッチ",
+            ),
+            (
+                "#10 真鍮ヒートセットインサート",
+                "市販購入品 (ホイール3個 / 全体17個)",
+                "#7c2d12",
+                "p10",
+                "M2 × 長さ3.0 × 外径3.2mm ローレット真鍮\nクレードルWC1/WC2に2個＋ロッカー南に1個\n220〜250℃の普通のはんだごてで簡単圧入!",
+            ),
+            (
+                "#11 統一 M2 × 6.0mm 精密ネジ",
+                "市販購入品 (ホイール3本 / 全体17本)",
+                "#7c2d12",
+                "p11",
+                "キーボード全17箇所すべて同一 M2×6.0mm!\nWC1/WC2固定2本＋南ラチェット調整1本\n(ラチェット用1本は磁石が付く鉄/鋼製を使用)",
+            ),
+            (
+                "#12 右プレート＆右メイン基板窓",
+                "JLCPCB 基板・プレート (カバー不要)",
+                "#334155",
+                "p12",
+                "プレート: 5.6×22.0mm シンプル角丸長穴\nWC1/WC2はØ4.4mm頭逃げ穴でネジ頭沈み込み\nスナップカバー廃止で外観スッキリ＆組立一瞬",
+            ),
         ]
 
-        n_cols, n_rows = 3, 7
-        left0, bottom0 = 0.020, 0.010
-        total_w, total_h = 0.960, 0.706
-        gap_x, gap_y = 0.014, 0.009
-        card_w = (total_w - gap_x * (n_cols - 1)) / n_cols
-        card_h = (total_h - gap_y * (n_rows - 1)) / n_rows
+        for idx, (title, badge, badge_col, thumb_key, desc) in enumerate(cards):
+            r = 1 + (idx // 3)
+            c = idx % 3
+            cell_gs = gs[r, c].subgridspec(2, 1, height_ratios=[1.55, 0.95], hspace=0.04)
+            ax_img = fig.add_subplot(cell_gs[0, 0])
+            ax_txt = fig.add_subplot(cell_gs[1, 0])
 
-        for idx, (title, src, line1, line2, (hdr_col, foot_bg)) in enumerate(cards):
-            r = idx // n_cols
-            c = idx % n_cols
-            cx = left0 + c * (card_w + gap_x)
-            cy = bottom0 + (n_rows - 1 - r) * (card_h + gap_y)
-
-            cax = fig.add_axes([cx, cy, card_w, card_h])
-            cax.set_xlim(0, 100)
-            cax.set_ylim(0, 100)
-            cax.set_xticks([])
-            cax.set_yticks([])
-            for sp in cax.spines.values():
-                sp.set_edgecolor(hdr_col)
-                sp.set_linewidth(1.35)
-
-            cax.add_patch(patches.Rectangle((0, 81), 100, 19, fc=hdr_col, ec="none", zorder=3))
-            cax.text(3.5, 90.5, title, ha="left", va="center", fontsize=9.8, fontweight="bold", color="white", zorder=4)
-
-            cax.add_patch(patches.Rectangle((0, 0), 100, 24, fc=foot_bg, ec="none", zorder=3))
-            cax.plot([0, 100], [24, 24], color="#cbd5e1", lw=0.8, zorder=4)
-            cax.text(50.0, 15.8, line1, ha="center", va="center", fontsize=7.8, fontweight="bold", color="#0f172a", zorder=4)
-            cax.text(50.0, 6.4, line2, ha="center", va="center", fontsize=7.1, color="#334155", zorder=4)
-
-            vax = fig.add_axes([cx + 0.004, cy + card_h * 0.242, card_w - 0.008, card_h * 0.565])
-            if src == "CUSTOM_WIRE":
-                _draw_wire_card(vax)
-            elif src == "CUSTOM_MAG_DIAM":
-                _draw_magnet_card(vax, diametric=True)
-            elif src == "CUSTOM_MAG_AXIAL":
-                _draw_magnet_card(vax, diametric=False)
+            if thumb_key == "mag_diam":
+                _draw_magnet_card(ax_img, diametric=True)
+            elif thumb_key == "mag_axial":
+                _draw_magnet_card(ax_img, diametric=False)
             else:
-                im_arr, bg_col = _autocrop_pil(Path(src), pad_frac=0.07)
-                ih, iw, _ = im_arr.shape
-                vax.set_facecolor(bg_col)
-                box_aspect = (card_w * 16.8) / (card_h * 0.565 * 25.4)
-                img_aspect = iw / max(1.0, float(ih))
-                if img_aspect >= box_aspect:
-                    disp_w = 100.0
-                    disp_h = 100.0 * (box_aspect / img_aspect)
-                else:
-                    disp_h = 100.0
-                    disp_w = 100.0 * (img_aspect / box_aspect)
-                x0 = 50.0 - disp_w / 2.0
-                y0 = 50.0 - disp_h / 2.0
-                vax.imshow(im_arr, extent=[x0, x0 + disp_w, y0, y0 + disp_h], aspect="auto", zorder=2)
-                if title.startswith("#14 "):
-                    vax.text(72, 82, "短い方: 10mm", ha="center", va="center", fontsize=7.0, fontweight="bold", color="#005f73",
-                             bbox=dict(boxstyle="round,pad=0.2", fc="#ffffff", ec="#005f73", lw=0.9), zorder=5)
-                elif title.startswith("#15 "):
-                    vax.text(72, 82, "長い方: 16mm", ha="center", va="center", fontsize=7.0, fontweight="bold", color="#005f73",
-                             bbox=dict(boxstyle="round,pad=0.2", fc="#ffffff", ec="#005f73", lw=0.9), zorder=5)
-                vax.set_xlim(0, 100)
-                vax.set_ylim(0, 100)
-                vax.axis("off")
+                im_arr, bg_c = _autocrop_pil(thumbs[thumb_key], pad_frac=0.08, target_aspect=2.45)
+                ax_img.set_facecolor(bg_c)
+                ax_img.imshow(im_arr, aspect="auto")
+                ax_img.set_xticks([])
+                ax_img.set_yticks([])
+                for sp in ax_img.spines.values():
+                    sp.set_edgecolor("#cbd5e1")
+                    sp.set_linewidth(1.0)
 
-        out_guide = ASSETS_DIR / "inertia_wheel_parts_guide.png"
-        fig.savefig(out_guide, dpi=160)
+            ax_img.set_title(title, fontsize=9.1, fontweight="bold", color="#0f172a", loc="left", pad=5)
+            ax_img.text(
+                0.99,
+                1.03,
+                badge,
+                transform=ax_img.transAxes,
+                ha="right",
+                va="bottom",
+                fontsize=6.9,
+                fontweight="bold",
+                color="white",
+                bbox=dict(boxstyle="round,pad=0.18", fc=badge_col, ec="none"),
+            )
+
+            ax_txt.set_facecolor("#f8fafc")
+            ax_txt.set_xticks([])
+            ax_txt.set_yticks([])
+            for sp in ax_txt.spines.values():
+                sp.set_edgecolor("#e2e8f0")
+                sp.set_linewidth(1.0)
+            ax_txt.text(
+                0.03,
+                0.50,
+                desc,
+                transform=ax_txt.transAxes,
+                ha="left",
+                va="center",
+                fontsize=7.9,
+                color="#1e293b",
+                linespacing=1.38,
+                fontweight="bold",
+            )
+
+        out_path = ASSETS_DIR / "inertia_wheel_parts_guide.png"
+        fig.savefig(out_path, dpi=180)
         plt.close(fig)
-        print(f"Saved {out_guide}")
+        print(f"Saved {out_path}")
 
 
 def main():
-    render_pcb_and_step_previews()
+    render_step_previews()
     _draw_spec_diagram()
-    generate_parts_guide()
+    _draw_parts_guide_diagram()
+    print("All inertia wheel previews & specification diagrams generated successfully!")
 
 
 if __name__ == "__main__":
