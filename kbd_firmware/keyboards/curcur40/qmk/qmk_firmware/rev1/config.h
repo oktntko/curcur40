@@ -15,11 +15,16 @@
 #define POINTING_DEVICE_CS_PIN GP6
 #define PMW33XX_CS_PIN GP6
 
-/* I2C0 & AS5600 Passive Magnetic Inertia Wheel Configuration (Right Half, rJ5) */
+/*
+ * I2C0 & AS5600 Passive Magnetic Inertia Wheel Configuration (Right Half, rJ5):
+ * Note: QMK's ChibiOS RP2040 i2c_master driver uses 1-indexed `I2C1_*` config macros
+ * regardless of whether `I2C_DRIVER` selects hardware `I2CD0` or `I2CD1`.
+ */
 #define I2C_DRIVER I2CD0
 #define I2C1_SDA_PIN GP24
 #define I2C1_SCL_PIN GP25
 #define I2C1_CLOCK_SPEED 400000
+#define F_SCL 400000UL
 
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_RIGHT

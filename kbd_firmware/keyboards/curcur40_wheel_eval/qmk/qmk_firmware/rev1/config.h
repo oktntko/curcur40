@@ -3,7 +3,11 @@
 
 #pragma once
 
-/* RP2040-Zero I2C0 Configuration (J1 JST SH 6-pin -> AS5600-ASOT Sub-PCB) */
+/*
+ * RP2040-Zero I2C0 Configuration (J1 JST SH 6-pin / J2 PTH -> AS5600-ASOM Sub-PCB):
+ * Note: QMK's ChibiOS RP2040 i2c_master driver uses 1-indexed `I2C1_*` config macros
+ * regardless of whether `I2C_DRIVER` selects hardware `I2CD0` or `I2CD1`.
+ */
 #define I2C_DRIVER I2CD0
 #define I2C1_SDA_PIN GP4
 #define I2C1_SCL_PIN GP5

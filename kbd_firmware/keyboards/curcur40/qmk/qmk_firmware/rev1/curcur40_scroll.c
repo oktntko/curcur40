@@ -35,9 +35,10 @@ static inline int16_t clamp_i16(int16_t x, int16_t lo, int16_t hi) {
  * ------------------------------------------------------------------------- */
 #define AS5600_FULL_SCALE_LSB    4096L
 #define AS5600_HALF_SCALE_LSB    2048
-#define AS5600_I2C_TIMEOUT_MS    5
+#define AS5600_I2C_TIMEOUT_MS    2
 #define AS5600_RETRY_INTERVAL_MS 200
 #define AS5600_STATUS_POLL_MS    250
+#define WHEEL_POLL_INTERVAL_MS   1
 #define WHEEL_IDLE_RESET_MS      60
 
 static bool     s_pmw3360_online     = false;
@@ -45,8 +46,11 @@ static bool     s_wheel_online       = false;
 static bool     s_wheel_magnet_ok    = false;
 static bool     s_wheel_angle_locked = false;
 static bool     s_wheel_resting      = true;
+static bool     s_wheel_polled_once  = false;
+static uint8_t  s_wheel_err_streak   = 0;
 static uint16_t s_wheel_prev_angle   = 0;
 static uint16_t s_wheel_rest_anchor  = 0;
+static uint16_t s_wheel_poll_ms      = 0;
 static uint16_t s_wheel_retry_ms     = 0;
 static uint16_t s_wheel_status_ms    = 0;
 static uint16_t s_wheel_motion_ms    = 0;
@@ -96,12 +100,33 @@ static inline int16_t wrap_delta_12bit(uint16_t current, uint16_t previous) {
 
 static void curcur40_wheel_init(void) {
     i2c_init();
-    s_wheel_retry_ms     = timer_read();
+    s_wheel_poll_ms      = timer_read();
+    s_wheel_retry_ms     = s_wheel_poll_ms;
     s_wheel_online       = as5600_configure();
+    s_wheel_err_streak   = s_wheel_online ? 0 : 1;
+    s_wheel_polled_once  = false;
     s_wheel_angle_locked = false;
     s_wheel_resting      = true;
     s_wheel_subtick_num  = 0;
     s_wheel_pending      = 0;
+}
+
+static report_mouse_t curcur40_wheel_emit_pending(report_mouse_t mouse_report) {
+    if (s_wheel_pending != 0) {
+        int32_t emit = s_wheel_pending;
+        if (emit > MOUSE_REPORT_HV_MAX) {
+            emit = MOUSE_REPORT_HV_MAX;
+        } else if (emit < MOUSE_REPORT_HV_MIN) {
+            emit = MOUSE_REPORT_HV_MIN;
+        }
+        s_wheel_pending -= emit;
+
+        int32_t combined = (int32_t)mouse_report.v + emit;
+        if (combined > MOUSE_REPORT_HV_MAX) combined = MOUSE_REPORT_HV_MAX;
+        if (combined < MOUSE_REPORT_HV_MIN) combined = MOUSE_REPORT_HV_MIN;
+        mouse_report.v = (mouse_hv_report_t)combined;
+    }
+    return mouse_report;
 }
 
 static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
@@ -109,17 +134,30 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
 
     if (!s_wheel_online) {
         if (timer_elapsed(s_wheel_retry_ms) < AS5600_RETRY_INTERVAL_MS) {
-            return mouse_report;
+            return curcur40_wheel_emit_pending(mouse_report);
         }
         s_wheel_retry_ms = now;
+        if (s_wheel_err_streak >= 3) {
+            i2c_init();
+        }
         if (!as5600_configure()) {
-            return mouse_report;
+            if (s_wheel_err_streak < 255) {
+                s_wheel_err_streak++;
+            }
+            return curcur40_wheel_emit_pending(mouse_report);
         }
         s_wheel_online       = true;
+        s_wheel_err_streak   = 0;
         s_wheel_angle_locked = false;
         s_wheel_resting      = true;
         s_wheel_subtick_num  = 0;
     }
+
+    if (s_wheel_polled_once && timer_elapsed(s_wheel_poll_ms) < WHEEL_POLL_INTERVAL_MS) {
+        return curcur40_wheel_emit_pending(mouse_report);
+    }
+    s_wheel_polled_once = true;
+    s_wheel_poll_ms     = now;
 
     if (timer_elapsed(s_wheel_status_ms) >= AS5600_STATUS_POLL_MS) {
         uint8_t status = 0;
@@ -127,7 +165,10 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
             s_wheel_online       = false;
             s_wheel_angle_locked = false;
             s_wheel_retry_ms     = now;
-            return mouse_report;
+            if (s_wheel_err_streak < 255) {
+                s_wheel_err_streak++;
+            }
+            return curcur40_wheel_emit_pending(mouse_report);
         }
         s_wheel_magnet_ok = (status & CURCUR40_AS5600_STATUS_MD) != 0;
         s_wheel_status_ms = now;
@@ -135,7 +176,7 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
 
     if (!s_wheel_magnet_ok) {
         s_wheel_angle_locked = false;
-        return mouse_report;
+        return curcur40_wheel_emit_pending(mouse_report);
     }
 
     uint16_t raw_angle = 0;
@@ -143,8 +184,12 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
         s_wheel_online       = false;
         s_wheel_angle_locked = false;
         s_wheel_retry_ms     = now;
-        return mouse_report;
+        if (s_wheel_err_streak < 255) {
+            s_wheel_err_streak++;
+        }
+        return curcur40_wheel_emit_pending(mouse_report);
     }
+    s_wheel_err_streak = 0;
 
     if (!s_wheel_angle_locked) {
         s_wheel_prev_angle   = raw_angle;
@@ -152,7 +197,7 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
         s_wheel_motion_ms    = now;
         s_wheel_resting      = true;
         s_wheel_angle_locked = true;
-        return mouse_report;
+        return curcur40_wheel_emit_pending(mouse_report);
     }
 
     if (!s_wheel_resting && timer_elapsed(s_wheel_motion_ms) >= WHEEL_IDLE_RESET_MS) {
@@ -165,7 +210,7 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
     if (s_wheel_resting) {
         const int16_t wake_delta = wrap_delta_12bit(raw_angle, s_wheel_rest_anchor);
         if (wake_delta > -CURCUR40_WHEEL_DEADBAND_LSB && wake_delta < CURCUR40_WHEEL_DEADBAND_LSB) {
-            return mouse_report;
+            return curcur40_wheel_emit_pending(mouse_report);
         }
         s_wheel_resting    = false;
         s_wheel_prev_angle = s_wheel_rest_anchor;
@@ -187,22 +232,7 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
         }
     }
 
-    if (s_wheel_pending != 0) {
-        int32_t emit = s_wheel_pending;
-        if (emit > MOUSE_REPORT_HV_MAX) {
-            emit = MOUSE_REPORT_HV_MAX;
-        } else if (emit < MOUSE_REPORT_HV_MIN) {
-            emit = MOUSE_REPORT_HV_MIN;
-        }
-        s_wheel_pending -= emit;
-
-        int32_t combined = (int32_t)mouse_report.v + emit;
-        if (combined > MOUSE_REPORT_HV_MAX) combined = MOUSE_REPORT_HV_MAX;
-        if (combined < MOUSE_REPORT_HV_MIN) combined = MOUSE_REPORT_HV_MIN;
-        mouse_report.v = (mouse_hv_report_t)combined;
-    }
-
-    return mouse_report;
+    return curcur40_wheel_emit_pending(mouse_report);
 }
 
 #ifdef VIAL_ENABLE
