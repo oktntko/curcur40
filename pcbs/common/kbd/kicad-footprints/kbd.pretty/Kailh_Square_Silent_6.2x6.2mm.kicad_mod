@@ -12,4 +12,16 @@
 	(fp_circle (center 0 0) (end 1.50 0) (stroke (width 0.12) (type default)) (fill no) (layer "F.Fab") (uuid "ed73ccaf-af5f-5e61-8508-d7b13f8b6e9b"))
 	(pad "1" thru_hole circle (at -2.50 0) (size 2.00 2.00) (drill 1.15) (layers "*.Cu" "*.Mask") (uuid "aabe0646-2e53-5483-b68f-d04f9c6340c0"))
 	(pad "2" thru_hole circle (at 2.50 0) (size 2.00 2.00) (drill 1.15) (layers "*.Cu" "*.Mask") (uuid "9fea8a35-100f-5b82-800b-d6ef7a8f8ce2"))
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/../common/kbd/kicad-packages3D/kbd.3dshapes/Kailh_Square_Silent_6.2x6.2mm.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
 )
