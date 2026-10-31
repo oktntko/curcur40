@@ -12,22 +12,22 @@ import pcbnew
 WORKSPACE = Path(__file__).resolve().parent.parent
 KICAD_CLI = os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe")
 
-# Left perimeter mounting holes (5 holes, Ø 2.40 mm -> radius 1.20 mm)
+# Left perimeter screw-head clearance holes (5 holes, Ø 4.40 mm -> radius 2.20 mm; sub-flush M2 screw head)
 LEFT_MOUNTING_HOLES = [
-    (   0.0000, -15.0000, 1.20),
-    (   0.0000,  20.0000, 1.20),
-    (-101.0000, -20.0000, 1.20),
-    ( -98.0000,  38.0000, 1.20),
-    ( -62.0000,  64.6000, 1.20),
+    (   0.0000, -15.0000, 2.20),
+    (   0.0000,  20.0000, 2.20),
+    (-101.0000, -20.0000, 2.20),
+    ( -98.0000,  38.0000, 2.20),
+    ( -62.0000,  64.6000, 2.20),
 ]
 
-# Right perimeter mounting holes (5 holes, Ø 2.40 mm -> radius 1.20 mm, symmetric with Left)
+# Right perimeter screw-head clearance holes (5 holes, Ø 4.40 mm -> radius 2.20 mm, symmetric with Left)
 RIGHT_MOUNTING_HOLES = [
-    (  0.0000, -15.0000, 1.20),
-    (  0.0000,  20.0000, 1.20),
-    (101.0000, -20.0000, 1.20),
-    ( 98.0000,  38.0000, 1.20),
-    ( 62.0000,  64.6000, 1.20),
+    (  0.0000, -15.0000, 2.20),
+    (  0.0000,  20.0000, 2.20),
+    (101.0000, -20.0000, 2.20),
+    ( 98.0000,  38.0000, 2.20),
+    ( 62.0000,  64.6000, 2.20),
 ]
 
 LEFT_SWITCHES = [
@@ -82,14 +82,13 @@ RIGHT_SWITCHES = [
     (71.4375, 52.38750),     # rSW9  (7,3)
 ]
 
-# Right Sunk Inertia Wheel 3-point M2 mounting holes (Ø 2.40 mm -> radius 1.20 mm)
+# Right Under-Plate Inertia Wheel 2-point cradle screw-head clearance holes (WC1, WC2: Ø 4.40 mm -> radius 2.20 mm)
 RIGHT_WHEEL_HOLES = [
-    ( 2.0875,  -1.9000, 1.20),
-    ( 2.0875,   5.8000, 1.20),
-    (16.2875, -12.2000, 1.20),
+    ( 7.8000, -9.8000, 2.20),
+    (20.4000,  5.8000, 2.20),
 ]
 
-RIGHT_INERTIA_WHEEL = (14.2875, 0.00000)  # Sunk Passive Magnetic Inertia Wheel module center (axle at Y = -0.1000 mm)
+RIGHT_INERTIA_WHEEL = (14.2875, -2.00000)  # Under-Plate Passive Magnetic Inertia Wheel axle center
 
 
 def round_polygon_with_fillets(pts_and_radii):
@@ -139,34 +138,30 @@ def make_rect_cutout(cx, cy, w, h, r=0.5):
     return round_polygon_with_fillets(pts)
 
 
-def make_inertia_wheel_top_cutout(cx_mod, cy_mod):
+def make_inertia_wheel_top_cutout(cx, cy):
     """
-    Exact 2D closed boundary of the Sunk Inertia Wheel Twin-Snap Top Plate opening (36 vertices, identical to
-    `SUNK_PLATE_OPENING_Q1` in `scripts/generate_inertia_wheel.py`, mirrored into all four quadrants
-    around the axle `(cx_mod, cy_mod - 0.10)`):
-      - Central flywheel slot: 6.08 x 18.16 mm (R = 0.55 mm) -> >= 0.30 mm to the wheel over the full click stroke
-      - Core window: 16.40 x 8.40 mm (concave inner corners R = 0.25 mm)
-      - AS5600 sub-PCB swing windows: 6.65 <= |dx| <= 8.20 mm, |dy| <= 5.30 mm (R = 0.50 mm)
-      - Twin snap-leg windows: 2.00 x 10.86 mm (R = 0.45 mm) at dx = ±4.85 mm (locate 1.80 mm legs at ±0.10 mm,
-        with all FR-4 shoulders >= 0.80 mm)
+    Clean rounded-rectangle Top Plate slot (5.60 x 22.00 mm, R = 1.00 mm) centered at `(cx, cy)`
+    for the Ø 22.00 x 4.40 mm 1-piece integral-shaft under-plate wheel (`>= 0.50 mm` clearance all around).
     """
-    cx = cx_mod
-    cy = cy_mod - 0.1000
-    q1 = [
-        (8.20, 5.30, 0.50),
-        (6.65, 5.30, 0.50),
-        (6.65, 4.20, 0.25),
-        (5.85, 4.20, 0.25),
-        (5.85, 5.43, 0.45),
-        (3.85, 5.43, 0.45),
-        (3.85, 4.20, 0.25),
-        (3.04, 4.20, 0.25),
-        (3.04, 9.08, 0.55),
+    return make_rect_cutout(cx, cy, 5.60, 22.00, 1.00)
+
+
+def make_inertia_wheel_foam_cutout():
+    """Cross-shaped switch-foam cutout matching the Right Main PCB wheel & bearing/magnet opening."""
+    pts = [
+        (11.4875, -13.5000, 0.50),
+        (17.0875, -13.5000, 0.50),
+        (17.0875,  -5.7500, 0.50),
+        (20.4075,  -5.7500, 0.50),
+        (20.4075,   1.7500, 0.50),
+        (17.0875,   1.7500, 0.50),
+        (17.0875,   9.5000, 0.50),
+        (11.4875,   9.5000, 0.50),
+        (11.4875,   1.7500, 0.50),
+        ( 6.0000,   1.7500, 0.50),
+        ( 6.0000,  -5.7500, 0.50),
+        (11.4875,  -5.7500, 0.50),
     ]
-    q2 = [(-u, v, r) for (u, v, r) in reversed(q1)]
-    q3 = [(-u, -v, r) for (u, v, r) in q1]
-    q4 = [(u, -v, r) for (u, v, r) in reversed(q1)]
-    pts = [(cx + u, cy + v, r) for (u, v, r) in q1 + q2 + q3 + q4]
     return round_polygon_with_fillets(pts)
 
 
@@ -340,10 +335,10 @@ def main():
         height_mm=120.0,
     )
 
-    left_foam_holes = [(x, y, 2.0) for (x, y, _) in LEFT_MOUNTING_HOLES]
-    right_foam_holes = [(x, y, 2.0) for (x, y, _) in right_all_holes]
+    left_foam_holes = [(x, y, 2.2) for (x, y, _) in LEFT_MOUNTING_HOLES]
+    right_foam_holes = [(x, y, 2.2) for (x, y, _) in right_all_holes]
     right_foam_cutouts = right_switch_cutouts + [
-        make_rect_cutout(RIGHT_INERTIA_WHEEL[0], RIGHT_INERTIA_WHEEL[1], 18.6, 18.6, 0.5)
+        make_inertia_wheel_foam_cutout()
     ]
     write_laser_svg(
         os.path.join(out_svg_dir, "foam-curcur40.svg"),
