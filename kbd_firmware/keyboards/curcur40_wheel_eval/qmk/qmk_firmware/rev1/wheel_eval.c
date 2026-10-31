@@ -8,9 +8,10 @@
 
 #define AS5600_FULL_SCALE_LSB      4096L
 #define AS5600_HALF_SCALE_LSB      2048
-#define AS5600_I2C_TIMEOUT_MS      5
+#define AS5600_I2C_TIMEOUT_MS      2
 #define AS5600_RETRY_INTERVAL_MS   200
 #define AS5600_STATUS_POLL_MS      250
+#define WHEEL_POLL_INTERVAL_MS     1
 #define WHEEL_IDLE_RESET_MS        60
 
 static bool     s_sensor_online   = false;
@@ -18,8 +19,11 @@ static bool     s_magnet_ok       = false;
 static bool     s_angle_locked    = false;
 static bool     s_resting         = true;
 static bool     s_horiz_mode      = false;
+static bool     s_polled_once     = false;
+static uint8_t  s_err_streak      = 0;
 static uint16_t s_prev_angle      = 0;
 static uint16_t s_rest_anchor     = 0;
+static uint16_t s_last_poll_ms    = 0;
 static uint16_t s_last_retry_ms   = 0;
 static uint16_t s_last_status_ms  = 0;
 static uint16_t s_last_motion_ms  = 0;
@@ -77,8 +81,11 @@ static int16_t wrap_delta_12bit(uint16_t current, uint16_t previous) {
 
 bool pointing_device_driver_init(void) {
     i2c_init();
-    s_last_retry_ms = timer_read();
+    s_last_poll_ms  = timer_read();
+    s_last_retry_ms = s_last_poll_ms;
     s_sensor_online = as5600_configure();
+    s_err_streak    = s_sensor_online ? 0 : 1;
+    s_polled_once   = false;
     s_angle_locked  = false;
     s_resting       = true;
     s_subtick_numer = 0;
@@ -87,89 +94,7 @@ bool pointing_device_driver_init(void) {
     return true;
 }
 
-report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
-    const uint16_t now = timer_read();
-
-    if (!s_sensor_online) {
-        if (timer_elapsed(s_last_retry_ms) < AS5600_RETRY_INTERVAL_MS) {
-            return mouse_report;
-        }
-        s_last_retry_ms = now;
-        if (!as5600_configure()) {
-            return mouse_report;
-        }
-        s_sensor_online = true;
-        s_angle_locked  = false;
-        s_resting       = true;
-        s_subtick_numer = 0;
-    }
-
-    if (timer_elapsed(s_last_status_ms) >= AS5600_STATUS_POLL_MS) {
-        uint8_t status = 0;
-        if (i2c_read_register(AS5600_I2C_ADDR, AS5600_REG_STATUS, &status, 1, AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
-            s_sensor_online = false;
-            s_angle_locked  = false;
-            s_last_retry_ms = now;
-            return mouse_report;
-        }
-        s_magnet_ok      = (status & AS5600_STATUS_MD) != 0;
-        s_last_status_ms = now;
-    }
-
-    if (!s_magnet_ok) {
-        s_angle_locked = false;
-        return mouse_report;
-    }
-
-    uint16_t raw_angle = 0;
-    if (!as5600_read_raw_angle(&raw_angle)) {
-        s_sensor_online = false;
-        s_angle_locked  = false;
-        s_last_retry_ms = now;
-        return mouse_report;
-    }
-
-    if (!s_angle_locked) {
-        s_prev_angle     = raw_angle;
-        s_rest_anchor    = raw_angle;
-        s_last_motion_ms = now;
-        s_resting        = true;
-        s_angle_locked   = true;
-        return mouse_report;
-    }
-
-    if (!s_resting && timer_elapsed(s_last_motion_ms) >= WHEEL_IDLE_RESET_MS) {
-        s_resting       = true;
-        s_rest_anchor   = raw_angle;
-        s_prev_angle    = raw_angle;
-        s_subtick_numer = 0;
-    }
-
-    if (s_resting) {
-        const int16_t wake_delta = wrap_delta_12bit(raw_angle, s_rest_anchor);
-        if (wake_delta > -WHEEL_DEADBAND_LSB && wake_delta < WHEEL_DEADBAND_LSB) {
-            return mouse_report;
-        }
-        s_resting    = false;
-        s_prev_angle = s_rest_anchor;
-    }
-
-    int16_t delta_lsb = wrap_delta_12bit(raw_angle, s_prev_angle);
-    if (delta_lsb != 0) {
-        s_prev_angle     = raw_angle;
-        s_last_motion_ms = now;
-
-#if WHEEL_INVERT_DIR
-        delta_lsb = -delta_lsb;
-#endif
-        s_subtick_numer += (int32_t)delta_lsb * (int32_t)WHEEL_NOTCHES_PER_REV;
-        const int32_t whole_ticks = s_subtick_numer / AS5600_FULL_SCALE_LSB;
-        if (whole_ticks != 0) {
-            s_subtick_numer -= whole_ticks * AS5600_FULL_SCALE_LSB;
-            s_pending_ticks += whole_ticks;
-        }
-    }
-
+static report_mouse_t wheel_eval_emit_pending(report_mouse_t mouse_report) {
     if (s_pending_ticks != 0) {
         int32_t emit = s_pending_ticks;
         if (emit > MOUSE_REPORT_HV_MAX) {
@@ -192,8 +117,113 @@ report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
             mouse_report.v = (mouse_hv_report_t)combined;
         }
     }
-
     return mouse_report;
+}
+
+report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
+    const uint16_t now = timer_read();
+
+    if (!s_sensor_online) {
+        if (timer_elapsed(s_last_retry_ms) < AS5600_RETRY_INTERVAL_MS) {
+            return wheel_eval_emit_pending(mouse_report);
+        }
+        s_last_retry_ms = now;
+        if (s_err_streak >= 3) {
+            i2c_init();
+        }
+        if (!as5600_configure()) {
+            if (s_err_streak < 255) {
+                s_err_streak++;
+            }
+            return wheel_eval_emit_pending(mouse_report);
+        }
+        s_sensor_online = true;
+        s_err_streak    = 0;
+        s_angle_locked  = false;
+        s_resting       = true;
+        s_subtick_numer = 0;
+    }
+
+    if (s_polled_once && timer_elapsed(s_last_poll_ms) < WHEEL_POLL_INTERVAL_MS) {
+        return wheel_eval_emit_pending(mouse_report);
+    }
+    s_polled_once  = true;
+    s_last_poll_ms = now;
+
+    if (timer_elapsed(s_last_status_ms) >= AS5600_STATUS_POLL_MS) {
+        uint8_t status = 0;
+        if (i2c_read_register(AS5600_I2C_ADDR, AS5600_REG_STATUS, &status, 1, AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+            s_sensor_online = false;
+            s_angle_locked  = false;
+            s_last_retry_ms = now;
+            if (s_err_streak < 255) {
+                s_err_streak++;
+            }
+            return wheel_eval_emit_pending(mouse_report);
+        }
+        s_magnet_ok      = (status & AS5600_STATUS_MD) != 0;
+        s_last_status_ms = now;
+    }
+
+    if (!s_magnet_ok) {
+        s_angle_locked = false;
+        return wheel_eval_emit_pending(mouse_report);
+    }
+
+    uint16_t raw_angle = 0;
+    if (!as5600_read_raw_angle(&raw_angle)) {
+        s_sensor_online = false;
+        s_angle_locked  = false;
+        s_last_retry_ms = now;
+        if (s_err_streak < 255) {
+            s_err_streak++;
+        }
+        return wheel_eval_emit_pending(mouse_report);
+    }
+    s_err_streak = 0;
+
+    if (!s_angle_locked) {
+        s_prev_angle     = raw_angle;
+        s_rest_anchor    = raw_angle;
+        s_last_motion_ms = now;
+        s_resting        = true;
+        s_angle_locked   = true;
+        return wheel_eval_emit_pending(mouse_report);
+    }
+
+    if (!s_resting && timer_elapsed(s_last_motion_ms) >= WHEEL_IDLE_RESET_MS) {
+        s_resting       = true;
+        s_rest_anchor   = raw_angle;
+        s_prev_angle    = raw_angle;
+        s_subtick_numer = 0;
+    }
+
+    if (s_resting) {
+        const int16_t wake_delta = wrap_delta_12bit(raw_angle, s_rest_anchor);
+        if (wake_delta > -WHEEL_DEADBAND_LSB && wake_delta < WHEEL_DEADBAND_LSB) {
+            return wheel_eval_emit_pending(mouse_report);
+        }
+        s_resting    = false;
+        s_prev_angle = s_rest_anchor;
+    }
+
+    int16_t delta_lsb = wrap_delta_12bit(raw_angle, s_prev_angle);
+    if (delta_lsb != 0) {
+        s_prev_angle     = raw_angle;
+        s_last_motion_ms = now;
+
+#if WHEEL_INVERT_DIR
+        delta_lsb = -delta_lsb;
+#endif
+        s_subtick_numer += (int32_t)delta_lsb * (int32_t)WHEEL_NOTCHES_PER_REV;
+        const int32_t whole_ticks = s_subtick_numer / AS5600_FULL_SCALE_LSB;
+        if (whole_ticks != 0) {
+            s_subtick_numer -= whole_ticks * AS5600_FULL_SCALE_LSB;
+            s_pending_ticks += whole_ticks;
+        }
+    }
+
+    return wheel_eval_emit_pending(mouse_report);
 }
 
 uint16_t pointing_device_driver_get_cpi(void) {
