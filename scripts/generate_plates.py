@@ -17,9 +17,9 @@ KICAD_CLI = os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cl
 #   - L4 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance hole (screw clamps Left Main PCB F.Cu Z = -4.20 mm)
 LEFT_MOUNTING_HOLES = [
     (   0.0000, -15.0000, 1.20),
-    (   0.0000,  20.0000, 1.20),
+    (   0.0000,  18.0000, 1.20),
     (-101.0000, -20.0000, 1.20),
-    ( -98.0000,  38.0000, 2.20),
+    ( -98.4500,  38.1500, 2.20),
     ( -62.0000,  65.1500, 1.20),
 ]
 
@@ -28,9 +28,9 @@ LEFT_MOUNTING_HOLES = [
 #   - R4 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance hole (screw clamps Right Main PCB F.Cu Z = -4.20 mm)
 RIGHT_MOUNTING_HOLES = [
     (  0.0000, -15.0000, 1.20),
-    (  0.0000,  20.0000, 1.20),
+    (  0.0000,  18.0000, 1.20),
     (101.0000, -20.0000, 1.20),
-    ( 98.0000,  38.0000, 2.20),
+    ( 98.4500,  38.1500, 2.20),
     ( 62.0000,  65.1500, 1.20),
 ]
 
@@ -88,11 +88,11 @@ RIGHT_SWITCHES = [
 
 # Right Under-Plate Inertia Wheel 2-point cradle screw-head clearance holes (WC1, WC2: Ø 4.40 mm -> radius 2.20 mm)
 RIGHT_WHEEL_HOLES = [
-    ( 7.8000, -9.8000, 2.20),
-    (22.4000,  6.0000, 2.20),
+    ( 6.6375, -9.8000, 2.20),
+    (21.2375,  6.0000, 2.20),
 ]
 
-RIGHT_INERTIA_WHEEL = (15.4500, -2.00000)  # Under-Plate Passive Magnetic Inertia Wheel axle center (Ø 22.00 x 6.50 mm)
+RIGHT_INERTIA_WHEEL = (14.2875, -2.00000)  # Under-Plate Passive Magnetic Inertia Wheel axle center (aligned with rEXSW2 x=14.2875)
 
 
 def round_polygon_with_fillets(pts_and_radii):
@@ -153,18 +153,18 @@ def make_inertia_wheel_top_cutout(cx, cy):
 def make_inertia_wheel_foam_cutout():
     """Cross-shaped switch-foam cutout matching the Right Main PCB wheel & bearing/magnet opening."""
     pts = [
-        (11.6000, -13.5000, 0.50),
-        (19.3000, -13.5000, 0.50),
-        (19.3000,  -5.7500, 0.50),
-        (22.5000,  -5.7500, 0.50),
-        (22.5000,   1.7500, 0.50),
-        (19.3000,   1.7500, 0.50),
-        (19.3000,   9.5000, 0.50),
-        (11.6000,   9.5000, 0.50),
-        (11.6000,   1.7500, 0.50),
-        ( 6.0000,   1.7500, 0.50),
-        ( 6.0000,  -5.7500, 0.50),
-        (11.6000,  -5.7500, 0.50),
+        (10.4375, -13.5000, 0.50),
+        (18.1375, -13.5000, 0.50),
+        (18.1375,  -5.7500, 0.50),
+        (21.3375,  -5.7500, 0.50),
+        (21.3375,   1.7500, 0.50),
+        (18.1375,   1.7500, 0.50),
+        (18.1375,   9.5000, 0.50),
+        (10.4375,   9.5000, 0.50),
+        (10.4375,   1.7500, 0.50),
+        ( 4.8375,   1.7500, 0.50),
+        ( 4.8375,  -5.7500, 0.50),
+        (10.4375,  -5.7500, 0.50),
     ]
     return round_polygon_with_fillets(pts)
 
