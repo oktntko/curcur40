@@ -3,12 +3,13 @@
 
 #include "curcur40_scroll.h"
 #include "drivers/sensors/pmw33xx_common.h"
+#include "gpio.h"
 #include "i2c_master.h"
 #include "pointing_device.h"
 #include "timer.h"
 
 /* -------------------------------------------------------------------------
- * Lightweight Cortex-M0+ helpers (no libm / powf dependency)
+ * Lightweight Cortex-M0+ helpers (no libm / powf / atan2f dependency)
  * ------------------------------------------------------------------------- */
 static inline float abs_f(float x) {
     return (x < 0.0f) ? -x : x;
@@ -24,6 +25,10 @@ static inline int16_t abs_i16(int16_t x) {
     return (x < 0) ? (int16_t)(-x) : x;
 }
 
+static inline int32_t abs_i32(int32_t x) {
+    return (x < 0) ? -x : x;
+}
+
 static inline int16_t clamp_i16(int16_t x, int16_t lo, int16_t hi) {
     if (x < lo) return lo;
     if (x > hi) return hi;
@@ -31,82 +36,356 @@ static inline int16_t clamp_i16(int16_t x, int16_t lo, int16_t hi) {
 }
 
 /* -------------------------------------------------------------------------
- * 1. Composite Right-Half Pointing Driver: PMW3360 (SPI1) + AS5600 (I2C0)
+ * 1. Composite Right-Half Pointing Driver:
+ *    PMW3360 (SPI1) + TMAG5273 / TLV493D-A1B6 3D Hall Inertia Wheel (I2C0)
  * ------------------------------------------------------------------------- */
-#define AS5600_FULL_SCALE_LSB    4096L
-#define AS5600_HALF_SCALE_LSB    2048
-#define AS5600_I2C_TIMEOUT_MS    2
-#define AS5600_RETRY_INTERVAL_MS 200
-#define AS5600_STATUS_POLL_MS    250
-#define WHEEL_POLL_INTERVAL_MS   1
-#define WHEEL_IDLE_RESET_MS      60
+#define WHEEL_ANGLE_FULL_LSB   4096L
+#define WHEEL_ANGLE_HALF_LSB   2048
+#define WHEEL_I2C_TIMEOUT_MS   2
+#define WHEEL_RETRY_INTERVAL_MS 200
+#define WHEEL_POLL_INTERVAL_MS 1
+#define WHEEL_IDLE_RESET_MS    60
+#define WHEEL_BUSY_STREAK_MAX  20
+#define WHEEL_CAL_DECAY_MS     2000
+#define WHEEL_CAL_BIPOLAR_MIN  1200
 
-static bool     s_pmw3360_online     = false;
-static bool     s_wheel_online       = false;
-static bool     s_wheel_magnet_ok    = false;
-static bool     s_wheel_angle_locked = false;
-static bool     s_wheel_resting      = true;
-static bool     s_wheel_polled_once  = false;
-static uint8_t  s_wheel_err_streak   = 0;
-static uint16_t s_wheel_prev_angle   = 0;
-static uint16_t s_wheel_rest_anchor  = 0;
-static uint16_t s_wheel_poll_ms      = 0;
-static uint16_t s_wheel_retry_ms     = 0;
-static uint16_t s_wheel_status_ms    = 0;
-static uint16_t s_wheel_motion_ms    = 0;
-static int32_t  s_wheel_subtick_num  = 0;
-static int32_t  s_wheel_pending      = 0;
+typedef enum {
+    WHEEL_SENSOR_NONE = 0,
+    WHEEL_SENSOR_TMAG5273,
+    WHEEL_SENSOR_TLV493D,
+} wheel_sensor_kind_t;
 
-static bool as5600_configure(void) {
+typedef struct {
+    int16_t min_s;
+    int16_t max_s;
+    int16_t min_c;
+    int16_t max_c;
+    bool    seeded;
+    bool    locked;
+} wheel_cal_t;
+
+static bool                s_pmw3360_online     = false;
+static wheel_sensor_kind_t s_wheel_sensor       = WHEEL_SENSOR_NONE;
+static uint8_t             s_wheel_addr8        = 0;
+static bool                s_wheel_online       = false;
+static bool                s_wheel_angle_locked = false;
+static bool                s_wheel_resting      = true;
+static bool                s_wheel_polled_once  = false;
+static bool                s_wheel_click_held   = false;
+static bool                s_wheel_click_seen   = false;
+static uint8_t             s_wheel_err_streak   = 0;
+static uint8_t             s_wheel_busy_streak  = 0;
+static uint16_t            s_wheel_prev_angle   = 0;
+static uint16_t            s_wheel_rest_anchor  = 0;
+static uint16_t            s_wheel_poll_ms      = 0;
+static uint16_t            s_wheel_retry_ms     = 0;
+static uint16_t            s_wheel_motion_ms    = 0;
+static uint16_t            s_wheel_click_rel_ms = 0;
+static uint16_t            s_wheel_cal_decay_ms = 0;
+static int32_t             s_wheel_subtick_num  = 0;
+static int32_t             s_wheel_pending      = 0;
+static wheel_cal_t         s_wheel_cal          = {0, 0, 0, 0, false, false};
+
+/*
+ * 12-iteration integer CORDIC atan2 returning 12-bit angle [0..4095] (0..360 deg).
+ * Max error across all 360 deg is <= 1 LSB (0.088 deg), zero float / libm calls.
+ */
+static uint16_t cordic_atan2_12bit(int32_t y, int32_t x) {
+    static const uint16_t k_atan_lut[12] = {
+        8192U, 4836U, 2555U, 1297U, 651U, 326U, 163U, 81U, 41U, 20U, 10U, 5U
+    };
+
+    if (x == 0 && y == 0) {
+        return 0;
+    }
+
+    int32_t mag = abs_i32(x) + abs_i32(y);
+    if (mag < 4096) {
+        x <<= 6;
+        y <<= 6;
+    }
+
+    uint16_t angle = 0;
+    if (x < 0) {
+        x     = -x;
+        y     = -y;
+        angle = 32768U;
+    }
+
+    for (uint8_t i = 0; i < 12; i++) {
+        int32_t dx = y >> i;
+        int32_t dy = x >> i;
+        if (y >= 0) {
+            x += dx;
+            y -= dy;
+            angle = (uint16_t)(angle + k_atan_lut[i]);
+        } else {
+            x -= dx;
+            y += dy;
+            angle = (uint16_t)(angle - k_atan_lut[i]);
+        }
+    }
+
+    return (uint16_t)(((uint16_t)(angle + 8U) >> 4) & 0x0FFFU);
+}
+
+static uint16_t wheel_eval_angle_12bit(int16_t raw_s, int16_t raw_c, const wheel_cal_t *cal) {
+    int32_t ns = (int32_t)raw_s;
+    int32_t nc = (int32_t)raw_c;
+
+    if (cal->locked) {
+        int32_t span_s = (int32_t)cal->max_s - (int32_t)cal->min_s;
+        int32_t span_c = (int32_t)cal->max_c - (int32_t)cal->min_c;
+        int32_t mid2_s = (int32_t)cal->max_s + (int32_t)cal->min_s;
+        int32_t mid2_c = (int32_t)cal->max_c + (int32_t)cal->min_c;
+        if (span_s >= (2 * WHEEL_CAL_BIPOLAR_MIN) && span_c >= (2 * WHEEL_CAL_BIPOLAR_MIN)) {
+            /* Cross-multiply by opposite span to normalize off-axis ellipse without division */
+            int32_t ds = (2 * ns - mid2_s) >> 2;
+            int32_t dc = (2 * nc - mid2_c) >> 2;
+            ns         = (ds * (span_c >> 2)) >> 8;
+            nc         = (dc * (span_s >> 2)) >> 8;
+        }
+    }
+
+    return cordic_atan2_12bit(ns, nc);
+}
+
+static void wheel_cal_reset(wheel_cal_t *cal) {
+    cal->min_s  = 0;
+    cal->max_s  = 0;
+    cal->min_c  = 0;
+    cal->max_c  = 0;
+    cal->seeded = false;
+    cal->locked = false;
+}
+
+static void wheel_cal_update(wheel_cal_t *cal, int16_t raw_s, int16_t raw_c, uint16_t now) {
+    if (!cal->seeded) {
+        cal->min_s          = raw_s;
+        cal->max_s          = raw_s;
+        cal->min_c          = raw_c;
+        cal->max_c          = raw_c;
+        cal->seeded         = true;
+        cal->locked         = false;
+        s_wheel_cal_decay_ms = now;
+        return;
+    }
+
+    /* Gentle envelope decay prevents any single-sample glitch from pinning min/max forever */
+    if (timer_elapsed(s_wheel_cal_decay_ms) >= WHEEL_CAL_DECAY_MS) {
+        s_wheel_cal_decay_ms = now;
+        if (cal->max_s - cal->min_s > (2 * WHEEL_CAL_BIPOLAR_MIN + 32)) {
+            cal->max_s -= 4;
+            cal->min_s += 4;
+        }
+        if (cal->max_c - cal->min_c > (2 * WHEEL_CAL_BIPOLAR_MIN + 32)) {
+            cal->max_c -= 4;
+            cal->min_c += 4;
+        }
+    }
+
+    if (raw_s < cal->min_s) cal->min_s = raw_s;
+    if (raw_s > cal->max_s) cal->max_s = raw_s;
+    if (raw_c < cal->min_c) cal->min_c = raw_c;
+    if (raw_c > cal->max_c) cal->max_c = raw_c;
+
+    if (!cal->locked) {
+        int32_t span_s = (int32_t)cal->max_s - (int32_t)cal->min_s;
+        int32_t span_c = (int32_t)cal->max_c - (int32_t)cal->min_c;
+        if (cal->min_s < -WHEEL_CAL_BIPOLAR_MIN && cal->max_s > WHEEL_CAL_BIPOLAR_MIN &&
+            cal->min_c < -WHEEL_CAL_BIPOLAR_MIN && cal->max_c > WHEEL_CAL_BIPOLAR_MIN &&
+            span_s * 5 >= span_c * 2 && span_c * 5 >= span_s * 2) {
+            cal->locked = true;
+        }
+    }
+}
+
+static bool tmag5273_try_configure(uint8_t addr7) {
+    const uint8_t addr8 = (uint8_t)(addr7 << 1);
+    uint8_t       id[3] = {0, 0, 0};
+
+    if (i2c_read_register(addr8, CURCUR40_TMAG5273_REG_DEVICE_ID, id, sizeof(id), WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+        return false;
+    }
+
+    const uint16_t mfg_id = (uint16_t)(((uint16_t)id[2] << 8) | id[1]);
+    const uint8_t  ver    = (uint8_t)(id[0] & 0x03U);
+    if (mfg_id != CURCUR40_TMAG5273_MFG_ID || (ver != 0x01U && ver != 0x02U)) {
+        return false;
+    }
+
     /*
-     * CONF register (0x07..0x08):
-     * - SF   = 0b11 (2x slow filter -> 0.286 ms step response for fast inertia spin)
-     * - FTH  = 0b001 (6 LSB fast-filter threshold: quiet at rest, instant on flick)
-     * - HYST = 0b01 (1 LSB internal hysteresis)
+     * Configure while in Standby Mode per TI datasheet SLYS045C Section 7.2.1.2:
+     * 1. INT_CONFIG_1  (0x08) = 0x01: MASK_INTB=1b (Pin 5 ~INT tied to GNDR via rR13)
+     * 2. T_CONFIG      (0x07) = 0x00: Temperature channel disabled
+     * 3. DEV_CONFIG_1  (0x00) = 0x08: CONV_AVG=010b (4x avg, ~3.1 kSPS), I2C_RD=00b, CRC=0
+     * 4. SNS_CONFIG_1  (0x02) = 0xB0: MAG_CH_EN=1011b (XZX pseudo-simultaneous sampling)
+     *    SNS_CONFIG_2  (0x03) = 0x03: X_Y_RANGE=1b, Z_RANGE=1b (+/-80mT on x1, +/-266mT on x2)
+     * 5. DEV_CONFIG_2  (0x01) = 0x12: LP_LN=1b (low-noise), OPERATING_MODE=10b (Continuous)
      */
-    const uint8_t conf[2] = {0x07, 0x04};
-    if (i2c_write_register(CURCUR40_AS5600_I2C_ADDR, CURCUR40_AS5600_REG_CONF_H, conf, sizeof(conf), AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+    const uint8_t int_cfg = 0x01U;
+    const uint8_t t_cfg   = 0x00U;
+    const uint8_t dev_cfg1 = 0x08U;
+    const uint8_t sns_cfg[2] = {0xB0U, 0x03U};
+    const uint8_t dev_cfg2 = 0x12U;
+
+    if (i2c_write_register(addr8, CURCUR40_TMAG5273_REG_INT_CFG_1, &int_cfg, 1, WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+        return false;
+    }
+    if (i2c_write_register(addr8, CURCUR40_TMAG5273_REG_T_CFG, &t_cfg, 1, WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+        return false;
+    }
+    if (i2c_write_register(addr8, CURCUR40_TMAG5273_REG_DEV_CFG_1, &dev_cfg1, 1, WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+        return false;
+    }
+    if (i2c_write_register(addr8, CURCUR40_TMAG5273_REG_SNS_CFG_1, sns_cfg, sizeof(sns_cfg), WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+        return false;
+    }
+    if (i2c_write_register(addr8, CURCUR40_TMAG5273_REG_DEV_CFG_2, &dev_cfg2, 1, WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
         return false;
     }
 
-    uint8_t status = 0;
-    if (i2c_read_register(CURCUR40_AS5600_I2C_ADDR, CURCUR40_AS5600_REG_STATUS, &status, 1, AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
-        return false;
-    }
-
-    s_wheel_magnet_ok = (status & CURCUR40_AS5600_STATUS_MD) != 0;
-    s_wheel_status_ms = timer_read();
+    s_wheel_sensor = WHEEL_SENSOR_TMAG5273;
+    s_wheel_addr8  = addr8;
     return true;
 }
 
-static bool as5600_read_raw_angle(uint16_t *out_angle) {
-    uint8_t buf[2] = {0, 0};
-    if (i2c_read_register(CURCUR40_AS5600_I2C_ADDR, CURCUR40_AS5600_REG_RAW_ANGLE_H, buf, sizeof(buf), AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+static bool tlv493d_try_configure(uint8_t addr7) {
+    const uint8_t addr8    = (uint8_t)(addr7 << 1);
+    uint8_t       rbuf[10] = {0};
+
+    if (i2c_receive(addr8, rbuf, sizeof(rbuf), WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
         return false;
     }
-    *out_angle = (uint16_t)(((uint16_t)(buf[0] & 0x0FU) << 8) | buf[1]);
+
+    bool all_zero = true;
+    bool all_ff   = true;
+    for (uint8_t i = 0; i < sizeof(rbuf); i++) {
+        if (rbuf[i] != 0x00U) all_zero = false;
+        if (rbuf[i] != 0xFFU) all_ff = false;
+    }
+    if (all_zero || all_ff) {
+        return false;
+    }
+
+    /*
+     * Preserve factory trim bits R_RES1..3 (bytes 7..9) and enter Master Controlled Mode:
+     * - wbuf[1] MOD1: INT=0 (MUST be 0 on shared SCL!), FAST=1, LOW=1 (3.3 kHz continuous)
+     * - wbuf[3] MOD2: T=1 (temp off), LP=1 (12 ms), PT=1 (odd parity check enabled)
+     */
+    uint8_t wbuf[4];
+    wbuf[0] = 0x00U;
+    wbuf[1] = (uint8_t)((rbuf[7] & 0x18U) | 0x03U);
+    wbuf[2] = rbuf[8];
+    wbuf[3] = (uint8_t)(0xE0U | (rbuf[9] & 0x1FU));
+
+    /* Odd parity over all 32 bits of wbuf[0..3] stored in wbuf[1] bit 7 */
+    wbuf[1] |= 0x80U;
+    uint8_t p = (uint8_t)(wbuf[0] ^ wbuf[1] ^ wbuf[2] ^ wbuf[3]);
+    p ^= (uint8_t)(p >> 1);
+    p ^= (uint8_t)(p >> 2);
+    p ^= (uint8_t)(p >> 4);
+    if ((p & 0x01U) == 0U) {
+        wbuf[1] &= (uint8_t)(~0x80U);
+    }
+
+    if (i2c_transmit(addr8, wbuf, sizeof(wbuf), WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+        return false;
+    }
+
+    s_wheel_sensor = WHEEL_SENSOR_TLV493D;
+    s_wheel_addr8  = addr8;
     return true;
+}
+
+static bool wheel_sensor_configure(void) {
+    /* 1. Probe TI TMAG5273 family (A1/A2=0x35, B1/B2=0x22, D1/D2=0x44, C1/C2=0x78) */
+    static const uint8_t k_tmag_addrs[4] = {0x35U, 0x22U, 0x44U, 0x78U};
+    for (uint8_t i = 0; i < sizeof(k_tmag_addrs); i++) {
+        if (tmag5273_try_configure(k_tmag_addrs[i])) {
+            s_wheel_busy_streak = 0;
+            return true;
+        }
+    }
+
+    /* 2. Probe Infineon TLV493D-A1B6 fallback (0x5E default ADDR=1, 0x1F ADDR=0) */
+    static const uint8_t k_tlv_addrs[2] = {0x5EU, 0x1FU};
+    for (uint8_t i = 0; i < sizeof(k_tlv_addrs); i++) {
+        if (tlv493d_try_configure(k_tlv_addrs[i])) {
+            s_wheel_busy_streak = 0;
+            return true;
+        }
+    }
+
+    s_wheel_sensor = WHEEL_SENSOR_NONE;
+    s_wheel_addr8  = 0;
+    return false;
+}
+
+/*
+ * Reads the two orthogonal quadrature field components in the (North-South, Up-Down)
+ * rotation plane of the wheel magnet, mapped so atan2(out_sin, out_cos) increases
+ * (+delta_lsb > 0) when rolling the top of the wheel North (away = Scroll UP, +V):
+ *   - TMAG5273 (DBV on B.Cu rot=-90):  (Bx, Bz)
+ *   - TLV493D  (TSOP-6 on B.Cu rot=-90): (By, Bz) left-aligned to 16-bit signed scale
+ */
+static bool wheel_sensor_read_quadrature(int16_t *out_sin, int16_t *out_cos, bool *out_busy) {
+    *out_busy = false;
+
+    if (s_wheel_sensor == WHEEL_SENSOR_TMAG5273) {
+        uint8_t buf[7] = {0};
+        if (i2c_read_register(s_wheel_addr8, CURCUR40_TMAG5273_REG_X_MSB_RESULT, buf, sizeof(buf), WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+            return false;
+        }
+        if ((buf[6] & CURCUR40_TMAG5273_CONV_RESULT_READY) == 0U) {
+            *out_busy = true;
+            return true;
+        }
+        *out_sin = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);
+        *out_cos = (int16_t)(((uint16_t)buf[4] << 8) | buf[5]);
+        return true;
+    }
+
+    if (s_wheel_sensor == WHEEL_SENSOR_TLV493D) {
+        uint8_t buf[6] = {0};
+        if (i2c_receive(s_wheel_addr8, buf, sizeof(buf), WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
+            return false;
+        }
+        /* R_CHANNEL (buf[3] bits 1:0) != 0 indicates ADC was mid-conversion during readout */
+        if ((buf[3] & 0x03U) != 0U) {
+            *out_busy = true;
+            return true;
+        }
+        *out_sin = (int16_t)(((uint16_t)buf[1] << 8) | ((uint16_t)(buf[4] & 0x0FU) << 4));
+        *out_cos = (int16_t)(((uint16_t)buf[2] << 8) | ((uint16_t)(buf[5] & 0x0FU) << 4));
+        return true;
+    }
+
+    return false;
 }
 
 static inline int16_t wrap_delta_12bit(uint16_t current, uint16_t previous) {
     int16_t diff = (int16_t)current - (int16_t)previous;
-    if (diff > (AS5600_HALF_SCALE_LSB - 1)) {
-        diff -= (int16_t)AS5600_FULL_SCALE_LSB;
-    } else if (diff < -AS5600_HALF_SCALE_LSB) {
-        diff += (int16_t)AS5600_FULL_SCALE_LSB;
+    if (diff > (WHEEL_ANGLE_HALF_LSB - 1)) {
+        diff -= (int16_t)WHEEL_ANGLE_FULL_LSB;
+    } else if (diff < -WHEEL_ANGLE_HALF_LSB) {
+        diff += (int16_t)WHEEL_ANGLE_FULL_LSB;
     }
     return diff;
 }
 
 static void curcur40_wheel_init(void) {
     i2c_init();
+    wheel_cal_reset(&s_wheel_cal);
     s_wheel_poll_ms      = timer_read();
     s_wheel_retry_ms     = s_wheel_poll_ms;
-    s_wheel_online       = as5600_configure();
+    s_wheel_online       = wheel_sensor_configure();
     s_wheel_err_streak   = s_wheel_online ? 0 : 1;
     s_wheel_polled_once  = false;
     s_wheel_angle_locked = false;
     s_wheel_resting      = true;
+    s_wheel_click_held   = false;
+    s_wheel_click_seen   = false;
     s_wheel_subtick_num  = 0;
     s_wheel_pending      = 0;
 }
@@ -133,14 +412,14 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
     const uint16_t now = timer_read();
 
     if (!s_wheel_online) {
-        if (timer_elapsed(s_wheel_retry_ms) < AS5600_RETRY_INTERVAL_MS) {
+        if (timer_elapsed(s_wheel_retry_ms) < WHEEL_RETRY_INTERVAL_MS) {
             return curcur40_wheel_emit_pending(mouse_report);
         }
         s_wheel_retry_ms = now;
         if (s_wheel_err_streak >= 3) {
             i2c_init();
         }
-        if (!as5600_configure()) {
+        if (!wheel_sensor_configure()) {
             if (s_wheel_err_streak < 255) {
                 s_wheel_err_streak++;
             }
@@ -151,6 +430,7 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
         s_wheel_angle_locked = false;
         s_wheel_resting      = true;
         s_wheel_subtick_num  = 0;
+        wheel_cal_reset(&s_wheel_cal);
     }
 
     if (s_wheel_polled_once && timer_elapsed(s_wheel_poll_ms) < WHEEL_POLL_INTERVAL_MS) {
@@ -159,28 +439,23 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
     s_wheel_polled_once = true;
     s_wheel_poll_ms     = now;
 
-    if (timer_elapsed(s_wheel_status_ms) >= AS5600_STATUS_POLL_MS) {
-        uint8_t status = 0;
-        if (i2c_read_register(CURCUR40_AS5600_I2C_ADDR, CURCUR40_AS5600_REG_STATUS, &status, 1, AS5600_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
-            s_wheel_online       = false;
-            s_wheel_angle_locked = false;
-            s_wheel_retry_ms     = now;
-            if (s_wheel_err_streak < 255) {
-                s_wheel_err_streak++;
-            }
-            return curcur40_wheel_emit_pending(mouse_report);
-        }
-        s_wheel_magnet_ok = (status & CURCUR40_AS5600_STATUS_MD) != 0;
-        s_wheel_status_ms = now;
+    /* Real-time local middle-click detection on Right Half (rEXSW1 on GP7, active-low) */
+    const bool click_now = !gpio_read_pin(CURCUR40_WHEEL_CLICK_PIN);
+    if (click_now) {
+        s_wheel_click_held   = true;
+        s_wheel_click_seen   = true;
+        s_wheel_click_rel_ms = now;
+    } else if (s_wheel_click_held) {
+        s_wheel_click_held   = false;
+        s_wheel_click_rel_ms = now;
     }
+    const bool click_blanked = s_wheel_click_held ||
+                               (s_wheel_click_seen && timer_elapsed(s_wheel_click_rel_ms) < CURCUR40_WHEEL_CLICK_BLANK_MS);
 
-    if (!s_wheel_magnet_ok) {
-        s_wheel_angle_locked = false;
-        return curcur40_wheel_emit_pending(mouse_report);
-    }
-
-    uint16_t raw_angle = 0;
-    if (!as5600_read_raw_angle(&raw_angle)) {
+    int16_t raw_s = 0;
+    int16_t raw_c = 0;
+    bool    busy  = false;
+    if (!wheel_sensor_read_quadrature(&raw_s, &raw_c, &busy)) {
         s_wheel_online       = false;
         s_wheel_angle_locked = false;
         s_wheel_retry_ms     = now;
@@ -189,45 +464,81 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
         }
         return curcur40_wheel_emit_pending(mouse_report);
     }
-    s_wheel_err_streak = 0;
 
-    if (!s_wheel_angle_locked) {
-        s_wheel_prev_angle   = raw_angle;
-        s_wheel_rest_anchor  = raw_angle;
+    if (busy) {
+        if (++s_wheel_busy_streak >= WHEEL_BUSY_STREAK_MAX) {
+            /* Sensor likely brown-out reset back to Standby/Power-Down; reconfigure */
+            s_wheel_online       = false;
+            s_wheel_angle_locked = false;
+            s_wheel_retry_ms     = now;
+            s_wheel_busy_streak  = 0;
+        }
+        return curcur40_wheel_emit_pending(mouse_report);
+    }
+    s_wheel_busy_streak = 0;
+    s_wheel_err_streak  = 0;
+
+    /* Reject demagnetized / missing-wheel noise floor */
+    if (abs_i32((int32_t)raw_s) + abs_i32((int32_t)raw_c) < CURCUR40_WHEEL_MIN_MAG_L1) {
+        s_wheel_angle_locked = false;
+        return curcur40_wheel_emit_pending(mouse_report);
+    }
+
+    /*
+     * Evaluate angle with previous calibration first so updating min/max or
+     * locking ellipse normalization produces strictly zero synthetic step jump.
+     */
+    const uint16_t angle_prev_cal = wheel_eval_angle_12bit(raw_s, raw_c, &s_wheel_cal);
+    if (!click_blanked) {
+        wheel_cal_update(&s_wheel_cal, raw_s, raw_c, now);
+    }
+    const uint16_t angle_new_cal = wheel_eval_angle_12bit(raw_s, raw_c, &s_wheel_cal);
+
+    if (!s_wheel_angle_locked || click_blanked) {
+        s_wheel_prev_angle   = angle_new_cal;
+        s_wheel_rest_anchor  = angle_new_cal;
         s_wheel_motion_ms    = now;
         s_wheel_resting      = true;
         s_wheel_angle_locked = true;
+        s_wheel_subtick_num  = 0;
+        if (click_blanked) {
+            s_wheel_pending = 0;
+        }
         return curcur40_wheel_emit_pending(mouse_report);
     }
 
     if (!s_wheel_resting && timer_elapsed(s_wheel_motion_ms) >= WHEEL_IDLE_RESET_MS) {
         s_wheel_resting     = true;
-        s_wheel_rest_anchor = raw_angle;
-        s_wheel_prev_angle  = raw_angle;
+        s_wheel_rest_anchor = angle_new_cal;
+        s_wheel_prev_angle  = angle_new_cal;
         s_wheel_subtick_num = 0;
     }
 
     if (s_wheel_resting) {
-        const int16_t wake_delta = wrap_delta_12bit(raw_angle, s_wheel_rest_anchor);
+        const int16_t wake_delta = wrap_delta_12bit(angle_prev_cal, s_wheel_rest_anchor);
+        const int16_t cal_shift  = wrap_delta_12bit(angle_new_cal, angle_prev_cal);
+        s_wheel_rest_anchor      = (uint16_t)((s_wheel_rest_anchor + (uint16_t)cal_shift) & 0x0FFFU);
         if (wake_delta > -CURCUR40_WHEEL_DEADBAND_LSB && wake_delta < CURCUR40_WHEEL_DEADBAND_LSB) {
+            s_wheel_prev_angle = angle_new_cal;
             return curcur40_wheel_emit_pending(mouse_report);
         }
         s_wheel_resting    = false;
-        s_wheel_prev_angle = s_wheel_rest_anchor;
+        s_wheel_prev_angle = (uint16_t)((s_wheel_rest_anchor - (uint16_t)cal_shift) & 0x0FFFU);
     }
 
-    int16_t delta_lsb = wrap_delta_12bit(raw_angle, s_wheel_prev_angle);
+    int16_t delta_lsb  = wrap_delta_12bit(angle_prev_cal, s_wheel_prev_angle);
+    s_wheel_prev_angle = angle_new_cal;
+
     if (delta_lsb != 0) {
-        s_wheel_prev_angle = raw_angle;
-        s_wheel_motion_ms  = now;
+        s_wheel_motion_ms = now;
 
 #if CURCUR40_WHEEL_INVERT_DIR
         delta_lsb = -delta_lsb;
 #endif
         s_wheel_subtick_num += (int32_t)delta_lsb * (int32_t)CURCUR40_WHEEL_NOTCHES_PER_REV;
-        const int32_t whole_ticks = s_wheel_subtick_num / AS5600_FULL_SCALE_LSB;
+        const int32_t whole_ticks = s_wheel_subtick_num / WHEEL_ANGLE_FULL_LSB;
         if (whole_ticks != 0) {
-            s_wheel_subtick_num -= whole_ticks * AS5600_FULL_SCALE_LSB;
+            s_wheel_subtick_num -= whole_ticks * WHEEL_ANGLE_FULL_LSB;
             s_wheel_pending += whole_ticks;
         }
     }
@@ -400,7 +711,7 @@ report_mouse_t pointing_device_task_kb(report_mouse_t mouse_report) {
     }
     prev_zoom_mods = zoom_mods;
 
-    /* 1. Route AS5600 Passive Magnetic Inertia Wheel ticks (vertical or WHL_HRZ horizontal) */
+    /* 1. Route 3D Hall Passive Magnetic Inertia Wheel ticks (vertical or WHL_HRZ horizontal) */
     int16_t wheel_ticks = (int16_t)mouse_report.v;
     int16_t out_v       = 0;
     int16_t out_h       = (int16_t)mouse_report.h;

@@ -13,33 +13,53 @@ enum curcur40_keycodes {
     SCRL_MO = QK_KB_0, // Hold: 2D trackball inertia high-speed drag-scroll (release brakes & restores cursor)
     SCRL_TG = QK_KB_1, // Toggle: hands-free 2D trackball inertia high-speed drag-scroll
     SCRL_SL = QK_KB_2, // Hold: precision slow 2D trackball drag-scroll (inertia disabled)
-    WHL_HRZ = QK_KB_3, // Hold: convert AS5600 passive magnetic inertia wheel rotation to horizontal scroll
+    WHL_HRZ = QK_KB_3, // Hold: convert passive magnetic inertia wheel rotation to horizontal scroll
 };
 
 /* =========================================================================
- * 1. AS5600 Passive Magnetic Inertia Wheel (Right Half I2C0: GP24 SDA / GP25 SCL)
- *    - 12-bit contactless Hall angle sensor (0x36) facing Ø3x2mm diametric magnet
- *    - Cup-shaped SUS304 flywheel + internal 9-ball axial magnetic ratchet hub
- *      provides real physical free-spin momentum and finger-touch braking.
+ * 1. Under-Plate 3D Hall Passive Magnetic Inertia Wheel
+ *    (Right Half Main PCB B.Cu: rU6 on I2C0 GP24 SDA / GP25 SCL + rEXSW1 on GP7)
+ *    - Primary sensor: TI TMAG5273 (A1/A2 0x35, B1/B2 0x22, D1/D2 0x44, C1/C2 0x78)
+ *      in XZX pseudo-simultaneous continuous mode, sensing off-axis D4x1mm
+ *      diametric shaft magnet via (Bx, Bz) quadrature vector.
+ *    - Fallback sensor: Infineon TLV493D-A1B6 (0x5E / 0x1F, pin-compatible SOT-23-6)
+ *      in Master Controlled continuous mode with /INT disabled, via (By, Bz).
+ *    - 1-piece CNC 45# steel integral-shaft flywheel (24 outer flutes) + magnetic
+ *      detent screw provides real physical free-spin momentum, 24 tactile notches/rev,
+ *      and instant finger-touch braking.
  *    - Recommended CURCUR40_WHEEL_NOTCHES_PER_REV presets:
- *         9 : Exact 1:1 HID scroll step per physical magnetic detent (40.0 deg)
- *        18 : Standard 20.0 deg mouse wheel pitch (2 steps/detent, default)
- *        36 : High-density fast scroll (10.0 deg/step, 4 steps/detent)
+ *        12 : Coarse 30.0 deg/step (1 step per 2 physical detents)
+ *        24 : Exact 1:1 HID scroll step per physical magnetic detent (15.0 deg, default)
+ *        48 : High-density fast scroll (7.5 deg/step, 2 steps/detent)
  * ========================================================================= */
-#define CURCUR40_AS5600_I2C_ADDR        (0x36 << 1)
-#define CURCUR40_AS5600_REG_CONF_H      0x07
-#define CURCUR40_AS5600_REG_STATUS      0x0B
-#define CURCUR40_AS5600_REG_RAW_ANGLE_H 0x0C
-#define CURCUR40_AS5600_STATUS_MD       (1U << 5)
+#define CURCUR40_TMAG5273_MFG_ID            0x5449U // "TI" in 0x0E (LSB=0x49) .. 0x0F (MSB=0x54)
+#define CURCUR40_TMAG5273_REG_DEV_CFG_1     0x00U
+#define CURCUR40_TMAG5273_REG_DEV_CFG_2     0x01U
+#define CURCUR40_TMAG5273_REG_SNS_CFG_1     0x02U
+#define CURCUR40_TMAG5273_REG_SNS_CFG_2     0x03U
+#define CURCUR40_TMAG5273_REG_T_CFG         0x07U
+#define CURCUR40_TMAG5273_REG_INT_CFG_1     0x08U
+#define CURCUR40_TMAG5273_REG_DEVICE_ID     0x0DU
+#define CURCUR40_TMAG5273_REG_X_MSB_RESULT  0x12U
+#define CURCUR40_TMAG5273_CONV_RESULT_READY 0x01U
 
 #ifndef CURCUR40_WHEEL_NOTCHES_PER_REV
-#    define CURCUR40_WHEEL_NOTCHES_PER_REV 18
+#    define CURCUR40_WHEEL_NOTCHES_PER_REV 24
 #endif
 #ifndef CURCUR40_WHEEL_DEADBAND_LSB
-#    define CURCUR40_WHEEL_DEADBAND_LSB 6
+#    define CURCUR40_WHEEL_DEADBAND_LSB 12
 #endif
 #ifndef CURCUR40_WHEEL_INVERT_DIR
-#    define CURCUR40_WHEEL_INVERT_DIR 1
+#    define CURCUR40_WHEEL_INVERT_DIR 0
+#endif
+#ifndef CURCUR40_WHEEL_CLICK_PIN
+#    define CURCUR40_WHEEL_CLICK_PIN GP7
+#endif
+#ifndef CURCUR40_WHEEL_CLICK_BLANK_MS
+#    define CURCUR40_WHEEL_CLICK_BLANK_MS 25U
+#endif
+#ifndef CURCUR40_WHEEL_MIN_MAG_L1
+#    define CURCUR40_WHEEL_MIN_MAG_L1 600
 #endif
 
 /* =========================================================================
