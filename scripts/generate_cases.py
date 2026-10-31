@@ -13,9 +13,9 @@ Strictly adheres to docs/case_spec.md:
         - Skimmed horizontally to Z = -8.00 mm at the pinky outer edge (|X_step| > 120.61 mm) for >= 0.40 mm switch socket clearance
 - Fastening Specifications (Section 2):
     - Top-down unified M2 x 6.0 mm screws threading into M2 brass heat-set inserts (M2 x L=3.0 mm x OD=3.2 mm):
-        - Cylindrical Boss Pillars (OD Ø 6.00 mm, R = 3.00 mm; pilot bore Ø 2.85 mm, R = 1.425 mm >= Ø 1.50 mm JLC3DP limit):
-            - 8x Perimeter bosses (L1..L3, L5, R1..R3, R5): boss top Z = -5.80 mm (Main PCB B.Cu), blind bore 5.00 mm deep to Z = -10.80 mm
-            - 2x Side-switch adjacent perimeter bosses (L4, R4): boss top Z = -5.80 mm (outer half clamping land) with Z = -8.10 mm insert seat clearing B.Cu TS-1088R tactile switch by 0.40 mm vertically / 2.33 mm horizontally, blind bore to Z = -11.20 mm
+        - Cylindrical Boss Pillars (base OD Ø 6.00 mm, R = 3.00 mm; pilot bore Ø 2.85 mm, R = 1.425 mm >= Ø 1.50 mm JLC3DP limit):
+            - 8x Stepped perimeter Top-Plate clamping bosses (L1..L3, L5, R1..R3, R5): Ø 6.00 mm lower shoulder at Z = -5.80 mm (supports Main PCB B.Cu) + Ø 4.46 mm upper boss passing through Main PCB to Z = -3.60 mm (supports Top Plate B.Cu; wall 0.805 mm >= 0.80 mm), blind bore 6.00 mm deep to Z = -9.60 mm
+            - 2x Side-switch adjacent perimeter bosses (L4, R4): boss top Z = -5.80 mm (clamps Main PCB directly) with Z = -8.10 mm insert seat clearing B.Cu TS-1088R tactile switch, blind bore to Z = -11.20 mm
             - 4x Trackball bosses (TB1..TB4): boss top Z = -17.60 mm (Sensor PCB B.Cu), blind bore 3.80 mm deep to Z = -21.40 mm
 - Cutouts & Ports (Section 3):
     - Split USB-C opening (inner thumb wall): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at Y = -86.6500 mm, Z = -5.85 mm
@@ -40,7 +40,9 @@ X_THUMB_OUTER = 7.0250
 X_PINKY_OUTER = 135.8580
 FLOOR_THICKNESS = 2.4000
 
-BOSS_OUTER_RADIUS = 3.0000   # Ø 6.00 mm boss (1.575 mm radial wall around Ø 2.85 mm pilot bore)
+BOSS_OUTER_RADIUS = 3.0000   # Ø 6.00 mm standard boss pillar (L4, R4, TB1..TB4)
+STEPPED_LOWER_RADIUS = 3.0500  # Ø 6.10 mm lower shoulder on stepped bosses (0.82 mm >= 0.80 mm step outside Ø 4.46 mm)
+BOSS_UPPER_RADIUS = 2.2300   # Ø 4.46 mm stepped upper boss (Top Plate support at Z = -3.60 mm; 0.805 mm >= 0.80 mm wall)
 PILOT_BORE_RADIUS = 1.4250   # Ø 2.85 mm pilot bore for M2 x L=3.0 x OD=3.2 mm brass heat-set insert
 
 
@@ -116,9 +118,10 @@ def make_filleted_sketch(pts_and_radii):
 
 def get_case_hole_specs(is_right=True):
     """
-    Returns list of (tag, cx, cy, z_boss_top, z_bore_bottom, z_insert_top) in STEP coordinates:
-    - Perimeter holes L1..L3, L5, R1..R3, R5:
-        z_boss_top = -5.80 mm (Main PCB B.Cu), z_bore_bottom = -10.80 mm (5.00 mm blind bore), z_insert_top = -5.80 mm
+    Returns list of (tag, cx, cy, z_boss_top, z_bore_bottom, z_insert_top, is_stepped_plate) in STEP coordinates:
+    - Stepped perimeter holes L1..L3, L5, R1..R3, R5:
+        Ø 6.00 mm lower boss to Z = -5.80 mm (Main PCB B.Cu) + Ø 4.46 mm upper boss to Z = -3.60 mm (Top Plate B.Cu),
+        z_bore_bottom = -9.60 mm (6.00 mm blind bore), z_insert_top = -3.60 mm
     - Side-switch adjacent perimeter holes L4, R4:
         z_boss_top = -5.80 mm (outer half clamping land), z_bore_bottom = -11.20 mm, z_insert_top = -8.10 mm
     - Trackball holes TB1..TB4:
@@ -126,33 +129,33 @@ def get_case_hole_specs(is_right=True):
     """
     if is_right:
         perim_pcb = [
-            ("R1",   0.0000, -15.0000, -5.80, -10.80, -5.80),
-            ("R2",   0.0000,  20.0000, -5.80, -10.80, -5.80),
-            ("R3", 101.0000, -20.0000, -5.80, -10.80, -5.80),
-            ("R4",  98.0000,  38.0000, -5.80, -11.20, -8.10),
-            ("R5",  62.0000,  64.6000, -5.80, -10.80, -5.80),
+            ("R1",   0.0000, -15.0000, -3.60,  -9.60, -3.60, True),
+            ("R2",   0.0000,  20.0000, -3.60,  -9.60, -3.60, True),
+            ("R3", 101.0000, -20.0000, -3.60,  -9.60, -3.60, True),
+            ("R4",  98.0000,  38.0000, -5.80, -11.20, -8.10, False),
+            ("R5",  62.0000,  65.1500, -3.60,  -9.60, -3.60, True),
         ]
         tb_pcb = [
-            ("TB1", -2.4750, 41.0875, -17.60, -21.40, -17.60),
-            ("TB2", 21.5250, 41.0875, -17.60, -21.40, -17.60),
-            ("TB3", -2.4750, 63.6875, -17.60, -21.40, -17.60),
-            ("TB4", 21.5250, 63.6875, -17.60, -21.40, -17.60),
+            ("TB1", -2.4750, 41.0875, -17.60, -21.40, -17.60, False),
+            ("TB2", 21.5250, 41.0875, -17.60, -21.40, -17.60, False),
+            ("TB3", -2.4750, 63.6875, -17.60, -21.40, -17.60, False),
+            ("TB4", 21.5250, 63.6875, -17.60, -21.40, -17.60, False),
         ]
         return [
-            (tag, x + 14.2875, -(y + 57.1500), z_top, z_bot, z_ins)
-            for tag, x, y, z_top, z_bot, z_ins in (perim_pcb + tb_pcb)
+            (tag, x + 14.2875, -(y + 57.1500), z_top, z_bot, z_ins, stepped)
+            for tag, x, y, z_top, z_bot, z_ins, stepped in (perim_pcb + tb_pcb)
         ]
     else:
         perim_pcb = [
-            ("L1",    0.0000, -15.0000, -5.80, -10.80, -5.80),
-            ("L2",    0.0000,  20.0000, -5.80, -10.80, -5.80),
-            ("L3", -101.0000, -20.0000, -5.80, -10.80, -5.80),
-            ("L4",  -98.0000,  38.0000, -5.80, -11.20, -8.10),
-            ("L5",  -62.0000,  64.6000, -5.80, -10.80, -5.80),
+            ("L1",    0.0000, -15.0000, -3.60,  -9.60, -3.60, True),
+            ("L2",    0.0000,  20.0000, -3.60,  -9.60, -3.60, True),
+            ("L3", -101.0000, -20.0000, -3.60,  -9.60, -3.60, True),
+            ("L4",  -98.0000,  38.0000, -5.80, -11.20, -8.10, False),
+            ("L5",  -62.0000,  65.1500, -3.60,  -9.60, -3.60, True),
         ]
         return [
-            (tag, x - 14.2875, -(y + 57.1500), z_top, z_bot, z_ins)
-            for tag, x, y, z_top, z_bot, z_ins in perim_pcb
+            (tag, x - 14.2875, -(y + 57.1500), z_top, z_bot, z_ins, stepped)
+            for tag, x, y, z_top, z_bot, z_ins, stepped in perim_pcb
         ]
 
 
@@ -292,25 +295,43 @@ def build_case(is_right=True) -> bd.Solid:
     cavity_volume = inner_prism & (tilted_cavity_halfspace + pinky_skim_halfspace)
     body = outer_solid - cavity_volume
 
-    # 4. Add Cylindrical Heat-Set Insert Boss Pillars (OD Ø 6.00 mm, R = 3.00 mm)
+    # 4. Add Cylindrical / Stepped Heat-Set Insert Boss Pillars
     hole_specs = get_case_hole_specs(is_right)
     boss_solids = []
-    for tag, cx, cy, z_boss_top, _z_bore_bot, z_ins_top in hole_specs:
+    for tag, cx, cy, z_boss_top, _z_bore_bot, z_ins_top, is_stepped in hole_specs:
+        z_lower_top = -5.80 if is_stepped else z_boss_top
+        r_lower = STEPPED_LOWER_RADIUS if is_stepped else BOSS_OUTER_RADIUS
         boss_cyl = bd.Cylinder(
-            radius=BOSS_OUTER_RADIUS,
-            height=z_boss_top - z_ext_bottom,
+            radius=r_lower,
+            height=z_lower_top - z_ext_bottom,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((cx, cy, z_ext_bottom)))
         # Bridge near-wall bosses cleanly into adjacent inner walls to eliminate narrow crevices:
-        # 1) South-wall bridges for R4/L4 (cy=-95.15), R5/L5 (cy=-121.75), TB3/TB4 (cy=-120.8375)
+        # 1) South-wall bridges for R4/L4 (cy=-95.15), R5/L5 (cy=-122.30), TB3/TB4 (cy=-120.8375)
         if abs(cy - (-95.1500)) < 0.1 or cy < -120.0:
             south_bridge = bd.Box(
-                2.0 * BOSS_OUTER_RADIUS,
+                2.0 * r_lower,
                 5.50,
-                z_boss_top - z_ext_bottom,
+                z_lower_top - z_ext_bottom,
                 align=(bd.Align.CENTER, bd.Align.MAX, bd.Align.MIN),
             ).moved(bd.Location((cx, cy, z_ext_bottom)))
             boss_cyl = boss_cyl + south_bridge
+        if is_stepped:
+            upper_cyl = bd.Cylinder(
+                radius=BOSS_UPPER_RADIUS,
+                height=z_boss_top - z_lower_top,
+                align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+            ).moved(bd.Location((cx, cy, z_lower_top)))
+            if cy < -120.0:
+                # Bridge R5/L5 stepped upper boss through Main PCB South U-notch into South inner wall
+                upper_south_bridge = bd.Box(
+                    2.0 * BOSS_UPPER_RADIUS,
+                    5.50,
+                    z_boss_top - z_lower_top,
+                    align=(bd.Align.CENTER, bd.Align.MAX, bd.Align.MIN),
+                ).moved(bd.Location((cx, cy, z_lower_top)))
+                upper_cyl = upper_cyl + upper_south_bridge
+            boss_cyl = boss_cyl + upper_cyl
         # 2) West-wall bridges for right-hand TB1 (11.8125, -98.2375) and TB3 (11.8125, -120.8375)
         if is_right and abs(cx - 11.8125) < 0.1:
             west_bridge = bd.Box(
@@ -395,7 +416,7 @@ def build_case(is_right=True) -> bd.Solid:
 
     # 6. Cut top-down blind pilot bores (Ø 2.85 mm, R = 1.425 mm) for M2 brass heat-set inserts:
     #    Zero bottom holes — every bore terminates >= 1.50 mm above the outer bottom surface!
-    for tag, cx, cy, z_boss_top, z_bore_bottom, _z_ins_top in hole_specs:
+    for tag, cx, cy, z_boss_top, z_bore_bottom, _z_ins_top, _is_stepped in hole_specs:
         z_outer_min = z_bottom_at_x(abs(cx) + PILOT_BORE_RADIUS)
         floor_margin = z_bore_bottom - z_outer_min
         assert floor_margin >= 1.40, (
