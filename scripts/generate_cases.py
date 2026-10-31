@@ -13,10 +13,10 @@ Strictly adheres to docs/case_spec.md:
         - Skimmed horizontally to Z = -8.00 mm at the pinky outer edge (|X_step| > 120.61 mm) for >= 0.40 mm switch socket clearance
 - Fastening Specifications (Section 2):
     - Top-down unified M2 x 6.0 mm screws threading into M2 brass heat-set inserts (M2 x L=3.0 mm x OD=3.2 mm):
-        - Cylindrical Boss Pillars (base OD Ø 6.00 mm, R = 3.00 mm; pilot bore Ø 2.85 mm, R = 1.425 mm >= Ø 1.50 mm JLC3DP limit):
-            - 8x Stepped perimeter Top-Plate clamping bosses (L1..L3, L5, R1..R3, R5): Ø 6.00 mm lower shoulder at Z = -5.80 mm (supports Main PCB B.Cu) + Ø 4.46 mm upper boss passing through Main PCB to Z = -3.60 mm (supports Top Plate B.Cu; wall 0.805 mm >= 0.80 mm), blind bore 6.00 mm deep to Z = -9.60 mm
-            - 2x Side-switch adjacent perimeter bosses (L4, R4): boss top Z = -5.80 mm (clamps Main PCB directly) with Z = -8.10 mm insert seat clearing B.Cu TS-1088R tactile switch, blind bore to Z = -11.20 mm
-            - 4x Trackball bosses (TB1..TB4): boss top Z = -17.60 mm (Sensor PCB B.Cu), blind bore 3.80 mm deep to Z = -21.40 mm
+        - Cylindrical Boss Pillars (pilot bore Ø 2.85 mm, R = 1.425 mm >= Ø 1.50 mm JLC3DP limit):
+            - 8x Wide Stepped perimeter Top-Plate clamping bosses (L1..L3, L5, R1..R3, R5): Ø 7.84 mm lower shoulder at Z = -5.80 mm (supports Main PCB B.Cu) + Ø 6.00 mm upper boss passing through Main PCB Ø 6.20 mm hole/U-notch to Z = -3.60 mm (supports Top Plate B.Cu; radial wall 1.575 mm >= 0.80 mm), flush insert top at Z = -3.60 mm, blind bore 6.00 mm deep to Z = -9.60 mm
+            - 2x Flat-topped Pinky-South perimeter bosses (L4, R4 at ±98.45, 38.15): Ø 4.90 mm flat boss top at Z = -5.80 mm (clamps Main PCB directly, uniform 1.025 mm radial wall, flush insert top at Z = -5.80 mm), blind bore to Z = -10.50 mm
+            - 4x Trackball bosses (TB1..TB4): Ø 6.00 mm boss top Z = -17.60 mm (Sensor PCB B.Cu), blind bore 3.80 mm deep to Z = -21.40 mm
 - Cutouts & Ports (Section 3):
     - Split USB-C opening (inner thumb wall): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at Y = -86.6500 mm, Z = -5.85 mm
     - Host USB-C opening (north wall): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at X = ±26.5750 mm, Z = -5.85 mm
@@ -40,10 +40,11 @@ X_THUMB_OUTER = 7.0250
 X_PINKY_OUTER = 135.8580
 FLOOR_THICKNESS = 2.4000
 
-BOSS_OUTER_RADIUS = 3.0000   # Ø 6.00 mm standard boss pillar (L4, R4, TB1..TB4)
-STEPPED_LOWER_RADIUS = 3.0500  # Ø 6.10 mm lower shoulder on stepped bosses (0.82 mm >= 0.80 mm step outside Ø 4.46 mm)
-BOSS_UPPER_RADIUS = 2.2300   # Ø 4.46 mm stepped upper boss (Top Plate support at Z = -3.60 mm; 0.805 mm >= 0.80 mm wall)
-PILOT_BORE_RADIUS = 1.4250   # Ø 2.85 mm pilot bore for M2 x L=3.0 x OD=3.2 mm brass heat-set insert
+BOSS_OUTER_RADIUS = 3.0000     # Ø 6.00 mm standard boss pillar (TB1..TB4)
+PINKY_SOUTH_RADIUS = 2.4500    # Ø 4.90 mm flat-topped boss for L4, R4 (1.025 mm radial wall; >= 0.33 mm clear of TS-1088R)
+STEPPED_LOWER_RADIUS = 3.9200  # Ø 7.84 mm lower shoulder on stepped bosses (0.92 mm >= 0.80 mm step outside Ø 6.00 mm)
+BOSS_UPPER_RADIUS = 3.0000     # Ø 6.00 mm stepped upper boss (Top Plate support & flush insert seat at Z = -3.60 mm; 1.575 mm wall)
+PILOT_BORE_RADIUS = 1.4250     # Ø 2.85 mm pilot bore for M2 x L=3.0 x OD=3.2 mm brass heat-set insert
 
 
 def z_bottom_at_x(x_abs: float) -> float:
@@ -119,20 +120,20 @@ def make_filleted_sketch(pts_and_radii):
 def get_case_hole_specs(is_right=True):
     """
     Returns list of (tag, cx, cy, z_boss_top, z_bore_bottom, z_insert_top, is_stepped_plate) in STEP coordinates:
-    - Stepped perimeter holes L1..L3, L5, R1..R3, R5:
-        Ø 6.00 mm lower boss to Z = -5.80 mm (Main PCB B.Cu) + Ø 4.46 mm upper boss to Z = -3.60 mm (Top Plate B.Cu),
-        z_bore_bottom = -9.60 mm (6.00 mm blind bore), z_insert_top = -3.60 mm
-    - Side-switch adjacent perimeter holes L4, R4:
-        z_boss_top = -5.80 mm (outer half clamping land), z_bore_bottom = -11.20 mm, z_insert_top = -8.10 mm
+    - Wide Stepped perimeter holes L1..L3, L5, R1..R3, R5:
+        Ø 7.84 mm lower boss to Z = -5.80 mm (Main PCB B.Cu) + Ø 6.00 mm upper boss to Z = -3.60 mm (Top Plate B.Cu),
+        z_bore_bottom = -9.60 mm (6.00 mm blind bore), z_insert_top = -3.60 mm (flush press-fit, 1.575 mm wall)
+    - Flat-topped Pinky-South perimeter holes L4, R4 (±98.4500, 38.1500):
+        Ø 4.90 mm flat boss to z_boss_top = -5.80 mm (Main PCB B.Cu), z_bore_bottom = -10.50 mm, z_insert_top = -5.80 mm
     - Trackball holes TB1..TB4:
-        z_boss_top = -17.60 mm (Sensor PCB B.Cu), z_bore_bottom = -21.40 mm (3.80 mm blind bore), z_insert_top = -17.60 mm
+        Ø 6.00 mm boss to z_boss_top = -17.60 mm (Sensor PCB B.Cu), z_bore_bottom = -21.40 mm (3.80 mm blind bore), z_insert_top = -17.60 mm
     """
     if is_right:
         perim_pcb = [
             ("R1",   0.0000, -15.0000, -3.60,  -9.60, -3.60, True),
-            ("R2",   0.0000,  20.0000, -3.60,  -9.60, -3.60, True),
+            ("R2",   0.0000,  18.0000, -3.60,  -9.60, -3.60, True),
             ("R3", 101.0000, -20.0000, -3.60,  -9.60, -3.60, True),
-            ("R4",  98.0000,  38.0000, -5.80, -11.20, -8.10, False),
+            ("R4",  98.4500,  38.1500, -5.80, -10.50, -5.80, False),
             ("R5",  62.0000,  65.1500, -3.60,  -9.60, -3.60, True),
         ]
         tb_pcb = [
@@ -148,9 +149,9 @@ def get_case_hole_specs(is_right=True):
     else:
         perim_pcb = [
             ("L1",    0.0000, -15.0000, -3.60,  -9.60, -3.60, True),
-            ("L2",    0.0000,  20.0000, -3.60,  -9.60, -3.60, True),
+            ("L2",    0.0000,  18.0000, -3.60,  -9.60, -3.60, True),
             ("L3", -101.0000, -20.0000, -3.60,  -9.60, -3.60, True),
-            ("L4",  -98.0000,  38.0000, -5.80, -11.20, -8.10, False),
+            ("L4",  -98.4500,  38.1500, -5.80, -10.50, -5.80, False),
             ("L5",  -62.0000,  65.1500, -3.60,  -9.60, -3.60, True),
         ]
         return [
@@ -295,20 +296,25 @@ def build_case(is_right=True) -> bd.Solid:
     cavity_volume = inner_prism & (tilted_cavity_halfspace + pinky_skim_halfspace)
     body = outer_solid - cavity_volume
 
-    # 4. Add Cylindrical / Stepped Heat-Set Insert Boss Pillars
+    # 4. Add Cylindrical / Stepped Heat-Set Insert Boss Pillars (zero perimeter wall ledges!)
     hole_specs = get_case_hole_specs(is_right)
     boss_solids = []
-    for tag, cx, cy, z_boss_top, _z_bore_bot, z_ins_top, is_stepped in hole_specs:
+    for tag, cx, cy, z_boss_top, _z_bore_bot, _z_ins_top, is_stepped in hole_specs:
         z_lower_top = -5.80 if is_stepped else z_boss_top
-        r_lower = STEPPED_LOWER_RADIUS if is_stepped else BOSS_OUTER_RADIUS
+        if is_stepped:
+            r_lower = STEPPED_LOWER_RADIUS
+        elif tag in ("R4", "L4"):
+            r_lower = PINKY_SOUTH_RADIUS
+        else:
+            r_lower = BOSS_OUTER_RADIUS
         boss_cyl = bd.Cylinder(
             radius=r_lower,
             height=z_lower_top - z_ext_bottom,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((cx, cy, z_ext_bottom)))
         # Bridge near-wall bosses cleanly into adjacent inner walls to eliminate narrow crevices:
-        # 1) South-wall bridges for R4/L4 (cy=-95.15), R5/L5 (cy=-122.30), TB3/TB4 (cy=-120.8375)
-        if abs(cy - (-95.1500)) < 0.1 or cy < -120.0:
+        # 1) South-wall bridges for R4/L4 (cy=-95.30), R5/L5 (cy=-122.30), TB3/TB4 (cy=-120.8375)
+        if tag in ("R4", "L4") or cy < -120.0:
             south_bridge = bd.Box(
                 2.0 * r_lower,
                 5.50,
@@ -349,52 +355,10 @@ def build_case(is_right=True) -> bd.Solid:
                     align=(bd.Align.MAX, bd.Align.MAX, bd.Align.MIN),
                 ).moved(bd.Location((cx, cy, z_ext_bottom)))
                 boss_cyl = boss_cyl + sw_corner_bridge
-        # On R4/L4, relieve the inner half above Z = -8.10 mm to give generous clearance
-        # around B.Cu SMD tactile button rSMDSW2 / SMDSW1 while retaining an outer half-boss + South wall clamping land at Z = -5.80 mm
-        if tag in ("R4", "L4") and z_ins_top < z_boss_top:
-            rel_align_x = bd.Align.MAX if is_right else bd.Align.MIN
-            rel_box = bd.Box(
-                6.00,
-                14.00,
-                (z_boss_top - z_ins_top) + 1.00,
-                align=(rel_align_x, bd.Align.CENTER, bd.Align.MIN),
-            ).moved(bd.Location((cx, cy, z_ins_top)))
-            boss_cyl = boss_cyl - rel_box
         boss_solids.append(boss_cyl & outer_solid)
 
     for b_cyl in boss_solids:
         body = body + b_cyl
-
-    # 4b. Add 4x Wall-Mounted Main PCB Support Ledges (North, South, Outer/Pinky, Inner/Thumb-Index)
-    sgn = 1.0 if is_right else -1.0
-    ledge_solids = []
-
-    pts_n = [(-31.8375, -5.80), (-33.8375, -5.80), (-33.8375, -6.65), (-31.8375, -8.65)]
-    with bd.BuildSketch(bd.Plane.YZ) as sk_n:
-        bd.Polygon(pts_n, align=None)
-    ledge_n = bd.extrude(sk_n.sketch, amount=10.0 * sgn).moved(bd.Location((sgn * 71.2875, 0, 0)))
-    ledge_solids.append(ledge_n & outer_solid)
-
-    pts_s = [(-125.6500, -5.80), (-123.6500, -5.80), (-123.6500, -6.65), (-125.6500, -8.65)]
-    with bd.BuildSketch(bd.Plane.YZ) as sk_s:
-        bd.Polygon(pts_s, align=None)
-    ledge_s = bd.extrude(sk_s.sketch, amount=10.0 * sgn).moved(bd.Location((sgn * 82.2875, 0, 0)))
-    ledge_solids.append(ledge_s & outer_solid)
-
-    pts_o = [(sgn * 134.8580, -5.80), (sgn * 132.3500, -5.80), (sgn * 132.3500, -8.50), (sgn * 134.8580, -8.50)]
-    with bd.BuildSketch(bd.Plane.XZ) as sk_o:
-        bd.Polygon(pts_o, align=None)
-    ledge_o = bd.extrude(sk_o.sketch, amount=10.0).moved(bd.Location((0, -55.1500, 0)))
-    ledge_solids.append(ledge_o & outer_solid)
-
-    pts_i = [(sgn * 8.0250, -5.80), (sgn * 10.0250, -5.80), (sgn * 10.0250, -6.65), (sgn * 8.0250, -8.65)]
-    with bd.BuildSketch(bd.Plane.XZ) as sk_i:
-        bd.Polygon(pts_i, align=None)
-    ledge_i = bd.extrude(sk_i.sketch, amount=10.0).moved(bd.Location((0, -54.1500, 0)))
-    ledge_solids.append(ledge_i & outer_solid)
-
-    for l_sol in ledge_solids:
-        body = body + l_sol
 
     # 5. Cut angled outer bottom tenting plane (theta_tent = 7.47 deg) — 100% sealed, hole-free flat bottom!
     if is_right:

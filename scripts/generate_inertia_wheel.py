@@ -10,7 +10,7 @@ Outputs:
     1. steel-flywheel.step / .stl   (JLCCNC 45# Steel + Electroless Nickel Plating, 1-piece Ø22.00 x 6.50 mm wheel + integral bearing shoulders & D-shaft)
     2. magnet-holder.step / .stl    (JLC3DP MJF/SLS PA12, Ø5.72 x 2.05 mm glue-free D4x1mm diametric magnet press-fit sleeve)
     3. wheel-rocker.step / .stl     (JLC3DP MJF/SLS PA12, seesaw carriage with 2x C-clip snap-in DDL-520ZZ seats, Ø3.00 mm trunnions, West Keeper Tab & rEXSW1 striker, South glue-free detent boss)
-    4. wheel-cradle.step / .stl     (JLC3DP MJF/SLS PA12, 2-screw under-PCB bracket at WC1/WC2 with Ø3.08 mm upward U-saddles captured 0.05 mm below Main PCB B.Cu)
+    4. wheel-cradle.step / .stl     (JLC3DP MJF/SLS PA12, 2-screw under-PCB bracket at WC1/WC2 with captive Ø3.06 mm C-clip snap-in seesaw hinge, 2.66 mm throat / 239 deg wrap)
 
   Verification Assemblies (`cases/assemblies/`):
     1. inertia-wheel-assembly.step
@@ -37,13 +37,13 @@ ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
 
 # =============================================================================
 # Axle-Centered Local Frame (u, v, w) -> Pure Translation of Global STEP (X, Y, Z):
-#   X_step = X_AXLE_STEP + u      (u = x_pcb - 15.4500; +u = East, -u = West)
+#   X_step = X_AXLE_STEP + u      (u = x_pcb - 14.2875; +u = East, -u = West)
 #   Y_step = Y_AXLE_STEP + v      (v = -(y_pcb + 2.0000); +v = North, -v = South)
 #   Z_step = Z_AXLE_STEP + w      (w = Z_step - (-6.9000); B.Cu = +1.10, F.Cu = +2.70, Plate = [+3.30, +4.90])
 # =============================================================================
-X_AXLE_PCB = 15.4500
+X_AXLE_PCB = 14.2875                    # Aligned 0.0000 mm on X-axis with South key rEXSW2 (14.2875, 19.0500)!
 Y_AXLE_PCB = -2.0000
-X_AXLE_STEP = X_AXLE_PCB + 14.2875      # +29.7375 mm
+X_AXLE_STEP = X_AXLE_PCB + 14.2875      # +28.5750 mm
 Y_AXLE_STEP = -(Y_AXLE_PCB + 57.1500)   # -55.1500 mm
 Z_AXLE_STEP = -6.9000                   # Wheel top = +4.10 mm (+0.50 mm proud of +3.60 mm Choc V2 keycaps)
 
@@ -69,19 +69,20 @@ HOLDER_U_EAST = -7.00                   # Length = 2.05 mm (>= 2.0 mm JLC3DP min
 MAG_POCKET_R = 2.02                     # Ø4.04 mm pocket, depth 1.05 mm (u in [-9.05, -8.00])
 MAG_D4_R = 1.99                         # Ø4.00 x 1.00 mm diametric magnet at u in [-9.02, -8.04] (~2.25 mm East of rU6!)
 
-# Seesaw Pivot & Middle-Click Kinematics:
-U_PIV = -8.12                           # x_pcb = +7.3300 mm (L_east = 8.12 mm, L_west = 8.18 mm -> ~70 gf crisp 1:1 click!)
-W_PIV = -0.45                           # Z_piv = -7.35 mm; Ø3.00 mm trunnion top at w = +1.05 (0.05 mm below Main PCB B.Cu w = +1.10!)
+# Seesaw Pivot (Captive C-Clip Snap-In Hinge) & Middle-Click Kinematics:
+U_PIV = -8.12                           # x_pcb = +6.1675 mm (L_east = 8.12 mm, L_west = 8.18 mm -> ~70 gf crisp 1:1 click!)
+W_PIV = -1.25                           # Z_piv = -8.15 mm; Ø3.00 mm trunnion top at w = +0.25 (0.85 mm below Main PCB B.Cu w = +1.10!)
 TRUNNION_R = 1.50                       # Ø3.00 mm integral PA12 trunnions (coaxial & flush with cheek R=1.50 top!)
-SADDLE_R = 1.54                         # Ø3.08 mm upward U-saddles in cradle (0.04 mm radial / 0.08 mm diametral clearance)
+SADDLE_R = 1.53                         # Ø3.06 mm captive C-clip snap bore in cradle (0.03 mm radial / 0.06 mm diametral clearance)
+SADDLE_THROAT_W = 2.66                  # 2.66 mm snap entry throat (239 deg wrap; locks #03 to #04 alone in ±u, ±v, +w, -w!)
 
-U_SW = -0.8500 - X_AXLE_PCB             # -16.3000 mm (rEXSW1 Kailh Square Silent center on B.Cu)
+U_SW = -2.0125 - X_AXLE_PCB             # -16.3000 mm (rEXSW1 Kailh Square Silent center on B.Cu)
 V_SW = 0.0000
 CLICK_PRESS_DEG = 2.20                  # 2.20 deg click press -> 0.31 mm wheel drop, +0.31 mm switch plunger compression
 
 # Cradle Mounting Bosses (WC1 & WC2 on curcur40-right):
-WC1_PCB = (7.8000, -9.8000)             # (u = -7.6500, v = +7.8000)
-WC2_PCB = (22.4000, 6.0000)             # (u = +6.9500, v = -8.0000)
+WC1_PCB = (6.6375, -9.8000)             # (u = -7.6500, v = +7.8000)
+WC2_PCB = (21.2375, 6.0000)             # (u = +6.9500, v = -8.0000)
 PILOT_BORE_R = 1.425                    # Ø2.85 mm pilot bore for M2 x L=3.0 x OD=3.2 mm brass heat-set insert
 
 # South Glue-Free Detent Adjuster Boss on Rocker:
@@ -272,22 +273,27 @@ def build_wheel_rocker_local() -> bd.Solid:
             bd.Rectangle(2.80, 4.00)
     west_ear = west_ear - bd.extrude(sk_sh_u.sketch, amount=0.93)
 
-    # 2. East Bearing Ear (`u in [+3.55, +6.62]`, `v in [-3.40, +3.40]`, `w in [-12.80, +2.35]`)
-    east_ear = bd.Box(
+    # 2. East Bearing Ear (`u in [+3.55, +6.62]`, `v in [-3.40, +3.40]`, `w in [-12.80, +2.35]`, R=0.85mm East outer corners)
+    east_ear_box = bd.Box(
         3.07, 6.80, 15.15,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((3.55, 0.0, -12.80)))
+    east_outer_edges = [
+        e for e in east_ear_box.edges()
+        if abs(e.bounding_box().size.Z - 15.15) < 0.05 and e.bounding_box().min.X > 6.50
+    ]
+    east_ear = bd.fillet(east_outer_edges, radius=0.85)
     with bd.BuildSketch(bd.Plane.YZ.offset(3.45)) as sk_ebrg_u:
         bd.Circle(2.52)
         with bd.Locations([(0.0, 2.00)]):
             bd.Rectangle(4.56, 4.00)
     east_ear = east_ear - bd.extrude(sk_ebrg_u.sketch, amount=2.32)  # Leaves solid 0.85 mm East wall [+5.77, +6.62]!
 
-    # 3. Bottom Bridge under wheel (`u in [-6.62, +6.62]`, `v in [-3.40, +3.40]`, `w in [-12.80, -11.45]`)
+    # 3. Bottom Bridge under wheel (`u in [-5.77, +5.77]`, `v in [-3.40, +3.40]`, `w in [-12.80, -11.45]`)
     bot_bridge = bd.Box(
-        6.62 - (-6.62), 6.80, 1.35,
+        5.77 - (-5.77), 6.80, 1.35,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((-6.62, 0.0, -12.80)))
+    ).moved(bd.Location((-5.77, 0.0, -12.80)))
 
     # 4. South Detent Adjuster Extension + Boss (`u in [-3.55, +3.55]` = 7.10 mm, 100% coplanar with ear inner faces!):
     det_web = bd.Box(
@@ -379,9 +385,10 @@ def build_wheel_cradle_local() -> bd.Solid:
       - Flat PCB mating top at `w = +1.10` (`Main PCB B.Cu`, `Z = -5.80 mm`)
       - 2x M2 heat-set insert bosses (`straight Ø2.85 mm` pilot bores, `w in [-3.90, +1.10]`)
         at `WC1 (u = -7.65, v = +7.80)` and `WC2 (u = +6.95, v = -8.00)`
-      - North Saddle (`v in [+4.32, +5.30]`) & South Saddle (`v in [-5.95, -4.32]`) with upward-opening
-        `Ø3.08 mm` (`R = 1.54 mm`) U-slots centered at `(U_PIV = -8.12, W_PIV = -0.45)`
-      - West Under-Arm Rest-Stop Bridge (`u in [-11.72, -10.52]`, `w in [-6.50, -5.16]`, 0.06 mm below striker arm!)
+      - Captive C-Clip Snap-In Seesaw Hinge:
+        North Saddle (`v in [+4.32, +5.28]`) & South Saddle (`v in [-5.93, -4.32]`) with
+        `Ø3.06 mm` (`R = 1.53 mm`) snap bores + `2.66 mm` top throat (`239 deg` wrap) centered at `(U_PIV = -8.12, W_PIV = -1.25)`
+      - West Under-Arm Rest-Stop Bridge (`u in [-11.65, -10.52]`, `w in [-6.50, -5.16]`, 0.06 mm below striker arm!)
     """
     u_wc1 = WC1_PCB[0] - X_AXLE_PCB     # -7.6500
     v_wc1 = -(WC1_PCB[1] - Y_AXLE_PCB)  # +7.8000
@@ -389,34 +396,43 @@ def build_wheel_cradle_local() -> bd.Solid:
     v_wc2 = -(WC2_PCB[1] - Y_AXLE_PCB)  # -8.0000
 
     w_top = 1.10
-    w_bridge_top = -0.30   # 1.40 mm step below B.Cu (+1.10) so North-East bridge clears rZD1/rR2/rU3 by >= 0.70 mm!
+    w_bridge_top = -0.30   # 1.40 mm step below B.Cu (+1.10) so North-East bridge clears rZD1/rR2/rU3 by >= 0.69 mm!
     w_boss_bot = -3.90
 
-    # 1) North-West Block (WC1 + North Saddle): u in [-11.72, -5.02], v in [+4.32, +13.80], w in [-3.90, +1.10]
-    block_n = bd.Box(
-        (-5.02) - (-11.72), 13.80 - 4.32, w_top - w_boss_bot,
+    # 1) North-West Block (North C-clip Saddle + WC1 + North-West Riser stepped to clear Ø7.84 mm R1 boss by >= 0.66 mm):
+    block_n_saddle = bd.Box(
+        (-5.02) - (-11.65), 6.50 - 4.32, w_top - w_boss_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-11.72, 4.32, w_boss_bot)))
+    ).moved(bd.Location((-11.65, 4.32, w_boss_bot)))
+    block_n_wc1 = bd.Box(
+        (-5.02) - (-10.52), 10.15 - 6.50, w_top - w_boss_bot,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-10.52, 6.50, w_boss_bot)))
+    block_n_riser = bd.Box(
+        (-5.02) - (-9.40), 13.80 - 10.15, w_top - w_boss_bot,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-9.40, 10.15, w_boss_bot)))
+    block_n = block_n_saddle + block_n_wc1 + block_n_riser
 
-    # 2) South-West Saddle Block: u in [-11.72, -5.02], v in [-8.50, -4.32], w in [-3.90, +1.10]
+    # 2) South-West C-Clip Saddle Block: u in [-11.65, -5.02], v in [-8.50, -4.32], w in [-3.90, +1.10]
     saddle_s_block = bd.Box(
-        (-5.02) - (-11.72), (-4.32) - (-8.50), w_top - w_boss_bot,
+        (-5.02) - (-11.65), (-4.32) - (-8.50), w_top - w_boss_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-11.72, -8.50, w_boss_bot)))
+    ).moved(bd.Location((-11.65, -8.50, w_boss_bot)))
 
-    # 3) Coplanar West Side Legs + Under-Arm Rest-Stop Bridge (`u in [-11.72, -10.52]` = 1.20 mm wide):
+    # 3) Coplanar West Side Legs + Under-Arm Rest-Stop Bridge (`u in [-11.65, -10.52]` = 1.13 mm wide):
     leg_n = bd.Box(
-        1.20, 6.50 - 4.32, w_top - (-6.50),
+        1.13, 6.50 - 4.32, w_top - (-6.50),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-11.72, 4.32, -6.50)))
+    ).moved(bd.Location((-11.65, 4.32, -6.50)))
     leg_s = bd.Box(
-        1.20, (-4.32) - (-6.50), w_top - (-6.50),
+        1.13, (-4.32) - (-6.50), w_top - (-6.50),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-11.72, -6.50, -6.50)))
+    ).moved(bd.Location((-11.65, -6.50, -6.50)))
     under_bridge = bd.Box(
-        1.20, 6.50 - (-6.50), (-5.16) - (-6.50),
+        1.13, 6.50 - (-6.50), (-5.16) - (-6.50),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-11.72, -6.50, -6.50)))
+    ).moved(bd.Location((-11.65, -6.50, -6.50)))
 
     # 4) North-East Perimeter Arch (`v in [+11.60, +13.80]` North + `u in [+7.10, +9.65]` East, `w in [-3.90, -0.30]`):
     arch_north = bd.Box(
@@ -436,31 +452,32 @@ def build_wheel_cradle_local() -> bd.Solid:
 
     body = block_n + saddle_s_block + leg_n + leg_s + under_bridge + arch_north + arch_east + block_wc2
 
-    uslot_n = (
+    # Captive C-Clip Snap-In Hinge Cuts (Ø3.06 mm bore + 2.66 mm snap throat -> 239 deg wrap, >= 1.25 mm jaw walls!)
+    cclip_n = (
         bd.Cylinder(
             radius=SADDLE_R,
-            height=5.30 - 4.25,
+            height=5.28 - 4.25,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
         .moved(bd.Location((U_PIV, 4.25, W_PIV)))
         + bd.Box(
-            2.0 * SADDLE_R, 5.30 - 4.25, 3.00,
+            SADDLE_THROAT_W, 5.28 - 4.25, 3.00,
             align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
         ).moved(bd.Location((U_PIV, 4.25, W_PIV)))
     )
-    uslot_s = (
+    cclip_s = (
         bd.Cylinder(
             radius=SADDLE_R,
-            height=(-4.25) - (-5.95),
+            height=(-4.25) - (-5.93),
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
-        .moved(bd.Location((U_PIV, -5.95, W_PIV)))
+        .moved(bd.Location((U_PIV, -5.93, W_PIV)))
         + bd.Box(
-            2.0 * SADDLE_R, (-4.25) - (-5.95), 3.00,
+            SADDLE_THROAT_W, (-4.25) - (-5.93), 3.00,
             align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
-        ).moved(bd.Location((U_PIV, -5.95, W_PIV)))
+        ).moved(bd.Location((U_PIV, -5.93, W_PIV)))
     )
 
     bore_wc1 = bd.Cylinder(
@@ -474,7 +491,7 @@ def build_wheel_cradle_local() -> bd.Solid:
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((u_wc2, v_wc2, w_boss_bot - 1.00)))
 
-    body = body - uslot_n - uslot_s - bore_wc1 - bore_wc2
+    body = body - cclip_n - cclip_s - bore_wc1 - bore_wc2
     solid = body.solids()[0]
     solid.label = "Wheel_Cradle_PA12"
     return solid
@@ -651,18 +668,18 @@ def verify_6dof_constraints():
         assert overlap_volume(mag_d4.moved(bd.Location(vec)), holder) > 0.0, f"#08 not radially locked at {vec}!"
     print("  [PASS] #02 Magnet Holder & #08 Magnet Retention: locked in ±u (Keeper Tab), ±v, ±w, and D-flat Rx")
 
-    # 4. Fix 2 — `#03` Rocker Seesaw Trunnion Capture (`±u, ±v, ±w` locked; `+2.20 deg` actuates switch; `-1.20 deg` hits rest stop!)
+    # 4. Fix 2 — `#03` Rocker Captive C-Clip Snap-In Hinge (`±u, ±v, +w, -w` locked to `#04` Cradle ALONE, without PCB!)
     for tag, vec in (
-        ("+u", (0.10, 0.0, 0.0)),
-        ("-u", (-0.10, 0.0, 0.0)),
-        ("+v", (0.0, 0.12, 0.0)),
-        ("-v", (0.0, -0.12, 0.0)),
-        ("+w (PCB B.Cu cap)", (0.0, 0.0, 0.10)),
-        ("-w (U-saddle + rest stop)", (0.0, 0.0, -0.10)),
+        ("+u", (0.08, 0.0, 0.0)),
+        ("-u", (-0.08, 0.0, 0.0)),
+        ("+v", (0.0, 0.10, 0.0)),
+        ("-v", (0.0, -0.10, 0.0)),
+        ("+w (C-clip snap jaw)", (0.0, 0.0, 0.08)),
+        ("-w (C-clip bottom + rest stop)", (0.0, 0.0, -0.08)),
     ):
         rk_m = rocker.moved(bd.Location(vec))
-        ov_rk = overlap_volume(rk_m, cradle) + overlap_volume(rk_m, pcb_ceiling)
-        assert ov_rk > 0.0, f"#03 Rocker NOT captured along {tag}!"
+        ov_rk = overlap_volume(rk_m, cradle)
+        assert ov_rk > 0.0, f"#03 Rocker NOT captured by #04 Cradle ALONE along {tag}!"
 
     piv_axis = bd.Axis((U_PIV, 0.0, W_PIV), (0.0, 1.0, 0.0))
     rk_click = rocker.rotate(piv_axis, CLICK_PRESS_DEG).solids()[0]
@@ -672,7 +689,7 @@ def verify_6dof_constraints():
 
     rk_pull_up = rocker.rotate(piv_axis, -1.20).solids()[0]
     assert overlap_volume(rk_pull_up, cradle) > 0.0, "Upward wheel pull (-1.20 deg) did NOT hit cradle under-bridge stop!"
-    print("  [PASS] #03 Seesaw Pivot & Click Kinematics: ±0.05..0.09 mm trunnion capture, +2.20 deg switch actuation, -1.20 deg upward stop")
+    print("  [PASS] #03 Captive C-Clip Seesaw Hinge: locked to #04 Cradle ALONE in ±u, ±v, +w, -w; +2.20 deg click, -1.20 deg stop")
 
     # 5. `#04` Static Cradle Clamping (`±u, ±v, +w` locked by Main PCB & WC1/WC2 screws)
     assert overlap_volume(cradle.moved(bd.Location((0.0, 0.0, 0.05))), pcb_ceiling) > 0.0, "#04 not seated against PCB!"

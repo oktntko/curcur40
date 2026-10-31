@@ -6,7 +6,7 @@ Generate curcur40 Full Assembly STEP models:
   3. cases/assemblies/curcur40-right-wheel-assembly.step (Right half with Under-Plate Inertia Wheel)
 and verify zero interference + minimum clearances across all components per docs/case_spec.md:
 - Left & Right 3D-printed Sealed-Bottom Built-in Tented Tray Bottom Cases (with Tilted Floor & Stepped M2 Heat-Set Insert Bosses)
-- Left & Right Main PCBs (Z = -5.80 to -4.20 mm, with Ø 4.66 mm boss-pass holes / U-notches, Ø 2.40 mm screw holes & Right Cross Wheel Cutout)
+- Left & Right Main PCBs (Z = -5.80 to -4.20 mm, with Ø 6.20 mm boss-pass holes / U-notches, Ø 2.40 mm screw holes & Right Cross Wheel Cutout)
 - Separated PMW3360 Sensor PCB (`curcur40-pmw3360`, Z = -17.60 to -16.00 mm, with Ø 2.40 mm TB1-TB4 screw holes)
 - Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, directly screw-clamped via 8x Ø 2.40 mm corner holes + Ø 4.40 mm sub-flush holes at L4/R4/WC1/WC2 & Right 7.70 x 22.00 mm wheel slot)
 - Sunk Trackball Cup placed on Sensor PCB F.Cu at (23.8125, -109.5375, -16.00 mm), Rim at Z = -2.00 mm, 2.00 mm flat ears
@@ -88,27 +88,27 @@ RIGHT_SWITCHES = [
     (71.4375, 52.38750),
 ]
 
-RIGHT_WHEEL_AXLE_PCB = (15.4500, -2.0000)
+RIGHT_WHEEL_AXLE_PCB = (14.2875, -2.0000)
 
 RIGHT_WHEEL_CRADLE_HOLES_PCB = [
-    ( 7.8000, -9.8000),   # WC1
-    (22.4000,  6.0000),   # WC2
+    ( 6.6375, -9.8000),   # WC1
+    (21.2375,  6.0000),   # WC2
 ]
 
 # (tag, px, py, z_ins_top, z_screw_seat, is_stepped_plate)
 LEFT_PERIMETER_HOLES_PCB = [
     ("L1",    0.0000, -15.0000, -3.61, -1.99, True),
-    ("L2",    0.0000,  20.0000, -3.61, -1.99, True),
+    ("L2",    0.0000,  18.0000, -3.61, -1.99, True),
     ("L3", -101.0000, -20.0000, -3.61, -1.99, True),
-    ("L4",  -98.0000,  38.0000, -8.11, -4.19, False),
+    ("L4",  -98.4500,  38.1500, -5.81, -4.19, False),
     ("L5",  -62.0000,  65.1500, -3.61, -1.99, True),
 ]
 
 RIGHT_PERIMETER_HOLES_PCB = [
     ("R1",   0.0000, -15.0000, -3.61, -1.99, True),
-    ("R2",   0.0000,  20.0000, -3.61, -1.99, True),
+    ("R2",   0.0000,  18.0000, -3.61, -1.99, True),
     ("R3", 101.0000, -20.0000, -3.61, -1.99, True),
-    ("R4",  98.0000,  38.0000, -8.11, -4.19, False),
+    ("R4",  98.4500,  38.1500, -5.81, -4.19, False),
     ("R5",  62.0000,  65.1500, -3.61, -1.99, True),
 ]
 
@@ -195,9 +195,9 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
     sk = make_filleted_sketch(pts_step)
     pcb = bd.extrude(sk, amount=1.60).moved(bd.Location((0, 0, -5.80)))
 
-    # Cut Ø 4.66 mm stepped-boss clearance holes (L1..L3, R1..R3), 4.66 mm South U-notches (L5, R5), and Ø 2.40 mm M2 holes (L4, R4)
+    # Cut Ø 6.20 mm stepped-boss clearance holes (L1..L3, R1..R3), 6.20 mm South U-notches (L5, R5), and Ø 2.40 mm M2 holes (L4, R4)
     for tag, hx, hy, is_stepped in hole_specs:
-        r_hole = 2.33 if is_stepped else 1.20
+        r_hole = 3.10 if is_stepped else 1.20
         pcb = pcb - bd.Cylinder(
             radius=r_hole,
             height=4.0,
@@ -223,21 +223,21 @@ def build_main_pcb_solid(is_right=True) -> bd.Solid:
         for sy in (-86.6500 - 5.6200, -86.6500 + 5.6200):
             pcb = pcb - bd.Box(2.20, 1.25, 4.0).moved(bd.Location((sx, sy, -5.0)))
 
-    # On Right Main PCB, cut the Cross-Shaped Under-Plate Inertia Wheel opening + WC1/WC2 Ø 2.40 mm holes
+    # On Right Main PCB, cut the Cross-Shaped Under-Plate Inertia Wheel opening (centered at 14.2875, -2.0000) + WC1/WC2 Ø 2.40 mm holes
     if is_right:
         cross_pts_pcb = [
-            (11.6000, -13.5000, 0.50),
-            (19.3000, -13.5000, 0.50),
-            (19.3000,  -5.7500, 0.50),
-            (22.5000,  -5.7500, 0.50),
-            (22.5000,   1.7500, 0.50),
-            (19.3000,   1.7500, 0.50),
-            (19.3000,   9.5000, 0.50),
-            (11.6000,   9.5000, 0.50),
-            (11.6000,   1.7500, 0.50),
-            ( 6.0000,   1.7500, 0.50),
-            ( 6.0000,  -5.7500, 0.50),
-            (11.6000,  -5.7500, 0.50),
+            (10.4375, -13.5000, 0.50),
+            (18.1375, -13.5000, 0.50),
+            (18.1375,  -5.7500, 0.50),
+            (21.3375,  -5.7500, 0.50),
+            (21.3375,   1.7500, 0.50),
+            (18.1375,   1.7500, 0.50),
+            (18.1375,   9.5000, 0.50),
+            (10.4375,   9.5000, 0.50),
+            (10.4375,   1.7500, 0.50),
+            ( 4.8375,   1.7500, 0.50),
+            ( 4.8375,  -5.7500, 0.50),
+            (10.4375,  -5.7500, 0.50),
         ]
         cross_pts_step = [(*to_step_right(x, y), r) for x, y, r in cross_pts_pcb]
         sk_cross = make_filleted_sketch(cross_pts_step)
@@ -389,16 +389,16 @@ def make_smd_and_switch_solids():
     j1_solid.label = "Sensor_PCB_J1_JST_SH"
     right_smds.append(j1_solid)
 
-    # 3. rU6 (TMAG5273A1QDBVR, SOT-23-6, 2.95 x 2.95 x 1.15 mm) at (4.1800, -2.0000) B.Cu
-    ru6_x, ru6_y = to_step_right(4.1800, -2.0000)
+    # 3. rU6 (TMAG5273A1QDBVR, SOT-23-6, 2.95 x 2.95 x 1.15 mm) at (3.0175, -2.0000) B.Cu
+    ru6_x, ru6_y = to_step_right(3.0175, -2.0000)
     ru6_solid = (
         bd.Pos(ru6_x, ru6_y, -5.81 - 1.14 / 2.0) * bd.Box(2.95, 2.95, 1.14)
     ).solids()[0]
     ru6_solid.label = "Right_PCB_rU6_TMAG5273"
     right_smds.append(ru6_solid)
 
-    # 4. rEXSW1 (Kailh Square Silent 6.20 x 6.20 x 4.30 mm) at (-0.8500, -2.0000) B.Cu
-    sw_x, sw_y = to_step_right(-0.8500, -2.0000)
+    # 4. rEXSW1 (Kailh Square Silent 6.20 x 6.20 x 4.30 mm) at (-2.0125, -2.0000) B.Cu
+    sw_x, sw_y = to_step_right(-2.0125, -2.0000)
     sw_housing = bd.Box(6.20, 6.20, 3.34, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)).moved(
         bd.Location((sw_x, sw_y, -5.81))
     )
@@ -411,10 +411,10 @@ def make_smd_and_switch_solids():
 
     # 5. Right Main PCB B.Cu passives & diodes near wheel / cradle
     main_wheel_smds = [
-        ("rC18", 4.9500,   1.3000, 1.90, 0.95, 0.60),
-        ("rR13", 3.4000,   1.3000, 0.95, 1.90, 0.55),
-        ("rR11", 2.7500,   3.3000, 0.95, 1.90, 0.55),
-        ("rR12", 1.5500,   3.3000, 0.95, 1.90, 0.55),
+        ("rC18", 3.7875,   1.3000, 1.90, 0.95, 0.60),
+        ("rR13", 2.2375,   1.3000, 0.95, 1.90, 0.55),
+        ("rR11", 1.5875,   3.3000, 0.95, 1.90, 0.55),
+        ("rR12", 0.3875,   3.3000, 0.95, 1.90, 0.55),
         ("rZD1", 20.9430, -14.7010, 1.00, 1.90, 0.70),
         ("rR2",  19.4220, -16.5000, 0.95, 1.90, 0.55),
         ("rU3",  22.6520, -11.5100, 2.60, 1.10, 0.60),
@@ -818,15 +818,9 @@ def main():
         min(closest_points(s, right_plate).distance for s in wheel_mov_rest),
         min(closest_points(s, right_plate).distance for s in wheel_mov_click),
     )
-    clr_rocker_trunnion_pcb = min(
+    clr_wheel_mov_pcb = min(
         closest_points(s, right_pcb).distance
         for s in (wheel_mov_rest + wheel_mov_click)
-        if s.label == "Wheel_Rocker_PA12"
-    )
-    clr_wheel_rotary_pcb = min(
-        closest_points(s, right_pcb).distance
-        for s in (wheel_mov_rest + wheel_mov_click)
-        if s.label != "Wheel_Rocker_PA12"
     )
     clr_wheel_usbc = min(
         closest_points(s, u).distance for s in wheel_solids for u in right_conn_solids
@@ -853,8 +847,7 @@ def main():
     print(f"Min Clearance Wheel Moving vs Right Case:   {clr_wheel_mov_case:.4f} mm (req >= 0.40 mm)")
     print(f"Min Clearance Wheel Cradle vs Right Case:   {clr_wheel_cradle_case:.4f} mm (req >= 0.60 mm)")
     print(f"Min Clearance Wheel Moving vs Right Plate:  {clr_wheel_mov_plate:.4f} mm (req >= 0.30 mm)")
-    print(f"Min Clearance Wheel Rotary vs Right PCB:    {clr_wheel_rotary_pcb:.4f} mm (req >= 0.30 mm)")
-    print(f"Rocker Trunnion vs Right PCB B.Cu Capture:  {clr_rocker_trunnion_pcb:.4f} mm (req 0.04..0.08 mm)")
+    print(f"Min Clearance Wheel Moving vs Right PCB:    {clr_wheel_mov_pcb:.4f} mm (req >= 0.30 mm)")
     print(f"Min Clearance Wheel Module vs USB-C Conns:  {clr_wheel_usbc:.4f} mm (req >= 1.00 mm)")
     print(f"Min Clearance Wheel Module vs Right Keycaps:{clr_wheel_keycaps:.4f} mm (req >= 1.00 mm)")
     print(f"Min Clearance Host/Split USBC vs Cases:     {clr_usbc_case:.4f} mm (req >= 0.50 mm)")
@@ -870,10 +863,7 @@ def main():
     assert clr_wheel_mov_case >= 0.40, f"Wheel moving parts too close to Right Case: {clr_wheel_mov_case:.4f} mm"
     assert clr_wheel_cradle_case >= 0.60, f"Wheel Cradle too close to Right Case: {clr_wheel_cradle_case:.4f} mm"
     assert clr_wheel_mov_plate >= 0.30, f"Wheel moving parts too close to Plate: {clr_wheel_mov_plate:.4f} mm"
-    assert clr_wheel_rotary_pcb >= 0.30, f"Wheel rotary parts too close to PCB: {clr_wheel_rotary_pcb:.4f} mm"
-    assert 0.04 <= clr_rocker_trunnion_pcb <= 0.08, (
-        f"Rocker trunnion ceiling capture out of range: {clr_rocker_trunnion_pcb:.4f} mm"
-    )
+    assert clr_wheel_mov_pcb >= 0.30, f"Wheel moving parts too close to PCB: {clr_wheel_mov_pcb:.4f} mm"
     assert clr_wheel_usbc >= 1.00, f"Wheel Module too close to USB-C: {clr_wheel_usbc:.4f} mm"
     assert clr_wheel_keycaps >= 1.00, f"Wheel Module too close to Keycaps: {clr_wheel_keycaps:.4f} mm"
     assert clr_usbc_case >= 0.50, f"USB-C too close to Case: {clr_usbc_case:.4f} mm"
