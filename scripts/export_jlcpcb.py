@@ -4,8 +4,6 @@ Export JLCPCB PCB / PCBA production files for curcur40:
 - Left Main PCB:      pcbs/left/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-left.*
 - Right Main PCB:     pcbs/right/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-right.*
 - PMW3360 Sub PCB:    pcbs/pmw3360/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-pmw3360.*
-- Wheel Sensor PCB:   pcbs/inertia-wheel-sensor/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-wheel-sensor.*
-- Wheel Eval PCB:     pcbs/inertia-wheel-eval/jlcpcb/production_files/{GERBER,BOM,CPL}-curcur40-wheel-eval.*
 - Top Plates:         plates/pcb/jlcpcb/production_files/GERBER-plate-top-{left,right}.zip
 """
 import os
@@ -56,7 +54,8 @@ LCSC_MAP_MAIN = {
     "J1": ("TYPE-C-31-M-13C", "TYPE-C-31-M-13C", "C2848620"),
     "J2": ("TYPE-C-31-M-13C", "TYPE-C-31-M-13C", "C2848620"),
     "J3": ("SM06B-SRSS-TB(LF)(SN)", "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", "C160405"),
-    "J5": ("SM06B-SRSS-TB(LF)(SN)", "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", "C160405"),
+    "U6": ("TMAG5273A1QDBVR", "SOT-23-6", "C3716049"),
+    "R13": ("0", "R_0402_1005Metric", "C17168"),
     "R4": ("27", "R_0402_1005Metric", "C2909343"),
     "R5": ("27", "R_0402_1005Metric", "C2909343"),
     "R10": ("27", "R_0402_1005Metric", "C2909343"),
@@ -78,19 +77,6 @@ PMW_PARTS = {
     "R2": ("10k", "R_0603_1608Metric", "C25804"),
     "R3": ("39R", "R_0603_1608Metric", "C23154"),
     "U2": ("TLV74318PDBVR", "SOT-23-5", "C485152"),
-}
-
-WHEEL_SENSOR_PARTS = {
-    "U1": ("AS5600-ASOT", "SOIC-8_3.9x4.9mm_P1.27mm", "C499458"),
-    "C1": ("100nF", "C_0402_1005Metric", "C1525"),
-    "C2": ("1uF", "C_0402_1005Metric", "C52923"),
-}
-
-WHEEL_EVAL_PARTS = {
-    "J1": ("SM06B-SRSS-TB(LF)(SN)", "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", "C160405"),
-    "C1": ("100nF", "C_0402_1005Metric", "C1525"),
-    "R1": ("4.7k", "R_0402_1005Metric", "C25900"),
-    "R2": ("4.7k", "R_0402_1005Metric", "C25900"),
 }
 
 
@@ -167,11 +153,11 @@ def export_gerber_zip(pcb_path, zip_path):
 # JLCPCB 3D/DFM model rotation offsets (in degrees, added to standard bottom-side rotation (180 - krot) % 360)
 # Verified against JLCPCB DFM Component Placement viewer:
 JLCPCB_ROT_OFFSETS = {
-    "SOIC-8_3.9x4.9mm_P1.27mm": 270.0,       # Wheel Sensor U1 (AS5600-ASOT, C499458): -90 deg in Top view
     "SOIC-8_5.3x5.3mm_P1.27mm": 270.0,       # U4/rU4 (W25Q128JVSIQ, C97521/C113767): 90 deg CW in Bottom view
     "SOT-223-3_TabPin2": 180.0,              # U2/rU2 (NCP1117LPST33T3G, C146799): 180 deg in Bottom view
     "USON-10_2.5x1.0mm_P0.5mm": 270.0,       # U3/U5, rU3/rU5 (TPD4E05U06DQAR, C138714): 90 deg CW in Bottom view
     "SOT-23-5": 180.0,                       # PMW3360 U2 (TLV74318PDBVR, C485152): 180 deg in Bottom view
+    "SOT-23-6": 180.0,                       # rU6 (TMAG5273A1QDBVR, C3716049): 180 deg in Bottom view
 }
 
 
@@ -322,7 +308,7 @@ def verify_jlcpcb_preflight(
             bom_refs.update(refs)
         cpl_refs = {row[0] for row in cpl_rows}
         assert bom_refs == cpl_refs, f"[{proj_name}] BOM/CPL mismatch: {bom_refs ^ cpl_refs}"
-        forbidden_dnp = {"J4", "rJ4", "U1" if is_pmw else "", "JP1"}
+        forbidden_dnp = {"J4", "rJ4", "rEXSW1", "U1" if is_pmw else "", "JP1"}
         if extra_forbidden_refs:
             forbidden_dnp |= set(extra_forbidden_refs)
         assert not (bom_refs & forbidden_dnp), f"[{proj_name}] DNP/THT ref found in BOM/CPL: {bom_refs & forbidden_dnp}"
@@ -457,23 +443,5 @@ if __name__ == "__main__":
         str(WORKSPACE / "pcbs" / "pmw3360" / "curcur40-pmw3360.kicad_pcb"),
         "curcur40-pmw3360",
         is_pmw=True,
-    )
-    export_main_pcb(
-        str(WORKSPACE / "pcbs" / "inertia-wheel-sensor" / "curcur40-wheel-sensor.kicad_pcb"),
-        "curcur40-wheel-sensor",
-        custom_map=WHEEL_SENSOR_PARTS,
-        zero_erc_warn=True,
-        min_board_mm=20.0,
-        extra_forbidden_refs={"J1", "MB1", "MB2"},
-        single_side_layer="top",
-    )
-    export_main_pcb(
-        str(WORKSPACE / "pcbs" / "inertia-wheel-eval" / "curcur40-wheel-eval.kicad_pcb"),
-        "curcur40-wheel-eval",
-        custom_map=WHEEL_EVAL_PARTS,
-        zero_erc_warn=True,
-        min_board_mm=20.0,
-        extra_forbidden_refs={"U1", "SW1", "J2", "H1", "H2", "H3", "H4", "H5", "H6"},
-        single_side_layer="top",
     )
     export_top_plates()
