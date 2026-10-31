@@ -16,9 +16,13 @@ wiki :  https://www.waveshare.com/wiki/RP2040-Zero
 販売元 : [Amazon](https://www.amazon.co.jp/dp/B092R7C9LM)
 Moechando SH1.0mm 片側ハウジング端子付きケーブル 延長ケーブル 300mm（入荷予定あり） (6P)
 
-### **`#12` ベアリング** `DDL-520`
+### **`#12` ベアリング** `DDL-520` ＋ **内輪シムリング**
 販売元 : [モノタロウ](https://www.monotaro.com/p/0953/8112/)  
 内径d(Φmm): 2, 外径D(Φmm): 5, 幅B(mm): 1.5  
+
+- [シムリングSUS](https://www.monotaro.com/g/02584871/) 内径2mm外径3mm 1枚入（岩田製作所、`#14` シャフトへドライのまま重ね通し・接着不要）
+  - https://www.monotaro.com/p/5509/9178/ 板厚t(mm)0.3 (`BRS002003030`)
+  - https://www.monotaro.com/p/5509/9162/ 板厚t(mm)0.2 (`BRS002003020`)
 
 ### **`#13` ラチェット鋼球** `SUJ2`
 販売元 : [モノタロウ](https://www.monotaro.com/p/4041/3721/)  
