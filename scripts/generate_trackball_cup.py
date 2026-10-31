@@ -28,9 +28,9 @@ def build_trackball_cup() -> bd.Solid:
     - Outer body radius: R = 14.00 mm (Ø 28.00 mm)
     - Inner spherical bowl radius: R = 12.85 mm (0.35 mm ball gap)
     - 4 Mounting Ears at (+/-12.00, +/-11.30 mm):
-        - Height = 5.50 mm (Z = 0.00 to 5.50 mm: 1.60 mm top clamping roof + 2.40 mm top screw thread + 1.50 mm screw gap)
-        - Stepped hole: lower Ø 3.30 mm standoff socket (Z = 0.00 to 3.90 mm) + upper Ø 2.40 mm M2 screw hole (Z = 3.90 to 5.50 mm)
-        - Outer boss radius = 3.00 mm (Ø 6.00 mm)
+        - Height = 2.00 mm (Z = 0.00 to 2.00 mm; clamped with Sensor PCB 1.60 mm by top-down M2 x 6.0 mm screws into case M2 brass heat-set inserts)
+        - Straight through-hole: Ø 2.40 mm M2 screw clearance hole (Z = 0.00 to 2.00 mm)
+        - Outer boss radius = 3.00 mm (Ø 6.00 mm; radial wall 1.80 mm)
     - 3 Retention Claws (T-shape orthogonal):
         - North 90.0 deg, West 180.0 deg, East 0.0 deg
         - Width = 4.50 mm
@@ -47,8 +47,7 @@ def build_trackball_cup() -> bd.Solid:
         - Central peephole (8.00 x 11.00 mm): Z = +4.85 to 6.69 mm (optical path)
     """
     z_base = 0.00
-    z_ear = 5.50
-    z_ear_socket = 3.90
+    z_ear = 2.00
     z_rim = 14.00
     z_claw_top = 22.80
     r_outer = 14.00
@@ -187,21 +186,14 @@ def build_trackball_cup() -> bd.Solid:
         throat = bd.extrude(throat_plane * bd.Circle(radius=0.975), amount=2.50)
         cup = cup - pocket - throat
 
-    # 10. 4x M2 stepped holes in mounting ears (height = 5.50 mm):
-    #     - Lower Ø 3.30 mm (radius 1.65 mm) standoff socket from Z = 0.00 to 3.90 mm
-    #     - Upper Ø 2.40 mm (radius 1.20 mm) M2 screw clamping hole from Z = 3.90 to 5.50 mm (thickness 1.60 mm)
+    # 10. 4x straight Ø 2.40 mm (radius 1.20 mm) M2 screw clearance holes in mounting ears (height = 2.00 mm)
     for sx, sy in ear_coords:
         screw_hole = bd.Cylinder(
             radius=1.20,
             height=z_ear + 2.0,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((sx, sy, -1.0)))
-        standoff_socket = bd.Cylinder(
-            radius=1.65,
-            height=z_ear_socket + 1.0,
-            align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
-        ).moved(bd.Location((sx, sy, -1.0)))
-        cup = cup - screw_hole - standoff_socket
+        cup = cup - screw_hole
 
     cup_solid = cup.solids()[0]
     cup_solid.label = "Trackball_Cup"
@@ -214,10 +206,8 @@ def verify_cup_wall_thickness_and_gaps(cup: bd.Solid):
       1) Watertight manifold single solid (`is_valid`, `is_sound`, `len(solids) == 1`, `volume > 0`)
       2) JLC3DP build envelope (<= 380 x 284 x 380 mm), min part size (>= 5 x 5 x 2 mm), and flat bottom Z_min = 0.0000 mm
       3) Minimum concave hole/bore diameter >= Ø 1.50 mm (actual min Ø 1.95 mm bearing snap-in throat)
-      4) Minimum wall thickness >= 0.80 mm & zero micro-gaps outside 4 documented intentional features:
+      4) Minimum wall thickness >= 0.80 mm & zero micro-gaps outside 2 documented intentional features:
          - Group A (~0.355 mm, Z in [7.0, 9.0] mm): 3x Ø 2.00 mm bearing ball snap-in retention lips
-         - Group B (0.450 mm, Z = 3.90 mm): 4x mounting ear internal counterbore step (Ø 3.30 to Ø 2.40 mm)
-         - Group C (0.650 mm, Z in [4.80, 5.55] mm): Z-offset between ear top (5.50) and lens pocket ceiling (4.85)
          - Group D (0.700 mm, Z in [21.0, 22.9] mm): 3x ball retention claw top lead-in chamfer edges
     """
     assert cup.is_valid and is_sound(cup), "[trackball-cup] Solid is not watertight/manifold!"
@@ -266,11 +256,9 @@ def verify_cup_wall_thickness_and_gaps(cup: bd.Solid):
                     mz = 0.5 * (p1.Z() + p2.Z())
 
                     is_group_a = 7.0 <= mz <= 9.0 and 0.340 <= d <= 0.370
-                    is_group_b = abs(mz - 3.90) < 0.15 and 0.440 <= d <= 0.460
-                    is_group_c = 4.80 <= mz <= 5.55 and 0.640 <= d <= 0.660
                     is_group_d = 21.0 <= mz <= 22.9 and 0.690 <= d <= 0.710
 
-                    if is_group_a or is_group_b or is_group_c or is_group_d:
+                    if is_group_a or is_group_d:
                         excluded_count += 1
                     else:
                         unexpected.append((d, (mx, my, mz), i, j))
