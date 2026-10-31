@@ -11,7 +11,7 @@ Outputs:
     1. sus304-flywheel.step / .stl        (JLCCNC SUS304 Stainless Steel Cup Wheel, Ø16.80 x 5.46 mm, 2-way groove)
     2. ratchet-hub.step / .stl            (JLC3DP SLA Resin Internal Hub, Ø12.40 x 3.10 mm, 9x Ø2.00 mm axial pockets)
     3. wheel-carriage.step / .stl         (JLC3DP SLA Resin Slim Rounded-Ear Hinged Inner Carriage)
-    4. wheel-base-frame.step / .stl       (JLC3DP SLA Resin, 17.18 x 17.56 mm On-PCB Surface-Mount Base Frame)
+    4. wheel-base-frame.step / .stl       (JLC3DP SLA Resin, 18.83 x 17.78 mm On-PCB Surface-Mount Base Frame)
     5. wheel-base-frame-sunk.step / .stl  (JLC3DP SLA Resin, Low-Profile Sunk Under-PCB Base Frame)
     6. wheel-cover.step / .stl            (JLC3DP SLA Resin, 180°-Symmetric Edge-Rounded Pyramid Switch-Snap Cover, x2)
     7. eval-pod-stand.step / .stl         (JLC3DP SLA/MJF Desktop Stand for RP2040-Zero Carrier PCB)
@@ -332,14 +332,16 @@ def build_wheel_carriage_assembled() -> bd.Solid:
     (100% walls & steps >= 0.85 mm, coplanar East print bed X = +6.45 mm):
       - North Cylindrical Hinge Barrel (`R = 1.92 mm`, `X in [-5.55, +6.45]`) at `(HINGE_Y=-6.85, HINGE_Z=2.15)`
       - G1-tangent West Hinge Arm (`X in [-4.55, -3.05]`, `Y in [-8.77, +3.35]`, `Z in [2.15, 5.30]`)
-        + Submerged West Sensor Sub-PCB L-Ledge (`X in [-7.79, -4.55]`, `Z <= 5.30 mm`)
+        + Submerged West Sensor Sub-PCB L-Ledge (`X in [-7.85, -4.55]`, `Z <= 6.15 mm`) with N/S Y-locating cheeks
+          and a `5.70 mm` central solder/wire relief channel for `#07` `J1` PTH leads
       - Sleek Concentric Rounded West (`X in [-4.55, -2.15]`, `2.40 mm` housing extending `0.90 mm` into `#01` West
         recess for `1.50 mm` `DDL-520` bearing + `Ø4x1mm` `#16` magnet clearance) & East (`X in [+3.10, +5.35]`)
         Bearing Ears (`Ø6.90 mm`, `R = 3.45 mm` around `(Y_AXLE, Z_AXLE)`), enclosed under `#20` Twin Snap Covers!
       - East Hinge Riser (`X in [+3.10, +5.35]`) & South Silent-Switch Striker Tab (`X in [+3.10, +6.45]`,
         `Y in [+2.25, +7.10]`, `Z in [4.38, 5.23]`, coplanar East face `X = +6.45` with `hinge_barrel`!)
-      - Axial M2 Magnet Adjuster Bore (`Ø1.76 mm` along X at `(Y = -0.10, Z = +6.25 mm)`) through the lower
-        East Bearing Stem (`#17` `NE218` `Ø1.50±0.10 mm` magnet passes freely; `#18` `M2x4mm` set screw self-taps!)
+      - Tapered Captive Axial M2 Magnet Adjuster Bore (`Ø1.76 -> Ø1.50 mm` along X at `(Y = -0.10, Z = +6.25 mm)`)
+        through the lower East Bearing Stem (`#17` `NE218` seats against the `Ø1.50 mm` West taper without dropping
+        into the flywheel cup; `#18` `M2x4mm` set screw self-taps from East!)
     """
     parts = []
 
@@ -370,16 +372,38 @@ def build_wheel_carriage_assembled() -> bd.Solid:
     )
     parts.extend([west_stem, west_cap])
 
-    # 4. Submerged West Sensor Sub-PCB L-Ledge (`Z <= 5.30 mm` -> coplanar top with west_arm, 0.86 mm step to 4.44 ledge!)
-    west_pcb_bridge = bd.Box(
-        2.39, 6.90, 1.90,
-        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-6.94, Y_AXLE - 3.45, 3.40)))  # Z in [3.40, 5.30]
+    # 4. Submerged West Sensor Sub-PCB L-Ledge + Elevated N/S Y-Locating Collar (`Z in [5.30, 6.20]`, 100% walls >= 0.86 mm!):
+    #    - Active #07 Sub-PCB (8.20 mm base, 0.80 mm thick) sits at X_mod in [-7.80, -7.00], Y in [Y_AXLE ± 4.10], Z_bot = 4.45
+    #    - Smooth tapered XY bridge (3.45 -> 4.15 half-width) avoids any <0.80 mm Y-step while keeping >0.45 mm to ear_l
+    #      and >1.14 mm to hinge_barrel; N/S L-cheeks at Z in [5.30, 6.20] cradle #07 Y ± 4.10 with 5.10 mm J1 PTH relief!
+    with bd.BuildSketch(bd.Plane.XY.offset(3.40)) as sk_wb:
+        bd.Polygon(
+            [
+                (-4.55, Y_AXLE - 3.45),
+                (-4.55, Y_AXLE + 3.45),
+                (-5.45, Y_AXLE + 4.15),
+                (-6.99, Y_AXLE + 4.15),
+                (-6.99, Y_AXLE - 4.15),
+                (-5.45, Y_AXLE - 4.15),
+            ],
+            align=None,
+        )
+    west_pcb_bridge = bd.extrude(sk_wb.sketch, amount=1.90).solids()[0]  # Z in [3.40, 5.30]
     west_pcb_ledge = bd.Box(
-        0.85, 6.90, 1.04,
-        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-7.79, Y_AXLE - 3.45, 3.40)))  # Z in [3.40, 4.44], 0.86 mm step to 5.30!
+        0.86, 8.30, 1.03,
+        align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((-7.85, Y_AXLE, 3.40)))  # Z in [3.40, 4.43], supports full 8.20 mm #07 width!
     parts.extend([west_pcb_bridge, west_pcb_ledge])
+    for sgn in (-1.0, 1.0):
+        sh_back = bd.Box(
+            1.54, 2.50, 0.90,
+            align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
+        ).moved(bd.Location((-6.99, Y_AXLE + sgn * 3.80, 5.30)))  # |Y - Y_AXLE| in [2.55, 5.05], Z in [5.30, 6.20]
+        cheek = bd.Box(
+            0.86, 0.90, 0.90,
+            align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
+        ).moved(bd.Location((-7.85, Y_AXLE + sgn * 4.60, 5.30)))  # |Y - Y_AXLE| in [4.15, 5.05], flush with ±4.15!
+        parts.extend([sh_back, cheek])
 
     # 5. Symmetrical G1-tangent East Hinge Arm (`X in [+3.10, +5.35]`, 0.37 mm East of #01 Wheel +2.73!, `Y in [-8.77, +2.25]`, `Z in [2.15, 5.23]`)
     east_arm = bd.Box(
@@ -436,32 +460,36 @@ def build_wheel_carriage_assembled() -> bd.Solid:
     )
     carriage = carriage - east_brg_seat
 
-    # 4) Axial M2 Magnet Adjuster Bore: Ø1.76 mm (>= Ø1.50 mm!) along X through lower East Stem at (Y = Y_AXLE, Z = +6.25 mm)
-    adj_bore = (
-        bd.Cylinder(radius=0.88, height=3.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+    # 4) Continuous-Taper Captive Axial M2 Magnet Adjuster Bore along X through lower East Stem at (Y_AXLE, +6.25 mm):
+    #    - Single continuous taper from Ø1.82 mm at East X = +5.35 (easy M2x4mm self-tap lead-in) down to exact
+    #      Ø1.52 mm at West X = +3.10 (>= Ø1.50 mm JLC3DP min, zero internal joint/step!) so #17 NE218 seats at
+    #      ~0.70 mm ball gap and cannot drop out into the flywheel cup!
+    adj_taper_bore = (
+        bd.Cone(bottom_radius=0.7333, top_radius=0.9433, height=3.15, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((2.85, Y_AXLE, Z_MAG_ADJ)))
+        .moved(bd.Location((2.70, Y_AXLE, Z_MAG_ADJ)))  # Exact R=0.760 (Ø1.52) at X=+3.10, R=0.910 (Ø1.82) at X=+5.35
     )
-    carriage = carriage - adj_bore
+    carriage = carriage - adj_taper_bore
 
     return carriage.solids()[0]
 
 
 def build_wheel_base_frame() -> bd.Solid:
     """
-    Build Stationary 17.18 x 17.56 mm Base Frame (`#04A`, `X in [-8.38, +8.80]`, `Y in [-8.78, +8.78]`,
-    `Z = 0.00 mm` sits flat on Main/Carrier PCB F.Cu):
-      - Uniform 1.40 mm solid floor across Y in [-4.70, +8.78] (wheel bottom is Z = +2.15 mm -> 0.75 mm clearance!)
+    Build Stationary 18.83 x 17.78 mm Base Frame (`#04A`, `X in [-8.38, +10.45]`, `Y in [-8.78, +9.00]`,
+    `Z = 0.00 mm` sits flat on Evaluation Carrier PCB F.Cu):
+      - Uniform 1.40 mm solid floor across Y in [-4.70, +9.00] (wheel bottom is Z = +2.15 mm -> 0.75 mm clearance!)
       - Open North hinge swing slot at X in [-5.85, +6.75], Y in [-8.78, -4.70] (`0.30 mm` clearance to hinge barrel!)
       - Two North Hinge Outer Ears at X in [-8.38, -5.85] (`2.53 mm`) and [+6.75, +8.80] (`2.05 mm`) retaining the
         `16.00 mm` `#15` hinge pin (`Ø2.02 mm` snug stationary bore at `(HINGE_Y=-6.85, HINGE_Z=2.15)`)
       - Open South-East corner cutout (`X >= +3.05, Y >= +2.55`) for PCB-mounted Kailh Silent Switch at `(+6.20, +5.70)`
-      - Two M2 mounting screw holes (Ø2.10 mm through-holes) at (-6.50, +6.50) and (-0.50, +6.50)
+      - Diagonal M2 mounting lugs (Ø2.10 mm through-holes, 17.50 mm span across CG, >= 0.90 mm outer wall!) at
+        H5 `(-4.85, +7.05)` and H6 `(+8.50, -1.10)`
     """
     base = bd.Box(
-        17.18, 17.56, 1.40,
-        align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((-8.38, 0.00, 0.00)))
+        18.83, 17.78, 1.40,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-8.38, -8.78, 0.00)))
 
     hinge_slot = bd.Box(
         12.60, 4.30, 5.00,
@@ -480,7 +508,7 @@ def build_wheel_base_frame() -> bd.Solid:
     base = base + ear_l + ear_r
 
     sw_cut = bd.Box(
-        6.60, 6.60, 6.00,
+        8.00, 6.60, 6.00,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((3.05, 2.55, -1.00)))
     base = base - sw_cut
@@ -492,7 +520,7 @@ def build_wheel_base_frame() -> bd.Solid:
     )
     base = base - hinge_bore
 
-    for mx, my in [(-6.50, 6.50), (-0.50, 6.50)]:
+    for mx, my in [(-4.85, 7.05), (8.50, -1.10)]:
         mh = bd.Cylinder(
             radius=1.05, height=10.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)
         ).moved(bd.Location((mx, my, 2.0)))
@@ -721,31 +749,22 @@ def build_cover_swing_voids_plate_coords() -> bd.Shape:
     (offset by `0.30 mm` + cover play) is swept over the full click-press stroke `[0, CLICK_SWEEP_DEG]` about the
     hinge axis and mirrored about `Y = Y_AXLE` (companion side), then bounded by simple analytic shapes whose
     faces never form `< 0.80 mm` internal steps:
-      1) Bearing-ear / bearing / magnet / `AS5600` SOIC-8 body tunnel: one cylinder (`R = 3.45 + 0.36 + h`) whose
-         centre is lowered by `h` so it contains the ear circle AND the `3.90 x 4.90 mm` `AS5600` SOIC-8 body at rest
-         AND at both mirrored bottom-out positions (crown roof unchanged), `X in [-6.61, -2.40]` (`>= 0.40 mm` axial
-         clearance to the `#08` `AS5600` body at `X = -5.69`, `#16` magnet at `X = -5.49`, and companion East ear)
-      2) `#07` stepped sub-PCB & SOIC-8 lead-frame envelope: `X in [-8.15, -5.75]` (`>= 0.40 mm` axial clearance to
-         `#07` PCB `-6.95` and SOIC-8 gull-wing leads `-6.64`), `Y = Y_AXLE ± 5.11 mm`, `0.80 mm` ceiling chamfers
+      1) Bearing-ear / bearing / magnet / `AS5600` SOIC-8 body tunnel: one cylinder (`r_tun = 4.214 mm`) whose
+         centre is lowered by `h` so it contains the ear circle AND the coaxially centered `3.90 x 4.90 mm`
+         `AS5600` SOIC-8 body (`Z_mod = 10.55 == Z_AXLE`) at rest AND at both mirrored bottom-out positions,
+         `X in [-6.61, -2.40]` (`>= 0.40 mm` axial clearance to `#08` `AS5600` body `-5.44`, `#16` magnet `-4.85`,
+         `#14` shaft East tip `+6.15`, and companion East ear `+5.35`)
+      2) `#07` stepped sub-PCB & SOIC-8 lead-frame envelope: `X in [-8.20, -5.75]` (`>= 0.40 mm` axial clearance to
+         `#07` PCB `-7.80..-7.00` and SOIC-8 gull-wing leads `-6.69`), `Y = Y_AXLE ± 5.11 mm`, `0.85 mm` ceiling chamfers
     """
     zo = CZ_SUNK
-    x_pcb0 = -7.75 - ENV_CLR_X   # -8.15
+    x_pcb0 = -7.80 - ENV_CLR_X   # -8.20
     x_prof1 = -5.75              # -5.75 (coplanar with the 1.80 mm snap leg West face; clears #07 PCB & SOIC-8 leads)
     # Tunnel starts 0.86 mm West of the profile end so its end face never forms a < 0.80 mm step with it, and so
-    # that it encloses the AS5600 SOIC-8 body (X in [-6.94, -5.39]), companion East bearing ear (X <= +5.35),
-    # and #14 10.00 mm shaft East tip (X <= +6.05 -> 0.56 mm >= 0.40 mm axial clearance!).
+    # that it encloses the AS5600 SOIC-8 body (X in [-6.99, -5.44]), companion East bearing ear (X <= +5.35),
+    # and #14 10.00 mm shaft East tip (X <= +6.15 -> 0.46 mm >= 0.40 mm axial clearance!).
     x_tun0 = x_prof1 - 0.86      # -6.61
-    assert x_tun0 <= -5.39 - ENV_CLR_X and x_tun0 <= -(6.05 + ENV_CLR_X)
-    # 1) Tunnel: rest centre c0 = (Y_AXLE, -2.00); bottom-out centres c1 = (Y_AXLE ± dy, -2.00 - dz)
-    c1y, c1z = _press_yz(Y_AXLE, -2.00, CLICK_SWEEP_DEG, zo)
-    dy, dz = abs(c1y - Y_AXLE), abs(c1z - (-2.00))
-    h = (dy * dy + dz * dz) / (2.0 * dz)
-    r_tun = 3.45 + ENV_CLR_YZ + h + 0.01
-    tunnel = (
-        bd.Cylinder(radius=r_tun, height=(-2.40) - x_tun0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
-        .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((x_tun0, Y_AXLE, -2.00 - h)))
-    )
+    assert x_tun0 <= -5.44 - ENV_CLR_X and x_tun0 <= -(6.15 + ENV_CLR_X)
 
     def bounds(half_y, z0_mod, z1_mod):
         return _swept_mirrored_yz_bounds(
@@ -753,17 +772,27 @@ def build_cover_swing_voids_plate_coords() -> bd.Shape:
             z0_mod + zo - ENV_CLR_YZ, z1_mod + zo + ENV_CLR_YZ, zo,
         )
 
-    # 2) #07 PCB stepped envelope (relative half-widths about Y_AXLE), also enclosing SOIC-8 gull-wing leads (Y ± 3.00)
-    #    while verify_tunnel checks that the 3.90 x 4.90 mm SOIC-8 body lies 100% inside `r_tun`
-    lo_ya, lo_yb, _, _ = bounds(4.40, 4.45, 10.30)
-    up_ya, up_yb, _, up_zt = bounds(3.95, 10.30, 13.11)
+    # 1) Tunnel: rest centre c0 = (Y_AXLE, -2.00); bottom-out centres c1 = (Y_AXLE ± dy, -2.00 - dz)
+    c1y, c1z = _press_yz(Y_AXLE, -2.00, CLICK_SWEEP_DEG, zo)
+    dy, dz = abs(c1y - Y_AXLE), abs(c1z - (-2.00))
+    h = (dy * dy + dz * dz) / (2.0 * dz)
+    ic_body_ya, ic_body_yb, _, ic_zt = bounds(1.95, Z_AXLE - 2.45, Z_AXLE + 2.45)
+    r_ic = math.hypot(max(Y_AXLE - ic_body_ya, ic_body_yb - Y_AXLE), ic_zt - (-2.00 - h))
+    r_tun = max(3.45 + ENV_CLR_YZ + h, r_ic) + 0.01
+    tunnel = (
+        bd.Cylinder(radius=r_tun, height=(-2.40) - x_tun0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        .rotate(bd.Axis.Y, 90)
+        .moved(bd.Location((x_tun0, Y_AXLE, -2.00 - h)))
+    )
+
+    # 2) #07 PCB stepped envelope (8.20 mm base Z=[4.45, 9.95], 8.00 mm neck Z=[9.95, 13.85] with R=0.45 top corners)
+    lo_ya, lo_yb, _, _ = bounds(4.10, 4.45, 9.95)
+    up_ya, up_yb, _, up_zt = bounds(4.00, 9.95, 13.85)
     w_pcb_req = max(Y_AXLE - lo_ya, lo_yb - Y_AXLE, Y_AXLE - up_ya, up_yb - Y_AXLE)
     assert w_pcb_req <= COV_POCKET_HALF_W, f"#07 pocket half-width {w_pcb_req:.3f} > {COV_POCKET_HALF_W:.2f} mm"
     w_pcb = COV_POCKET_HALF_W
-    ic_body_ya, ic_body_yb, _, ic_zt = bounds(1.95, 10.05 - 2.45, 10.05 + 2.45)
-    assert math.hypot(max(Y_AXLE - ic_body_ya, ic_body_yb - Y_AXLE), ic_zt - (-2.00 - h)) <= r_tun
     z_bot = -9.50
-    c_top = 0.80  # 45° ceiling chamfers (>= 0.80 mm so side wall and ceiling never form a thin step pair)
+    c_top = 0.85  # 45° ceiling chamfers (>= 0.85 mm keeps dome roof >= 0.80 mm while clearing R=0.45 PCB corners)
     half = [
         (w_pcb, z_bot),
         (w_pcb, up_zt - c_top),
@@ -850,16 +879,18 @@ def make_allowed_wheel_cover_thin(print_shift: tuple[float, float, float]):
 def build_stepped_sensor_pcb_mod() -> bd.Solid:
     """
     Build exact stepped `#07` `AS5600_Sensor_SubPCB` matching `curcur40-wheel-sensor.kicad_pcb` (`0.80 mm` thick):
-      - Lower `5.85 mm` (`Z_mod in [4.45, 10.30]`): `8.80 mm` wide (`Y_AXLE ± 4.40`)
-      - Upper `2.81 mm` (`Z_mod in [10.30, 13.11]`): `7.90 mm` wide (`Y_AXLE ± 3.95`) with `R = 0.60 mm` top corners
-      - Seated on `west_pcb_ledge` at `X_mod in [-7.75, -6.95]`, `Z_mod_bot = 4.45 mm` (`U1` center at `Z_mod = 10.05 mm`).
+      - Lower `5.50 mm` (`Z_mod in [4.45, 9.95]`): `8.20 mm` wide (`Y_AXLE ± 4.10`, inset mouse-bite tabs, `R = 0.50` bottom)
+      - Upper `3.90 mm` (`Z_mod in [9.95, 13.85]`): `8.00 mm` wide (`Y_AXLE ± 4.00`) with `R = 0.45 mm` top corners
+      - Seated on `west_pcb_ledge` at `X_mod in [-7.80, -7.00]`, `Z_mod_bot = 4.45 mm` (`U1` center at `Z_mod = 10.55 mm == Z_AXLE`).
     """
     with bd.BuildSketch(bd.Plane.XY) as sk:
-        bd.Rectangle(8.80, 5.85, align=(bd.Align.CENTER, bd.Align.MIN))
-        with bd.Locations([(0.0, 5.85 - 1.00)]):
-            bd.RectangleRounded(7.90, 2.81 + 1.00, radius=0.60, align=(bd.Align.CENTER, bd.Align.MIN))
+        bd.RectangleRounded(8.20, 5.50, radius=0.50, align=(bd.Align.CENTER, bd.Align.MIN))
+        with bd.Locations([(0.0, 2.50)]):
+            bd.Rectangle(8.20, 3.00, align=(bd.Align.CENTER, bd.Align.MIN))
+        with bd.Locations([(0.0, 5.50 - 1.00)]):
+            bd.RectangleRounded(8.00, 3.90 + 1.00, radius=0.45, align=(bd.Align.CENTER, bd.Align.MIN))
     raw = bd.extrude(sk.sketch, amount=0.80).solids()[0]
-    pcb = raw.rotate(bd.Axis.X, 90).rotate(bd.Axis.Z, 90).moved(bd.Location((-7.75, Y_AXLE, 4.45))).solids()[0]
+    pcb = raw.rotate(bd.Axis.X, 90).rotate(bd.Axis.Z, 90).moved(bd.Location((-7.80, Y_AXLE, 4.45))).solids()[0]
     pcb.label = "AS5600_Sensor_SubPCB"
     return pcb
 
@@ -867,44 +898,44 @@ def build_stepped_sensor_pcb_mod() -> bd.Solid:
 def build_eval_pod_stand() -> bd.Solid:
     """
     Build Desktop Stand (`#05`) for the 48.0 x 32.0 mm Standalone Evaluation Carrier PCB:
-      - Outer tray: 52.0 x 36.0 x 6.60 mm (flat bottom at Z = 0.0000 mm, corner R = 2.50 mm)
+      - Outer tray: 52.0 x 36.0 x 7.60 mm (flat bottom at Z = 0.0000 mm, corner R = 2.50 mm)
       - Floor thickness: 2.40 mm (Z = 0.00 to 2.40 mm)
-      - 4 corner PCB standoffs bridged directly into inner walls rising to Z = 5.40 mm
-        at (±21.50, ±13.50) with Ø2.00 mm M2 screw holes
-      - Side opening on West wall (Z >= 3.40 mm, 1.00 mm step above floor) for RP2040-Zero USB-C cable access
+      - 4 corner PCB standoffs bridged directly into inner walls rising to Z = 6.40 mm
+        at (±21.50, ±13.50) with Ø1.76 mm M2 self-tap blind bores (depth to Z = 1.20 mm for M2x6mm screws)
+      - Side opening on West wall (Z >= 4.40 mm, 2.00 mm step above floor) for RP2040-Zero USB-C cable access
     """
     with bd.BuildPart() as bp:
         with bd.BuildSketch(bd.Plane.XY):
             bd.RectangleRounded(52.0, 36.0, radius=2.50)
-        bd.extrude(amount=6.60)
+        bd.extrude(amount=7.60)
     tray_outer = bp.part
 
     with bd.BuildPart() as cav_bp:
         with bd.BuildSketch(bd.Plane.XY.offset(2.40)):
             bd.RectangleRounded(48.6, 32.6, radius=1.20)
-        bd.extrude(amount=5.00)
+        bd.extrude(amount=6.00)
     tray = tray_outer - cav_bp.part
 
     usb_cut = bd.Box(
         6.00, 12.00, 5.00,
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((-25.0, 0.0, 3.40)))
+    ).moved(bd.Location((-25.0, 0.0, 4.40)))
     tray = tray - usb_cut
 
     boss_pts = [(-21.50, -13.50), (21.50, -13.50), (-21.50, 13.50), (21.50, 13.50)]
     for bx, by in boss_pts:
-        b_cyl = bd.Cylinder(radius=2.80, height=5.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
+        b_cyl = bd.Cylinder(radius=2.80, height=6.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
             bd.Location((bx, by, 0.00))
         )
         sx = 1.0 if bx > 0 else -1.0
         sy = 1.0 if by > 0 else -1.0
-        b_x = bd.Box(3.50, 5.60, 5.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
+        b_x = bd.Box(3.50, 5.60, 6.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
             bd.Location((bx + sx * 1.75, by, 0.00))
         )
-        b_y = bd.Box(5.60, 3.50, 5.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
+        b_y = bd.Box(5.60, 3.50, 6.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
             bd.Location((bx, by + sy * 1.75, 0.00))
         )
-        b_corner = bd.Box(3.50, 3.50, 5.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
+        b_corner = bd.Box(3.50, 3.50, 6.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
             bd.Location((bx + sx * 1.75, by + sy * 1.75, 0.00))
         )
         tray = tray + b_cyl + b_x + b_y + b_corner
@@ -912,11 +943,11 @@ def build_eval_pod_stand() -> bd.Solid:
     with bd.BuildPart() as mask_bp:
         with bd.BuildSketch(bd.Plane.XY.offset(-0.50)):
             bd.RectangleRounded(52.0, 36.0, radius=2.50)
-        bd.extrude(amount=8.00)
+        bd.extrude(amount=9.00)
     tray = tray & mask_bp.part
 
     for bx, by in boss_pts:
-        h = bd.Cylinder(radius=1.00, height=8.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
+        h = bd.Cylinder(radius=0.88, height=8.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
             bd.Location((bx, by, 1.20))
         )
         tray = tray - h
@@ -1031,15 +1062,23 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
         b.label = f"Steel_Ball_2mm_{i+1:02d}"
         balls.append(b)
 
-    # 6. Non-magnetic SUS303 JIS B-type h7 Parallel Pin Ø1.99 x 10.00 mm (c ≈ 0.35 mm chamfers, X_mod in [-3.95, +6.05])
+    # 6. Non-magnetic SUS303 JIS B-type h7 Parallel Pin Ø1.99 x 10.00 mm (c ≈ 0.35 mm chamfers, X_mod in [-3.85, +6.15])
     shaft_cyl = bd.Cylinder(radius=0.99, height=10.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
     shaft_cyl = bd.chamfer(shaft_cyl.edges(), length=0.33)
     shaft = (
         shaft_cyl.rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((-3.95, Y_AXLE, Z_AXLE)))
+        .moved(bd.Location((-3.85, Y_AXLE, Z_AXLE)))
         .solids()[0]
     )
     shaft.label = "SUS303_Axle_Shaft_2x10mm"
+
+    # 6b. Precision SUS304 Inner-Race Shim Ring M2 x Ø3.0 x 0.5 mm (X_mod in [+2.63, +3.08]):
+    #     Locks total rotor/shaft/magnet axial play between West (-2.15) & East (+3.10) DDL-520 inner races to 0.04 mm!
+    east_shim = (
+        bd.Cylinder(radius=1.45, height=0.45, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        - bd.Cylinder(radius=1.02, height=0.45, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+    ).rotate(bd.Axis.Y, 90).moved(bd.Location((2.63, Y_AXLE, Z_AXLE))).solids()[0]
+    east_shim.label = "SUS304_Inner_Race_Shim_M2x3x0p5"
 
     # 7. 2x MinebeaMitsumi NMB DDL-520 Open Miniature Bearings (Ø2.00 ID x Ø5.00 OD x 1.50 W):
     #    - West bearing pressed flush with West Ear inner face (-2.15): X_mod in [-3.65, -2.15]
@@ -1066,17 +1105,17 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
     )
     hinge_pin.label = "Hinge_Pin_SUS303_2x16mm"
 
-    # 9. Diametric Sensor Magnet D4x1mm (Ø4.00 x 1.00 mm, X_mod in [-4.95, -3.95], 0.30 mm West of DDL-520,
-    #    0.52 mm radial clearance inside Ø5.04 mm West recess, 0.44 mm nominal airgap to AS5600 / 0.25 mm at A_max=1.75)
+    # 9. Diametric Sensor Magnet D4x1mm (Ø4.00 x 1.00 mm, X_mod in [-4.85, -3.85], 0.20 mm West of DDL-520,
+    #    0.52 mm radial clearance inside Ø5.04 mm West recess, 0.59 mm nominal airgap to AS5600 / 0.39 mm at A_max=1.75)
     #    + Stepped Top-Side PCBA AS5600 SubPCB:
-    #    - SubPCB 8.80/7.90 x 8.66 x 0.80 mm (X_mod in [-7.75, -6.95], Z_mod in [4.45, 13.11])
-    #    - U1 AS5600-ASOT SOIC-8 (JEDEC MS-012: 3.90 x 4.90 x 1.55 mm realistic mounted height at X_mod in [-6.94, -5.39],
-    #      Y = Y_AXLE ± 1.95, plus 6.00 x 4.90 x 0.30 mm gull-wing lead frame at X_mod in [-6.94, -6.64], Z = 10.05 ± 2.45)
-    #    - C1 (100nF 0402) & C2 (1uF 0402) on F.Cu at Z_mod = 6.40 mm
+    #    - SubPCB 8.20/8.00 x 9.40 x 0.80 mm (X_mod in [-7.80, -7.00], Z_mod in [4.45, 13.85])
+    #    - U1 AS5600-ASOM SOIC-8 (JEDEC MS-012: 3.90 x 4.90 x 1.55 mm realistic mounted height at X_mod in [-6.99, -5.44],
+    #      Y = Y_AXLE ± 1.95, coaxially centered at Z_mod = 10.55 == Z_AXLE, plus 6.00 x 4.90 x 0.30 mm lead frame)
+    #    - C1 (100nF 0402) & C2 (1uF 0402) on F.Cu at Z_mod = 7.25 mm
     sens_mag = (
         bd.Cylinder(radius=2.00, height=1.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((-4.95, Y_AXLE, Z_AXLE)))
+        .moved(bd.Location((-4.85, Y_AXLE, Z_AXLE)))
         .solids()[0]
     )
     sens_mag.label = "Diametric_Magnet_4x1mm"
@@ -1086,24 +1125,24 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
     as5600_body = bd.Box(
         1.55, 3.90, 4.90,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
-    ).moved(bd.Location((-6.94, Y_AXLE, 10.05)))
+    ).moved(bd.Location((-6.99, Y_AXLE, Z_AXLE)))
     as5600_leads = bd.Box(
         0.30, 6.00, 4.90,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
-    ).moved(bd.Location((-6.94, Y_AXLE, 10.05)))
+    ).moved(bd.Location((-6.99, Y_AXLE, Z_AXLE)))
     as5600_ic = (as5600_body + as5600_leads).solids()[0]
     as5600_ic.label = "AS5600_SOIC8_IC"
 
     as5600_c1 = bd.Box(
         0.55, 1.00, 0.50,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
-    ).moved(bd.Location((-6.94, Y_AXLE - 2.30, 6.40)))
+    ).moved(bd.Location((-6.99, Y_AXLE - 2.50, 7.25)))
     as5600_c1.label = "AS5600_Cap_C1_100nF"
 
     as5600_c2 = bd.Box(
         0.55, 1.00, 0.50,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER),
-    ).moved(bd.Location((-6.94, Y_AXLE + 0.10, 6.40)))
+    ).moved(bd.Location((-6.99, Y_AXLE - 0.50, 7.25)))
     as5600_c2.label = "AS5600_Cap_C2_1uF"
 
     # 10. Kailh Square Silent Micro Switch (`6.2 x 6.2 x 4.3 mm`, published H=4.3mm drawing:
@@ -1129,20 +1168,20 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
     silent_sw = (sw_body + sw_btn + sw_pin_l + sw_pin_r).solids()[0]
     silent_sw.label = "Kailh_Silent_Switch_6x6x4p3"
 
-    # 11. Axial #17 Ratchet Magnet (`NE218`, Ø1.50 x 1.50 mm at X_mod in [+2.86, +4.36], 0.45 mm nominal gap to #13 balls)
-    #     + #18 SUS304 DIN916 M2 x 4.00 mm Cup-Point Hex Set Screw (X_mod in [+4.36, +8.36]) in lower East Stem
+    # 11. Axial #17 Ratchet Magnet (`NE218`, Ø1.50 x 1.50 mm seated in captive taper at X_mod in [+3.15, +4.65],
+    #     0.74 mm nominal gap to #13 balls) + #18 SUS304 DIN916 M2 x 4.00 mm Set Screw (X_mod in [+4.65, +8.65])
     adj_mag_tip = (
-        bd.Cylinder(radius=0.75, height=1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        bd.Cylinder(radius=0.74, height=1.50, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((2.86, Y_AXLE, Z_MAG_ADJ)))
+        .moved(bd.Location((3.15, Y_AXLE, Z_MAG_ADJ)))
     )
     adj_scr_in = (
-        bd.Cylinder(radius=0.85, height=1.01, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        bd.Cylinder(radius=0.85, height=0.72, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
-        .moved(bd.Location((4.36, Y_AXLE, Z_MAG_ADJ)))
+        .moved(bd.Location((4.65, Y_AXLE, Z_MAG_ADJ)))
     )
     adj_scr_out = (
-        bd.Cylinder(radius=0.98, height=2.99, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+        bd.Cylinder(radius=0.98, height=3.28, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.Y, 90)
         .moved(bd.Location((5.37, Y_AXLE, Z_MAG_ADJ)))
     )
@@ -1150,7 +1189,7 @@ def assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk: bool = False, include_co
     m2_adj.label = "M2_Magnet_Adjuster_And_NdFeB"
 
     raw_items = [
-        base, carriage, flywheel, hub, shaft, brg_w, brg_e,
+        base, carriage, flywheel, hub, shaft, east_shim, brg_w, brg_e,
         hinge_pin, sens_mag, as5600_pcb, as5600_ic, as5600_c1, as5600_c2,
         silent_sw, m2_adj,
         *balls,
@@ -1456,37 +1495,80 @@ def main():
     mod_sunk_asm = bd.Compound(label="Inertia_Wheel_Module_Sunk_Assembly", children=mod_sunk_parts)
     bd.export_step(mod_sunk_asm, str(ASSEMBLIES_DIR / "inertia-wheel-module-sunk-assembly.step"))
 
-    # Standalone Eval Pod Assembly
+    # Standalone Eval Pod Assembly (exact rot180 chirality parity matching curcur40-wheel-eval.kicad_pcb & curcur40-right!)
     stand_asm = build_eval_pod_stand()
     stand_asm.label = "Eval_Pod_Stand"
     with bd.BuildPart() as cpcb_bp:
-        with bd.BuildSketch(bd.Plane.XY.offset(5.41)):
+        with bd.BuildSketch(bd.Plane.XY.offset(6.41)):
             bd.RectangleRounded(48.0, 32.0, radius=1.00)
         bd.extrude(amount=1.60)
     carrier_pcb = cpcb_bp.part
-    for bx, by in [(-21.50, -13.50), (21.50, -13.50), (-21.50, 13.50), (21.50, 13.50)]:
+    with bd.BuildPart() as u1_cut_bp:
+        with bd.BuildSketch(bd.Plane.XY.offset(5.00)):
+            with bd.Locations([(-12.00, 0.00)]):
+                bd.RectangleRounded(17.20, 11.20, radius=1.00)
+        bd.extrude(amount=4.00)
+    carrier_pcb = carrier_pcb - u1_cut_bp.part
+    for bx, by in [
+        (-21.50, -13.50), (21.50, -13.50), (-21.50, 13.50), (21.50, 13.50),
+        (17.35, -7.05), (4.00, 1.10),
+    ]:
         carrier_pcb = carrier_pcb - bd.Cylinder(
             radius=1.10, height=5.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-        ).moved(bd.Location((bx, by, 4.00)))
-    for px in (12.5 + 6.20 - 0.5 * SWITCH_PIN_PITCH, 12.5 + 6.20 + 0.5 * SWITCH_PIN_PITCH):
+        ).moved(bd.Location((bx, by, 5.00)))
+    for px in (6.30 - 0.5 * SWITCH_PIN_PITCH, 6.30 + 0.5 * SWITCH_PIN_PITCH):
         carrier_pcb = carrier_pcb - bd.Cylinder(
             radius=0.55, height=5.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-        ).moved(bd.Location((px, 5.70, 4.00)))
+        ).moved(bd.Location((px, -5.70, 5.00)))
     carrier_pcb = carrier_pcb.solids()[0]
     carrier_pcb.label = "Eval_Carrier_PCB_48x32"
 
     rp2040_zero = bd.Box(23.5, 18.0, 3.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
-        bd.Location((-12.0, 0.0, 7.02))
+        bd.Location((-12.00, 0.00, 8.02))
     )
     rp2040_zero.label = "Waveshare_RP2040_Zero"
 
     jst_sh = bd.Box(8.00, 4.30, 2.95, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
-        bd.Location((-2.0, -12.5, 7.02))
+        bd.Location((4.00, 12.60, 8.02))
     )
     jst_sh.label = "JST_SH_6Pin_Header"
 
-    pod_wheel_parts = assemble_module_parts(origin=(12.5, 0.0, 7.02))
-    pod_all = [stand_asm, carrier_pcb, rp2040_zero, jst_sh, *pod_wheel_parts]
+    pod_wheel_comp = bd.Compound(
+        children=assemble_module_parts(origin=(0.0, 0.0, 0.0), sunk=False)
+    ).rotate(bd.Axis.Z, 180).moved(bd.Location((12.50, 0.00, 8.02)))
+    pod_wheel_parts = list(pod_wheel_comp.solids())
+    for idx_pw, s_pw in enumerate(pod_wheel_parts):
+        s_pw.label = mod_parts[idx_pw].label
+
+    pod_fasteners = []
+    for idx_c, (bx, by) in enumerate([(-21.50, -13.50), (21.50, -13.50), (-21.50, 13.50), (21.50, 13.50)]):
+        cs_head = bd.Cylinder(radius=1.90, height=1.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
+            bd.Location((bx, by, 8.02))
+        )
+        cs_shank = bd.Cylinder(radius=0.85, height=6.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)).moved(
+            bd.Location((bx, by, 8.02))
+        )
+        cs = (cs_head + cs_shank).solids()[0]
+        cs.label = f"Eval_Stand_Screw_M2x6_{idx_c+1}"
+        pod_fasteners.append(cs)
+
+    for idx_m, (mx_p, my_p) in enumerate([(17.35, -7.05), (4.00, 1.10)]):
+        ms_head = bd.Cylinder(radius=1.90, height=1.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
+            bd.Location((mx_p, my_p, 9.43))
+        )
+        ms_shank = bd.Cylinder(radius=0.95, height=6.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)).moved(
+            bd.Location((mx_p, my_p, 9.43))
+        )
+        ms = (ms_head + ms_shank).solids()[0]
+        ms.label = f"Eval_Module_Screw_M2x6_{idx_m+1}"
+        mn = (
+            bd.Cylinder(radius=2.15, height=1.58, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX))
+            - bd.Cylinder(radius=1.00, height=1.58, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX))
+        ).moved(bd.Location((mx_p, my_p, 6.40))).solids()[0]
+        mn.label = f"Eval_Module_Nut_M2_{idx_m+1}"
+        pod_fasteners.extend([ms, mn])
+
+    pod_all = [stand_asm, carrier_pcb, rp2040_zero, jst_sh, *pod_fasteners, *pod_wheel_parts]
     verify_zero_overlap(pod_all, "Standalone_Eval_Pod")
     pod_asm = bd.Compound(label="Inertia_Wheel_Eval_Pod_Assembly", children=pod_all)
     bd.export_step(pod_asm, str(ASSEMBLIES_DIR / "inertia-wheel-eval-pod-assembly.step"))
