@@ -11,12 +11,14 @@ Strictly adheres to docs/case_spec.md:
     - Tilted Interior Floor:
         - Parallel to outer bottom plane with uniform 2.40 mm bottom wall thickness (Z_floor = Z_bottom + 2.40 mm)
         - Skimmed horizontally to Z = -8.00 mm at the pinky outer edge (|X_step| > 120.61 mm) for >= 0.40 mm switch socket clearance
-- Fastening Specifications (Section 2 — Switch-Retained Top Plate Architecture / 案1A):
+- Fastening & Hidden Support Specifications (Section 2 — Switch-Retained Top Plate Architecture / 案1A + 6-Point Valley Layout):
     - Top-down unified M2 x 6.0 mm screws threading into M2 brass heat-set inserts (M2 x L=3.0 mm x OD=3.2 mm):
         - Cylindrical Boss Pillars (pilot bore Ø 2.85 mm, R = 1.425 mm >= Ø 1.50 mm JLC3DP limit):
-            - 10x Compact Flat-Topped Perimeter PCB Bosses (L1..L5 on Left, R1..R5 on Right, with L4/R4 at ±100.50, 21.50):
-              Ø 5.20 mm flat boss top at Z = -5.80 mm (supports & clamps Main PCB directly via M2 x 6.0 mm screws passing through Top Plate Ø 4.40 mm screw-head clearance holes; uniform 1.175 mm radial wall >= 0.80 mm, flush insert top at Z = -5.80 mm), blind bores to Z = -11.80 mm (L1,L2,L5,R1,R2,R5), -10.95 mm (L3,R3), and -11.00 mm (L4,R4)
+            - 12x Compact Flat-Topped Key-Valley PCB Bosses (L1..L6 on Left, R1..R6 on Right, 100% L-R symmetric, zero outer-margin bosses):
+              Ø 5.20 mm flat boss top at Z = -5.80 mm (supports & clamps Main PCB directly via M2 x 6.0 mm screws passing through Top Plate Ø 4.40 mm screw-head clearance holes; uniform 1.175 mm radial wall >= 0.80 mm, flush insert top at Z = -5.80 mm), blind bores to Z = -11.80 mm (L1,L4,L5,L6,R1,R4,R5,R6) and -11.00 mm (L2,L3,R2,R3)
             - 4x Trackball Bosses (TB1..TB4): Ø 6.00 mm boss top Z = -17.60 mm (Sensor PCB B.Cu), blind bore 3.80 mm deep to Z = -21.40 mm
+        - 3x Symmetric Hidden Inner-Wall PCB Support Shelves per case (`NW_HostUSB_Shelf`, `NE_HostUSB_Shelf`, `W_SplitUSB_Shelf`):
+            - Full-height vertical pilasters integrated into North & Inner-West walls from tilted interior floor up to Z = -5.80 mm (2.00 mm inward protrusion = 1.50 mm solid shelf overlap under Main PCB B.Cu), preventing downward PCB flexing during Host/Split USB-C cable insertion with zero top/exterior visibility.
 - Cutouts & Ports (Section 3):
     - Split USB-C opening (inner thumb wall): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at Y = -86.6500 mm, Z = -5.85 mm
     - Host USB-C opening (north wall): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at X = ±26.5750 mm, Z = -5.85 mm
@@ -41,7 +43,7 @@ X_PINKY_OUTER = 135.8580
 FLOOR_THICKNESS = 2.4000
 
 BOSS_OUTER_RADIUS = 3.0000     # Ø 6.00 mm boss pillar for Trackball bosses (TB1..TB4; 1.575 mm radial wall)
-PERIM_BOSS_RADIUS = 2.6000     # Ø 5.20 mm compact flat-topped boss for all 10 perimeter PCB holes (L1..L5, R1..R5; 1.175 mm radial wall)
+PERIM_BOSS_RADIUS = 2.6000     # Ø 5.20 mm compact flat-topped boss for all 12 key-valley PCB holes (L1..L6, R1..R6; 1.175 mm radial wall)
 PILOT_BORE_RADIUS = 1.4250     # Ø 2.85 mm pilot bore for M2 x L=3.0 x OD=3.2 mm brass heat-set insert
 
 
@@ -118,21 +120,22 @@ def make_filleted_sketch(pts_and_radii):
 def get_case_hole_specs(is_right=True):
     """
     Returns list of (tag, cx, cy, z_boss_top, z_bore_bottom, z_insert_top, r_boss) in STEP coordinates:
-    - 10x Compact Flat-Topped Perimeter PCB Bosses L1..L5, R1..R5:
+    - 12x Compact Flat-Topped Key-Valley PCB Bosses L1..L6, R1..R6 (100% L-R symmetric):
         Ø 5.20 mm (R = 2.60 mm, 1.175 mm radial wall) flat boss to z_boss_top = -5.80 mm (Main PCB B.Cu),
-        z_insert_top = -5.80 mm (flush press-fit, zero stepped upper shelf!),
-        blind bores: -11.80 mm (L1, L2, L5, R1, R2, R5), -10.95 mm (L3, R3), -11.00 mm (L4, R4 at ±100.5000, 21.5000)
+        z_insert_top = -5.80 mm (flush press-fit, zero stepped upper shelf),
+        blind bores: -11.80 mm (L1, L4, L5, L6, R1, R4, R5, R6), -11.00 mm (L2, L3, R2, R3 at ±100.5000)
     - 4x Trackball Bosses TB1..TB4:
         Ø 6.00 mm (R = 3.00 mm) boss to z_boss_top = -17.60 mm (Sensor PCB B.Cu),
         z_bore_bottom = -21.40 mm (3.80 mm blind bore), z_insert_top = -17.60 mm
     """
     if is_right:
         perim_pcb = [
-            ("R1",   0.0000, -15.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
-            ("R2",   0.0000,  18.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
-            ("R3", 101.0000, -20.0000, -5.80, -10.95, -5.80, PERIM_BOSS_RADIUS),
-            ("R4", 100.5000,  21.5000, -5.80, -11.00, -5.80, PERIM_BOSS_RADIUS),
-            ("R5",  62.0000,  65.1500, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
+            ("R1",  42.2500,   0.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
+            ("R2", 100.5000,   2.5000, -5.80, -11.00, -5.80, PERIM_BOSS_RADIUS),
+            ("R3", 100.5000,  21.5000, -5.80, -11.00, -5.80, PERIM_BOSS_RADIUS),
+            ("R4",  21.5000,  29.2500, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
+            ("R5",  34.5000,  42.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
+            ("R6",  60.5000,  42.5000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
         ]
         tb_pcb = [
             ("TB1", -2.4750, 41.0875, -17.60, -21.40, -17.60, BOSS_OUTER_RADIUS),
@@ -146,16 +149,63 @@ def get_case_hole_specs(is_right=True):
         ]
     else:
         perim_pcb = [
-            ("L1",    0.0000, -15.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
-            ("L2",    0.0000,  18.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
-            ("L3", -101.0000, -20.0000, -5.80, -10.95, -5.80, PERIM_BOSS_RADIUS),
-            ("L4", -100.5000,  21.5000, -5.80, -11.00, -5.80, PERIM_BOSS_RADIUS),
-            ("L5",  -62.0000,  65.1500, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
+            ("L1",  -42.2500,   0.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
+            ("L2", -100.5000,   2.5000, -5.80, -11.00, -5.80, PERIM_BOSS_RADIUS),
+            ("L3", -100.5000,  21.5000, -5.80, -11.00, -5.80, PERIM_BOSS_RADIUS),
+            ("L4",  -21.5000,  29.2500, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
+            ("L5",  -34.5000,  42.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
+            ("L6",  -60.5000,  42.5000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
         ]
         return [
             (tag, x - 14.2875, -(y + 57.1500), z_top, z_bot, z_ins, r_b)
             for tag, x, y, z_top, z_bot, z_ins, r_b in perim_pcb
         ]
+
+
+def build_usbc_support_pilasters(is_right: bool, z_ext_bottom: float) -> list[bd.Solid]:
+    """
+    Build 3 symmetric hidden inner-wall PCB support shelves (top face Z = -5.8000 mm = Main PCB B.Cu)
+    flanking Host USB-C (J1/rJ1) on the North inner wall and Split USB-C (J2/rJ2) on the Inner-West wall:
+      1. NW_HostUSB_Shelf: |X| in [7.8000, 18.5000],  Y in [-34.3375, -31.6000] (fills NW corner + West of J1/rJ1)
+      2. NE_HostUSB_Shelf: |X| in [34.6500, 44.6500], Y in [-34.3375, -31.6000] (East of J1/rJ1)
+      3. W_SplitUSB_Shelf: |X| in [7.8000, 10.5250],  Y in [-78.5000, -64.5000] (North of J2/rJ2)
+    Each pilaster protrudes 2.00 mm inward from the case inner wall (1.50 mm solid overlap beneath Main PCB)
+    and runs continuously down into the tilted floor (zero overhangs, zero undercuts, R=0.85 mm inner corners).
+    """
+    z_shelf_top = -5.8000
+    h = z_shelf_top - z_ext_bottom
+    sgn = 1.0 if is_right else -1.0
+    specs = [
+        # (xa_abs, xb_abs, ymin, ymax, inner_corner_pts_abs)
+        (7.8000, 18.5000, -34.3375, -31.6000, [(18.5000, -34.3375)]),
+        (34.6500, 44.6500, -34.3375, -31.6000, [(34.6500, -34.3375), (44.6500, -34.3375)]),
+        (7.8000, 10.5250, -78.5000, -64.5000, [(10.5250, -78.5000), (10.5250, -64.5000)]),
+    ]
+    pilasters = []
+    for xa, xb, ymin, ymax, corners_abs in specs:
+        xmin = min(sgn * xa, sgn * xb)
+        xmax = max(sgn * xa, sgn * xb)
+        cx = 0.5 * (xmin + xmax)
+        cy = 0.5 * (ymin + ymax)
+        box = bd.Box(
+            xmax - xmin,
+            ymax - ymin,
+            h,
+            align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+        ).moved(bd.Location((cx, cy, z_ext_bottom)))
+        target_corners = [(sgn * kx, ky) for kx, ky in corners_abs]
+        vedges = box.edges().filter_by(
+            lambda e, tcs=target_corners: abs(e.bounding_box().size.Z - h) < 0.05
+            and any(
+                abs(e.bounding_box().center().X - tx) < 0.05
+                and abs(e.bounding_box().center().Y - ty) < 0.05
+                for tx, ty in tcs
+            )
+        )
+        if len(vedges) > 0:
+            box = bd.fillet(vedges, radius=0.85)
+        pilasters.append(box)
+    return pilasters
 
 
 def verify_case_wall_thickness_and_gaps(solid: bd.Solid, is_right: bool):
@@ -294,7 +344,7 @@ def build_case(is_right=True) -> bd.Solid:
     cavity_volume = inner_prism & (tilted_cavity_halfspace + pinky_skim_halfspace)
     body = outer_solid - cavity_volume
 
-    # 4. Add Compact Flat-Topped Cylindrical Heat-Set Insert Boss Pillars (zero perimeter wall ledges!)
+    # 4. Add Compact Flat-Topped Cylindrical Heat-Set Insert Boss Pillars + Hidden USB-C Inner-Wall Support Shelves
     hole_specs = get_case_hole_specs(is_right)
     boss_solids = []
     for tag, cx, cy, z_boss_top, _z_bore_bot, _z_ins_top, r_boss in hole_specs:
@@ -303,8 +353,8 @@ def build_case(is_right=True) -> bd.Solid:
             height=z_boss_top - z_ext_bottom,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((cx, cy, z_ext_bottom)))
-        # Bridge near-wall bosses cleanly into adjacent inner walls to eliminate narrow crevices:
-        # 1) South-wall bridges for R5/L5 (cy=-122.30) and TB3/TB4 (cy=-120.8375)
+        # Bridge near-wall Trackball bosses cleanly into adjacent inner walls to eliminate narrow crevices:
+        # 1) South-wall bridges for TB3/TB4 (cy=-120.8375)
         if cy < -120.0:
             south_bridge = bd.Box(
                 2.0 * r_boss,
@@ -334,6 +384,9 @@ def build_case(is_right=True) -> bd.Solid:
 
     for b_cyl in boss_solids:
         body = body + b_cyl
+
+    for pilaster in build_usbc_support_pilasters(is_right, z_ext_bottom):
+        body = body + (pilaster & outer_solid)
 
     # 5. Cut angled outer bottom tenting plane (theta_tent = 7.47 deg) — 100% sealed, hole-free flat bottom!
     if is_right:

@@ -6,19 +6,19 @@ Generate curcur40 Full Assembly STEP models:
   3. cases/assemblies/curcur40-right-wheel-assembly.step (Right half with Under-Plate Inertia Wheel)
 and verify zero B-rep interference + minimum clearances across all components per docs/case_spec.md:
 - Left & Right 3D-printed Sealed-Bottom Built-in Tented Tray Bottom Cases
-  (with Tilted Floor & Compact Flat-Topped Ø 5.20 mm M2 Heat-Set Insert Bosses at Z = -5.80 mm)
+  (with Tilted Floor, 12x Compact Flat-Topped Ø 5.20 mm M2 Heat-Set Insert Valley Bosses + 6x Hidden Inner-Wall USB-C Support Shelves at Z = -5.80 mm)
 - Direct KiCad 10.0 3D STEP Synchronization (`kicad-cli pcb export step --subst-models`):
     - `curcur40-left.kicad_pcb`    (Z = -5.80 to -4.20 mm + all 268 real 3D component solids)
     - `curcur40-right.kicad_pcb`   (Z = -5.80 to -4.20 mm + all 258 real 3D component solids)
     - `curcur40-pmw3360.kicad_pcb` (Z = -17.60 to -16.00 mm + all 9 real SMD/JST-SH solids)
 - Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, retained via 40x Kailh Choc V2 switch snap-fit,
-  with 12x Ø 4.40 mm screw-head clearance holes & Right 7.70 x 22.00 mm wheel slot)
+  with 14x Ø 4.40 mm screw-head clearance holes & Right 7.70 x 22.00 mm wheel slot)
 - 40x Kailh Choc V2 Low-Profile Keyswitches (21 Left + 19 Right) + 40x Keycaps
 - Sunk Trackball Cup placed on Sensor PCB F.Cu at (23.8125, -109.5375, -16.00 mm), Rim at Z = -2.00 mm, 2.00 mm flat ears
 - 25mm Trackball Sphere at (23.8125, -109.5375, +2.30 mm) + `Lens_Optical_Ref_Point` (exact 2.40 mm optical gap)
 - PMW3360 Sensor IC & LM19-LSI Optical Lens
-- 17x Unified M2 Brass Heat-Set Inserts (M2 x L=3.0 x OD=3.2 mm) + 17x Unified M2 x 6.0 mm Screws:
-    - 10x Perimeter (5 Left L1-L5 + 5 Right R1-R5, L4/R4 at (±100.50, 21.50), clamping Main PCB F.Cu Z = -4.20 mm
+- 19x Unified M2 Brass Heat-Set Inserts (M2 x L=3.0 x OD=3.2 mm) + 19x Unified M2 x 6.0 mm Screws:
+    - 12x Key-Valley (6 Left L1-L6 + 6 Right R1-R6, 100% L-R symmetric, clamping Main PCB F.Cu Z = -4.20 mm
       into Ø 5.20 mm Case Bosses at Z = -5.80 mm; screw heads submerged inside Top Plate Ø 4.40 mm clearance holes)
     - 4x Trackball Cup (TB1-TB4, clamping 2.00 mm Cup Ears + 1.60 mm Sensor PCB into Case Bosses at Z = -17.60 mm)
     - 2x Wheel Cradle (WC1-WC2, clamping Main PCB F.Cu Z = -4.20 mm into Wheel Cradle Bosses at Z = -5.80 mm)
@@ -34,6 +34,9 @@ import tempfile
 from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import overlap_volume, closest_points
+from OCP.BRep import BRep_Builder
+from OCP.BRepExtrema import BRepExtrema_DistShapeShape
+from OCP.TopoDS import TopoDS_Compound
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 if str(WORKSPACE / "scripts") not in sys.path:
@@ -103,21 +106,23 @@ RIGHT_WHEEL_CRADLE_HOLES_PCB = [
     (21.2375,  6.0000),   # WC2
 ]
 
-# (tag, px, py, z_ins_top, z_screw_seat) — 案1A: all 10 perimeter bosses flat Ø 5.20 mm at Z = -5.80 mm
+# (tag, px, py, z_ins_top, z_screw_seat) — 案1A + 6-point symmetric valley layout: all 12 PCB bosses flat Ø 5.20 mm at Z = -5.80 mm
 LEFT_PERIMETER_HOLES_PCB = [
-    ("L1",    0.0000, -15.0000, -5.81, -4.19),
-    ("L2",    0.0000,  18.0000, -5.81, -4.19),
-    ("L3", -101.0000, -20.0000, -5.81, -4.19),
-    ("L4", -100.5000,  21.5000, -5.81, -4.19),
-    ("L5",  -62.0000,  65.1500, -5.81, -4.19),
+    ("L1",  -42.2500,   0.0000, -5.81, -4.19),
+    ("L2", -100.5000,   2.5000, -5.81, -4.19),
+    ("L3", -100.5000,  21.5000, -5.81, -4.19),
+    ("L4",  -21.5000,  29.2500, -5.81, -4.19),
+    ("L5",  -34.5000,  42.0000, -5.81, -4.19),
+    ("L6",  -60.5000,  42.5000, -5.81, -4.19),
 ]
 
 RIGHT_PERIMETER_HOLES_PCB = [
-    ("R1",    0.0000, -15.0000, -5.81, -4.19),
-    ("R2",    0.0000,  18.0000, -5.81, -4.19),
-    ("R3",  101.0000, -20.0000, -5.81, -4.19),
-    ("R4",  100.5000,  21.5000, -5.81, -4.19),
-    ("R5",   62.0000,  65.1500, -5.81, -4.19),
+    ("R1",   42.2500,   0.0000, -5.81, -4.19),
+    ("R2",  100.5000,   2.5000, -5.81, -4.19),
+    ("R3",  100.5000,  21.5000, -5.81, -4.19),
+    ("R4",   21.5000,  29.2500, -5.81, -4.19),
+    ("R5",   34.5000,  42.0000, -5.81, -4.19),
+    ("R6",   60.5000,  42.5000, -5.81, -4.19),
 ]
 
 RIGHT_TB_HOLES_PCB = [
@@ -166,6 +171,44 @@ def max_group_overlap(group_a, group_b) -> float:
                 if ov > mv:
                     mv = ov
     return mv
+
+
+def _aabb_min_dist(b1, b2) -> float:
+    dx = max(0.0, b1.min.X - b2.max.X, b2.min.X - b1.max.X)
+    dy = max(0.0, b1.min.Y - b2.max.Y, b2.min.Y - b1.max.Y)
+    dz = max(0.0, b1.min.Z - b2.max.Z, b2.min.Z - b1.max.Z)
+    return math.sqrt(dx * dx + dy * dy + dz * dz)
+
+
+def min_surface_clearance(solids_list, target_solid) -> float:
+    """
+    Exact B-rep boundary-face minimum Euclidean distance between `solids_list` and `target_solid`
+    (called after `overlap_volume == 0.0` is verified, avoiding OCCT `BRepClass3d_SolidClassifier`
+    ray-grazing false-zero artifacts on multi-solid compounds).
+    """
+    target_faces = [(f.wrapped, f.bounding_box()) for f in target_solid.faces()]
+    best = float("inf")
+    builder = BRep_Builder()
+    ordered = sorted(solids_list, key=lambda s: -abs(s.bounding_box().center().X))
+    for s in ordered:
+        sb = s.bounding_box()
+        cand_tfaces = [fw for fw, fb in target_faces if _aabb_min_dist(sb, fb) < best]
+        if not cand_tfaces:
+            continue
+        cmp_s = TopoDS_Compound()
+        builder.MakeCompound(cmp_s)
+        for sf in s.faces():
+            builder.Add(cmp_s, sf.wrapped)
+        cmp_t = TopoDS_Compound()
+        builder.MakeCompound(cmp_t)
+        for tfw in cand_tfaces:
+            builder.Add(cmp_t, tfw)
+        dss = BRepExtrema_DistShapeShape(cmp_s, cmp_t)
+        if dss.IsDone() and dss.NbSolution() > 0:
+            d = dss.Value()
+            if d < best:
+                best = d
+    return best
 
 
 def make_filleted_sketch(pts_and_radii):
@@ -620,7 +663,7 @@ def main():
     wheel_mov_click, _, _ = assemble_wheel_parts_global(click_deg=CLICK_PRESS_DEG)
     wheel_solids = wheel_mov_rest + wheel_stat
 
-    # 14x Case Heat-Set Inserts + 14x Top-Down M2 x 6.0 mm Screws (plus 3x in wheel assembly = 17x total)
+    # 16x Case Heat-Set Inserts + 16x Top-Down M2 x 6.0 mm Screws (plus 3x in wheel assembly = 19x total)
     inserts = []
     top_screws = []
     left_fasteners = []
@@ -834,11 +877,11 @@ def main():
 
     excluded_right = set(id(s) for s in (j1_solids + rj3_solids + right_conn_solids))
     excluded_left = set(id(s) for s in left_conn_solids)
-    right_smds_cmp = bd.Compound(children=[s for s in all_right_kicad_comps if id(s) not in excluded_right])
-    left_smds_cmp = bd.Compound(children=[s for s in left_kicad_comps if id(s) not in excluded_left])
+    right_smds_list = [s for s in all_right_kicad_comps if id(s) not in excluded_right]
+    left_smds_list = [s for s in left_kicad_comps if id(s) not in excluded_left]
     clr_smds_case = min(
-        closest_points(right_smds_cmp, right_case).distance,
-        closest_points(left_smds_cmp, left_case).distance,
+        min_surface_clearance(right_smds_list, right_case),
+        min_surface_clearance(left_smds_list, left_case),
     )
     clr_ball_cup = closest_points(ball_global, cup_global).distance
     clr_cup_plate = closest_points(cup_global, right_plate).distance
@@ -908,8 +951,8 @@ def main():
     for part, anchors, d_xy, d_z, lock_desc in (
         (left_plate, left_switches, 0.15, 0.05, "21x Kailh Choc V2 switch snap-fit"),
         (right_plate, right_switches, 0.15, 0.05, "19x Kailh Choc V2 switch snap-fit"),
-        (left_pcb, [left_case] + left_fasteners, 0.25, 0.12, "5x Ø 5.20 mm bosses & M2x6 screws"),
-        (right_pcb, [right_case] + right_fasteners + wheel_cradle_screws + wheel_stat, 0.25, 0.12, "5x Ø 5.20 mm bosses + 2x cradle bosses & M2x6 screws"),
+        (left_pcb, [left_case] + left_fasteners, 0.25, 0.12, "6x Ø 5.20 mm valley bosses + 3x USB-C shelves & M2x6 screws"),
+        (right_pcb, [right_case] + right_fasteners + wheel_cradle_screws + wheel_stat, 0.25, 0.12, "6x Ø 5.20 mm valley bosses + 2x cradle bosses + 3x USB-C shelves & M2x6 screws"),
         (sensor_pcb_global, [right_case, cup_global] + right_fasteners, 0.28, 0.12, "4x TB bosses + Trackball Cup & M2x6 screws"),
         (cup_global, [sensor_pcb_global] + right_fasteners, 0.28, 0.12, "Sensor PCB + 4x TB M2x6 screws"),
     ):
