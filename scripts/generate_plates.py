@@ -12,25 +12,27 @@ import pcbnew
 WORKSPACE = Path(__file__).resolve().parent.parent
 KICAD_CLI = os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe")
 
-# Left perimeter holes (Switch-Retained Top Plate 1A):
-#   - All 5 holes L1..L5 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance holes
+# Left key-valley holes (Switch-Retained Top Plate 1A — 6-point outer-margin-free layout):
+#   - All 6 holes L1..L6 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance holes
 #     (M2 x 6.0 mm screws clamp Left Main PCB F.Cu Z = -4.20 mm directly into Ø 5.20 mm flat case bosses; screw head top Z = -3.00 mm sits 1.00 mm below Top Plate top Z = -2.00 mm)
 LEFT_MOUNTING_HOLES = [
-    (   0.0000, -15.0000, 2.20),
-    (   0.0000,  18.0000, 2.20),
-    (-101.0000, -20.0000, 2.20),
-    (-100.5000,  21.5000, 2.20),
-    ( -62.0000,  65.1500, 2.20),
+    ( -42.2500,   0.0000, 2.20),  # L1: Index North 4-key valley (SW3/4/5/6)
+    (-100.5000,   2.5000, 2.20),  # L2: Pinky North 4-key valley (SW13/14/17/18)
+    (-100.5000,  21.5000, 2.20),  # L3: Pinky South 4-key valley (SW14/15/16/17)
+    ( -21.5000,  29.2500, 2.20),  # L4: Inner South valley (EXSW2 SE / SW2 W)
+    ( -34.5000,  42.0000, 2.20),  # L5: Thumb Inner valley (behind SW1)
+    ( -60.5000,  42.5000, 2.20),  # L6: Thumb Outer valley (behind SW8/SW9)
 ]
 
-# Right perimeter holes (symmetric with Left, Switch-Retained Top Plate 1A):
-#   - All 5 holes R1..R5 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance holes
+# Right key-valley holes (100% L-R symmetric with Left, Switch-Retained Top Plate 1A):
+#   - All 6 holes R1..R6 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance holes
 RIGHT_MOUNTING_HOLES = [
-    (  0.0000, -15.0000, 2.20),
-    (  0.0000,  18.0000, 2.20),
-    (101.0000, -20.0000, 2.20),
-    (100.5000,  21.5000, 2.20),
-    ( 62.0000,  65.1500, 2.20),
+    (  42.2500,   0.0000, 2.20),  # R1: Index North 4-key valley (rSW3/4/5/6)
+    ( 100.5000,   2.5000, 2.20),  # R2: Pinky North 4-key valley (rSW13/14/rSW17/18)
+    ( 100.5000,  21.5000, 2.20),  # R3: Pinky South 4-key valley (rSW14/15/16/17)
+    (  21.5000,  29.2500, 2.20),  # R4: Inner South valley (rEXSW2 SE / rSW2 W)
+    (  34.5000,  42.0000, 2.20),  # R5: Thumb Inner valley (behind rSW1)
+    (  60.5000,  42.5000, 2.20),  # R6: Thumb Outer valley (behind rSW8/rSW9)
 ]
 
 LEFT_SWITCHES = [
@@ -307,7 +309,7 @@ def main():
     p_top_left = os.path.join(out_pcb_dir, "plate-top-left.kicad_pcb")
     write_plate_kicad_pcb(p_top_left, left_outer, left_cutouts, LEFT_MOUNTING_HOLES)
 
-    # 2. Right Top Plate (with Under-Plate Inertia Wheel 7.70 x 22.00 mm slot + 7x Ø 4.40 mm screw-head clearance holes)
+    # 2. Right Top Plate (with Under-Plate Inertia Wheel 7.70 x 22.00 mm slot + 8x Ø 4.40 mm screw-head clearance holes)
     right_outer_notched = round_polygon_with_fillets(get_right_outer_pts(notched_trackball=True))
     right_switch_cutouts = [make_rect_cutout(cx, cy, 14.0, 14.0, 0.5) for (cx, cy) in RIGHT_SWITCHES]
     right_cutouts = right_switch_cutouts + [
