@@ -102,7 +102,7 @@ def generate_vertical_stackup_diagram():
 
     draw_dim(7.5, 0.0, -11.2, "Pinky: 10.0 mm\n(Thumb: 26.9 mm)", offset_text=1.0)
 
-    ax.annotate('Compact Flat Boss (All 10x: L1..L5, R1..R5)\n• Ø5.20mm cylinder (1.175mm thick wall!)\n• Clamps Main PCB (-4.20) via Ø2.40mm hole\n• Screw head submerged in Plate Ø4.40mm hole!',
+    ax.annotate('Compact Valley Boss (All 12x: L1..L6, R1..R6)\n• Ø5.20mm cylinder (1.175mm thick wall!)\n• Clamps Main PCB (-4.20) via Ø2.40mm hole\n• Screw head submerged in Plate Ø4.40mm hole!',
                 xy=(115.8, -3.60), xytext=(126.5, -2.6),
                 arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=5),
                 fontsize=7.3, fontweight='bold', color='#1d3557',
@@ -178,7 +178,7 @@ def generate_ports_and_screws_diagram():
 
     ax1.annotate('', xy=(9.4, -8.95), xytext=(9.4, -2.75),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax1.text(9.9, center_y, "Host (N) & Split (Inner)\nHeight: 6.20 mm (R=1.50)\nCenter Z = -5.85 mm\nY_split = -86.65 mm", ha='left', va='center', fontsize=7.8, fontweight='bold', color='#d90429')
+    ax1.text(9.9, center_y, "Host (N) & Split (Inner)\nHeight: 6.20 mm (R=1.50)\nCenter Z = -5.85 mm\n+ Hidden Z=-5.80mm\n  PCB Support Shelves", ha='left', va='center', fontsize=7.5, fontweight='bold', color='#d90429')
 
     ax1.plot([0.2, 9.4], [center_y, center_y], linestyle='-.', color='#888888', lw=1)
     ax1.axis('off')
@@ -266,7 +266,7 @@ def generate_ports_and_screws_diagram():
     ax3.add_patch(patches.Rectangle((-1.90, -4.20), 3.80, 1.20, lw=1.2, ec='#343a40', fc='#adb5bd', zorder=6))
     ax3.add_patch(patches.Rectangle((-1.00, -10.20), 2.00, 6.00, lw=1.2, ec='#343a40', fc='#ced4da', zorder=5))
 
-    ax3.text(0.0, -0.35, "10x Flat Ø5.2mm Boss (Main PCB Ø2.4mm Clamped)\n[Screw Head Submerged in Plate Ø4.4mm Hole]",
+    ax3.text(0.0, -0.35, "12x Flat Ø5.2mm Valley Boss (Main PCB Ø2.4mm Clamped)\n[Screw Head Submerged in Plate Ø4.4mm Hole]",
              ha='center', va='bottom', fontsize=6.5, fontweight='bold', color='#16425b')
 
     ax3.annotate('Ø5.20 Flat Boss (-5.80)\n1.175mm Uniform Wall!\n+ Flush M2×L3.0 Insert', xy=(2.60, -7.00), xytext=(3.60, -9.20),
@@ -436,7 +436,7 @@ def generate_trackball_cup_fastening_diagram():
     dim_left(-5.40, -7.80, "4. Sealed Floor:\n2.40 mm Solid", -10.2, '#343a40')
 
     # Right Annotations
-    ax.annotate('Unified Top-Down M2 × 6.0mm Screw\n• Same screw length as all 17 fastening points!\n• Clamps 2.00mm Cup Ear + 1.60mm Sensor PCB\n• Engages 2.40mm (6 full threads) into Brass Insert',
+    ax.annotate('Unified Top-Down M2 × 6.0mm Screw\n• Same screw length as all 19 fastening points!\n• Clamps 2.00mm Cup Ear + 1.60mm Sensor PCB\n• Engages 2.40mm (6 full threads) into Brass Insert',
                 xy=(1.95, 2.55), xytext=(8.5, 2.7),
                 arrowprops=dict(facecolor='#212529', shrink=0.05, width=1.1, headwidth=5),
                 fontsize=8.3, fontweight='bold', color='#212529',
