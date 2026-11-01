@@ -134,7 +134,7 @@ JLCCNC（[https://jlccnc.com/](https://jlccnc.com/) — JLCPCB / JLC3DP と共�
 | **25mm トラックボール球** | **1個** | **Perixx PERIPRO-303 25mm** 等、直径 25mm 交換球。 | Amazon / 遊舎工房 / Booth |
 | **$\varnothing 2.0\text{ mm}$ セラミック支持球** | **3個** | `trackball-cup` 内部の3箇所にスナップイン圧入する $\varnothing 2.0\text{ mm}$ $\text{ZrO}_2$ / $\text{Si}_3\text{N}_4$ ベアリング球。 | Amazon / モノタロウ / AliExpress |
 | **PMW3360DM-T2QU IC ＋ LM19-LSI レンズ** | **1セット** | TBセンサーサブ基板（`curcur40-pmw3360`）の `U1` に実装。 | AliExpress / Tindie / Booth |
-| **JST SH 1.0mm 6ピン両端コネクタ付ケーブル** | **1本** | 長さ **50mm** 程度、**両端同方向フラット（`1-6, 2-5, 3-4, 4-3, 5-2, 6-1` 結線）**。右メイン `rJ3` ⇔ TBセンサー基板 `J1` 接続用（[Pimoroni JST-SH 6-pin 50mm](https://shop.pimoroni.com/en-jp/products/jst-sh-cable-6-pin?variant=39292536455251) 等）。 | Pimoroni / 秋月電子 / Amazon |
+| **JST SH 1.0mm 6ピン両端コネクタ付ケーブル** | **1本** | 長さ **50〜100mm** 程度、**`SHR-06V-S-B` ハウジング・両端同方向フラット（`1-6, 2-5, 3-4, 4-3, 5-2, 6-1` 結線）**。右メイン `rJ3` ⇔ TBセンサー基板 `J1` 接続用（[スイッチサイエンス `#9142` Pimoroni 100mm](https://www.switch-science.com/products/9142?variant=42749692149958) / [Pimoroni 50mm](https://shop.pimoroni.com/en-jp/products/jst-sh-cable-6-pin?variant=39292536455251) 等）。 | スイッチサイエンス / Pimoroni / 秋月電子 |
 
 ### ④ 真鍮ヒートセットインサート・統一 M2×6.0mm ネジ・ゴム足・USBケーブル類
 | 品名 | 必要数 | 仕様・備考 | 主な入手先 |
