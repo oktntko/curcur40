@@ -9,8 +9,8 @@ and verify zero B-rep interference + minimum clearances across all components pe
   (with Tilted Floor, 12x Compact Flat-Topped Ø 5.20 mm M2 Heat-Set Insert Valley Bosses + 6x Hidden Inner-Wall USB-C Support Shelves at Z = -5.80 mm)
 - Direct KiCad 10.0 3D STEP Synchronization (`kicad-cli pcb export step --subst-models`):
     - `curcur40-left.kicad_pcb`    (Z = -5.80 to -4.20 mm + all 268 real 3D component solids)
-    - `curcur40-right.kicad_pcb`   (Z = -5.80 to -4.20 mm + all 258 real 3D component solids)
-    - `curcur40-pmw3360.kicad_pcb` (Z = -17.60 to -16.00 mm + all 9 real SMD/JST-SH solids)
+    - `curcur40-right.kicad_pcb`   (Z = -5.80 to -4.20 mm + all 258 real 3D component solids + mated `rJ3` JST `SHR-06V-S-B` plug)
+    - `curcur40-pmw3360.kicad_pcb` (Z = -17.60 to -16.00 mm + all 9 real SMD/JST-SH solids + mated `J1` JST `SHR-06V-S-B` plug)
 - Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, retained via 40x Kailh Choc V2 switch snap-fit,
   with 14x Ø 4.40 mm screw-head clearance holes & Right 7.70 x 22.00 mm wheel slot)
 - 40x Kailh Choc V2 Low-Profile Keyswitches (21 Left + 19 Right) + 40x Keycaps
@@ -33,7 +33,7 @@ import sys
 import tempfile
 from pathlib import Path
 from cadgen import build123d as bd
-from cadgen.geometry import overlap_volume, closest_points
+from cadgen.geometry import overlap_volume, closest_points, is_sound
 from OCP.BRep import BRep_Builder
 from OCP.BRepExtrema import BRepExtrema_DistShapeShape
 from OCP.TopoDS import TopoDS_Compound
@@ -390,6 +390,87 @@ def export_kicad_pcb_solids(
     return board_solid, comp_solids
 
 
+def _find_footprint_xy(pcb_rel_path: str, target_ref: str) -> tuple[float, float]:
+    """Read exact `(at x y ...)` footprint origin for `target_ref` directly from `.kicad_pcb`."""
+    pcb_path = WORKSPACE / pcb_rel_path
+    text = pcb_path.read_text(encoding="utf-8")
+    for fp_blk in _extract_sexpr_blocks(text, "footprint"):
+        m_ref = re.search(r'\(property\s+"Reference"\s+"([^"]+)"', fp_blk)
+        if m_ref and m_ref.group(1) == target_ref:
+            m_at = re.search(r"\(at\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)", fp_blk)
+            if m_at:
+                return (float(m_at.group(1)), float(m_at.group(2)))
+    raise ValueError(f"Footprint {target_ref} not found in {pcb_path.name}")
+
+
+def make_jst_shr06v_plug_from_header(
+    header_solids: list[bd.Solid],
+    pcb_solid: bd.Solid,
+    label: str,
+) -> bd.Solid:
+    """
+    Constructs a datasheet-accurate JST `SHR-06V-S-B` 6-circuit 1.00 mm pitch crimp socket housing
+    (per JST `eSH.pdf` Pages 1–2: 9.00 mm width with protrusions x 2.80 mm height x 5.00 mm nominal depth,
+    side-entry mated depth 6.25 mm from `SM06B-SRSS-TB` back wall -> 2.00 mm exposed rear collar),
+    automatically aligned to the imported KiCad `SM06B-SRSS-TB` shroud solid's exact mating mouth:
+      - Rear exposed body (`[-2.00, -0.04]`): width = 7.00 mm, height = 2.80 mm (`eSH.pdf` p.2).
+      - Rear finger-grip protrusions (`-B`, `[-2.00, -0.80]`): width = 9.00 mm, height = 2.80 mm (`eSH.pdf` p.2).
+      - Inserted nose (`[-0.06, +2.95]`): width = 6.30 mm, height = 2.00 mm + side polarization ribs
+        (`width = 6.96 mm, height = 0.48 mm` inside `SM06B` keyways).
+      - 6x female crimp contact chambers (`0.68 x 1.45 mm` at 1.00 mm pitch, span A = 5.00 mm)
+        enclosing the 6 male header pins with zero B-rep overlap + 6x housing lance windows.
+    """
+    shroud = max(header_solids, key=lambda s: s.volume)
+    faces_by_area = sorted(shroud.faces(), key=lambda f: f.area, reverse=True)
+    top_bot_faces = faces_by_area[:2]
+    back_wall_face = faces_by_area[2]
+    assert min(f.area for f in top_bot_faces) > 30.0 and 20.0 < back_wall_face.area < 24.0, (
+        f"Unexpected SM06B shroud face areas for {label}: {[round(f.area, 2) for f in faces_by_area[:4]]}"
+    )
+    sbb = bd.Compound(children=top_bot_faces).bounding_box()
+    n_ins = back_wall_face.normal_at(back_wall_face.center())
+    ins_xy_len = math.hypot(n_ins.X, n_ins.Y)
+    assert ins_xy_len > 0.99, f"Unexpected SM06B back-wall normal for {label}: {n_ins}"
+    ins_dx, ins_dy = n_ins.X / ins_xy_len, n_ins.Y / ins_xy_len
+    mouth_x = sbb.center().X - 2.125 * ins_dx
+    mouth_y = sbb.center().Y - 2.125 * ins_dy
+    center_z = sbb.center().Z
+    rot_z_deg = math.degrees(math.atan2(ins_dy, ins_dx))
+
+    nose_main = bd.Box(
+        3.01, 6.30, 2.00, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER)
+    ).moved(bd.Location((-0.06, 0.0, 0.0)))
+    nose_keys = bd.Box(
+        2.36, 6.96, 0.48, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER)
+    ).moved(bd.Location((-0.06, 0.0, -0.25)))
+    rear_body = bd.Box(
+        1.96, 7.00, 2.80, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER)
+    ).moved(bd.Location((-2.00, 0.0, 0.0)))
+    protrusions = bd.Box(
+        1.20, 9.00, 2.80, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER)
+    ).moved(bd.Location((-2.00, 0.0, 0.0)))
+    body = nose_main + nose_keys + rear_body + protrusions
+
+    for i in range(6):
+        py = -2.50 + i * 1.00
+        body = body - bd.Box(
+            5.20, 0.68, 1.45, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.CENTER)
+        ).moved(bd.Location((-2.10, py, 0.0)))
+        body = body - bd.Box(
+            1.10, 0.68, 0.80, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MAX)
+        ).moved(bd.Location((-1.60, py, -0.65)))
+
+    if center_z > pcb_solid.bounding_box().center().Z:
+        body = body.rotate(bd.Axis.X, 180.0)
+    if abs(rot_z_deg) > 1e-6:
+        body = body.rotate(bd.Axis.Z, rot_z_deg)
+
+    solid = body.moved(bd.Location((mouth_x, mouth_y, center_z))).solids()[0]
+    solid.label = label
+    assert solid.is_valid and is_sound(solid) and len(body.solids()) == 1, f"{label} is not a sound single solid"
+    return solid
+
+
 def build_top_plate_solid(is_right=True) -> bd.Solid:
     """
     Constructs the FR-4 Top Plate solid (Z = -3.60 to -2.00 mm, thickness 1.60 mm)
@@ -587,27 +668,36 @@ def main():
     rexsw1_plunger = rexsw1_plungers[0]
     rexsw1_plunger.label = "Right_PCB_rEXSW1_Plunger"
 
-    rj3_x, rj3_y = to_step_right(46.5000, 63.0000)
+    rj3_px, rj3_py = _find_footprint_xy("pcbs/right/curcur40-right.kicad_pcb", "rJ3")
+    rj3_x, rj3_y = to_step_right(rj3_px, rj3_py)
     rj3_solids = [
         c
         for c in right_kicad_comps
-        if math.hypot(c.bounding_box().center().X - rj3_x, c.bounding_box().center().Y - rj3_y) < 4.5
-        and c.bounding_box().min.Z < -7.50
+        if math.hypot(c.bounding_box().center().X - rj3_x, c.bounding_box().center().Y - rj3_y) < 5.0
+        and c.bounding_box().min.Z < -7.00
     ]
     assert len(rj3_solids) >= 1, "Failed to locate rJ3 JST-SH in Right KiCad STEP"
     for idx, c in enumerate(rj3_solids):
         c.label = f"Right_PCB_rJ3_JST_SH_{idx+1}"
+    rj3_shr_plug = make_jst_shr06v_plug_from_header(
+        rj3_solids, right_pcb, "Right_PCB_rJ3_SHR06V_Plug"
+    )
 
-    j1_x, j1_y = to_step_right(19.2000, 52.3875)
+    j1_px, j1_py = _find_footprint_xy("pcbs/pmw3360/curcur40-pmw3360.kicad_pcb", "J1")
+    j1_x, j1_y = to_step_right(j1_px, j1_py)
     j1_solids = [
         c
         for c in pmw_kicad_comps
-        if math.hypot(c.bounding_box().center().X - j1_x, c.bounding_box().center().Y - j1_y) < 4.5
-        and c.bounding_box().min.Z < -19.00
+        if math.hypot(c.bounding_box().center().X - j1_x, c.bounding_box().center().Y - j1_y) < 5.0
+        and c.bounding_box().min.Z < -18.50
     ]
     assert len(j1_solids) >= 1, "Failed to locate J1 JST-SH in PMW3360 KiCad STEP"
     for idx, c in enumerate(j1_solids):
         c.label = f"Sensor_PCB_J1_JST_SH_{idx+1}"
+    j1_shr_plug = make_jst_shr06v_plug_from_header(
+        j1_solids, sensor_pcb_global, "Sensor_PCB_J1_SHR06V_Plug"
+    )
+    jst_shr_plugs = [j1_shr_plug, rj3_shr_plug]
 
     def find_usbc_solids(comps, is_right: bool):
         sgn = 1.0 if is_right else -1.0
@@ -795,6 +885,18 @@ def main():
     )
     max_cap_screw_ov = max_group_overlap(top_screws + wheel_cradle_screws, keycaps)
 
+    ov_j1_plug_case = overlap_volume(j1_shr_plug, right_case)
+    ov_rj3_plug_case = overlap_volume(rj3_shr_plug, right_case)
+    ov_jst_plug_env = max_group_overlap(
+        jst_shr_plugs,
+        [right_pcb, sensor_pcb_global, right_plate, cup_global, sensor_global, lens_global]
+        + all_right_kicad_comps
+        + right_switches
+        + right_keycaps
+        + right_fasteners
+        + wheel_check_group,
+    )
+
     print(f"Cup vs Right Case:         {ov_cup_case:.8f} mm^3")
     print(f"Cup vs Right Plate:        {ov_cup_plate:.8f} mm^3")
     print(f"Cup vs Right Main PCB:     {ov_cup_rpcb:.8f} mm^3")
@@ -820,6 +922,9 @@ def main():
     print(f"KiCad 3D Comps vs Wheel:   {ov_kicad_wheel:.8f} mm^3")
     print(f"KiCad 3D Comps vs Screws:  {ov_kicad_fasteners:.8f} mm^3")
     print(f"KiCad 3D Comps vs ChocV2:  {ov_kicad_switches:.8f} mm^3")
+    print(f"Sensor J1 SHR-06V vs Case: {ov_j1_plug_case:.8f} mm^3")
+    print(f"Main rJ3 SHR-06V vs Case:  {ov_rj3_plug_case:.8f} mm^3")
+    print(f"JST SHR-06V vs PCBs/Comps: {ov_jst_plug_env:.8f} mm^3")
     print(f"ChocV2 vs Plate/PCB/Caps:  {ov_sw_plate_pcb_case_cap:.8f} mm^3")
     print(f"Max Insert Overlap:        {max_ins_ov:.8f} mm^3")
     print(f"Max Top Screw Overlap:     {max_tscr_ov:.8f} mm^3")
@@ -827,6 +932,7 @@ def main():
     print(f"Max Screw vs Keycaps:      {max_cap_screw_ov:.8f} mm^3")
     print(f"Optical Distance (Ball Bottom Z=-10.20 to Ref Point Z=-12.60): {dist_opt:.6f} mm")
 
+    verification_failures: list[str] = []
     for name, val in [
         ("ov_cup_case", ov_cup_case),
         ("ov_cup_plate", ov_cup_plate),
@@ -856,15 +962,23 @@ def main():
         ("ov_kicad_wheel", ov_kicad_wheel),
         ("ov_kicad_fasteners", ov_kicad_fasteners),
         ("ov_kicad_switches", ov_kicad_switches),
+        ("ov_j1_plug_case", ov_j1_plug_case),
+        ("ov_rj3_plug_case", ov_rj3_plug_case),
+        ("ov_jst_plug_env", ov_jst_plug_env),
         ("ov_sw_plate_pcb_case_cap", ov_sw_plate_pcb_case_cap),
         ("max_ins_ov", max_ins_ov),
         ("max_tscr_ov", max_tscr_ov),
         ("max_ins_scr_ov", max_ins_scr_ov),
         ("max_cap_screw_ov", max_cap_screw_ov),
     ]:
-        assert val == 0.0, f"{name} non-zero overlap: {val:.8f} mm^3"
-    assert ov_click_plunger > 0.10, f"Wheel click failed to actuate rEXSW1 plunger: {ov_click_plunger:.6f} mm^3"
-    assert abs(dist_opt - 2.40) < 1e-6
+        if val != 0.0:
+            verification_failures.append(f"{name} non-zero overlap: {val:.8f} mm^3")
+    if ov_click_plunger <= 0.10:
+        verification_failures.append(
+            f"Wheel click failed to actuate rEXSW1 plunger: {ov_click_plunger:.6f} mm^3"
+        )
+    if abs(dist_opt - 2.40) >= 1e-6:
+        verification_failures.append(f"Optical distance mismatch: {dist_opt:.6f} mm != 2.400000 mm")
 
     print("\n--- Micro-Gap & Wall-Thickness (<0.80mm) Verification ---")
     verify_case_wall_thickness_and_gaps(left_case, is_right=False)
@@ -873,6 +987,16 @@ def main():
 
     clr_j1_case = min(closest_points(s, right_case).distance for s in j1_solids)
     clr_rj3_case = min(closest_points(s, right_case).distance for s in rj3_solids)
+    clr_j1_plug_case = (
+        -float((j1_shr_plug & right_case).bounding_box().size.Z)
+        if ov_j1_plug_case > 0.0
+        else closest_points(j1_shr_plug, right_case).distance
+    )
+    clr_rj3_plug_case = (
+        -float((rj3_shr_plug & right_case).bounding_box().size.Z)
+        if ov_rj3_plug_case > 0.0
+        else closest_points(rj3_shr_plug, right_case).distance
+    )
     clr_sensor_case = closest_points(sensor_global, right_case).distance
 
     excluded_right = set(id(s) for s in (j1_solids + rj3_solids + right_conn_solids))
@@ -916,6 +1040,8 @@ def main():
 
     print(f"Min Clearance Sensor J1 vs Right Case:      {clr_j1_case:.4f} mm (req >= 0.05 mm)")
     print(f"Min Clearance Main rJ3 vs Right Case:       {clr_rj3_case:.4f} mm (req >= 0.50 mm)")
+    print(f"Min Clearance J1 SHR-06V Plug vs Case:      {clr_j1_plug_case:.4f} mm (req >= 0.20 mm)")
+    print(f"Min Clearance rJ3 SHR-06V Plug vs Case:     {clr_rj3_plug_case:.4f} mm (req >= 0.20 mm)")
     print(f"Min Clearance PMW3360 Sensor vs Right Case: {clr_sensor_case:.4f} mm (req >= 1.50 mm)")
     print(f"Min Clearance All KiCad SMDs/SWs vs Cases:  {clr_smds_case:.4f} mm (req >= 0.30 mm)")
     print(f"Min Clearance 25mm Ball vs Trackball Cup:   {clr_ball_cup:.4f} mm (req >= 0.30 mm)")
@@ -930,21 +1056,29 @@ def main():
     print(f"Min Clearance Host/Split USBC vs Cases:     {clr_usbc_case:.4f} mm (req >= 0.50 mm)")
     print(f"Min Clearance Host/Split USBC vs Plates:    {clr_usbc_plate:.4f} mm (req >= 0.35 mm)")
 
-    assert clr_j1_case >= 0.05, f"J1 too close to Right Case: {clr_j1_case:.4f} mm"
-    assert clr_rj3_case >= 0.50, f"rJ3 too close to Right Case: {clr_rj3_case:.4f} mm"
-    assert clr_sensor_case >= 1.50, f"PMW3360 too close to Right Case: {clr_sensor_case:.4f} mm"
-    assert clr_smds_case >= 0.30, f"KiCad SMDs/SWs too close to Case: {clr_smds_case:.4f} mm"
-    assert clr_ball_cup >= 0.30, f"25mm Ball too close to Cup: {clr_ball_cup:.4f} mm"
-    assert clr_cup_plate >= 0.25, f"Cup too close to Right Plate: {clr_cup_plate:.4f} mm"
-    assert clr_cup_rpcb >= 0.25, f"Cup too close to Right PCB: {clr_cup_rpcb:.4f} mm"
-    assert clr_wheel_mov_case >= 0.40, f"Wheel moving parts too close to Right Case: {clr_wheel_mov_case:.4f} mm"
-    assert clr_wheel_cradle_case >= 0.60, f"Wheel Cradle too close to Right Case: {clr_wheel_cradle_case:.4f} mm"
-    assert clr_wheel_mov_plate >= 0.30, f"Wheel moving parts too close to Plate: {clr_wheel_mov_plate:.4f} mm"
-    assert clr_wheel_mov_pcb >= 0.30, f"Wheel moving parts too close to PCB: {clr_wheel_mov_pcb:.4f} mm"
-    assert clr_wheel_usbc >= 1.00, f"Wheel Module too close to USB-C: {clr_wheel_usbc:.4f} mm"
-    assert clr_wheel_keycaps >= 1.00, f"Wheel Module too close to Keycaps: {clr_wheel_keycaps:.4f} mm"
-    assert clr_usbc_case >= 0.50, f"USB-C too close to Case: {clr_usbc_case:.4f} mm"
-    assert clr_usbc_plate >= 0.35, f"USB-C too close to Top Plate: {clr_usbc_plate:.4f} mm"
+    for clr_desc, clr_val, clr_req in [
+        ("J1 header vs Right Case", clr_j1_case, 0.05),
+        ("rJ3 header vs Right Case", clr_rj3_case, 0.50),
+        ("Sensor_PCB_J1_SHR06V_Plug vs Right Case", clr_j1_plug_case, 0.20),
+        ("Right_PCB_rJ3_SHR06V_Plug vs Right Case", clr_rj3_plug_case, 0.20),
+        ("PMW3360 vs Right Case", clr_sensor_case, 1.50),
+        ("KiCad SMDs/SWs vs Case", clr_smds_case, 0.30),
+        ("25mm Ball vs Cup", clr_ball_cup, 0.30),
+        ("Cup vs Right Plate", clr_cup_plate, 0.25),
+        ("Cup vs Right PCB", clr_cup_rpcb, 0.25),
+        ("Wheel moving parts vs Right Case", clr_wheel_mov_case, 0.40),
+        ("Wheel Cradle vs Right Case", clr_wheel_cradle_case, 0.60),
+        ("Wheel moving parts vs Plate", clr_wheel_mov_plate, 0.30),
+        ("Wheel moving parts vs PCB", clr_wheel_mov_pcb, 0.30),
+        ("Wheel Module vs USB-C", clr_wheel_usbc, 1.00),
+        ("Wheel Module vs Keycaps", clr_wheel_keycaps, 1.00),
+        ("USB-C vs Case", clr_usbc_case, 0.50),
+        ("USB-C vs Top Plate", clr_usbc_plate, 0.35),
+    ]:
+        if clr_val < clr_req:
+            verification_failures.append(
+                f"{clr_desc} clearance NG: {clr_val:.4f} mm < req {clr_req:.2f} mm"
+            )
 
     print("\n--- Full-Assembly 6-DOF Retention Verification (Switch-Retained Plate + Boss-Clamped PCBs) ---")
     verify_6dof_constraints()
@@ -966,7 +1100,10 @@ def main():
         ):
             pm = part.moved(bd.Location(vec))
             ov_tot = max_group_overlap([pm], anchors)
-            assert ov_tot > 0.0, f"[6-DOF FAIL] {part.label} NOT mechanically locked along {axis_tag}!"
+            if ov_tot <= 0.0:
+                verification_failures.append(
+                    f"[6-DOF FAIL] {part.label} NOT mechanically locked along {axis_tag}!"
+                )
         print(f"  [PASS] {part.label}: mechanically locked in ±X, ±Y, ±Z by {lock_desc}")
 
     left_kicad_grp = bd.Compound(children=left_kicad_comps)
@@ -990,6 +1127,8 @@ def main():
             left_kicad_grp,
             right_kicad_grp,
             pmw_kicad_grp,
+            j1_shr_plug,
+            rj3_shr_plug,
             left_plate,
             right_plate,
             left_sw_grp,
@@ -1026,6 +1165,8 @@ def main():
             sensor_pcb_global,
             right_kicad_grp,
             pmw_kicad_grp,
+            j1_shr_plug,
+            rj3_shr_plug,
             right_plate,
             right_sw_grp,
             cup_global,
@@ -1068,6 +1209,12 @@ def main():
         f"{len(asm_desk.solids())} solids + 1 optical ref face, valid={asm_desk.is_valid}, "
         f"Left Case Z=[{bb_desk_l.min.Z:.4f}, {bb_desk_l.max.Z:.4f}], "
         f"Right Case Z=[{bb_desk_r.min.Z:.4f}, {bb_desk_r.max.Z:.4f}])"
+    )
+
+    assert not verification_failures, (
+        f"\n[ASSEMBLY VERIFICATION NG] {len(verification_failures)} check(s) failed "
+        "(all 3 assembly STEP files have been exported to cases/assemblies/ for 3D inspection):\n  - "
+        + "\n  - ".join(verification_failures)
     )
 
 
