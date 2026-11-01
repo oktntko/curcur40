@@ -69,7 +69,7 @@
 - **25mm 交換用トラックボール球**（1個）：Perixx `PERIPRO-303`（25mm 艶あり赤 / 緑 / 黄 等、Amazon 等で購入可能）
 - **$\varnothing 2.0\,\text{mm}$ セラミックボール（$\text{ZrO}_2$ 酸化ジルコニウム G5 等級）**（3個）：トラックボールカップ支持球用（UXCELL / Amazon / AliExpress 等）
 - **光学センサー `PMW3360DM-T2QU` ＋ 純正レンズ `LM19-LSI` セット**（1セット）：AliExpress / 遊舎工房等
-- **JST SH 1.0mm ピッチ 6ピン 両端ハーネス（ストレート結線、長さ $50 \sim 80\,\text{mm}$）**（1本）：右メイン基板 `rJ3` ⇔ トラックボールセンサー基板 `J1` 接続用（Amazon / AliExpress 等で既製品購入可・圧着作業不要）
+- **JST SH 1.0mm ピッチ 6ピン 両端ハーネス（`SHR-06V-S-B` ハウジング・両端同方向フラット結線、長さ $50 \sim 100\,\text{mm}$）**（1本）：右メイン基板 `rJ3` ⇔ トラックボールセンサー基板 `J1` 接続用（[スイッチサイエンス `#9142`（Pimoroni JST-SH 6P 100mm）](https://www.switch-science.com/products/9142?variant=42749692149958) / Pimoroni 50mm / Amazon / AliExpress 等で既製品購入可・圧着作業不要）
 
 ---
 
