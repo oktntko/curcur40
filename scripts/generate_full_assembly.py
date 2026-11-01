@@ -1038,10 +1038,10 @@ def main():
         min(closest_points(s, right_plate).distance for s in right_conn_solids),
     )
 
-    print(f"Min Clearance Sensor J1 vs Right Case:      {clr_j1_case:.4f} mm (req >= 0.05 mm)")
+    print(f"Min Clearance Sensor J1 vs Right Case:      {clr_j1_case:.4f} mm (req >= 0.50 mm)")
     print(f"Min Clearance Main rJ3 vs Right Case:       {clr_rj3_case:.4f} mm (req >= 0.50 mm)")
-    print(f"Min Clearance J1 SHR-06V Plug vs Case:      {clr_j1_plug_case:.4f} mm (req >= 0.20 mm)")
-    print(f"Min Clearance rJ3 SHR-06V Plug vs Case:     {clr_rj3_plug_case:.4f} mm (req >= 0.20 mm)")
+    print(f"Min Clearance J1 SHR-06V Plug vs Case:      {clr_j1_plug_case:.4f} mm (req >= 0.40 mm)")
+    print(f"Min Clearance rJ3 SHR-06V Plug vs Case:     {clr_rj3_plug_case:.4f} mm (req >= 0.40 mm)")
     print(f"Min Clearance PMW3360 Sensor vs Right Case: {clr_sensor_case:.4f} mm (req >= 1.50 mm)")
     print(f"Min Clearance All KiCad SMDs/SWs vs Cases:  {clr_smds_case:.4f} mm (req >= 0.30 mm)")
     print(f"Min Clearance 25mm Ball vs Trackball Cup:   {clr_ball_cup:.4f} mm (req >= 0.30 mm)")
@@ -1057,10 +1057,10 @@ def main():
     print(f"Min Clearance Host/Split USBC vs Plates:    {clr_usbc_plate:.4f} mm (req >= 0.35 mm)")
 
     for clr_desc, clr_val, clr_req in [
-        ("J1 header vs Right Case", clr_j1_case, 0.05),
+        ("J1 header vs Right Case", clr_j1_case, 0.50),
         ("rJ3 header vs Right Case", clr_rj3_case, 0.50),
-        ("Sensor_PCB_J1_SHR06V_Plug vs Right Case", clr_j1_plug_case, 0.20),
-        ("Right_PCB_rJ3_SHR06V_Plug vs Right Case", clr_rj3_plug_case, 0.20),
+        ("Sensor_PCB_J1_SHR06V_Plug vs Right Case", clr_j1_plug_case, 0.40),
+        ("Right_PCB_rJ3_SHR06V_Plug vs Right Case", clr_rj3_plug_case, 0.40),
         ("PMW3360 vs Right Case", clr_sensor_case, 1.50),
         ("KiCad SMDs/SWs vs Case", clr_smds_case, 0.30),
         ("25mm Ball vs Cup", clr_ball_cup, 0.30),
