@@ -11,6 +11,9 @@ Strictly adheres to docs/case_spec.md:
     - Tilted Interior Floor:
         - Parallel to outer bottom plane with uniform 2.40 mm bottom wall thickness (Z_floor = Z_bottom + 2.40 mm)
         - Skimmed horizontally to Z = -8.00 mm at the pinky outer edge (|X_step| > 120.61 mm) for >= 0.40 mm switch socket clearance
+        - Right Case local JST-SH `J1` (`SM06B-SRSS-TB` + mated `SHR-06V-S-B` + wire exit) relief pocket:
+          15.50 x 11.60 mm (R = 1.50 mm) centered at (38.2500, -109.5375) mm (X in [30.50, 46.00], Y in [-115.3375, -103.7375]),
+          parallel to outer bottom with exact 1.40 mm solid remaining bottom wall thickness (100% sealed exterior)
 - Fastening & Hidden Support Specifications (Section 2 — Switch-Retained Top Plate Architecture / 案1A + 6-Point Valley Layout):
     - Top-down unified M2 x 6.0 mm screws threading into M2 brass heat-set inserts (M2 x L=3.0 mm x OD=3.2 mm):
         - Cylindrical Boss Pillars (pilot bore Ø 2.85 mm, R = 1.425 mm >= Ø 1.50 mm JLC3DP limit):
@@ -41,6 +44,7 @@ Z_PINKY_BOTTOM = -10.0000
 X_THUMB_OUTER = 7.0250
 X_PINKY_OUTER = 135.8580
 FLOOR_THICKNESS = 2.4000
+J1_POCKET_WALL_THICKNESS = 1.4000  # Exact 1.40 mm perpendicular solid bottom wall under Right Sensor PCB J1 + SHR-06V-S-B
 
 BOSS_OUTER_RADIUS = 3.0000     # Ø 6.00 mm boss pillar for Trackball bosses (TB1..TB4; 1.575 mm radial wall)
 PERIM_BOSS_RADIUS = 2.6000     # Ø 5.20 mm compact flat-topped boss for all 12 key-valley PCB holes (L1..L6, R1..R6; 1.175 mm radial wall)
@@ -342,6 +346,24 @@ def build_case(is_right=True) -> bd.Solid:
         bd.Plane.XY.offset(-8.00) * bd.Rectangle(400.0, 400.0), amount=10.0
     )
     cavity_volume = inner_prism & (tilted_cavity_halfspace + pinky_skim_halfspace)
+    if is_right:
+        # Local interior relief pocket under Sensor PCB J1 (`SM06B-SRSS-TB` + mated `SHR-06V-S-B` housing + wire exit bend):
+        # X in [30.5000, 46.0000] (15.50 mm), Y in [-115.3375, -103.7375] (11.60 mm, 2.50 mm clear of TB2/TB4 Ø 6.00 mm bosses),
+        # R = 1.50 mm corners (Ø 3.00 mm >= Ø 1.50 mm JLC3DP limit), 1.4000 mm exact perpendicular solid remaining wall thickness.
+        theta_rad = math.atan2(
+            Z_PINKY_BOTTOM - Z_THUMB_BOTTOM, X_PINKY_OUTER - X_THUMB_OUTER
+        )
+        dz_j1_pocket_wall = J1_POCKET_WALL_THICKNESS / math.cos(theta_rad)
+        p_thumb_pkt = (X_THUMB_OUTER, -80.0, Z_THUMB_BOTTOM + dz_j1_pocket_wall)
+        j1_pkt_plane = bd.Plane(origin=p_thumb_pkt, z_dir=norm_up)
+        j1_pkt_halfspace = bd.extrude(
+            j1_pkt_plane * bd.Rectangle(400.0, 400.0), amount=50.0
+        )
+        with bd.BuildSketch(bd.Plane.XY.offset(z_ext_bottom)) as sk_j1_pkt:
+            with bd.Locations([(38.2500, -109.5375)]):
+                bd.RectangleRounded(15.50, 11.60, 1.50)
+        j1_pkt_prism = bd.extrude(sk_j1_pkt.sketch, amount=30.0)
+        cavity_volume = cavity_volume + (j1_pkt_prism & j1_pkt_halfspace)
     body = outer_solid - cavity_volume
 
     # 4. Add Compact Flat-Topped Cylindrical Heat-Set Insert Boss Pillars + Hidden USB-C Inner-Wall Support Shelves
