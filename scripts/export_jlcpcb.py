@@ -161,6 +161,78 @@ JLCPCB_ROT_OFFSETS = {
 }
 
 
+def verify_pcb_3d_step_models(board, pcb_path, proj_name, is_pmw=False):
+    """
+    Verify 100% 3D STEP model coverage for all non-DNP footprints (AGENTS.md Sec. 3.6).
+    DO NOT add exemptions or invent dummy/approximate 3D models to bypass an NG!
+    Leave NG as NG and report (Reference, Footprint, Value) to the user.
+    """
+    kicad_3d_dir = Path(KICAD_CLI).resolve().parent.parent / "share" / "kicad" / "3dmodels"
+    proj_dir = Path(pcb_path).resolve().parent
+    # Fixed exemptions ONLY for curcur40-pmw3360:
+    #   - JP1: copper-bridged solder jumper trace (zero physical component)
+    #   - U1:  PMW3360DM-T2QU optical sensor explicitly placed via pmw3360-lens-pcb-assembly.step
+    allowed_no_step = (
+        {
+            ("JP1", "Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels"),
+            ("U1", "kbd:PMW3360DM-T2QU_16Pin"),
+        }
+        if is_pmw
+        else set()
+    )
+    step_model_problems = []
+    for fp in sorted(board.GetFootprints(), key=lambda f: f.GetReference()):
+        if fp.GetAttributes() & pcbnew.FP_DNP:
+            continue
+        ref = fp.GetReference()
+        fpid = str(fp.GetFPID().GetUniStringLibId())
+        val = fp.GetValue()
+        if (ref, fpid) in allowed_no_step:
+            continue
+        models = list(fp.Models())
+        if not models:
+            step_model_problems.append(f"{ref} ({fpid}, val={val}): NO 3D model assigned")
+            continue
+        has_valid_step = False
+        for m in models:
+            if hasattr(m, "m_Show") and not m.m_Show:
+                step_model_problems.append(f"{ref} ({fpid}, val={val}): 3D model is hidden (m_Show=False)")
+                continue
+            resolved = m.m_Filename.replace("${KIPRJMOD}", str(proj_dir))
+            for var in (
+                "${KICAD10_3DMODEL_DIR}",
+                "${KICAD9_3DMODEL_DIR}",
+                "${KICAD8_3DMODEL_DIR}",
+                "${KICAD7_3DMODEL_DIR}",
+                "${KICAD6_3DMODEL_DIR}",
+                "${KISYS3DMOD}",
+            ):
+                resolved = resolved.replace(var, str(kicad_3d_dir))
+            rp = Path(resolved)
+            if (
+                rp.with_suffix(".step").exists()
+                or rp.with_suffix(".stp").exists()
+                or (rp.suffix.lower() in (".step", ".stp") and rp.exists())
+            ):
+                has_valid_step = True
+            elif rp.exists():
+                step_model_problems.append(
+                    f"{ref} ({fpid}, val={val}): '{m.m_Filename}' has no .step/.stp for --subst-models"
+                )
+            else:
+                step_model_problems.append(
+                    f"{ref} ({fpid}, val={val}): 3D model file NOT FOUND '{m.m_Filename}'"
+                )
+        if not has_valid_step and not any(p.startswith(f"{ref} ") for p in step_model_problems):
+            step_model_problems.append(f"{ref} ({fpid}, val={val}): no valid .step/.stp model resolved")
+    assert not step_model_problems, (
+        f"[{proj_name}] 3D STEP model check NG ({len(step_model_problems)} issue(s)):\n  - "
+        + "\n  - ".join(step_model_problems)
+        + "\nCRITICAL RULE (AGENTS.md Sec. 3.6): DO NOT invent a dummy/approximate 3D model or add to "
+        "allowed_no_step on your own! Leave as NG and report (Reference, Footprint, Value) to the user."
+    )
+
+
 def verify_jlcpcb_preflight(
     pcb_path: str,
     proj_name: str,
@@ -289,6 +361,9 @@ def verify_jlcpcb_preflight(
         )
     if min_npth != float("inf"):
         assert min_npth >= 0.50, f"[{proj_name}] NPTH drill {min_npth} mm < JLCPCB 0.50 mm limit!"
+
+    if not is_plate:
+        verify_pcb_3d_step_models(board, pcb_path, proj_name, is_pmw=is_pmw)
 
     # Verify Gerber ZIP contents
     with zipfile.ZipFile(zip_path, "r") as zf:
