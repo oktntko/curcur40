@@ -254,11 +254,17 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 # トラックボールセンサーサブ基板 ERC / DRC
 & "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\kicad-cli.exe" sch erc pcbs/pmw3360/curcur40-pmw3360.kicad_sch
 & "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\kicad-cli.exe" pcb drc --schematic-parity pcbs/pmw3360/curcur40-pmw3360.kicad_pcb
+
+# JLCPCB 発注前自動検証（全実装部品の .step 3Dモデル存在チェック含む）
+& "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\python.exe" scripts/export_jlcpcb.py
+
+# ★ PCB・部品配置・外形変更時の必須ステップ：KiCad 3D STEP エクスポート ＆ 3DP筐体・機構との干渉／6-DOF検証
+& "$env:USERPROFILE\.local\bin\uvx.exe" --no-config --managed-python --python 3.13 --from "cadgen==0.7.26" python scripts/generate_full_assembly.py
 ```
 
 ### 8.2 合格基準（現在の達成状態）
 
-| チェック対象 | エラー数 | 警告数 | 未配線 / 回路図不一致 | 無視設定 (Ignored Checks) | 許容される唯一の警告内容 |
+| チェック対象 | エラー数 | 警告数 | 未配線 / 回路図不一致 | 無視設定 (Ignored Checks) | 許容される唯一の警告・除外内容 |
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **左手 PCB DRC** | **0 件** | **0 件** | **0 件 / 0 件** | **なし (0 件)** | なし（完全ゼロ） |
 | **右手メイン PCB DRC** | **0 件** | **0 件** | **0 件 / 0 件** | **なし (0 件)** | なし（完全ゼロ） |
@@ -267,9 +273,14 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 | **左手 回路図 ERC** | **0 件** | **1 件** | ― | **なし (0 件)** | `[pin_to_pin]` `U1` Pin 32 (`GPIO21`) と `+3V3` の直結（左右判定ピン） |
 | **右手メイン 回路図 ERC** | **0 件** | **1 件** | ― | **なし (0 件)** | `[pin_to_pin]` `rU1` Pin 32 (`GPIO21`) と `GNDR` の直結（左右判定ピン） |
 | **トラックボールセンサー 回路図 ERC** | **0 件** | **0 件** | ― | **なし (0 件)** | なし（完全ゼロ） |
+| **全実装部品 3D STEP モデル解決チェック** | **0 件** | **0 件** | ― | **固定除外 2点のみ** | 左81部品・右84部品・センサー9部品すべて `.step` 解決済（除外は銅箔 `JP1` と光学側配置 `PMW3360 U1` のみ） |
+| **3DPケース・ボス・ホイール機構 3D干渉検証** | **0 件** | **0 件** | ― | **なし (0 件)** | 全668ソリッド間 `overlap_volume == 0.00000000 mm³`・最小クリアランス＆6-DOF拘束 PASS |
 
 * **JLCPCB 2層 FR-4 PCB / PCBA 発注前自動検証（[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py)）**:
-  全3基板（`left`, `right`, `pmw3360`）および左右トッププレートについて、DRC/ERC 合格に加えて基板外形サイズ（$\ge 20 \times 20\text{ mm}$）、最小配線幅（$\ge 0.127\text{ mm}$、実測 $\ge 0.200\text{ mm}$）、最小ビア（$\ge 0.45/0.30\text{ mm}$、実測 $0.50/0.30\text{ mm}$）、PTH/NPTH ドリル径、Gerber 全9レイヤー＋ドリル存在、BOM/CPL の Designator 100% 一致、有効な LCSC 番号、および THT/`DNP` 部品（`rEXSW1`, `U1(PMW3360)`, `JP1`, `R4`, `C5`, `J4`, `rJ4`）の自動除外をアサートします。
+  全3基板（`left`, `right`, `pmw3360`）および左右トッププレートについて、DRC/ERC 合格に加えて基板外形サイズ（$\ge 20 \times 20\text{ mm}$）、最小配線幅（$\ge 0.127\text{ mm}$、実測 $\ge 0.200\text{ mm}$）、最小ビア（$\ge 0.45/0.30\text{ mm}$、実測 $0.50/0.30\text{ mm}$）、PTH/NPTH ドリル径、Gerber 全9レイヤー＋ドリル存在、BOM/CPL の Designator 100% 一致、有効な LCSC 番号、THT/`DNP` 部品（`rEXSW1`, `U1(PMW3360)`, `JP1`, `R4`, `C5`, `J4`, `rJ4`）の自動除外、および**全非 `DNP` 部品に有効な `.step`/`.stp` 3Dモデルが紐付いていること**をアサートします。
+* **PCB変更時の 3DPモデル干渉検証の必須化と 3Dモデル未設定NG時の運用ルール（[`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py)）**:
+  * PCB（`Edge.Cuts`、部品配置、フットプリント、3Dモデル）に変更が入った際は必ず `scripts/generate_full_assembly.py` を実行し、KiCad から直接エクスポートした STEP モデルと 3DP ケース・受けボス・ホイールクレードル・プレート等との干渉体積ゼロ（`0.00000000 mm³`）を確認のうえ `cases/assemblies/*.step` を更新します。
+  * **3Dモデル未設定・リンク切れ（NG）が発生した場合、チェックを通すために独断で簡易・推測3Dモデル（ダミー形状等）を定義したり除外リストへ追加して素通りさせてはなりません**。NGのまま停止して対象部品を報告し、公式3Dモデルやデータシートの調達・レビュー方針を合意してから対応します。
 
 ### 8.3 KiCad 10.0 `pcbnew` Python API 注意事項
 * `board.GetTracks()` を走査する際は、必ず `if t.GetClass() == "PCB_TRACK":` と `elif t.GetClass() == "PCB_VIA":` を分岐させ、ビアには `t.GetWidth(pcbnew.F_Cu)` および `t.GetPosition()` を使用してください（引数なし `GetWidth()` は C++ アサーション停止を招きます）。

@@ -27,6 +27,7 @@ and verify zero B-rep interference + minimum clearances across all components pe
 """
 import math
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -184,6 +185,123 @@ def make_filleted_sketch(pts_and_radii):
     return sk.sketch
 
 
+def _extract_sexpr_blocks(text: str, head_token: str) -> list[str]:
+    """Extract balanced S-expression blocks starting with `(<head_token>` outside strings."""
+    blocks = []
+    needle = f"({head_token}"
+    pos = 0
+    n = len(text)
+    while True:
+        idx = text.find(needle, pos)
+        if idx == -1:
+            break
+        after = idx + len(needle)
+        if after < n and not text[after].isspace():
+            pos = after
+            continue
+        depth = 0
+        in_str = False
+        esc = False
+        i = idx
+        while i < n:
+            ch = text[i]
+            if in_str:
+                if esc:
+                    esc = False
+                elif ch == "\\":
+                    esc = True
+                elif ch == '"':
+                    in_str = False
+            else:
+                if ch == '"':
+                    in_str = True
+                elif ch == "(":
+                    depth += 1
+                elif ch == ")":
+                    depth -= 1
+                    if depth == 0:
+                        blocks.append(text[idx : i + 1])
+                        pos = i + 1
+                        break
+            i += 1
+        else:
+            break
+    return blocks
+
+
+def verify_pcb_3d_step_coverage(pcb_path: Path):
+    """
+    Assert that every non-DNP footprint on `pcb_path` has a valid, unhidden `.step`/`.stp` 3D model
+    before running `kicad-cli pcb export step --subst-models`, preventing silent skips.
+    CRITICAL RULE (AGENTS.md Sec. 3.6): DO NOT invent approximate/dummy 3D models or add exemptions
+    to bypass an NG — leave NG as NG and report (Reference, Footprint, Value) to the user!
+    """
+    text = pcb_path.read_text(encoding="utf-8")
+    proj_dir = pcb_path.resolve().parent
+    kicad_3d_dir = KICAD_CLI.resolve().parent.parent / "share" / "kicad" / "3dmodels"
+    is_pmw = pcb_path.name == "curcur40-pmw3360.kicad_pcb"
+    allowed_no_step = (
+        {
+            ("JP1", "Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels"),
+            ("U1", "kbd:PMW3360DM-T2QU_16Pin"),
+        }
+        if is_pmw
+        else set()
+    )
+    problems = []
+    for fp_blk in _extract_sexpr_blocks(text, "footprint"):
+        m_fp = re.match(r'^\(footprint\s+"([^"]+)"', fp_blk)
+        fpid = m_fp.group(1) if m_fp else "?"
+        m_ref = re.search(r'\(property\s+"Reference"\s+"([^"]+)"', fp_blk)
+        ref = m_ref.group(1) if m_ref else "?"
+        m_val = re.search(r'\(property\s+"Value"\s+"([^"]+)"', fp_blk)
+        val = m_val.group(1) if m_val else "?"
+        if re.search(r"\(attr\b[^)]*\bdnp\b", fp_blk):
+            continue
+        if (ref, fpid) in allowed_no_step:
+            continue
+        model_blks = _extract_sexpr_blocks(fp_blk, "model")
+        if not model_blks:
+            problems.append(f"{ref} ({fpid}, val={val}): NO 3D model assigned")
+            continue
+        has_valid_step = False
+        for m_blk in model_blks:
+            if re.search(r"\(hide\s+yes\)", m_blk):
+                problems.append(f"{ref} ({fpid}, val={val}): 3D model is hidden")
+                continue
+            m_path = re.match(r'^\(model\s+"([^"]+)"', m_blk)
+            raw = m_path.group(1) if m_path else ""
+            resolved = raw.replace("${KIPRJMOD}", str(proj_dir))
+            for var in (
+                "${KICAD10_3DMODEL_DIR}",
+                "${KICAD9_3DMODEL_DIR}",
+                "${KICAD8_3DMODEL_DIR}",
+                "${KICAD7_3DMODEL_DIR}",
+                "${KICAD6_3DMODEL_DIR}",
+                "${KISYS3DMOD}",
+            ):
+                resolved = resolved.replace(var, str(kicad_3d_dir))
+            rp = Path(resolved)
+            if (
+                rp.with_suffix(".step").exists()
+                or rp.with_suffix(".stp").exists()
+                or (rp.suffix.lower() in (".step", ".stp") and rp.exists())
+            ):
+                has_valid_step = True
+            elif rp.exists():
+                problems.append(f"{ref} ({fpid}, val={val}): '{raw}' has no .step/.stp for --subst-models")
+            else:
+                problems.append(f"{ref} ({fpid}, val={val}): 3D model file NOT FOUND '{raw}'")
+        if not has_valid_step and not any(p.startswith(f"{ref} ") for p in problems):
+            problems.append(f"{ref} ({fpid}, val={val}): no valid .step/.stp model resolved")
+    assert not problems, (
+        f"[3D STEP COVERAGE NG] {pcb_path.name} ({len(problems)} issue(s)):\n  - "
+        + "\n  - ".join(problems)
+        + "\nCRITICAL RULE (AGENTS.md Sec. 3.6): DO NOT invent a dummy/approximate 3D model or add to "
+        "allowed_no_step on your own! Leave as NG and report (Reference, Footprint, Value) to the user."
+    )
+
+
 def export_kicad_pcb_solids(
     pcb_rel_path: str,
     offset_xyz: tuple[float, float, float],
@@ -191,11 +309,13 @@ def export_kicad_pcb_solids(
     comp_prefix: str,
 ):
     """
-    Export a `.kicad_pcb` directly via `kicad-cli pcb export step --subst-models --no-dnp --user-origin 0x0mm`
-    and translate into the Global STEP coordinate frame so PCB holes, cutouts, and 3D component models
+    Verify 100% 3D STEP model coverage and export a `.kicad_pcb` directly via
+    `kicad-cli pcb export step --subst-models --no-dnp --user-origin 0x0mm`,
+    translating into the Global STEP coordinate frame so PCB holes, cutouts, and 3D component models
     are 100% synchronized with KiCad.
     """
     pcb_path = WORKSPACE / pcb_rel_path
+    verify_pcb_3d_step_coverage(pcb_path)
     with tempfile.TemporaryDirectory() as tmp_dir:
         out_step = Path(tmp_dir) / f"{pcb_path.stem}.step"
         subprocess.run(
