@@ -1,6 +1,6 @@
 # curcur40
 
-**curcur40** は、[Corne Keyboard (crkbd v4)](https://github.com/foostan/crkbd) をベースに、Kailh Choc V1/V2 ロープロファイルスイッチ専用の **40キー左右分割レイアウト**、右手親指内側の **$\varnothing 25\,\text{mm}$ 光学式トラックボール（`PMW3360DM-T2QU` 低プロファイル分離センサーサブ基板）**、および右手人差し指内側の **アンダープレート 1ピース一体軸パッシブ磁気慣性ホイール（`45# Steel` 削り出しフライホイール ＋ 右メイン基板 PCBA 直実装 `TMAG5273` 3Dホール磁気センサ）** を統合し、筐体全体を **真鍮ヒートセットインサート × 統一 `M2 × 6.0mm` ネジ（100% 密閉・底面穴なしケース）** で構築したカスタム分割エルゴノミクスキーボードです。
+**curcur40** は、[Corne Keyboard (crkbd v4)](https://github.com/foostan/crkbd) をベースに、Kailh Choc V2（`CPG1353`）ロープロファイルスイッチ専用の **40キー左右分割レイアウト**、右手親指内側の **$\varnothing 25\,\text{mm}$ 光学式トラックボール（`PMW3360DM-T2QU` 低プロファイル分離センサーサブ基板）**、および右手人差し指内側の **アンダープレート 1ピース一体軸パッシブ磁気慣性ホイール（`45# Steel` 削り出しフライホイール ＋ 右メイン基板 PCBA 直実装 `TMAG5273` 3Dホール磁気センサ）** を統合し、筐体全体を **真鍮ヒートセットインサート × 統一 `M2 × 6.0mm` ネジ（100% 密閉・底面穴なしケース）** で構築したカスタム分割エルゴノミクスキーボードです。
 
 ![Full Assembly Isometric](./docs/assets/render_full_assembly_iso.png)
 
@@ -139,9 +139,9 @@ curcur40/
 │   │   ├── wheel-rocker.step/.stl    # #03 一体トラニオン軸シーソーロッカー (JLC3DP PA12)
 │   │   └── wheel-cradle.step/.stl    # #04 Cクリップスナップインヒンジ付アンダーPCBクレードル (JLC3DP PA12)
 │   └── assemblies/               # 光学距離・干渉・クリアランス検証用アセンブリモデル 7種 (STEP / STL)
-│       ├── assembly-full.step                    # KiCad実3D部品535個同期・全672ソリッド統合フルアセンブリ（トッププレート水平基準）
-│       ├── assembly-full-desk.step               # KiCad実3D部品535個同期・全672ソリッド統合フルアセンブリ（ケース底面＝デスク面 Z=0 基準）
-│       ├── curcur40-right-wheel-assembly.step    # 右手＋KiCad実3D部品＋アンダープレート慣性ホイール検証アセンブリ（347ソリッド）
+│       ├── assembly-full.step                    # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（トッププレート水平基準）
+│       ├── assembly-full-desk.step               # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（ケース底面＝デスク面 Z=0 基準）
+│       ├── curcur40-right-wheel-assembly.step    # 右手＋KiCad実3D部品＋アンダープレート慣性ホイール検証アセンブリ（349ソリッド）
 │       ├── inertia-wheel-assembly.step           # アンダープレート慣性ホイール機構単体アセンブリ（14パーツ）
 │       ├── trackball-cup-with-ball.step/.stl     # カップ＋25mm球＋光学基準点アセンブリ
 │       ├── pmw3360-lens-pcb-assembly.step        # PMW3360＋LM19レンズ＋サブ基板光学モジュール

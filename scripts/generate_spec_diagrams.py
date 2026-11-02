@@ -737,10 +737,273 @@ def generate_trackball_cup_detail_drawing():
     print(f"Saved: {out_file}")
 
 
+def generate_assembly_tool_clearance_diagram():
+    """
+    Generate visual assembly tool-size limit & internal routing guide
+    (`docs/assets/assembly_tool_clearance_guide.png`):
+      - Panel 1: TB1 / TB3 brass insert heat-set — soldering iron diameter <= Ø 6.0 mm (max Ø 6.5 mm) up to 18 mm from tip
+      - Panel 2: TB1..TB4 cup screws — #0 precision screwdriver shaft <= Ø 4.5 mm (rec. Ø 3.0-3.5 mm) up to 15 mm from tip
+      - Panel 3: Pre-closure checklist — tune DET magnetic ratchet screw before fastening R1..R6 + route 100 mm JST-SH slack SE
+    """
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(21.5, 8.2), dpi=200)
+    fig.patch.set_facecolor('#ffffff')
+    fig.suptitle(
+        "curcur40 組み立て時の干渉ポイントと「ここはこのサイズ以下を使ってね」工具・配線ガイド",
+        fontsize=15.0, fontweight='bold', color='#1e293b', y=0.98
+    )
+
+    # =========================================================================
+    # PANEL 1: TB1 / TB3 Heat-Set Insert — Soldering Iron Tip/Collar Clearance
+    # True 1:1 scale in mm around TB1/TB3 bore center (X = 0)
+    # =========================================================================
+    ax1.set_facecolor('#f8fafc')
+    ax1.set_xlim(-10.5, 16.5)
+    ax1.set_ylim(-23.5, 10.5)
+    ax1.set_aspect('equal')
+
+    # Case West Wall (inner face at X = -3.2875, outer face at X = -4.7875, top rim Z = 0.00) + Boss (OD Ø6.0, top Z = -17.60)
+    case_p1 = patches.Polygon(
+        [
+            (-4.79, -23.0), (14.5, -23.0), (14.5, -20.6),
+            (3.00, -20.6), (3.00, -17.60),
+            (1.425, -17.60), (1.425, -21.40), (-1.425, -21.40), (-1.425, -17.60),
+            (-3.29, -17.60), (-3.29, 0.00), (-4.79, 0.00),
+        ],
+        closed=True, lw=1.5, ec='#334155', fc='#cbd5e1', zorder=2
+    )
+    ax1.add_patch(case_p1)
+    ax1.text(5.2, -21.8, "右手ケース下段 (PA12・底面密閉)", ha='center', va='center', fontsize=8.0, fontweight='bold', color='#1e293b', zorder=3)
+    ax1.text(-4.04, -9.0, "ケース西壁", rotation=90, ha='center', va='center', fontsize=8.0, fontweight='bold', color='#334155', zorder=3)
+
+    # Brass insert at Z = -20.60..-17.60
+    ax1.add_patch(patches.Rectangle((-1.60, -20.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
+    ax1.add_patch(patches.Rectangle((1.05, -20.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
+
+    # NG Ghost: Wide soldering-iron sleeve (Ø 8.2 mm -> X = ±4.10 starting 11 mm above tip -> Z = -6.60) hitting West Wall X = -3.29!
+    ng_sleeve = patches.Rectangle((-4.10, -6.60), 8.20, 12.0, lw=1.8, ls='--', ec='#dc2626', fc='#fecaca', alpha=0.55, zorder=3)
+    ax1.add_patch(ng_sleeve)
+    ax1.plot([-3.29], [0.00], marker='X', markersize=11, color='#dc2626', mec='#ffffff', mew=1.2, zorder=8)
+    ax1.annotate(
+        "× NG例: 太い保護管 (Ø7〜10mm)\n西壁上フチ (Z=0) に当たって\n斜めになる・フチを溶かす!",
+        xy=(-3.29, 0.00), xytext=(3.8, 3.2),
+        arrowprops=dict(arrowstyle='->', color='#dc2626', lw=1.5),
+        fontsize=7.8, fontweight='bold', color='#991b1b',
+        bbox=dict(boxstyle="round,pad=0.28", fc="#fef2f2", ec="#dc2626", lw=1.1), zorder=9
+    )
+
+    # OK Slim Iron Tip + Shaft (Tip enters insert at Z = -18.2, conical to Ø 5.2 mm at Z = -11.0, slim Ø 5.2 mm shaft past Z = +5.0)
+    ok_iron = patches.Polygon(
+        [
+            (-0.75, -18.3), (0.75, -18.3),
+            (2.60, -11.0), (2.60, 4.8),
+            (-2.60, 4.8), (-2.60, -11.0),
+        ],
+        closed=True, lw=1.6, ec='#15803d', fc='#bbf7d0', alpha=0.92, zorder=5
+    )
+    ax1.add_patch(ok_iron)
+    ax1.axvline(0.0, ls='-.', color='#64748b', lw=0.9, zorder=6)
+    ax1.text(0.0, -5.5, "OK 細軸こて先\n(例: Ø5.0〜5.5mm)", rotation=90, ha='center', va='center', fontsize=8.0, fontweight='bold', color='#14532d', zorder=7)
+
+    # Dimension: Depth 17.6 mm (Z = 0.0 to -17.6)
+    ax1.plot([-3.29, -9.2], [0.00, 0.00], ls=':', color='#0f172a', lw=1.0)
+    ax1.plot([-1.60, -9.2], [-17.60, -17.60], ls=':', color='#0f172a', lw=1.0)
+    ax1.annotate('', xy=(-8.2, 0.00), xytext=(-8.2, -17.60), arrowprops=dict(arrowstyle='<->', color='#0f172a', lw=1.4))
+    ax1.text(-8.5, -8.80, "深さ\n17.6 mm", ha='right', va='center', fontsize=8.5, fontweight='bold', color='#0f172a')
+
+    # Dimension: Radial clearance 3.29 mm -> Max Ø 6.57 mm
+    ax1.annotate('', xy=(-3.29, 1.3), xytext=(0.0, 1.3), arrowprops=dict(arrowstyle='<->', color='#0369a1', lw=1.4), zorder=9)
+    ax1.text(-1.65, 2.1, "半径 3.29mm", ha='center', va='bottom', fontsize=7.6, fontweight='bold', color='#0369a1',
+             bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#0369a1", lw=0.7, alpha=0.95), zorder=9)
+
+    # Green Specification Callout
+    ax1.text(
+        9.4, -10.8,
+        "◎ ここはこのサイズ以下!\n"
+        "━━━━━━━━━━━━\n"
+        "先端から 18 mm まで\n"
+        "太さ Ø 6.0 mm 以下\n"
+        "(物理限界: Ø 6.5 mm)\n\n"
+        "・TS100 / Pinecil 等の\n"
+        "  ペン型細軸こて (Ø5.5)\n"
+        "・長めの円錐 B型/I型こて先",
+        ha='center', va='center', fontsize=8.2, fontweight='bold', color='#14532d',
+        bbox=dict(boxstyle="round,pad=0.4", fc="#dcfce7", ec="#16a34a", lw=1.6), zorder=9
+    )
+
+    ax1.set_title("① TB1 / TB3 インサート熱圧入\n【はんだごて先端の太さ制限】", fontsize=11.8, fontweight='bold', color='#0f172a', pad=10)
+    ax1.axis('off')
+
+    # =========================================================================
+    # PANEL 2: TB1..TB4 Cup Screws — Precision #0 Screwdriver Shaft Diameter
+    # True 1:1 scale in mm around TB1..TB4 screw axis (X = 0; Cup outer wall at X = -2.48)
+    # =========================================================================
+    ax2.set_facecolor('#f8fafc')
+    ax2.set_xlim(-11.5, 15.5)
+    ax2.set_ylim(-23.5, 10.5)
+    ax2.set_aspect('equal')
+
+    # Case TB Boss + Sensor PCB (1.6mm, Z=-17.6..-16.0) + Trackball Cup Wall (X <= -2.48, Z=-16.0..-2.0) & Flat Ear (Z=-16.0..-14.0)
+    boss_p2 = patches.Polygon(
+        [
+            (-10.5, -23.0), (13.5, -23.0), (13.5, -20.6),
+            (3.00, -20.6), (3.00, -17.60),
+            (1.425, -17.60), (1.425, -21.40), (-1.425, -21.40), (-1.425, -17.60),
+            (-3.00, -17.60), (-3.00, -20.6), (-10.5, -20.6),
+        ],
+        closed=True, lw=1.4, ec='#334155', fc='#cbd5e1', zorder=2
+    )
+    ax2.add_patch(boss_p2)
+    ax2.add_patch(patches.Rectangle((-1.60, -20.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
+    ax2.add_patch(patches.Rectangle((1.05, -20.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
+
+    # Sensor PCB
+    ax2.add_patch(patches.Rectangle((-10.5, -17.60), 9.30, 1.60, lw=1.2, ec='#14532d', fc='#4ade80', alpha=0.85, zorder=3))
+    ax2.add_patch(patches.Rectangle((1.20, -17.60), 4.80, 1.60, lw=1.2, ec='#14532d', fc='#4ade80', alpha=0.85, zorder=3))
+    ax2.text(-6.2, -16.80, "TBセンサー基板", ha='center', va='center', fontsize=7.2, fontweight='bold', color='#052e16', zorder=4)
+
+    # Trackball Cup Body Wall (X in [-10.5, -2.48], Z in [-16.00, -2.00]) + 2.00 mm Flat Ear (X in [-2.48, +3.00], Z in [-16.00, -14.00])
+    cup_p2 = patches.Polygon(
+        [
+            (-10.5, -16.00), (-1.20, -16.00), (-1.20, -14.00),
+            (-2.48, -14.00), (-2.48, -2.00), (-10.5, -2.00),
+        ],
+        closed=True, lw=1.5, ec='#1e3a8a', fc='#93c5fd', alpha=0.88, zorder=4
+    )
+    ear_r_p2 = patches.Rectangle((1.20, -16.00), 1.80, 2.00, lw=1.5, ec='#1e3a8a', fc='#93c5fd', alpha=0.88, zorder=4)
+    ax2.add_patch(cup_p2)
+    ax2.add_patch(ear_r_p2)
+    ax2.text(-6.5, -8.5, "トラックボール\nカップ外壁\n(Ø28.0 mm)", ha='center', va='center', fontsize=8.2, fontweight='bold', color='#1e3a8a', zorder=5)
+
+    # M2 x 6.0mm Screw
+    ax2.add_patch(patches.Rectangle((-1.90, -14.00), 3.80, 1.20, lw=1.3, ec='#1e293b', fc='#64748b', zorder=6))
+    ax2.add_patch(patches.Rectangle((-0.98, -20.00), 1.96, 6.00, lw=1.3, ec='#1e293b', fc='#94a3b8', zorder=5))
+
+    # NG Ghost: Thick 4mm/6.35mm bit-holder chuck (Ø 8.0 mm -> X = ±4.00 above Z = -6.0) hitting Cup Outer Wall at (-2.48, -2.00)
+    ng_chuck = patches.Rectangle((-4.00, -6.00), 8.00, 9.50, lw=1.8, ls='--', ec='#dc2626', fc='#fecaca', alpha=0.55, zorder=3)
+    ax2.add_patch(ng_chuck)
+    ax2.plot([-2.48], [-2.00], marker='X', markersize=11, color='#dc2626', mec='#ffffff', mew=1.2, zorder=8)
+    ax2.annotate(
+        "× NG例: 差替ビットホルダー\n太いチャック (Ø6.5〜10mm) が\nカップ外壁に当たって届かない!",
+        xy=(-2.48, -2.00), xytext=(4.0, 3.2),
+        arrowprops=dict(arrowstyle='->', color='#dc2626', lw=1.5),
+        fontsize=7.6, fontweight='bold', color='#991b1b',
+        bbox=dict(boxstyle="round,pad=0.26", fc="#fef2f2", ec="#dc2626", lw=1.1), zorder=9
+    )
+
+    # OK Slim #0 Precision Screwdriver Shaft (Ø 3.0 mm -> X = ±1.50 from Z = -12.80 up to +4.20, handle above Z = +4.20)
+    ok_shaft = patches.Rectangle((-1.50, -12.80), 3.00, 17.00, lw=1.6, ec='#15803d', fc='#bbf7d0', alpha=0.95, zorder=7)
+    ok_handle = patches.FancyBboxPatch((-3.40, 4.20), 6.80, 4.60, boxstyle="round,pad=0,rounding_size=1.0", lw=1.5, ec='#15803d', fc='#86efac', zorder=7)
+    ax2.add_patch(ok_shaft)
+    ax2.add_patch(ok_handle)
+    ax2.axvline(0.0, ls='-.', color='#64748b', lw=0.9, zorder=8)
+    ax2.text(0.0, 6.50, "精密 #0 グリップ", ha='center', va='center', fontsize=7.6, fontweight='bold', color='#14532d', zorder=8)
+    ax2.text(0.0, -5.8, "細軸 Ø3.0mm", rotation=90, ha='center', va='center', fontsize=7.6, fontweight='bold', color='#14532d', zorder=8)
+
+    # Dimensions: 12.0 mm height & 2.48 mm radial gap (Ø 4.97 mm physical max)
+    ax2.annotate('', xy=(-2.48, -0.8), xytext=(0.0, -0.8), arrowprops=dict(arrowstyle='<->', color='#0369a1', lw=1.4), zorder=9)
+    ax2.text(-1.24, 0.0, "半径 2.48mm", ha='center', va='bottom', fontsize=7.5, fontweight='bold', color='#0369a1',
+             bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#0369a1", lw=0.7, alpha=0.95), zorder=9)
+
+    ax2.plot([1.90, 4.8], [-14.00, -14.00], ls=':', color='#0f172a', lw=1.0)
+    ax2.plot([-2.48, 4.8], [-2.00, -2.00], ls=':', color='#0f172a', lw=1.0)
+    ax2.annotate('', xy=(3.8, -2.00), xytext=(3.8, -14.00), arrowprops=dict(arrowstyle='<->', color='#0f172a', lw=1.3))
+    ax2.text(4.1, -8.00, "12.0 mm", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#0f172a')
+
+    ax2.text(
+        9.4, -13.2,
+        "◎ ここはこのサイズ以下!\n"
+        "━━━━━━━━━━━━\n"
+        "先端から 15 mm まで\n"
+        "軸径 Ø 4.5 mm 以下\n"
+        "(推奨: Ø 3.0〜3.5 mm)\n\n"
+        "・単体の精密プラス\n"
+        "  ドライバー (#0 / #00)\n"
+        "  (差替チャック式は不可)",
+        ha='center', va='center', fontsize=8.2, fontweight='bold', color='#14532d',
+        bbox=dict(boxstyle="round,pad=0.4", fc="#dcfce7", ec="#16a34a", lw=1.6), zorder=9
+    )
+
+    ax2.set_title("② TB1〜TB4 カップ固定ネジ締め\n【精密ドライバー軸の太さ制限】", fontsize=11.8, fontweight='bold', color='#0f172a', pad=10)
+    ax2.axis('off')
+
+    # =========================================================================
+    # PANEL 3: Pre-Closure Checklist — (A) DET Screw Timing & (B) 100mm Cable Slack
+    # =========================================================================
+    ax3.set_facecolor('#f8fafc')
+    ax3.set_xlim(0, 100)
+    ax3.set_ylim(0, 100)
+
+    # --- Top Card (A): DET Ratchet Adjuster Screw Timing ---
+    card_a = patches.FancyBboxPatch((3, 52), 94, 44, boxstyle="round,pad=0,rounding_size=3.0", lw=1.4, ec='#475569', fc='#ffffff', zorder=1)
+    ax3.add_patch(card_a)
+    ax3.text(50, 92, "③-A ホイールノッチ調整ネジ (DET) は「基板を閉じる前」に調整!", ha='center', va='center', fontsize=9.5, fontweight='bold', color='#0f172a', zorder=2)
+
+    # Mini schematic inside Card A
+    ax3.add_patch(patches.Rectangle((8, 78), 52, 4.0, lw=1.2, ec='#1e3a8a', fc='#60a5fa', zorder=3))
+    ax3.text(34, 80, "右メイン基板 + トッププレート (R1〜R6 で蓋)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#ffffff', zorder=4)
+    ax3.add_patch(patches.Circle((22, 71), 8.5, lw=1.4, ec='#334155', fc='#94a3b8', zorder=2))
+    ax3.text(22, 71, "#01\nホイール", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#ffffff', zorder=3)
+    ax3.add_patch(patches.Rectangle((33, 62), 14, 11, lw=1.2, ec='#475569', fc='#cbd5e1', zorder=3))
+    ax3.text(40, 69.5, "#03 南ボス", ha='center', va='center', fontsize=6.8, fontweight='bold', color='#1e293b', zorder=4)
+    # DET screw + magnet
+    ax3.add_patch(patches.Rectangle((31.2, 64.5), 2.5, 2.5, lw=1.0, ec='#b91c1c', fc='#ef4444', zorder=4))
+    ax3.add_patch(patches.Rectangle((33.7, 64.8), 16.5, 1.9, lw=1.1, ec='#1e293b', fc='#64748b', zorder=4))
+    ax3.text(52, 65.7, "← DET 調整ネジ (基板の下 Z=-11.3mm)", ha='left', va='center', fontsize=7.5, fontweight='bold', color='#b91c1c', zorder=4)
+
+    ax3.text(
+        50, 56.8,
+        "◎ Phase 4〜5（R1〜R6 ネジ6本でケースへ本締めする前）に好みのノッチ強弱へ調整!\n"
+        "   ※組んだ後に再調整したい時は、R1〜R6 を外して右基板を持ち上げれば回せます。",
+        ha='center', va='center', fontsize=7.7, fontweight='bold', color='#14532d',
+        bbox=dict(boxstyle="round,pad=0.28", fc="#dcfce7", ec="#16a34a", lw=1.2), zorder=5
+    )
+
+    # --- Bottom Card (B): 100mm JST-SH Cable Slack Routing ---
+    card_b = patches.FancyBboxPatch((3, 3), 94, 45, boxstyle="round,pad=0,rounding_size=3.0", lw=1.4, ec='#475569', fc='#ffffff', zorder=1)
+    ax3.add_patch(card_b)
+    ax3.text(50, 44, "③-B 100mm JST-SH ケーブルの余長は「南東 (rSW8/rSW9 下)」へ逃がす!", ha='center', va='center', fontsize=9.3, fontweight='bold', color='#0f172a', zorder=2)
+
+    # Mini top-view map inside Card B
+    # North wheel danger zone
+    ax3.add_patch(patches.FancyBboxPatch((8, 28), 32, 11, boxstyle="round,pad=0,rounding_size=2.0", lw=1.3, ls='--', ec='#dc2626', fc='#fef2f2', zorder=2))
+    ax3.text(24, 33.5, "× 北側: #01 回転ホイール\n(余長ループを近づけない!)", ha='center', va='center', fontsize=7.3, fontweight='bold', color='#991b1b', zorder=3)
+
+    # J1 (West) & rJ3 (Center)
+    ax3.add_patch(patches.Rectangle((10, 12), 16, 11, lw=1.2, ec='#14532d', fc='#bbf7d0', zorder=3))
+    ax3.text(18, 17.5, "TB基板\nJ1 (東向)", ha='center', va='center', fontsize=7.2, fontweight='bold', color='#052e16', zorder=4)
+
+    ax3.add_patch(patches.Rectangle((36, 10), 16, 11, lw=1.2, ec='#1e3a8a', fc='#bfdbfe', zorder=3))
+    ax3.text(44, 15.5, "右メイン\nrJ3 (西向)", ha='center', va='center', fontsize=7.2, fontweight='bold', color='#1e3a8a', zorder=4)
+
+    # South-East Safe Slack Zone
+    ax3.add_patch(patches.FancyBboxPatch((56, 6), 37, 34, boxstyle="round,pad=0,rounding_size=2.5", lw=1.5, ec='#16a34a', fc='#dcfce7', zorder=2))
+    ax3.text(74.5, 34.5, "◎ 南東: 安全逃がし空間\n(rSW8 / rSW9 の真下)", ha='center', va='center', fontsize=7.8, fontweight='bold', color='#14532d', zorder=4)
+    ax3.text(74.5, 11.2, "余長ループをここへ寄せ\nカプトンテープ等で軽く留める!", ha='center', va='center', fontsize=7.4, fontweight='bold', color='#166534',
+             bbox=dict(boxstyle="round,pad=0.22", fc="#f0fdf4", ec="#16a34a", lw=0.8), zorder=8)
+
+    # Green curved 100mm cable path looping into SE safe zone, plus red dashed NG path going North
+    ax3.plot([26, 28.5, 25], [19.5, 24.5, 28.5], ls='--', lw=2.0, color='#dc2626', zorder=5)
+    cx_path = [26.0, 31.0, 44.0, 62.0, 84.0, 87.5, 84.0, 60.0, 53.5, 43.0, 32.5, 32.5, 36.0]
+    cy_path = [17.5, 22.8, 24.8, 26.5, 26.5, 23.0, 19.5, 19.0,  6.8,  6.8,  8.5, 15.5, 15.5]
+    ax3.plot(cx_path, cy_path, lw=2.6, color='#15803d', solid_capstyle='round', solid_joinstyle='round', zorder=6)
+    ax3.add_patch(patches.Rectangle((69, 24.0), 7.8, 5.0, lw=1.0, ec='#b45309', fc='#fde047', alpha=0.92, zorder=7))
+    ax3.text(72.9, 26.5, "テープ", ha='center', va='center', fontsize=6.3, fontweight='bold', color='#78350f', zorder=8)
+
+    ax3.set_title("③ ケース本締め前の確認ポイント\n【DET ノッチ調整 ＆ 100mm ケーブル配線】", fontsize=11.8, fontweight='bold', color='#0f172a', pad=10)
+    ax3.axis('off')
+
+    plt.tight_layout(rect=[0, 0, 1, 0.94])
+    out_file = ASSETS_DIR / "assembly_tool_clearance_guide.png"
+    plt.savefig(out_file, bbox_inches='tight')
+    plt.close()
+    print(f"Saved: {out_file}")
+
+
 if __name__ == "__main__":
     generate_vertical_stackup_diagram()
     generate_ports_and_screws_diagram()
     generate_trackball_optical_diagram()
     generate_trackball_cup_fastening_diagram()
     generate_trackball_cup_detail_drawing()
+    generate_assembly_tool_clearance_diagram()
     print("All specification diagram images updated successfully!")

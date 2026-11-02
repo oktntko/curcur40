@@ -166,7 +166,7 @@ def build_steel_flywheel_local() -> bd.Solid:
       - Ø22.00 x 6.50 mm solid rim (`u in [-3.25, +3.25]`) with 24 rounded outer grip/detent flutes (`15 deg` pitch)
       - Integral Ø2.90 mm inner-race shoulders (`u in [-3.45, -3.25]` and `[+3.25, +3.45]`)
       - Integral Ø1.98 mm bearing journals (`u in [-5.75, -3.45]` and `[+3.45, +5.72]`)
-      - Integral West D-shaft (`u in [-7.98, -5.75]`, D-flat `w >= +0.71` removed over `u in [-7.98, -6.85]`)
+      - Integral West D-shaft (`u in [-7.98, -5.75]`, D-flat `w >= +0.71` removed over `u in [-7.98, -6.98]`)
     """
     rim = bd.extrude(
         bd.Plane.YZ.offset(-WHEEL_RIM_W / 2.0) * bd.Circle(WHEEL_R),
@@ -251,7 +251,7 @@ def build_wheel_rocker_local() -> bd.Solid:
       - Rigid Under-Wheel U-Stirrup (`w in [-12.80, -11.45]`)
       - South Monolithic Detent Adjuster Boss (`u in [-3.55, +3.55]`, `v in [-16.40, -11.40]`, straight Ø2.85 mm bore at `w = -4.40`)
       - West Middle-Click Striker Arm (`u` to `-17.65`, `w in [-5.10, -3.40]`) + Integral West Keeper Tab (`u in [-10.50, -9.62]`, `w` to `-1.15`)
-      - 2x Integral Ø3.00 mm Pivot Trunnions at `(U_PIV = -8.12, W_PIV = -0.45)` (`0.05 mm` below Main PCB B.Cu!)
+      - 2x Integral Ø3.00 mm Pivot Trunnions at `(U_PIV = -8.12, W_PIV = -1.25)` (trunnion top `w = +0.25`, `0.85 mm` below Main PCB `B.Cu`!)
     """
     # 1. West Bearing Ear (`u in [-6.62, -3.55]`, `v in [-3.40, +3.40]`, `w in [-12.80, +2.35]`)
     west_ear = bd.Box(

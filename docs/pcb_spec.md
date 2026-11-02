@@ -51,12 +51,12 @@
 
 | フットプリント名 (`kbd:`) | 対象部品 / 回路図シンボル | データ入手元・作成根拠 | ローカルでの生成・改変内容 |
 | :--- | :--- | :--- | :--- |
-| **[`keyswitch_choc12_hotswap_1u.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/keyswitch_choc12_hotswap_1u.kicad_mod)** | Kailh Choc ソケット (`CPG135001S30`)<br>`Switch:SW_Push` | **foostan/kbd** ([MIT License](../pcbs/common/kbd/LICENSE)) | 旧 Corne V3 由来の不要な $\varnothing 0.40\,\text{mm}$ NPTH 穴および個別マスクマージンを削除、相対3Dモデルパス化 |
+| **[`keyswitch_choc12_hotswap_1u.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/keyswitch_choc12_hotswap_1u.kicad_mod)** | Kailh Choc V2 用ソケット (`CPG135001S30`)<br>`Switch:SW_Push` | **foostan/kbd** ([MIT License](../pcbs/common/kbd/LICENSE)) | 旧 Corne V3 由来の不要な $\varnothing 0.40\,\text{mm}$ NPTH 穴および個別マスクマージンを削除、相対3Dモデルパス化 |
 | **[`YS-SK6812MINI-E.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/YS-SK6812MINI-E.kicad_mod)** | 逆付け RGB LED (`YS-SK6812MINI-E`)<br>`kbd:YS-SK6812MINI-E` | **foostan/kbd** ([MIT License](../pcbs/common/kbd/LICENSE)) | シルク重なり回避および相対3Dモデルパス化 |
 | **[`TS-1088R-02026.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/TS-1088R-02026.kicad_mod)** | SMD タクトSW (`TS-1088R-02026`)<br>`Switch:SW_Push` | **foostan/kbd** ([MIT License](../pcbs/common/kbd/LICENSE)) | 相対3Dモデルパス化 |
 | **[`USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/USB_C_Receptacle_TYPE-C-31-M-13C.kicad_mod)** | USB-C 16ピン (`TYPE-C-31-M-13C`)<br>`Connector:USB_C_Receptacle_USB2.0_16P` | **foostan/kbd** ([MIT License](../pcbs/common/kbd/LICENSE)) | 標準シンボルのフィルタ適合リネーム、シールド脚 `SH` ピン名整合、相対3Dモデルパス化 |
 | **[`PMW3360DM-T2QU_16Pin.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/PMW3360DM-T2QU_16Pin.kicad_mod)** | 光学センサー (`PMW3360DM-T2QU`)<br>`PMW3360_PCB:PMW3360DM-T2QU` | **siderakb/pmw3360-pcb** ([CERN-OHL-P v2](../LICENSE_CERN_OHL_P_V2)) | KiCad 10.0 向けにスルーホールパッド層 `(layers "*.Cu" "*.Mask")` を補完 |
-| **[`Kailh_Square_Silent_6.2x6.2mm.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/Kailh_Square_Silent_6.2x6.2mm.kicad_mod)** | 静音角形マイクロスイッチ (`rEXSW1`: `Kailh Square Silent 6.2×6.2×4.3mm`)<br>`Switch:SW_Push` | Kailh 公式データシート公表寸法（本体 $6.2 \times 6.2\,\text{mm}$、2ピンピッチ $5.00\,\text{mm}$、平端子 $0.8 \times 0.4\,\text{mm}$）に基づき新規作成 | ドリル径 $\varnothing 1.10\,\text{mm}$ PTH 2穴＋専用3Dモデル [`Kailh_Square_Silent_6.2x6.2mm.step`](../pcbs/common/kbd/kicad-packages3D/kbd.3dshapes/Kailh_Square_Silent_6.2x6.2mm.step) 登録（`curcur40-right` 裏面 `B.Cu` `(-2.0125, -2.00)` に直付け実装） |
+| **[`Kailh_Square_Silent_6.2x6.2mm.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/Kailh_Square_Silent_6.2x6.2mm.kicad_mod)** | 静音角形マイクロスイッチ (`rEXSW1`: `Kailh Square Silent 6.2×6.2×4.3mm`)<br>`Switch:SW_Push` | Kailh 公式データシート公表寸法（本体 $6.2 \times 6.2\,\text{mm}$、2ピンピッチ $5.00\,\text{mm}$、平端子 $0.8 \times 0.4\,\text{mm}$）に基づき新規作成 | ドリル径 $\varnothing 1.15\,\text{mm}$ PTH 2穴＋専用3Dモデル [`Kailh_Square_Silent_6.2x6.2mm.step`](../pcbs/common/kbd/kicad-packages3D/kbd.3dshapes/Kailh_Square_Silent_6.2x6.2mm.step) 登録（`curcur40-right` 裏面 `B.Cu` `(-2.0125, -2.00)` に直付け実装） |
 
 ---
 
@@ -83,7 +83,7 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 * **最小配線幅**: `0.20 mm`（信号線 `0.20 mm` / `0.2032 mm`、電源ライン `0.25 mm` 〜 `0.508 mm`）
 * **標準ビア寸法**: 外径 `0.50 mm` / ドリル径 `0.30 mm`（一部電源・信号ビアは外径 `0.60 mm` / ドリル径 `0.30 mm`）
 * **ハンダマスク拡張 (`pad_to_mask_clearance`)**: **`0 mm`**（KiCad 10.0 標準 NSMD）
-* **銅箔ゾーン (`GND` / `GNDR`)**: 表裏両面全面ベタGNDプレーン、サーマルリリーフ最小スポーク数 `2本`。
+* **銅箔ゾーン (`GND` / `GNDR`) およびネジ座面キープアウト**: 表面（`F.Cu`）全面ベタ GND プレーン＋裏面（`B.Cu`）リターンストラップ配線（ゾーンなし）、サーマルリリーフ最小スポーク数 `2本`。さらに全固定穴周囲（`L1..L6`, `R1..R6, WC1, WC2`: `F.Cu` $r = 2.30\,\text{mm}$ / `B.Cu` $r = 2.00\,\text{mm}$；`TB1..TB4`: `F.Cu`/`B.Cu` $r = 2.00\,\text{mm}$）に円形 `Rule Area` 銅箔・ベタ禁止領域を設け、鉄ネジ頭・真鍮インサート接触による短絡を物理的に遮断。
 
 ---
 
@@ -95,7 +95,7 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 | **QSPI フラッシュ** | `U4` (`W25Q128JVSIQ`, 16MB) | `rU4` (`W25Q128JVSIQ`, 16MB) | 裏面（`B.Cu`）PCBA実装、SOIC-8 |
 | **3.3V LDO レギュレータ** | `U2` (`NCP1117LPST33T3G`) | `rU2` (`NCP1117LPST33T3G`) | 5V (`VBUS`) → 3.3V (`+3V3` / `+3V3R`) |
 | **PC接続 / 左右間ポート** | 北側 `J1` ＋ 内側 `J2` (`TYPE-C-31-M-13C`) | 北側 `rJ1` ＋ 内側 `rJ2` (`TYPE-C-31-M-13C`) | すべてミッドマウント USB-C 16ピン（`B.Cu`、ESD保護・誤挿し保護回路付き） |
-| **キースイッチ数 (Choc)** | **21 キー**（すべて 1u） | **19 キー**（すべて 1u） | ダイレクトピン接続（マトリクスダイオード不要） |
+| **キースイッチ数 (Kailh Choc V2)** | **21 キー**（すべて 1u） | **19 キー**（すべて 1u） | ダイレクトピン接続（マトリクスダイオード不要） |
 | **RGB LED (`YS-SK6812MINI-E`)** | **21 個** (`LED1`〜`18`, `EXLED1`〜`3`) | **19 個** (`rLED1`〜`18`, `rEXLED2`) | 各キースイッチ直下に配置 |
 | **パッシブ磁気慣性ホイール回路** | なし（通常キースイッチ `EXSW1`） | **右メイン基板 `B.Cu` に直接オンボード統合！**<br>・**`rU6`**: `TMAG5273A1QDBVR`（3Dホール磁気センサ, `I2C0`, PCBA実装済）<br>・**`rEXSW1`**: `Kailh Square Silent`（静音中クリックSW, `/KEYEX1`, THT 2ピン直付け） | **ホイール用サブ基板・JST SH コネクタ（旧 `rJ5`）・手配線ハーネスを完全廃止**。回転軸西端の `D4×1mm` 径方向着磁磁石の3軸磁界 $(B_x, B_z)$ を `rU6` で直接読み取り |
 | **トラックボールセンサー** | なし（親指4キー構成） | **JST SH 6ピンコネクタ (`rJ3`)** 経由で独立サブ基板 [`curcur40-pmw3360`](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（`U1`: `PMW3360DM-T2QU` ＋ `U2`: `1.8V LDO` ＋ `J1`）と接続 | トラックボールカップ開口面をトッププレート天面（$Z = -2.00\,\text{mm}$）とフラッシュに沈み込ませるため、センサー基板のみ $-11.80\,\text{mm}$ 下段（$Z = -16.00\,\text{mm}$）へ分離配置 |
@@ -120,7 +120,7 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 * KiCad 10.0 純正 `MCU_RaspberryPi:RP2040` シンボルを無改変で維持するため、ERC 実行時に `[pin_to_pin]` 警告が左右 **1件のみ** 出力される状態を正式仕様とします。
 
 ### 4.3 右手専用：光学トラックボールセンサー基板 (`curcur40-pmw3360`) と JST SH 6ピン接続 (`rJ3` / `J1`)
-* トラックボールカップを $-11.80\,\text{mm}$ 沈み込ませるため、`U1` (`PMW3360DM-T2QU`) と 1.8V LDO `U2` (`TLV74318PDBVR`) を独立サブ基板 [`curcur40-pmw3360.kicad_pcb`](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（$Z = -17.60 \sim -16.00\,\text{mm}$）に分離し、右メイン基板唯一の JST SH 6ピンコネクタ **`rJ3`**（`B.Cu` $(46.5000, 63.0000)$, 西向き）とセンサーサブ基板 **`J1`**（`B.Cu` $(19.2000, 52.3875)$, 東向き）を **市販の JST SH 6ピン両端同方向フラットケーブル（`1-6, 2-5, 3-4, 4-3, 5-2, 6-1` 結線、50mm推奨）** でひねらず真っ直ぐ接続します：
+* トラックボールカップを $-11.80\,\text{mm}$ 沈み込ませるため、`U1` (`PMW3360DM-T2QU`) と 1.8V LDO `U2` (`TLV74318PDBVR`) を独立サブ基板 [`curcur40-pmw3360.kicad_pcb`](../pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（$Z = -17.60 \sim -16.00\,\text{mm}$）に分離し、右メイン基板唯一の JST SH 6ピンコネクタ **`rJ3`**（`B.Cu` $(46.5000, 63.0000)$, 西向き）とセンサーサブ基板 **`J1`**（`B.Cu` $(19.2000, 52.3875)$, 東向き）を **市販の JST SH 6ピン両端同方向フラットケーブル（`1-6, 2-5, 3-4, 4-3, 5-2, 6-1` 結線、長さ `100mm`：スイッチサイエンス `#9142` 等）** でひねらず真っ直ぐ接続します：
   * 北端（`J1` Pin 1 / `rJ3` Pin 6）: `+3V3R` ／ 2番目: `GNDR` ／ 3番目: `/SCLK` (`GP14`) ／ 4番目: `/MOSI` (`GP11`) ／ 5番目: `/MISO` (`GP8`) ／ 南端（`J1` Pin 6 / `rJ3` Pin 1）: `/NCS` (`GP6`)。
 * **`VDDPIX` 分離・`JP1` 銅箔ブリッジ・`R4`/`C5` DNP**: `U1` Pin 3 (`VDDPIX`) は `C1`/`C2` のみの独立ネット（`Net-(U1-VDDPIX)`）に保ち、`JP1` は `SolderJumper_3_Bridged12`（Pad 1 `+3V3R` – Pad 2 `/V_{IO}` 基板内銅箔直結）、`R4` (`28kΩ`) / `C5` (`22nF`) は `DNP` とします。
 
@@ -134,10 +134,10 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
   * **ピン結線とピン互換フォールバック設計（`TLV493D-A1B6` 無改造対応）**:
     * **Pin 1 (`SCL`)**: `/WHEEL_SCL` → `rU1` Pin 37 (`GPIO25` / ハードウェア `I2C0 SCL`、`rR12` `4.7kΩ` で `+3V3R` へプルアップ)
     * **Pin 2 (`GND`)**: `GNDR`
-    * **Pin 3 (`SDA`)**: `/WHEEL_SDA` → `rU1` Pin 36 (`GPIO24` / ハードウェア `I2C0 SDA`、`rR11` `4.7kΩ` で `+3V3R` へプルアップ)
+    * **Pin 3 (`GND`)**: `GNDR`
     * **Pin 4 (`VCC`)**: `+3V3R`（直近にデカップリングコンデンサ `rC18` `100nF` を配置）
     * **Pin 5 (`~INT`)**: **`rR13` (`0Ω`, `0402`, LCSC `C17168`)** を介して `GNDR` へ接続。`TMAG5273` では起動時無効のオープンドレイン出力のため `GND` 接続で問題なく動作し、万が一の部品枯渇時にピン互換の Infineon **`TLV493D-A1B6`**（Pin 5 が必須 `GND` ピン）へ載せ替えても基板無改造・ファームウェア自動判別でそのまま動作します。
-    * **Pin 6 (`GND`)**: `GNDR`
+    * **Pin 6 (`SDA`)**: `/WHEEL_SDA` → `rU1` Pin 36 (`GPIO24` / ハードウェア `I2C0 SDA`、`rR11` `4.7kΩ` で `+3V3R` へプルアップ)
 * **オンボード静音ミドルクリックスイッチ `rEXSW1`（基板 `B.Cu` 直付け THT）**:
   * **採用素子**: **`Kailh Square Silent 6.2×6.2×4.3mm`**（フットプリント `kbd:Kailh_Square_Silent_6.2x6.2mm`）
   * **配置座標**: 右メイン基板 `B.Cu` の **`(-2.0125, -2.0000)`**。Pin 1 を `/KEYEX1`（`rU1` Pin 9 `GPIO7`, マトリクス `[4, 6]`）、Pin 2 を `GNDR` へ基板内パターンで直結しています。
@@ -229,7 +229,7 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 | **USB-C (16ピン)** | `J1, J2` | `rJ1, rJ2` | `TYPE-C-31-M-13C` (`C2848620`) | `kbd:USB_C_Receptacle_TYPE-C-31-M-13C` | `B.Cu` | 2 | 2 |
 | **タクトSW** | `SMDSW1, SMDSW2` | `rSMDSW1, rSMDSW2` | `TS-1088R-02026` (`C455280`) | `kbd:TS-1088R-02026` | `B.Cu` | 2 | 2 |
 | **逆付け RGB LED** | `LED1`〜`18`, `EXLED1`〜`3` | `rLED1`〜`18`, `rEXLED2` | `YS-SK6812MINI-E` (`C5149201`) | `kbd:YS-SK6812MINI-E` | `B.Cu` | 21 | 19 |
-| **Choc ソケット (1u)** | `SW1`〜`18`, `EXSW1`〜`3` | `rSW1`〜`18`, `rEXSW2` | `CPG135001S30` (`C5333465`) | `kbd:keyswitch_choc12_hotswap_1u` | `B.Cu` | 21 | 19 |
+| **Choc V2 ソケット (1u)** | `SW1`〜`18`, `EXSW1`〜`3` | `rSW1`〜`18`, `rEXSW2` | `CPG135001S30` (`C5333465`) | `kbd:keyswitch_choc12_hotswap_1u` | `B.Cu` | 21 | 19 |
 | **静音中クリックSW** | ― | `rEXSW1` (右メイン手ハンダ THT) | `Kailh Square Silent 6.2×6.2×4.3mm` | `kbd:Kailh_Square_Silent_6.2x6.2mm` | `B.Cu` | 0 | 1 (手ハンダ) |
 | **JST SH 6ピンコネクタ** | ― | `rJ3` (右メイン) / `J1` (TBセンサー) | `SM06B-SRSS-TB(LF)(SN)` (`C160405`) | `Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal` | `B.Cu` | 0 | 1 + 1 |
 | **光学センサー** | ― | `U1` (TBセンサー手ハンダ THT) | `PMW3360DM-T2QU` | `kbd:PMW3360DM-T2QU_16Pin` | `B.Cu` | 0 | 1 (手ハンダ) |
@@ -276,10 +276,10 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 | **右手メイン 回路図 ERC** | **0 件** | **1 件** | ― | **なし (0 件)** | `[pin_to_pin]` `rU1` Pin 32 (`GPIO21`) と `GNDR` の直結（左右判定ピン） |
 | **トラックボールセンサー 回路図 ERC** | **0 件** | **0 件** | ― | **なし (0 件)** | なし（完全ゼロ） |
 | **全実装部品 3D STEP モデル解決チェック** | **0 件** | **0 件** | ― | **固定除外 2点のみ** | 左81部品・右84部品・センサー9部品すべて `.step` 解決済（除外は銅箔 `JP1` と光学側配置 `PMW3360 U1` のみ） |
-| **3DPケース・ボス・ホイール機構 3D干渉検証** | **0 件** | **0 件** | ― | **なし (0 件)** | 全672ソリッド間 `overlap_volume == 0.00000000 mm³`・最小クリアランス＆6-DOF拘束 PASS |
+| **3DPケース・ボス・ホイール機構 3D干渉検証** | **0 件** | **0 件** | ― | **なし (0 件)** | 全674ソリッド間 `overlap_volume == 0.00000000 mm³`・最小クリアランス＆6-DOF拘束 PASS |
 
 * **JLCPCB 2層 FR-4 PCB / PCBA 発注前自動検証（[`scripts/export_jlcpcb.py`](../scripts/export_jlcpcb.py)）**:
-  全3基板（`left`, `right`, `pmw3360`）および左右トッププレートについて、DRC/ERC 合格に加えて基板外形サイズ（$\ge 20 \times 20\text{ mm}$）、最小配線幅（$\ge 0.127\text{ mm}$、実測 $\ge 0.200\text{ mm}$）、最小ビア（$\ge 0.45/0.30\text{ mm}$、実測 $0.50/0.30\text{ mm}$）、PTH/NPTH ドリル径、Gerber 全9レイヤー＋ドリル存在、BOM/CPL の Designator 100% 一致、有効な LCSC 番号、THT/`DNP` 部品（`rEXSW1`, `U1(PMW3360)`, `JP1`, `R4`, `C5`, `J4`, `rJ4`）の自動除外、および**全非 `DNP` 部品に有効な `.step`/`.stp` 3Dモデルが紐付いていること**をアサートします。
+  全3基板（`left`, `right`, `pmw3360`）および左右トッププレートについて、DRC/ERC 合格に加えて基板外形サイズ（$\ge 20 \times 20\text{ mm}$）、最小配線幅（$\ge 0.127\text{ mm}$、実測 $\ge 0.200\text{ mm}$）、最小ビア（$\ge 0.45/0.30\text{ mm}$、実測 $0.50/0.30\text{ mm}$）、PTH/NPTH ドリル径、全ネジ穴・インサート座面周囲の銅箔キープアウト確保、Gerber 全9レイヤー＋ドリル存在、BOM/CPL の Designator 100% 一致、有効な LCSC 番号、THT/`DNP` 部品（`rEXSW1`, `U1(PMW3360)`, `JP1`, `R4`, `C5`, `J4`, `rJ4`）の自動除外、および**全非 `DNP` 部品に有効な `.step`/`.stp` 3Dモデルが紐付いていること**をアサートします。
 * **PCB変更時の 3DPモデル干渉検証の必須化と 3Dモデル未設定NG時の運用ルール（[`scripts/generate_full_assembly.py`](../scripts/generate_full_assembly.py)）**:
   * PCB（`Edge.Cuts`、部品配置、フットプリント、3Dモデル）に変更が入った際は必ず `scripts/generate_full_assembly.py` を実行し、KiCad から直接エクスポートした STEP モデルと 3DP ケース・受けボス・ホイールクレードル・プレート等との干渉体積ゼロ（`0.00000000 mm³`）を確認のうえ `cases/assemblies/*.step` を更新します。
   * **3Dモデル未設定・リンク切れ（NG）が発生した場合、チェックを通すために独断で簡易・推測3Dモデル（ダミー形状等）を定義したり除外リストへ追加して素通りさせてはなりません**。NGのまま停止して対象部品を報告し、公式3Dモデルやデータシートの調達・レビュー方針を合意してから対応します。
