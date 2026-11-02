@@ -38,13 +38,15 @@
 | **[PCB・回路図設計仕様書 (`docs/pcb_spec.md`)](./docs/pcb_spec.md)** | 全3基板（`left`, `right`, `pmw3360`）の回路構成、オンボード3Dホール `rU6` (`TMAG5273`) ＆ `rEXSW1` 仕様、RP2040 GPIO ピンアサイン表、DRC/ERC 検証基準 |
 | **[パッシブ磁気慣性ホイール設計仕様書 (`docs/passive_inertia_wheel_spec.md`)](./docs/passive_inertia_wheel_spec.md)** | **小学生でもわかる「3つのしくみ」図解**、幅 $6.50\,\text{mm}$ 一体軸 `45# Steel` ホイールの物理設計、接着剤ゼロ磁気デテント＆Cクリップシーソー中クリック機構、6自由度拘束検証、`XZX` 3Dホール角度復調アルゴリズム |
 | **[さわって動かせる！3つのしくみインタラクティブ図解 (`docs/wheel_mechanism_guide.html`)](./docs/wheel_mechanism_guide.html)** | ブラウザでオフライン動作する体験型 HTML ガイド（ホイールのフリック高速スピン、ノッチ調整ネジスライダー、Cクリップシーソー中クリックを実際に操作可能） |
-| **[生成スクリプト一覧 (`scripts/README.md`)](./scripts/README.md)** | 3Dモデル（ケース・カップ・慣性ホイール・フルアセンブリ）、トッププレート、JLCPCB 発注データ、図版・プレビュー画像の再現生成スクリプト（全10本）の説明 |
+| **[生成スクリプト一覧 (`scripts/README.md`)](./scripts/README.md)** | 3Dモデル（ケース・カップ・慣性ホイール・フルアセンブリ）、トッププレート、JLCPCB 発注データ、図版・プレビュー画像・3D組み立てアニメーション動画の再現生成スクリプト（全11本）の説明 |
 
 ---
 
 ## 3D プレビュー・完成イメージギャラリー (3D Preview Gallery)
 
-KiCad 10.0 Raytracing（`kicad-cli pcb render`）および `cadgen` 3D CAD レンダラーで出力した完成イメージ一覧です。
+KiCad 10.0 Raytracing（`kicad-cli pcb render`）、`cadgen` 3D CAD レンダラー、および PyVista PBR レンダラーで出力した完成イメージ・組み立て動画一覧です。
+
+- 🎬 **[3D 組み立てアニメーション動画 (`docs/assets/assembly_animation.mp4`, 1080p 60fps)](./docs/assets/assembly_animation.mp4)** — トラックボールユニット ＆ パッシブ磁気慣性ホイールのサブ組立から、白ケース・黒PCB・黒トッププレート・スイッチ・白キーキャップ・25mmボールの積み上げ完成までを収録した PBR 3D 動画
 
 ### 1. フルアセンブリ（密閉底面3Dプリントケース + メイン基板 + トッププレート + 25mmトラックボール + アンダープレート一体軸慣性ホイール）
 
