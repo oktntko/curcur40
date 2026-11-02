@@ -12406,7 +12406,7 @@
 		(layer "B.Cu")
 		(uuid "bdf7efb8-7b0d-4ea4-9e74-491d6797d294")
 		(at -2.0125 -2 90)
-		(descr "Kailh Square Silent Micro Switch 6.2x6.2x4.3mm Yellow Dot (CMI624301D09)")
+		(descr "Kailh Square Silent Micro Switch 6.2x6.2x4.3mm Red Dot")
 		(property "Reference" "rEXSW1"
 			(at 0 4 270)
 			(layer "B.SilkS")

@@ -539,13 +539,13 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
 def make_choc_v2_switch_solid(sx: float, sy: float, label: str) -> bd.Solid:
     """
     Constructs a Kailh Choc V2 (`CPG1353`) low-profile keyswitch housing solid:
-      1. Central PCB stem boss: Ø 3.16 mm in Main PCB Ø 3.40 mm NPTH hole (Z = -5.75..-4.18 mm)
+      1. Central PCB stem boss: Ø 4.80 mm in Main PCB Ø 5.00 mm NPTH hole (Z = -5.75..-4.18 mm)
       2. Switch plate body: 13.80 x 13.80 mm in Top Plate 14.00 x 14.00 mm cutout (Z = -4.18..-1.99 mm)
       3. Upper housing flange: 14.50 x 14.50 mm above Top Plate Z = -2.00 mm (Z = -1.99..-0.90 mm)
       4. North/South snap latches: 4.40 x 14.48 mm below Top Plate Z = -3.60 mm (Z = -4.18..-3.62 mm)
     """
     stem_boss = bd.Cylinder(
-        radius=1.58, height=1.57, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+        radius=2.40, height=1.57, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
     ).moved(bd.Location((sx, sy, -5.75)))
     with bd.BuildSketch(bd.Plane.XY.offset(-4.18)) as sk_body:
         with bd.Locations([(sx, sy)]):
@@ -563,11 +563,20 @@ def make_choc_v2_switch_solid(sx: float, sy: float, label: str) -> bd.Solid:
     return sw
 
 
-def make_keycap_solid(sx, sy, label="Keycap") -> bd.Solid:
-    with bd.BuildSketch(bd.Plane.XY.offset(-0.80)) as sk:
+def make_keycap_solid(sx: float, sy: float, label: str = "Keycap") -> bd.Solid:
+    """
+    Constructs a Choc V2 low-profile MX cross-stem 1u keycap solid (18.00 x 18.00 mm):
+      - Outer keycap skirt: Z = +1.30..+3.60 mm (so full 3.20 mm travel stops at Z = -1.90 mm above Top Plate Z = -2.00 mm)
+      - Central MX stem collar: Ø 5.50 mm at Z = -0.80..+1.30 mm above switch upper housing (Z = -0.90 mm)
+    """
+    with bd.BuildSketch(bd.Plane.XY.offset(1.30)) as sk:
         with bd.Locations([(sx, sy)]):
-            bd.RectangleRounded(17.2, 16.2, 1.5)
-    cap = bd.extrude(sk.sketch, amount=4.40).solids()[0]
+            bd.RectangleRounded(18.00, 18.00, 1.50)
+    skirt = bd.extrude(sk.sketch, amount=2.30)
+    stem_collar = bd.Cylinder(
+        radius=2.75, height=2.10, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+    ).moved(bd.Location((sx, sy, -0.80)))
+    cap = (skirt + stem_collar).solids()[0]
     cap.label = label
     return cap
 
@@ -870,6 +879,8 @@ def main():
             right_switches,
             [right_plate, right_pcb, right_case, cup_global] + right_keycaps + right_fasteners + wheel_cradle_screws,
         ),
+        max_group_overlap(left_keycaps, [left_plate, left_pcb, left_case]),
+        max_group_overlap(right_keycaps, [right_plate, right_pcb, right_case, cup_global, ball_global]),
     )
 
     max_ins_ov = max_group_overlap(
