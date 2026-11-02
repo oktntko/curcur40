@@ -10,6 +10,7 @@ import os
 import re
 import csv
 import json
+import math
 import tempfile
 import zipfile
 import subprocess
@@ -233,6 +234,113 @@ def verify_pcb_3d_step_models(board, pcb_path, proj_name, is_pmw=False):
     )
 
 
+def _pt_seg_dist(px: float, py: float, x1: float, y1: float, x2: float, y2: float) -> float:
+    dx, dy = x2 - x1, y2 - y1
+    l2 = dx * dx + dy * dy
+    if l2 <= 1e-12:
+        return math.hypot(px - x1, py - y1)
+    t = max(0.0, min(1.0, ((px - x1) * dx + (py - y1) * dy) / l2))
+    return math.hypot(px - (x1 + t * dx), py - (y1 + t * dy))
+
+
+def verify_screw_hole_copper_keepouts(board, proj_name: str, is_pmw: bool = False):
+    """
+    Verify M2 screw-head (F.Cu) and brass heat-set insert (B.Cu) copper keepout zones and clearances
+    around every Ø 2.40 mm Edge.Cuts mounting hole:
+      - Main PCBs (left/right): F.Cu >= 2.28 mm (Ø 4.56 mm, Rule Area r=2.30 mm), B.Cu >= 1.98 mm (Ø 3.96 mm, Rule Area r=2.00 mm)
+      - PMW3360 Sub-PCB:        F.Cu >= 1.98 mm (plastic cup ear side),           B.Cu >= 1.98 mm (brass insert side)
+    """
+    holes = []
+    for d in board.GetDrawings():
+        if d.GetLayer() == pcbnew.Edge_Cuts and d.GetShape() == pcbnew.SHAPE_T_CIRCLE:
+            r_mm = pcbnew.ToMM(d.GetRadius())
+            if 1.00 <= r_mm <= 1.50:
+                c = d.GetCenter()
+                holes.append((pcbnew.ToMM(c.x), pcbnew.ToMM(c.y)))
+    assert holes, f"[{proj_name}] Expected Edge.Cuts M2 screw holes, found 0!"
+
+    req_radii = {
+        pcbnew.F_Cu: 1.98 if is_pmw else 2.28,
+        pcbnew.B_Cu: 1.98,
+    }
+    problems = []
+
+    rule_zones = [z for z in board.Zones() if z.GetIsRuleArea()]
+    for hx, hy in holes:
+        for lid, min_r in req_radii.items():
+            lname = board.GetLayerName(lid)
+            matched_keepout = False
+            for z in rule_zones:
+                if not z.IsOnLayer(lid):
+                    continue
+                if not (
+                    z.GetDoNotAllowTracks()
+                    and z.GetDoNotAllowVias()
+                    and z.GetDoNotAllowPads()
+                    and z.GetDoNotAllowZoneFills()
+                ):
+                    continue
+                bb = z.GetBoundingBox()
+                zx, zy = pcbnew.ToMM(bb.GetCenter().x), pcbnew.ToMM(bb.GetCenter().y)
+                zr = 0.5 * min(pcbnew.ToMM(bb.GetWidth()), pcbnew.ToMM(bb.GetHeight()))
+                if math.hypot(zx - hx, zy - hy) <= 0.05 and zr >= min_r:
+                    matched_keepout = True
+                    break
+            if not matched_keepout:
+                problems.append(
+                    f"Hole ({hx:.4f}, {hy:.4f}) missing {lname} Rule Area keepout (r >= {min_r:.2f} mm)"
+                )
+
+        for t in board.GetTracks():
+            cls = t.GetClass()
+            if cls == "PCB_TRACK":
+                lid = t.GetLayer()
+                if lid not in req_radii:
+                    continue
+                min_r = req_radii[lid]
+                sx, sy = pcbnew.ToMM(t.GetStart().x), pcbnew.ToMM(t.GetStart().y)
+                ex, ey = pcbnew.ToMM(t.GetEnd().x), pcbnew.ToMM(t.GetEnd().y)
+                edge_d = _pt_seg_dist(hx, hy, sx, sy, ex, ey) - 0.5 * pcbnew.ToMM(t.GetWidth())
+                if edge_d < min_r:
+                    problems.append(
+                        f"Hole ({hx:.4f}, {hy:.4f}) {board.GetLayerName(lid)} track [{t.GetNetname()}] "
+                        f"at r={edge_d:.3f} mm < {min_r:.2f} mm"
+                    )
+            elif cls == "PCB_VIA":
+                vx, vy = pcbnew.ToMM(t.GetPosition().x), pcbnew.ToMM(t.GetPosition().y)
+                vr = 0.5 * pcbnew.ToMM(t.GetWidth(pcbnew.F_Cu))
+                for lid, min_r in req_radii.items():
+                    if t.IsOnLayer(lid):
+                        edge_d = math.hypot(vx - hx, vy - hy) - vr
+                        if edge_d < min_r:
+                            problems.append(
+                                f"Hole ({hx:.4f}, {hy:.4f}) {board.GetLayerName(lid)} via [{t.GetNetname()}] "
+                                f"at r={edge_d:.3f} mm < {min_r:.2f} mm"
+                            )
+
+        for fp in board.GetFootprints():
+            for pad in fp.Pads():
+                if pad.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH:
+                    continue
+                bb = pad.GetBoundingBox()
+                px1, py1 = pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop())
+                px2, py2 = pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom())
+                dx = max(px1 - hx, 0.0, hx - px2)
+                dy = max(py1 - hy, 0.0, hy - py2)
+                edge_d = math.hypot(dx, dy)
+                for lid, min_r in req_radii.items():
+                    if pad.IsOnLayer(lid) and edge_d < min_r:
+                        problems.append(
+                            f"Hole ({hx:.4f}, {hy:.4f}) {board.GetLayerName(lid)} pad {fp.GetReference()}.{pad.GetNumber()} "
+                            f"at r={edge_d:.3f} mm < {min_r:.2f} mm"
+                        )
+
+    assert not problems, (
+        f"[{proj_name}] Screw-hole copper keepout check FAILED ({len(problems)} issue(s)):\n  - "
+        + "\n  - ".join(problems)
+    )
+
+
 def verify_jlcpcb_preflight(
     pcb_path: str,
     proj_name: str,
@@ -364,6 +472,7 @@ def verify_jlcpcb_preflight(
 
     if not is_plate:
         verify_pcb_3d_step_models(board, pcb_path, proj_name, is_pmw=is_pmw)
+        verify_screw_hole_copper_keepouts(board, proj_name, is_pmw=is_pmw)
 
     # Verify Gerber ZIP contents
     with zipfile.ZipFile(zip_path, "r") as zf:
