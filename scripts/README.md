@@ -26,7 +26,7 @@
 
 ---
 
-## 2. スクリプト一覧と実行方法（全10本）
+## 2. スクリプト一覧と実行方法（全11本）
 
 ### ① 3D CAD 生成スクリプト（`cadgen` / `build123d` 環境で実行）
 ```powershell
@@ -53,3 +53,4 @@ $KICAD_PY = "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\python.exe"
 | **[`generate_spec_diagrams.py`](./generate_spec_diagrams.py)** | `docs/assets/` 配下のスタックアップ断面図・コンパクト $\varnothing 5.20\text{ mm}$ フラットインサートボス＆統一 `M2×6mm` 締結図・トラックボールカップ詳細図面・**組み立て時の工具サイズ制限＆配線ガイド（`assembly_tool_clearance_guide.png`）** 等の解説図版 PNG を生成します（`uvx --from "cadgen==0.7.26" --with matplotlib --with pillow python` で実行）。 |
 | **[`generate_inertia_wheel_diagram.py`](./generate_inertia_wheel_diagram.py)** | アンダープレート一体軸パッシブ磁気慣性ホイールの3Dプレビュー画像（`render_inertia_wheel_flywheel.png`, `render_inertia_wheel_module.png`, `render_curcur40_right_wheel.png`）、部品構成・組立ビジュアルガイド（`inertia_wheel_parts_guide.png`）、`#01`〜`#12` 全番号入り断面・機構解説図版（`passive_inertia_wheel_spec.png`）、および **小学生でもわかる3つのしくみ図解（`inertia_wheel_easy_guide.png`）** を生成します（`uvx --from "cadgen==0.7.26" --with matplotlib --with pillow python` で実行）。 |
 | **[`render_previews.py`](./render_previews.py)** | `docs/assets/render_*.png` および `trackball_cup*.png`（フルアセンブリ表裏斜視・全3基板・左右トッププレート・トラックボールカップの3Dレンダリング画像）を一括更新します。 |
+| **[`render_assembly_video.py`](./render_assembly_video.py)** | トラックボールユニット組立 → アンダープレート慣性ホイール組立 → 密閉ボトムケース（白）・PCB（黒）・トッププレート（黒）・Choc V2 スイッチ40個・キーキャップ（白）40個・25mmボールの積み上げ工程を再現した **1080p 60fps PBR 3D組み立てアニメーション動画（`docs/assets/assembly_animation.mp4`）** を生成します（`uvx --from "cadgen==0.7.26" --with pyvista --with imageio-ffmpeg --with pillow python` で実行）。 |
