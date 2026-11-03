@@ -34,11 +34,11 @@
 | :--- | :--- |
 | **[ビルドガイド (`docs/buildguide_jp.md`)](./docs/buildguide_jp.md)** | 必要パーツ一覧（BOM）、JLCPCB / JLC3DP / JLCCNC 発注手順、真鍮ヒートセットインサート圧入、慣性ホイール＆トラックボール組立、ファームウェア書き込み手順 |
 | **[購入部材・製造委託パーツリファレンス (`docs/parts_spec.md`)](./docs/parts_spec.md)** | ベアリング（`DDL-520ZZ`）・磁石（`D4×1mm`, `NE280`）・静音スイッチ・真鍮インサート・統一 `M2×6mm` ネジ・委託造形品の確定型番と購入先URL一覧 |
-| **[ケース・機構設計仕様書 (`docs/case_spec.md`)](./docs/case_spec.md)** | Z軸スタックアップ定義、19箇所真鍮ヒートセットインサート＋統一 `M2×6.0mm` ネジ締結仕様、USB-C内壁基板受け棚、100%密閉底面ケース、トラックボールカップ＆光学距離（$2.40\,\text{mm}$）仕様 |
+| **[ケース・機構設計仕様書 (`docs/case_spec.md`)](./docs/case_spec.md)** | Z軸スタックアップ定義、19箇所真鍮ヒートセットインサート＋統一 `M2×6.0mm` ネジ締結仕様、USB-C内壁基板受け棚、100%密閉底面ケース、トラックボールカップ＆光学距離（$2.40\,\text{mm}$）仕様、持ち運び用スナップイン・キャリングフレーム仕様 |
 | **[PCB・回路図設計仕様書 (`docs/pcb_spec.md`)](./docs/pcb_spec.md)** | 全3基板（`left`, `right`, `pmw3360`）の回路構成、オンボード3Dホール `rU6` (`TMAG5273`) ＆ `rEXSW1` 仕様、RP2040 GPIO ピンアサイン表、DRC/ERC 検証基準 |
 | **[パッシブ磁気慣性ホイール設計仕様書 (`docs/passive_inertia_wheel_spec.md`)](./docs/passive_inertia_wheel_spec.md)** | **小学生でもわかる「3つのしくみ」図解**、幅 $6.50\,\text{mm}$ 一体軸 `45# Steel` ホイールの物理設計、接着剤ゼロ磁気デテント＆Cクリップシーソー中クリック機構、6自由度拘束検証、`XZX` 3Dホール角度復調アルゴリズム |
 | **[さわって動かせる！3つのしくみインタラクティブ図解 (`docs/wheel_mechanism_guide.html`)](./docs/wheel_mechanism_guide.html)** | ブラウザでオフライン動作する体験型 HTML ガイド（ホイールのフリック高速スピン、ノッチ調整ネジスライダー、Cクリップシーソー中クリックを実際に操作可能） |
-| **[生成スクリプト一覧 (`scripts/README.md`)](./scripts/README.md)** | 3Dモデル（ケース・カップ・慣性ホイール・フルアセンブリ）、トッププレート、JLCPCB 発注データ、図版・プレビュー画像・3D組み立てアニメーション動画の再現生成スクリプト（全11本）の説明 |
+| **[生成スクリプト一覧 (`scripts/README.md`)](./scripts/README.md)** | 3Dモデル（ケース・カップ・慣性ホイール・キャリングフレーム・フルアセンブリ）、トッププレート、JLCPCB 発注データ、図版・プレビュー画像・3D組み立てアニメーション動画の再現生成スクリプト（全12本）の説明 |
 
 ---
 
@@ -125,6 +125,19 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）、`cadgen` 3D CAD レンダラ
 
 ---
 
+### 6. 持ち運び用スナップイン・キャリングフレーム（オプション：`carrying-frame.step` / `carrying-assembly.step`）
+- **最小サイズ互い違いウェッジ相殺（$137.27 \times 100.31 \times 59.92\,\text{mm}$）**: 左右ケースの $7.47^\circ$ ビルトインテンティング傾斜を互い違いの向き（左手を $X$ 軸まわりに $180^\circ$ 反転）で対面させて完全に相殺し、$\varnothing 8 \times 2\,\text{mm}$ ゴム足込みでも均一厚み $59.92\,\text{mm}$（素ケース厚 $55.92\,\text{mm}$）のコンパクトな平行直方体ブロックとしてはめ合わせます。
+- **25mm トラックボール装着＆底面ゴム足のままワンタッチ着脱**: ネジ・マグネット・ゴムバンド等の別部品を一切使わない **1ピース `PA12` ナイロン一体造形（`carrying-frame.step`, 体積 $43.29\,\text{cm}^3$）**。25mm ボール周囲を非接触 $0.58\,\text{mm}$ クリアランスで囲うハローキーパー（落下衝撃時の浮き上がりを $+0.73\,\text{mm}$ 以下に制限）、全4箇所の USB-C 防塵シャッター、L字欠き保護シールドを備え、親指側ツメ引っ掛け＋小指側パドルラッチで片手1秒で着脱できます。
+
+| キャリングフレーム単体 (`cases/carrying-frame.step`) | 収納フルアセンブリ 斜視図 (`cases/assemblies/carrying-assembly.step`) |
+| :---: | :---: |
+| ![Carrying Frame Isometric](./docs/assets/render_carrying_frame_iso.png) | ![Carrying Assembly Isometric](./docs/assets/render_carrying_assembly_iso.png) |
+
+#### 正面図（7.47°テンティング傾斜が相殺され上下平行に整列した収納状態・ゴム足接地）
+![Carrying Assembly Front](./docs/assets/render_carrying_assembly_front.png)
+
+---
+
 ## リポジトリ構成と発注用データ (Repository Structure & Production Files)
 
 ```text
@@ -135,14 +148,16 @@ curcur40/
 │   ├── right.step / right.stl    # 右手密閉底面ボトムケース（トッププレート水平基準）
 │   ├── right-desk.step / .stl    # 右手密閉底面ボトムケース（ケース外底面＝デスク水平基準・JLC3DP推奨）
 │   ├── trackball-cup.step / .stl # 25mmトラックボール用スナップインカップ（2.0mmフラット固定耳）
+│   ├── carrying-frame.step / .stl # 【オプション】持ち運び用1ピース・スナップイン・キャリングフレーム (JLC3DP PA12)
 │   ├── inertia_wheel/            # アンダープレート一体軸慣性ホイール実部品 4種
 │   │   ├── steel-flywheel.step/.stl  # #01 1ピース一体軸 45# Steel + 無電解Ni ホイール (JLCCNC)
 │   │   ├── magnet-holder.step/.stl   # #02 接着剤ゼロ D4×1mm 磁石ホルダー (JLC3DP PA12)
 │   │   ├── wheel-rocker.step/.stl    # #03 一体トラニオン軸シーソーロッカー (JLC3DP PA12)
 │   │   └── wheel-cradle.step/.stl    # #04 Cクリップスナップインヒンジ付アンダーPCBクレードル (JLC3DP PA12)
-│   └── assemblies/               # 光学距離・干渉・クリアランス検証用アセンブリモデル 7種 (STEP / STL)
+│   └── assemblies/               # 光学距離・干渉・クリアランス検証用アセンブリモデル 8種 (STEP / STL)
 │       ├── assembly-full.step                    # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（トッププレート水平基準）
 │       ├── assembly-full-desk.step               # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（ケース底面＝デスク面 Z=0 基準）
+│       ├── carrying-assembly.step                # キャリングフレーム収納フルアセンブリ（全685ソリッド・ゴム足10個統合）
 │       ├── curcur40-right-wheel-assembly.step    # 右手＋KiCad実3D部品＋アンダープレート慣性ホイール検証アセンブリ（349ソリッド）
 │       ├── inertia-wheel-assembly.step           # アンダープレート慣性ホイール機構単体アセンブリ（14パーツ）
 │       ├── trackball-cup-with-ball.step/.stl     # カップ＋25mm球＋光学基準点アセンブリ
@@ -165,7 +180,7 @@ curcur40/
 │   ├── passive_inertia_wheel_spec.md
 │   ├── wheel_mechanism_guide.html
 │   └── assets/
-└── scripts/                      # 3Dモデル・プレート・JLCPCBデータ・プレビュー画像の公式生成スクリプト群（10本）
+└── scripts/                      # 3Dモデル・プレート・JLCPCBデータ・プレビュー画像の公式生成スクリプト群（12本）
 ```
 
 ---
