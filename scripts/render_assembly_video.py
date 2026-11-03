@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Render a 1080p 60fps PBR 3D assembly animation video (`docs/assets/assembly_animation.mp4`)
-for curcur40 (`prototype/passive-inertia-wheel`), following the real build guide assembly flow:
+and an inline-looping animated WebP (`docs/assets/assembly_animation.webp`) for curcur40,
+following the real build guide assembly flow:
 
   Stage 1: Trackball Sub-Assembly (Sensor PCB + PMW3360 + LM19-LSI Lens + Cup + 3x Ceramic Balls)
   Stage 2: Under-Plate Passive Magnetic Inertia Wheel Sub-Assembly
@@ -22,6 +23,7 @@ from __future__ import annotations
 import argparse
 import math
 import os
+import subprocess
 import sys
 import time
 from dataclasses import dataclass
@@ -40,6 +42,7 @@ if str(WORKSPACE / "scripts") not in sys.path:
 CASES_DIR = WORKSPACE / "cases"
 ASSEMBLIES_DIR = CASES_DIR / "assemblies"
 DEFAULT_OUT_MP4 = WORKSPACE / "docs" / "assets" / "assembly_animation.mp4"
+DEFAULT_OUT_WEBP = WORKSPACE / "docs" / "assets" / "assembly_animation.webp"
 
 from generate_full_assembly import (  # noqa: E402
     LEFT_PERIMETER_HOLES_PCB,
@@ -1307,12 +1310,51 @@ def render_full_video(out_mp4: Path, width: int, height: int, fps: int):
         pl.close()
 
     size_mb = out_mp4.stat().st_size / (1024.0 * 1024.0)
-    print(f"[3/3] Successfully wrote {out_mp4} ({size_mb:.2f} MB)!")
+    print(f"[3/4] Successfully wrote {out_mp4} ({size_mb:.2f} MB)!")
+
+
+def export_inline_webp(
+    src_mp4: Path,
+    out_webp: Path,
+    width: int = 960,
+    fps: int = 20,
+    quality: int = 75,
+):
+    assert src_mp4.exists(), f"Source MP4 not found: {src_mp4}"
+    out_webp.parent.mkdir(parents=True, exist_ok=True)
+    ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
+    vf = f"fps={fps},scale={width}:-1:flags=lanczos"
+    print(f"[4/4] Encoding inline animated WebP ({width}w @ {fps}fps, q={quality}) -> {out_webp} ...")
+    cmd = [
+        ffmpeg_exe,
+        "-y",
+        "-i",
+        str(src_mp4),
+        "-vf",
+        vf,
+        "-c:v",
+        "libwebp_anim",
+        "-lossless",
+        "0",
+        "-compression_level",
+        "4",
+        "-q:v",
+        str(quality),
+        "-loop",
+        "0",
+        "-an",
+        str(out_webp),
+    ]
+    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+    webp_mb = out_webp.stat().st_size / (1024.0 * 1024.0)
+    print(f"      Successfully wrote {out_webp} ({webp_mb:.2f} MB)!")
 
 
 def main():
     parser = argparse.ArgumentParser(description="Render curcur40 3D PBR assembly animation video.")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUT_MP4, help="Output MP4 file path")
+    parser.add_argument("--webp-output", type=Path, default=DEFAULT_OUT_WEBP, help="Output animated WebP file path")
+    parser.add_argument("--webp-only", action="store_true", help="Convert existing MP4 to animated WebP without re-rendering 3D")
     parser.add_argument("--width", type=int, default=1920, help="Video width in pixels (even)")
     parser.add_argument("--height", type=int, default=1080, help="Video height in pixels (even)")
     parser.add_argument("--fps", type=int, default=60, help="Frames per second")
@@ -1326,8 +1368,11 @@ def main():
 
     if args.preview_dir is not None:
         render_preview_keyframes(args.preview_dir, args.width, args.height)
+    elif args.webp_only:
+        export_inline_webp(args.output, args.webp_output)
     else:
         render_full_video(args.output, args.width, args.height, args.fps)
+        export_inline_webp(args.output, args.webp_output)
 
 
 if __name__ == "__main__":
