@@ -4,7 +4,11 @@
 
 ![curcur40 全体プレビュー（斜視）](./assets/render_full_assembly_iso.png)
 
-> 🎬 **全体の組み立てイメージ動画**: トラックボール・慣性ホイールのサブ組立からケース・PCB・トッププレート・スイッチ・キーキャップの積み上げまでを通しで確認できる **[3D 組み立てアニメーション動画 (`docs/assets/assembly_animation.mp4`)](./assets/assembly_animation.mp4)** もあわせてご覧ください。
+### 🎬 3D 組み立てアニメーション（全体フロー）
+
+[![curcur40 3D 組み立てアニメーション](./assets/assembly_animation.webp)](./assets/assembly_animation.mp4)
+
+> トラックボール・慣性ホイールのサブ組立からケース・PCB・トッププレート・スイッチ・キーキャップの積み上げまでを通しで確認できます（クリックでフル画質 1080p 60fps 動画 [`docs/assets/assembly_animation.mp4`](./assets/assembly_animation.mp4) を開きます）。
 
 | 上面ビュー（トッププレート・キー配列・カバー不要ホイール） | 底面ビュー（100% 密閉・ネジ穴＆ザグリ穴ゼロのフラット底面） |
 | :---: | :---: |
