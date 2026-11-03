@@ -69,6 +69,8 @@
 - **25mm 交換用トラックボール球**（1個）：Perixx `PERIPRO-303`（25mm 艶あり赤 / 緑 / 黄 等、Amazon 等で購入可能）
 - **$\varnothing 2.0\,\text{mm}$ セラミックボール（$\text{ZrO}_2$ 酸化ジルコニウム G5 等級）**（3個）：トラックボールカップ支持球用（UXCELL / Amazon / AliExpress 等）
 - **光学センサー `PMW3360DM-T2QU` ＋ 純正レンズ `LM19-LSI` セット**（1セット）：AliExpress / 遊舎工房等
+  - **公式データシート（PixArt Imaging Inc.）**: https://www.pixart.com/_getfs.php?tb=product&id=10&fs=ck2_fs_en （製品ページ：https://www.pixart.com/products-detail/10/PMW3360DM-T2QU ）
+  - ※データシート PDF は無断転載禁止のためリポジトリへコミットせず、AI エージェントや設計確認時は上記 PixArt 公式ダウンロード URL から直接参照してください。
 - **JST SH 1.0mm ピッチ 6ピン 両端ハーネス（`SHR-06V-S-B` ハウジング・両端同方向フラット結線、長さ `100mm`）**（1本）：右メイン基板 `rJ3` ⇔ トラックボールセンサー基板 `J1` 接続用（[スイッチサイエンス `#9142`（Pimoroni JST-SH 6P 100mm）](https://www.switch-science.com/products/9142?variant=42749692149958) 等で既製品購入可・圧着作業不要。組み込み時は余長ループを南東側の `rSW8`/`rSW9` 下の広い空間へ寄せてカプトンテープ等で軽く留め、北側の回転ホイールから離します）
 
 ### 1-8. キースイッチ・キーキャップ（Kailh Choc V2 専用）
