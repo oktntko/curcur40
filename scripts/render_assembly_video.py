@@ -371,6 +371,7 @@ class AnimPart:
         )
         self._visible = True
         self._last_opacity = mat.opacity
+        self._backface_culled = False
 
     def update(self, matrix: np.ndarray, alpha: float = 1.0):
         a = clamp01(alpha)
@@ -379,13 +380,20 @@ class AnimPart:
                 self.actor.SetVisibility(False)
                 self._visible = False
             return
+        if a >= 0.999:
+            a = 1.0
         if not self._visible:
             self.actor.SetVisibility(True)
             self._visible = True
-        target_op = self.base_opacity * a
-        if abs(target_op - self._last_opacity) > 1e-3:
+        target_op = self.base_opacity if a >= 1.0 else (self.base_opacity * a)
+        if target_op != self._last_opacity:
             self.actor.prop.opacity = target_op
             self._last_opacity = target_op
+        if self.base_opacity >= 1.0:
+            want_cull = target_op < 1.0
+            if want_cull != self._backface_culled:
+                self.actor.GetProperty().SetBackfaceCulling(want_cull)
+                self._backface_culled = want_cull
         self.actor.user_matrix = matrix
 
 
