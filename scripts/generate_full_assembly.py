@@ -25,6 +25,7 @@ and verify zero B-rep interference + minimum clearances across all components pe
     - 1x Glue-Free Detent Adjuster (in Wheel Rocker South Boss, adjusting Ø 2.0x2.0 mm axial NdFeB magnet gap)
 - Under-Plate 1-Piece Integral-Shaft Passive Inertia Scroll Wheel (`steel-flywheel`, `magnet-holder`, `wheel-rocker`, `wheel-cradle`)
 """
+import functools
 import math
 import os
 import re
@@ -536,6 +537,23 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
     return solid
 
 
+@functools.lru_cache(maxsize=1)
+def _base_choc_v2_switch_solid() -> bd.Solid:
+    stem_boss = bd.Cylinder(
+        radius=2.40, height=1.57, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+    ).moved(bd.Location((0.0, 0.0, -5.75)))
+    with bd.BuildSketch(bd.Plane.XY.offset(-4.18)) as sk_body:
+        bd.RectangleRounded(13.80, 13.80, 0.45)
+    body = bd.extrude(sk_body.sketch, amount=2.19)
+    with bd.BuildSketch(bd.Plane.XY.offset(-1.99)) as sk_flange:
+        bd.RectangleRounded(14.50, 14.50, 0.50)
+    flange = bd.extrude(sk_flange.sketch, amount=1.09)
+    latch = bd.Box(
+        4.40, 14.48, 0.56, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+    ).moved(bd.Location((0.0, 0.0, -4.18)))
+    return (stem_boss + body + flange + latch).solids()[0]
+
+
 def make_choc_v2_switch_solid(sx: float, sy: float, label: str) -> bd.Solid:
     """
     Constructs a Kailh Choc V2 (`CPG1353`) low-profile keyswitch housing solid:
@@ -543,24 +561,22 @@ def make_choc_v2_switch_solid(sx: float, sy: float, label: str) -> bd.Solid:
       2. Switch plate body: 13.80 x 13.80 mm in Top Plate 14.00 x 14.00 mm cutout (Z = -4.18..-1.99 mm)
       3. Upper housing flange: 14.50 x 14.50 mm above Top Plate Z = -2.00 mm (Z = -1.99..-0.90 mm)
       4. North/South snap latches: 4.40 x 14.48 mm below Top Plate Z = -3.60 mm (Z = -4.18..-3.62 mm)
+    Shares a single canonical OpenCascade TShape across all switch instances.
     """
-    stem_boss = bd.Cylinder(
-        radius=2.40, height=1.57, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-    ).moved(bd.Location((sx, sy, -5.75)))
-    with bd.BuildSketch(bd.Plane.XY.offset(-4.18)) as sk_body:
-        with bd.Locations([(sx, sy)]):
-            bd.RectangleRounded(13.80, 13.80, 0.45)
-    body = bd.extrude(sk_body.sketch, amount=2.19)
-    with bd.BuildSketch(bd.Plane.XY.offset(-1.99)) as sk_flange:
-        with bd.Locations([(sx, sy)]):
-            bd.RectangleRounded(14.50, 14.50, 0.50)
-    flange = bd.extrude(sk_flange.sketch, amount=1.09)
-    latch = bd.Box(
-        4.40, 14.48, 0.56, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-    ).moved(bd.Location((sx, sy, -4.18)))
-    sw = (stem_boss + body + flange + latch).solids()[0]
+    sw = bd.Solid(_base_choc_v2_switch_solid().wrapped.Moved(bd.Location((sx, sy, 0.0)).wrapped))
     sw.label = label
     return sw
+
+
+@functools.lru_cache(maxsize=1)
+def _base_keycap_solid() -> bd.Solid:
+    with bd.BuildSketch(bd.Plane.XY.offset(1.30)) as sk:
+        bd.RectangleRounded(18.00, 18.00, 1.50)
+    skirt = bd.extrude(sk.sketch, amount=2.30)
+    stem_collar = bd.Cylinder(
+        radius=2.75, height=2.10, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+    ).moved(bd.Location((0.0, 0.0, -0.80)))
+    return (skirt + stem_collar).solids()[0]
 
 
 def make_keycap_solid(sx: float, sy: float, label: str = "Keycap") -> bd.Solid:
@@ -568,39 +584,44 @@ def make_keycap_solid(sx: float, sy: float, label: str = "Keycap") -> bd.Solid:
     Constructs a Choc V2 low-profile MX cross-stem 1u keycap solid (18.00 x 18.00 mm):
       - Outer keycap skirt: Z = +1.30..+3.60 mm (so full 3.20 mm travel stops at Z = -1.90 mm above Top Plate Z = -2.00 mm)
       - Central MX stem collar: Ø 5.50 mm at Z = -0.80..+1.30 mm above switch upper housing (Z = -0.90 mm)
+    Shares a single canonical OpenCascade TShape across all keycap instances.
     """
-    with bd.BuildSketch(bd.Plane.XY.offset(1.30)) as sk:
-        with bd.Locations([(sx, sy)]):
-            bd.RectangleRounded(18.00, 18.00, 1.50)
-    skirt = bd.extrude(sk.sketch, amount=2.30)
-    stem_collar = bd.Cylinder(
-        radius=2.75, height=2.10, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-    ).moved(bd.Location((sx, sy, -0.80)))
-    cap = (skirt + stem_collar).solids()[0]
+    cap = bd.Solid(_base_keycap_solid().wrapped.Moved(bd.Location((sx, sy, 0.0)).wrapped))
     cap.label = label
     return cap
+
+
+@functools.lru_cache(maxsize=1)
+def _base_m2_insert_solid() -> bd.Solid:
+    return (
+        bd.Cylinder(radius=1.41, height=2.98, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX))
+        - bd.Cylinder(radius=1.02, height=3.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)).moved(
+            bd.Location((0, 0, 0.10))
+        )
+    ).solids()[0]
+
+
+@functools.lru_cache(maxsize=1)
+def _base_m2x6_screw_solid() -> bd.Solid:
+    head = bd.Cylinder(
+        radius=1.90, height=1.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
+    )
+    shank = bd.Cylinder(
+        radius=0.98, height=6.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)
+    )
+    return (head + shank).solids()[0]
 
 
 def make_insert_and_screw(sx: float, sy: float, z_ins_top: float, z_screw_seat: float, tag: str):
     """
     Build 1x M2 x L=3.0 mm Brass Heat-Set Insert + 1x Top-Down M2 x 6.0 mm Screw
     with nominal clearance radii so B-rep overlap_volume == 0.00000000 mm^3.
+    Shares canonical OpenCascade TShapes across all insert and screw instances.
     """
-    ins = (
-        bd.Cylinder(radius=1.41, height=2.98, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX))
-        - bd.Cylinder(radius=1.02, height=3.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)).moved(
-            bd.Location((0, 0, 0.10))
-        )
-    ).moved(bd.Location((sx, sy, z_ins_top))).solids()[0]
+    ins = bd.Solid(_base_m2_insert_solid().wrapped.Moved(bd.Location((sx, sy, z_ins_top)).wrapped))
     ins.label = f"HeatSet_Insert_M2_{tag}"
 
-    head = bd.Cylinder(
-        radius=1.90, height=1.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
-    ).moved(bd.Location((sx, sy, z_screw_seat)))
-    shank = bd.Cylinder(
-        radius=0.98, height=6.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX)
-    ).moved(bd.Location((sx, sy, z_screw_seat)))
-    scr = (head + shank).solids()[0]
+    scr = bd.Solid(_base_m2x6_screw_solid().wrapped.Moved(bd.Location((sx, sy, z_screw_seat)).wrapped))
     scr.label = f"Top_Screw_M2x6_{tag}"
     return ins, scr
 
