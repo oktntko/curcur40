@@ -109,7 +109,9 @@ JLC3DP（[https://jlc3dp.com/](https://jlc3dp.com/)）にて、以下の **6フ�
 | **④ `#02` ホイール用マグネットホルダー** | **1個** | [magnet-holder.step](../cases/inertia_wheel/magnet-holder.step) | [magnet-holder.stl](../cases/inertia_wheel/magnet-holder.stl) | **MJF (PA12)** / **SLS (PA12)** |
 | **⑤ `#03` ホイール用シーソーロッカー** | **1個** | [wheel-rocker.step](../cases/inertia_wheel/wheel-rocker.step) | [wheel-rocker.stl](../cases/inertia_wheel/wheel-rocker.stl) | **MJF (PA12)** / **SLS (PA12)** |
 | **⑥ `#04` ホイール用アンダーPCBクレードル** | **1個** | [wheel-cradle.step](../cases/inertia_wheel/wheel-cradle.step) | [wheel-cradle.stl](../cases/inertia_wheel/wheel-cradle.stl) | **MJF (PA12)** / **SLS (PA12)** |
-| **（任意）持ち運び用キャリングフレーム** | **1個** | [carrying-frame.step](../cases/carrying-frame.step) | [carrying-frame.stl](../cases/carrying-frame.stl) | **MJF (PA12)** / **SLS (PA12)** |
+| **（任意・案A）持ち運び用オープンフレーム** | **1個** | [carrying-frame.step](../cases/carrying-frame.step) | [carrying-frame.stl](../cases/carrying-frame.stl) | **MJF (PA12)** / **SLS (PA12)** |
+| **（任意・案B）持ち運び用スライドボックス本体** | **1個** | [carrying-box.step](../cases/carrying-box.step) | [carrying-box.stl](../cases/carrying-box.stl) | **MJF (PA12)** / **SLS (PA12)** |
+| **（任意・案B用）スライドボックス着脱フタ** | **1個** | [carrying-box-lid.step](../cases/carrying-box-lid.step) | [carrying-box-lid.stl](../cases/carrying-box-lid.stl) | **MJF (PA12)** / **SLS (PA12)** |
 
 ### ② JLCCNC（1ピース一体軸フライホイール CNC 切削：1個）
 JLCCNC（[https://jlccnc.com/](https://jlccnc.com/) — JLCPCB / JLC3DP と共通アカウント）で、1ピース一体軸ホイールを金属切削で発注します。

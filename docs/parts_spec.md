@@ -90,7 +90,7 @@
 > [!IMPORTANT]
 > ホイールの外周24溝で磁気デテント（ノッチ感）を発生させるため、材質は必ず強磁性の **`45# Steel`（S45C 炭素鋼）** を選択してください（アルミや SUS304 オーステナイトステンレスは非磁性のため磁気デテントが働きません）。また炭素鋼の防錆と滑らかな触感のため、表面処理で **無電解ニッケルめっき（Electroless Nickel Plating）** を指定することを推奨します。
 
-### 2-2. 3D プリント造形（JLC3DP）：必須 6種（＋オプション 1種）
+### 2-2. 3D プリント造形（JLC3DP）：必須 6種（＋持ち運び用オプション 案A／案B）
 すべてのヒートセットインサート圧入部（下穴 $\varnothing 2.85\,\text{mm}$）の耐熱性・靭性・寸法精度およびスナップラッチの弾性を両立するため、**MJF（`PA12-HP Nylon`）または SLS（`PA12` / `PA11` ナイロン）** を推奨します。
 
 | ファイルパス | 推奨方式・材質 | 数量 | 役割・仕様 |
@@ -101,7 +101,9 @@
 | [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（東側 $\varnothing 2.00\,\text{mm}$ D穴圧入、$\varnothing 5.72 \times 2.05\,\text{mm}$） |
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・西キーパータブ・南ラチェットボス） |
 | [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定クレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |
-| [`cases/carrying-frame.step`](../cases/carrying-frame.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】持ち運び用スナップイン・キャリングフレーム**（ネジ・別部品ゼロの1ピース一体造形、全4箇所 USB-C マグネット端子 `CIO-SLMG-T-C`・25mm球・ゴム足装着のまま両側パドルラッチへ押し込み収納、外寸 $144.76 \times 100.31 \times 59.22\,\text{mm}$・体積 $44.79\,\text{cm}^3$） |
+| [`cases/carrying-frame.step`](../cases/carrying-frame.step) | MJF / SLS `PA12` | 1（任意） | **【オプション・案A】持ち運び用スナップイン・オープンフレーム**（1ピース一体造形、全4箇所 `CIO-SLMG-T-C`・25mm球・ゴム足装着のまま真上から両側パドルラッチへ押し込み収納、外寸 $144.76 \times 100.31 \times 59.22\,\text{mm}$・体積 $44.79\,\text{cm}^3$） |
+| [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション・案B】持ち運び用 5面フルカバー・スライド差し込みボックス**（フタなし単体でも入口クリックストッパーで保持、ゴム足空中フローティング Cレール・中央ディバイダ TB キーパー・全4箇所 `CIO-SLMG-T-C` 開放、外寸 $143.00 \times 100.65 \times 65.42\,\text{mm}$・体積 $118.10\,\text{cm}^3$） |
+| [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション・案B用フタ】スライドボックス用ツライチ着脱スナップフタ**（`carrying-box` 北口へ装着して 6面フルボックス化するキャップ、北 `rJ1` `CIO-SLMG-T-C` 窓付き・幅＆高さ増加ゼロ、造形サイズ $143.00 \times 65.42 \times 18.00\,\text{mm}$・体積 $21.15\,\text{cm}^3$） |
 
 ### 2-3. 基板製造・PCBA 実装（JLCPCB）：計 5種（すべて板厚 `1.6mm` 標準 FR-4）
 - **PCBA 実装基板（3種）**: `curcur40-left`, `curcur40-right`（裏面 `B.Cu` に 3D ホールセンサー `rU6: TMAG5273A1QDBVR` LCSC `C3716049` 自動実装済み！）, `curcur40-pmw3360`
