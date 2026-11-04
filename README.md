@@ -126,14 +126,14 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）、`cadgen` 3D CAD レンダラ
 ---
 
 ### 6. 持ち運び用スナップイン・キャリングフレーム（オプション：`carrying-frame.step` / `carrying-assembly.step`）
-- **最小サイズ互い違いウェッジ相殺（$137.27 \times 100.31 \times 59.92\,\text{mm}$）**: 左右ケースの $7.47^\circ$ ビルトインテンティング傾斜を互い違いの向き（左手を $X$ 軸まわりに $180^\circ$ 反転）で対面させて完全に相殺し、$\varnothing 8 \times 2\,\text{mm}$ ゴム足込みでも均一厚み $59.92\,\text{mm}$（素ケース厚 $55.92\,\text{mm}$）のコンパクトな平行直方体ブロックとしてはめ合わせます。
-- **25mm トラックボール装着＆底面ゴム足のままワンタッチ着脱**: ネジ・マグネット・ゴムバンド等の別部品を一切使わない **1ピース `PA12` ナイロン一体造形（`carrying-frame.step`, 体積 $43.29\,\text{cm}^3$）**。25mm ボール周囲を非接触 $0.58\,\text{mm}$ クリアランスで囲うハローキーパー（落下衝撃時の浮き上がりを $+0.73\,\text{mm}$ 以下に制限）、全4箇所の USB-C 防塵シャッター、L字欠き保護シールドを備え、親指側ツメ引っ掛け＋小指側パドルラッチで片手1秒で着脱できます。
+- **最小厚み互い違いウェッジ相殺（均一厚み $59.92\,\text{mm}$）**: 左右ケースの $7.47^\circ$ ビルトインテンティング傾斜を互い違いの向き（左手を $X$ 軸まわりに $180^\circ$ 反転）で対面させて完全に相殺し、$\varnothing 8 \times 2\,\text{mm}$ ゴム足 10 個および全 4 箇所の USB-C マグネット端子（`CIO-SLMG-T-C`）を装着したまま **$144.76 \times 103.51 \times 59.92\,\text{mm}$**（素ケース厚 $55.92\,\text{mm}$）の平行直方体ブロックとしてはめ合わせます。
+- **全4箇所 USB-C マグネット端子常時装着対応 ＆ 両側パドルラッチで押し込みロック**: ネジ・マグネット・ゴムバンド等の別部品を一切使わない **1ピース `PA12` ナイロン一体造形（`carrying-frame.step`, 外寸 $144.76 \times 100.31 \times 59.22\,\text{mm}$, 体積 $44.79\,\text{cm}^3$）**。全4箇所の USB-C ポート周りを幅 $18.0\,\text{mm}$ のオープン U字切り欠きで完全開放しており、`CIO-SLMG-T-C` を付けっぱなしのまま真上から押し込むだけで親指側・小指側の両側カンチレバー・パドルラッチが「カチッ」とロックします（25mm ボール非接触ハローキーパー＆L字欠き保護シールド内蔵）。
 
 | キャリングフレーム単体 (`cases/carrying-frame.step`) | 収納フルアセンブリ 斜視図 (`cases/assemblies/carrying-assembly.step`) |
 | :---: | :---: |
 | ![Carrying Frame Isometric](./docs/assets/render_carrying_frame_iso.png) | ![Carrying Assembly Isometric](./docs/assets/render_carrying_assembly_iso.png) |
 
-#### 正面図（7.47°テンティング傾斜が相殺され上下平行に整列した収納状態・ゴム足接地）
+#### 正面図（7.47°テンティング傾斜が相殺され上下平行に整列した収納状態・USB-Cマグネット端子開放＆ゴム足接地）
 ![Carrying Assembly Front](./docs/assets/render_carrying_assembly_front.png)
 
 ---
@@ -157,7 +157,7 @@ curcur40/
 │   └── assemblies/               # 光学距離・干渉・クリアランス検証用アセンブリモデル 8種 (STEP / STL)
 │       ├── assembly-full.step                    # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（トッププレート水平基準）
 │       ├── assembly-full-desk.step               # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（ケース底面＝デスク面 Z=0 基準）
-│       ├── carrying-assembly.step                # キャリングフレーム収納フルアセンブリ（全685ソリッド・ゴム足10個統合）
+│       ├── carrying-assembly.step                # キャリングフレーム収納フルアセンブリ（全689ソリッド・ゴム足10個＆CIO端子4個統合）
 │       ├── curcur40-right-wheel-assembly.step    # 右手＋KiCad実3D部品＋アンダープレート慣性ホイール検証アセンブリ（349ソリッド）
 │       ├── inertia-wheel-assembly.step           # アンダープレート慣性ホイール機構単体アセンブリ（14パーツ）
 │       ├── trackball-cup-with-ball.step/.stl     # カップ＋25mm球＋光学基準点アセンブリ
