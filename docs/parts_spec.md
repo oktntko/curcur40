@@ -102,8 +102,8 @@
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・西キーパータブ・南ラチェットボス） |
 | [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定クレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |
 | [`cases/carrying-frame.step`](../cases/carrying-frame.step) | MJF / SLS `PA12` | 1（任意） | **【オプション・案A】持ち運び用スナップイン・オープンフレーム**（1ピース一体造形、全4箇所 `CIO-SLMG-T-C`・25mm球・ゴム足装着のまま真上から両側パドルラッチへ押し込み収納、外寸 $144.76 \times 100.31 \times 59.22\,\text{mm}$・体積 $44.79\,\text{cm}^3$） |
-| [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション・案B】持ち運び用 5面フルカバー・スライド差し込みボックス**（フタなし単体でも入口クリックストッパーで保持、ゴム足空中フローティング Cレール・中央ディバイダ TB キーパー・全4箇所 `CIO-SLMG-T-C` 開放、外寸 $143.00 \times 100.65 \times 65.42\,\text{mm}$・体積 $118.10\,\text{cm}^3$） |
-| [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション・案B用フタ】スライドボックス用ツライチ着脱スナップフタ**（`carrying-box` 北口へ装着して 6面フルボックス化するキャップ、北 `rJ1` `CIO-SLMG-T-C` 窓付き・幅＆高さ増加ゼロ、造形サイズ $143.00 \times 65.42 \times 18.00\,\text{mm}$・体積 $21.15\,\text{cm}^3$） |
+| [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション・案B】持ち運び用 完全90°直方体・5面フルカバー・スライド差し込みボックス**（天底水平・左右垂直の直方体外殻、フタなし単体でも入口クリックストッパーで保持、ゴム足空中フローティング Cレール・中央ディバイダ TB キーパー・全4箇所 `CIO-SLMG-T-C` 開放、外寸 $142.40 \times 100.65 \times 65.42\,\text{mm}$・体積 $167.70\,\text{cm}^3$） |
+| [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション・案B用フタ】スライドボックス用ツライチ着脱キャップフタ**（`carrying-box` 北口へ装着して 6面フルボックス化するキャップ、北 `rJ1` `CIO-SLMG-T-C` 窓付き・幅＆高さ増加ゼロ、造形サイズ $142.40 \times 65.42 \times 18.00\,\text{mm}$・体積 $21.89\,\text{cm}^3$） |
 
 ### 2-3. 基板製造・PCBA 実装（JLCPCB）：計 5種（すべて板厚 `1.6mm` 標準 FR-4）
 - **PCBA 実装基板（3種）**: `curcur40-left`, `curcur40-right`（裏面 `B.Cu` に 3D ホールセンサー `rU6: TMAG5273A1QDBVR` LCSC `C3716049` 自動実装済み！）, `curcur40-pmw3360`
