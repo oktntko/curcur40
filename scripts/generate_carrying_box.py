@@ -1,25 +1,30 @@
 # -*- coding: utf-8 -*-
 """
-Generate curcur40 Concept B: Orthogonal Rectangular Slide-In 5-Sided Carrying Box
-(`cases/carrying-box.step`, `cases/carrying-box.stl`), Optional Flush Cap Lid
-(`cases/carrying-box-lid.step`, `cases/carrying-box-lid.stl`), and Full Packed Verification
-Assemblies (`cases/assemblies/carrying-box-assembly.step`, `carrying-box-with-lid-assembly.step`).
+Generate curcur40 Concept B: Orthogonal 90-deg Rectangular Slide-In Carrying Box WITH Snap Lid
+(`cases/carrying-box.step`, `cases/carrying-box.stl`, `cases/carrying-box-lid.step`, `cases/carrying-box-lid.stl`)
+and Full Packed Verification Assemblies (`cases/assemblies/carrying-box-with-lid-assembly.step` &
+`cases/assemblies/carrying-box-assembly.step`).
 
-Design Highlights (Concept B-1 — Orthogonal 90-deg Rectangular Cuboid Slide-In Box):
-1. True 90.000-deg Orthogonal Rectangular Cuboid Exterior (`142.40 x 100.65 x 65.42 mm`):
-   - Top & Bottom outer faces are horizontal (`Z = 0.00 mm` & `Z = 65.42 mm`), West & East outer walls are
-     strictly vertical (`90.000 deg`, `X = 3.36 mm` & `145.76 mm`), and North/South planes are strictly vertical
-     (`90.000 deg`, `Y = -28.50 mm` & `-129.15 mm`) — zero trapezoidal/parallelogram lean!
-   - All 4 `CIO-SLMG-T-C` magnetic USB-C tips sit protected WITHIN the `142.40 mm` side width (`>= 1.08 mm`
-     recessed inside the West/East vertical walls) while remaining 100% open & unobstructed via horizontal
-     side slide slots (`rJ2`, `J2`), a horizontal South back window (`J1`), and the open North mouth (`rJ1`).
-2. Zero-Friction Floating Rubber-Foot Wells & Custom C-Channel Rails:
-   - Internal rails match the 7.473-deg keyboard rims (`0.20 mm` Z gap, `0.30 mm` X gap) while recessing the
-     interior floor & ceiling wells by `2.75 mm`, floating all 10 rubber feet in mid-air (`0.750 mm` clearance).
-   - Central `2.25 mm` divider web integrates a `15.60 mm` wide non-contact Trackball Keeper U-slot (`0.580 mm` gap).
-3. Clean Exterior Lidless Retention (Mode B-1) + Zero-Mark Optional Cap Lid (Mode B-2):
-   - Built-in PA12 entrance click-detent spring catches lock both keyboards in all 6 DOFs WITHOUT a lid,
-     with zero unused clasp pockets on the exterior side walls.
+Design Highlights (Concept B — True 90-deg Rectangular Cuboid + Hole-Free End Moats + Snap Cap Lid):
+1. True 90.000-deg Orthogonal Rectangular Cuboid (`142.40 x 111.35 x 65.42 mm` closed with Lid):
+   - Top & Bottom outer faces are horizontal (`Z = 0.00 mm` & `65.42 mm`), West & East outer walls are
+     strictly vertical (`90.000 deg`), and South Back Wall & North Snap Lid are 100% SEALED & HOLE-FREE!
+2. Internal USB-C Blind Moats (`堀`) & Positive Keyboard Backstop Shoulders:
+   - South Back Wall has NO exterior hole: both keyboards stop cleanly against solid internal backstop
+     shoulders at `Y = -126.95 mm` (`0.30 mm` behind `Y_SOUTH_OUTER = -126.65 mm` so keyboards NEVER bottom
+     out at the very back), while Left's `J1` `CIO-SLMG-T-C` magnetic tip floats freely inside a `4.55 mm`
+     deep internal blind moat (`堀`, `Y in [-131.50, -126.95]`, `1.01 mm` axial air gap) backed by a `2.20 mm`
+     solid exterior South wall (`Y_OUT_SOUTH = -133.70 mm`).
+   - North Snap Cap Lid (`6.00 mm` cap wall, `Y in [-28.35, -22.35]`) likewise has NO exterior hole: Right's
+     `rJ1` `CIO-SLMG-T-C` magnetic tip floats inside a `3.80 mm` deep internal blind moat (`堀`, `2.44 mm`
+     axial air gap) backed by a `2.20 mm` solid exterior front wall.
+   - West `rJ2` & East `J2` `CIO-SLMG-T-C` tips remain recessed `1.08 mm` inside the `142.40 mm` vertical side
+     walls along horizontal open slide slots.
+3. Hidden Internal Snap-Lock Cap Lid + Floating Rubber-Foot C-Rails:
+   - All 10 rubber feet float in mid-air (`0.750 mm` clearance) inside recessed floor/ceiling wells.
+   - Dual hidden internal PA12 snap prongs on the Lid click into concealed sockets inside the thick Top-West
+     & Bottom-East mouth blocks (100% invisible from outside, 6-DOF locked!), paired with subtle side grip
+     flutes on the Lid perimeter and flush rounded tongues sealing the `36 mm` finger-pull cutouts.
 """
 from __future__ import annotations
 
@@ -63,15 +68,23 @@ from generate_carrying_case import (
 )
 
 # Internal slide clearances (in `asm` frame)
-XY_SLIDE_GAP = 0.3000                 # >= 0.30 mm JLC3DP moving clearance
-Z_SLIDE_GAP = 0.2000                  # 0.20 mm vertical rail clearance
-BOX_WALL = 2.2000                     # 2.20 mm nominal back/cap wall thickness
+XY_SLIDE_GAP = 0.3000                        # >= 0.30 mm JLC3DP moving clearance
+Z_SLIDE_GAP = 0.2000                         # 0.20 mm vertical rail clearance
+BOX_WALL = 2.2000                            # 2.20 mm solid end wall thickness
 
 X_IN_WEST = X_THUMB_OUTER - XY_SLIDE_GAP     # 6.7250 mm
 X_IN_EAST = X_PINKY_OUTER + XY_SLIDE_GAP     # 136.1580 mm
-Y_IN_SOUTH = Y_SOUTH_OUTER - XY_SLIDE_GAP    # -126.9500 mm
-Y_OUT_SOUTH = Y_IN_SOUTH - BOX_WALL          # -129.1500 mm
-Y_MOUTH = -28.5000                           # Depth = 100.6500 mm
+
+# South backstop shoulder & internal blind moat (`堀`) for Left's `J1` `CIO-SLMG-T-C` tip (NO exterior hole!)
+Y_IN_SOUTH = Y_SOUTH_OUTER - XY_SLIDE_GAP    # -126.9500 mm (Keyboard backstop shoulder! Stops keyboards here!)
+Y_MOAT_SOUTH = -131.5000                     # -131.5000 mm (4.55 mm deep internal moat; 1.01 mm clear of J1 tip!)
+Y_OUT_SOUTH = Y_MOAT_SOUTH - BOX_WALL        # -133.7000 mm (2.20 mm solid hole-free South exterior wall!)
+Y_MOUTH = -28.5000                           # Box exterior depth = 105.2000 mm
+
+# North Snap Cap Lid (`carrying-box-lid`) with internal blind moat (`堀`) for Right's `rJ1` tip (NO exterior hole!)
+Y_LID_IN = Y_MOUTH + 0.1500                  # -28.3500 mm (0.15 mm axial gap to box mouth -> 0.00 mm^3 overlap)
+Y_LID_MOAT = -24.5500                        # -24.5500 mm (3.80 mm deep internal moat; 2.44 mm clear of rJ1 tip!)
+Y_LID_OUT = Y_LID_MOAT + BOX_WALL            # -22.3500 mm (6.00 mm cap wall; 2.20 mm solid hole-free front face!)
 
 # Perpendicular offsets from bare angled case bottoms (horizontal Z planes in `box_desk`!)
 COS_TENT = math.cos(THETA_TENT_RAD)
@@ -165,10 +178,8 @@ def extrude_xz_profile_along_y(xz_pts: list[tuple[float, float]], y_min: float, 
 def build_entrance_detents_desk() -> tuple[bd.Solid, bd.Solid, bd.Solid, bd.Solid]:
     """
     Builds orthogonal West (Right keyboard) & East (Packed Left keyboard) entrance click-detent
-    spring arms and relief-slot cutters directly in `box_desk` coordinates:
-      - Outer arm faces lie strictly on the vertical 90-deg box walls (`X_BOX_WEST`, `X_BOX_EAST`).
-      - Top & bottom arm/slot faces are strictly horizontal (`Z_desk = const`).
-      - Inner catch nose matches the 7.473-deg keyboard thumb wall (`0.22 mm` uniform rest gap, +1.00 mm lock).
+    spring arms and relief-slot cutters directly in `box_desk` coordinates so keyboards stay gently
+    retained even while the Lid is off.
     """
     z_bot_slot = 7.4000
     z_arm_bot = 9.4000
@@ -176,7 +187,6 @@ def build_entrance_detents_desk() -> tuple[bd.Solid, bd.Solid, bd.Solid, bd.Soli
     z_top_slot = 18.9000
     y_slot_root_straight = -50.5000  # Filleted by R=1.00 -> root at Y = -51.50 mm (~4.5 N gentle snap!)
 
-    # Orthogonal West slot cutter (`Z_desk in [7.40, 18.90]`, `Y in [-51.50, Y_MOUTH + 2.0]`)
     cut_w = bd.Box(
         10.00,
         (Y_MOUTH + 2.00) - y_slot_root_straight,
@@ -190,15 +200,13 @@ def build_entrance_detents_desk() -> tuple[bd.Solid, bd.Solid, bd.Solid, bd.Soli
     assert len(root_edges) == 2, f"Expected 2 root edges on West detent cutter, got {len(root_edges)}"
     cut_w = bd.fillet(root_edges, radius=1.00)
 
-    # Inner catch nose profile in `asm` (tangent-cleared 0.22 mm behind Right's R=2.00 NW corner),
-    # transformed to `box_desk` and trimmed flush to `X_BOX_WEST` & horizontal `Z_desk in [9.40, 16.90]`!
     xy_pts_asm = [
         (-5.0000, -51.8000),
-        (X_IN_WEST, -51.8000),    # Coplanar with lower_cav West inner wall -> zero root step!
-        (X_IN_WEST, -32.0000),    # 0.22 mm clear behind R=2.00 NW corner arc
-        (8.0250, -30.7000),       # 45-deg exit ramp -> +1.00 mm positive catch behind X_THUMB_OUTER (7.0250)
-        (8.0250, -29.8000),       # 0.90 mm flat detent crest (>= 0.80 mm)
-        (6.5250, Y_MOUTH),        # 41-deg entry cam funnel (< 7.0250 so pushing keyboard in self-cams open)
+        (X_IN_WEST, -51.8000),
+        (X_IN_WEST, -32.0000),
+        (8.0250, -30.7000),
+        (8.0250, -29.8000),
+        (6.5250, Y_MOUTH),
         (-5.0000, Y_MOUTH),
     ]
     with bd.BuildSketch(bd.Plane.XY.offset(-32.00)) as sk_arm_asm:
@@ -212,20 +220,69 @@ def build_entrance_detents_desk() -> tuple[bd.Solid, bd.Solid, bd.Solid, bd.Soli
     ).moved(bd.Location((X_BOX_WEST, -51.8000, z_arm_bot)))
     arm_w = (arm_raw_desk & arm_trim_box).solids()[0]
 
-    # Exact 180-deg Y-axis symmetry `(X, Y, Z) -> (2*X_MID_DESK - X, Y, H_BOX - Z)` for East (Packed Left)
     loc_sym = bd.Pos(2.0 * X_MID_DESK, 0.0, H_BOX) * bd.Rot(0.0, 180.0, 0.0)
     arm_e = bd.Solid(arm_w.wrapped.Moved(loc_sym.wrapped))
     cut_e = bd.Solid(cut_w.wrapped.Moved(loc_sym.wrapped))
     return arm_w, cut_w, arm_e, cut_e
 
 
+def build_hidden_lid_snap_sockets_and_prongs_desk() -> tuple[bd.Solid, bd.Solid, bd.Solid, bd.Solid]:
+    """
+    Builds 100% hidden internal snap-catch sockets inside `Carrying_Box`'s thick Top-West & Bottom-East
+    diagonal corner blocks (`Z_desk in [42.00, 54.00]` on West, `[11.42, 23.42]` on East) and matching
+    PA12 cantilever snap prongs on `Carrying_Box_Lid` (`Z_desk in [43.00, 53.00]` & `[12.42, 22.42]`).
+    """
+    x_s_out = X_BOX_WEST + 2.2000          # 5.5571 mm (2.20 mm solid outer West wall preserved!)
+    x_s_throat = x_s_out + 3.1000          # 8.6571 mm (3.10 mm entry throat)
+    x_s_undercut = x_s_out + 4.0000        # 9.5571 mm (+0.90 mm snap catch shoulder; >= 2.10 mm to upper_cav!)
+
+    sock_xy = [
+        (x_s_out, Y_MOUTH + 1.0000),
+        (x_s_throat, Y_MOUTH + 1.0000),
+        (x_s_throat, -32.5000),
+        (x_s_undercut, -33.4000),
+        (x_s_undercut, -37.5000),
+        (x_s_out, -37.5000),
+    ]
+    with bd.BuildSketch(bd.Plane.XY.offset(42.0000)) as sk_sock:
+        bd.Polygon(sock_xy, align=None)
+    sock_w = bd.extrude(sk_sock.sketch, amount=54.0000 - 42.0000).solids()[0]
+    sock_back_edges = sock_w.edges().filter_by(
+        lambda e: abs(e.bounding_box().size.Z - 12.0000) < 0.1 and abs(e.bounding_box().center().Y - (-37.5000)) < 0.05
+    )
+    assert len(sock_back_edges) == 2, f"Expected 2 back edges on sock_w, got {len(sock_back_edges)}"
+    sock_w = bd.fillet(sock_back_edges, radius=0.85)  # D 1.70 mm >= 1.50 mm, leaves 2.30 mm straight back wall!
+
+    # Matching cantilever snap prong on `Carrying_Box_Lid` (`Z_desk in [42.25, 53.75]`, 0.25 mm vertical guide fit!)
+    x_p_out = x_s_out + 0.3000             # 5.8571 mm (0.30 mm clearance to outer socket wall)
+    x_p_in = x_p_out + 1.8000              # 7.6571 mm (1.80 mm thick PA12 beam; 1.00 mm deflection gap to throat!)
+    x_p_hook = x_s_throat + 0.5500         # 9.2071 mm (+0.55 mm positive snap engagement; 0.35 mm clear of 9.5571!)
+
+    prong_xy = [
+        (x_p_out, Y_LID_IN + 1.5000),      # Root embedded 1.50 mm inside lid_plate
+        (x_p_in, Y_LID_IN + 1.5000),
+        (x_p_in, -32.0000),
+        (x_p_hook, -33.5500),              # 45-deg exit cam ramp (0.354 mm normal gap to socket ramp!)
+        (x_p_hook, -34.7000),              # 1.15 mm flat crest (>= 0.80 mm!)
+        (x_p_in, -36.2500),                # 45-deg entry cam ramp
+        (x_p_out, -36.2500),               # 1.80 mm flat tip (>= 0.80 mm!)
+    ]
+    with bd.BuildSketch(bd.Plane.XY.offset(42.2500)) as sk_prong:
+        bd.Polygon(prong_xy, align=None)
+    prong_w = bd.extrude(sk_prong.sketch, amount=53.7500 - 42.2500).solids()[0]
+
+    loc_sym = bd.Pos(2.0 * X_MID_DESK, 0.0, H_BOX) * bd.Rot(0.0, 180.0, 0.0)
+    sock_e = bd.Solid(sock_w.wrapped.Moved(loc_sym.wrapped))
+    prong_e = bd.Solid(prong_w.wrapped.Moved(loc_sym.wrapped))
+    return sock_w, sock_e, prong_w, prong_e
+
+
 def build_carrying_box_and_lid_desk() -> tuple[bd.Solid, bd.Solid]:
     """
-    Builds both `Carrying_Box` (Concept B-1 lidless orthogonal rectangular cuboid) and
-    `Carrying_Box_Lid` (Concept B-2 optional flush cap lid) directly in `box_desk` coordinates
-    (`Z in [0.0000, 65.4210] mm`, all 6 outer faces mutually perpendicular at exact `90.000 deg`).
+    Builds both `Carrying_Box` and `Carrying_Box_Lid` directly in `box_desk` coordinates
+    (`Z in [0.0000, 65.4210] mm`, true `90.000-deg` rectangular cuboid with hole-free end moats `堀`).
     """
-    # 1. Pure 90.000-deg Orthogonal Rectangular Cuboid Outer Shell (`142.40 x 100.65 x 65.42 mm`)
+    # 1. Pure 90.000-deg Orthogonal Rectangular Cuboid Outer Shell (`142.40 x 105.20 x 65.42 mm`)
     outer_shell = bd.Box(
         W_BOX,
         Y_MOUTH - Y_OUT_SOUTH,
@@ -238,7 +295,7 @@ def build_carrying_box_and_lid_desk() -> tuple[bd.Solid, bd.Solid]:
     assert len(long_y_edges) == 4, f"Expected 4 longitudinal Y-edges, got {len(long_y_edges)}"
     outer_shell = bd.fillet(long_y_edges, radius=2.00)
 
-    # 2. Internal C-Channel Cavities & Central Divider Web (built in `asm` and transformed to `box_desk`)
+    # 2. Internal C-Channel Cavities stopping at `Y_IN_SOUTH = -126.9500 mm` (Keyboard Backstop Shoulder!)
     x_rim_w = 8.5250
     x_rim_e = 134.3580
     x_well_w = 8.8250
@@ -304,7 +361,7 @@ def build_carrying_box_and_lid_desk() -> tuple[bd.Solid, bd.Solid]:
     finger_cutter = bd.extrude(sk_finger.sketch, amount=H_BOX + 10.00)
     body = body - finger_cutter
 
-    # 5. Orthogonal Open Side Slots & Back Window for All 4 Permanent `CIO-SLMG-T-C` Magnetic USB-C Tips:
+    # 5. USB-C Clearances:
     #    - West Horizontal Side Slot for Right `rJ2` (`Z_desk in [20.90, 30.55]`, `Y in [-95.50, Y_MOUTH + 5.0]`)
     w_slot = bd.Box(
         12.00,
@@ -315,7 +372,7 @@ def build_carrying_box_and_lid_desk() -> tuple[bd.Solid, bd.Solid]:
     w_slot_edges = w_slot.edges().filter_by(
         lambda e: abs(e.bounding_box().size.X - 12.00) < 0.1 and e.bounding_box().min.Y < -95.40
     )
-    assert len(w_slot_edges) == 2, f"Expected 2 end edges on w_slot, got {len(w_slot_edges)}"
+    assert len(w_slot_edges) == 2
     w_slot = bd.fillet(w_slot_edges, radius=2.50)
 
     #    - East Horizontal Side Slot for Packed Left `J2` (`Z_desk in [34.871, 44.521]`, `Y in [-79.70, Y_MOUTH + 5.0]`)
@@ -328,19 +385,20 @@ def build_carrying_box_and_lid_desk() -> tuple[bd.Solid, bd.Solid]:
     e_slot_edges = e_slot.edges().filter_by(
         lambda e: abs(e.bounding_box().size.X - 12.00) < 0.1 and e.bounding_box().min.Y < -79.60
     )
-    assert len(e_slot_edges) == 2, f"Expected 2 end edges on e_slot, got {len(e_slot_edges)}"
+    assert len(e_slot_edges) == 2
     e_slot = bd.fillet(e_slot_edges, radius=2.50)
 
-    #    - South Back Wall Horizontal Window for Packed Left `J1` (`17.20 x 11.20 mm`, R=2.50, 0-deg horizontal!)
+    #    - South Back Wall INTERNAL BLIND MOAT (`堀`, `Y in [-131.50, -125.00]`, 100% SEALED EXTERIOR!)
     j1_cx_desk, j1_cz_desk = asm_xz_to_desk(DX_LEFT - HOST_USBC_CX_R, H_SEP - USBC_CENTER_Z_R)
-    p_south_win = bd.Plane(origin=(j1_cx_desk, Y_OUT_SOUTH - 1.0, j1_cz_desk), x_dir=(1, 0, 0), z_dir=(0, 1, 0))
-    s_win = bd.extrude(p_south_win * bd.RectangleRounded(17.20, 11.20, 2.50), amount=8.00)
+    p_south_moat = bd.Plane(origin=(j1_cx_desk, Y_MOAT_SOUTH, j1_cz_desk), x_dir=(1, 0, 0), z_dir=(0, 1, 0))
+    s_moat = bd.extrude(p_south_moat * bd.RectangleRounded(17.60, 11.60, 2.50), amount=6.50)
 
-    body = body - w_slot - e_slot - s_win
+    body = body - w_slot - e_slot - s_moat
 
-    # 6. Integrate Orthogonal Entrance Click-Detents (West for Right, East for Packed Left — zero exterior lid marks!)
+    # 6. Entrance Click-Detents + Hidden Internal Lid Snap-Catch Sockets
     det_arm_w, det_cut_w, det_arm_e, det_cut_e = build_entrance_detents_desk()
-    body = body - det_cut_w - det_cut_e + det_arm_w + det_arm_e
+    sock_w, sock_e, prong_w, prong_e = build_hidden_lid_snap_sockets_and_prongs_desk()
+    body = body - det_cut_w - det_cut_e + det_arm_w + det_arm_e - sock_w - sock_e
 
     box_solids = body.solids()
     assert len(box_solids) == 1, f"Expected single solid for Carrying_Box, got {len(box_solids)}"
@@ -348,22 +406,31 @@ def build_carrying_box_and_lid_desk() -> tuple[bd.Solid, bd.Solid]:
     box_solid.label = "Carrying_Box"
 
     # =========================================================================
-    # 7. Optional Rectangular Flush Cap Lid (`Carrying_Box_Lid`, `142.40 x 65.42 mm`)
-    #    - Zero marks/pockets required on `Carrying_Box`: plugs cleanly into the top & bottom
-    #      finger cutouts (`0.35 mm` uniform perimeter gap) with an orthogonal `rJ1` CIO window!
+    # 7. Snap-Lock Rectangular Cap Lid (`Carrying_Box_Lid`, `142.40 x 6.00 x 65.42 mm` cap)
+    #    - 100% SEALED Hole-Free Front Face (`Y_LID_OUT = -22.35 mm`)!
+    #    - Internal Blind Moat (`堀`, `Y in [-28.35, -24.55]`) clears Right's North `rJ1` CIO tip!
+    #    - Dual Hidden Internal Snap Prongs (`prong_w`, `prong_e`) lock Lid in all 6 DOFs!
+    #    - Flush Top & Bottom Rounded Tongues seal the `36 mm` finger-pull cutouts!
+    #    - Subtle Vertical Side Grip Flutes (`R=3.00`, `0.90 mm` deep) for easy pull-off!
     # =========================================================================
-    y_lid_in = Y_MOUTH + 0.1500
-    y_lid_out = y_lid_in + BOX_WALL
-
+    lid_cap_len = Y_LID_OUT - Y_LID_IN  # 6.0000 mm
     lid_plate = bd.Box(
         W_BOX,
-        BOX_WALL,
+        lid_cap_len,
         H_BOX,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((X_BOX_WEST, y_lid_in, 0.0)))
-    lid_y_edges = lid_plate.edges().filter_by(lambda e: abs(e.bounding_box().size.Y - BOX_WALL) < 0.1)
+    ).moved(bd.Location((X_BOX_WEST, Y_LID_IN, 0.0)))
+    lid_y_edges = lid_plate.edges().filter_by(lambda e: abs(e.bounding_box().size.Y - lid_cap_len) < 0.1)
     assert len(lid_y_edges) == 4
     lid_plate = bd.fillet(lid_y_edges, radius=2.00)
+
+    # Subtle ergonomic finger-grip flutes on West & East edges of the 6.00 mm Lid cap (`Z in [16.0, 49.42]`)
+    y_flute_c = 0.5 * (Y_LID_IN + Y_LID_OUT)  # -25.3500 mm
+    for x_fc in (X_BOX_WEST - 2.1000, X_BOX_EAST + 2.1000):
+        with bd.BuildSketch(bd.Plane.XY.offset(16.0000)) as sk_flute:
+            with bd.Locations([(x_fc, y_flute_c)]):
+                bd.Circle(3.0000)  # D 6.00 >= 1.50 mm; 0.90 mm deep flute; 0.86 mm flat land on both sides!
+        lid_plate = lid_plate - bd.extrude(sk_flute.sketch, amount=H_BOX - 32.0000)
 
     plug_gap = 0.3500
     tx_min = FINGER_X_MIN_DESK + plug_gap
@@ -373,25 +440,25 @@ def build_carrying_box_and_lid_desk() -> tuple[bd.Solid, bd.Solid]:
     plug_h = D_OUT_PERP - (D_WELL_PERP + 0.25)  # 1.7500 mm
 
     with bd.BuildSketch(bd.Plane.XY.offset(0.0)) as sk_bot_plug:
-        with bd.Locations([(FINGER_CX_DESK, 0.5 * (plug_y_min + (y_lid_out + 15.0)))]):
-            bd.RectangleRounded(tx_max - tx_min, (y_lid_out + 15.0) - plug_y_min, plug_r)
+        with bd.Locations([(FINGER_CX_DESK, 0.5 * (plug_y_min + (Y_LID_OUT + 15.0)))]):
+            bd.RectangleRounded(tx_max - tx_min, (Y_LID_OUT + 15.0) - plug_y_min, plug_r)
     plug_full_bot = bd.extrude(sk_bot_plug.sketch, amount=plug_h)
     y_clip = bd.Box(
         W_BOX,
-        y_lid_out - (plug_y_min - 1.0),
+        Y_LID_OUT - (plug_y_min - 1.0),
         H_BOX + 2.0,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((X_BOX_WEST, plug_y_min - 1.0, -1.0)))
     bot_plug = (plug_full_bot & y_clip).solids()[0]
     top_plug = bot_plug.moved(bd.Location((0.0, 0.0, H_BOX - plug_h)))
 
-    lid_body = lid_plate + bot_plug + top_plug
+    lid_body = lid_plate + bot_plug + top_plug + prong_w + prong_e
 
-    # Orthogonal North `rJ1` `CIO-SLMG-T-C` window (`18.00 x 12.00 mm`, R=2.50)
+    # Internal Blind Moat (`堀`, `Y in [-30.00, -24.55]`) on Lid inner face for Right's North `rJ1` CIO tip!
     rj1_cx_desk, rj1_cz_desk = asm_xz_to_desk(HOST_USBC_CX_R, USBC_CENTER_Z_R)
-    p_lid_usbc = bd.Plane(origin=(rj1_cx_desk, y_lid_in - 2.0, rj1_cz_desk), x_dir=(1, 0, 0), z_dir=(0, 1, 0))
-    lid_usbc_cut = bd.extrude(p_lid_usbc * bd.RectangleRounded(18.00, 12.00, 2.50), amount=10.00)
-    lid_body = lid_body - lid_usbc_cut
+    p_lid_moat = bd.Plane(origin=(rj1_cx_desk, Y_LID_IN - 2.0, rj1_cz_desk), x_dir=(1, 0, 0), z_dir=(0, 1, 0))
+    lid_moat_cut = bd.extrude(p_lid_moat * bd.RectangleRounded(18.00, 12.00, 2.50), amount=(Y_LID_MOAT - (Y_LID_IN - 2.0)))
+    lid_body = lid_body - lid_moat_cut
 
     lid_solids = lid_body.solids()
     assert len(lid_solids) == 1, f"Expected single solid for Carrying_Box_Lid, got {len(lid_solids)}"
@@ -401,15 +468,10 @@ def build_carrying_box_and_lid_desk() -> tuple[bd.Solid, bd.Solid]:
     return box_solid, lid_solid
 
 
-def verify_orthogonal_cuboid_bounds(box_desk: bd.Solid) -> None:
-    """Asserts that `Carrying_Box` is a true 90-deg orthogonal rectangular cuboid (not a trapezoid/parallelogram)."""
+def verify_orthogonal_cuboid_and_sealed_ends(box_desk: bd.Solid, lid_desk: bd.Solid) -> None:
+    """Asserts true 90-deg cuboid geometry AND 100% hole-free South Back Wall & North Lid Front Wall."""
     bb = box_desk.bounding_box()
-    # Check outer planar faces on -Z, +Z, -X, +X, -Y have exact axis-aligned normals!
-    has_west = False
-    has_east = False
-    has_bot = False
-    has_top = False
-    has_south = False
+    has_west = has_east = has_bot = has_top = has_sealed_south = False
     for f in box_desk.faces():
         fb = f.bounding_box()
         if fb.size.X < 1e-4 and abs(fb.min.X - X_BOX_WEST) < 1e-3 and fb.size.Y > 50.0 and fb.size.Z > 20.0:
@@ -420,12 +482,28 @@ def verify_orthogonal_cuboid_bounds(box_desk: bd.Solid) -> None:
             has_bot = True
         if fb.size.Z < 1e-4 and abs(fb.max.Z - H_BOX) < 1e-3 and fb.size.X > 100.0 and fb.size.Y > 80.0:
             has_top = True
-        if fb.size.Y < 1e-4 and abs(fb.min.Y - Y_OUT_SOUTH) < 1e-3 and fb.size.X > 100.0 and fb.size.Z > 50.0:
-            has_south = True
-    assert has_west and has_east and has_bot and has_top and has_south, (
-        f"Outer cuboid orthogonality check failed: W={has_west}, E={has_east}, B={has_bot}, T={has_top}, S={has_south}"
+        if fb.size.Y < 1e-4 and abs(fb.min.Y - Y_OUT_SOUTH) < 1e-3:
+            # Must have ZERO interior holes (1 single outer wire only -> area == W_BOX*H_BOX - corner fillet delta)
+            expected_area = W_BOX * H_BOX - 4.0 * (4.0 - math.pi)
+            assert abs(f.area - expected_area) < 0.5, (
+                f"South back wall is NOT hole-free! area={f.area:.2f} != {expected_area:.2f} mm^2"
+            )
+            has_sealed_south = True
+    assert has_west and has_east and has_bot and has_top and has_sealed_south, (
+        f"Cuboid/sealed-south check failed: W={has_west}, E={has_east}, B={has_bot}, T={has_top}, S={has_sealed_south}"
     )
     assert abs(bb.size.X - W_BOX) < 1e-3 and abs(bb.size.Z - H_BOX) < 1e-3, "Cuboid outer size mismatch!"
+
+    has_sealed_lid_front = False
+    for f in lid_desk.faces():
+        fb = f.bounding_box()
+        if fb.size.Y < 1e-4 and abs(fb.max.Y - Y_LID_OUT) < 1e-3:
+            expected_area = W_BOX * H_BOX - 4.0 * (4.0 - math.pi)
+            assert abs(f.area - expected_area) < 0.5, (
+                f"North Lid front wall is NOT hole-free! area={f.area:.2f} != {expected_area:.2f} mm^2"
+            )
+            has_sealed_lid_front = True
+    assert has_sealed_lid_front, "North Lid front wall missing or not sealed!"
 
 
 def verify_jlc3dp_part(print_solid: bd.Solid, tag: str) -> None:
@@ -500,7 +578,7 @@ def verify_carrying_box_assembly_desk(
     wheel_desk: bd.Solid,
     keycaps_desk: list[bd.Solid],
 ) -> None:
-    """Full 690-solid zero-overlap, horizontal slide trajectory, clearance, & 6-DOF verification in `box_desk`."""
+    """Full 690-solid zero-overlap, horizontal slide trajectory, moat clearances, & 6-DOF lock (Keyboards + Lid!)."""
     box_bb = box_desk.bounding_box()
     lid_bb = lid_desk.bounding_box()
     all_parts = (
@@ -535,7 +613,7 @@ def verify_carrying_box_assembly_desk(
     assert max_ov_box == 0.0, f"B-rep interference with Carrying_Box: {max_ov_box:.8f} mm^3 at {worst_box}!"
     assert max_ov_lid == 0.0, f"B-rep interference with Carrying_Box_Lid: {max_ov_lid:.8f} mm^3 at {worst_lid}!"
 
-    # Horizontal `+Y -> -Y` slide trajectory verification (`dy = +10, +30, +60, +90 mm`)
+    # Horizontal `+Y -> -Y` slide trajectory verification (`dy = +10, +30, +60, +90 mm` with Lid removed)
     slide_check_solids = (
         right_feet_desk + left_feet_desk + right_cio_desk + left_cio_desk
         + [ball_desk, wheel_desk] + keycaps_desk
@@ -565,8 +643,8 @@ def verify_carrying_box_assembly_desk(
         f"  - Box vs 25mm Trackball (Keeper Slot):   {clr_ball:.3f} mm (target 0.50..0.70 mm)\n"
         f"  - Box vs Inertia Wheel:                  {clr_wheel:.3f} mm (>= 1.50 mm)\n"
         f"  - Box vs All 40 Keycaps:                 {clr_keycaps:.3f} mm (>= 0.75 mm)\n"
-        f"  - Box vs All 4 CIO-SLMG-T-C Tips:        {clr_cio_box:.3f} mm (>= 0.90 mm)\n"
-        f"  - Lid vs North rJ1 CIO-SLMG-T-C Tip:     {clr_cio_lid:.3f} mm (>= 2.00 mm)"
+        f"  - Box (Moat & Slots) vs All 4 CIO Tips:  {clr_cio_box:.3f} mm (>= 0.90 mm)\n"
+        f"  - Lid (Internal Moat) vs rJ1 CIO Tip:    {clr_cio_lid:.3f} mm (>= 2.00 mm)"
     )
     assert clr_feet >= 0.50, f"Rubber feet clearance {clr_feet:.3f} mm < 0.50 mm!"
     assert 0.50 <= clr_ball <= 0.70, f"Trackball keeper clearance {clr_ball:.3f} mm outside [0.50, 0.70] mm!"
@@ -575,14 +653,15 @@ def verify_carrying_box_assembly_desk(
     assert clr_cio_box >= 0.90, f"CIO tip clearance to Box {clr_cio_box:.3f} mm < 0.90 mm!"
     assert clr_cio_lid >= 2.00, f"CIO tip clearance to Lid {clr_cio_lid:.3f} mm < 2.00 mm!"
 
-    # 6-DOF positive mechanical lock inside `Carrying_Box` ALONE (Concept B-1 Lidless!)
+    # 6-DOF positive mechanical lock of BOTH Keyboards (including `-Y` backstop shoulder so they NEVER hit moat back!)
     right_case_desk = max(right_solids_desk, key=lambda s: s.volume)
     left_case_desk = max(left_solids_desk, key=lambda s: s.volume)
+    left_j1_tip = [t for t in left_cio_desk if "Host" in getattr(t, "label", "")][0]
     test_dirs = [
         ("+X", (0.65, 0.0, 0.0)),
         ("-X", (-0.65, 0.0, 0.0)),
         ("+Y_Mouth_Detent", (0.0, 0.75, 0.0)),
-        ("-Y_Back_Wall", (0.0, -0.65, 0.0)),
+        ("-Y_Backstop_Shoulder", (0.0, -0.65, 0.0)),
         ("+Z", (0.0, 0.0, 0.55)),
         ("-Z", (0.0, 0.0, -0.55)),
     ]
@@ -591,22 +670,42 @@ def verify_carrying_box_assembly_desk(
             shifted = bd.Solid(target_case.wrapped.Moved(bd.Location(vec).wrapped))
             ov_lock = overlap_volume(box_desk, shifted)
             assert ov_lock > 0.02, (
-                f"[6-DOF FAIL] {name} is NOT locked in {d_tag} inside lidless Carrying_Box (ov={ov_lock:.5f} mm^3)!"
+                f"[6-DOF FAIL] {name} is NOT locked in {d_tag} inside Carrying_Box (ov={ov_lock:.5f} mm^3)!"
             )
+    # Also verify that at `-0.65 mm` (after Left_Case hits the `-126.95 mm` backstop shoulder!), `J1` CIO tip
+    # STILL has `0.000000 mm^3` overlap with `Carrying_Box`'s internal moat (`堀`)!
+    j1_pushed = bd.Solid(left_j1_tip.wrapped.Moved(bd.Location((0.0, -0.65, 0.0)).wrapped))
+    assert overlap_volume(box_desk, j1_pushed) == 0.0, "J1 CIO tip touched moat floor before case hit backstop!"
+
+    # 6-DOF positive mechanical lock of `Carrying_Box_Lid` onto `Carrying_Box`!
+    lid_dirs = [
+        ("+X", (0.65, 0.0, 0.0)),
+        ("-X", (-0.65, 0.0, 0.0)),
+        ("+Y_Snap_Prongs", (0.0, 0.75, 0.0)),
+        ("-Y_Mouth_Rim", (0.0, -0.35, 0.0)),
+        ("+Z", (0.0, 0.0, 0.65)),
+        ("-Z", (0.0, 0.0, -0.65)),
+    ]
+    for d_tag, vec in lid_dirs:
+        lid_shifted = bd.Solid(lid_desk.wrapped.Moved(bd.Location(vec).wrapped))
+        ov_lid_lock = overlap_volume(box_desk, lid_shifted)
+        assert ov_lid_lock > 0.02, (
+            f"[6-DOF FAIL] Carrying_Box_Lid is NOT locked in {d_tag} on Carrying_Box (ov={ov_lid_lock:.5f} mm^3)!"
+        )
 
     ball_lifted = bd.Solid(ball_desk.wrapped.Moved(bd.Location((-SIN_TENT * 1.0, 0.0, COS_TENT * 1.0)).wrapped))
     assert overlap_volume(box_desk, ball_lifted) > 0.40, "[6-DOF FAIL] Trackball Keeper U-slot failed to stop +1mm lift!"
-    print("[carrying-box-assembly] Orthogonal 90-deg cuboid, 6-DOF lidless lock, slide & CIO checks: ALL PASS!")
+    print("[carrying-box-assembly] Cuboid, Hole-Free Moats, Backstop, & 6-DOF (Keyboards + Lid) checks: ALL PASS!")
 
 
 def main() -> None:
-    print("=== Building curcur40 Concept B-1: Orthogonal 90-deg Rectangular Slide-In PA12 Carrying Box ===")
+    print("=== Building curcur40 Concept B: Orthogonal 90-deg Rectangular Carrying Box WITH Snap Lid & End Moats ===")
     CASES_DIR.mkdir(parents=True, exist_ok=True)
     ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
 
     # 1. Build `Carrying_Box` & `Carrying_Box_Lid` directly in orthogonal `box_desk` pose (`Z in [0, 65.42] mm`)
     box_desk, lid_desk = build_carrying_box_and_lid_desk()
-    verify_orthogonal_cuboid_bounds(box_desk)
+    verify_orthogonal_cuboid_and_sealed_ends(box_desk, lid_desk)
 
     bb_box = box_desk.bounding_box()
     box_print = box_desk.moved(bd.Location((0.0, 0.0, -bb_box.min.Z)))
@@ -625,7 +724,7 @@ def main() -> None:
     bd.export_stl(box_print, str(CASES_DIR / "carrying-box.stl"))
     bd.export_step(lid_print, str(CASES_DIR / "carrying-box-lid.step"))
     bd.export_stl(lid_print, str(CASES_DIR / "carrying-box-lid.stl"))
-    print("Exported orthogonal carrying-box.step/.stl & carrying-box-lid.step/.stl")
+    print("Exported hole-free moat carrying-box.step/.stl & carrying-box-lid.step/.stl")
 
     # 3. Load synchronized 674-solid `assembly-full.step`, transform to `box_desk`, & verify all 690 solids
     full_asm_path = ASSEMBLIES_DIR / "assembly-full.step"
@@ -679,7 +778,7 @@ def main() -> None:
         keycaps_desk,
     )
 
-    # 4. Export `carrying-box-assembly.step` (Concept B-1 Lidless) FIRST before re-parenting `anytree` nodes!
+    # 4. Export `carrying-box-assembly.step` (Open View) FIRST, then `carrying-box-with-lid-assembly.step` (With Lid!)
     right_grp = bd.Compound(children=right_solids_desk + right_feet_desk + right_cio_desk)
     right_grp.label = "Right_Keyboard_With_Feet_And_CIO_Tips"
     left_grp = bd.Compound(children=left_solids_desk + left_feet_desk + left_cio_desk)
@@ -689,28 +788,24 @@ def main() -> None:
     asm_lidless.label = "curcur40_carrying_box_assembly"
     bb_open = asm_lidless.bounding_box()
     print(
-        f"Concept B-1 (Orthogonal Lidless Slide-In Box) Envelope: "
+        f"Open-Mouth Inspection Envelope: "
         f"{bb_open.size.X:.2f} x {bb_open.size.Y:.2f} x {bb_open.size.Z:.2f} mm "
         f"(Z = [{bb_open.min.Z:.4f}, {bb_open.max.Z:.4f}] mm)"
     )
     bd.export_step(asm_lidless, str(ASSEMBLIES_DIR / "carrying-box-assembly.step"))
-    assert len(bd.import_step(str(ASSEMBLIES_DIR / "carrying-box-assembly.step")).solids()) == 689, (
-        "Exported carrying-box-assembly.step solid count mismatch!"
-    )
+    assert len(bd.import_step(str(ASSEMBLIES_DIR / "carrying-box-assembly.step")).solids()) == 689
 
     asm_with_lid = bd.Compound(children=[box_desk, lid_desk, right_grp, left_grp])
     asm_with_lid.label = "curcur40_carrying_box_with_lid_assembly"
     bb_closed = asm_with_lid.bounding_box()
     print(
-        f"Concept B-2 (Orthogonal Slide-In Box + Cap Lid) Envelope: "
+        f"Concept B (Orthogonal Slide-In Box + Snap Cap Lid) Closed Envelope: "
         f"{bb_closed.size.X:.2f} x {bb_closed.size.Y:.2f} x {bb_closed.size.Z:.2f} mm "
         f"(Z = [{bb_closed.min.Z:.4f}, {bb_closed.max.Z:.4f}] mm)"
     )
     bd.export_step(asm_with_lid, str(ASSEMBLIES_DIR / "carrying-box-with-lid-assembly.step"))
-    assert len(bd.import_step(str(ASSEMBLIES_DIR / "carrying-box-with-lid-assembly.step")).solids()) == 690, (
-        "Exported carrying-box-with-lid-assembly.step solid count mismatch!"
-    )
-    print("Exported orthogonal carrying-box-assembly.step (689 solids) & carrying-box-with-lid-assembly.step (690 solids)!")
+    assert len(bd.import_step(str(ASSEMBLIES_DIR / "carrying-box-with-lid-assembly.step")).solids()) == 690
+    print("Exported carrying-box-with-lid-assembly.step (690 solids) & carrying-box-assembly.step (689 solids)!")
 
 
 if __name__ == "__main__":
