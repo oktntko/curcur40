@@ -137,13 +137,13 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）、`cadgen` 3D CAD レンダラ
 
 ![Carrying Assembly Front](./docs/assets/render_carrying_assembly_front.png)
 
-#### 【案B】完全90°直方体・5面フルカバー・スライド差し込みボックス (`carrying-box.step` ＋ 任意フタ `carrying-box-lid.step`)
-- **天底水平・左右垂直の完全直方体（外寸 $142.40 \times 100.65 \times 65.42\,\text{mm}$） ＆ ゴム足空中フローティング Cチャネルレール**: 外殻を傾きゼロの完全な直方体としつつ、内部レールのみをキーボードの $7.47^\circ$ 傾斜に合わせて成形。全10個のゴム足を常時 $0.75\,\text{mm}$ 空中に浮かせて引っ掛かりゼロでスライドでき、全4箇所の `CIO-SLMG-T-C` 端子も水平サイドスロット＆背面窓で干渉せず（側面端子は垂直外壁より $1.08\,\text{mm}$ 内側に保護されます）。
-- **フタなし単体（モード B-1）で完結するクリーン外観（任意キャップ B-2 も対応）**: 差込口に水平スリット弾性クリックストッパーを内蔵し、外側面に不要なフタ用ノッチを一切設けず **フタなし1ピース（包絡外寸 $142.40 \times 103.51 \times 65.42\,\text{mm}$）で逆さにしても抜けない自立設計** です（必要に応じてツライチキャップ `carrying-box-lid.step` も装着可）。
+#### 【案B】完全90°直方体・スナップフタ付き6面フルカバー・スライド差し込みボックス (`carrying-box.step` ＋ `carrying-box-lid.step`)
+- **天底水平・左右前後垂直の完全直方体 ＆ 前後面とも貫通穴ゼロの内部「堀」構造**: 外殻を傾きゼロの完全な直方体（フタ装着時外寸 **$142.40 \times 111.35 \times 65.42\,\text{mm}$**）としつつ、内部レールのみをキーボードの $7.47^\circ$ 傾斜に合わせて成形。全10個のゴム足を常時 $0.75\,\text{mm}$ 空中に浮かせて引っ掛かりゼロでスライドでき、奥面とフタ内面には外へ貫通しない **内部の「堀（ブラインドポケット）」＋ キーボード手前突き当たりストッパー段差** を設けることで、全4箇所の `CIO-SLMG-T-C` マグネット端子を装着したまま前後面を完全密閉（側面端子も垂直外壁より $1.08\,\text{mm}$ 内側に保護）します。
+- **隠しスナップロック式キャップフタ（`carrying-box-lid.step`）＋ 入口仮保持ストッパー**: 外側面にノッチを出さない隠しカンチレバー・スナップ爪でキャップフタが「カチッ」とロックされ、上下の指掛け切り欠きもツライチに塞いでカバンの中でホコリや小物の侵入を防ぎます。
 
-| 案B-1：フタなしスライド収納 (`carrying-box-assembly.step`) | 案B-2：着脱スナップフタ装着 (`carrying-box-with-lid-assembly.step`) |
+| 案B：フタ装着フルカバー収納 (`carrying-box-with-lid-assembly.step`) | 案B：フタ取り外し・スライド挿入時 (`carrying-box-assembly.step`) |
 | :---: | :---: |
-| ![Carrying Box Lidless](./docs/assets/render_carrying_box_lidless_iso.png) | ![Carrying Box With Lid](./docs/assets/render_carrying_box_with_lid_iso.png) |
+| ![Carrying Box With Lid](./docs/assets/render_carrying_box_with_lid_iso.png) | ![Carrying Box Lidless](./docs/assets/render_carrying_box_lidless_iso.png) |
 
 | 案B：ボックス単体 (`cases/carrying-box.step`) | 案B：差込口正面（ゴム足フローティング＆中央 TB キーパー断面視） |
 | :---: | :---: |
