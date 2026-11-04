@@ -26,7 +26,7 @@
 
 ---
 
-## 2. スクリプト一覧と実行方法（全12本）
+## 2. スクリプト一覧と実行方法（全13本）
 
 ### ① 3D CAD 生成スクリプト（`cadgen` / `build123d` 環境で実行）
 ```powershell
@@ -40,7 +40,8 @@ $CADGEN_PY = "$env:USERPROFILE\.local\bin\uvx.exe"
 | **[`generate_sensor_assemblies.py`](./generate_sensor_assemblies.py)** | PMW3360DM-T2QU + LM19-LSI レンズ + PCB の光学アセンブリ（`cases/assemblies/pmw3360-lens-pcb-assembly.step`）およびカップ＋ボール統合検証モデル（`cases/assemblies/trackball-sensor-assembly.step`）を生成します（両モデルとも `Lens_Optical_Ref_Point` を収録）。 |
 | **[`generate_inertia_wheel.py`](./generate_inertia_wheel.py)** | アンダープレート 1ピース一体軸パッシブ磁気慣性ホイール実部品 4種（[`cases/inertia_wheel/`](../cases/inertia_wheel/) 配下の JLCCNC `45# Steel + 無電解Ni` 削り出し $\varnothing 22.0 \times 6.50\text{ mm}$ `steel-flywheel`、および JLC3DP MJF/SLS PA12 造形 `magnet-holder`, `wheel-rocker`, `wheel-cradle`［Cクリップスナップインヒンジ付］の STEP/STL）ならびに検証アセンブリ（`cases/assemblies/inertia-wheel-assembly.step`）を生成し、JLCCNC/JLC3DP 造形ルール・0.80mm未満薄肉完全ゼロ（除外0件）・静止姿勢（$0^\circ$）〜中クリック押下姿勢（$2.20^\circ$）の全パーツ間干渉ゼロ（`0.00000000 mm³`）・最小可動クリアランス・**6自由度（6-DOF）固定＆稼働拘束検証（`verify_6dof_constraints()`：基板未装着での `#03/#04` 一体保持含む）** を一括検証します。 |
 | **[`generate_full_assembly.py`](./generate_full_assembly.py)** | `kicad-cli pcb export step --subst-models --no-dnp` により全3基板（`left`, `right`, `pmw3360`）と **全535個のKiCad実3D部品モデル** を直接出力・同期したうえで、嵌合する **JST `SHR-06V-S-B` ハウジング 2個**・左右ケース・左右トッププレート・Kailh Choc V2 スイッチ 40個・キーキャップ 40個・トラックボールカップ・25mm球・PMW3360・LM19レンズ・`Lens_Optical_Ref_Point`・アンダープレート一体軸慣性ホイール一式・`M2×L3.0×OD3.2mm` 真鍮ヒートセットインサート 19個・統一 `M2×6.0mm` ネジ 19本を統合したフルアセンブリ（`cases/assemblies/assembly-full.step`, `assembly-full-desk.step`、全674ソリッド）および右手ホイール検証モデル（`cases/assemblies/curcur40-right-wheel-assembly.step`、全349ソリッド）を生成し、①全パーツ間の干渉体積ゼロ（`0.00000000 mm³`）、②非接触パーツ間の最小クリアランス、③3Dプリント部品全6種の0.80mm未満肉厚チェック（確定除外箇所を除く違反0件）、④**スイッチ嵌合トッププレート・フラットボス＆内壁受け棚締結基板・カップ＆ホイール全体の 6-DOF 機械的拘束検証** を一括検証します。 |
-| **[`generate_carrying_case.py`](./generate_carrying_case.py)** | 持ち運び用 1ピース・スナップイン・キャリングフレーム（`cases/carrying-frame.step`, `carrying-frame.stl`：互い違いウェッジ相殺対面構造・全4箇所 USB-C マグネット端子 `CIO-SLMG-T-C` 用 幅 $18.0\text{ mm}$ 完全開放 U字切り欠き・親指側＆小指側両側ワンタッチカンチレバーパドルラッチ・25mm球非接触ハローキーパー・L字欠きシールド一体造形）および `assembly-full.step` 全674ソリッド＋ゴム足10個＋`CIO-SLMG-T-C` 4個を統合した収納アセンブリ（`cases/assemblies/carrying-assembly.step`、全689ソリッド、外寸 $144.76 \times 103.51 \times 59.92\text{ mm}$）を生成し、JLC3DP 基本造形ルール・0.80mm未満薄肉完全ゼロ（除外0件）・全689ソリッド間干渉ゼロ（`0.00000000 mm³`）・ストレート着脱経路クリアランス・最小表面クリアランス・6-DOF 保持拘束を一括検証します。 |
+| **[`generate_carrying_case.py`](./generate_carrying_case.py)** | 【案A】持ち運び用 1ピース・スナップイン・オープンフレーム（`cases/carrying-frame.step`, `carrying-frame.stl`：互い違いウェッジ相殺対面構造・全4箇所 USB-C マグネット端子 `CIO-SLMG-T-C` 用 幅 $18.0\text{ mm}$ 完全開放 U字切り欠き・親指側＆小指側両側ワンタッチカンチレバーパドルラッチ・25mm球非接触ハローキーパー・L字欠きシールド一体造形）および収納アセンブリ（`cases/assemblies/carrying-assembly.step`、全689ソリッド、外寸 $144.76 \times 103.51 \times 59.92\text{ mm}$）を生成し、JLC3DP 基本造形ルール・0.80mm未満薄肉完全ゼロ（除外0件）・全689ソリッド間干渉ゼロ（`0.00000000 mm³`）・ストレート着脱経路クリアランス・最小表面クリアランス・6-DOF 保持拘束を一括検証します。 |
+| **[`generate_carrying_box.py`](./generate_carrying_box.py)** | 【案B】持ち運び用 5面フルカバー・スライド差し込みボックス本体（`cases/carrying-box.step`, `carrying-box.stl`：ゴム足空中フローティング Cチャネルレール・中央ディバイダ 25mm球キーパー Uスロット・全4箇所 `CIO-SLMG-T-C` 開放スロット／窓・フタなし入口クリックストッパー一体造形、$143.00 \times 100.65 \times 65.42\text{ mm}$）＋ オプション着脱ツライチスナップフタ（`cases/carrying-box-lid.step`, `carrying-box-lid.stl`）および収納アセンブリ2種（フタなし `carrying-box-assembly.step` ／ フタ装着 `carrying-box-with-lid-assembly.step`、全690ソリッド）を生成し、JLC3DP 基本造形ルール・両部品とも 0.80mm未満薄肉完全ゼロ（除外0件）・全690ソリッド間干渉ゼロ（`0.00000000 mm³`）・全スライド軌道クリアランス・フタなし単体での 6-DOF 保持拘束を一括検証します。 |
 
 ### ② KiCad 基板・プレート・JLCPCB 発注データ・図版スクリプト
 ```powershell

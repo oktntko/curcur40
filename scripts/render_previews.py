@@ -51,6 +51,10 @@ def render_assembly_step():
         (WORKSPACE / "cases" / "carrying-frame.step", "iso", ASSETS_DIR / "render_carrying_frame_iso.png", 1600, 1100),
         (WORKSPACE / "cases" / "assemblies" / "carrying-assembly.step", "iso", ASSETS_DIR / "render_carrying_assembly_iso.png", 1600, 1100),
         (WORKSPACE / "cases" / "assemblies" / "carrying-assembly.step", "front", ASSETS_DIR / "render_carrying_assembly_front.png", 1600, 1000),
+        (WORKSPACE / "cases" / "carrying-box.step", "iso", ASSETS_DIR / "render_carrying_box_iso.png", 1600, 1100),
+        (WORKSPACE / "cases" / "assemblies" / "carrying-box-assembly.step", "iso", ASSETS_DIR / "render_carrying_box_lidless_iso.png", 1600, 1100),
+        (WORKSPACE / "cases" / "assemblies" / "carrying-box-assembly.step", "back", ASSETS_DIR / "render_carrying_box_mouth.png", 1600, 1000),
+        (WORKSPACE / "cases" / "assemblies" / "carrying-box-with-lid-assembly.step", "iso", ASSETS_DIR / "render_carrying_box_with_lid_iso.png", 1600, 1100),
     ]
     for step_path, view_name, out_path, w, h in step_jobs:
         print(f"Rendering {out_path.name} from {step_path.name} ({view_name})...")
