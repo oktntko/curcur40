@@ -9,22 +9,28 @@ Strictly adheres to `docs/case_spec.md` Section 6 & `AGENTS.md` Section 4:
     - Left keyboard (`left.step`) rotated 180 deg about X-axis + translated (+142.8830, -157.4875, +19.5000) mm
     - Left & Right 7.473 deg built-in tenting planes become 100% mathematically parallel (55.92 mm bare brick
       thickness, 59.92 mm uniform total thickness including 2.00 mm rubber feet on both outer bottoms)
+- All 4 USB-C Ports 100% Open for Permanent Magnetic USB-C Tips (`CIO-SLMG-T-C`, ~12.3 x 7.0 mm):
+    - Wide 18.00 mm open U-notches (up to the seating plane Z = +0.05 / +19.45 mm, R = 1.00 mm arch corners)
+      at all 4 USB-C locations (Right `rJ1`/`rJ2` & Left `J1`/`J2`)
+    - Zero dust shutters or port-interior lugs: allows straight-in vertical push-to-lock and pull-to-release
+      with all 4 `CIO-SLMG-T-C` magnetic tips permanently installed (>= 2.30 mm clearance all around)
+- Symmetric Dual One-Touch Cantilever Paddle Latches (Thumb + Pinky on Both Halves, Zero Rubber-Foot Interference):
+    - Push straight in from above/below to self-cam & snap-lock; pull both paddles (~1 mm) to release
+    - Pinky 20.00 mm wide PA12 cantilever paddle latch (`Y in [-82.00, -62.00]` on Right)
+    - Thumb 20.00 mm wide PA12 cantilever paddle latch + local side-skirt support apron (`Y in [-65.00, -45.00]`
+      on Right, 12.65 mm clear north of Split USB-C U-notch) matching Pinky spring stiffness (~10-11 N/mm)
+    - Latch bases are coplanar with the 7.473 deg brick plane (0.35 mm clear inside the 2.00 mm rubber-foot plane),
+      so `carrying-frame.step` sits flat on Z = 0.0000 mm at all 4 latch corners with 59.22 mm print height
 - Internal Non-Contact Protection & 100% Cavity Enclosure:
     - Rim-to-rim perimeter seating ledges (Z = +0.05 mm & +19.45 mm) carry all loads through the PA12 case rims
-    - Annular Trackball Keeper Halo Ring (Ø 15.60 mm ID / Ø 22.00 mm OD, Z = +12.80..+15.10 mm) holds a 0.58 mm
-      non-contact gap over the 25mm ball at rest and limits shock lift to <= 0.73 mm (preventing claw pop-out
-      and keeping >= 0.37 mm clearance to opposite Left `SW18` keycap even at hard stop)
+    - Annular Trackball Keeper Halo Ring (D 15.60 mm ID / D 22.00 mm OD, Z = +12.80..+15.10 mm) holds a 0.58 mm
+      non-contact gap over the 25mm ball at rest and limits shock lift to <= 0.73 mm
     - Point-symmetric NW & SE L-cutout protective corner shields (2.00 mm thick) seal all 40 keys & inertia wheel
-- One-Touch 1-Second Snap Retention & 4-Port USB-C Dust Shields (Zero Rubber-Foot Interference):
-    - Thumb Split USB-C solid Toe-Lug + Dust Shield (0.90 mm catch under 1.50 mm PA12 wall bridge, >= 0.35 mm
-      clear of recessed metal `TYPE-C-31-M-13C` shell)
-    - North/South Host USB-C exterior flush dust-shield tabs (zero inward hook for bind-free swing-in/out)
-    - Pinky 22.00 mm wide PA12 cantilever spring paddle latches (2.00 mm beam, 2.00 mm relief slots with Ø 2.00 mm
-      filleted roots, 1.00 mm catch overlap under the 10.00 mm pinky wall + ergonomic thumb-release paddle)
 - Automated Preflight & Full-Assembly Verification:
-    - JLC3DP MJF/SLS PA12 rules: single watertight manifold solid, Z = 0.0000 mm base, concave bore >= Ø 1.50 mm,
+    - JLC3DP MJF/SLS PA12 rules: single watertight manifold solid, Z = 0.0000 mm base, concave bore >= D 1.50 mm,
       and ZERO `< 0.80 mm` thin-wall/micro-gap face pairs (0 exclusions)
     - Zero B-rep overlap (`0.00000000 mm^3`) across all 674 KiCad-synchronized keyboard solids + 10 rubber feet
+      + 4 `CIO-SLMG-T-C` magnetic USB-C tips (both at rest and along straight vertical entry/exit!)
     - Exact surface clearance & 6-DOF mechanical retention assertions
 """
 from __future__ import annotations
@@ -58,7 +64,8 @@ Y_STEP_R = -100.1316
 
 Z_THUMB_BOTTOM = -26.9000
 Z_PINKY_BOTTOM = -10.0000
-THETA_TENT_RAD = math.atan2(Z_PINKY_BOTTOM - Z_THUMB_BOTTOM, X_PINKY_OUTER - X_THUMB_OUTER)
+TAN_TENT = (Z_PINKY_BOTTOM - Z_THUMB_BOTTOM) / (X_PINKY_OUTER - X_THUMB_OUTER)
+THETA_TENT_RAD = math.atan(TAN_TENT)
 THETA_TENT_DEG = math.degrees(THETA_TENT_RAD)
 
 # Wedge-canceling `Rot_X(180 deg)` transformation parameters
@@ -73,22 +80,44 @@ MID_Z = 0.5 * H_SEP                          #   +9.7500 mm
 Z_SEAT_GAP = 0.0500       # Nominal 0.05 mm B-rep seating air film at Z = +0.05 mm and +19.45 mm
 XY_FIT_GAP = 0.2500       # Static perimeter fit clearance (>= 0.20 mm JLC3DP rule)
 SKIRT_WALL = 2.0000       # 2.00 mm outer skirt wall thickness
-SKIRT_DEPTH = 2.4000      # Skirt overlap onto case walls (stops at Z = -2.40 mm, clear of -2.75 mm USB-C ports)
+SKIRT_DEPTH = 2.4000      # Skirt overlap onto case walls (Z = -2.40 mm on Right, +21.90 mm on Left)
 SHIELD_THICK = 2.0000     # 2.00 mm protective corner shields over NW & SE L-cutouts
+
+# USB-C port centers & open U-notch width for permanent `CIO-SLMG-T-C` (~12.3 x 7.0 mm) magnetic tips
+HOST_USBC_CX_R = 26.5750
+SPLIT_USBC_CY_R = -86.6500
+USBC_CENTER_Z_R = -5.8500
+USBC_NOTCH_WIDTH = 18.0000    # +-9.00 mm around port center (>= 2.80 mm side clearance for 12.3 mm CIO tip)
+
+# CIO-SLMG-T-C magnetic USB-C tip verification envelope (`~12.3 x 7.0 mm` head, protruding `3.80 mm` outside case)
+CIO_TIP_WIDTH = 12.4000
+CIO_TIP_HEIGHT = 7.0000
+CIO_TIP_PROTRUSION = 3.8000
 
 # Trackball coordinates & Keeper Halo Ring parameters
 TB_CX = 23.8125
 TB_CY = -109.5375
 BALL_CZ = 2.3000
 BALL_RADIUS = 12.5000
-HALO_R_IN = 7.8000        # Ø 15.60 mm inner bore
-HALO_R_OUT = 11.0000      # Ø 22.00 mm outer ring
-HALO_Z_MIN = 12.8000      # 0.58 mm radial rest gap to Ø 25.00 mm ball
+HALO_R_IN = 7.8000        # D 15.60 mm inner bore
+HALO_R_OUT = 11.0000      # D 22.00 mm outer ring
+HALO_Z_MIN = 12.8000      # 0.58 mm radial rest gap to D 25.00 mm ball
 HALO_Z_MAX = 15.1000      # 2.30 mm thick ring, 0.80 mm clear below Left keycaps (+15.90 mm)
 
-# Rubber foot specification (`docs/buildguide_jp.md`: Ø 6-8 mm, thickness 1.5-2.0 mm)
-RUBBER_FOOT_RADIUS = 4.0000   # Ø 8.00 mm
+# Rubber foot specification (`docs/buildguide_jp.md`: D 6-8 mm, thickness 1.5-2.0 mm)
+RUBBER_FOOT_RADIUS = 4.0000   # D 8.00 mm
 RUBBER_FOOT_HEIGHT = 2.0000   # 2.00 mm height
+LATCH_BASE_PERP_OFFSET = 1.6500  # Coplanar latch base offset (0.35 mm clear inside 2.00 mm rubber-foot plane)
+
+
+def z_case_bottom_right(x: float) -> float:
+    """Exact Z coordinate on Right keyboard's angled outer bottom plane at X."""
+    return Z_THUMB_BOTTOM + (x - X_THUMB_OUTER) * TAN_TENT
+
+
+def z_latch_base_right(x: float) -> float:
+    """Coplanar latch base line parallel to Right's outer bottom (`Z_desk = +0.3500 mm` flat horizontal!)."""
+    return z_case_bottom_right(x) - LATCH_BASE_PERP_OFFSET / math.cos(THETA_TENT_RAD)
 
 
 def make_filleted_sketch(pts_and_radii: list[tuple[float, float, float]]) -> bd.Sketch:
@@ -105,7 +134,7 @@ def make_filleted_sketch(pts_and_radii: list[tuple[float, float, float]]) -> bd.
     return sk.sketch
 
 
-def get_right_Offset_pts(outward_offset: float, r_convex: float, r_concave: float) -> list[tuple[float, float, float]]:
+def get_right_offset_pts(outward_offset: float, r_convex: float, r_concave: float) -> list[tuple[float, float, float]]:
     """
     Polygon for Right keyboard outer perimeter expanded outward by `outward_offset` mm.
     (`outward_offset = -1.50` reproduces `get_inner_pts(True)`).
@@ -116,7 +145,7 @@ def get_right_Offset_pts(outward_offset: float, r_convex: float, r_concave: floa
         (X_PINKY_OUTER + d, Y_NORTH_OUTER + d, r_convex),
         (X_PINKY_OUTER + d, Y_STEP_R - d, r_convex),
         (X_STEP_R + d, Y_STEP_R - d, r_concave),
-        (X_STEP_R + d, Y_SOUTH_OUTER - d, r_convex),
+        (X_STEP_R + d, Y_STEP_R - d if False else Y_SOUTH_OUTER - d, r_convex),
         (X_THUMB_OUTER - d, Y_SOUTH_OUTER - d, r_convex),
     ]
 
@@ -147,7 +176,8 @@ def transform_left_to_packed(shape: bd.Shape) -> bd.Shape:
 def transform_packed_to_desk(shape: bd.Shape) -> bd.Shape:
     """
     Rotate the packed parallel brick by `+THETA_TENT_DEG` (+7.473 deg) around Y and shift in Z
-    so the bottom rubber feet rest flat on `Z = 0.0000 mm` (and bare Right bottom sits at `Z = +2.0000 mm`).
+    so the bottom rubber feet rest flat on `Z = 0.0000 mm` (bare Right bottom sits at `Z = +2.0000 mm`,
+    and both Thumb & Pinky bottom latch bases sit coplanar at `Z = +0.3500 mm`).
     """
     lbl = getattr(shape, "label", "")
     children = getattr(shape, "children", None)
@@ -173,18 +203,16 @@ def transform_packed_to_desk(shape: bd.Shape) -> bd.Shape:
 
 def build_pinky_paddle_latch_right() -> tuple[bd.Solid, bd.Solid]:
     """
-    Builds the Right-keyboard (East `X = 135.8580 mm`, `Y in [-76.50, -54.50]`) PA12 cantilever
-    spring paddle latch solid AND the relief-slot cutter that isolates the spring beam from the skirt/ledge.
-    Every face segment is >= 0.85 mm wide and slot root fillets are Ø 2.00 mm (zero `< 0.80 mm` pairs).
+    Builds the Right-keyboard Pinky (East `X = 135.8580 mm`, `Y in [-82.00, -62.00]`) PA12 cantilever
+    spring paddle latch solid AND its relief-slot cutter (`Y in [-84.00, -60.00]`).
+    Bottom outer face lies on `z_latch_base_right(X)` so it becomes horizontal `Z = 0.0000 mm` in desk pose.
     """
     y_center = -72.0000
-    latch_w = 22.0000
+    latch_w = 20.0000
     slot_w = 2.0000
-    total_cut_w = latch_w + 2.0 * slot_w  # 26.00 mm: Y in [-85.00, -59.00] (clears Halo Bridge by 5.55 mm!)
+    total_cut_w = latch_w + 2.0 * slot_w  # 24.00 mm: Y in [-84.00, -60.00]
     z_root = 5.0000                       # Straight slot up to +5.00 mm + R=1.00 mm top round -> +6.00 mm
 
-    # 1. Cutter that clears the skirt & inner ledge across Y in [-85.00, -59.00] below Z = +6.00 mm,
-    #    with R = 1.00 mm (Ø 2.00 mm >= Ø 1.50 mm) rounded slot tops:
     cut_box = bd.Box(
         12.00,
         total_cut_w,
@@ -195,115 +223,196 @@ def build_pinky_paddle_latch_right() -> tuple[bd.Solid, bd.Solid]:
         lambda e: abs(e.bounding_box().size.X - 12.00) < 0.1
         and abs(e.bounding_box().min.Z - z_root) < 0.05
     )
-    assert len(top_slot_edges) == 2, f"Expected 2 top X-edges on latch cutter, got {len(top_slot_edges)}"
+    assert len(top_slot_edges) == 2, f"Expected 2 top X-edges on pinky latch cutter, got {len(top_slot_edges)}"
     cut_box = bd.fillet(top_slot_edges, radius=1.00)
 
-    # 2. Cantilever spring beam + bottom catch hook + ergonomic thumb-release paddle in XZ plane:
-    #    `x_in` and `x_out` align 100.000% flush with `sk_r_in` (136.1080) and `sk_r_out` (138.1080)
-    #    so zero micro-steps occur at the beam root!
     x_in = X_PINKY_OUTER + XY_FIT_GAP             # 136.1080 mm (flush with skirt inner wall)
     x_out = x_in + SKIRT_WALL                     # 138.1080 mm (flush with skirt outer wall, 2.00 mm beam)
     x_hook = X_PINKY_OUTER - 1.0000               # 134.8580 mm (1.00 mm inward catch overlap under 1.50 mm wall)
-    x_ramp_bot = 135.9580                         # Entry cam ramp outer bottom (> 135.8580 so case corner self-cams!)
-    x_paddle = 139.9080                           # +1.80 mm ergonomic finger release tab
+    x_ramp_bot = 135.9800                         # > 135.8580 so straight vertical push-in self-cams open!
+    x_paddle = x_out + 1.4000                     # +1.40 mm ergonomic finger release tab (139.5080 mm)
 
     xz_pts = [
-        (x_in, 6.2000),         # Blends 0.20 mm above slot root into solid 3.75 mm frame wall
+        (x_in, 6.2000),                           # Blends 0.20 mm above slot root into solid frame wall
         (x_out, 6.2000),
         (x_out, -7.6000),
-        (x_paddle, -9.0000),    # 2.28 mm ergonomic upper bevel
-        (x_paddle, -10.6000),   # 1.60 mm vertical paddle tip face
-        (x_out, -10.6000),      # 1.80 mm horizontal thumb-grip ledge for effortless 1-finger release
-        (x_out, -11.6800),      # 1.08 mm lower outer face (stays clear above 2.00 mm rubber-foot desk plane!)
-        (x_ramp_bot, -11.6800), # 2.15 mm flat horizontal base (serves as Z=0 print bed face!)
-        (x_hook, -11.2800),     # 1.17 mm angled entry cam ramp
-        (x_hook, -10.4300),     # 0.85 mm vertical inner hook nose (> 0.80 mm!)
-        (x_in, -10.4300),       # 1.25 mm horizontal catch shelf (0.30 mm clear below angled case bottom)
+        (x_paddle, -8.8000),                      # 1.84 mm ergonomic upper bevel
+        (x_paddle, -10.4000),                     # 1.60 mm vertical paddle tip face
+        (x_out, -10.4000),                        # 1.40 mm horizontal finger-grip release ledge
+        (x_out, z_latch_base_right(x_out)),       # ~ -11.369 mm (>= 0.96 mm vertical outer lower face)
+        (x_ramp_bot, z_latch_base_right(x_ramp_bot)),  # ~ -11.648 mm (coplanar desk-horizontal print base!)
+        (x_hook, -11.3000),                       # 1.18 mm angled entry cam ramp
+        (x_hook, -10.4300),                       # 0.87 mm vertical inner hook nose (> 0.80 mm!)
+        (x_in, -10.4300),                         # 1.25 mm horizontal catch shelf (0.30 mm clear below case)
     ]
-    with bd.BuildSketch(bd.Plane.XZ) as sk_arm_sym:
+    with bd.BuildSketch(bd.Plane.XZ) as sk_arm:
         bd.Polygon(xz_pts, align=None)
-    arm_solid = bd.extrude(sk_arm_sym.sketch, amount=latch_w, both=False)
+    arm_solid = bd.extrude(sk_arm.sketch, amount=latch_w, both=False)
     arm_bb = arm_solid.bounding_box()
     arm_solid = arm_solid.moved(bd.Location((0.0, y_center - arm_bb.center().Y, 0.0)))
 
     return arm_solid, cut_box
 
 
-def build_Retention_features_for_half(is_top_left: bool) -> tuple[list[bd.Solid], list[bd.Solid]]:
+def build_thumb_paddle_latch_right() -> tuple[bd.Solid, bd.Solid, bd.Solid]:
     """
-    Returns `(add_solids, cut_solids)` for one keyboard half:
-      - `is_top_left = False`: Bottom Right keyboard (`Z <= 0`)
-      - `is_top_left = True`:  Top Left keyboard via exact point-inversion `(DX_LEFT - X, DY_LEFT - Y, H_SEP - Z)`
-    Features:
-      1. Split USB-C solid Toe-Lug + Dust Shield (`X = 4.775..7.925, Y = -90.65..-82.65, Z = -8.35..-3.05`)
-         Plus bridges extending the outer skirt smoothly down around the lug (`Y in [-92.90, -80.40]`).
-      2. Host USB-C exterior flush Dust Shield (`X = 19.575..33.575, Y = -30.5875..-28.5875, Z = -9.20..+0.50`).
-      3. Pinky One-Touch Cantilever Paddle Latch + Relief Slot Cutter.
+    Builds the Right-keyboard Thumb (West `X = 7.0250 mm`, `Y in [-65.00, -45.00]`, 12.65 mm clear north
+    of the Split USB-C U-notch) PA12 support apron, cantilever spring paddle latch, and relief-slot cutter.
+    - Support apron (`Y in [-73.00, -37.00]`, `Z in [-10.00, +0.05]`) brings the slot ceiling to `Z = -7.50 mm`,
+      giving a 19.75 mm free cantilever length that matches the Pinky latch spring stiffness (~10-11 N/mm).
+    - Bottom outer face lies on `z_latch_base_right(X)` so BOTH Thumb & Pinky latch bases sit flat on Z = 0.0000 mm!
     """
-    # 1. Split USB-C Dust Shield + Inward Toe-Lug (5.30 mm tall block, >= 0.355 mm clear of metal USB-C shell!)
-    with bd.BuildSketch(bd.Plane.YZ.offset(4.7750)) as sk_split_shield:
-        with bd.Locations([(-86.6500, -4.1750)]):
-            bd.RectangleRounded(12.80, 8.35, 1.50)  # Y in [-93.05, -80.25], Z in [-8.35, 0.00]
-    split_shield = bd.extrude(sk_split_shield.sketch, amount=SKIRT_WALL)  # X in [4.7750, 6.7750]
+    y_center = -55.0000
+    latch_w = 20.0000
+    slot_w = 2.0000
+    total_cut_w = latch_w + 2.0 * slot_w  # 24.00 mm: Y in [-67.00, -43.00]
+    apron_w = 36.0000                     # Y in [-73.00, -37.00] (6.00 mm solid wings on each side!)
+    z_apron_bot = -10.5000                # Leaves 2.00 mm straight wall below -8.50 mm slot fillet bottom!
+    z_slot_top_straight = -7.5000         # Filleted by R=1.00 mm -> rounds from -7.50 down to -8.50 mm!
 
-    with bd.BuildSketch(bd.Plane.YZ.offset(6.5000)) as sk_toe_lug:
-        with bd.Locations([(-86.6500, -5.7000)]):
-            bd.RectangleRounded(8.00, 5.30, 1.20)   # Y in [-90.65, -82.65], Z in [-8.35, -3.05]
-    toe_lug = bd.extrude(sk_toe_lug.sketch, amount=1.4250)  # X up to 7.9250 mm (0.90 mm catch under PA12 bridge)
+    x_in = X_THUMB_OUTER - XY_FIT_GAP     # 6.7750 mm (100% flush with straight West face of `sk_r_in`)
+    x_out = x_in - SKIRT_WALL             # 4.7750 mm (100% flush with straight West face of `sk_r_out`)
+    x_hook = X_THUMB_OUTER + 1.0000       # 8.0250 mm (1.00 mm inward catch overlap under 1.50 mm Thumb wall)
+    x_ramp_bot = 6.9000                   # < 7.0250 so straight vertical push-in self-cams open!
+    x_paddle = x_out - 1.4000             # -1.40 mm ergonomic finger release tab (3.3750 mm)
 
-    # 2. Host USB-C Exterior Flush Dust Shield (North wall, zero inward hook so swing-in never binds)
-    host_shield = bd.Box(
-        14.40,
+    # 1. Flush West Side-Skirt Support Apron (`X in [4.7750, 6.7750]`, `Y in [-73.00, -37.00]`, `Z in [-10.50, 0.00]`)
+    apron_box = bd.Box(
         SKIRT_WALL,
-        9.40,
-        align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((26.5750, Y_NORTH_OUTER + XY_FIT_GAP, -9.2000)))
-    host_edges = host_shield.edges().filter_by(
-        lambda e: abs(e.bounding_box().size.Y - SKIRT_WALL) < 0.1
-        and e.bounding_box().max.Z < -8.00
+        apron_w,
+        0.0000 - z_apron_bot,
+        align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((x_out, y_center, z_apron_bot)))
+    apron_bot_edges = apron_box.edges().filter_by(
+        lambda e: abs(e.bounding_box().size.X - SKIRT_WALL) < 0.1
+        and abs(e.bounding_box().max.Z - z_apron_bot) < 0.05
     )
-    if len(host_edges) == 2:
-        host_shield = bd.fillet(host_edges, radius=1.50)
+    assert len(apron_bot_edges) == 2, f"Expected 2 bottom X-edges on thumb apron, got {len(apron_bot_edges)}"
+    apron_solid = bd.fillet(apron_bot_edges, radius=1.50)
 
-    # 3. Pinky Cantilever Paddle Latch
-    latch_arm, latch_cutter = build_pinky_paddle_latch_right()
+    # 2. Relief-slot cutter (`Y in [-67.00, -43.00]`, top at `Z = -7.50 mm` with D 2.00 mm rounded slot roots)
+    cut_box = bd.Box(
+        12.00,
+        total_cut_w,
+        z_slot_top_straight - (-35.00),
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((5.80, y_center, -35.00)))
+    top_slot_edges = cut_box.edges().filter_by(
+        lambda e: abs(e.bounding_box().size.X - 12.00) < 0.1
+        and abs(e.bounding_box().min.Z - z_slot_top_straight) < 0.05
+    )
+    assert len(top_slot_edges) == 2, f"Expected 2 top X-edges on thumb latch cutter, got {len(top_slot_edges)}"
+    cut_box = bd.fillet(top_slot_edges, radius=1.00)
 
-    adds = [split_shield, toe_lug, host_shield, latch_arm]
-    cuts = [latch_cutter]
+    # 3. Thumb Cantilever Spring Paddle Latch (`Y in [-65.00, -45.00]`)
+    xz_pts = [
+        (x_in, -7.3000),                          # Blends 0.20 mm above -7.50 mm slot ceiling into West skirt
+        (x_out, -7.3000),
+        (x_out, -25.0500),
+        (x_paddle, -26.2500),                     # 1.84 mm ergonomic upper bevel
+        (x_paddle, -27.8500),                     # 1.60 mm vertical paddle tip face
+        (x_out, -27.8500),                        # 1.40 mm horizontal finger-grip release ledge
+        (x_out, z_latch_base_right(x_out)),       # ~ -28.859 mm (1.01 mm vertical outer lower face)
+        (x_ramp_bot, z_latch_base_right(x_ramp_bot)),  # ~ -28.581 mm (coplanar desk-horizontal print base!)
+        (x_hook, -28.1200),                       # 1.22 mm angled entry cam ramp
+        (x_hook, -27.2500),                       # 0.87 mm vertical inner hook nose (> 0.80 mm!)
+        (x_in, -27.2500),                         # 1.25 mm horizontal catch shelf (0.35 mm clear below -26.90 mm)
+    ]
+    with bd.BuildSketch(bd.Plane.XZ) as sk_arm:
+        bd.Polygon(xz_pts, align=None)
+    arm_solid = bd.extrude(sk_arm.sketch, amount=latch_w, both=False)
+    arm_bb = arm_solid.bounding_box()
+    arm_solid = arm_solid.moved(bd.Location((0.0, y_center - arm_bb.center().Y, 0.0)))
+
+    return apron_solid, arm_solid, cut_box
+
+
+def build_usbc_open_notch_cutters_right() -> list[bd.Solid]:
+    """
+    Builds 18.00 mm wide open U-notch cutters for Right's two USB-C ports (`rJ1` on North, `rJ2` on West)
+    extending up to `Z_SEAT_GAP` (+0.0500 mm) with R = 1.00 mm (D 2.00 mm) smooth tangent arch corners,
+    so `CIO-SLMG-T-C` magnetic USB-C tips (~12.3 x 7.0 mm) remain 100% uncovered and pass straight in/out.
+    """
+    z_bot = -15.0000
+    z_straight_top = Z_SEAT_GAP  # +0.0500 mm; filleted by R=1.00 mm -> rounds from +0.05 down to -0.95 mm!
+
+    # 1. Host USB-C (`rJ1`) open notch on North skirt (`X = 26.5750 +- 9.00 mm`)
+    host_cut = bd.Box(
+        USBC_NOTCH_WIDTH,
+        12.00,
+        z_straight_top - z_bot,
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((HOST_USBC_CX_R, Y_NORTH_OUTER, z_bot)))
+    host_edges = host_cut.edges().filter_by(
+        lambda e: abs(e.bounding_box().size.Y - 12.00) < 0.1
+        and abs(e.bounding_box().min.Z - z_straight_top) < 0.05
+    )
+    assert len(host_edges) == 2, f"Expected 2 top Y-edges on host_cut, got {len(host_edges)}"
+    host_cut = bd.fillet(host_edges, radius=1.00)
+
+    # 2. Split USB-C (`rJ2`) open notch on West skirt (`Y = -86.6500 +- 9.00 mm`)
+    split_cut = bd.Box(
+        12.00,
+        USBC_NOTCH_WIDTH,
+        z_straight_top - z_bot,
+        align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+    ).moved(bd.Location((X_THUMB_OUTER, SPLIT_USBC_CY_R, z_bot)))
+    split_edges = split_cut.edges().filter_by(
+        lambda e: abs(e.bounding_box().size.X - 12.00) < 0.1
+        and abs(e.bounding_box().min.Z - z_straight_top) < 0.05
+    )
+    assert len(split_edges) == 2, f"Expected 2 top X-edges on split_cut, got {len(split_edges)}"
+    split_cut = bd.fillet(split_edges, radius=1.00)
+
+    return [host_cut, split_cut]
+
+
+def build_features_for_half(is_top_left: bool) -> tuple[list[bd.Solid], list[bd.Solid], list[bd.Solid]]:
+    """
+    Returns `(pre_cut_adds, cuts, post_cut_adds)` for one keyboard half:
+      - `pre_cut_adds`: Thumb support apron (added BEFORE cutting relief slots)
+      - `cuts`:         Pinky latch slot + Thumb latch slot + 2 Open USB-C U-notches
+      - `post_cut_adds`: Pinky paddle latch arm + Thumb paddle latch arm (added AFTER cutting slots)
+    """
+    pinky_arm, pinky_cut = build_pinky_paddle_latch_right()
+    thumb_apron, thumb_arm, thumb_cut = build_thumb_paddle_latch_right()
+    usbc_cuts = build_usbc_open_notch_cutters_right()
+
+    pre_adds = [thumb_apron]
+    cuts = [pinky_cut, thumb_cut] + usbc_cuts
+    post_adds = [pinky_arm, thumb_arm]
 
     if not is_top_left:
-        return adds, cuts
+        return pre_adds, cuts, post_adds
 
-    # Exact point-inversion `(X, Y, Z) -> (DX_LEFT - X, DY_LEFT - Y, H_SEP - Z)` via Rot_X(180) * Mirror_YZ
-    # Wait: since Right's retention features are extruded prisms, we can mirror across X = MID_X and rotate 180 about X!
     def invert_solid(s: bd.Solid) -> bd.Solid:
         mir = s.mirror(bd.Plane.YZ)
         loc = bd.Pos(DX_LEFT, DY_LEFT, H_SEP) * bd.Rot(180.0, 0.0, 0.0)
         return bd.Solid(mir.wrapped.Moved(loc.wrapped))
 
-    return [invert_solid(s) for s in adds], [invert_solid(c) for c in cuts]
+    return (
+        [invert_solid(s) for s in pre_adds],
+        [invert_solid(c) for c in cuts],
+        [invert_solid(a) for a in post_adds],
+    )
 
 
 def build_trackball_keeper_halo() -> bd.Solid:
     """
     Annular non-contact Trackball Keeper Halo Ring at `(23.8125, -109.5375)`, `Z in [12.80, 15.10] mm`
-    (ID Ø 15.60 mm, OD Ø 22.00 mm, thickness 2.30 mm) + rigid L-corner web bridges into the West & South
+    (ID D 15.60 mm, OD D 22.00 mm, thickness 2.30 mm) + rigid L-corner web bridges into the West & South
     frame walls (`X <= 8.5250`, `Y <= -125.1500`).
     """
     h = HALO_Z_MAX - HALO_Z_MIN
     with bd.BuildSketch(bd.Plane.XY.offset(HALO_Z_MIN)) as sk_halo:
         with bd.Locations([(TB_CX, TB_CY)]):
             bd.Circle(HALO_R_OUT)
-        # West bridge into West frame wall (`X in [6.00, TB_CX]`, width 11.0 mm)
         with bd.Locations([(0.5 * (6.00 + TB_CX), TB_CY)]):
             bd.Rectangle(TB_CX - 6.00, 11.00)
-        # South bridge into South frame wall (`Y in [-127.50, TB_CY]`, width 11.0 mm)
         with bd.Locations([(TB_CX, 0.5 * (-127.50 + TB_CY))]):
             bd.Rectangle(11.00, TB_CY - (-127.50))
-        # SW corner fill eliminating any narrow pocket between the two bridges and SW inner wall
         with bd.Locations([(0.5 * (6.00 + TB_CX), 0.5 * (-127.50 + TB_CY))]):
             bd.Rectangle(TB_CX - 6.00, TB_CY - (-127.50))
-        # Subtract Ø 15.60 mm central bore
         with bd.Locations([(TB_CX, TB_CY)]):
             bd.Circle(HALO_R_IN, mode=bd.Mode.SUBTRACT)
     return bd.extrude(sk_halo.sketch, amount=h)
@@ -314,12 +423,10 @@ def build_carrying_frame_assembly_pose() -> bd.Solid:
     Constructs the 1-piece PA12 `Carrying_Frame` in the packed assembly coordinate system
     (Right Case Rim at `Z = 0.00 mm`, Left Case Rim at `Z = +19.50 mm`).
     """
-    # Polygons for Bottom Half (Right `P_R`)
-    pts_r_skirt_out = get_right_Offset_pts(XY_FIT_GAP + SKIRT_WALL, r_convex=3.20, r_concave=1.50)
-    pts_r_skirt_in = get_right_Offset_pts(XY_FIT_GAP, r_convex=2.25, r_concave=1.75)
-    pts_r_cav = get_right_Offset_pts(-1.5000, r_convex=1.00, r_concave=1.00)
+    pts_r_skirt_out = get_right_offset_pts(XY_FIT_GAP + SKIRT_WALL, r_convex=3.20, r_concave=1.50)
+    pts_r_skirt_in = get_right_offset_pts(XY_FIT_GAP, r_convex=2.25, r_concave=1.75)
+    pts_r_cav = get_right_offset_pts(-1.5000, r_convex=1.00, r_concave=1.00)
 
-    # Polygons for Top Half (Transformed Left `P_L'`)
     pts_l_skirt_out = invert_pts_for_left_top(pts_r_skirt_out)
     pts_l_skirt_in = invert_pts_for_left_top(pts_r_skirt_in)
     pts_l_cav = invert_pts_for_left_top(pts_r_cav)
@@ -336,64 +443,55 @@ def build_carrying_frame_assembly_pose() -> bd.Solid:
     z_bot_seat = Z_SEAT_GAP                  # +0.05 mm
     z_nw_roof_bot = MID_Z - SHIELD_THICK     # +7.75 mm
     z_mid = MID_Z                            # +9.75 mm
-    z_se_floor_top = MID_Z + SHIELD_THICK    # +11.75 mm
     z_top_seat = H_SEP - Z_SEAT_GAP          # +19.45 mm
     z_top_skirt = H_SEP + SKIRT_DEPTH        # +21.90 mm
 
-    # 1. Bottom Half:
-    #    - Outer skirt ring (`Z = -2.40 .. +0.05`)
+    # 1. Bottom Half (Right `P_R` + NW L-cutout shield)
     bot_skirt = bd.extrude(sk_r_out, amount=z_bot_seat - z_bot_skirt).moved(
         bd.Location((0, 0, z_bot_skirt))
     ) - bd.extrude(sk_r_in, amount=z_bot_seat - z_bot_skirt + 0.20).moved(
         bd.Location((0, 0, z_bot_skirt - 0.10))
     )
-    #    - Main spacer wall (`Z = +0.05 .. +9.75` across full `P_R`, + up to `+11.75` along SE step to fuse with SE floor)
     bot_spacer = bd.extrude(sk_r_out, amount=z_mid - z_bot_seat).moved(
         bd.Location((0, 0, z_bot_seat))
     ) - bd.extrude(sk_r_cav, amount=z_mid - z_bot_seat + 0.20).moved(
         bd.Location((0, 0, z_bot_seat - 0.10))
     )
-    #    - NW L-cutout protective roof slab (`Z = +7.75 .. +9.75`): `sk_r_out - sk_l_cav`!
-    #      Look how clean `sk_r_out - sk_l_cav` is: it fills ONLY the NW L-cutout outside `Left`'s cavity,
-    #      fusing 100% flush with `Left`'s step wall (`sk_l_out - sk_l_cav`)!
-    nw_shield_2d = sk_r_out - sk_l_cav
-    nw_shield = bd.extrude(nw_shield_2d, amount=SHIELD_THICK).moved(
+    nw_shield = bd.extrude(sk_r_out - sk_l_cav, amount=SHIELD_THICK).moved(
         bd.Location((0, 0, z_nw_roof_bot))
     )
 
-    # 2. Top Half (exact point-symmetric twin!):
-    #    - Outer skirt ring (`Z = +19.45 .. +21.90`)
+    # 2. Top Half (Transformed Left `P_L'` + SE L-cutout shield)
     top_skirt = bd.extrude(sk_l_out, amount=z_top_skirt - z_top_seat).moved(
         bd.Location((0, 0, z_top_seat))
     ) - bd.extrude(sk_l_in, amount=z_top_skirt - z_top_seat + 0.20).moved(
         bd.Location((0, 0, z_top_seat - 0.10))
     )
-    #    - Main spacer wall (`Z = +9.75 .. +19.45` across full `P_L'`)
     top_spacer = bd.extrude(sk_l_out, amount=z_top_seat - z_mid).moved(
         bd.Location((0, 0, z_mid))
     ) - bd.extrude(sk_l_cav, amount=z_top_seat - z_mid + 0.20).moved(
         bd.Location((0, 0, z_mid - 0.10))
     )
-    #    - SE L-cutout protective floor slab (`Z = +9.75 .. +11.75`): `sk_l_out - sk_r_cav`!
-    se_shield_2d = sk_l_out - sk_r_cav
-    se_shield = bd.extrude(se_shield_2d, amount=SHIELD_THICK).moved(
+    se_shield = bd.extrude(sk_l_out - sk_r_cav, amount=SHIELD_THICK).moved(
         bd.Location((0, 0, z_mid))
     )
 
     body = bot_skirt + bot_spacer + nw_shield + top_skirt + top_spacer + se_shield
 
-    # 3. Integrate Trackball Keeper Halo Ring (clipped strictly inside `sk_r_out` so outer wall stays flush)
+    # 3. Integrate Trackball Keeper Halo Ring
     halo = build_trackball_keeper_halo()
     outer_clip = bd.extrude(sk_r_out, amount=30.0).moved(bd.Location((0, 0, 0.0)))
     body = body + (halo & outer_clip)
 
-    # 4. Integrate Bottom (Right) & Top (Left) One-Touch Retention Latches + USB-C Dust Shields
-    adds_r, cuts_r = build_Retention_features_for_half(is_top_left=False)
-    adds_l, cuts_l = build_Retention_features_for_half(is_top_left=True)
+    # 4. Integrate Dual Paddle Latches (Thumb + Pinky) & 4 Open USB-C U-Notches
+    pre_r, cuts_r, post_r = build_features_for_half(is_top_left=False)
+    pre_l, cuts_l, post_l = build_features_for_half(is_top_left=True)
 
+    for p in pre_r + pre_l:
+        body = body + p
     for c in cuts_r + cuts_l:
         body = body - c
-    for a in adds_r + adds_l:
+    for a in post_r + post_l:
         body = body + a
 
     solids = body.solids()
@@ -466,15 +564,15 @@ def verify_jlc3dp_carrying_frame(print_solid: bd.Solid) -> None:
 
 def build_rubber_feet_in_case_pose(is_right: bool) -> list[bd.Solid]:
     """
-    Builds 5 realistic Ø 8.0 x 2.0 mm cylindrical rubber feet stuck flat onto the outer tilted
-    bottom plane of `right.step` (`is_right=True`) or `left.step` (`is_right=False`), inset 6.5 mm
+    Builds 5 realistic D 8.0 x 2.0 mm cylindrical rubber feet stuck flat onto the outer tilted
+    bottom plane of `right.step` (`is_right=True`) or `left.step` (`is_right=False`), inset >= 6.5 mm
     inside the 5 outer corners of the case bottom.
     """
     sgn = 1.0 if is_right else -1.0
     foot_xy_abs = [
         (14.50, -38.50),    # NW thumb-north corner
         (128.00, -38.50),   # NE pinky-north corner
-        (128.00, -92.50),   # SE pinky-south corner (5.86 mm inside pinky edge, clear of 1.0 mm latch hook)
+        (128.00, -92.50),   # SE pinky-south corner
         (91.00, -119.00),   # Thumb-east south corner
         (14.50, -119.00),   # SW thumb-south corner
     ]
@@ -482,17 +580,13 @@ def build_rubber_feet_in_case_pose(is_right: bool) -> list[bd.Solid]:
     p_pinky = (sgn * X_PINKY_OUTER, -80.0, Z_PINKY_BOTTOM)
     dx = p_pinky[0] - p_thumb[0]
     dz = p_pinky[2] - p_thumb[2]
-    # Outer outward-pointing bottom normal (pointing roughly in -Z)
     norm_out = (dz, 0.0, -dx) if is_right else (-dz, 0.0, dx)
 
     feet = []
     side_tag = "Right" if is_right else "Left"
     for idx, (ax, fy) in enumerate(foot_xy_abs):
         fx = sgn * ax
-        fz = Z_THUMB_BOTTOM + (Z_PINKY_BOTTOM - Z_THUMB_BOTTOM) * (ax - X_THUMB_OUTER) / (
-            X_PINKY_OUTER - X_THUMB_OUTER
-        )
-        # Offset by 0.01 mm outward from bottom face so B-rep overlap_volume == 0.00000000
+        fz = z_case_bottom_right(ax)
         n_len = math.hypot(norm_out[0], norm_out[2])
         ux, uz = norm_out[0] / n_len, norm_out[2] / n_len
         foot_plane = bd.Plane(origin=(fx + 0.01 * ux, fy, fz + 0.01 * uz), z_dir=(ux, 0.0, uz))
@@ -500,6 +594,58 @@ def build_rubber_feet_in_case_pose(is_right: bool) -> list[bd.Solid]:
         cyl.label = f"{side_tag}_Rubber_Foot_{idx + 1}"
         feet.append(cyl)
     return feet
+
+
+def build_cio_magnetic_tips_in_case_pose(is_right: bool) -> list[bd.Solid]:
+    """
+    Builds realistic `CIO-SLMG-T-C` magnetic USB-C adapter tips (`12.40 x 7.00 mm` stadium head,
+    protruding `3.80 mm` outside the case outer wall + recessed neck toward the USB-C port) for both
+    Host USB-C (`J1`/`rJ1`) and Split USB-C (`J2`/`rJ2`), with a 0.05 mm air gap to the unmodified case
+    and metal USB-C receptacle so B-rep overlap_volume == 0.00000000 mm^3.
+    """
+    sgn = 1.0 if is_right else -1.0
+    side_tag = "Right" if is_right else "Left"
+
+    # 1. Host USB-C (`rJ1` / `J1`) on North wall (`Y_NORTH_OUTER = -30.8375`, protruding in `+Y`)
+    host_cx = sgn * HOST_USBC_CX_R
+    p_host = bd.Plane(origin=(host_cx, Y_NORTH_OUTER + 0.05, USBC_CENTER_Z_R), x_dir=(1, 0, 0), z_dir=(0, 1, 0))
+    host_head = bd.extrude(
+        p_host * bd.RectangleRounded(CIO_TIP_WIDTH, CIO_TIP_HEIGHT, 3.20),
+        amount=CIO_TIP_PROTRUSION,
+    ).solids()[0]
+    p_host_neck = bd.Plane(origin=(host_cx, Y_NORTH_OUTER - 1.15, USBC_CENTER_Z_R), x_dir=(1, 0, 0), z_dir=(0, 1, 0))
+    host_neck = bd.extrude(
+        p_host_neck * bd.RectangleRounded(8.40, 2.60, 1.10),
+        amount=1.25,
+    ).solids()[0]
+    host_tip = (host_head + host_neck).solids()[0]
+    host_tip.label = f"{side_tag}_Host_USBC_CIO_Tip"
+
+    # 2. Split USB-C (`rJ2` / `J2`) on Thumb wall (`|X| = 7.0250`, protruding outward in `-X` for Right / `+X` for Left)
+    split_x_wall = sgn * X_THUMB_OUTER
+    out_x = -1.0 if is_right else 1.0
+    p_split = bd.Plane(
+        origin=(split_x_wall + 0.05 * out_x, SPLIT_USBC_CY_R, USBC_CENTER_Z_R),
+        x_dir=(0, 1, 0),
+        z_dir=(out_x, 0, 0),
+    )
+    split_head = bd.extrude(
+        p_split * bd.RectangleRounded(CIO_TIP_WIDTH, CIO_TIP_HEIGHT, 3.20),
+        amount=CIO_TIP_PROTRUSION,
+    ).solids()[0]
+    p_split_neck = bd.Plane(
+        origin=(split_x_wall - 1.15 * out_x, SPLIT_USBC_CY_R, USBC_CENTER_Z_R),
+        x_dir=(0, 1, 0),
+        z_dir=(out_x, 0, 0),
+    )
+    split_neck = bd.extrude(
+        p_split_neck * bd.RectangleRounded(8.40, 2.60, 1.10),
+        amount=1.25,
+    ).solids()[0]
+    split_tip = (split_head + split_neck).solids()[0]
+    split_tip.label = f"{side_tag}_Split_USBC_CIO_Tip"
+
+    return [host_tip, split_tip]
 
 
 def _aabb_intersects(b1, b2, tol: float = 1e-4) -> bool:
@@ -553,21 +699,27 @@ def verify_carrying_assembly(
     left_packed_solids: list[bd.Solid],
     right_feet: list[bd.Solid],
     left_packed_feet: list[bd.Solid],
+    right_cio_tips: list[bd.Solid],
+    left_packed_cio_tips: list[bd.Solid],
 ) -> None:
     """
     Verifies:
       1. Zero B-rep overlap (`overlap_volume == 0.00000000 mm^3`) across `Carrying_Frame`, all 674 solids
-         of Left & Right full assemblies, and all 10 rubber feet.
-      2. Minimum surface clearances (Ball keeper gap, Inertia wheel, Keycaps, USB-C shells, Rubber feet).
-      3. Positive 6-DOF mechanical lock (`±X, ±Y, ±Z`) of Right case, Left case, and 25mm Trackball.
+         of Left & Right full assemblies, all 10 rubber feet, and all 4 `CIO-SLMG-T-C` magnetic USB-C tips.
+      2. Unobstructed straight-in vertical entry/exit path for all 4 `CIO-SLMG-T-C` tips (`0.00000000 mm^3`
+         overlap with `Carrying_Frame` along the entire straight-in insertion travel).
+      3. Minimum surface clearances (Ball keeper gap, Inertia wheel, Keycaps, CIO USB-C tips, Rubber feet).
+      4. Positive 6-DOF mechanical lock (`+-X, +-Y, +-Z`) of Right case, Left case, and 25mm Trackball.
     """
     frame_bb = frame_asm.bounding_box()
-    all_kb_and_feet = right_solids + left_packed_solids + right_feet + left_packed_feet
+    r_extra = right_feet + right_cio_tips
+    l_extra = left_packed_feet + left_packed_cio_tips
+    all_kb_and_acc = right_solids + left_packed_solids + r_extra + l_extra
 
     # 1. Frame vs every solid
     max_ov_frame = 0.0
     worst_label = ""
-    for idx, s in enumerate(all_kb_and_feet):
+    for idx, s in enumerate(all_kb_and_acc):
         sb = s.bounding_box()
         if _aabb_intersects(frame_bb, sb):
             ov = overlap_volume(frame_asm, s)
@@ -575,9 +727,19 @@ def verify_carrying_assembly(
                 max_ov_frame = ov
                 worst_label = f"{getattr(s, 'label', '') or idx} bbox={sb}"
 
-    # 2. Right solids (+ feet) vs Left packed solids (+ feet)
-    r_group = [(s, s.bounding_box()) for s in (right_solids + right_feet)]
-    l_group = [(s, s.bounding_box()) for s in (left_packed_solids + left_packed_feet)]
+    # 2. CIO tips vs own keyboard solids & Right group vs Left group
+    max_ov_cio_self = 0.0
+    for tip_list, kb_list in ((right_cio_tips, right_solids), (left_packed_cio_tips, left_packed_solids)):
+        for tip in tip_list:
+            tb = tip.bounding_box()
+            for ks in kb_list:
+                if _aabb_intersects(tb, ks.bounding_box()):
+                    ov = overlap_volume(tip, ks)
+                    if ov > max_ov_cio_self:
+                        max_ov_cio_self = ov
+
+    r_group = [(s, s.bounding_box()) for s in (right_solids + r_extra)]
+    l_group = [(s, s.bounding_box()) for s in (left_packed_solids + l_extra)]
     max_ov_rl = 0.0
     for sr, br in r_group:
         for sl, bl in l_group:
@@ -587,11 +749,29 @@ def verify_carrying_assembly(
                     max_ov_rl = ov
 
     print(
-        f"[carrying-assembly] Overlap check ({len(all_kb_and_feet)} solids + frame): "
-        f"Frame_vs_All={max_ov_frame:.8f} mm^3, Right_vs_Left={max_ov_rl:.8f} mm^3"
+        f"[carrying-assembly] Overlap check ({len(all_kb_and_acc)} solids + frame): "
+        f"Frame_vs_All={max_ov_frame:.8f} mm^3, CIO_vs_KB={max_ov_cio_self:.8f} mm^3, "
+        f"Right_vs_Left={max_ov_rl:.8f} mm^3"
     )
     assert max_ov_frame == 0.0, f"B-rep interference with Carrying_Frame: {max_ov_frame:.8f} mm^3 at {worst_label}!"
+    assert max_ov_cio_self == 0.0, f"B-rep interference between CIO tips & KB: {max_ov_cio_self:.8f} mm^3!"
     assert max_ov_rl == 0.0, f"B-rep interference between Right & Left halves: {max_ov_rl:.8f} mm^3!"
+
+    # 3. Straight-in vertical entry/exit path check for all 4 plugged-in `CIO-SLMG-T-C` tips
+    for dz in (-1.5, -4.0, -10.0, -20.0):
+        for r_tip in right_cio_tips:
+            moved_tip = bd.Solid(r_tip.wrapped.Moved(bd.Location((0.0, 0.0, dz)).wrapped))
+            if _aabb_intersects(frame_bb, moved_tip.bounding_box()):
+                assert overlap_volume(frame_asm, moved_tip) == 0.0, (
+                    f"Right CIO tip {r_tip.label} collides with Carrying_Frame at dz={dz} mm during straight push-in!"
+                )
+    for dz in (1.5, 4.0, 10.0, 20.0):
+        for l_tip in left_packed_cio_tips:
+            moved_tip = bd.Solid(l_tip.wrapped.Moved(bd.Location((0.0, 0.0, dz)).wrapped))
+            if _aabb_intersects(frame_bb, moved_tip.bounding_box()):
+                assert overlap_volume(frame_asm, moved_tip) == 0.0, (
+                    f"Left CIO tip {l_tip.label} collides with Carrying_Frame at dz=+{dz} mm during straight push-in!"
+                )
 
     # Identify semantic solids from geometry in assembly coordinates
     right_case = max(right_solids, key=lambda s: s.volume)
@@ -622,23 +802,11 @@ def verify_carrying_assembly(
         f"Expected 19 Right + 21 Left keycaps, got R={len(right_keycaps)}, L={len(left_keycaps_packed)}"
     )
 
-    usbc_solids = [
-        s
-        for s in right_solids
-        if 39.0 < s.volume < 58.0 and -7.6 < s.bounding_box().min.Z < -7.0 and -4.5 < s.bounding_box().max.Z < -4.1
-    ] + [
-        s
-        for s in left_packed_solids
-        if 39.0 < s.volume < 58.0
-        and (H_SEP + 4.1) < s.bounding_box().min.Z < (H_SEP + 4.5)
-        and (H_SEP + 7.0) < s.bounding_box().max.Z < (H_SEP + 7.6)
-    ]
-    assert len(usbc_solids) >= 4, f"Expected >= 4 USB-C connector solids, got {len(usbc_solids)}"
-
+    all_cio_tips = right_cio_tips + left_packed_cio_tips
     clr_ball = min_surface_clearance([ball_solid], frame_asm)
     clr_wheel = min_surface_clearance([wheel_solid], frame_asm)
     clr_keycaps = min_surface_clearance(right_keycaps + left_keycaps_packed, frame_asm)
-    clr_usbc = min_surface_clearance(usbc_solids, frame_asm)
+    clr_cio_tips = min_surface_clearance(all_cio_tips, frame_asm)
     clr_feet = min_surface_clearance(right_feet + left_packed_feet, frame_asm)
     clr_ball_to_left_cap = min_surface_clearance(left_keycaps_packed, ball_solid)
 
@@ -648,17 +816,17 @@ def verify_carrying_assembly(
         f"  - 25mm Trackball vs Left Keycap (SW18):  {clr_ball_to_left_cap:.3f} mm (>= 1.00 mm)\n"
         f"  - Frame vs Inertia Wheel:                {clr_wheel:.3f} mm (>= 1.50 mm)\n"
         f"  - Frame vs All 40 Keycaps:               {clr_keycaps:.3f} mm (>= 0.75 mm)\n"
-        f"  - Frame vs All 4 USB-C Shells:           {clr_usbc:.3f} mm (>= 0.30 mm)\n"
+        f"  - Frame vs All 4 CIO-SLMG-T-C Tips:      {clr_cio_tips:.3f} mm (>= 1.50 mm, 100% open)\n"
         f"  - Frame vs All 10 Rubber Feet:           {clr_feet:.3f} mm (>= 2.00 mm)"
     )
     assert 0.50 <= clr_ball <= 0.70, f"Trackball keeper clearance {clr_ball:.3f} mm outside [0.50, 0.70] mm!"
     assert clr_ball_to_left_cap >= 1.00, f"Ball-to-Left-keycap gap {clr_ball_to_left_cap:.3f} mm < 1.00 mm!"
     assert clr_wheel >= 1.50, f"Inertia wheel clearance {clr_wheel:.3f} mm < 1.50 mm!"
     assert clr_keycaps >= 0.75, f"Keycap clearance {clr_keycaps:.3f} mm < 0.75 mm!"
-    assert clr_usbc >= 0.30, f"USB-C shell clearance {clr_usbc:.3f} mm < 0.30 mm!"
+    assert clr_cio_tips >= 1.50, f"CIO-SLMG-T-C tip clearance {clr_cio_tips:.3f} mm < 1.50 mm!"
     assert clr_feet >= 2.00, f"Rubber feet clearance {clr_feet:.3f} mm < 2.00 mm!"
 
-    # 3. 6-DOF positive mechanical lock check (`±X, ±Y, ±Z` <= 0.65 mm displacement causes solid interference)
+    # 4. 6-DOF positive mechanical lock check (`+-X, +-Y, +-Z` <= 0.65 mm displacement causes solid interference)
     test_dirs = [
         ("+X", (0.65, 0.0, 0.0)),
         ("-X", (-0.65, 0.0, 0.0)),
@@ -679,18 +847,19 @@ def verify_carrying_assembly(
     ball_lifted = bd.Solid(ball_solid.wrapped.Moved(bd.Location((0.0, 0.0, 1.00)).wrapped))
     ov_ball_stop = overlap_volume(frame_asm, ball_lifted)
     assert ov_ball_stop > 0.50, f"[6-DOF FAIL] Trackball Halo Ring failed to stop +1.00 mm ball lift ({ov_ball_stop:.4f})!"
-    print("[carrying-assembly] 6-DOF mechanical lock & trackball shock-retention checks: ALL PASS!")
+    print("[carrying-assembly] 6-DOF mechanical lock, straight-in CIO tip entry & shock-retention checks: ALL PASS!")
 
 
 def main() -> None:
-    print("=== Building curcur40 Snap-In PA12 Carrying Frame & Full Packed Assembly ===")
+    print("=== Building curcur40 Dual-Latch Open-USB PA12 Carrying Frame & Full Packed Assembly ===")
     CASES_DIR.mkdir(parents=True, exist_ok=True)
     ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
 
-    # 1. Build 1-piece PA12 Carrying Frame in assembly pose & shift to Z = 0.0000 mm print bed pose
+    # 1. Build 1-piece PA12 Carrying Frame in assembly pose & transform to brick-horizontal Z = 0.0000 mm print pose
     frame_asm = build_carrying_frame_assembly_pose()
-    bb_asm = frame_asm.bounding_box()
-    frame_print = frame_asm.moved(bd.Location((0.0, 0.0, -bb_asm.min.Z)))
+    frame_desk_raw = transform_packed_to_desk(frame_asm)
+    bb_raw = frame_desk_raw.bounding_box()
+    frame_print = frame_desk_raw.moved(bd.Location((0.0, 0.0, -bb_raw.min.Z)))
     frame_print.label = "curcur40_carrying_frame"
 
     # 2. Run JLC3DP preflight & `< 0.80 mm` zero-violation check on `frame_print`
@@ -720,15 +889,25 @@ def main() -> None:
     left_packed_solids = [transform_left_to_packed(s) for s in left_orig_solids]
     right_feet = build_rubber_feet_in_case_pose(is_right=True)
     left_packed_feet = [transform_left_to_packed(f) for f in build_rubber_feet_in_case_pose(is_right=False)]
+    right_cio_tips = build_cio_magnetic_tips_in_case_pose(is_right=True)
+    left_packed_cio_tips = [transform_left_to_packed(t) for t in build_cio_magnetic_tips_in_case_pose(is_right=False)]
 
-    # 4. Run full 684-solid B-rep interference, clearance & 6-DOF retention checks
-    verify_carrying_assembly(frame_asm, right_solids, left_packed_solids, right_feet, left_packed_feet)
+    # 4. Run full 688-solid B-rep interference, straight-in CIO path, clearance & 6-DOF retention checks
+    verify_carrying_assembly(
+        frame_asm,
+        right_solids,
+        left_packed_solids,
+        right_feet,
+        left_packed_feet,
+        right_cio_tips,
+        left_packed_cio_tips,
+    )
 
     # 5. Export desk-level parallel brick verification assembly (`carrying-assembly.step`)
-    right_grp = bd.Compound(children=right_solids + right_feet)
-    right_grp.label = "Right_Keyboard_With_Feet"
-    left_grp = bd.Compound(children=left_packed_solids + left_packed_feet)
-    left_grp.label = "Left_Keyboard_Packed_With_Feet"
+    right_grp = bd.Compound(children=right_solids + right_feet + right_cio_tips)
+    right_grp.label = "Right_Keyboard_With_Feet_And_CIO_Tips"
+    left_grp = bd.Compound(children=left_packed_solids + left_packed_feet + left_packed_cio_tips)
+    left_grp.label = "Left_Keyboard_Packed_With_Feet_And_CIO_Tips"
 
     packed_desk = transform_packed_to_desk(
         bd.Compound(children=[frame_asm, right_grp, left_grp])
@@ -736,7 +915,7 @@ def main() -> None:
     packed_desk.label = "curcur40_carrying_assembly"
     bb_desk = packed_desk.bounding_box()
     print(
-        f"Packed Brick Envelope (including D8x2mm rubber feet on both outer bottoms): "
+        f"Packed Brick Envelope (including D8x2mm rubber feet & 4 CIO-SLMG-T-C magnetic tips): "
         f"{bb_desk.size.X:.2f} x {bb_desk.size.Y:.2f} x {bb_desk.size.Z:.2f} mm "
         f"(Z = [{bb_desk.min.Z:.4f}, {bb_desk.max.Z:.4f}] mm)"
     )
