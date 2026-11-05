@@ -1,0 +1,5 @@
+# OSX thumbnails cache file
+.DS_Store
+
+# idea
+.idea/*

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>さわってわかる！curcur40 高速スクロールホイールの3つのしくみ</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --border: #cbd5e1;
+      --svg-bg: #f1f5f9;
+      --control-bg: #f8fafc;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1120;
+        --card: #111827;
+        --foreground: #f8fafc;
+        --muted-foreground: #94a3b8;
+        --border: #334155;
+        --svg-bg: #1e293b;
+        --control-bg: #0f172a;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: "Meiryo", "Yu Gothic", "Hiragino Kaku Gothic ProN", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--foreground);
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--card);
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    }
+    .header-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .title {
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tab-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted-foreground);
+    }
+    .tab-btn:hover {
+      color: var(--foreground);
+      border-color: #64748b;
+    }
+    .tab-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 1px 4px rgba(2, 132, 199, 0.35);
+    }
+    .panel {
+      padding-top: 12px;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .diagram-svg {
+      width: 100%;
+      height: auto;
+      max-height: 280px;
+      display: block;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--svg-bg);
+    }
+    .controls-row {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .action-btn {
+      padding: 8px 15px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s ease, background 0.15s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      white-space: nowrap;
+    }
+    .action-btn:active {
+      transform: scale(0.96);
+    }
+    .btn-sky { background: #0284c7; }
+    .btn-sky:hover { background: #0ea5e9; }
+    .btn-amber { background: #d97706; }
+    .btn-amber:hover { background: #f59e0b; }
+    .btn-emerald { background: #059669; }
+    .btn-emerald:hover { background: #10b981; }
+    .slider-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--control-bg);
+      padding: 6px 12px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+    .slider-box input[type="range"] {
+      width: 136px;
+      accent-color: #0ea5e9;
+      cursor: pointer;
+    }
+    .desc {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted-foreground);
+      flex: 1 1 320px;
+      line-height: 1.65;
+    }
+    .desc strong {
+      color: var(--foreground);
+    }
+    .hl-emerald {
+      color: #10b981 !important;
+    }
+    .hl-indigo {
+      color: #6366f1 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header + Tabs -->
+    <div class="header-bar">
+      <div class="title">
+        <span>🎡 さわってわかる！curcur40 高速スクロールホイールの3つのしくみ</span>
+      </div>
+      <div class="tabs" role="tablist">
+        <button id="tab-btn-1" onclick="switchTab(1)" class="tab-btn active">
+          ① 高速回転と #02 の場所
+        </button>
+        <button id="tab-btn-2" onclick="switchTab(2)" class="tab-btn">
+          ② カリカリ感（ノッチ）調整
+        </button>
+        <button id="tab-btn-3" onclick="switchTab(3)" class="tab-btn">
+          ③ シーソー式ミドルクリック
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1: Fast Scroll & #02 Magnet Holder -->
+    <div id="panel-1" class="panel">
+      <svg viewBox="0 0 760 236" class="diagram-svg">
+        <!-- Top Plate & Main PCB Cross Section (Front View: West=Left, East=Right) -->
+        <rect x="30" y="20" width="380" height="14" rx="3" fill="#64748b" opacity="0.45" />
+        <rect x="525" y="20" width="205" height="14" rx="3" fill="#64748b" opacity="0.45" />
+        <text x="42" y="31" font-size="12" font-weight="600" fill="currentColor">トッププレート（キースイッチでパチンと保持！ネジ頭は下に隠れ、ホイールの頭だけ窓から出る）</text>
+
+        <!-- Main PCB (stops left of wheel wing slot) -->
+        <rect x="30" y="54" width="215" height="18" rx="3" fill="#16a34a" opacity="0.85" />
+        <rect x="595" y="54" width="135" height="18" rx="3" fill="#16a34a" opacity="0.85" />
+        <text x="42" y="67" font-size="12" font-weight="700" fill="#ffffff">右メイン基板 (FR-4)</text>
+
+        <!-- #05 Sensor rU6 on underside of Main PCB -->
+        <rect x="155" y="72" width="46" height="18" rx="3" fill="#0ea5e9" stroke="#0284c7" stroke-width="1.5" />
+        <text x="178" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">#05</text>
+        <text x="128" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#0ea5e9">3D磁気コンパス (rU6)</text>
+        <text x="128" y="124" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">基板の裏に自動実装済</text>
+
+        <!-- Non-contact magnetic waves between #05 and #08 -->
+        <g id="mag-waves" stroke="#f59e0b" stroke-width="2" fill="none" stroke-dasharray="4 4">
+          <path d="M 206 86 Q 232 95 252 115" />
+          <path d="M 206 80 Q 238 82 256 105" />
+        </g>
+        <rect x="76" y="142" width="166" height="44" rx="8" fill="#f59e0b" opacity="0.16" stroke="#f59e0b" stroke-width="1.2" />
+        <text x="159" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">すき間 2.25mm（空中！）</text>
+        <text x="159" y="177" text-anchor="middle" font-size="12" fill="currentColor">触れない＝まさつゼロ！</text>
+
+        <!-- #03 Rocker C-clip seats under bearings + West Keeper Tab -->
+        <path d="M 326 125 L 326 164 L 368 164 L 368 125" fill="none" stroke="#94a3b8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M 552 125 L 552 164 L 594 164 L 594 125" fill="none" stroke="#94a3b8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+        <line x1="326" y1="164" x2="594" y2="164" stroke="#94a3b8" stroke-width="6" />
+        <!-- Keeper tab blocking #02/#08 on the left -->
+        <rect x="244" y="102" width="7" height="62" rx="2" fill="#64748b" />
+        <text x="652" y="169" font-size="12" font-weight="600" fill="currentColor" opacity="0.75">#03 受け台（ロッカー）</text>
+
+        <!-- Integral Steel Shaft (#01) -->
+        <rect x="285" y="114" width="305" height="22" rx="3" fill="#94a3b8" stroke="#475569" stroke-width="1.5" />
+
+        <!-- #07 Left & Right Ball Bearings -->
+        <rect x="334" y="95" width="26" height="60" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+        <circle cx="347" cy="105" r="4" fill="#475569" />
+        <circle cx="347" cy="145" r="4" fill="#475569" />
+        <text x="347" y="192" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">#07 ベアリング</text>
+
+        <rect x="560" y="95" width="26" height="60" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+        <circle cx="573" cy="105" r="4" fill="#475569" />
+        <circle cx="573" cy="145" r="4" fill="#475569" />
+        <text x="573" y="192" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">#07 ベアリング</text>
+
+        <!-- #02 Magnet Holder (HIGHLIGHTED IN EMERALD!) -->
+        <path d="M 256 92 L 312 92 L 312 158 L 256 158 L 256 144 L 278 144 L 278 106 L 256 106 Z"
+              fill="#10b981" stroke="#047857" stroke-width="2" />
+        <!-- Callout badge for #02 -->
+        <line x1="292" y1="158" x2="292" y2="202" stroke="#10b981" stroke-width="2.5" />
+        <rect x="184" y="198" width="232" height="30" rx="6" fill="#10b981" />
+        <text x="300" y="218" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">★ここが #02 マグネットホルダー！</text>
+
+        <!-- #08 N/S Magnet inside #02 cup (animated polarity!) -->
+        <g id="mag-ns-box">
+          <rect id="mag-n-half" x="256" y="106" width="22" height="19" fill="#ef4444" />
+          <rect id="mag-s-half" x="256" y="125" width="22" height="19" fill="#3b82f6" />
+          <text id="mag-n-txt" x="267" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">N</text>
+          <text id="mag-s-txt" x="267" y="139" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">S</text>
+        </g>
+
+        <!-- #01 Heavy Wide Steel Wheel (Center: 6.50mm wide, aligned with south key rEXSW2) -->
+        <rect x="415" y="10" width="90" height="212" rx="10" fill="#475569" stroke="#1e293b" stroke-width="2" />
+        <!-- Animated flutes on wheel -->
+        <g id="wheel-stripes"></g>
+        <rect x="421" y="88" width="78" height="52" rx="6" fill="#0f172a" opacity="0.84" />
+        <text x="460" y="106" text-anchor="middle" font-size="11.5" font-weight="700" fill="#f8fafc">#01 鉄のコマ</text>
+        <text x="460" y="121" text-anchor="middle" font-size="10.5" fill="#cbd5e1">幅6.5mm・19.3g</text>
+        <text x="460" y="135" text-anchor="middle" font-size="11" fill="#38bdf8" id="rpm-readout">停止中</text>
+
+        <!-- Mini compass dial at top-right -->
+        <g transform="translate(682, 112)">
+          <circle cx="0" cy="0" r="34" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" />
+          <g id="compass-needle">
+            <polygon points="0,-28 -7,0 7,0" fill="#ef4444" />
+            <polygon points="0,28 -7,0 7,0" fill="#3b82f6" />
+          </g>
+          <circle cx="0" cy="0" r="4" fill="#f8fafc" stroke="#334155" stroke-width="1.5" />
+          <text x="0" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" id="angle-label">角度: 0°</text>
+        </g>
+      </svg>
+
+      <div class="controls-row">
+        <button onclick="flickWheel()" class="action-btn btn-sky">
+          👆 指でホイールを「シュッ！」と弾く
+        </button>
+        <p class="desc">
+          <strong>小学生向けのたとえ：</strong>
+          ズッシリ重い鉄のコマ（<strong>#01 幅6.5mm・19.3g</strong>）が2個のベアリング（<strong>#07</strong>）の上でツルツル回ります。細い軸（2mm）の先に直接4mm磁石は貼れないため、<strong class="hl-emerald">#02 プラスチックのキャップ</strong>を軸先（Dカット）にギュッと差し込んで磁石（#08）を抱え、左側の抜け止め壁でガードしながら、基板裏のコンパス（#05）が空中で回転を読み取ります。
+        </p>
+      </div>
+    </div>
+
+    <!-- TAB 2: Magnetic Detent (Notch) Adjustment -->
+    <div id="panel-2" class="panel hidden">
+      <svg viewBox="0 0 760 236" class="diagram-svg">
+        <text x="24" y="28" font-size="13" font-weight="700" fill="currentColor">横から見た図：24個の「鉄の山」と「磁石つきネジ」のひっぱりっこ</text>
+
+        <!-- Spinning / notched wheel side view -->
+        <g transform="translate(260, 118)">
+          <g id="tab2-wheel" transform="rotate(0)">
+            <circle cx="0" cy="0" r="76" fill="#475569" stroke="#1e293b" stroke-width="2" />
+            <g id="tab2-teeth"></g>
+            <circle cx="0" cy="0" r="54" fill="#64748b" opacity="0.35" />
+            <circle cx="0" cy="0" r="12" fill="#cbd5e1" stroke="#334155" stroke-width="2" />
+          </g>
+          <text x="0" y="-22" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">#01 鉄のホイール</text>
+          <text x="0" y="-5" text-anchor="middle" font-size="12" fill="#e2e8f0">外周に24個の山</text>
+        </g>
+
+        <!-- Magnetic pull lines between nearest tooth (x=342, y=118) and magnet -->
+        <g id="detent-flux" stroke="#ef4444" fill="none" stroke-linecap="round">
+          <line id="flux-1" x1="343" y1="110" x2="395" y2="110" stroke-width="3" stroke-dasharray="5 4" />
+          <line id="flux-2" x1="345" y1="118" x2="395" y2="118" stroke-width="4" />
+          <line id="flux-3" x1="343" y1="126" x2="395" y2="126" stroke-width="3" stroke-dasharray="5 4" />
+        </g>
+
+        <!-- #03 Rocker South Boss + #10 Brass Insert -->
+        <rect x="425" y="84" width="130" height="68" rx="8" fill="#94a3b8" opacity="0.4" stroke="#64748b" stroke-width="1.5" />
+        <rect x="425" y="102" width="130" height="32" fill="#1e293b" opacity="0.22" />
+        <!-- Brass heat-set insert #10 -->
+        <rect x="485" y="100" width="52" height="36" rx="3" fill="#eab308" opacity="0.85" />
+        <text x="490" y="76" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">#03 壁の中の #10 真鍮ネジ穴</text>
+
+        <!-- Movable Screw (#11) + Magnet (#09) group -->
+        <g id="screw-mag-group" transform="translate(0, 0)">
+          <!-- #09 Tiny Magnet stuck to steel screw tip by its own magnetism -->
+          <rect x="392" y="105" width="16" height="26" rx="2" fill="#ef4444" stroke="#991b1b" stroke-width="1.5" />
+          <rect x="408" y="105" width="14" height="26" rx="2" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1.5" />
+          <text x="407" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">#09</text>
+
+          <!-- #11 Steel M2 Screw -->
+          <rect x="422" y="107" width="128" height="22" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+          <!-- Screw threads -->
+          <path d="M 435 107 L 440 129 M 450 107 L 455 129 M 465 107 L 470 129 M 480 107 L 485 129 M 495 107 L 500 129 M 510 107 L 515 129 M 525 107 L 530 129" stroke="#64748b" stroke-width="2" />
+          <!-- Screw head -->
+          <rect x="550" y="96" width="18" height="44" rx="4" fill="#94a3b8" stroke="#334155" stroke-width="1.5" />
+          <text x="488" y="176" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">#11 鉄のM2×6mmネジ（磁石が自分の磁力でくっつく！）</text>
+        </g>
+
+        <!-- Feel Badge on Right -->
+        <rect x="588" y="34" width="150" height="86" rx="10" fill="#0ea5e9" opacity="0.14" stroke="#0ea5e9" stroke-width="1.5" />
+        <text x="663" y="56" text-anchor="middle" font-size="12" font-weight="700" fill="#0ea5e9">いまの感触モード</text>
+        <text id="detent-mode-txt" x="663" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">ほどよいカリカリ</text>
+        <text id="detent-gap-txt" x="663" y="104" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">すき間: 1.2 mm</text>
+      </svg>
+
+      <div class="controls-row">
+        <div class="slider-box">
+          <span>ゆるめる(ツルツル)</span>
+          <input id="screw-slider" type="range" min="0" max="100" value="55" oninput="updateDetent(this.value)" />
+          <span>しめる(カリカリ)</span>
+        </div>
+        <button onclick="stepOneNotch()" class="action-btn btn-amber">
+          🔄 1カチッ回す
+        </button>
+        <p class="desc">
+          <strong>ポイント：</strong>
+          小さな磁石（#09）は鉄のホイールに一番近い「山」を磁力で引っ張ります。だから山が通るたびに<strong>触っていないのに「コトン・コトン」と1周24回止まりたがる力</strong>が生まれ、ネジ（#11）を回して距離を変えるだけで強さを自由に変えられます！
+        </p>
+      </div>
+    </div>
+
+    <!-- TAB 3: Playground Seesaw Middle Click -->
+    <div id="panel-3" class="panel hidden">
+      <svg viewBox="0 0 760 236" class="diagram-svg">
+        <text x="24" y="26" font-size="13" font-weight="700" fill="currentColor">正面から見た図：「パチンと抜けないCクリップ支点」のシーソーで裏スイッチを押す！</text>
+
+        <!-- Main PCB (Fixed) -->
+        <rect x="40" y="54" width="380" height="18" rx="3" fill="#16a34a" />
+        <rect x="595" y="54" width="125" height="18" rx="3" fill="#16a34a" />
+        <text x="60" y="67" font-size="12" font-weight="700" fill="#ffffff">右メイン基板（WC1・WC2の2本のネジで #04 クレードルを固定）</text>
+
+        <!-- #06 Silent Switch mounted UPSIDE DOWN on PCB underside (Left = West) -->
+        <rect x="122" y="72" width="76" height="34" rx="4" fill="#334155" stroke="#0f172a" stroke-width="1.5" />
+        <text x="160" y="93" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">#06 静音スイッチ</text>
+        <!-- Red plunger sticking DOWN from switch -->
+        <rect id="sw-plunger" x="148" y="106" width="24" height="14" rx="2" fill="#ef4444" />
+
+        <!-- Click status badge -->
+        <rect id="click-badge-bg" x="42" y="138" width="154" height="44" rx="8" fill="#64748b" opacity="0.2" stroke="#64748b" stroke-width="1.5" />
+        <text id="click-badge-txt" x="119" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">待機中（OFF）</text>
+
+        <!-- #04 Cradle (Fixed C-clip snap-in hinge hanging from PCB, wrapping >239° around pivot!) -->
+        <path d="M 326 72 L 326 168 L 374 168 L 374 72" fill="none" stroke="#6366f1" stroke-width="8" stroke-linejoin="round" />
+        <!-- C-clip upper lips showing captive snap-fit! -->
+        <circle cx="337" cy="133" r="4.5" fill="#6366f1" />
+        <circle cx="363" cy="133" r="4.5" fill="#6366f1" />
+        <text x="350" y="198" text-anchor="middle" font-size="12" font-weight="700" fill="#6366f1">#04 クレードル（Cクリップ軸受けでパチンと連結！）</text>
+        <text x="350" y="215" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">上にも横にも抜けず、回転（シーソー）だけできる支点</text>
+
+        <!-- Tilting Seesaw Group (#03 Rocker + #01 Wheel) around pivot (350, 146) -->
+        <g id="seesaw-group" transform="rotate(0, 350, 146)">
+          <!-- #03 Rocker beam -->
+          <path d="M 145 136 L 545 136 L 545 154 L 145 154 Z" fill="#10b981" stroke="#047857" stroke-width="1.5" />
+          <!-- Striker bump on Left end -->
+          <rect x="148" y="122" width="24" height="16" rx="4" fill="#10b981" stroke="#047857" stroke-width="1.5" />
+          <text x="248" y="149" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">#03 シーソーの板（ロッカー）</text>
+
+          <!-- Upward arrow at Left striker -->
+          <g id="left-up-arrow" opacity="0.35">
+            <path d="M 212 128 L 212 96 M 205 104 L 212 96 L 219 104" stroke="#ef4444" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            <text x="248" y="114" font-size="12" font-weight="700" fill="#ef4444">左が上がる↑</text>
+          </g>
+
+          <!-- #01 Wheel on Right end -->
+          <rect x="462" y="34" width="76" height="178" rx="10" fill="#475569" stroke="#1e293b" stroke-width="2" />
+          <text x="500" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">#01</text>
+          <text x="500" y="139" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">ホイール</text>
+        </g>
+
+        <!-- Pivot pin highlight inside C-clip -->
+        <circle cx="350" cy="146" r="10.5" fill="#f59e0b" stroke="#b45309" stroke-width="2" />
+        <text x="350" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">支点</text>
+
+        <!-- Finger push arrow on Right -->
+        <g id="finger-arrow">
+          <path d="M 605 56 L 605 108 M 596 98 L 605 108 L 614 98" stroke="#0ea5e9" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          <text x="665" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#0ea5e9">右のホイールを</text>
+          <text x="665" y="97" text-anchor="middle" font-size="12" font-weight="700" fill="#0ea5e9">指で下へ押す↓</text>
+        </g>
+      </svg>
+
+      <div class="controls-row">
+        <button id="seesaw-btn"
+          onmousedown="setSeesaw(true)" onmouseup="setSeesaw(false)" onmouseleave="setSeesaw(false)"
+          ontouchstart="setSeesaw(true); event.preventDefault();" ontouchend="setSeesaw(false)"
+          onclick="toggleSeesawClick()"
+          class="action-btn btn-emerald">
+          👇 ここを押してみて！（ミドルクリック）
+        </button>
+        <p class="desc">
+          <strong>抜けないヒンジで安心クリック：</strong>
+          ロッカー（#03）の丸い支点軸は、<strong class="hl-indigo">#04 クレードルのCクリップ軸受け（239°抱え込み）</strong>に上から「パチン！」とハメ込む機械連結になっています。だから外れたりズレたりせず、右のホイールを少し（0.31mm）下に押したときだけ<strong class="hl-emerald">シーソーの左端がグイッと上がって</strong>基板裏のスイッチ（#06）をポチッと押します！
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentTab = 1;
+    let wheelAngle = 0;
+    let wheelVel = 0;
+    let animId = null;
+
+    // Build stripes on Tab 1 wheel & 24 teeth on Tab 2 wheel
+    const stripesG = document.getElementById('wheel-stripes');
+    const teethG = document.getElementById('tab2-teeth');
+    for (let i = 0; i < 24; i++) {
+      const a = (i * 15) * Math.PI / 180;
+      const tx = Math.cos(a) * 76;
+      const ty = Math.sin(a) * 76;
+      const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', tx.toFixed(1));
+      c.setAttribute('cy', ty.toFixed(1));
+      c.setAttribute('r', '5.2');
+      c.setAttribute('fill', '#94a3b8');
+      teethG.appendChild(c);
+    }
+
+    function renderTab1Wheel() {
+      stripesG.innerHTML = '';
+      const phase = (wheelAngle % 360 + 360) % 360;
+      for (let k = -6; k <= 6; k++) {
+        const deg = k * 15 + (phase % 15);
+        if (Math.abs(deg) > 85) continue;
+        const y = 116 + Math.sin(deg * Math.PI / 180) * 100;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', '419');
+        line.setAttribute('x2', '501');
+        line.setAttribute('y1', y.toFixed(1));
+        line.setAttribute('y2', y.toFixed(1));
+        line.setAttribute('stroke', '#94a3b8');
+        line.setAttribute('stroke-width', '2.5');
+        line.setAttribute('opacity', (0.75 * Math.cos(deg * Math.PI / 180)).toFixed(2));
+        stripesG.appendChild(line);
+      }
+      // Update compass needle & N/S magnet visual flip
+      document.getElementById('compass-needle').setAttribute('transform', `rotate(${phase.toFixed(1)})`);
+      document.getElementById('angle-label').textContent = `角度: ${Math.round(phase)}°`;
+      const cVal = Math.cos(phase * Math.PI / 180);
+      document.getElementById('mag-n-half').setAttribute('fill', cVal >= 0 ? '#ef4444' : '#3b82f6');
+      document.getElementById('mag-s-half').setAttribute('fill', cVal >= 0 ? '#3b82f6' : '#ef4444');
+      document.getElementById('mag-n-txt').textContent = cVal >= 0 ? 'N' : 'S';
+      document.getElementById('mag-s-txt').textContent = cVal >= 0 ? 'S' : 'N';
+      document.getElementById('rpm-readout').textContent = wheelVel > 0.4 ? '高速回転中！' : '停止中';
+    }
+
+    function flickWheel() {
+      wheelVel = 24;
+      if (!animId) {
+        const step = () => {
+          wheelAngle += wheelVel;
+          wheelVel *= 0.978;
+          renderTab1Wheel();
+          if (wheelVel > 0.25) {
+            animId = requestAnimationFrame(step);
+          } else {
+            wheelVel = 0;
+            renderTab1Wheel();
+            animId = null;
+          }
+        };
+        animId = requestAnimationFrame(step);
+      }
+    }
+
+    let tab2Angle = 0;
+    function updateDetent(val) {
+      const v = Number(val); // 0 = loose (right), 100 = tight (left closer to wheel)
+      const shiftX = (55 - v) * 0.34;
+      document.getElementById('screw-mag-group').setAttribute('transform', `translate(${shiftX.toFixed(1)}, 0)`);
+      const tipX = 392 + shiftX;
+      ['flux-1', 'flux-2', 'flux-3'].forEach(id => {
+        const el = document.getElementById(id);
+        el.setAttribute('x2', tipX.toFixed(1));
+        el.setAttribute('opacity', (0.15 + 0.85 * (v / 100)).toFixed(2));
+      });
+      const gap = (2.0 - 1.5 * (v / 100)).toFixed(1);
+      document.getElementById('detent-gap-txt').textContent = `すき間: ${gap} mm`;
+      const modeEl = document.getElementById('detent-mode-txt');
+      if (v < 22) modeEl.textContent = 'ツルツル高速回転！';
+      else if (v < 72) modeEl.textContent = 'ほどよいカリカリ';
+      else modeEl.textContent = 'くっきり24ノッチ！';
+    }
+
+    function stepOneNotch() {
+      const target = tab2Angle + 15;
+      let cur = tab2Angle;
+      const anim = () => {
+        cur += 2.5;
+        document.getElementById('tab2-wheel').setAttribute('transform', `rotate(${Math.min(cur, target).toFixed(1)})`);
+        if (cur < target) requestAnimationFrame(anim);
+        else tab2Angle = target % 360;
+      };
+      requestAnimationFrame(anim);
+    }
+
+    let seesawLatched = false;
+    function applySeesawVisual(pressed) {
+      const grp = document.getElementById('seesaw-group');
+      const plg = document.getElementById('sw-plunger');
+      const bbg = document.getElementById('click-badge-bg');
+      const btx = document.getElementById('click-badge-txt');
+      const arr = document.getElementById('left-up-arrow');
+      if (pressed) {
+        grp.setAttribute('transform', 'rotate(3.8, 350, 146)');
+        plg.setAttribute('height', '6');
+        bbg.setAttribute('fill', '#10b981');
+        bbg.setAttribute('stroke', '#10b981');
+        btx.textContent = 'カチッ！ON ✨';
+        btx.setAttribute('fill', '#10b981');
+        arr.setAttribute('opacity', '1');
+      } else {
+        grp.setAttribute('transform', 'rotate(0, 350, 146)');
+        plg.setAttribute('height', '14');
+        bbg.setAttribute('fill', '#64748b');
+        bbg.setAttribute('stroke', '#64748b');
+        btx.textContent = '待機中（OFF）';
+        btx.setAttribute('fill', 'currentColor');
+        arr.setAttribute('opacity', '0.35');
+      }
+    }
+    function setSeesaw(pressed) {
+      seesawLatched = false;
+      applySeesawVisual(pressed);
+    }
+    function toggleSeesawClick() {
+      seesawLatched = !seesawLatched;
+      applySeesawVisual(seesawLatched);
+      if (seesawLatched) {
+        setTimeout(() => { seesawLatched = false; applySeesawVisual(false); }, 950);
+      }
+    }
+
+    function switchTab(n) {
+      currentTab = n;
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById(`panel-${i}`).classList.toggle('hidden', i !== n);
+        document.getElementById(`tab-btn-${i}`).classList.toggle('active', i === n);
+      }
+    }
+
+    renderTab1Wheel();
+    updateDetent(55);
+    switchTab(1);
+  </script>
+</body>
+</html>
