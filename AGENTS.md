@@ -29,11 +29,11 @@
    - `scratch/` や `tmp/`、ルート直下の `.json` / `.rpt` / `.net` / `.bak` / `.kicad_prl` 等を作業後にリポジトリへ残さないこと。
    - スクリプト内で DRC/ERC レポートや Gerber 一時ファイルを出力する場合は、Python 標準の `tempfile.TemporaryDirectory` を使用して自動削除すること。
 2. **公式生成スクリプトの一元管理 (`scripts/`)**:
-   - 3Dモデル・プレート・発注データ・図版・プレビュー画像・組み立て動画の生成は [`scripts/`](scripts/) 配下の13本の公式スクリプト（詳細は [`scripts/README.md`](scripts/README.md) 参照）に集約し、1回限りの調査・デバッグ用スクリプトを `scripts/` に残さないこと。
+   - 3Dモデル・プレート・発注データ・図版・プレビュー画像・組み立て動画の生成は [`scripts/`](scripts/) 配下の12本の公式スクリプト（詳細は [`scripts/README.md`](scripts/README.md) 参照）に集約し、1回限りの調査・デバッグ用スクリプトを `scripts/` に残さないこと。
    - スクリプト内でワークスペースや入出力パスを参照する際は、`c:\Users\...` 等の環境依存フルパスをハードコードせず、必ずスクリプト自身の位置からの相対解決（`WORKSPACE = Path(__file__).resolve().parent.parent`）で記述すること。
 3. **ボトムプレートの作成禁止と `cases/` ディレクトリ構成**:
    - ボトムプレートは 3D プリント製 100% 密閉・底面穴なしトレイ型ボトムケース（`cases/left.step`, `right.step`）に統合済みのため、生成・出力しないこと。
-   - `cases/` 直下にはケース・カップ・キャリングケース実部品（`left.step/.stl`, `left-desk.step/.stl`, `right.step/.stl`, `right-desk.step/.stl`, `trackball-cup.step/.stl`, `carrying-frame.step/.stl`, `carrying-box.step/.stl`, `carrying-box-lid.step/.stl`）、`cases/inertia_wheel/` 配下にはアンダープレート慣性ホイール実部品 4種（`steel-flywheel.step/.stl`, `magnet-holder.step/.stl`, `wheel-rocker.step/.stl`, `wheel-cradle.step/.stl`）、`cases/assemblies/` 配下には検証・確認用のアセンブリモデル 10種（`assembly-full.step`, `assembly-full-desk.step`, `carrying-assembly.step`, `carrying-box-assembly.step`, `carrying-box-with-lid-assembly.step`, `curcur40-right-wheel-assembly.step`, `inertia-wheel-assembly.step`, `trackball-cup-with-ball.step/.stl`, `pmw3360-lens-pcb-assembly.step`, `trackball-sensor-assembly.step`）を分離して管理すること。
+   - `cases/` 直下にはケース・カップ・キャリングボックス実部品（`left.step/.stl`, `left-desk.step/.stl`, `right.step/.stl`, `right-desk.step/.stl`, `trackball-cup.step/.stl`, `carrying-box.step/.stl`, `carrying-box-lid.step/.stl`）、`cases/inertia_wheel/` 配下にはアンダープレート慣性ホイール実部品 4種（`steel-flywheel.step/.stl`, `magnet-holder.step/.stl`, `wheel-rocker.step/.stl`, `wheel-cradle.step/.stl`）、`cases/assemblies/` 配下には検証・確認用のアセンブリモデル 9種（`assembly-full.step`, `assembly-full-desk.step`, `carrying-box-assembly.step`, `carrying-box-with-lid-assembly.step`, `curcur40-right-wheel-assembly.step`, `inertia-wheel-assembly.step`, `trackball-cup-with-ball.step/.stl`, `pmw3360-lens-pcb-assembly.step`, `trackball-sensor-assembly.step`）を分離して管理すること。
 4. **ドキュメント・画像アセットの一元管理 (`docs/`)**:
    - `curcur40` に関するドキュメントおよびプレビュー・図解画像はすべて `docs/` および `docs/assets/` 配下に格納すること（ルート直下に `preview/` 等を作らない）。
 
