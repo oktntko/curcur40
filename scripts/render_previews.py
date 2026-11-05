@@ -2,7 +2,7 @@
 """
 Render all 3D preview images for curcur40 into docs/assets/:
 - Full Assembly (ISO, Top, Bottom) from cases/assemblies/assembly-full-desk.step via cadgen
-- Carrying Frame & Packed Carrying Assembly (ISO, Front) via cadgen
+- Carrying Box & Snap Lid Assemblies (ISO, Mouth) via cadgen
 - Left & Right Main PCBs (Top, Bottom, ISO) via kicad-cli pcb render
 - Left & Right Top Plates via kicad-cli pcb render
 """
@@ -48,9 +48,6 @@ def render_assembly_step():
         (WORKSPACE / "cases" / "assemblies" / "assembly-full-desk.step", "bottom", ASSETS_DIR / "render_full_assembly_bottom.png", 1600, 1000),
         (WORKSPACE / "cases" / "trackball-cup.step", "iso", ASSETS_DIR / "trackball_cup_render.png", 1200, 1000),
         (WORKSPACE / "cases" / "assemblies" / "trackball-cup-with-ball.step", "iso", ASSETS_DIR / "trackball_cup_with_ball_render.png", 1200, 1000),
-        (WORKSPACE / "cases" / "carrying-frame.step", "iso", ASSETS_DIR / "render_carrying_frame_iso.png", 1600, 1100),
-        (WORKSPACE / "cases" / "assemblies" / "carrying-assembly.step", "iso", ASSETS_DIR / "render_carrying_assembly_iso.png", 1600, 1100),
-        (WORKSPACE / "cases" / "assemblies" / "carrying-assembly.step", "front", ASSETS_DIR / "render_carrying_assembly_front.png", 1600, 1000),
         (WORKSPACE / "cases" / "carrying-box.step", "iso", ASSETS_DIR / "render_carrying_box_iso.png", 1600, 1100),
         (WORKSPACE / "cases" / "assemblies" / "carrying-box-assembly.step", "iso", ASSETS_DIR / "render_carrying_box_lidless_iso.png", 1600, 1100),
         (WORKSPACE / "cases" / "assemblies" / "carrying-box-assembly.step", "back", ASSETS_DIR / "render_carrying_box_mouth.png", 1600, 1000),
