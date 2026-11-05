@@ -34,11 +34,12 @@
 | :--- | :--- |
 | **[ビルドガイド (`docs/buildguide_jp.md`)](./docs/buildguide_jp.md)** | 必要パーツ一覧（BOM）、JLCPCB / JLC3DP / JLCCNC 発注手順、真鍮ヒートセットインサート圧入、慣性ホイール＆トラックボール組立、ファームウェア書き込み手順 |
 | **[購入部材・製造委託パーツリファレンス (`docs/parts_spec.md`)](./docs/parts_spec.md)** | ベアリング（`DDL-520ZZ`）・磁石（`D4×1mm`, `NE280`）・静音スイッチ・真鍮インサート・統一 `M2×6mm` ネジ・委託造形品の確定型番と購入先URL一覧 |
-| **[ケース・機構設計仕様書 (`docs/case_spec.md`)](./docs/case_spec.md)** | Z軸スタックアップ定義、19箇所真鍮ヒートセットインサート＋統一 `M2×6.0mm` ネジ締結仕様、USB-C内壁基板受け棚、100%密閉底面ケース、トラックボールカップ＆光学距離（$2.40\,\text{mm}$）仕様、持ち運び用スナップイン・キャリングフレーム仕様 |
+| **[ケース・機構設計仕様書 (`docs/case_spec.md`)](./docs/case_spec.md)** | Z軸スタックアップ定義、19箇所真鍮ヒートセットインサート＋統一 `M2×6.0mm` ネジ締結仕様、USB-C内壁基板受け棚、100%密閉底面ケース、トラックボールカップ＆光学距離（$2.40\,\text{mm}$）仕様、持ち運び用上下リバーシブル・キャリングボックス仕様 |
 | **[PCB・回路図設計仕様書 (`docs/pcb_spec.md`)](./docs/pcb_spec.md)** | 全3基板（`left`, `right`, `pmw3360`）の回路構成、オンボード3Dホール `rU6` (`TMAG5273`) ＆ `rEXSW1` 仕様、RP2040 GPIO ピンアサイン表、DRC/ERC 検証基準 |
 | **[パッシブ磁気慣性ホイール設計仕様書 (`docs/passive_inertia_wheel_spec.md`)](./docs/passive_inertia_wheel_spec.md)** | **小学生でもわかる「3つのしくみ」図解**、幅 $6.50\,\text{mm}$ 一体軸 `45# Steel` ホイールの物理設計、接着剤ゼロ磁気デテント＆Cクリップシーソー中クリック機構、6自由度拘束検証、`XZX` 3Dホール角度復調アルゴリズム |
 | **[さわって動かせる！3つのしくみインタラクティブ図解 (`docs/wheel_mechanism_guide.html`)](./docs/wheel_mechanism_guide.html)** | ブラウザでオフライン動作する体験型 HTML ガイド（ホイールのフリック高速スピン、ノッチ調整ネジスライダー、Cクリップシーソー中クリックを実際に操作可能） |
-| **[生成スクリプト一覧 (`scripts/README.md`)](./scripts/README.md)** | 3Dモデル（ケース・カップ・慣性ホイール・キャリングフレーム・フルアセンブリ）、トッププレート、JLCPCB 発注データ、図版・プレビュー画像・3D組み立てアニメーション動画の再現生成スクリプト（全12本）の説明 |
+| **[まっすぐ引くだけでフタが抜けるしくみ図解 (`docs/carrying_box_lid_guide.html`)](./docs/carrying_box_lid_guide.html)** | ブラウザでオフライン動作する体験型 HTML ガイド（キャリングボックスの $26^\circ$ 浅角カム坂道・$14\,\text{mm}$ 長スパン弾性梁によるスナップフタ開閉動作をスライダーで操作可能） |
+| **[生成スクリプト一覧 (`scripts/README.md`)](./scripts/README.md)** | 3Dモデル（ケース・カップ・慣性ホイール・キャリングボックス・フルアセンブリ）、トッププレート、JLCPCB 発注データ、図版・プレビュー画像・3D組み立てアニメーション動画の再現生成スクリプト（全12本）の説明 |
 
 ---
 
@@ -125,27 +126,19 @@ KiCad 10.0 Raytracing（`kicad-cli pcb render`）、`cadgen` 3D CAD レンダラ
 
 ---
 
-### 6. 持ち運び用キャリングケース（オプション：案A オープンフレーム型 ／ 案B スライド差し込みボックス型）
-左右ケースの $7.47^\circ$ ビルトインテンティング傾斜を互い違いの向き（左手を $X$ 軸まわりに $180^\circ$ 反転）で対面させて相殺し、**$\varnothing 8 \times 2\,\text{mm}$ ゴム足 10 個・25mm トラックボール・全 4 箇所の USB-C マグネット端子（`CIO-SLMG-T-C`）を装着したまま** 平行直方体ブロックとして安全に持ち運べる 2 種類の `PA12` ケースを用意しています。
+### 6. 持ち運び用キャリングボックス（オプション：上下リバーシブル・スナップフタ付き6面フルカバー）
+左右ケースの $7.47^\circ$ ビルトインテンティング傾斜を互い違いの向き（左手を $X$ 軸まわりに $180^\circ$ 反転）で対面させて相殺し、**$\varnothing 8 \times 2\,\text{mm}$ ゴム足 10 個・25mm トラックボール・全 4 箇所の USB-C マグネット端子（`CIO-SLMG-T-C`）を装着したまま** 真の $90^\circ$ 直方体ブロックとして安全に持ち運べる `PA12` キャリングボックス（[`carrying-box.step`](./cases/carrying-box.step) ＋ [`carrying-box-lid.step`](./cases/carrying-box-lid.step)）を用意しています。
 
-#### 【案A】1ピース・スナップイン・オープンフレーム (`carrying-frame.step` / `carrying-assembly.step`)
-- **最軽量・最小厚み（収納外寸 $144.76 \times 103.51 \times 59.92\,\text{mm}$、体積 $44.79\,\text{cm}^3$）**: 真上／真下から押し込むだけで親指側・小指側の両側カンチレバー・パドルラッチがワンタッチでロックし、全4箇所の USB-C ポートを幅 $18.0\,\text{mm}$ U字切り欠きで完全開放します（25mm 球非接触ハローキーパー＆L字欠き保護シールド内蔵）。
-
-| 案A：フレーム単体 (`cases/carrying-frame.step`) | 案A：収納フルアセンブリ (`cases/assemblies/carrying-assembly.step`) |
-| :---: | :---: |
-| ![Carrying Frame Isometric](./docs/assets/render_carrying_frame_iso.png) | ![Carrying Assembly Isometric](./docs/assets/render_carrying_assembly_iso.png) |
-
-![Carrying Assembly Front](./docs/assets/render_carrying_assembly_front.png)
-
-#### 【案B】上下リバーシブル完全90°直方体・スナップフタ付き6面フルカバー・スライド差し込みボックス (`carrying-box.step` ＋ `carrying-box-lid.step`)
 - **箱もフタも上下逆さま区別なし（高さ増加ゼロの完全点対称 $142.40 \times 111.85 \times 65.42\,\text{mm}$）**: 点対称クランク段差ディバイダ＋左右デュアル 25mm 球キーパー溝により、**右手トラックボール側を下にしても上にしても（箱・フタの上下向きを一切見ずに）そのままスッと差し込んで閉められます**。全10個のゴム足は常時 $0.75\,\text{mm}$ 空中に浮き、奥面とフタ内面には外へ貫通しない **デュアル内部「堀」＋ キーボード手前突き当たりストッパー段差** を備えています。
 - **力学計算済みの長スパン $26^\circ$ 浅角カム式隠しスナップフタ**: 長さ $14.0\,\text{mm}$ の弾性梁と抜き角 $26^\circ$ の浅角カムにより偏心セルフロックを完全解消し、左右の指掛け溝を持って真っ直ぐ引くだけで **約 $9.7\,\text{N}$（約 $1.0\,\text{kgf}$、最大曲げひずみ $0.71\%$）** でスムーズに開閉できます。
 
-| 案B：フタ装着フルカバー収納 (`carrying-box-with-lid-assembly.step`) | 案B：フタ取り外し・スライド挿入時 (`carrying-box-assembly.step`) |
+> 💡 まっすぐ引っ張るだけでスナップフタが抜けるしくみをスライダーで体験できる **[インタラクティブ HTML 図解 (`docs/carrying_box_lid_guide.html`)](./docs/carrying_box_lid_guide.html)** も収録しています。
+
+| フタ装着フルカバー収納 (`carrying-box-with-lid-assembly.step`) | フタ取り外し・スライド挿入時 (`carrying-box-assembly.step`) |
 | :---: | :---: |
 | ![Carrying Box With Lid](./docs/assets/render_carrying_box_with_lid_iso.png) | ![Carrying Box Lidless](./docs/assets/render_carrying_box_lidless_iso.png) |
 
-| 案B：ボックス単体 (`cases/carrying-box.step`) | 案B：差込口正面（ゴム足フローティング＆中央 TB キーパー断面視） |
+| ボックス単体 (`cases/carrying-box.step`) | 差込口正面（ゴム足フローティング＆中央 TB キーパー断面視） |
 | :---: | :---: |
 | ![Carrying Box Isometric](./docs/assets/render_carrying_box_iso.png) | ![Carrying Box Mouth View](./docs/assets/render_carrying_box_mouth.png) |
 
@@ -161,20 +154,18 @@ curcur40/
 │   ├── right.step / right.stl    # 右手密閉底面ボトムケース（トッププレート水平基準）
 │   ├── right-desk.step / .stl    # 右手密閉底面ボトムケース（ケース外底面＝デスク水平基準・JLC3DP推奨）
 │   ├── trackball-cup.step / .stl # 25mmトラックボール用スナップインカップ（2.0mmフラット固定耳）
-│   ├── carrying-frame.step / .stl    # 【オプション・案A】持ち運び用1ピース・スナップイン・オープンフレーム (JLC3DP PA12)
-│   ├── carrying-box.step / .stl      # 【オプション・案B】持ち運び用5面フルカバー・スライド差し込みボックス本体 (JLC3DP PA12)
-│   ├── carrying-box-lid.step / .stl  # 【オプション・案B用】スライドボックス用ツライチ着脱スナップフタ (JLC3DP PA12)
+│   ├── carrying-box.step / .stl      # 【オプション】持ち運び用上下リバーシブル直方体スライドボックス本体 (JLC3DP PA12)
+│   ├── carrying-box-lid.step / .stl  # 【オプション】スライドボックス用上下リバーシブル・スナップフタ (JLC3DP PA12)
 │   ├── inertia_wheel/            # アンダープレート一体軸慣性ホイール実部品 4種
 │   │   ├── steel-flywheel.step/.stl  # #01 1ピース一体軸 45# Steel + 無電解Ni ホイール (JLCCNC)
 │   │   ├── magnet-holder.step/.stl   # #02 接着剤ゼロ D4×1mm 磁石ホルダー (JLC3DP PA12)
 │   │   ├── wheel-rocker.step/.stl    # #03 一体トラニオン軸シーソーロッカー (JLC3DP PA12)
 │   │   └── wheel-cradle.step/.stl    # #04 Cクリップスナップインヒンジ付アンダーPCBクレードル (JLC3DP PA12)
-│   └── assemblies/               # 光学距離・干渉・クリアランス検証用アセンブリモデル 10種 (STEP / STL)
+│   └── assemblies/               # 光学距離・干渉・クリアランス検証用アセンブリモデル 9種 (STEP / STL)
 │       ├── assembly-full.step                    # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（トッププレート水平基準）
 │       ├── assembly-full-desk.step               # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（ケース底面＝デスク面 Z=0 基準）
-│       ├── carrying-assembly.step                # 【案A】オープンフレーム収納フルアセンブリ（全689ソリッド・ゴム足10個＆CIO端子4個統合）
-│       ├── carrying-box-assembly.step            # 【案B-1】スライドボックス収納フルアセンブリ・フタなし（全689ソリッド）
-│       ├── carrying-box-with-lid-assembly.step   # 【案B-2】スライドボックス収納フルアセンブリ・フタ装着（全690ソリッド）
+│       ├── carrying-box-assembly.step            # スライドボックス収納検証アセンブリ・フタ取り外し内部確認用（全689ソリッド）
+│       ├── carrying-box-with-lid-assembly.step   # スライドボックス収納フルアセンブリ・フタ装着標準姿勢（全690ソリッド）
 │       ├── curcur40-right-wheel-assembly.step    # 右手＋KiCad実3D部品＋アンダープレート慣性ホイール検証アセンブリ（349ソリッド）
 │       ├── inertia-wheel-assembly.step           # アンダープレート慣性ホイール機構単体アセンブリ（14パーツ）
 │       ├── trackball-cup-with-ball.step/.stl     # カップ＋25mm球＋光学基準点アセンブリ
@@ -196,6 +187,7 @@ curcur40/
 │   ├── pcb_spec.md
 │   ├── passive_inertia_wheel_spec.md
 │   ├── wheel_mechanism_guide.html
+│   ├── carrying_box_lid_guide.html
 │   └── assets/
 └── scripts/                      # 3Dモデル・プレート・JLCPCBデータ・プレビュー画像の公式生成スクリプト群（12本）
 ```

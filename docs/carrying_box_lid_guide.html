@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>さわってわかる！curcur40 キャリングボックスの「まっすぐ引くだけで抜けるフタ」のしくみ</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --border: #cbd5e1;
+      --svg-bg: #f1f5f9;
+      --control-bg: #f8fafc;
+      --accent-blue: #2563eb;
+      --accent-green: #059669;
+      --accent-amber: #d97706;
+      --accent-red: #dc2626;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1120;
+        --card: #111827;
+        --foreground: #f8fafc;
+        --muted-foreground: #94a3b8;
+        --border: #334155;
+        --svg-bg: #1e293b;
+        --control-bg: #0f172a;
+        --accent-blue: #60a5fa;
+        --accent-green: #34d399;
+        --accent-amber: #fbbf24;
+        --accent-red: #f87171;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 18px;
+      font-family: "Meiryo", "Yu Gothic", "Hiragino Kaku Gothic ProN", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--foreground);
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--card);
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    }
+    .header-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .title {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted-foreground);
+      margin-top: 2px;
+    }
+    .mode-switch {
+      display: flex;
+      gap: 6px;
+      background: var(--control-bg);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .mode-btn {
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--muted-foreground);
+      transition: all 0.15s ease;
+    }
+    .mode-btn.active-ok {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 1px 4px rgba(37, 99, 235, 0.35);
+    }
+    .mode-btn.active-ng {
+      background: #dc2626;
+      color: #ffffff;
+      box-shadow: 0 1px 4px rgba(220, 38, 38, 0.35);
+    }
+    .svg-box {
+      margin-top: 14px;
+      background: var(--svg-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      background: var(--control-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+    .play-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: none;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .play-btn:hover { background: #1d4ed8; }
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 200px;
+    }
+    .slider-wrap span {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted-foreground);
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: #2563eb;
+      cursor: pointer;
+    }
+    .badge {
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .badge-blue { background: rgba(59, 130, 246, 0.16); color: var(--accent-blue); }
+    .badge-green { background: rgba(16, 185, 129, 0.18); color: var(--accent-green); }
+    .badge-amber { background: rgba(245, 158, 11, 0.18); color: var(--accent-amber); }
+    .badge-red { background: rgba(239, 68, 68, 0.18); color: var(--accent-red); }
+    .cards-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .info-card {
+      background: var(--control-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .info-card h3 {
+      margin: 0 0 6px 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .info-card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--muted-foreground);
+    }
+    .spec-strip {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px dashed var(--border);
+      font-size: 12.5px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+    }
+    .spec-strip strong { color: var(--foreground); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-bar">
+      <div>
+        <div class="title">🔍 まっすぐ引っぱるだけでフタが抜ける「3つのひみつ」図解</div>
+        <div class="subtitle">お部屋のドアの三角ラッチ金具や、長いプラスチック定規とまったく同じしくみで動きます</div>
+      </div>
+      <div class="mode-switch">
+        <button id="btnOk" class="mode-btn active-ok" onclick="setMode('ok')">✅ 採用設計（スッと抜ける）</button>
+        <button id="btnNg" class="mode-btn" onclick="setMode('ng')">❌ NG例（抜けない理由）</button>
+      </div>
+    </div>
+
+    <div class="svg-box">
+      <svg id="scene" viewBox="0 0 760 220" style="width:100%; height:auto; display:block;">
+        <defs>
+          <marker id="arrowBlue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="#3b82f6" />
+          </marker>
+          <marker id="arrowGreen" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="#10b981" />
+          </marker>
+          <marker id="arrowRed" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="#ef4444" />
+          </marker>
+          <pattern id="diagHatch" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="8" stroke="#64748b" stroke-opacity="0.25" stroke-width="2" />
+          </pattern>
+        </defs>
+
+        <!-- Escape Space Highlight -->
+        <rect id="escapeZone" x="155" y="54" width="190" height="22" rx="3"
+              fill="#f59e0b" fill-opacity="0.14" stroke="#f59e0b" stroke-dasharray="4 3" stroke-width="1.2" />
+        <text id="escapeLabel" x="250" y="69" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">
+          ② ツメのにげ場所（あきスペース 0.85mm）
+        </text>
+
+        <!-- Stationary Carrying Box Cross-Section -->
+        <path id="boxShape" d="" fill="url(#diagHatch)" stroke="#64748b" stroke-width="2.2" stroke-linejoin="round" />
+        <path id="boxTint" d="" fill="#64748b" fill-opacity="0.14" />
+
+        <text x="42" y="45" font-size="13" font-weight="700" fill="currentColor" opacity="0.85">
+          箱のカベ（動かない）
+        </text>
+
+        <!-- Ramp Callout -->
+        <g id="rampCallout">
+          <line id="rampLine" x1="228" y1="126" x2="205" y2="172" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 2" />
+          <rect id="rampBadge" x="92" y="170" width="242" height="26" rx="6" fill="#10b981" fill-opacity="0.16" stroke="#10b981" stroke-width="1.2" />
+          <text id="rampText" x="213" y="187" text-anchor="middle" font-size="12" font-weight="700" fill="#10b981">
+            ① なだらかな「すべり台の坂（26°）」
+          </text>
+        </g>
+
+        <!-- Moving Lid + Springy Cantilever Prong -->
+        <g id="lidGroup">
+          <path id="lidShape" d="" fill="#3b82f6" fill-opacity="0.24" stroke="#3b82f6" stroke-width="2.4" stroke-linejoin="round" />
+          <path id="gripArc" d="" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="3 2" />
+          <text id="lidTitle" x="387" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#3b82f6">
+            フタ
+          </text>
+          <text id="gripText" x="387" y="114" text-anchor="middle" font-size="12" font-weight="600" fill="#3b82f6">
+            （指かけミゾ）
+          </text>
+          <text id="armLabel" x="266" y="95" text-anchor="middle" font-size="12" font-weight="700" fill="#2563eb">
+            長いバネのうで (14mm)
+          </text>
+        </g>
+
+        <!-- Pull Force Arrow -->
+        <g id="pullArrowGrp">
+          <line id="pullLine" x1="425" y1="106" x2="541" y2="106" stroke="#3b82f6" stroke-width="4" marker-end="url(#arrowBlue)" />
+          <text id="pullLabel1" x="483" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#3b82f6">
+            まっすぐ引く力
+          </text>
+          <text id="pullLabel2" x="483" y="128" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" opacity="0.8">
+            約1kg（牛乳パック1本分）
+          </text>
+        </g>
+
+        <!-- Dynamic Reaction Arrows -->
+        <g id="reactionOk" opacity="0">
+          <circle cx="242" cy="117" r="5" fill="#10b981" />
+          <line x1="242" y1="138" x2="242" y2="66" stroke="#10b981" stroke-width="4" marker-end="url(#arrowGreen)" />
+          <rect x="256" y="128" width="236" height="26" rx="6" fill="#10b981" />
+          <text x="374" y="145" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">
+            坂道で「上へ押し上げる力」に変身！
+          </text>
+        </g>
+
+        <g id="reactionNg" opacity="0">
+          <circle cx="322" cy="118" r="6" fill="#ef4444" />
+          <line x1="322" y1="95" x2="322" y2="142" stroke="#ef4444" stroke-width="4" marker-end="url(#arrowRed)" />
+          <rect x="342" y="138" width="380" height="28" rx="6" fill="#ef4444" />
+          <text x="532" y="156" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">
+            💥 うでが短すぎて曲がらず、引く力で逆に食い込んでロック！
+          </text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="controls">
+      <button id="playBtn" class="play-btn" onclick="togglePlay()">▶ うごかしてみる</button>
+      <div class="slider-wrap">
+        <span>閉</span>
+        <input id="pullSlider" type="range" min="0" max="100" value="0" oninput="onSlide(this.value)" />
+        <span>開</span>
+      </div>
+      <span id="statusBadge" class="badge badge-blue">🔒 カチッと閉まっている（逆さでも開かない）</span>
+    </div>
+
+    <div class="cards-grid">
+      <div class="info-card">
+        <h3 style="color: var(--accent-green);">① すべり台（坂道 26°）で力の向きが変わる</h3>
+        <p>
+          引っかかりが直角の壁ではなく<strong>なだらかな26°の坂道</strong>になっています。フタを前に引っぱると、坂道がツメを<strong>勝手に内側のにげ場所へ押し上げる</strong>ため、人間が横からツメを押してあげる必要がありません。
+        </p>
+      </div>
+      <div class="info-card">
+        <h3 style="color: var(--accent-amber);">② 「長い定規」みたいに軽くしなる</h3>
+        <p>
+          定規は短く持つと固くて曲がりませんが、長く持つと指1本でしなります。ツメのうでを<strong>14mmまで長く</strong>し、裏側に<strong>0.85mmのにげ場所</strong>を作ったので、坂道の力だけで無理なくペコッと曲がって通り抜けます。
+        </p>
+      </div>
+      <div class="info-card">
+        <h3 style="color: var(--accent-blue);">③ 「牛乳パック1本分（約1kg）」の絶妙な重さ</h3>
+        <p>
+          中身のキーボード2枚は<strong>約350g</strong>しかないので、カバンの中で逆さまになっても<strong>約1kgのブレーキ</strong>は勝手に開きません。一方で、人間が横の指かけミゾ（深さ1.2mm）をつまんで引くときは片手でスッと抜けます。
+        </p>
+      </div>
+    </div>
+
+    <div class="spec-strip">
+      <strong>📐 実寸エンジニアリング仕様（<code>carrying-box-lid.step</code> / <code>PA12</code> ナイロン）:</strong>
+      自由梁長 <code>L = 14.0 mm</code> ／ 梁厚 <code>t = 1.85 mm</code> ／ 梁幅 <code>b = 9.5 mm</code> ／ 掛かり代 <code>δ = 0.50 mm</code>（背面逃げ隙間 <code>0.85 mm</code>） ／
+      抜きカム角 <code>α_out = 26.0°</code>（押し込み角 <code>20.0°</code>） ／
+      <strong>真っ直ぐ引き抜き力 <code>9.73 N (0.99 kgf)</code></strong>・押し込み力 <code>6.35 N (0.65 kgf)</code> ／
+      根元最大曲げひずみ <code>0.71%</code>（PA12 弾性限界 <code>3.50%</code> に対し<strong>安全率 4.94倍</strong>）
+    </div>
+  </div>
+
+  <script>
+    let mode = 'ok';
+    let animId = null;
+    let progress = 0;
+
+    function buildBoxPath(m) {
+      if (m === 'ok') {
+        return [
+          'M 25 26 L 350 26 L 350 54 L 118 54 L 118 136 L 202 136',
+          'L 250 112 L 350 112 L 350 186 L 25 186 Z'
+        ].join(' ');
+      } else {
+        return [
+          'M 25 26 L 350 26 L 350 70 L 272 70 L 272 128 L 310 128',
+          'L 326 112 L 350 112 L 350 186 L 25 186 Z'
+        ].join(' ');
+      }
+    }
+
+    function buildLidAndProngPath(m, t) {
+      if (m === 'ok') {
+        const dx = t * 1.85;
+        let defl = 0;
+        if (dx < 20) {
+          defl = 0;
+        } else if (dx < 48) {
+          defl = ((dx - 20) / 28) * 14.5;
+        } else if (dx < 162) {
+          defl = 14.5;
+        } else if (dx < 180) {
+          defl = (1.0 - (dx - 162) / 18.0) * 14.5;
+        } else {
+          defl = 0;
+        }
+
+        const xLid = 356 + dx;
+        const xLidOut = xLid + 62;
+        const L = 186;
+        const yTop0 = 78;
+        const yBot0 = 106;
+
+        const steps = 14;
+        const topPts = [];
+        for (let i = 0; i <= steps; i++) {
+          const s = i / steps;
+          const x = xLid - s * L;
+          const w = defl * 0.5 * s * s * (3 - s);
+          topPts.push(`${x.toFixed(1)} ${(yTop0 - w).toFixed(1)}`);
+        }
+
+        const wTip = defl;
+        const wHookEnd = defl * 0.5 * Math.pow(0.84, 2) * (3 - 0.84);
+        const wRampStart = defl * 0.5 * Math.pow(0.65, 2) * (3 - 0.65);
+
+        const xTip = xLid - L;
+        const xCrestL = xTip + 18;
+        const xCrestR = xTip + 32;
+        const xRampR = xTip + 66;
+
+        const botPts = [
+          `${xTip.toFixed(1)} ${(yBot0 - wTip).toFixed(1)}`,
+          `${xCrestL.toFixed(1)} ${(yBot0 + 18 - wTip).toFixed(1)}`,
+          `${xCrestR.toFixed(1)} ${(yBot0 + 18 - wHookEnd).toFixed(1)}`,
+          `${xRampR.toFixed(1)} ${(yBot0 - wRampStart).toFixed(1)}`
+        ];
+        for (let i = 9; i >= 0; i--) {
+          const s = (i / 9) * 0.65;
+          const x = xLid - s * L;
+          const w = defl * 0.5 * s * s * (3 - s);
+          botPts.push(`${x.toFixed(1)} ${(yBot0 - w).toFixed(1)}`);
+        }
+
+        const poly = [
+          `M ${xLid.toFixed(1)} 26`,
+          `L ${xLidOut.toFixed(1)} 26`,
+          `L ${xLidOut.toFixed(1)} 186`,
+          `L ${xLid.toFixed(1)} 186`,
+          ...botPts.slice().reverse().map(p => `L ${p}`),
+          ...topPts.slice().reverse().map(p => `L ${p}`),
+          'Z'
+        ].join(' ');
+
+        const grip = `M ${xLidOut.toFixed(1)} 72 Q ${(xLidOut - 12).toFixed(1)} 106 ${xLidOut.toFixed(1)} 140`;
+        return { poly, grip, xCenter: xLid + 31, xArm: xLid - 90 };
+      } else {
+        const dx = Math.min(t * 0.9, 12);
+        const xLid = 356 + dx;
+        const xLidOut = xLid + 62;
+        const xTip = xLid - 64;
+        const poly = [
+          `M ${xLid.toFixed(1)} 26 L ${xLidOut.toFixed(1)} 26 L ${xLidOut.toFixed(1)} 186 L ${xLid.toFixed(1)} 186`,
+          `L ${xLid.toFixed(1)} 108 L ${(xTip + 38).toFixed(1)} 108`,
+          `L ${(xTip + 22).toFixed(1)} 124 L ${(xTip + 10).toFixed(1)} 124`,
+          `L ${xTip.toFixed(1)} 108 L ${xTip.toFixed(1)} 76 L ${xLid.toFixed(1)} 76 Z`
+        ].join(' ');
+        const grip = `M ${xLidOut.toFixed(1)} 72 Q ${(xLidOut - 7).toFixed(1)} 106 ${xLidOut.toFixed(1)} 140`;
+        return { poly, grip, xCenter: xLid + 31, xArm: xLid - 32 };
+      }
+    }
+
+    function render(val) {
+      const t = Number(val);
+      const bPath = buildBoxPath(mode);
+      document.getElementById('boxShape').setAttribute('d', bPath);
+      document.getElementById('boxTint').setAttribute('d', bPath);
+
+      const escapeZone = document.getElementById('escapeZone');
+      const escapeLabel = document.getElementById('escapeLabel');
+      const rampText = document.getElementById('rampText');
+      const rampBadge = document.getElementById('rampBadge');
+      const rampLine = document.getElementById('rampLine');
+      const armLabel = document.getElementById('armLabel');
+
+      if (mode === 'ok') {
+        escapeZone.setAttribute('opacity', '1');
+        escapeLabel.setAttribute('opacity', '1');
+        rampText.textContent = '① なだらかな「すべり台の坂（26°）」';
+        rampText.setAttribute('fill', '#10b981');
+        rampBadge.setAttribute('stroke', '#10b981');
+        rampLine.setAttribute('x1', '228');
+        rampLine.setAttribute('stroke', '#10b981');
+        armLabel.textContent = '長いバネのうで (14mm)';
+      } else {
+        escapeZone.setAttribute('opacity', '0.2');
+        escapeLabel.setAttribute('opacity', '0.25');
+        rampText.textContent = '急すぎるガケ (45°) ＋ みじかい太うで';
+        rampText.setAttribute('fill', '#ef4444');
+        rampBadge.setAttribute('stroke', '#ef4444');
+        rampLine.setAttribute('x1', '318');
+        rampLine.setAttribute('stroke', '#ef4444');
+        armLabel.textContent = '短いうで(4mm)';
+      }
+
+      const st = buildLidAndProngPath(mode, t);
+      document.getElementById('lidShape').setAttribute('d', st.poly);
+      document.getElementById('gripArc').setAttribute('d', st.grip);
+      document.getElementById('lidTitle').setAttribute('x', st.xCenter);
+      document.getElementById('gripText').setAttribute('x', st.xCenter);
+      document.getElementById('armLabel').setAttribute('x', st.xArm);
+
+      const xArrowStart = st.xCenter + 38;
+      document.getElementById('pullLine').setAttribute('x1', xArrowStart);
+      document.getElementById('pullLine').setAttribute('x2', xArrowStart + 116);
+      document.getElementById('pullLabel1').setAttribute('x', xArrowStart + 58);
+      document.getElementById('pullLabel2').setAttribute('x', xArrowStart + 58);
+
+      const rOk = document.getElementById('reactionOk');
+      const rNg = document.getElementById('reactionNg');
+      const badge = document.getElementById('statusBadge');
+
+      if (mode === 'ok') {
+        rNg.setAttribute('opacity', '0');
+        rOk.setAttribute('opacity', (t >= 11 && t <= 32) ? '1' : '0');
+        if (t < 11) {
+          badge.textContent = '🔒 カチッと閉まっている（逆さでも開かない）';
+          badge.className = 'badge badge-blue';
+        } else if (t <= 32) {
+          badge.textContent = '📐 坂道に当たってツメが上へペコッとよける！';
+          badge.className = 'badge badge-green';
+        } else if (t < 88) {
+          badge.textContent = '💨 引っ込んだままスルスル通り抜ける！';
+          badge.className = 'badge badge-amber';
+        } else {
+          badge.textContent = '✨ スポッと抜けた！（バネが元の形にもどる）';
+          badge.className = 'badge badge-green';
+        }
+      } else {
+        rOk.setAttribute('opacity', '0');
+        if (t > 14) {
+          rNg.setAttribute('opacity', '1');
+          badge.textContent = '💥 ガチッ！うでが曲がらず引っかかって抜けない！';
+          badge.className = 'badge badge-red';
+        } else {
+          rNg.setAttribute('opacity', '0');
+          badge.textContent = '🔒 閉まっている状態（引っぱってみて！）';
+          badge.className = 'badge badge-blue';
+        }
+      }
+    }
+
+    function onSlide(v) {
+      stopAnim();
+      progress = Number(v);
+      render(progress);
+    }
+
+    function setMode(m) {
+      stopAnim();
+      mode = m;
+      progress = 0;
+      document.getElementById('pullSlider').value = 0;
+      document.getElementById('btnOk').className = m === 'ok' ? 'mode-btn active-ok' : 'mode-btn';
+      document.getElementById('btnNg').className = m === 'ng' ? 'mode-btn active-ng' : 'mode-btn';
+      render(0);
+    }
+
+    function stopAnim() {
+      if (animId) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+      document.getElementById('playBtn').textContent = '▶ うごかしてみる';
+    }
+
+    function togglePlay() {
+      if (animId) {
+        stopAnim();
+        return;
+      }
+      if (progress >= 99 || (mode === 'ng' && progress >= 45)) {
+        progress = 0;
+      }
+      document.getElementById('playBtn').textContent = '⏸ とめる';
+      function step() {
+        progress += (mode === 'ok' ? 0.65 : 0.8);
+        const cap = mode === 'ok' ? 100 : 50;
+        if (progress >= cap) {
+          progress = cap;
+          document.getElementById('pullSlider').value = progress;
+          render(progress);
+          stopAnim();
+          return;
+        }
+        document.getElementById('pullSlider').value = progress;
+        render(progress);
+        animId = requestAnimationFrame(step);
+      }
+      animId = requestAnimationFrame(step);
+    }
+
+    render(0);
+  </script>
+</body>
+</html>
