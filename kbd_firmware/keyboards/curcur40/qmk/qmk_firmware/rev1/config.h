@@ -22,17 +22,16 @@
 #define ENCODER_MAP_KEY_DELAY 2
 
 /*
- * Trackball Sensor (U1: PMW3360DM-T2QU) Orientation on Right PCB:
- * - Mounted on B.Cu with optical aperture facing up (+Z) toward the 25mm trackball.
- * - Pin 1..8 row is at X = 4.175 mm (West), Pin 9..16 row is at X = 14.875 mm (East),
- *   with Pin 1/16 at South (+Y_kicad) and Pin 8/9 at North (-Y_kicad).
- * - Because a trackball's bottom surface moves opposite to the top surface rolled by the finger,
- *   rolling Up (-Y_kicad) moves the bottom surface South (+Y_kicad, toward Pin 1..8 -> -Y_report),
- *   and rolling Right (+X_kicad) moves the bottom surface West (-X_kicad, toward Pin 1..8 -> -X_report).
- * - Therefore Y is already naturally aligned (-Y_report = cursor Up), and X is inverted:
+ * Trackball Sensor (U1: PMW3360DM-T2QU) Orientation on Right Sensor Sub-PCB:
+ * - Mounted on B.Cu with optical aperture facing up (+Z) toward the 25mm trackball
+ *   (equivalent to a 180 deg flip around the East-West X axis from standard mouse orientation).
+ * - Pin 1..8 row is at West (-X), Pin 9..16 row is at East (+X),
+ *   with Pin 1/16 (IR LED) at South (+Y_kicad) and Pin 8/9 (Camera) at North (-Y_kicad).
+ * - Rolling Right (+X_kicad) moves the ball's bottom surface West (Pin 9..16 -> Pin 1..8 = +X_report, naturally aligned).
+ * - Rolling Up (-Y_kicad) moves the ball's bottom surface South (Pin 8/9 -> Pin 1/16 = +Y_report, inverted vs -Y_report = Up):
  */
-#define POINTING_DEVICE_INVERT_X
-// #define POINTING_DEVICE_INVERT_Y
+// #define POINTING_DEVICE_INVERT_X
+#define POINTING_DEVICE_INVERT_Y
 // #define POINTING_DEVICE_ROTATION_90
 // #define POINTING_DEVICE_ROTATION_180
 // #define POINTING_DEVICE_ROTATION_270
