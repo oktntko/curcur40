@@ -16,6 +16,8 @@
 #define SPI_MISO_PIN GP8
 #define POINTING_DEVICE_CS_PIN GP6
 #define PMW33XX_CS_PIN GP6
+/* Run SPI1 at ~0.98 MHz (125 MHz / 128) for clean signal integrity across the 50 mm JST SH harness */
+#define PMW33XX_SPI_DIVISOR 128
 
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_RIGHT

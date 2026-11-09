@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include "curcur40_scroll.h"
+#include "wait.h"
 #include "drivers/sensors/pmw3360.h"
 #ifdef SPLIT_KEYBOARD
 #    include "transactions.h"
@@ -16,6 +17,34 @@
 extern bool    pmw33xx_init(uint8_t sensor);
 extern uint8_t pmw33xx_read(uint8_t sensor, uint8_t reg_addr);
 extern bool    pmw33xx_write(uint8_t sensor, uint8_t reg_addr, uint8_t data);
+extern void    __real_pmw33xx_set_cpi(uint8_t sensor, uint16_t cpi);
+
+static uint16_t curcur40_cached_cpi = PMW33XX_CPI;
+
+/*
+ * Fix upstream QMK SPLIT_POINTING_ENABLE + pmw3360 bug:
+ * transactions.c:pointing_handlers_slave() calls get_cpi() on EVERY Slave scan.
+ * Stock pmw33xx_get_cpi() reads REG_Config1 WITHOUT exiting Motion_Burst mode
+ * first, receives 0xFF (MISO High-Z), and writes 0xFF (25,600 CPI, out of spec!)
+ * back to REG_Config1 on every scan — causing 21x hyperspeed & cursor teleports.
+ * Caching CPI avoids burst-mode corruption and saves ~540 us per Slave scan.
+ */
+uint16_t __wrap_pmw33xx_get_cpi(uint8_t sensor) {
+    (void)sensor;
+    return curcur40_cached_cpi;
+}
+
+void __wrap_pmw33xx_set_cpi(uint8_t sensor, uint16_t cpi) {
+    uint16_t clamped = cpi;
+    if (clamped < 100U) {
+        clamped = 100U;
+    } else if (clamped > 12000U) {
+        clamped = 12000U;
+    }
+    curcur40_cached_cpi = (uint16_t)((clamped / 100U) * 100U);
+    pmw33xx_write(sensor, REG_Config2, 0x00);
+    __real_pmw33xx_set_cpi(sensor, curcur40_cached_cpi);
+}
 
 /* -------------------------------------------------------------------------
  * Lightweight Cortex-M0+ helpers (no libm / powf dependency)
@@ -171,7 +200,6 @@ static const pmw3360_tune_preset_t pmw3360_presets[4] = {
 
 static uint8_t  tb_dbg_mode       = (uint8_t)(CURCUR40_PMW3360_DEFAULT_MODE & 0x03U);
 static bool     tb_dbg_streaming  = false;
-static bool     tb_pending_reinit = false;
 static uint32_t tb_dbg_last_ms    = 0;
 static int32_t  tb_dbg_dx         = 0;
 static int32_t  tb_dbg_dy         = 0;
@@ -211,6 +239,22 @@ _Static_assert(sizeof(pmw_diag_req_t) <= RPC_M2S_BUFFER_SIZE, "pmw_diag_req_t ex
 _Static_assert(sizeof(pmw_diag_resp_t) <= RPC_S2M_BUFFER_SIZE, "pmw_diag_resp_t exceeds RPC_S2M_BUFFER_SIZE");
 #endif
 
+/*
+ * Lock-free double-buffered diagnostic cache on the Right half:
+ * - Only the Right main QMK thread (pointing_device_init_kb / housekeeping_task_kb)
+ *   ever touches SPID1, completely eliminating ChibiOS SlaveThread vs main-thread
+ *   SPI bus contention.
+ */
+static pmw_diag_resp_t   tb_resp_buf[2];
+static volatile uint8_t  tb_resp_active_idx     = 0U;
+static volatile bool     tb_slave_poll_active   = false;
+static volatile uint32_t tb_slave_poll_lease_ms = 0U;
+static volatile bool     tb_has_pending_mode    = false;
+static volatile uint8_t  tb_pending_mode        = 0U;
+static bool              tb_cache_ready         = false;
+static bool              tb_sensor_disconnected = false;
+static uint32_t          tb_slave_sample_ms     = 0U;
+
 static void curcur40_apply_pmw3360_mode(uint8_t mode) {
     if (is_keyboard_left()) {
         return;
@@ -223,18 +267,31 @@ static void curcur40_apply_pmw3360_mode(uint8_t mode) {
     pmw33xx_write(0, REG_Raw_Data_Threshold, pmw3360_presets[m].raw_th);
 }
 
-static void curcur40_sample_pmw3360_local(const pmw_diag_req_t *req, pmw_diag_resp_t *resp) {
-    memset(resp, 0, sizeof(*resp));
+static bool curcur40_sample_pmw3360_main_thread(bool apply_mode, uint8_t new_mode, pmw_diag_resp_t *out_resp) {
     if (is_keyboard_left()) {
-        return;
+        if (out_resp != NULL) {
+            memset(out_resp, 0, sizeof(*out_resp));
+        }
+        return false;
     }
 
-    if (req->cmd == PMW_DIAG_CMD_SET_MODE) {
-        tb_dbg_mode = (uint8_t)(req->mode & 0x03U);
+    /*
+     * CRITICAL (PMW3360 Datasheet R1.50 Sec 4.0 Step 7):
+     * Must write to a register FIRST to exit Motion_Burst mode before issuing
+     * any single-register reads (otherwise MISO stays High-Z = 0xFF).
+     * Writing Config2 = 0x00 also clears pmw33xx_common.c's static in_burst[0]
+     * flag so the next pmw33xx_read_burst(0) cleanly re-enters burst mode.
+     */
+    pmw33xx_write(0, REG_Config2, 0x00);
+    wait_us(50);
+
+    if (apply_mode) {
+        tb_dbg_mode = (uint8_t)(new_mode & 0x03U);
         curcur40_apply_pmw3360_mode(tb_dbg_mode);
     }
 
     uint8_t pid  = pmw33xx_read(0, REG_Product_ID);
+    uint8_t inv  = pmw33xx_read(0, REG_Inverse_Product_ID);
     uint8_t srom = pmw33xx_read(0, REG_SROM_ID);
     uint8_t mot  = pmw33xx_read(0, REG_Motion);
     /* Clear latched motion registers per PMW3360 Datasheet Sec 11.0 (p.30) */
@@ -252,32 +309,45 @@ static void curcur40_sample_pmw3360_local(const pmw_diag_req_t *req, pmw_diag_re
     uint16_t shutter = ((uint16_t)sh_u << 8) | (uint16_t)sh_l;
 
     /*
-     * Non-burst register reads exit PMW3360 burst mode (Datasheet Sec 4.0 step 7).
-     * Writing Config2 = 0x00 keeps Run mode active AND resets pmw33xx_common.c's
-     * static in_burst[0] flag so the next pmw33xx_read_burst(0) re-enters burst cleanly.
+     * Only re-initialize if the sensor had actually lost connection/power
+     * (PID != 0x42 or Inverse_PID != 0xBD) and then reconnected.
+     * Note: QMK runs PMW3360 on internal masked ROM where SROM_ID is normally 0x00.
      */
-    pmw33xx_write(0, REG_Config2, 0x00);
-
-    resp->ok      = 1U;
-    resp->mode    = (uint8_t)(tb_dbg_mode & 0x03U);
-    resp->pid     = pid;
-    resp->srom    = srom;
-    resp->mot     = mot;
-    resp->sq      = sq;
-    resp->sum     = sum;
-    resp->mx      = mx;
-    resp->mn      = mn;
-    resp->shutter = shutter;
-
-    /*
-     * Auto-recover if sensor was hot-plugged while powered (PID=0x42, SROM=0x00).
-     * Defer pmw33xx_init(0) (~70 ms) to housekeeping_task_kb() on the Right half
-     * so we never exceed SERIAL_USART_TIMEOUT (20 ms) inside a Split RPC callback.
-     */
-    if (pid == 0x42U && srom == 0x00U) {
-        tb_pending_reinit = true;
-        resp->reinit      = 1U;
+    uint8_t did_reinit = 0U;
+    if (pid != 0x42U || inv != 0xBDU) {
+        tb_sensor_disconnected = true;
+    } else if (tb_sensor_disconnected) {
+        tb_sensor_disconnected = false;
+        if (pmw33xx_init(0)) {
+            curcur40_apply_pmw3360_mode(tb_dbg_mode);
+            did_reinit = 1U;
+        }
     }
+
+    pmw_diag_resp_t sample = {
+        .ok      = 1U,
+        .mode    = (uint8_t)(tb_dbg_mode & 0x03U),
+        .pid     = pid,
+        .srom    = srom,
+        .mot     = mot,
+        .sq      = sq,
+        .sum     = sum,
+        .mx      = mx,
+        .mn      = mn,
+        .reinit  = did_reinit,
+        .shutter = shutter,
+    };
+
+    uint8_t next_idx      = (uint8_t)(tb_resp_active_idx ^ 1U);
+    tb_resp_buf[next_idx] = sample;
+    __asm__ volatile("" ::: "memory");
+    tb_resp_active_idx = next_idx;
+    tb_cache_ready     = true;
+
+    if (out_resp != NULL) {
+        *out_resp = sample;
+    }
+    return true;
 }
 
 #ifdef SPLIT_KEYBOARD
@@ -289,11 +359,19 @@ static void curcur40_pmw_diag_slave_cb(uint8_t in_buflen, const void *in_data,
         }
         return;
     }
-    pmw_diag_req_t  req;
-    pmw_diag_resp_t resp;
+    pmw_diag_req_t req;
     memcpy(&req, in_data, sizeof(req));
-    curcur40_sample_pmw3360_local(&req, &resp);
-    memcpy(out_data, &resp, sizeof(resp));
+
+    tb_slave_poll_lease_ms = timer_read32();
+    tb_slave_poll_active   = true;
+
+    if (req.cmd == PMW_DIAG_CMD_SET_MODE) {
+        tb_pending_mode     = (uint8_t)(req.mode & 0x03U);
+        tb_has_pending_mode = true;
+    }
+
+    uint8_t idx = tb_resp_active_idx;
+    memcpy(out_data, &tb_resp_buf[idx], sizeof(pmw_diag_resp_t));
 }
 #endif
 
@@ -305,8 +383,7 @@ static bool curcur40_fetch_pmw3360_diag(uint8_t cmd, uint8_t mode, pmw_diag_resp
     memset(resp, 0, sizeof(*resp));
 
     if (!is_keyboard_left()) {
-        curcur40_sample_pmw3360_local(&req, resp);
-        return resp->ok != 0U;
+        return curcur40_sample_pmw3360_main_thread(cmd == PMW_DIAG_CMD_SET_MODE, req.mode, resp);
     }
 
 #ifdef SPLIT_KEYBOARD
@@ -429,7 +506,7 @@ static bool curcur40_emit_pmw3360_diag_ex(uint8_t cmd, uint8_t mode) {
     curcur40_send_ascii(line);
 
     if (resp.reinit != 0U) {
-        curcur40_send_ascii("pmw3360 reinit queued\n");
+        curcur40_send_ascii("pmw3360 reinit ok\n");
     }
     return true;
 }
@@ -440,6 +517,11 @@ static void curcur40_toggle_tb_dbg(void) {
     tb_dbg_dy        = 0;
     tb_dbg_last_ms   = timer_read32();
     if (tb_dbg_streaming) {
+        if (is_keyboard_left()) {
+            pmw_diag_resp_t dummy;
+            (void)curcur40_fetch_pmw3360_diag(PMW_DIAG_CMD_QUERY, tb_dbg_mode, &dummy);
+            wait_ms(8);
+        }
         char  hdr[32];
         char *p = buf_str(hdr, "pmw3360 live on m");
         *p++    = (char)('0' + (tb_dbg_mode & 0x03U));
@@ -461,7 +543,18 @@ static void curcur40_cycle_tb_mode(void) {
     *p++      = '\n';
     *p        = '\0';
     curcur40_send_ascii(msg);
-    if (curcur40_emit_pmw3360_diag_ex(PMW_DIAG_CMD_SET_MODE, next_mode)) {
+    if (is_keyboard_left()) {
+        pmw_diag_resp_t dummy;
+        if (curcur40_fetch_pmw3360_diag(PMW_DIAG_CMD_SET_MODE, next_mode, &dummy)) {
+            wait_ms(8);
+            if (curcur40_emit_pmw3360_diag_ex(PMW_DIAG_CMD_QUERY, next_mode)) {
+                tb_dbg_mode = next_mode;
+            }
+        } else {
+            curcur40_send_ascii("err trrs rpc fail flash both halves\n");
+            tb_dbg_streaming = false;
+        }
+    } else if (curcur40_emit_pmw3360_diag_ex(PMW_DIAG_CMD_SET_MODE, next_mode)) {
         tb_dbg_mode = next_mode;
     }
     tb_dbg_last_ms = timer_read32();
@@ -480,18 +573,25 @@ void keyboard_post_init_kb(void) {
 void pointing_device_init_kb(void) {
     if (!is_keyboard_left()) {
         curcur40_apply_pmw3360_mode(tb_dbg_mode);
+        (void)curcur40_sample_pmw3360_main_thread(false, tb_dbg_mode, NULL);
+        tb_slave_sample_ms = timer_read32();
     }
     pointing_device_init_user();
 }
 
 void housekeeping_task_kb(void) {
-    if (!is_keyboard_left() && tb_pending_reinit) {
-        tb_pending_reinit = false;
-        if (pmw33xx_init(0)) {
-            curcur40_apply_pmw3360_mode(tb_dbg_mode);
-            if (is_keyboard_master()) {
-                curcur40_send_ascii("pmw3360 reinit ok\n");
-            }
+    if (!is_keyboard_left()) {
+        if (tb_has_pending_mode) {
+            uint8_t m           = tb_pending_mode;
+            tb_has_pending_mode = false;
+            (void)curcur40_sample_pmw3360_main_thread(true, m, NULL);
+            tb_slave_sample_ms = timer_read32();
+        } else if (tb_slave_poll_active && timer_elapsed32(tb_slave_poll_lease_ms) > 2500U) {
+            tb_slave_poll_active = false;
+        } else if (!tb_cache_ready ||
+                   (tb_slave_poll_active && timer_elapsed32(tb_slave_sample_ms) >= CURCUR40_TB_SLAVE_SAMPLE_MS)) {
+            (void)curcur40_sample_pmw3360_main_thread(false, tb_dbg_mode, NULL);
+            tb_slave_sample_ms = timer_read32();
         }
     }
 
@@ -688,6 +788,15 @@ report_mouse_t pointing_device_task_kb(report_mouse_t mouse_report) {
     bool     inertia_mode = curcur40_is_inertia_mode();
     bool     prec_mode    = scroll_sl_held;
     bool     scroll_mode  = inertia_mode || prec_mode;
+
+    /* Reject corrupted 16-bit SPI burst frames (e.g. pmw33xx_read_burst panic frames) */
+    if ((int16_t)mouse_report.x > CURCUR40_MAX_VALID_DELTA ||
+        (int16_t)mouse_report.x < -CURCUR40_MAX_VALID_DELTA ||
+        (int16_t)mouse_report.y > CURCUR40_MAX_VALID_DELTA ||
+        (int16_t)mouse_report.y < -CURCUR40_MAX_VALID_DELTA) {
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
 
     /* Accumulate raw pointer counts for live diagnostic readout */
     tb_dbg_dx += (int32_t)mouse_report.x;

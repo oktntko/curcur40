@@ -110,3 +110,10 @@ enum curcur40_keycodes {
 #ifndef CURCUR40_TB_DBG_INTERVAL_MS
 #    define CURCUR40_TB_DBG_INTERVAL_MS 1000U
 #endif
+#ifndef CURCUR40_TB_SLAVE_SAMPLE_MS
+#    define CURCUR40_TB_SLAVE_SAMPLE_MS 250U
+#endif
+/* Reject corrupted 16-bit SPI burst frames (e.g. QMK pmw33xx_read_burst panic frames) */
+#ifndef CURCUR40_MAX_VALID_DELTA
+#    define CURCUR40_MAX_VALID_DELTA 320
+#endif
