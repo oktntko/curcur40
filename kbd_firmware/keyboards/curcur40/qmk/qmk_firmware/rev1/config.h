@@ -18,6 +18,8 @@
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_RIGHT
 #define PMW33XX_CPI 1200
+/* Maximize PMW3360 lift-off detection threshold (0x03 = nominal + 3 mm vs default 0x02 = +2 mm) */
+#define PMW33XX_LIFTOFF_DISTANCE 0x03
 #define MOUSE_EXTENDED_REPORT
 #define ENCODER_MAP_KEY_DELAY 2
 

@@ -47,3 +47,14 @@ make update-all
    - **Layer Activation**: Entering `CURCUR40_SCROLL_LAYER` (default Layer `3`) also enables 2D inertia scroll automatically.
    - **Touch-to-Stop & Zoom Guard**: Touching the trackball (or clicking a mouse button) during inertia coasting immediately stops movement; pressing `Ctrl`/`Alt`/`GUI` during coasting cancels inertia to prevent accidental OS zoom.
    - Tuning parameters can be overridden in `rev1/config.h` (see `rev1/curcur40_scroll.h`).
+
+## 5. PMW3360 Lift-Off / SQUAL Threshold Presets & Live Notepad Diagnostics
+
+1. **Sensitivity / Lift-Off Presets (`m0`..`m3`)**:
+   - `m0` (Boot Default): `Lift_Config=0x03` (`+3 mm`), `Min_SQ_Run=6`, `Raw_Data_Threshold=7`
+   - `m1` (Ultra Sensitivity): `Lift_Config=0x03` (`+3 mm`), `Min_SQ_Run=1`, `Raw_Data_Threshold=4`
+   - `m2` (`+3 mm` Lift Only): `Lift_Config=0x03` (`+3 mm`), `Min_SQ_Run=16`, `Raw_Data_Threshold=10`
+   - `m3` (`v0.2.2` Stock Baseline): `Lift_Config=0x02` (`+2 mm`), `Min_SQ_Run=16`, `Raw_Data_Threshold=10`
+2. **Triggers (Plug USB directly into the Right Half, open Notepad in Half-Width English)**:
+   - **Right Middle Thumb (`[7,4]`) + `CKW12` Wheel Click (`[4,6]`)** (or `TB_DBG` / `USER03`): Toggle `1.0 s` live telemetry streaming ON/OFF (`Esc` also stops streaming immediately).
+   - **Right Middle Thumb (`[7,4]`) + Inner Key Below Wheel (`[5,6]`)** (or `TB_MOD` / `USER04`): Cycle `m0 -> m1 -> m2 -> m3 -> m0` and emit a single-line snapshot.

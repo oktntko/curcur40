@@ -2,6 +2,16 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "curcur40_scroll.h"
+#include "drivers/sensors/pmw3360.h"
+
+/*
+ * Declare PMW33XX SPI helpers directly rather than including pmw33xx_common.h,
+ * because vial-qmk's pmw33xx_common.h declares `pmw33xx_pointing_device_driver`
+ * without `extern` (which triggers -fno-common multiple-definition errors).
+ */
+extern bool    pmw33xx_init(uint8_t sensor);
+extern uint8_t pmw33xx_read(uint8_t sensor, uint8_t reg_addr);
+extern bool    pmw33xx_write(uint8_t sensor, uint8_t reg_addr, uint8_t data);
 
 /* -------------------------------------------------------------------------
  * Lightweight Cortex-M0+ helpers (no libm / powf dependency)
@@ -136,11 +146,283 @@ static inline bool curcur40_is_scroll_active(void) {
 }
 
 /* -------------------------------------------------------------------------
+ * 3. PMW3360 Lift-Off / SQUAL Threshold Tuning & Live Notepad Diagnostics
+ * ------------------------------------------------------------------------- */
+typedef struct {
+    uint8_t lift_cfg; /* REG_Lift_Config (0x63): 0x02 = +2mm, 0x03 = +3mm */
+    uint8_t min_sq;   /* REG_Min_SQ_Run  (0x2B): default 0x10 (16)        */
+    uint8_t raw_th;   /* REG_Raw_Data_Threshold (0x2C): default 0x0A (10) */
+} pmw3360_tune_preset_t;
+
+static const pmw3360_tune_preset_t pmw3360_presets[4] = {
+    /* m0 (Boot default): +3mm lift-off + relaxed SQUAL threshold (6 vs 16) */
+    {0x03, 0x06, 0x07},
+    /* m1 (Ultra sensitivity): +3mm lift-off + minimal SQUAL cutoff (1) */
+    {0x03, 0x01, 0x04},
+    /* m2 (+3mm lift-off only, stock SQUAL=16 & RawTh=10) */
+    {0x03, 0x10, 0x0A},
+    /* m3 (Stock v0.2.2 baseline: +2mm lift-off, SQUAL=16, RawTh=10) */
+    {0x02, 0x10, 0x0A},
+};
+
+static uint8_t  tb_dbg_mode       = (uint8_t)(CURCUR40_PMW3360_DEFAULT_MODE & 0x03U);
+static bool     tb_dbg_streaming  = false;
+static uint32_t tb_dbg_last_ms    = 0;
+static int32_t  tb_dbg_dx         = 0;
+static int32_t  tb_dbg_dy         = 0;
+static bool     r_thumb_mid_held  = false;
+static bool     swallow_r46       = false;
+static bool     swallow_r56       = false;
+
+static void curcur40_apply_pmw3360_mode(uint8_t mode) {
+    if (is_keyboard_left()) {
+        return;
+    }
+    uint8_t m = (uint8_t)(mode & 0x03U);
+    /* Disable Rest mode so SQUAL is valid and reset in_burst[0] cleanly */
+    pmw33xx_write(0, REG_Config2, 0x00);
+    pmw33xx_write(0, REG_Lift_Config, pmw3360_presets[m].lift_cfg);
+    pmw33xx_write(0, REG_Min_SQ_Run, pmw3360_presets[m].min_sq);
+    pmw33xx_write(0, REG_Raw_Data_Threshold, pmw3360_presets[m].raw_th);
+}
+
+/* US/JIS layout-neutral ASCII helpers (only lowercase a-z, 0-9, space, '-', '\n') */
+static char *buf_str(char *p, const char *s) {
+    while (*s) {
+        *p++ = *s++;
+    }
+    return p;
+}
+
+static char *buf_hex8(char *p, uint8_t v) {
+    static const char hex[16] = "0123456789abcdef";
+    *p++                      = hex[(v >> 4) & 0x0FU];
+    *p++                      = hex[v & 0x0FU];
+    return p;
+}
+
+static char *buf_u3(char *p, uint8_t v) {
+    *p++ = (char)('0' + (v / 100U));
+    *p++ = (char)('0' + ((v / 10U) % 10U));
+    *p++ = (char)('0' + (v % 10U));
+    return p;
+}
+
+static char *buf_u5(char *p, uint16_t v) {
+    *p++ = (char)('0' + (v / 10000U));
+    *p++ = (char)('0' + ((v / 1000U) % 10U));
+    *p++ = (char)('0' + ((v / 100U) % 10U));
+    *p++ = (char)('0' + ((v / 10U) % 10U));
+    *p++ = (char)('0' + (v % 10U));
+    return p;
+}
+
+static char *buf_i32(char *p, int32_t v) {
+    uint32_t u;
+    if (v < 0) {
+        *p++ = '-';
+        u    = (uint32_t)(-(v + 1)) + 1U;
+    } else {
+        u = (uint32_t)v;
+    }
+    if (u > 99999U) {
+        u = 99999U;
+    }
+    char    tmp[6];
+    uint8_t n = 0;
+    do {
+        tmp[n++] = (char)('0' + (u % 10U));
+        u /= 10U;
+    } while (u > 0U);
+    while (n > 0U) {
+        *p++ = tmp[--n];
+    }
+    return p;
+}
+
+static void curcur40_send_ascii(const char *s) {
+    uint8_t saved_mods = get_mods();
+    if (saved_mods != 0) {
+        clear_mods();
+        send_keyboard_report();
+    }
+    send_string(s);
+    if (saved_mods != 0) {
+        set_mods(saved_mods);
+        send_keyboard_report();
+    }
+}
+
+static void curcur40_emit_pmw3360_diag(void) {
+    if (is_keyboard_left()) {
+        curcur40_send_ascii("err plug usb into right half\n");
+        tb_dbg_streaming = false;
+        return;
+    }
+
+    uint8_t pid  = pmw33xx_read(0, REG_Product_ID);
+    uint8_t srom = pmw33xx_read(0, REG_SROM_ID);
+    uint8_t mot  = pmw33xx_read(0, REG_Motion);
+    /* Clear latched motion registers per PMW3360 Datasheet Sec 11.0 (p.30) */
+    (void)pmw33xx_read(0, REG_Delta_X_L);
+    (void)pmw33xx_read(0, REG_Delta_X_H);
+    (void)pmw33xx_read(0, REG_Delta_Y_L);
+    (void)pmw33xx_read(0, REG_Delta_Y_H);
+    uint8_t sq   = pmw33xx_read(0, REG_SQUAL);
+    uint8_t sum  = pmw33xx_read(0, REG_Raw_Data_Sum);
+    uint8_t mx   = pmw33xx_read(0, REG_Maximum_Raw_data);
+    uint8_t mn   = pmw33xx_read(0, REG_Minimum_Raw_data);
+    /* Datasheet p.36: read Shutter_Upper (0x0C) then Shutter_Lower (0x0B) consecutively */
+    uint8_t  sh_u    = pmw33xx_read(0, REG_Shutter_Upper);
+    uint8_t  sh_l    = pmw33xx_read(0, REG_Shutter_Lower);
+    uint16_t shutter = ((uint16_t)sh_u << 8) | (uint16_t)sh_l;
+
+    /*
+     * Non-burst register reads exit PMW3360 burst mode (Datasheet Sec 4.0 step 7).
+     * Writing Config2 = 0x00 keeps Run mode active AND resets pmw33xx_common.c's
+     * static in_burst[0] flag so the next pmw33xx_read_burst(0) re-enters burst cleanly.
+     */
+    pmw33xx_write(0, REG_Config2, 0x00);
+
+    int32_t dx = tb_dbg_dx;
+    int32_t dy = tb_dbg_dy;
+    tb_dbg_dx  = 0;
+    tb_dbg_dy  = 0;
+
+    char  line[96];
+    char *p = line;
+    *p++    = 'm';
+    *p++    = (char)('0' + (tb_dbg_mode & 0x03U));
+    p       = buf_str(p, " id");
+    p       = buf_hex8(p, pid);
+    p       = buf_str(p, " sr");
+    p       = buf_hex8(p, srom);
+    p       = buf_str(p, " lf");
+    *p++    = (mot & 0x08U) ? '1' : '0';
+    p       = buf_str(p, " sq");
+    p       = buf_u3(p, sq);
+    p       = buf_str(p, " sm");
+    p       = buf_u3(p, sum);
+    p       = buf_str(p, " mx");
+    p       = buf_u3(p, mx);
+    p       = buf_str(p, " mn");
+    p       = buf_u3(p, mn);
+    p       = buf_str(p, " sh");
+    p       = buf_u5(p, shutter);
+    p       = buf_str(p, " dx");
+    p       = buf_i32(p, dx);
+    p       = buf_str(p, " dy");
+    p       = buf_i32(p, dy);
+    *p++    = '\n';
+    *p      = '\0';
+
+    curcur40_send_ascii(line);
+
+    /* Auto-recover if sensor was hot-plugged while USB remained powered (PID=0x42, SROM=0x00) */
+    if (pid == 0x42U && srom == 0x00U) {
+        if (pmw33xx_init(0)) {
+            curcur40_apply_pmw3360_mode(tb_dbg_mode);
+            curcur40_send_ascii("pmw3360 reinit ok\n");
+        }
+    }
+}
+
+static void curcur40_toggle_tb_dbg(void) {
+    if (is_keyboard_left()) {
+        curcur40_send_ascii("err plug usb into right half\n");
+        return;
+    }
+    tb_dbg_streaming = !tb_dbg_streaming;
+    tb_dbg_dx        = 0;
+    tb_dbg_dy        = 0;
+    tb_dbg_last_ms   = timer_read32();
+    if (tb_dbg_streaming) {
+        char hdr[32];
+        char *p = buf_str(hdr, "pmw3360 live on m");
+        *p++    = (char)('0' + (tb_dbg_mode & 0x03U));
+        *p++    = '\n';
+        *p      = '\0';
+        curcur40_send_ascii(hdr);
+        curcur40_emit_pmw3360_diag();
+        tb_dbg_last_ms = timer_read32();
+    } else {
+        curcur40_send_ascii("pmw3360 live off\n");
+    }
+}
+
+static void curcur40_cycle_tb_mode(void) {
+    if (is_keyboard_left()) {
+        curcur40_send_ascii("err plug usb into right half\n");
+        return;
+    }
+    tb_dbg_mode = (uint8_t)((tb_dbg_mode + 1U) & 0x03U);
+    curcur40_apply_pmw3360_mode(tb_dbg_mode);
+    char msg[32];
+    char *p = buf_str(msg, "pmw3360 set m");
+    *p++    = (char)('0' + tb_dbg_mode);
+    *p++    = '\n';
+    *p      = '\0';
+    curcur40_send_ascii(msg);
+    curcur40_emit_pmw3360_diag();
+    tb_dbg_last_ms = timer_read32();
+}
+
+/* -------------------------------------------------------------------------
  * QMK Keyboard-Level Hooks (always chain to *_user)
  * ------------------------------------------------------------------------- */
+void pointing_device_init_kb(void) {
+    if (!is_keyboard_left()) {
+        curcur40_apply_pmw3360_mode(tb_dbg_mode);
+    }
+    pointing_device_init_user();
+}
+
+void housekeeping_task_kb(void) {
+    if (tb_dbg_streaming && is_keyboard_master() &&
+        timer_elapsed32(tb_dbg_last_ms) >= CURCUR40_TB_DBG_INTERVAL_MS) {
+        tb_dbg_last_ms = timer_read32();
+        curcur40_emit_pmw3360_diag();
+    }
+    housekeeping_task_user();
+}
+
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     if (!process_record_user(keycode, record)) {
         return false;
+    }
+
+    /*
+     * Built-in Right-half diagnostic chord (works immediately without EEPROM reset):
+     * Hold Right middle thumb [7,4] (MO(2)) + tap:
+     *   - [4,6] (CKW12 wheel push) : toggle 1s live PMW3360 Notepad readout ON/OFF
+     *   - [5,6] (inner key rEXSW2) : cycle sensitivity mode (m0..m3) + 1-line snapshot
+     */
+    if (!IS_ENCODEREVENT(record->event)) {
+        uint8_t r = record->event.key.row;
+        uint8_t c = record->event.key.col;
+        if (r == 7U && c == 4U) {
+            r_thumb_mid_held = record->event.pressed;
+        } else if (r == 4U && c == 6U) {
+            if (record->event.pressed && r_thumb_mid_held) {
+                swallow_r46 = true;
+                curcur40_toggle_tb_dbg();
+                return false;
+            }
+            if (!record->event.pressed && swallow_r46) {
+                swallow_r46 = false;
+                return false;
+            }
+        } else if (r == 5U && c == 6U) {
+            if (record->event.pressed && r_thumb_mid_held) {
+                swallow_r56 = true;
+                curcur40_cycle_tb_mode();
+                return false;
+            }
+            if (!record->event.pressed && swallow_r56) {
+                swallow_r56 = false;
+                return false;
+            }
+        }
     }
 
 #ifdef ENCODER_MAP_ENABLE
@@ -198,6 +480,27 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
+        case TB_DBG:
+            if (record->event.pressed) {
+                curcur40_toggle_tb_dbg();
+            }
+            return false;
+
+        case TB_MOD:
+            if (record->event.pressed) {
+                curcur40_cycle_tb_mode();
+            }
+            return false;
+
+        case KC_ESC:
+            /* Pressing Esc immediately stops live Notepad streaming */
+            if (record->event.pressed && tb_dbg_streaming) {
+                tb_dbg_streaming = false;
+                curcur40_send_ascii("pmw3360 live off\n");
+                return false;
+            }
+            break;
+
         case QK_MOUSE_BUTTON_1 ... QK_MOUSE_BUTTON_8:
             /* Clicking while coasting acts as an immediate brake */
             if (record->event.pressed && is_coasting) {
@@ -240,6 +543,10 @@ report_mouse_t pointing_device_task_kb(report_mouse_t mouse_report) {
     bool     inertia_mode = curcur40_is_inertia_mode();
     bool     prec_mode    = scroll_sl_held;
     bool     scroll_mode  = inertia_mode || prec_mode;
+
+    /* Accumulate raw pointer counts for live diagnostic readout */
+    tb_dbg_dx += (int32_t)mouse_report.x;
+    tb_dbg_dy += (int32_t)mouse_report.y;
 
     if (!scroll_mode && prev_scroll_active) {
         curcur40_reset_scroll_state();
