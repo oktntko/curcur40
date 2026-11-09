@@ -5,6 +5,8 @@
 #pragma once
 
 #define SERIAL_USART_TX_PIN GP12
+#define SERIAL_PIO_USE_PIO1
+#define SPLIT_TRANSACTION_IDS_KB RPC_ID_CURCUR40_PMW_DIAG
 #define USB_VBUS_PIN GP13
 
 /* SPI1 & PMW3360 Pointing Device Configuration (Right Half) */

@@ -13,7 +13,7 @@ enum curcur40_keycodes {
     SCRL_MO = QK_KB_0, // Hold: 2D trackball inertia high-speed drag-scroll (release brakes & restores cursor)
     SCRL_TG = QK_KB_1, // Toggle: hands-free 2D trackball inertia high-speed drag-scroll
     SCRL_SL = QK_KB_2, // Hold: precision slow 2D drag-scroll (inertia disabled)
-    TB_DBG  = QK_KB_3, // Toggle: 1s live PMW3360 SPI diagnostic readout via USB HID text (Right half USB)
+    TB_DBG  = QK_KB_3, // Toggle: 1s live PMW3360 SPI diagnostic readout via USB HID text (Left TRRS or Right USB)
     TB_MOD  = QK_KB_4, // Cycle: PMW3360 lift-off / SQUAL threshold mode (m0..m3) + single-line snapshot
 };
 

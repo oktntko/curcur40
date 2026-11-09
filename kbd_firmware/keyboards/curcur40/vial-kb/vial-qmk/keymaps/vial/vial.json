@@ -22,7 +22,7 @@
         },
         {
             "name": "Trackball Live Debug",
-            "title": "Toggle 1s Live PMW3360 SPI Register Telemetry into Notepad (Right Half USB)",
+            "title": "Toggle 1s Live PMW3360 SPI Register Telemetry into Notepad (Left TRRS or Right USB)",
             "shortName": "TB_DBG"
         },
         {

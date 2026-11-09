@@ -55,6 +55,10 @@ make update-all
    - `m1` (Ultra Sensitivity): `Lift_Config=0x03` (`+3 mm`), `Min_SQ_Run=1`, `Raw_Data_Threshold=4`
    - `m2` (`+3 mm` Lift Only): `Lift_Config=0x03` (`+3 mm`), `Min_SQ_Run=16`, `Raw_Data_Threshold=10`
    - `m3` (`v0.2.2` Stock Baseline): `Lift_Config=0x02` (`+2 mm`), `Min_SQ_Run=16`, `Raw_Data_Threshold=10`
-2. **Triggers (Plug USB directly into the Right Half, open Notepad in Half-Width English)**:
-   - **Right Middle Thumb (`[7,4]`) + `CKW12` Wheel Click (`[4,6]`)** (or `TB_DBG` / `USER03`): Toggle `1.0 s` live telemetry streaming ON/OFF (`Esc` also stops streaming immediately).
-   - **Right Middle Thumb (`[7,4]`) + Inner Key Below Wheel (`[5,6]`)** (or `TB_MOD` / `USER04`): Cycle `m0 -> m1 -> m2 -> m3 -> m0` and emit a single-line snapshot.
+2. **Triggers (Works on Left Half USB via TRRS Split RPC or Right Half USB — flash both halves with the same `.uf2`, open Notepad in Half-Width English)**:
+   - **Left-Hand Chord (Recommended when USB is plugged into Left Half)**:
+     - **Left `MO(1)` Thumb (`[3,4]`) + `B` (`[2,5]`)** (or `TB_DBG` / `USER03`): Toggle `1.0 s` live telemetry streaming ON/OFF (`Esc` also stops streaming immediately).
+     - **Left `MO(1)` Thumb (`[3,4]`) + `V` (`[2,4]`)** (or `TB_MOD` / `USER04`): Cycle `m0 -> m1 -> m2 -> m3 -> m0` and emit a single-line snapshot.
+   - **Right-Hand Chord**:
+     - **Right Middle Thumb (`[7,4]`) + `CKW12` Wheel Click (`[4,6]`)** (or `TB_DBG` / `USER03`): Toggle `1.0 s` live telemetry streaming ON/OFF.
+     - **Right Middle Thumb (`[7,4]`) + Inner Key Below Wheel (`[5,6]`)** (or `TB_MOD` / `USER04`): Cycle `m0 -> m1 -> m2 -> m3 -> m0` and emit a single-line snapshot.
