@@ -113,7 +113,14 @@ enum curcur40_keycodes {
 #ifndef CURCUR40_TB_SLAVE_SAMPLE_MS
 #    define CURCUR40_TB_SLAVE_SAMPLE_MS 250U
 #endif
-/* Reject corrupted 16-bit SPI burst frames (e.g. QMK pmw33xx_read_burst panic frames) */
+/*
+ * Reject corrupted 16-bit SPI frames (e.g. Delta_H 0xFF sign-extension glitches
+ * like 0xFF06 = -250 or 0xFF1E = -226). At 1200 CPI and 1000 Hz (1 ms polling),
+ * physical thumb motion is <= 25 counts/ms; 45 counts/ms (~37.5 ips) is a safe hard bound.
+ */
 #ifndef CURCUR40_MAX_VALID_DELTA
-#    define CURCUR40_MAX_VALID_DELTA 320
+#    define CURCUR40_MAX_VALID_DELTA 45
+#endif
+#ifndef CURCUR40_MAX_SLEW_DELTA
+#    define CURCUR40_MAX_SLEW_DELTA 28
 #endif

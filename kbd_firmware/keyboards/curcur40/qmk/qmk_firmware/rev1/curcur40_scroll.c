@@ -2,24 +2,81 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <string.h>
+#include <hal.h>
 #include "curcur40_scroll.h"
 #include "wait.h"
+#include "spi_master.h"
+#include "pointing_device.h"
 #include "drivers/sensors/pmw3360.h"
 #ifdef SPLIT_KEYBOARD
 #    include "transactions.h"
 #endif
+
+extern uint8_t crc8(const void *data, size_t len);
 
 /*
  * Declare PMW33XX SPI helpers directly rather than including pmw33xx_common.h,
  * because vial-qmk's pmw33xx_common.h declares `pmw33xx_pointing_device_driver`
  * without `extern` (which triggers -fno-common multiple-definition errors).
  */
-extern bool    pmw33xx_init(uint8_t sensor);
-extern uint8_t pmw33xx_read(uint8_t sensor, uint8_t reg_addr);
-extern bool    pmw33xx_write(uint8_t sensor, uint8_t reg_addr, uint8_t data);
-extern void    __real_pmw33xx_set_cpi(uint8_t sensor, uint16_t cpi);
+extern bool                            pmw33xx_init(uint8_t sensor);
+extern uint8_t                         pmw33xx_read(uint8_t sensor, uint8_t reg_addr);
+extern bool                            pmw33xx_write(uint8_t sensor, uint8_t reg_addr, uint8_t data);
+extern void                            __real_pmw33xx_set_cpi(uint8_t sensor, uint16_t cpi);
+extern bool                            __real_spi_start(pin_t slavePin, bool lsbFirst, uint8_t mode, uint16_t divisor);
+extern void                            __real_spi_stop(void);
+extern spi_status_t                    __real_spi_read(void);
+extern spi_status_t                    __real_spi_receive(uint8_t *data, uint16_t length);
+extern const pointing_device_driver_t *pointing_device_driver;
 
-static uint16_t curcur40_cached_cpi = PMW33XX_CPI;
+static uint16_t curcur40_cached_cpi     = PMW33XX_CPI;
+static bool     curcur40_spi_kept_alive = false;
+static pin_t    curcur40_spi_cs_pin     = PMW33XX_CS_PIN;
+
+/*
+ * Fix RP2040 ChibiOS SPI Mode 3 (CPOL=1, CPHA=1) SCLK/NCS race condition:
+ * Stock QMK spi_stop() calls spiStop(&SPID1) -> hal_lld_peripheral_reset(RESETS_ALLREG_SPI1),
+ * which drops SCLK (GP14) from HIGH (3.3V) to LOW (0V) after every single byte.
+ * On the next spi_start(), spiStart() unresets SPI1 (SCLK rising 0V -> 3.3V) and
+ * immediately calls spi_select() (NCS falling 3.3V -> 0V) with 0 ns delay — causing
+ * the PMW3360 to see a spurious rising SCLK edge while NCS is low and return 0xFF.
+ * Keeping SPID1 in SPI_READY holds SCLK solidly HIGH (3.3V) between all transactions.
+ */
+bool __wrap_spi_start(pin_t slavePin, bool lsbFirst, uint8_t mode, uint16_t divisor) {
+    curcur40_spi_cs_pin = slavePin;
+    if (!curcur40_spi_kept_alive || SPID1.state != SPI_READY) {
+        gpio_set_pin_output(slavePin);
+        gpio_write_pin_high(slavePin);
+        if (!__real_spi_start(slavePin, lsbFirst, mode, divisor)) {
+            return false;
+        }
+        /* De-assert NCS immediately and let SCLK settle at CPOL=1 HIGH for 10 us */
+        gpio_write_pin_high(slavePin);
+        wait_us(10);
+        curcur40_spi_kept_alive = true;
+    }
+    /* SCLK is already stably HIGH; drive NCS low and wait tNCS-SCLK (>= 120 ns) */
+    gpio_write_pin_low(slavePin);
+    wait_us(2);
+    return true;
+}
+
+void __wrap_spi_stop(void) {
+    gpio_write_pin_high(curcur40_spi_cs_pin);
+    wait_us(2);
+}
+
+spi_status_t __wrap_spi_read(void) {
+    /* Transmit 0x00 (MSB=0 read bit) on MOSI instead of ChibiOS dummytx = 0xFF */
+    return spi_write(0x00);
+}
+
+spi_status_t __wrap_spi_receive(uint8_t *data, uint16_t length) {
+    for (uint16_t i = 0; i < length; i++) {
+        data[i] = (uint8_t)spi_write(0x00);
+    }
+    return SPI_STATUS_SUCCESS;
+}
 
 /*
  * Fix upstream QMK SPLIT_POINTING_ENABLE + pmw3360 bug:
@@ -246,14 +303,171 @@ _Static_assert(sizeof(pmw_diag_resp_t) <= RPC_S2M_BUFFER_SIZE, "pmw_diag_resp_t 
  *   SPI bus contention.
  */
 static pmw_diag_resp_t   tb_resp_buf[2];
-static volatile uint8_t  tb_resp_active_idx     = 0U;
-static volatile bool     tb_slave_poll_active   = false;
-static volatile uint32_t tb_slave_poll_lease_ms = 0U;
-static volatile bool     tb_has_pending_mode    = false;
-static volatile uint8_t  tb_pending_mode        = 0U;
-static bool              tb_cache_ready         = false;
-static bool              tb_sensor_disconnected = false;
-static uint32_t          tb_slave_sample_ms     = 0U;
+static volatile uint8_t  tb_resp_active_idx       = 0U;
+static volatile bool     tb_slave_poll_active     = false;
+static volatile uint32_t tb_slave_poll_lease_ms   = 0U;
+static volatile bool     tb_has_pending_mode      = false;
+static volatile uint8_t  tb_pending_mode          = 0U;
+static bool              tb_cache_ready           = false;
+static bool              tb_sensor_disconnected   = false;
+static uint32_t          tb_slave_sample_ms       = 0U;
+static bool              tb_need_motion_freeze    = true;
+static uint32_t          tb_last_sensor_poll_ms   = 0U;
+static report_mouse_t    tb_slave_cached_report   = {0};
+static volatile bool     tb_slave_report_consumed = true;
+static uint8_t           tb_slave_seq             = 1U;
+static uint8_t           tb_slave_last_crc8       = 0U;
+static uint8_t           tb_master_last_seq       = 0U;
+static uint32_t          tb_master_last_rx_ms     = 0U;
+static int16_t           tb_prev_valid_dx         = 0;
+static int16_t           tb_prev_valid_dy         = 0;
+
+#ifdef SPLIT_KEYBOARD
+static void curcur40_pointing_data_slave_cb(uint8_t initiator2target_buffer_size, const void *initiator2target_buffer,
+                                            uint8_t target2initiator_buffer_size, void *target2initiator_buffer) {
+    (void)initiator2target_buffer_size;
+    (void)initiator2target_buffer;
+    (void)target2initiator_buffer_size;
+    (void)target2initiator_buffer;
+    tb_slave_report_consumed = true;
+}
+#endif
+
+static void curcur40_pmw3360_init_driver(void) {
+    pmw33xx_init(0);
+}
+
+static void curcur40_pmw3360_set_cpi_driver(uint16_t cpi) {
+    __wrap_pmw33xx_set_cpi(0, cpi);
+}
+
+static uint16_t curcur40_pmw3360_get_cpi_driver(void) {
+    return __wrap_pmw33xx_get_cpi(0);
+}
+
+/*
+ * Safe non-burst 1-ms PMW3360 motion polling driver (Datasheet R1.50 Sec 11.0, p.30):
+ * - Eliminates Motion_Burst (0x50) continuous 12-byte reads so a single bit-error
+ *   can never shift subsequent bytes or leave the sensor stuck in burst state.
+ * - Freezes/clears the motion registers via Write(REG_Motion, 0x01) before reading
+ *   REG_Motion (0x02), and only reads Delta_X_L..Delta_Y_H when bit 7 (mot) == 1
+ *   and bit 3 (lift) == 0 and the reserved bits (bits 6, 5, 2, 1) are 0.
+ * - Synchronizes with QMK's SPLIT_POINTING_ENABLE (transactions.c) by holding each
+ *   sampled report until the Master actually pulls GET_POINTING_DATA, then clearing
+ *   it to {0} and tagging each valid sample with a unique `boot_x` sequence token
+ *   whose CRC8 never collides with the previous report or zero report.
+ */
+static report_mouse_t curcur40_pmw3360_get_report(report_mouse_t mouse_report) {
+    (void)mouse_report;
+    report_mouse_t zero_rep = {0};
+    if (is_keyboard_left()) {
+        return zero_rep;
+    }
+
+    uint32_t now = timer_read32();
+    if (!tb_slave_report_consumed && timer_elapsed32(tb_last_sensor_poll_ms) < 5U) {
+        return tb_slave_cached_report;
+    }
+    if (timer_elapsed32(tb_last_sensor_poll_ms) < 1U) {
+        if (tb_slave_report_consumed) {
+            memset(&tb_slave_cached_report, 0, sizeof(tb_slave_cached_report));
+            tb_slave_last_crc8 = crc8(&tb_slave_cached_report, sizeof(tb_slave_cached_report));
+        }
+        return tb_slave_cached_report;
+    }
+    tb_last_sensor_poll_ms = now;
+
+    if (tb_need_motion_freeze) {
+        pmw33xx_write(0, REG_Motion, 0x01);
+        tb_need_motion_freeze = false;
+    }
+
+    uint8_t mot = pmw33xx_read(0, REG_Motion);
+    if (mot == 0xFFU || (mot & 0x66U) != 0U) {
+        /* Invalid/corrupted status byte: re-sync by writing REG_Motion */
+        tb_need_motion_freeze = true;
+        memset(&tb_slave_cached_report, 0, sizeof(tb_slave_cached_report));
+        tb_slave_report_consumed = true;
+        tb_slave_last_crc8       = crc8(&tb_slave_cached_report, sizeof(tb_slave_cached_report));
+        return tb_slave_cached_report;
+    }
+
+    if ((mot & 0x80U) == 0U) {
+        /* No motion since last poll: no need to write REG_Motion on next poll */
+        memset(&tb_slave_cached_report, 0, sizeof(tb_slave_cached_report));
+        tb_slave_report_consumed = true;
+        tb_slave_last_crc8       = crc8(&tb_slave_cached_report, sizeof(tb_slave_cached_report));
+        return tb_slave_cached_report;
+    }
+
+    /* Motion bit is set: read all 4 delta registers in strict datasheet order */
+    uint8_t dxl = pmw33xx_read(0, REG_Delta_X_L);
+    uint8_t dxh = pmw33xx_read(0, REG_Delta_X_H);
+    uint8_t dyl = pmw33xx_read(0, REG_Delta_Y_L);
+    uint8_t dyh = pmw33xx_read(0, REG_Delta_Y_H);
+    tb_need_motion_freeze = true;
+
+    if ((mot & 0x08U) != 0U) {
+        /* Ball is lifted: discard delta after draining registers */
+        memset(&tb_slave_cached_report, 0, sizeof(tb_slave_cached_report));
+        tb_slave_report_consumed = true;
+        tb_slave_last_crc8       = crc8(&tb_slave_cached_report, sizeof(tb_slave_cached_report));
+        return tb_slave_cached_report;
+    }
+
+    int16_t dx = (int16_t)(((uint16_t)dxh << 8) | (uint16_t)dxl);
+    int16_t dy = (int16_t)(((uint16_t)dyh << 8) | (uint16_t)dyl);
+
+    /* Reject out-of-range 1-ms spikes (e.g. 0xFFxx upper-byte sign-extension glitch) */
+    if (dx > CURCUR40_MAX_VALID_DELTA || dx < -CURCUR40_MAX_VALID_DELTA ||
+        dy > CURCUR40_MAX_VALID_DELTA || dy < -CURCUR40_MAX_VALID_DELTA) {
+        memset(&tb_slave_cached_report, 0, sizeof(tb_slave_cached_report));
+        tb_slave_report_consumed = true;
+        tb_slave_last_crc8       = crc8(&tb_slave_cached_report, sizeof(tb_slave_cached_report));
+        return tb_slave_cached_report;
+    }
+
+    if (dx == 0 && dy == 0) {
+        memset(&tb_slave_cached_report, 0, sizeof(tb_slave_cached_report));
+        tb_slave_report_consumed = true;
+        tb_slave_last_crc8       = crc8(&tb_slave_cached_report, sizeof(tb_slave_cached_report));
+        return tb_slave_cached_report;
+    }
+
+    report_mouse_t rep = {0};
+    rep.x              = (mouse_xy_report_t)dx;
+    rep.y              = (mouse_xy_report_t)dy;
+
+    /*
+     * Choose a non-zero sequence number in `boot_x` (1..125) such that:
+     * 1. It differs from the previous sequence number (so Master detects every new sample), and
+     * 2. `crc8(&rep)` differs from both `tb_slave_last_crc8` and `crc8(&zero_rep)`
+     *    (so transactions.c:read_if_checksum_mismatch() is guaranteed to fetch it).
+     */
+    uint8_t zero_crc = crc8(&zero_rep, sizeof(zero_rep));
+    uint8_t next_seq = tb_slave_seq;
+    uint8_t new_crc  = 0U;
+    for (uint8_t attempt = 0U; attempt < 16U; attempt++) {
+        next_seq = (uint8_t)((next_seq % 125U) + 1U);
+        rep.boot_x = (int8_t)next_seq;
+        new_crc    = crc8(&rep, sizeof(rep));
+        if (new_crc != tb_slave_last_crc8 && new_crc != zero_crc) {
+            break;
+        }
+    }
+    tb_slave_seq             = next_seq;
+    tb_slave_last_crc8       = new_crc;
+    tb_slave_cached_report   = rep;
+    tb_slave_report_consumed = false;
+    return tb_slave_cached_report;
+}
+
+static const pointing_device_driver_t curcur40_pmw3360_driver = {
+    .init       = curcur40_pmw3360_init_driver,
+    .get_report = curcur40_pmw3360_get_report,
+    .set_cpi    = curcur40_pmw3360_set_cpi_driver,
+    .get_cpi    = curcur40_pmw3360_get_cpi_driver,
+};
 
 static void curcur40_apply_pmw3360_mode(uint8_t mode) {
     if (is_keyboard_left()) {
@@ -265,6 +479,7 @@ static void curcur40_apply_pmw3360_mode(uint8_t mode) {
     pmw33xx_write(0, REG_Lift_Config, pmw3360_presets[m].lift_cfg);
     pmw33xx_write(0, REG_Min_SQ_Run, pmw3360_presets[m].min_sq);
     pmw33xx_write(0, REG_Raw_Data_Threshold, pmw3360_presets[m].raw_th);
+    tb_need_motion_freeze = true;
 }
 
 static bool curcur40_sample_pmw3360_main_thread(bool apply_mode, uint8_t new_mode, pmw_diag_resp_t *out_resp) {
@@ -275,13 +490,6 @@ static bool curcur40_sample_pmw3360_main_thread(bool apply_mode, uint8_t new_mod
         return false;
     }
 
-    /*
-     * CRITICAL (PMW3360 Datasheet R1.50 Sec 4.0 Step 7):
-     * Must write to a register FIRST to exit Motion_Burst mode before issuing
-     * any single-register reads (otherwise MISO stays High-Z = 0xFF).
-     * Writing Config2 = 0x00 also clears pmw33xx_common.c's static in_burst[0]
-     * flag so the next pmw33xx_read_burst(0) cleanly re-enters burst mode.
-     */
     pmw33xx_write(0, REG_Config2, 0x00);
     wait_us(50);
 
@@ -293,12 +501,14 @@ static bool curcur40_sample_pmw3360_main_thread(bool apply_mode, uint8_t new_mod
     uint8_t pid  = pmw33xx_read(0, REG_Product_ID);
     uint8_t inv  = pmw33xx_read(0, REG_Inverse_Product_ID);
     uint8_t srom = pmw33xx_read(0, REG_SROM_ID);
+    pmw33xx_write(0, REG_Motion, 0x01);
     uint8_t mot  = pmw33xx_read(0, REG_Motion);
     /* Clear latched motion registers per PMW3360 Datasheet Sec 11.0 (p.30) */
     (void)pmw33xx_read(0, REG_Delta_X_L);
     (void)pmw33xx_read(0, REG_Delta_X_H);
     (void)pmw33xx_read(0, REG_Delta_Y_L);
     (void)pmw33xx_read(0, REG_Delta_Y_H);
+    tb_need_motion_freeze = true;
     uint8_t sq   = pmw33xx_read(0, REG_SQUAL);
     uint8_t sum  = pmw33xx_read(0, REG_Raw_Data_Sum);
     uint8_t mx   = pmw33xx_read(0, REG_Maximum_Raw_data);
@@ -325,7 +535,7 @@ static bool curcur40_sample_pmw3360_main_thread(bool apply_mode, uint8_t new_mod
     }
 
     pmw_diag_resp_t sample = {
-        .ok      = 1U,
+        .ok      = 2U,
         .mode    = (uint8_t)(tb_dbg_mode & 0x03U),
         .pid     = pid,
         .srom    = srom,
@@ -480,7 +690,7 @@ static bool curcur40_emit_pmw3360_diag_ex(uint8_t cmd, uint8_t mode) {
     char *p = line;
     *p++    = 'm';
     *p++    = (char)('0' + tb_dbg_mode);
-    p       = buf_str(p, " id");
+    p       = buf_str(p, (resp.ok >= 2U) ? "v2r2 id" : "v2r1 id");
     p       = buf_hex8(p, resp.pid);
     p       = buf_str(p, " sr");
     p       = buf_hex8(p, resp.srom);
@@ -522,8 +732,8 @@ static void curcur40_toggle_tb_dbg(void) {
             (void)curcur40_fetch_pmw3360_diag(PMW_DIAG_CMD_QUERY, tb_dbg_mode, &dummy);
             wait_ms(8);
         }
-        char  hdr[32];
-        char *p = buf_str(hdr, "pmw3360 live on m");
+        char  hdr[36];
+        char *p = buf_str(hdr, "pmw3360 v2 live on m");
         *p++    = (char)('0' + (tb_dbg_mode & 0x03U));
         *p++    = '\n';
         *p      = '\0';
@@ -563,14 +773,22 @@ static void curcur40_cycle_tb_mode(void) {
 /* -------------------------------------------------------------------------
  * QMK Keyboard-Level Hooks (always chain to *_user)
  * ------------------------------------------------------------------------- */
+void keyboard_pre_init_kb(void) {
+    pointing_device_driver = &curcur40_pmw3360_driver;
+    keyboard_pre_init_user();
+}
+
 void keyboard_post_init_kb(void) {
+    pointing_device_driver = &curcur40_pmw3360_driver;
 #ifdef SPLIT_KEYBOARD
+    split_transaction_table[GET_POINTING_DATA].slave_callback = curcur40_pointing_data_slave_cb;
     transaction_register_rpc(RPC_ID_CURCUR40_PMW_DIAG, curcur40_pmw_diag_slave_cb);
 #endif
     keyboard_post_init_user();
 }
 
 void pointing_device_init_kb(void) {
+    pointing_device_driver = &curcur40_pmw3360_driver;
     if (!is_keyboard_left()) {
         curcur40_apply_pmw3360_mode(tb_dbg_mode);
         (void)curcur40_sample_pmw3360_main_thread(false, tb_dbg_mode, NULL);
@@ -789,13 +1007,53 @@ report_mouse_t pointing_device_task_kb(report_mouse_t mouse_report) {
     bool     prec_mode    = scroll_sl_held;
     bool     scroll_mode  = inertia_mode || prec_mode;
 
-    /* Reject corrupted 16-bit SPI burst frames (e.g. pmw33xx_read_burst panic frames) */
-    if ((int16_t)mouse_report.x > CURCUR40_MAX_VALID_DELTA ||
-        (int16_t)mouse_report.x < -CURCUR40_MAX_VALID_DELTA ||
-        (int16_t)mouse_report.y > CURCUR40_MAX_VALID_DELTA ||
-        (int16_t)mouse_report.y < -CURCUR40_MAX_VALID_DELTA) {
+    /*
+     * 1. Deduplicate split pointing reports on Master:
+     *    In vial-qmk transactions.c:read_if_checksum_mismatch(), when Master's main loop
+     *    (~200 us) polls Slave before Slave produces a new SPI sample, `else` re-copies
+     *    the already-consumed report into `shared_mouse_report`.
+     *    - With v2 Right half: each fresh sample carries a unique non-zero `boot_x`
+     *      sequence number (1..125); any duplicate `seq == tb_master_last_seq` is zeroed.
+     *    - Fallback if Right half is still on v1 (`boot_x == 0`): throttle non-zero
+     *      reports to at most 1 per millisecond so sub-ms replays are discarded.
+     */
+    if (mouse_report.boot_x != 0) {
+        uint8_t seq         = (uint8_t)mouse_report.boot_x;
+        mouse_report.boot_x = 0;
+        if (seq == tb_master_last_seq) {
+            mouse_report.x = 0;
+            mouse_report.y = 0;
+        } else {
+            tb_master_last_seq   = seq;
+            tb_master_last_rx_ms = now;
+        }
+    } else if (mouse_report.x != 0 || mouse_report.y != 0) {
+        if (timer_elapsed32(tb_master_last_rx_ms) < 1U) {
+            mouse_report.x = 0;
+            mouse_report.y = 0;
+        } else {
+            tb_master_last_rx_ms = now;
+        }
+    } else if (timer_elapsed32(tb_master_last_rx_ms) > 15U) {
+        tb_prev_valid_dx = 0;
+        tb_prev_valid_dy = 0;
+    }
+
+    /*
+     * 2. Reject out-of-range 1-ms spikes (e.g. Delta_H = 0xFF sign-extension glitch
+     *    producing -256..-190 on small positive movements) and single-frame teleports.
+     */
+    int16_t cur_dx = (int16_t)mouse_report.x;
+    int16_t cur_dy = (int16_t)mouse_report.y;
+    if (cur_dx > CURCUR40_MAX_VALID_DELTA || cur_dx < -CURCUR40_MAX_VALID_DELTA ||
+        cur_dy > CURCUR40_MAX_VALID_DELTA || cur_dy < -CURCUR40_MAX_VALID_DELTA ||
+        (abs_i16(cur_dx) > CURCUR40_MAX_SLEW_DELTA && abs_i16((int16_t)(cur_dx - tb_prev_valid_dx)) > CURCUR40_MAX_SLEW_DELTA) ||
+        (abs_i16(cur_dy) > CURCUR40_MAX_SLEW_DELTA && abs_i16((int16_t)(cur_dy - tb_prev_valid_dy)) > CURCUR40_MAX_SLEW_DELTA)) {
         mouse_report.x = 0;
         mouse_report.y = 0;
+    } else if (cur_dx != 0 || cur_dy != 0) {
+        tb_prev_valid_dx = cur_dx;
+        tb_prev_valid_dy = cur_dy;
     }
 
     /* Accumulate raw pointer counts for live diagnostic readout */
