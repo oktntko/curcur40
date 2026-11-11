@@ -115,12 +115,12 @@ enum curcur40_keycodes {
 #endif
 /*
  * Reject corrupted 16-bit SPI frames (e.g. Delta_H 0xFF sign-extension glitches
- * like 0xFF06 = -250 or 0xFF1E = -226). At 1200 CPI and 1000 Hz (1 ms polling),
- * physical thumb motion is <= 25 counts/ms; 45 counts/ms (~37.5 ips) is a safe hard bound.
+ * like 0xFF06 = -250 or 0xFF1E = -226). At 500 Hz (2 ms throttled split polling),
+ * physical finger motion is <= 40 counts/tick; 60 counts/tick is a safe hard bound.
  */
 #ifndef CURCUR40_MAX_VALID_DELTA
-#    define CURCUR40_MAX_VALID_DELTA 45
+#    define CURCUR40_MAX_VALID_DELTA 60
 #endif
 #ifndef CURCUR40_MAX_SLEW_DELTA
-#    define CURCUR40_MAX_SLEW_DELTA 28
+#    define CURCUR40_MAX_SLEW_DELTA 36
 #endif
