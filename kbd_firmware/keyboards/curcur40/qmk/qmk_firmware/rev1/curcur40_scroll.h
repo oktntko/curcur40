@@ -6,15 +6,13 @@
 #include QMK_KEYBOARD_H
 
 /*
- * curcur40 Custom Keycodes (mapped to QK_KB_0..4 = 0x7E00..0x7E04 for full
- * compatibility across QMK, VIA USER00..04, and Vial customKeycodes).
+ * curcur40 Custom Keycodes (mapped to QK_KB_0..2 = 0x7E00..0x7E02 for full
+ * compatibility across QMK, VIA USER00..02, and Vial customKeycodes).
  */
 enum curcur40_keycodes {
     SCRL_MO = QK_KB_0, // Hold: 2D trackball inertia high-speed drag-scroll (release brakes & restores cursor)
     SCRL_TG = QK_KB_1, // Toggle: hands-free 2D trackball inertia high-speed drag-scroll
     SCRL_SL = QK_KB_2, // Hold: precision slow 2D drag-scroll (inertia disabled)
-    TB_DBG  = QK_KB_3, // Toggle: 1s live PMW3360 SPI diagnostic readout via USB HID text (Left TRRS or Right USB)
-    TB_MOD  = QK_KB_4, // Cycle: PMW3360 lift-off / SQUAL threshold mode (m0..m3) + single-line snapshot
 };
 
 /* =========================================================================
@@ -95,32 +93,4 @@ enum curcur40_keycodes {
 #endif
 #ifndef CURCUR40_INERTIA_TOUCH_STOP_COUNTS
 #    define CURCUR40_INERTIA_TOUCH_STOP_COUNTS 8
-#endif
-
-/* =========================================================================
- * 3. PMW3360 Lift-Off / SQUAL Threshold Tuning & Live Notepad Diagnostics
- *    - Mode 0 (default): Lift_Config=0x03 (+3mm), Min_SQ_Run=6,  Raw_Th=7
- *    - Mode 1 (ultra)  : Lift_Config=0x03 (+3mm), Min_SQ_Run=1,  Raw_Th=4
- *    - Mode 2 (+3mm)   : Lift_Config=0x03 (+3mm), Min_SQ_Run=16, Raw_Th=10
- *    - Mode 3 (stock)  : Lift_Config=0x02 (+2mm), Min_SQ_Run=16, Raw_Th=10
- * ========================================================================= */
-#ifndef CURCUR40_PMW3360_DEFAULT_MODE
-#    define CURCUR40_PMW3360_DEFAULT_MODE 0U
-#endif
-#ifndef CURCUR40_TB_DBG_INTERVAL_MS
-#    define CURCUR40_TB_DBG_INTERVAL_MS 1000U
-#endif
-#ifndef CURCUR40_TB_SLAVE_SAMPLE_MS
-#    define CURCUR40_TB_SLAVE_SAMPLE_MS 250U
-#endif
-/*
- * Reject corrupted 16-bit SPI frames (e.g. Delta_H 0xFF sign-extension glitches
- * like 0xFF06 = -250 or 0xFF1E = -226). At 500 Hz (2 ms throttled split polling),
- * physical finger motion is <= 40 counts/tick; 60 counts/tick is a safe hard bound.
- */
-#ifndef CURCUR40_MAX_VALID_DELTA
-#    define CURCUR40_MAX_VALID_DELTA 60
-#endif
-#ifndef CURCUR40_MAX_SLEW_DELTA
-#    define CURCUR40_MAX_SLEW_DELTA 36
 #endif

@@ -19,16 +19,6 @@
             "name": "Scroll Hold (Precision)",
             "title": "Hold for Slow Precision 2D Trackball Drag-Scroll (no inertia)",
             "shortName": "SCRL_SL"
-        },
-        {
-            "name": "Trackball Live Debug",
-            "title": "Toggle 1s Live PMW3360 SPI Register Telemetry into Notepad (Left TRRS or Right USB)",
-            "shortName": "TB_DBG"
-        },
-        {
-            "name": "Trackball Sensitivity Mode",
-            "title": "Cycle PMW3360 Lift-Off & SQUAL Threshold Mode (m0..m3) + Snapshot",
-            "shortName": "TB_MOD"
         }
     ],
     "layouts": {

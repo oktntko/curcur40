@@ -5,8 +5,6 @@
 #pragma once
 
 #define SERIAL_USART_TX_PIN GP12
-#define SERIAL_PIO_USE_PIO1
-#define SPLIT_TRANSACTION_IDS_KB RPC_ID_CURCUR40_PMW_DIAG
 #define USB_VBUS_PIN GP13
 
 /* SPI1 & PMW3360 Pointing Device Configuration (Right Half) */
@@ -16,15 +14,10 @@
 #define SPI_MISO_PIN GP8
 #define POINTING_DEVICE_CS_PIN GP6
 #define PMW33XX_CS_PIN GP6
-/* Run SPI1 at ~0.98 MHz (125 MHz / 128) for clean signal integrity across the 50 mm JST SH harness */
-#define PMW33XX_SPI_DIVISOR 128
 
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_RIGHT
-#define POINTING_DEVICE_TASK_THROTTLE_MS 2
-#define PMW33XX_CPI 1200
-/* Maximize PMW3360 lift-off detection threshold (0x03 = nominal + 3 mm vs default 0x02 = +2 mm) */
-#define PMW33XX_LIFTOFF_DISTANCE 0x03
+#define PMW33XX_CPI 600
 #define MOUSE_EXTENDED_REPORT
 #define ENCODER_MAP_KEY_DELAY 2
 
