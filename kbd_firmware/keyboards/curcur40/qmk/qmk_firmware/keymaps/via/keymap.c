@@ -7,39 +7,39 @@
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
-        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_TAB,     KC_MUTE, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
-        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_LCTL,    MS_BTN3, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
-        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
-                          KC_LGUI, MO(1),   KC_SPC,  KC_LSFT,    KC_ENT,  MO(2),   KC_BSPC
+        KC_TAB,  KC_W,    KC_E,    KC_R,    KC_F,    KC_MINS,            MS_BTN3, KC_J,    KC_U,    KC_I,    KC_O,    KC_Q,
+        KC_A,    KC_S,    KC_D,    KC_T,    KC_G,    LSFT(KC_SCLN),      MS_BTN1, KC_H,    KC_Y,    KC_K,    KC_L,    KC_P,
+        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,                                 KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,
+                          KC_LGUI, LALT_T(KC_INT5), LCTL_T(KC_ESC), LT(1, KC_SPC), LT(2, KC_ENT), LT(3, KC_INT4), KC_LGUI
     ),
 
     [1] = LAYOUT(
-        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_ESC,     _______, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        SCRL_TG, SCRL_MO, MS_BTN2, MS_BTN1, SCRL_SL, _______,    _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_QUOT,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      MS_BTN1, MS_BTN2, SCRL_MO, SCRL_TG, KC_ESC,
-                          _______, _______, _______, _______,    _______, MO(3),   KC_DEL
+        _______, KC_F2,   KC_F4,   KC_F12,  _______, KC_F11,             _______, LSFT(KC_6),    LSFT(KC_8),    LSFT(KC_9),   KC_MINS,       KC_NUBS,
+        KC_LBRC, KC_DEL,  KC_ENT,  KC_BSPC, _______, LAG(KC_SPC),        _______, LSFT(KC_BSLS), KC_RBRC,       KC_NUHS,      LSFT(KC_MINS), _______,
+        _______, LALT(KC_LEFT), LALT(KC_UP), LALT(KC_RGHT), _______,              LSFT(KC_4),    LSFT(KC_COMM), LSFT(KC_DOT), LSFT(KC_EQL),  _______,
+                          LALT(KC_DOWN), _______, _______, _______,      _______, _______,       _______
     ),
 
     [2] = LAYOUT(
-        KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_TAB,     _______, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,    _______, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE,
-                          _______, MO(3),   _______, _______,    _______, _______, KC_GRV
+        _______, _______, _______, _______, _______, _______,            _______, LSFT(KC_LBRC), LSFT(KC_7), LSFT(KC_2), KC_EQL,  _______,
+        _______, _______, _______, _______, _______, _______,            _______, KC_QUOT,       KC_BSPC,    KC_UP,      KC_DEL,  _______,
+        _______, _______, _______, _______, _______,                              _______,       KC_LEFT,    KC_DOWN,    KC_RGHT, KC_SCLN,
+                          _______, _______, _______, _______,            _______, _______,       _______
     ),
 
     [3] = LAYOUT(
-        QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
-        RM_TOGG, RM_HUEU, RM_SATU, RM_VALU, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        RM_NEXT, RM_HUED, RM_SATD, RM_VALD, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                          _______, _______, _______, _______,    _______, _______, _______
+        _______,    _______, KC_PGUP, _______, _______, _______,         _______, LSFT(KC_QUOT), KC_7, KC_8, KC_9, LSFT(KC_5),
+        LSFT(KC_3), KC_HOME, KC_PGDN, KC_END,  _______, _______,         _______, KC_SLSH,       KC_4, KC_5, KC_6, LSFT(KC_MINS),
+        _______,    _______, _______, _______, _______,                           KC_0,          KC_1, KC_2, KC_3, _______,
+                             _______, _______, _______, _______,         _______, _______,       _______
     )
 };
 
 #ifdef ENCODER_MAP_ENABLE
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(MS_WHLU, MS_WHLD) },
-    [1] = { ENCODER_CCW_CW(RM_PREV, RM_NEXT), ENCODER_CCW_CW(MS_WHLL, MS_WHLR) },
-    [2] = { ENCODER_CCW_CW(RM_HUED, RM_HUEU), ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-    [3] = { ENCODER_CCW_CW(RM_SATD, RM_SATU), ENCODER_CCW_CW(RM_PREV, RM_NEXT) },
+    [0] = { ENCODER_CCW_CW(KC_NO, KC_NO), ENCODER_CCW_CW(MS_WHLD, MS_WHLU) },
+    [1] = { ENCODER_CCW_CW(_______, _______), ENCODER_CCW_CW(_______, _______) },
+    [2] = { ENCODER_CCW_CW(_______, _______), ENCODER_CCW_CW(_______, _______) },
+    [3] = { ENCODER_CCW_CW(_______, _______), ENCODER_CCW_CW(_______, _______) },
 };
 #endif
