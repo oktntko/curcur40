@@ -8,6 +8,9 @@
 #    include "vial.h"
 #    include "dynamic_keymap.h"
 #endif
+#ifdef QMK_SETTINGS
+#    include "qmk_settings.h"
+#endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
@@ -80,6 +83,12 @@ void eeconfig_init_user(void) {
         vial_key_override_entry_t entry = default_overrides[i];
         dynamic_keymap_set_key_override(i, &entry);
     }
+#    endif
+
+#    ifdef QMK_SETTINGS
+    uint8_t enabled = 1;
+    qmk_settings_set(22, &enabled, sizeof(enabled)); /* Permissive Hold */
+    qmk_settings_set(23, &enabled, sizeof(enabled)); /* Hold On Other Key Press */
 #    endif
 
     vial_init();
