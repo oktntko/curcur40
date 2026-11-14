@@ -306,9 +306,9 @@ def build_ceramic_ball_solids(tb_cx: float, tb_cy: float, tb_cz: float) -> list[
     """3x Ø2.00 mm zirconia support balls + their inward snap vectors in Global STEP frame."""
     r_orbit = 13.50
     z_ball_center = 18.30
-    elev_rad = math.radians(52.0)
+    elev_rad = math.radians(35.0)
     out = []
-    for az_deg in (30.0, 150.0, 270.0):
+    for az_deg in (90.0, 210.0, 330.0):
         az_rad = math.radians(az_deg)
         ux = math.cos(elev_rad) * math.cos(az_rad)
         uy = math.cos(elev_rad) * math.sin(az_rad)
