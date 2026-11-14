@@ -24,9 +24,9 @@ def build_trackball_cup() -> bd.Solid:
     - Ball diameter: Ø 25.0 mm (R = 12.50 mm)
     - Ball center: (0, 0, 18.30 mm)
     - Navigation Surface (Ball Bottom): Z = +5.80 mm
-    - Cup uniform outer rim: Z = +14.00 mm (below Equator Z = +18.30 mm)
+    - Cup uniform outer rim: Z = +18.00 mm (0.30 mm below Equator Z = +18.30 mm; Global Z = +2.00 mm)
     - Outer body radius: R = 14.00 mm (Ø 28.00 mm)
-    - Inner spherical bowl radius: R = 12.85 mm (0.35 mm ball gap)
+    - Inner spherical bowl radius: R = 12.75 mm (Ø 25.50 mm; +0.25 mm uniform radial ball gap)
     - 4 Mounting Ears at (+/-12.00, +/-11.30 mm):
         - Height = 2.00 mm (Z = 0.00 to 2.00 mm; clamped with Sensor PCB 1.60 mm by top-down M2 x 6.0 mm screws into case M2 brass heat-set inserts)
         - Straight through-hole: Ø 2.40 mm M2 screw clearance hole (Z = 0.00 to 2.00 mm)
@@ -35,28 +35,28 @@ def build_trackball_cup() -> bd.Solid:
         - North 90.0 deg, West 180.0 deg, East 0.0 deg
         - Width = 4.50 mm
         - Outer back face: Perfectly cylindrical matching R = 14.00 mm body (seamless, zero step)
-        - Rounded dome tips & smooth spherical wrap retention (no local nubs needed)
-    - South 270.0 deg: Claw-free, uniform rim at Z = 14.00 mm (no low-rim cutout needed)
-    - 3 Ceramic Bearing Balls (Ø 2.00 mm):
-        - Elevation = 52.0 deg down from horizontal (Z = 7.66 mm, R_xy = 8.31 mm)
-        - Azimuth = 30.0 deg, 150.0 deg, 270.0 deg
-        - Pocket radius = 1.03 mm, with Ø 1.95 mm entrance throat (blind bottom, no push-out hole)
+        - Rounded dome tips & smooth spherical wrap retention (Ø 24.59 mm snap throat, no local nubs needed)
+    - South 270.0 deg: Claw-free, uniform circular rim at Z = 18.00 mm (prevents Southward ride-up while keeping upper hemisphere open)
+    - 3 Ceramic Bearing Balls (Ø 2.00 mm, anti-ride-up geometry):
+        - Polar angle = 55.0 deg from bottom nadir (Elevation = 35.0 deg down from horizontal; Z = 10.56 mm, R_xy = 11.06 mm)
+        - Azimuth = 90.0 deg (North), 210.0 deg (SW), 330.0 deg (SE)
+        - Pocket radius = 1.03 mm, with Ø 1.95 mm entrance throat (blind bottom, radial outer wall 1.91 mm >= 0.80 mm)
     - LM19 Lens Pocket (2-Stage Design, Zero Collision):
         - Main lens chamber (19.60 x 22.20 mm): Z = 0.00 to +4.85 mm (accommodates 18.85 x 21.15 mm flange)
         - Flange bottom at Z = +3.40 mm ensures exact 2.40 mm optical tracking distance to ball bottom (Z = +5.80 mm)
-        - Central peephole (8.00 x 11.00 mm): Z = +4.85 to 6.69 mm (optical path)
+        - Central peephole (8.00 x 11.00 mm): Z = +4.85 to 6.58 mm (optical path)
     """
     z_base = 0.00
     z_ear = 2.00
-    z_rim = 14.00
+    z_rim = 18.00
     z_claw_top = 22.80
     r_outer = 14.00
-    r_inner = 12.85
+    r_inner = 12.75
     z_ball_center = 18.30
     w_claw = 4.50
     th_claw = 2.40
 
-    # 1. Main cylindrical body (clean uniform rim at Z = 14.00 mm)
+    # 1. Main cylindrical body (clean uniform circular rim at Z = 18.00 mm)
     cup = bd.Cylinder(
         radius=r_outer,
         height=z_rim - z_base,
@@ -84,14 +84,14 @@ def build_trackball_cup() -> bd.Solid:
 
     # 3. Add 3 SLIM claw pillars with CYLINDRICAL outer back face (North 90°, West 180°, East 0°)
     # Outer back face trimmed to match the cup's outer cylinder (R = 14.00 mm, Ø 28.00 mm) perfectly.
-    # Claws rise from uniform rim (Z = 13.00 mm) up to Z = 22.80 mm (+4.50 mm above equator).
+    # Claws rise seamlessly from the cup body up to Z = 22.80 mm (+4.50 mm above equator).
     # Retention is achieved naturally by the spherical inner surface (Step 6) curving inward over
     # the ball's northern hemisphere:
-    # - Equator (Z = 18.30 mm): Opening Ø = 25.30 mm (+0.30 mm clearance)
-    # - Throat (Z = 21.40 mm): Opening Ø = 24.59 mm (narrows down below Ø 25.00 mm equator!)
-    # - Seated clearance = +0.35 mm uniform across the entire ball (ZERO contact during operation).
+    # - Equator (Z = 18.30 mm): Opening Ø = 25.50 mm (+0.50 mm diametral / +0.25 mm radial clearance)
+    # - Throat (Z = 21.67 mm): Opening Ø = 24.59 mm (narrows down below Ø 25.00 mm equator!)
+    # - Seated clearance = +0.25 mm uniform across the entire ball (ZERO contact during operation).
     # - Catch on lift = Ø 24.59 mm throat blocks Ø 25.00 mm equator, preventing drop-out.
-    r_claw_mid = 12.80
+    r_claw_mid = 12.75
     claw_angles = (90.0, 180.0, 0.0)
     claw_trim_cyl = bd.Cylinder(
         radius=r_outer,
@@ -108,7 +108,7 @@ def build_trackball_cup() -> bd.Solid:
                 with bd.Locations([(cx, cy)]):
                     # Width = 4.50 mm, radial thickness extended slightly outward so cylinder trimming
                     # creates an exact, seamless continuation of the R = 14.00 mm cup outer wall
-                    bd.Rectangle(th_claw + 0.60, w_claw, rotation=th_deg)
+                    bd.Rectangle(th_claw + 0.80, w_claw, rotation=th_deg)
             bd.extrude(amount=z_claw_top - 13.00)
         trimmed_claw = claw_bp.part.intersect(claw_trim_cyl)
         cup = cup + trimmed_claw
@@ -130,7 +130,7 @@ def build_trackball_cup() -> bd.Solid:
         bd.extrude(amount=5.00)
     cup = cup - peephole_bp.part
 
-    # 6. Cut inner spherical cavity for 25mm trackball (R = 12.85 mm, center at Z = 18.30 mm)
+    # 6. Cut inner spherical cavity for 25mm trackball (R = 12.75 mm, center at Z = 18.30 mm)
     cup = cup - bd.Sphere(radius=r_inner).moved(bd.Location((0, 0, z_ball_center)))
 
     # 7. Sculpt the ARCH / DOME on the top of each slim claw!
@@ -156,30 +156,31 @@ def build_trackball_cup() -> bd.Solid:
             arch_bp.part = arch_bp.part - cyl
         cup = cup - arch_bp.part
 
-    # 8. Inner smooth lead-in chamfer for easy ball insertion
+    # 8. Inner smooth lead-in chamfer for easy ball insertion (preserves Ø 24.59 mm throat & 0.700 mm Group D tip)
+    cone_top_r = 12.05 + (13.30 - 12.05) * (1.60 / 1.40)  # 13.47857 mm -> exact r=13.30 at Z=22.80
     cone = bd.Cone(
-        bottom_radius=11.90,
-        top_radius=13.50,
+        bottom_radius=12.05,
+        top_radius=cone_top_r,
         height=1.60,
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)
     ).moved(bd.Location((0, 0, 21.40)))
     cup = cup - cone
 
-    # 9. 3x Bearing ball pockets (Ø 2.00 mm ceramic balls)
-    # Azimuths: 30.0 deg (#1), 150.0 deg (#2), 270.0 deg (#3)
-    # Elevation: 52.0 deg down from horizontal
+    # 9. 3x Bearing ball pockets (Ø 2.00 mm ceramic balls — anti-ride-up 55° polar / 35° elevation)
+    # Azimuths: 90.0 deg (#1 North), 210.0 deg (#2 SW), 330.0 deg (#3 SE)
+    # Elevation: 35.0 deg down from horizontal (55.0 deg from bottom nadir; Z = 10.56 mm, R_xy = 11.06 mm)
     # Spherical dimple (radius 1.03 mm, blind bottom) + Ø 1.95 mm (radius 0.975 mm) entrance throat
     # extending inward toward the ball center (0, 0, z_ball_center) for crack-free snap-in assembly
     r_orbit = 13.50
-    elev_rad = math.radians(52.0)
-    for az_deg in (30.0, 150.0, 270.0):
+    elev_rad = math.radians(35.0)
+    for az_deg in (90.0, 210.0, 330.0):
         az_rad = math.radians(az_deg)
         ux = math.cos(elev_rad) * math.cos(az_rad)
         uy = math.cos(elev_rad) * math.sin(az_rad)
         uz = -math.sin(elev_rad)
         bx = r_orbit * ux
         by = r_orbit * uy
-        bz = z_ball_center + r_orbit * uz  # 7.66 mm
+        bz = z_ball_center + r_orbit * uz  # 10.56 mm
         pocket = bd.Sphere(radius=1.03).moved(bd.Location((bx, by, bz)))
         inward_dir = bd.Vector(-ux, -uy, -uz)
         throat_plane = bd.Plane(origin=(bx, by, bz), z_dir=inward_dir)
@@ -207,7 +208,7 @@ def verify_cup_wall_thickness_and_gaps(cup: bd.Solid):
       2) JLC3DP build envelope (<= 380 x 284 x 380 mm), min part size (>= 5 x 5 x 2 mm), and flat bottom Z_min = 0.0000 mm
       3) Minimum concave hole/bore diameter >= Ø 1.50 mm (actual min Ø 1.95 mm bearing snap-in throat)
       4) Minimum wall thickness >= 0.80 mm & zero micro-gaps outside 2 documented intentional features:
-         - Group A (~0.355 mm, Z in [7.0, 9.0] mm): 3x Ø 2.00 mm bearing ball snap-in retention lips
+         - Group A (~0.455 mm, Z in [9.8, 12.0] mm): 3x Ø 2.00 mm bearing ball snap-in retention lips
          - Group D (0.700 mm, Z in [21.0, 22.9] mm): 3x ball retention claw top lead-in chamfer edges
     """
     assert cup.is_valid and is_sound(cup), "[trackball-cup] Solid is not watertight/manifold!"
@@ -255,7 +256,7 @@ def verify_cup_wall_thickness_and_gaps(cup: bd.Solid):
                     my = 0.5 * (p1.Y() + p2.Y())
                     mz = 0.5 * (p1.Z() + p2.Z())
 
-                    is_group_a = 7.0 <= mz <= 9.0 and 0.340 <= d <= 0.370
+                    is_group_a = 9.8 <= mz <= 12.0 and 0.440 <= d <= 0.470
                     is_group_d = 21.0 <= mz <= 22.9 and 0.690 <= d <= 0.710
 
                     if is_group_a or is_group_d:
