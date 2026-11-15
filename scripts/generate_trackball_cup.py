@@ -24,7 +24,7 @@ def build_trackball_cup() -> bd.Solid:
     - Ball diameter: Ø 25.0 mm (R = 12.50 mm)
     - Ball center: (0, 0, 18.30 mm)
     - Navigation Surface (Ball Bottom): Z = +5.80 mm
-    - Cup uniform outer rim: Z = +18.00 mm (0.30 mm below Equator Z = +18.30 mm; Global Z = +2.00 mm)
+    - Cup uniform outer rim: Z = +14.00 mm (flush with Top Plate Z = -2.00 mm; preserves 7.67 mm claw flex & lower-hemisphere finger access)
     - Outer body radius: R = 14.00 mm (Ø 28.00 mm)
     - Inner spherical bowl radius: R = 12.75 mm (Ø 25.50 mm; +0.25 mm uniform radial ball gap)
     - 4 Mounting Ears at (+/-12.00, +/-11.30 mm):
@@ -36,7 +36,7 @@ def build_trackball_cup() -> bd.Solid:
         - Width = 4.50 mm
         - Outer back face: Perfectly cylindrical matching R = 14.00 mm body (seamless, zero step)
         - Rounded dome tips & smooth spherical wrap retention (Ø 24.59 mm snap throat, no local nubs needed)
-    - South 270.0 deg: Claw-free, uniform circular rim at Z = 18.00 mm (prevents Southward ride-up while keeping upper hemisphere open)
+    - South 270.0 deg: Claw-free, uniform circular rim at Z = 14.00 mm (keeps thumb access & tool-free ball pinch removal unobstructed)
     - 3 Ceramic Bearing Balls (Ø 2.00 mm, anti-ride-up geometry):
         - Polar angle = 55.0 deg from bottom nadir (Elevation = 35.0 deg down from horizontal; Z = 10.56 mm, R_xy = 11.06 mm)
         - Azimuth = 90.0 deg (North), 210.0 deg (SW), 330.0 deg (SE)
@@ -48,7 +48,7 @@ def build_trackball_cup() -> bd.Solid:
     """
     z_base = 0.00
     z_ear = 2.00
-    z_rim = 18.00
+    z_rim = 14.00
     z_claw_top = 22.80
     r_outer = 14.00
     r_inner = 12.75
@@ -56,7 +56,7 @@ def build_trackball_cup() -> bd.Solid:
     w_claw = 4.50
     th_claw = 2.40
 
-    # 1. Main cylindrical body (clean uniform circular rim at Z = 18.00 mm)
+    # 1. Main cylindrical body (clean uniform circular rim at Z = 14.00 mm)
     cup = bd.Cylinder(
         radius=r_outer,
         height=z_rim - z_base,
