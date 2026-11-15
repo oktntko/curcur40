@@ -97,7 +97,7 @@
 | :--- | :--- | :---: | :--- |
 | [`cases/left-desk.step`](../cases/left-desk.step) | MJF / SLS `PA12` | 1 | 左手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋USB-C内壁受け棚3箇所） |
 | [`cases/right-desk.step`](../cases/right-desk.step) | MJF / SLS `PA12` | 1 | 右手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋カップボス4箇所＋USB-C内壁受け棚3箇所） |
-| [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（支持球 $55^\circ$・赤道近傍リム $Z_{\text{rel}}=18.0\,\text{mm}$・高さ $2.0\,\text{mm}$ フラット固定耳×4） |
+| [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（支持球 $55^\circ$・内球面 $R=12.75\,\text{mm}$・高さ $2.0\,\text{mm}$ フラット固定耳×4） |
 | [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（東側 $\varnothing 2.00\,\text{mm}$ D穴圧入、$\varnothing 5.72 \times 2.05\,\text{mm}$） |
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・西キーパータブ・南ラチェットボス） |
 | [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定クレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |

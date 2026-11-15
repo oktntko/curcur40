@@ -51,7 +51,7 @@
    - KiCad 10.0 では `PCB_VIA` オブジェクトに対してレイヤー引数なしで `GetWidth()` を呼び出したり `GetEnd()` を呼ぶと C++ アサーション（`assert "false" failed in GetWidth()`）で停止する。
    - `board.GetTracks()` を走査する際は必ず `if t.GetClass() == "PCB_TRACK":` と `elif t.GetClass() == "PCB_VIA":` を分岐させ、ビアには `t.GetWidth(pcbnew.F_Cu)` および `t.GetPosition()` を使用すること。
 4. **右手基板 (`curcur40-right`) および トラックボールセンサーサブ基板 (`curcur40-pmw3360`) の固有仕様**:
-   - 25mm トラックボール赤道（$Z = +2.30\text{ mm}$）をキー天面（$Z = +3.60\text{ mm}$）より低く沈み込ませる低プロファイル設計のため、PMW3360 センサー回路は独立サブ基板 [`pcbs/pmw3360/curcur40-pmw3360.kicad_pcb`](pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（$Z = -17.60 \sim -16.00\text{ mm}$）に分離し、右メイン基板 `rJ3` とセンサー基板 `J1` を **JST SH 1.0mm ピッチ 6ピン横向き SMD コネクタ（`SM06B-SRSS-TB(LF)(SN)`, LCSC `C160405`）** で接続する。
+   - トラックボールカップ開口面をトッププレート天面（$Z = -2.00\text{ mm}$）と同じ高さに揃える低プロファイル設計のため、PMW3360 センサー回路は独立サブ基板 [`pcbs/pmw3360/curcur40-pmw3360.kicad_pcb`](pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（$Z = -17.60 \sim -16.00\text{ mm}$）に分離し、右メイン基板 `rJ3` とセンサー基板 `J1` を **JST SH 1.0mm ピッチ 6ピン横向き SMD コネクタ（`SM06B-SRSS-TB(LF)(SN)`, LCSC `C160405`）** で接続する。
    - アンダープレート一体軸パッシブ磁気慣性ホイール用のセンサーおよび中クリック回路は**サブ基板・手配線ハーネスを一切使わず右メイン基板 `B.Cu` へ直接統合**する：
      - **`rU6`（`TMAG5273A1QDBVR`, `SOT-23-6`, LCSC `C3716049`）**: 右メイン基板 `B.Cu` の `(3.0175, -2.00)`（回転 $-90^\circ$）へ PCBA 実装し、`I2C0`（`GP24` `/WHEEL_SDA`, `GP25` `/WHEEL_SCL`、プルアップ抵抗 `rR11`/`rR12` $4.7\text{ k}\Omega$、パスコン `rC18` $100\text{ nF}$）へ接続する。Pin 5（`~INT`）は `rR13`（$0\ \Omega$）を介して `GNDR` へ落とすことで、ピン互換の Infineon `TLV493D-A1B6` にも無改造でフォールバック可能とする。
      - **`rEXSW1`（`Kailh Square Silent 6.2×6.2×4.3mm`）**: 右メイン基板 `B.Cu` の `(-2.0125, -2.00)` へ THT 2ピン直付けし、`GP7`（`/KEYEX1`, マトリクス `[4, 6]`）へ直接配線する（PCBA 対象からは THT として自動除外）。
