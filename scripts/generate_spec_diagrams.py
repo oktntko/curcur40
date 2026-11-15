@@ -295,9 +295,9 @@ def generate_trackball_optical_diagram():
     ax.add_patch(ball)
     ax.text(0, 18.30, "Ø 25 mm Trackball Sphere\n(Center Z_rel = +18.30 mm, Bottom Z_rel = +5.80 mm)", ha='center', va='center', fontsize=10, fontweight='bold', color='#03045e')
 
-    cup_outline = patches.Arc(ball_center, 27.0, 27.0, theta1=182, theta2=358, linewidth=3, color='#023e8a')
+    cup_outline = patches.Arc(ball_center, 27.0, 27.0, theta1=200, theta2=340, linewidth=3, color='#023e8a')
     ax.add_patch(cup_outline)
-    ax.text(-18.2, 11.8, "Trackball Cup Body\n(Rim Z_rel=+18.0, Claws: N/E/W)", ha='center', va='center', fontsize=9.2, fontweight='bold', color='#023e8a')
+    ax.text(-18.2, 11.8, "Trackball Cup Body\n(Rim Z_rel=+14.0, Claws: N/E/W)", ha='center', va='center', fontsize=9.2, fontweight='bold', color='#023e8a')
 
     lens_body = patches.Rectangle((-8.25, 0.0), 16.5, 3.4, linewidth=1.2, edgecolor='#f77f00', facecolor='#ffd166', alpha=0.75)
     lens_flange = patches.Rectangle((-10.5, 3.40), 21.0, 1.4, linewidth=1.5, edgecolor='#f77f00', facecolor='#fcbf49', alpha=0.85)
@@ -481,7 +481,7 @@ def generate_trackball_cup_detail_drawing():
                   Ball (Ø25mm, center Z=18.30), Claws (Z=22.80), Bearings (55° from nadir, Z=10.56), and Lens Pocket (Z=3.40).
     - Middle Panel: Top Plan View (X-Y View) with all 4 Mounting Ears (NE, NW, SW, SE at X=±12, Y=±11.3),
                     3 Claws (N 90°, E 0°, W 180°), South Open (270°), and 3 Bearings (90°, 210°, 330° at R_xy=11.06mm).
-    - Right Panel: Side Elevation (Y-Z View) showing North Claw (Z=22.80) vs South Raised Uniform Rim (Z=18.00)
+    - Right Panel: Side Elevation (Y-Z View) showing North Claw (Z=22.80) vs South Uniform Rim (Z=14.00)
                    and South/North Mounting Ears (Y=±11.3).
     """
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(22, 10.5), dpi=200)
@@ -511,21 +511,21 @@ def generate_trackball_cup_detail_drawing():
 
     cup_wall_left = patches.Polygon([
         (-14.0, 0.0), (-14.0, 20.5), (-12.5, 22.8), (-11.2, 22.8),
-        (-11.5, 20.5), (-12.74, 18.0), (-11.0, 11.5), (-8.0, 5.8), (-5.5, 5.8), (-5.5, 3.4), (-10.5, 3.4), (-10.5, 0.0)
+        (-11.5, 20.5), (-12.0, 14.0), (-11.0, 11.5), (-8.0, 5.8), (-5.5, 5.8), (-5.5, 3.4), (-10.5, 3.4), (-10.5, 0.0)
     ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
     ax1.add_patch(cup_wall_left)
 
     cup_wall_right = patches.Polygon([
         (14.0, 0.0), (14.0, 20.5), (12.5, 22.8), (11.2, 22.8),
-        (11.5, 20.5), (12.74, 18.0), (11.0, 11.5), (8.0, 5.8), (5.5, 5.8), (5.5, 3.4), (10.5, 3.4), (10.5, 0.0)
+        (11.5, 20.5), (12.0, 14.0), (11.0, 11.5), (8.0, 5.8), (5.5, 5.8), (5.5, 3.4), (10.5, 3.4), (10.5, 0.0)
     ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
     ax1.add_patch(cup_wall_right)
 
-    ax1.plot([-14.0, 14.0], [18.0, 18.0], linestyle='--', color='#1d3557', lw=1.0, zorder=4)
+    ax1.plot([-14.0, 14.0], [14.0, 14.0], linestyle='--', color='#1d3557', lw=1.0, zorder=4)
 
-    claw_w = patches.Polygon([(-14.0, 18.0), (-14.0, 20.5), (-12.5, 22.8), (-11.2, 22.8), (-11.5, 20.5), (-12.74, 18.0)],
+    claw_w = patches.Polygon([(-14.0, 14.0), (-14.0, 20.5), (-12.5, 22.8), (-11.2, 22.8), (-11.5, 20.5), (-12.0, 14.0)],
                              closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
-    claw_e = patches.Polygon([(14.0, 18.0), (14.0, 20.5), (12.5, 22.8), (11.2, 22.8), (11.5, 20.5), (12.74, 18.0)],
+    claw_e = patches.Polygon([(14.0, 14.0), (14.0, 20.5), (12.5, 22.8), (11.2, 22.8), (11.5, 20.5), (12.0, 14.0)],
                              closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
     ax1.add_patch(claw_w)
     ax1.add_patch(claw_e)
@@ -645,7 +645,7 @@ def generate_trackball_cup_detail_drawing():
     ax2.add_patch(claw_w_top)
     ax2.text(-14.6, 0, "West Claw\n(180°)", ha='right', va='center', fontsize=8, fontweight='bold', color='#03045e')
 
-    ax2.annotate('South (270°): Claw-Free (爪なし)\n• Uniform circular rim at Z_rel = +18.00 mm\n• 0.30 mm below Equator (乗り上げ防止＆親指開放)',
+    ax2.annotate('South (270°): Claw-Free (爪なし)\n• Uniform rim at Z_rel = +14.00 mm (Global -2.00)\n• Flush with Top Plate (親指開放＆指先で着脱可能)',
                  xy=(0, -14.0), xytext=(0, -21.5),
                  arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=4),
                  fontsize=7.8, fontweight='bold', color='#1d3557', ha='center',
@@ -699,15 +699,15 @@ def generate_trackball_cup_detail_drawing():
         ax3.add_patch(ear_h)
 
     cup_yz_poly = patches.Polygon([
-        (-14.0, 0.0), (-14.0, 18.0), (-12.74, 18.0),
+        (-14.0, 0.0), (-14.0, 14.0), (-12.0, 14.0),
         (-11.0, 11.5), (-8.0, 5.8), (-5.5, 3.4), (5.5, 3.4), (8.0, 5.8), (11.0, 11.5),
-        (12.74, 18.0), (11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.0, 20.5), (14.0, 18.0), (14.0, 0.0)
+        (12.0, 14.0), (11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.0, 20.5), (14.0, 14.0), (14.0, 0.0)
     ], closed=True, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85, lw=1.5, zorder=3)
     ax3.add_patch(cup_yz_poly)
 
-    ax3.plot([-14.0, 14.0], [18.0, 18.0], linestyle=':', color='#1d3557', lw=1.0, zorder=4)
+    ax3.plot([-14.0, 14.0], [14.0, 14.0], linestyle=':', color='#1d3557', lw=1.0, zorder=4)
 
-    claw_n_yz = patches.Polygon([(11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.0, 20.5), (14.0, 18.0), (12.74, 18.0)],
+    claw_n_yz = patches.Polygon([(11.5, 20.5), (11.2, 22.8), (12.5, 22.8), (14.0, 20.5), (14.0, 14.0), (12.0, 14.0)],
                                 closed=True, edgecolor='#03045e', facecolor='#1d3557', zorder=5)
     ax3.add_patch(claw_n_yz)
     ax3.text(13.0, 23.5, "North Claw (90°)\nTip Z=+22.80mm", ha='center', va='bottom', fontsize=8, fontweight='bold', color='#03045e')
@@ -720,15 +720,15 @@ def generate_trackball_cup_detail_drawing():
     ax3.add_patch(patches.Circle((11.06, 10.56), 1.0, lw=1.2, ec='#6a040f', fc='#d90429', zorder=6))
     ax3.add_patch(patches.Circle((-5.53, 10.56), 1.0, lw=1.1, ls='--', ec='#6a040f', fc='#fca5a5', zorder=6))
 
-    ax3.annotate('South Side (270°): No Claw (爪なし)\n• Raised uniform rim: Z = +18.00 mm\n• 0.30 mm below Equator (Z = +18.30 mm)\n• Stops ride-up while keeping thumb clear',
-                 xy=(-13.4, 18.0), xytext=(-25.2, 22.8),
+    ax3.annotate('South Side (270°): No Claw (爪なし)\n• Uniform rim: Z = +14.00 mm (Global -2.00)\n• Flush with Top Plate\n• Preserves 7.67mm claw flex & finger grip',
+                 xy=(-13.0, 14.0), xytext=(-25.2, 21.8),
                  arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=4),
                  fontsize=7.3, fontweight='bold', color='#1d3557',
                  bbox=dict(boxstyle="round,pad=0.25", fc="#e0f2fe", ec="#1d3557", lw=0.8), zorder=10)
 
-    ax3.annotate('', xy=(-17.0, 18.0), xytext=(-17.0, 0.0),
+    ax3.annotate('', xy=(-17.0, 14.0), xytext=(-17.0, 0.0),
                  arrowprops=dict(arrowstyle='<->', color='#1d3557', lw=1.0))
-    ax3.text(-17.4, 9.0, "Uniform Rim:\n18.00 mm", ha='right', va='center', fontsize=7.5, fontweight='bold', color='#1d3557',
+    ax3.text(-17.4, 7.0, "Uniform Rim:\n14.00 mm", ha='right', va='center', fontsize=7.5, fontweight='bold', color='#1d3557',
              bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#1d3557", lw=0.6, alpha=0.9))
 
     ax3.annotate('', xy=(-11.3, -3.2), xytext=(11.3, -3.2),
@@ -753,7 +753,7 @@ def generate_assembly_tool_clearance_diagram():
     Generate visual assembly tool-size limit & internal routing guide
     (`docs/assets/assembly_tool_clearance_guide.png`):
       - Panel 1: TB1 / TB3 brass insert heat-set — soldering iron diameter <= Ø 6.0 mm (max Ø 6.5 mm) up to 18 mm from tip
-      - Panel 2: TB1..TB4 cup screws — #0 precision screwdriver shaft <= Ø 4.5 mm (rec. Ø 3.0-3.5 mm) up to 18 mm from tip
+      - Panel 2: TB1..TB4 cup screws — #0 precision screwdriver shaft <= Ø 4.5 mm (rec. Ø 3.0-3.5 mm) up to 15 mm from tip
       - Panel 3: Pre-closure checklist — tune DET magnetic ratchet screw before fastening R1..R6 + route 100 mm JST-SH slack SE
     """
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(21.5, 8.2), dpi=200)
@@ -853,7 +853,7 @@ def generate_assembly_tool_clearance_diagram():
     ax2.set_ylim(-23.5, 12.8)
     ax2.set_aspect('equal')
 
-    # Case TB Boss + Sensor PCB (1.6mm, Z=-17.6..-16.0) + Trackball Cup Wall (X <= -2.48, Z=-16.0..+2.0) & Flat Ear (Z=-16.0..-14.0)
+    # Case TB Boss + Sensor PCB (1.6mm, Z=-17.6..-16.0) + Trackball Cup Wall (X <= -2.48, Z=-16.0..-2.0) & Flat Ear (Z=-16.0..-14.0)
     boss_p2 = patches.Polygon(
         [
             (-10.5, -23.0), (13.5, -23.0), (13.5, -20.6),
@@ -872,30 +872,30 @@ def generate_assembly_tool_clearance_diagram():
     ax2.add_patch(patches.Rectangle((1.20, -17.60), 4.80, 1.60, lw=1.2, ec='#14532d', fc='#4ade80', alpha=0.85, zorder=3))
     ax2.text(-6.2, -16.80, "TBセンサー基板", ha='center', va='center', fontsize=7.2, fontweight='bold', color='#052e16', zorder=4)
 
-    # Trackball Cup Body Wall (X in [-10.5, -2.48], Z in [-16.00, +2.00]) + 2.00 mm Flat Ear (X in [-2.48, +3.00], Z in [-16.00, -14.00])
+    # Trackball Cup Body Wall (X in [-10.5, -2.48], Z in [-16.00, -2.00]) + 2.00 mm Flat Ear (X in [-2.48, +3.00], Z in [-16.00, -14.00])
     cup_p2 = patches.Polygon(
         [
             (-10.5, -16.00), (-1.20, -16.00), (-1.20, -14.00),
-            (-2.48, -14.00), (-2.48, 2.00), (-10.5, 2.00),
+            (-2.48, -14.00), (-2.48, -2.00), (-10.5, -2.00),
         ],
         closed=True, lw=1.5, ec='#1e3a8a', fc='#93c5fd', alpha=0.88, zorder=4
     )
     ear_r_p2 = patches.Rectangle((1.20, -16.00), 1.80, 2.00, lw=1.5, ec='#1e3a8a', fc='#93c5fd', alpha=0.88, zorder=4)
     ax2.add_patch(cup_p2)
     ax2.add_patch(ear_r_p2)
-    ax2.text(-6.5, -6.5, "トラックボール\nカップ外壁\n(Ø28.0 mm)", ha='center', va='center', fontsize=8.2, fontweight='bold', color='#1e3a8a', zorder=5)
+    ax2.text(-6.5, -8.5, "トラックボール\nカップ外壁\n(Ø28.0 mm)", ha='center', va='center', fontsize=8.2, fontweight='bold', color='#1e3a8a', zorder=5)
 
     # M2 x 6.0mm Screw
     ax2.add_patch(patches.Rectangle((-1.90, -14.00), 3.80, 1.20, lw=1.3, ec='#1e293b', fc='#64748b', zorder=6))
     ax2.add_patch(patches.Rectangle((-0.98, -20.00), 1.96, 6.00, lw=1.3, ec='#1e293b', fc='#94a3b8', zorder=5))
 
-    # NG Ghost: Thick 4mm/6.35mm bit-holder chuck (Ø 8.0 mm -> X = ±4.00 above Z = -2.0) hitting Cup Outer Wall at (-2.48, +2.00)
-    ng_chuck = patches.Rectangle((-4.00, -2.00), 8.00, 9.00, lw=1.8, ls='--', ec='#dc2626', fc='#fecaca', alpha=0.55, zorder=3)
+    # NG Ghost: Thick 4mm/6.35mm bit-holder chuck (Ø 8.0 mm -> X = ±4.00 above Z = -5.5) hitting Cup Outer Wall at (-2.48, -2.00)
+    ng_chuck = patches.Rectangle((-4.00, -5.50), 8.00, 10.50, lw=1.8, ls='--', ec='#dc2626', fc='#fecaca', alpha=0.55, zorder=3)
     ax2.add_patch(ng_chuck)
-    ax2.plot([-2.48], [2.00], marker='X', markersize=11, color='#dc2626', mec='#ffffff', mew=1.2, zorder=8)
+    ax2.plot([-2.48], [-2.00], marker='X', markersize=11, color='#dc2626', mec='#ffffff', mew=1.2, zorder=8)
     ax2.annotate(
         "× NG例: 差替ビットホルダー\n太いチャック (Ø6.5〜10mm) が\nカップ外壁に当たって届かない!",
-        xy=(-2.48, 2.00), xytext=(4.0, 5.2),
+        xy=(-2.48, -2.00), xytext=(4.0, 3.2),
         arrowprops=dict(arrowstyle='->', color='#dc2626', lw=1.5),
         fontsize=7.6, fontweight='bold', color='#991b1b',
         bbox=dict(boxstyle="round,pad=0.26", fc="#fef2f2", ec="#dc2626", lw=1.1), zorder=9
@@ -908,23 +908,23 @@ def generate_assembly_tool_clearance_diagram():
     ax2.add_patch(ok_handle)
     ax2.axvline(0.0, ls='-.', color='#64748b', lw=0.9, zorder=8)
     ax2.text(0.0, 8.40, "精密 #0 グリップ", ha='center', va='center', fontsize=7.4, fontweight='bold', color='#14532d', zorder=8)
-    ax2.text(0.0, -4.5, "細軸 Ø3.0mm", rotation=90, ha='center', va='center', fontsize=7.6, fontweight='bold', color='#14532d', zorder=8)
+    ax2.text(0.0, -7.2, "細軸 Ø3.0mm", rotation=90, ha='center', va='center', fontsize=7.6, fontweight='bold', color='#14532d', zorder=8)
 
-    # Dimensions: 16.0 mm height & 2.48 mm radial gap (Ø 4.97 mm physical max)
-    ax2.annotate('', xy=(-2.48, 3.1), xytext=(0.0, 3.1), arrowprops=dict(arrowstyle='<->', color='#0369a1', lw=1.4), zorder=9)
-    ax2.text(-1.24, 3.8, "半径 2.48mm", ha='center', va='bottom', fontsize=7.4, fontweight='bold', color='#0369a1',
+    # Dimensions: 12.0 mm height & 2.48 mm radial gap (Ø 4.97 mm physical max)
+    ax2.annotate('', xy=(-2.48, -0.8), xytext=(0.0, -0.8), arrowprops=dict(arrowstyle='<->', color='#0369a1', lw=1.4), zorder=9)
+    ax2.text(-1.24, 0.0, "半径 2.48mm", ha='center', va='bottom', fontsize=7.4, fontweight='bold', color='#0369a1',
              bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#0369a1", lw=0.7, alpha=0.95), zorder=9)
 
     ax2.plot([1.90, 4.8], [-14.00, -14.00], ls=':', color='#0f172a', lw=1.0)
-    ax2.plot([-2.48, 4.8], [2.00, 2.00], ls=':', color='#0f172a', lw=1.0)
-    ax2.annotate('', xy=(3.8, 2.00), xytext=(3.8, -14.00), arrowprops=dict(arrowstyle='<->', color='#0f172a', lw=1.3))
-    ax2.text(4.1, -6.00, "16.0 mm", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#0f172a')
+    ax2.plot([-2.48, 4.8], [-2.00, -2.00], ls=':', color='#0f172a', lw=1.0)
+    ax2.annotate('', xy=(3.8, -2.00), xytext=(3.8, -14.00), arrowprops=dict(arrowstyle='<->', color='#0f172a', lw=1.3))
+    ax2.text(4.1, -8.00, "12.0 mm", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#0f172a')
 
     ax2.text(
         9.4, -13.2,
         "◎ ここはこのサイズ以下!\n"
         "━━━━━━━━━━━━\n"
-        "先端から 18 mm まで\n"
+        "先端から 15 mm まで\n"
         "軸径 Ø 4.5 mm 以下\n"
         "(推奨: Ø 3.0〜3.5 mm)\n\n"
         "・単体の精密プラス\n"
