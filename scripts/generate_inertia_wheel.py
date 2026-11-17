@@ -92,7 +92,7 @@ SADDLE_THROAT_W = 2.66                  # 2.66 mm snap entry throat (239 deg wra
 
 U_SW = 25.3000 - X_AXLE_PCB             # +11.0125 mm (rEXSW1 Kailh Square Silent center on B.Cu: x=25.30, y=-4.75)
 V_SW = -(-4.7500 - Y_AXLE_PCB)          # +7.5125 mm
-CLICK_PRESS_DEG = 2.20                  # 2.20 deg click press -> 0.23 mm wheel drop, +0.19 mm switch plunger lift
+CLICK_PRESS_DEG = 1.08                  # 1.08 deg click press -> 0.115 mm wheel drop, +0.093 mm switch plunger lift (>= 0.31 mm PCB/Plate clearance!)
 
 # Cradle Mounting Bosses (WC1 & WC2 on curcur40-right):
 WC1_PCB = (7.3375, -5.0375)             # (u = -6.9500, v = +7.8000)
@@ -271,14 +271,14 @@ def build_wheel_rocker_local() -> bd.Solid:
         + Integral East Keeper Tab (`u in [+9.55, +10.55]`, `v in [-1.50, +1.50]`, `w` to `-1.15`)
         + Longitudinal NE Striker Arm & Plunger Boss (`u in [+9.55, +12.45]`, `v` to `+9.10`, `w` to `-3.30` under `rEXSW1`!)
     """
-    # 1. West Bearing Ear (`u in [-6.62, -3.55]`, `v in [-3.40, +3.40]`, `w in [-12.80, +2.35]`, R=0.85mm West outer corners)
+    # 1. West Bearing Ear (`u in [-6.62, -3.55]`, `v in [-3.40, +3.40]`, `w in [-12.80, +1.90]`, R=0.85mm West outer corners)
     west_ear_box = bd.Box(
-        3.07, 6.80, 15.15,
+        3.07, 6.80, 14.70,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((-6.62, 0.0, -12.80)))
     west_outer_edges = [
         e for e in west_ear_box.edges()
-        if abs(e.bounding_box().size.Z - 15.15) < 0.05 and e.bounding_box().max.X < -6.50
+        if abs(e.bounding_box().size.Z - 14.70) < 0.05 and e.bounding_box().max.X < -6.50
     ]
     west_ear = bd.fillet(west_outer_edges, radius=0.85)
     with bd.BuildSketch(bd.Plane.YZ.offset(-5.77)) as sk_wbrg_u:
@@ -287,9 +287,9 @@ def build_wheel_rocker_local() -> bd.Solid:
             bd.Rectangle(4.56, 4.00)
     west_ear = west_ear - bd.extrude(sk_wbrg_u.sketch, amount=2.32)  # Leaves solid 0.85 mm West wall [-6.62, -5.77]!
 
-    # 2. East Bearing Ear (`u in [+3.55, +6.62]`, `v in [-3.40, +3.40]`, `w in [-12.80, +2.35]`)
+    # 2. East Bearing Ear (`u in [+3.55, +6.62]`, `v in [-3.40, +3.40]`, `w in [-12.80, +1.90]`)
     east_ear = bd.Box(
-        3.07, 6.80, 15.15,
+        3.07, 6.80, 14.70,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((3.55, 0.0, -12.80)))
     with bd.BuildSketch(bd.Plane.YZ.offset(3.45)) as sk_ebrg_u:
@@ -371,7 +371,7 @@ def build_wheel_rocker_local() -> bd.Solid:
     ).moved(bd.Location((9.55, -1.50, -8.80)))
 
     striker_boss = bd.Box(
-        12.35 - 9.55, 9.10 - 5.90, (-3.30) - (-8.80),
+        12.35 - 9.55, 9.10 - 5.90, (-3.22) - (-8.80),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((9.55, 5.90, -8.80)))
 
