@@ -24,8 +24,8 @@ LCSC_MAP_MAIN = {
     "U4": ("W25Q128JVSIQ", "SOIC-8_5.3x5.3mm_P1.27mm", "C113767"),
     "R3": ("1k", "R_0402_1005Metric", "C11702"),
     "R6": ("1k", "R_0402_1005Metric", "C11702"),
-    "U3": ("TPD4E05U06DQAR", "USON-10_2.5x1.0mm_P0.5mm", "C138714"),
-    "U5": ("TPD4E05U06DQAR", "USON-10_2.5x1.0mm_P0.5mm", "C138714"),
+    "U3": ("USBLC6-2SC6", "SOT-23-6", "C7519"),
+    "U5": ("USBLC6-2SC6", "SOT-23-6", "C7519"),
     "ZD1": ("RB521S30T1G", "D_SOD-523", "C145179"),
     "U2": ("NCP1117LPST33T3G", "SOT-223-3_TabPin2", "C146799"),
     "C3": ("100n", "C_0402_1005Metric", "C1525"),
@@ -158,7 +158,7 @@ JLCPCB_ROT_OFFSETS = {
     "SOT-223-3_TabPin2": 180.0,              # U2/rU2 (NCP1117LPST33T3G, C146799): 180 deg in Bottom view
     "USON-10_2.5x1.0mm_P0.5mm": 270.0,       # U3/U5, rU3/rU5 (TPD4E05U06DQAR, C138714): 90 deg CW in Bottom view
     "SOT-23-5": 180.0,                       # PMW3360 U2 (TLV74318PDBVR, C485152): 180 deg in Bottom view
-    "SOT-23-6": 180.0,                       # rU6 (TMAG5273A1QDBVR, C3716049): 180 deg in Bottom view
+    "SOT-23-6": 180.0,                       # U3/U5/rU3/rU5 (USBLC6-2SC6, C7519) & rU6 (TMAG5273A1QDBVR, C3716049): 180 deg in Bottom view
 }
 
 
@@ -341,6 +341,42 @@ def verify_screw_hole_copper_keepouts(board, proj_name: str, is_pmw: bool = Fals
     )
 
 
+def verify_zero_via_in_pad(board, proj_name: str):
+    """
+    Verify 100% zero Via-in-Pad across ALL SMD pads on the board (including QFN thermal pads).
+    Prevents solder wicking, tombstoning, and JLCPCB DFM 'Hole in Pad' engineering holds.
+    """
+    vias = []
+    for t in board.GetTracks():
+        if t.GetClass() == "PCB_VIA":
+            p = t.GetPosition()
+            vr = 0.5 * pcbnew.ToMM(t.GetWidth(pcbnew.F_Cu))
+            vias.append((pcbnew.ToMM(p.x), pcbnew.ToMM(p.y), vr, t.GetNetname()))
+
+    vip_problems = []
+    for fp in board.GetFootprints():
+        if fp.GetAttributes() & pcbnew.FP_DNP:
+            continue
+        ref = fp.GetReference()
+        for pad in fp.Pads():
+            if pad.GetAttribute() != pcbnew.PAD_ATTRIB_SMD:
+                continue
+            bb = pad.GetBoundingBox()
+            x1, y1 = pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop())
+            x2, y2 = pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom())
+            for vx, vy, vr, vnet in vias:
+                dx = max(x1 - vx, 0.0, vx - x2)
+                dy = max(y1 - vy, 0.0, vy - y2)
+                if math.hypot(dx, dy) < vr - 1e-4:
+                    vip_problems.append(
+                        f"{ref}.{pad.GetNumber()} [{pad.GetNetname()}] overlaps via ({vx:.3f}, {vy:.3f}) [{vnet}]"
+                    )
+    assert not vip_problems, (
+        f"[{proj_name}] Via-in-Pad check FAILED ({len(vip_problems)} SMD pad overlap(s)):\n  - "
+        + "\n  - ".join(vip_problems[:25])
+    )
+
+
 def verify_jlcpcb_preflight(
     pcb_path: str,
     proj_name: str,
@@ -473,6 +509,7 @@ def verify_jlcpcb_preflight(
     if not is_plate:
         verify_pcb_3d_step_models(board, pcb_path, proj_name, is_pmw=is_pmw)
         verify_screw_hole_copper_keepouts(board, proj_name, is_pmw=is_pmw)
+        verify_zero_via_in_pad(board, proj_name)
 
     # Verify Gerber ZIP contents
     with zipfile.ZipFile(zip_path, "r") as zf:
@@ -553,6 +590,19 @@ def export_main_pcb(
         px_mm = pcbnew.ToMM(pos.x)
         py_mm = pcbnew.ToMM(pos.y)
 
+        # Normalize CPL center coordinates to match JLCPCB DFM component centroids (Tasks 2-1 & 2-2):
+        if pkg == "TYPE-C-31-M-13C":
+            sh_pads = [p for p in fp.Pads() if p.GetNumber() == "SH"]
+            if sh_pads:
+                px_mm = sum(pcbnew.ToMM(p.GetPosition().x) for p in sh_pads) / len(sh_pads)
+                py_mm = sum(pcbnew.ToMM(p.GetPosition().y) for p in sh_pads) / len(sh_pads)
+        elif pkg in ("R_0402_1005Metric", "C_0402_1005Metric", "R_0603_1608Metric", "C_0603_1608Metric", "D_SOD-523"):
+            p1 = fp.FindPadByNumber("1")
+            p2 = fp.FindPadByNumber("2")
+            if p1 is not None and p2 is not None:
+                px_mm = 0.5 * (pcbnew.ToMM(p1.GetPosition().x) + pcbnew.ToMM(p2.GetPosition().x))
+                py_mm = 0.5 * (pcbnew.ToMM(p1.GetPosition().y) + pcbnew.ToMM(p2.GetPosition().y))
+
         x_mm = round(px_mm - ox, 6)
         y_mm = round(oy - py_mm, 6)
         krot = fp.GetOrientationDegrees()
@@ -562,6 +612,8 @@ def export_main_pcb(
             crot = round((180.0 - krot + rot_offset) % 360.0, 2)
         else:
             crot = round((krot + rot_offset) % 360.0, 2)
+        if pkg in ("R_0402_1005Metric", "C_0402_1005Metric", "R_0603_1608Metric", "C_0603_1608Metric"):
+            crot = round(crot % 180.0, 2)
         cpl_rows.append([ref, comment, pkg, x_mm, y_mm, crot, layer])
 
     bom_path = os.path.join(out_dir, f"BOM-{proj_name}.csv")
