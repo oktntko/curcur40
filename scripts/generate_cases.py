@@ -14,14 +14,14 @@ Strictly adheres to docs/case_spec.md:
 - Fastening & Hidden Support Specifications (Section 2 — Switch-Retained Top Plate Architecture / 案1A + 6-Point Valley Layout):
     - Top-down unified M2 x 6.0 mm screws threading into M2 brass heat-set inserts (M2 x L=3.0 mm x OD=3.2 mm):
         - Cylindrical Boss Pillars (pilot bore Ø 2.85 mm, R = 1.425 mm >= Ø 1.50 mm JLC3DP limit):
-            - 12x Compact Flat-Topped Key-Valley PCB Bosses (L1..L6 on Left, R1..R6 on Right, 100% L-R symmetric, zero outer-margin bosses):
+            - 12x Compact Flat-Topped Key-Valley PCB Bosses (L1..L6 on Left, R1..R6 on Right, zero outer-margin bosses):
               Ø 5.20 mm flat boss top at Z = -5.80 mm (supports & clamps Main PCB directly via M2 x 6.0 mm screws passing through Top Plate Ø 4.40 mm screw-head clearance holes; uniform 1.175 mm radial wall >= 0.80 mm, flush insert top at Z = -5.80 mm), blind bores to Z = -11.80 mm
             - 4x Trackball Bosses (TB1..TB4, 6.00 mm sunken optical stack): Ø 6.00 mm boss top Z = -23.60 mm (Sensor PCB B.Cu), blind bore 3.80 mm deep to Z = -27.40 mm
-        - 3x North-Wall Hidden Inner-Wall PCB Support Shelves per case (`Inner_USBC_Shelf`, `Mid_USBC_Shelf`, `Outer_USBC_Shelf`):
-            - Full-height vertical pilasters integrated into the North inner wall (`Y = -28.9875 mm`) from tilted interior floor up to Z = -5.80 mm (2.00 mm inward protrusion = 1.50 mm solid shelf overlap under Main PCB B.Cu), flanking both Host & Split USB-C ports to prevent downward PCB flexing during cable insertion with zero top/exterior visibility.
-- Cutouts & Ports (Section 3 — North-Wall Dual USB-C):
-    - Split USB-C opening (north wall, inner): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at X = ±28.5750 mm, Z = -5.85 mm
-    - Host USB-C opening (north wall, outer): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at X = -60.2375 mm (Left `J1`) / +57.1500 mm (Right `rJ1`), Z = -5.85 mm
+        - 3x Hidden Inner-Wall PCB Support Shelves per case (`NW_HostUSB_Shelf`, `NE_HostUSB_Shelf`, `W_SplitUSB_Shelf`):
+            - Full-height vertical pilasters integrated into the North inner wall (`Y = -28.9875 mm`, flanking Host USB-C) and Inner vertical wall (`|X| = 18.5500 mm`, North of Split USB-C) from tilted interior floor up to Z = -5.80 mm (2.00 mm inward protrusion = 1.50 mm solid shelf overlap under Main PCB B.Cu) to prevent downward PCB flexing during cable insertion with zero top/exterior visibility.
+- Cutouts & Ports (Section 3 — North Host USB-C + Inner-Wall Split USB-C):
+    - Host USB-C opening (north wall): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at X = -60.2375 mm (Left `J1`) / +57.1500 mm (Right `rJ1`), Z = -5.85 mm
+    - Split USB-C opening (inner vertical wall `|X| = 17.0500 mm`): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at Y = -95.9000 mm (`y_pcb = 38.7500 mm`), Z = -5.85 mm
 """
 import math
 import sys
@@ -172,7 +172,7 @@ def get_case_hole_specs(is_right=True):
             ("L2", -100.5000,   0.5000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
             ("L3", -100.5000,  19.5000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
             ("L4",  -42.2500,  14.5000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
-            ("L5",   -9.4500,  58.5000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
+            ("L5",  -27.0000,  58.8000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
             ("L6",  -60.5000,  35.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
         ]
         return [
@@ -183,28 +183,28 @@ def get_case_hole_specs(is_right=True):
 
 def build_usbc_support_pilasters(is_right: bool, z_ext_bottom: float) -> list[bd.Solid]:
     """
-    Build 3 hidden North-inner-wall PCB support shelves (top face Z = -5.8000 mm = Main PCB B.Cu)
-    flanking both Split USB-C (J2/rJ2) and Host USB-C (J1/rJ1) along Y_inner = -28.9875 mm:
-      1. Inner_USBC_Shelf: |X| in [17.8000, 21.6500], Y in [-30.9875, -28.2000] (fills inner-North corner)
-      2. Mid_USBC_Shelf:   X in [+35.5000, +50.2000] (Right) / [-53.3000, -35.5000] (Left), Y in [-30.9875, -28.2000]
-      3. Outer_USBC_Shelf: X in [+64.1000, +74.1000] (Right) / [-77.2000, -67.2000] (Left), Y in [-30.9875, -28.2000]
-    Each pilaster protrudes 2.00 mm inward from the North inner wall (1.50 mm solid overlap beneath Main PCB),
-    maintains >= 0.925 mm wall step to the 12.00 mm USB-C apertures, and runs continuously down into the tilted floor
+    Build 3 hidden inner-wall PCB support shelves (top face Z = -5.8000 mm = Main PCB B.Cu):
+      1. NW_HostUSB_Shelf: North inner wall (`Y in [-30.9875, -28.2000]`), flanking Host USB-C (`J1`/`rJ1`)
+      2. NE_HostUSB_Shelf: North inner wall (`Y in [-30.9875, -28.2000]`), flanking Host USB-C (`J1`/`rJ1`)
+      3. W_SplitUSB_Shelf: Inner vertical wall (`|X| in [17.8000, 20.5500]`, `Y in [-81.8000, -74.6000]`),
+         North of Split USB-C (`J2`/`rJ2` at `Y = -95.9000`) and clear of `Wheel_Cradle` & `rEXSW2` socket.
+    Each pilaster protrudes 2.00 mm inward from the adjacent inner wall (1.50 mm solid overlap beneath Main PCB),
+    maintains >= 0.95 mm step to the 12.00 mm USB-C apertures, and runs continuously down into the tilted floor
     (zero overhangs, zero undercuts, R=0.85 mm inner corners >= Ø1.50 mm JLC3DP limit).
     """
     z_shelf_top = -5.8000
     h = z_shelf_top - z_ext_bottom
     if is_right:
         specs = [
-            (17.8000, 21.6500, -30.9875, -28.2000, [(21.6500, -30.9875)]),
-            (35.5000, 50.2000, -30.9875, -28.2000, [(35.5000, -30.9875), (50.2000, -30.9875)]),
-            (64.1000, 74.1000, -30.9875, -28.2000, [(64.1000, -30.9875), (74.1000, -30.9875)]),
+            (40.1500, 50.1500, -30.9875, -28.2000, [(40.1500, -30.9875), (50.1500, -30.9875)]),
+            (64.1500, 74.1500, -30.9875, -28.2000, [(64.1500, -30.9875), (74.1500, -30.9875)]),
+            (17.8000, 20.5500, -81.8000, -74.6000, [(20.5500, -81.8000), (20.5500, -74.6000)]),
         ]
     else:
         specs = [
-            (-21.6500, -17.8000, -30.9875, -28.2000, [(-21.6500, -30.9875)]),
-            (-53.3000, -35.5000, -30.9875, -28.2000, [(-53.3000, -30.9875), (-35.5000, -30.9875)]),
             (-77.2000, -67.2000, -30.9875, -28.2000, [(-77.2000, -30.9875), (-67.2000, -30.9875)]),
+            (-53.2000, -43.2000, -30.9875, -28.2000, [(-53.2000, -30.9875), (-43.2000, -30.9875)]),
+            (-20.5500, -17.8000, -81.8000, -74.6000, [(-20.5500, -81.8000), (-20.5500, -74.6000)]),
         ]
     pilasters = []
     for xmin, xmax, ymin, ymax, target_corners in specs:
@@ -423,19 +423,32 @@ def build_case(is_right=True) -> bd.Solid:
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((cx, cy, z_bore_bottom)))
 
-    # 7. North-Wall Dual USB-C port cutouts (Host + Split, Width = 12.00 mm, Height = 6.20 mm, R = 1.50 mm, Center Z = -5.85 mm)
-    north_usb_cxs = (28.5750, 57.1500) if is_right else (-60.2375, -28.5750)
-    for usb_cx in north_usb_cxs:
-        usb_cutter = bd.Box(12.00, 12.00, 6.20).moved(
-            bd.Location((usb_cx, -27.4875, -5.8500))
-        )
-        edges_y = usb_cutter.edges().filter_by(
-            lambda e: abs(e.bounding_box().size.Y - 12.00) < 0.1
-            and abs(e.bounding_box().size.Z - 0.0) < 0.1
-        )
-        assert len(edges_y) == 4, f"Expected 4 Y-parallel edges on usb_cutter at {usb_cx}, got {len(edges_y)}"
-        usb_cutter = bd.fillet(edges_y, radius=1.50)
-        body = body - usb_cutter
+    # 7. USB-C port cutouts (Width = 12.00 mm, Height = 6.20 mm, R = 1.50 mm, Center Z = -5.85 mm):
+    #    7a. North-Wall Host USB-C (`J1` at X = -60.2375 mm on Left, `rJ1` at X = +57.1500 mm on Right)
+    north_usb_cx = 57.1500 if is_right else -60.2375
+    host_usb_cutter = bd.Box(12.00, 12.00, 6.20).moved(
+        bd.Location((north_usb_cx, -27.4875, -5.8500))
+    )
+    edges_y = host_usb_cutter.edges().filter_by(
+        lambda e: abs(e.bounding_box().size.Y - 12.00) < 0.1
+        and abs(e.bounding_box().size.Z - 0.0) < 0.1
+    )
+    assert len(edges_y) == 4, f"Expected 4 Y-parallel edges on host_usb_cutter at {north_usb_cx}, got {len(edges_y)}"
+    host_usb_cutter = bd.fillet(edges_y, radius=1.50)
+    body = body - host_usb_cutter
+
+    #    7b. Inner-Vertical-Wall Split USB-C (`J2`/`rJ2` at |X| = 17.0500 mm, Y = -95.9000 mm -> y_pcb = 38.7500 mm)
+    inner_usb_cx = 17.0500 if is_right else -17.0500
+    split_usb_cutter = bd.Box(12.00, 12.00, 6.20).moved(
+        bd.Location((inner_usb_cx, -95.9000, -5.8500))
+    )
+    edges_x = split_usb_cutter.edges().filter_by(
+        lambda e: abs(e.bounding_box().size.X - 12.00) < 0.1
+        and abs(e.bounding_box().size.Z - 0.0) < 0.1
+    )
+    assert len(edges_x) == 4, f"Expected 4 X-parallel edges on split_usb_cutter at {inner_usb_cx}, got {len(edges_x)}"
+    split_usb_cutter = bd.fillet(edges_x, radius=1.50)
+    body = body - split_usb_cutter
 
     solid = body.solids()[0]
     solid.label = f"curcur40_case_{side_str}"
