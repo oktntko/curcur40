@@ -20,11 +20,11 @@ LEFT_MOUNTING_HOLES = [
     (-100.5000,   0.5000, 2.20),  # L2: Pinky North 4-key valley (SW13/14/17/18)
     (-100.5000,  19.5000, 2.20),  # L3: Pinky South 4-key valley (SW14/15/16/17)
     ( -42.2500,  14.5000, 2.20),  # L4: Index South 4-key valley (SW2/3/6/7)
-    (  -9.4500,  58.5000, 2.20),  # L5: Inner Thumb South-East corner (East of EXSW3)
+    ( -27.0000,  58.8000, 2.20),  # L5: Inner Thumb valley between SW1 & EXSW3
     ( -60.5000,  35.0000, 2.20),  # L6: Outer Thumb valley (North of SW8/SW9)
 ]
 
-# Right key-valley holes (100% L-R symmetric with Left, Switch-Retained Top Plate 1A):
+# Right key-valley holes (Switch-Retained Top Plate 1A — R1..R4, R6 symmetric with Left; R5 on SW thumb peninsula):
 #   - All 6 holes R1..R6 (Ø 4.40 mm -> r = 2.20 mm): sub-flush screw-head clearance holes
 RIGHT_MOUNTING_HOLES = [
     (  42.2500,  -4.5000, 2.20),  # R1: Index North 4-key valley (rSW3/4/5/6)
@@ -59,7 +59,7 @@ LEFT_SWITCHES = [
     ( -71.4375,  42.86250),  # SW9   (3,3)
     ( -52.3875,  47.62500),  # SW8   (3,4)
     ( -33.3375,  47.62500),  # SW1   (3,5)
-    ( -14.2875,  47.62500),  # EXSW3 (3,6)
+    ( -14.2875,  52.42500),  # EXSW3 (3,6) — shifted +4.80 mm South to clear inner-wall Split USB-C J2
 ]
 
 RIGHT_SWITCHES = [
