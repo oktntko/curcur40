@@ -3,20 +3,20 @@
 Generate curcur40 3D-printed Built-in Tented Tray Bottom Cases
 (cases/left.step, left.stl, right.step, right.stl, left-desk.step, left-desk.stl, right-desk.step, right-desk.stl).
 Strictly adheres to docs/case_spec.md:
-- Built-in 17.0 deg Tenting Architecture with Sealed Flat Bottom, Tilted Interior Floor & Heat-Set Insert Bosses:
-    - Outer Bottom Tenting Plane (theta_tent = 17.00 deg):
+- Built-in 11.80 deg Minimum-Envelope Tenting Architecture with Sealed Flat Bottom, Tilted Interior Floor & Heat-Set Insert Bosses:
+    - Outer Bottom Tenting Plane (theta_tent = 11.80 deg — minimum slope enclosing the -3.00 mm sunken trackball optics & J1 plug):
         - Pinky outer edge (|X_step| = 135.8580 mm): Z_bottom = -10.0000 mm (total height 10.00 mm)
-        - Thumb inner edge (|X_step| = 17.0500 mm):  Z_bottom = -46.3233 mm (total height 46.32 mm; narrowed -10.0250 mm/side)
+        - Thumb inner edge (|X_step| = 17.0500 mm):  Z_bottom = -34.8203 mm (total height 34.82 mm; narrowed -10.0250 mm/side)
         - 100% sealed, hole-free outer bottom face (zero bottom counterbores or through-holes)
     - Tilted Interior Floor:
-        - Parallel to outer bottom plane with uniform 2.40 mm vertical (2.30 mm perpendicular) bottom wall thickness (Z_floor = Z_bottom + 2.40 mm)
-        - Unbroken smooth 17.0 deg interior plane from pinky to thumb (>= 0.97 mm perpendicular clearance under pinky Choc V2 sockets and >= 5.22 mm clearance under uncut LM19-LSI lens guide pins & Sensor PCB J1 housing with zero thin-wall relief pockets)
+        - Parallel to outer bottom plane with uniform 2.40 mm vertical (2.35 mm perpendicular) bottom wall thickness (Z_floor = Z_bottom + 2.40 mm)
+        - Unbroken smooth 11.80 deg interior plane from pinky to thumb (>= 0.72 mm clearance under pinky Choc V2 sockets, >= 0.71 mm under uncut LM19-LSI lens guide pins, and >= 0.47 mm under Sensor PCB J1 SHR-06V plug with zero thin-wall relief pockets)
 - Fastening & Hidden Support Specifications (Section 2 — Switch-Retained Top Plate Architecture / 案1A + 6-Point Valley Layout):
     - Top-down unified M2 x 6.0 mm screws threading into M2 brass heat-set inserts (M2 x L=3.0 mm x OD=3.2 mm):
         - Cylindrical Boss Pillars (pilot bore Ø 2.85 mm, R = 1.425 mm >= Ø 1.50 mm JLC3DP limit):
             - 12x Compact Flat-Topped Key-Valley PCB Bosses (L1..L6 on Left, R1..R6 on Right, zero outer-margin bosses):
               Ø 5.20 mm flat boss top at Z = -5.80 mm (supports & clamps Main PCB directly via M2 x 6.0 mm screws passing through Top Plate Ø 4.40 mm screw-head clearance holes; uniform 1.175 mm radial wall >= 0.80 mm, flush insert top at Z = -5.80 mm), blind bores to Z = -11.80 mm
-            - 4x Trackball Bosses (TB1..TB4, 6.00 mm sunken optical stack): Ø 6.00 mm boss top Z = -23.60 mm (Sensor PCB B.Cu), blind bore 3.80 mm deep to Z = -27.40 mm
+            - 4x Trackball Bosses (TB1..TB4, 3.00 mm sunken optical stack): Ø 6.00 mm boss top Z = -20.60 mm (Sensor PCB B.Cu), blind bore 3.80 mm deep to Z = -24.40 mm
         - 3x Hidden Inner-Wall PCB Support Shelves per case (`NW_HostUSB_Shelf`, `NE_HostUSB_Shelf`, `W_SplitUSB_Shelf`):
             - Full-height vertical pilasters integrated into the North inner wall (`Y = -28.9875 mm`, flanking Host USB-C) and Inner vertical wall (`|X| = 18.5500 mm`, North of Split USB-C) from tilted interior floor up to Z = -5.80 mm (2.00 mm inward protrusion = 1.50 mm solid shelf overlap under Main PCB B.Cu) to prevent downward PCB flexing during cable insertion with zero top/exterior visibility.
 - Cutouts & Ports (Section 3 — North Host USB-C + Inner-Wall Split USB-C):
@@ -51,14 +51,14 @@ def _check_timeout(phase: str):
         raise TimeoutError(f"[{phase}] Exceeded hard timeout {MAX_RUNTIME_SEC:.0f}s (elapsed={el:.1f}s)!")
 
 
-THETA_TENT_DEG = 17.0
+THETA_TENT_DEG = 11.80
 X_THUMB_OUTER = 17.0500
 X_PINKY_OUTER = 135.8580
 Z_PINKY_BOTTOM = -10.0000
 Z_THUMB_BOTTOM = round(
     Z_PINKY_BOTTOM - (X_PINKY_OUTER - X_THUMB_OUTER) * math.tan(math.radians(THETA_TENT_DEG)),
     4,
-)  # -46.3233 mm
+)  # -34.8203 mm
 FLOOR_THICKNESS = 2.4000
 
 BOSS_OUTER_RADIUS = 3.0000     # Ø 6.00 mm boss pillar for Trackball bosses (TB1..TB4; 1.575 mm radial wall)
@@ -68,8 +68,8 @@ PILOT_BORE_RADIUS = 1.4250     # Ø 2.85 mm pilot bore for M2 x L=3.0 x OD=3.2 m
 
 def z_bottom_at_x(x_abs: float) -> float:
     """
-    Built-in tenting outer bottom Z height at |X_step| (theta_tent = 17.00 deg):
-    - |X| = 17.0500 mm (thumb inner edge):  Z = -46.3233 mm
+    Built-in tenting outer bottom Z height at |X_step| (theta_tent = 11.80 deg):
+    - |X| = 17.0500 mm (thumb inner edge):  Z = -34.8203 mm
     - |X| = 135.8580 mm (pinky outer edge): Z = -10.0000 mm
     """
     return Z_THUMB_BOTTOM + (Z_PINKY_BOTTOM - Z_THUMB_BOTTOM) * (
@@ -143,9 +143,9 @@ def get_case_hole_specs(is_right=True):
         Ø 5.20 mm (R = 2.60 mm, 1.175 mm radial wall) flat boss to z_boss_top = -5.80 mm (Main PCB B.Cu),
         z_insert_top = -5.80 mm (flush press-fit, zero stepped upper shelf),
         blind bores: -11.80 mm (uniform 6.00 mm blind bore across all 12 bosses)
-    - 4x Trackball Bosses TB1..TB4 (6.00 mm sunken optical stack):
-        Ø 6.00 mm (R = 3.00 mm) boss to z_boss_top = -23.60 mm (Sensor PCB B.Cu),
-        z_bore_bottom = -27.40 mm (3.80 mm blind bore), z_insert_top = -23.60 mm
+    - 4x Trackball Bosses TB1..TB4 (3.00 mm sunken optical stack):
+        Ø 6.00 mm (R = 3.00 mm) boss to z_boss_top = -20.60 mm (Sensor PCB B.Cu),
+        z_bore_bottom = -24.40 mm (3.80 mm blind bore), z_insert_top = -20.60 mm
     """
     if is_right:
         perim_pcb = [
@@ -157,10 +157,10 @@ def get_case_hole_specs(is_right=True):
             ("R6",  60.5000,  35.0000, -5.80, -11.80, -5.80, PERIM_BOSS_RADIUS),
         ]
         tb_pcb = [
-            ("TB1", 16.5750, 36.3250, -23.60, -27.40, -23.60, BOSS_OUTER_RADIUS),
-            ("TB2", 40.5750, 36.3250, -23.60, -27.40, -23.60, BOSS_OUTER_RADIUS),
-            ("TB3", 16.5750, 58.9250, -23.60, -27.40, -23.60, BOSS_OUTER_RADIUS),
-            ("TB4", 40.5750, 58.9250, -23.60, -27.40, -23.60, BOSS_OUTER_RADIUS),
+            ("TB1", 16.5750, 36.3250, -20.60, -24.40, -20.60, BOSS_OUTER_RADIUS),
+            ("TB2", 40.5750, 36.3250, -20.60, -24.40, -20.60, BOSS_OUTER_RADIUS),
+            ("TB3", 16.5750, 58.9250, -20.60, -24.40, -20.60, BOSS_OUTER_RADIUS),
+            ("TB4", 40.5750, 58.9250, -20.60, -24.40, -20.60, BOSS_OUTER_RADIUS),
         ]
         return [
             (tag, x + 14.2875, -(y + 57.1500), z_top, z_bot, z_ins, r_b)
@@ -344,7 +344,7 @@ def build_case(is_right=True) -> bd.Solid:
         bd.Location((0, 0, z_ext_bottom))
     )
 
-    # 3. Cut tilted interior cavity (17.0 deg unbroken smooth interior plane)
+    # 3. Cut tilted interior cavity (11.80 deg unbroken smooth interior plane)
     if is_right:
         p_thumb_fl = (X_THUMB_OUTER, -80.0, Z_THUMB_BOTTOM + FLOOR_THICKNESS)
         p_pinky_fl = (X_PINKY_OUTER, -80.0, Z_PINKY_BOTTOM + FLOOR_THICKNESS)
@@ -391,7 +391,7 @@ def build_case(is_right=True) -> bd.Solid:
     for pilaster in build_usbc_support_pilasters(is_right, z_ext_bottom):
         body = body + (pilaster & outer_solid)
 
-    # 5. Cut angled outer bottom tenting plane (theta_tent = 17.00 deg) — 100% sealed, hole-free flat bottom!
+    # 5. Cut angled outer bottom tenting plane (theta_tent = 11.80 deg) — 100% sealed, hole-free flat bottom!
     if is_right:
         p_thumb = (X_THUMB_OUTER, -80.0, Z_THUMB_BOTTOM)
         p_pinky = (X_PINKY_OUTER, -80.0, Z_PINKY_BOTTOM)
