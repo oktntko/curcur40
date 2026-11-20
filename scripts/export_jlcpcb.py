@@ -28,8 +28,8 @@ LCSC_MAP_MAIN = {
     "R6": ("1k", "R_0402_1005Metric", "C11702"),
     "U3": ("USBLC6-2SC6", "SOT-23-6", "C7519"),
     "U5": ("USBLC6-2SC6", "SOT-23-6", "C7519"),
-    "ZD1": ("B5819WS", "D_SOD-323", "C2128"),
-    "U2": ("NCP1117LPST33T3G", "SOT-223-3_TabPin2", "C146799"),
+    "ZD1": ("1N5819WS", "D_SOD-323", "C191023"),
+    "U2": ("LDL1117S33R", "SOT-223-3_TabPin2", "C435835"),
     "C3": ("100n", "C_0402_1005Metric", "C1525"),
     "C4": ("100n", "C_0402_1005Metric", "C1525"),
     "C7": ("100n", "C_0402_1005Metric", "C1525"),
@@ -46,7 +46,7 @@ LCSC_MAP_MAIN = {
     "C1": ("27p", "C_0402_1005Metric", "C1557"),
     "C2": ("27p", "C_0402_1005Metric", "C1557"),
     "U1": ("RP2040", "QFN-56-1EP_7x7mm_P0.4mm_EP3.2x3.2mm", "C2040"),
-    "D1": ("B5819WS", "D_SOD-323", "C2128"),
+    "D1": ("1N4148WS", "D_SOD-323", "C2128"),
     "R7": ("10k", "R_0402_1005Metric", "C25744"),
     "R9": ("10k", "R_0402_1005Metric", "C25744"),
     "R1": ("5.1k", "R_0402_1005Metric", "C25905"),
@@ -163,7 +163,7 @@ def export_gerber_zip(pcb_path, zip_path):
 # Verified against JLCPCB DFM Component Placement viewer:
 JLCPCB_ROT_OFFSETS = {
     "SOIC-8_5.3x5.3mm_P1.27mm": 270.0,       # U4/rU4 (W25Q128JVSIQ, C97521/C113767): 90 deg CW in Bottom view
-    "SOT-223-3_TabPin2": 180.0,              # U2/rU2 (NCP1117LPST33T3G, C146799): 180 deg in Bottom view
+    "SOT-223-3_TabPin2": 180.0,              # U2/rU2 (LDL1117S33R, C435835): 180 deg in Bottom view
     "USON-10_2.5x1.0mm_P0.5mm": 270.0,       # U3/U5, rU3/rU5 (TPD4E05U06DQAR, C138714): 90 deg CW in Bottom view
     "SOT-23-5": 180.0,                       # PMW3360 U2 (TLV74318PDBVR, C485152): 180 deg in Bottom view
     "SOT-23-6": 180.0,                       # U3/U5/rU3/rU5 (USBLC6-2SC6, C7519) & rU6 (TMAG5273A1QDBVR, C3716049): 180 deg in Bottom view
@@ -389,6 +389,74 @@ def verify_zero_via_in_pad(board, proj_name: str):
     )
 
 
+def verify_panel_mousebite_clearances(board, proj_name: str, min_clr_mm: float = 0.48):
+    """
+    Verify every panel mouse-bite NPTH hole (MB*) has >= min_clr_mm copper clearance
+    to all tracks, vias, and pads so depaneling shear/flex stress never cracks nearby traces.
+    """
+    mbs = []
+    other_pads = []
+    for fp in board.GetFootprints():
+        ref = fp.GetReference()
+        if ref.startswith("MB"):
+            p = fp.Pads()[0]
+            mbs.append(
+                (
+                    ref,
+                    pcbnew.ToMM(p.GetPosition().x),
+                    pcbnew.ToMM(p.GetPosition().y),
+                    0.5 * pcbnew.ToMM(p.GetDrillSize().x),
+                )
+            )
+        else:
+            for p in fp.Pads():
+                if p.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH:
+                    continue
+                bb = p.GetBoundingBox()
+                other_pads.append(
+                    (
+                        f"{ref}.{p.GetNumber()}",
+                        pcbnew.ToMM(bb.GetLeft()),
+                        pcbnew.ToMM(bb.GetTop()),
+                        pcbnew.ToMM(bb.GetRight()),
+                        pcbnew.ToMM(bb.GetBottom()),
+                    )
+                )
+    assert mbs, f"[{proj_name}] Expected MB* mouse-bite holes on panel, found 0!"
+
+    mb_problems = []
+    for ref, mx, my, mr in mbs:
+        for t in board.GetTracks():
+            cls = t.GetClass()
+            if cls == "PCB_TRACK":
+                sx, sy = pcbnew.ToMM(t.GetStart().x), pcbnew.ToMM(t.GetStart().y)
+                ex, ey = pcbnew.ToMM(t.GetEnd().x), pcbnew.ToMM(t.GetEnd().y)
+                clr = _pt_seg_dist(mx, my, sx, sy, ex, ey) - mr - 0.5 * pcbnew.ToMM(t.GetWidth())
+                if clr < min_clr_mm:
+                    mb_problems.append(
+                        f"{ref} ({mx:.3f},{my:.3f}) -> {board.GetLayerName(t.GetLayer())} track [{t.GetNetname()}] clr={clr:.3f}mm < {min_clr_mm:.2f}mm"
+                    )
+            elif cls == "PCB_VIA":
+                vx, vy = pcbnew.ToMM(t.GetPosition().x), pcbnew.ToMM(t.GetPosition().y)
+                clr = math.hypot(mx - vx, my - vy) - mr - 0.5 * pcbnew.ToMM(t.GetWidth(pcbnew.F_Cu))
+                if clr < min_clr_mm:
+                    mb_problems.append(
+                        f"{ref} ({mx:.3f},{my:.3f}) -> via [{t.GetNetname()}] clr={clr:.3f}mm < {min_clr_mm:.2f}mm"
+                    )
+        for pname, x1, y1, x2, y2 in other_pads:
+            dx = max(x1 - mx, 0.0, mx - x2)
+            dy = max(y1 - my, 0.0, my - y2)
+            clr = math.hypot(dx, dy) - mr
+            if clr < min_clr_mm:
+                mb_problems.append(
+                    f"{ref} ({mx:.3f},{my:.3f}) -> pad {pname} clr={clr:.3f}mm < {min_clr_mm:.2f}mm"
+                )
+    assert not mb_problems, (
+        f"[{proj_name}] Panel mouse-bite copper clearance check FAILED ({len(mb_problems)} issue(s)):\n  - "
+        + "\n  - ".join(mb_problems[:25])
+    )
+
+
 def verify_jlcpcb_preflight(
     pcb_path: str,
     proj_name: str,
@@ -528,6 +596,8 @@ def verify_jlcpcb_preflight(
         verify_pcb_3d_step_models(board, pcb_path, proj_name, is_pmw=is_pmw, is_panel=is_panel)
         verify_screw_hole_copper_keepouts(board, proj_name, is_pmw=is_pmw, is_panel=is_panel)
         verify_zero_via_in_pad(board, proj_name)
+    if is_panel:
+        verify_panel_mousebite_clearances(board, proj_name, min_clr_mm=0.48)
 
     # Verify Gerber ZIP contents
     with zipfile.ZipFile(zip_path, "r") as zf:
@@ -813,9 +883,9 @@ def _add_panel_npth_hole(
             kz = pcbnew.ZONE(panel)
             kz.SetIsRuleArea(True)
             kz.SetLayer(lid)
-            kz.SetDoNotAllowTracks(False)
-            kz.SetDoNotAllowVias(False)
-            kz.SetDoNotAllowPads(False)
+            kz.SetDoNotAllowTracks(True)
+            kz.SetDoNotAllowVias(True)
+            kz.SetDoNotAllowPads(False)  # Allow the MB* NPTH pad itself; copper pads checked by verify_panel_mousebite_clearances
             kz.SetDoNotAllowZoneFills(True)
             kz.SetDoNotAllowFootprints(False)
             kol = kz.Outline()
@@ -972,7 +1042,7 @@ def build_and_export_panel_3in1():
         # Right Main PCB (9 tabs)
         ("H_EDGE", -96.3 + dx_r, 198.5000, +1, 0.10),
         ("H_EDGE", -22.3 + dx_r, 198.5000, +1, 0.10),
-        ("H_EDGE", -74.0 + dx_r, 108.1000, -1, 0.08),
+        ("H_EDGE", -74.0 + dx_r, 108.1000, -1, 0.10),
         ("H_EDGE",  -9.3 + dx_r, 108.1000, -1, 0.10),
         ("H_EDGE", -101.0 + dx_r, 132.2375, -1, 0.10),
         ("V_EDGE",  13.0 + dy_r, 8.0000, -1, 0.10),
@@ -986,7 +1056,7 @@ def build_and_export_panel_3in1():
         ("V_EDGE", 53.5 + dy_p, 8.0000, -1, 0.10),
     ]
 
-    mb_keepout_r = 0.5 * mb_diam + 0.36  # >= 0.35 mm NPTH-to-zone clearance (JLCPCB min = 0.25 mm)
+    mb_keepout_r = 0.5 * mb_diam + 0.50  # >= 0.48–0.50 mm NPTH-to-copper clearance across all tracks/vias/pads/zones!
     mb_idx = 1
     for kind, c_along, edge_v, sign, inset_mm in tabs:
         if kind == "H_EDGE":
