@@ -19,9 +19,10 @@ Strictly adheres to docs/case_spec.md:
             - 4x Trackball Bosses (TB1..TB4, 3.00 mm sunken optical stack): Ø 6.00 mm boss top Z = -20.60 mm (Sensor PCB B.Cu), blind bore 3.80 mm deep to Z = -24.40 mm
         - 3x Hidden Inner-Wall PCB Support Shelves per case (`NW_HostUSB_Shelf`, `NE_HostUSB_Shelf`, `W_SplitUSB_Shelf`):
             - Full-height vertical pilasters integrated into the North inner wall (`Y = -28.9875 mm`, flanking Host USB-C) and Inner vertical wall (`|X| = 18.5500 mm`, North of Split USB-C) from tilted interior floor up to Z = -5.80 mm (2.00 mm inward protrusion = 1.50 mm solid shelf overlap under Main PCB B.Cu) to prevent downward PCB flexing during cable insertion with zero top/exterior visibility.
-- Cutouts & Ports (Section 3 — North Host USB-C + Inner-Wall Split USB-C):
-    - Host USB-C opening (north wall): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at X = -60.2375 mm (Left `J1`) / +57.1500 mm (Right `rJ1`), Z = -5.85 mm
-    - Split USB-C opening (inner vertical wall `|X| = 17.0500 mm`): Width 12.00 mm x Height 6.20 mm, corner fillet R = 1.50 mm, center at Y = -95.9000 mm (`y_pcb = 38.7500 mm`), Z = -5.85 mm
+- Cutouts & Ports (Section 3 — Intentional Minimal Aperture for Short-Body `TYPE-C-31-M-13C`):
+    - Note: `TYPE-C-31-M-13C` (`L = 6.50 mm`, internal stop `4.50 mm`) leaves `+0.9..+1.2 mm` of a standard `6.65 mm` USB-C male plug's metal barrel exposed outside the case wall even at 100% full latch, so plastic overmolds NEVER enter the case hole. The aperture is intentionally minimized to **`10.20 x 4.40 mm, R = 1.20 mm`** (hiding 100% of the Top Plate behind a `3.65 mm` solid top rim).
+    - Host USB-C opening (north wall): Width 10.20 mm x Height 4.40 mm, corner fillet R = 1.20 mm, center at X = -60.2375 mm (Left `J1`) / +57.1500 mm (Right `rJ1`), Z = -5.85 mm
+    - Split USB-C opening (inner vertical wall `|X| = 17.0500 mm`): Width 10.20 mm x Height 4.40 mm, corner fillet R = 1.20 mm, center at Y = -95.9000 mm (`y_pcb = 38.7500 mm`), Z = -5.85 mm
 """
 import math
 import sys
@@ -423,10 +424,11 @@ def build_case(is_right=True) -> bd.Solid:
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         ).moved(bd.Location((cx, cy, z_bore_bottom)))
 
-    # 7. USB-C port cutouts (Width = 12.00 mm, Height = 6.20 mm, R = 1.50 mm, Center Z = -5.85 mm):
+    # 7. Intentional Minimal USB-C Port Cutouts (Width = 10.20 mm, Height = 4.40 mm, R = 1.20 mm, Center Z = -5.85 mm;
+    #    short-body TYPE-C-31-M-13C stops male plug overmolds >= 0.9 mm outside outer wall, and Z_top = -3.65 mm hides 100% of Top Plate!):
     #    7a. North-Wall Host USB-C (`J1` at X = -60.2375 mm on Left, `rJ1` at X = +57.1500 mm on Right)
     north_usb_cx = 57.1500 if is_right else -60.2375
-    host_usb_cutter = bd.Box(12.00, 12.00, 6.20).moved(
+    host_usb_cutter = bd.Box(10.20, 12.00, 4.40).moved(
         bd.Location((north_usb_cx, -27.4875, -5.8500))
     )
     edges_y = host_usb_cutter.edges().filter_by(
@@ -434,12 +436,12 @@ def build_case(is_right=True) -> bd.Solid:
         and abs(e.bounding_box().size.Z - 0.0) < 0.1
     )
     assert len(edges_y) == 4, f"Expected 4 Y-parallel edges on host_usb_cutter at {north_usb_cx}, got {len(edges_y)}"
-    host_usb_cutter = bd.fillet(edges_y, radius=1.50)
+    host_usb_cutter = bd.fillet(edges_y, radius=1.20)
     body = body - host_usb_cutter
 
     #    7b. Inner-Vertical-Wall Split USB-C (`J2`/`rJ2` at |X| = 17.0500 mm, Y = -95.9000 mm -> y_pcb = 38.7500 mm)
     inner_usb_cx = 17.0500 if is_right else -17.0500
-    split_usb_cutter = bd.Box(12.00, 12.00, 6.20).moved(
+    split_usb_cutter = bd.Box(12.00, 10.20, 4.40).moved(
         bd.Location((inner_usb_cx, -95.9000, -5.8500))
     )
     edges_x = split_usb_cutter.edges().filter_by(
@@ -447,7 +449,7 @@ def build_case(is_right=True) -> bd.Solid:
         and abs(e.bounding_box().size.Z - 0.0) < 0.1
     )
     assert len(edges_x) == 4, f"Expected 4 X-parallel edges on split_usb_cutter at {inner_usb_cx}, got {len(edges_x)}"
-    split_usb_cutter = bd.fillet(edges_x, radius=1.50)
+    split_usb_cutter = bd.fillet(edges_x, radius=1.20)
     body = body - split_usb_cutter
 
     solid = body.solids()[0]
