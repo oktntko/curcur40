@@ -22,14 +22,14 @@
 ### 1-2. 静音ミドルクリックスイッチ：`Kailh Square Silent Micro Switch`（必要数：1個）
 - **品番 / 仕様**: `Kailh Square Silent Micro Switch`（$6.2 \times 6.2 \times 4.3\,\text{mm}$、2ピン角形静音マイクロスイッチ Red Dot）
 - **販売元**: [Amazon (`B0FF9Y9DB8`)](https://www.amazon.co.jp/dp/B0FF9Y9DB8) / AliExpress
-- **実装方法**: 右メイン基板 `curcur40-right` 裏面（`B.Cu`）の `rEXSW1` へ差し込み、表面（`F.Cu`）側から 2箇所はんだ付けしたあと、`F.Cu` 側へ飛び出したピン先端をニッパーで平切り（フラッシュカット）します（手配線ケーブル不要）。
+- **実装方法**: 右メイン基板 `curcur40-right` 裏面（`B.Cu`）の `rEXSW1`（`(25.30, -4.75)`）へ差し込み、表面（`F.Cu`）側から 2箇所はんだ付けしたあと、`F.Cu` とトッププレート裏面の Switch Gap（$0.60\,\text{mm}$）内で干渉しないよう `F.Cu` 側へ飛び出したピン先端をニッパーで $\le 0.4\,\text{mm}$ に平切り（フラッシュカット）します（手配線ケーブル不要）。
 
 ### 1-3. 角度検出用ネオジム磁石：`D4×1mm` 径方向2極着磁（必要数：1個）
 - **仕様**: **径方向2極着磁（Diametric Magnetization）** 円盤型ネオジム磁石、直径 $\varnothing 4.0\,\text{mm}$ × 厚さ $1.0\,\text{mm}$
 - **販売元**: [AliExpress（径方向着磁 D4×1mm）](https://ja.aliexpress.com/item/1005010201889003.html)
 - **備考**:
   - **必ず円盤の直径方向（左右）に N 極 / S 極が分かれた「径方向着磁（Diametric）」品**を選んでください（一般的な厚み方向着磁では回転角を検出できません）。
-  - `magnet-holder.step`（`#02`）の西側ポケット（$\varnothing 4.04 \times 1.05\,\text{mm}$）へ入れるだけで、東側は鋼製Dカット軸端面、西側は `wheel-rocker.step`（`#03`）の一体キーパータブにより機械的に抜け止めされるため、**接着剤は不要**です。
+  - `magnet-holder.step`（`#02`）の東側ポケット（$\varnothing 4.04 \times 1.05\,\text{mm}$）へ入れるだけで、西側は鋼製Dカット軸端面、東側は `wheel-rocker.step`（`#03`）の一体キーパータブにより機械的に抜け止めされるため、**接着剤は不要**です。
 
 ### 1-4. 磁気デテント調整用ネオジム磁石：`Ø2.0×2.0mm` 軸方向着磁（必要数：1個）
 - **メーカー / 代表型番**: 二六製作所 **`NE280`**（丸型ネオジム磁石 $\varnothing 2.0 \times 2.0\,\text{mm}$, N52 / Niメッキ）または同寸の標準軸方向着磁ネオジム磁石（N35〜N52）
@@ -47,8 +47,8 @@
   - 外径（$OD$）：**$\varnothing 3.2\,\text{mm}$**（3Dプリント側の下穴設計径：$\varnothing 2.85\,\text{mm}$）
 - **使用箇所内訳（計 19個）**:
   - 左ケース キー谷間ボス `L1`〜`L6`：6個（全箇所とも段差ゼロの $\varnothing 5.20\,\text{mm}$ フラット円筒ボス上面 $Z = -5.80\,\text{mm}$・片側均一肉厚 $1.175\,\text{mm}$ へそのままツライチ熱圧入！）
-  - 右ケース キー谷間ボス `R1`〜`R6`：6個（左 `L1`〜`L6` と完全左右対称・段差ゼロの $\varnothing 5.20\,\text{mm}$ フラット円筒ボス上面 $Z = -5.80\,\text{mm}$・片側均一肉厚 $1.175\,\text{mm}$）
-  - 右ケーストラックボールカップ固定ボス `TB1`〜`TB4`：4個（ボス上面 $Z = -17.60\,\text{mm}$・外径 $\varnothing 6.00\,\text{mm}$）
+  - 右ケース キー谷間ボス `R1`〜`R6`：6個（段差ゼロの $\varnothing 5.20\,\text{mm}$ フラット円筒ボス上面 $Z = -5.80\,\text{mm}$・片側均一肉厚 $1.175\,\text{mm}$）
+  - 右ケーストラックボールカップ固定ボス `TB1`〜`TB4`：4個（ボス上面 $Z = -20.60\,\text{mm}$・外径 $\varnothing 6.00\,\text{mm}$）
   - ホイールクレードル `WC1`, `WC2`：2個
   - ホイールロッカー南ラチェット調整ボス：1個
 - **販売元**: Amazon / AliExpress 等で「`インサートナット 真鍮 M2 3mm 3.2mm`」として 50〜100個入りパックが安価に入手可能
@@ -74,8 +74,8 @@
 - **JST SH 1.0mm ピッチ 6ピン 両端ハーネス（`SHR-06V-S-B` ハウジング・両端同方向フラット結線、長さ `100mm`）**（1本）：右メイン基板 `rJ3` ⇔ トラックボールセンサー基板 `J1` 接続用（[スイッチサイエンス `#9142`（Pimoroni JST-SH 6P 100mm）](https://www.switch-science.com/products/9142?variant=42749692149958) 等で既製品購入可・圧着作業不要。組み込み時は余長ループを南東側の `rSW8`/`rSW9` 下の広い空間へ寄せてカプトンテープ等で軽く留め、北側の回転ホイールから離します）
 
 ### 1-8. キースイッチ・キーキャップ（Kailh Choc V2 専用）
-- **キースイッチ：`Kailh Choc V2`（`CPG1353` シリーズ）**（必要数：40個＝左21個＋右19個）
-- **キーキャップ：Choc V2 対応（MX 十字ステム）ロープロファイル 1u キーキャップ（外寸 $18.5 \times 18.5\,\text{mm}$ 以下）**（必要数：40個）
+- **キースイッチ：`Kailh Choc V2`（`CPG1353` シリーズ）**（必要数：**39個**＝左21個＋右18個 ※40個パック等を購入すれば予備1個になります）
+- **キーキャップ：Choc V2 対応（MX 十字ステム）ロープロファイル 1u キーキャップ（外寸 $18.5 \times 18.5\,\text{mm}$ 以下）**（必要数：**39個**）
   - ※一般的な背の高い Cherry / OEM プロファイル等の通常 MX キーキャップは底打ち時にスカートがプレート・スイッチハウジングに干渉するため、必ずロープロファイル用 MX 十字ステム 1u キーキャップを使用してください。
 
 ---
@@ -85,7 +85,7 @@
 ### 2-1. CNC 金属切削（JLCCNC）：1種
 | ファイルパス | 材質 | 表面処理 | 数量 | 役割・仕様 |
 | :--- | :--- | :--- | :---: | :--- |
-| [`cases/inertia_wheel/steel-flywheel.step`](../cases/inertia_wheel/steel-flywheel.step) | **`45# Steel`**（S45C 炭素鋼・強磁性） | **`Electroless Nickel Plating`**（無電解ニッケルめっき・防錆） | 1 | 外径 $\varnothing 22.00 \times$ **幅 $6.50\,\text{mm}$**・外周24溝・一体段付き肩（$\varnothing 2.90\,\text{mm}$）・一体 $\varnothing 1.98\,\text{mm}$ 軸＆西Dカット軸（質量 **$19.31\,\text{g}$**、$J \approx 1160\,\text{g}\cdot\text{mm}^2$） |
+| [`cases/inertia_wheel/steel-flywheel.step`](../cases/inertia_wheel/steel-flywheel.step) | **`45# Steel`**（S45C 炭素鋼・強磁性） | **`Electroless Nickel Plating`**（無電解ニッケルめっき・防錆） | 1 | 外径 $\varnothing 22.00 \times$ **幅 $6.50\,\text{mm}$**・外周24溝・一体段付き肩（$\varnothing 2.90\,\text{mm}$）・一体 $\varnothing 1.98\,\text{mm}$ 軸＆東Dカット軸（質量 **$19.31\,\text{g}$**、$J \approx 1160\,\text{g}\cdot\text{mm}^2$） |
 
 > [!IMPORTANT]
 > ホイールの外周24溝で磁気デテント（ノッチ感）を発生させるため、材質は必ず強磁性の **`45# Steel`（S45C 炭素鋼）** を選択してください（アルミや SUS304 オーステナイトステンレスは非磁性のため磁気デテントが働きません）。また炭素鋼の防錆と滑らかな触感のため、表面処理で **無電解ニッケルめっき（Electroless Nickel Plating）** を指定することを推奨します。
@@ -98,12 +98,12 @@
 | [`cases/left-desk.step`](../cases/left-desk.step) | MJF / SLS `PA12` | 1 | 左手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋USB-C内壁受け棚3箇所） |
 | [`cases/right-desk.step`](../cases/right-desk.step) | MJF / SLS `PA12` | 1 | 右手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋カップボス4箇所＋USB-C内壁受け棚3箇所） |
 | [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（支持球 $55^\circ$・内球面 $R=12.75\,\text{mm}$・高さ $2.0\,\text{mm}$ フラット固定耳×4） |
-| [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（東側 $\varnothing 2.00\,\text{mm}$ D穴圧入、$\varnothing 5.72 \times 2.05\,\text{mm}$） |
-| [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・西キーパータブ・南ラチェットボス） |
+| [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（西側 $\varnothing 2.00\,\text{mm}$ D穴圧入、$\varnothing 5.72 \times 2.05\,\text{mm}$） |
+| [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・東キーパータブ・南ラチェットボス） |
 | [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定クレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |
-| [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】持ち運び用 上下リバーシブル完全90°直方体・スライド差し込みボックス本体**（`carrying-box-lid.step` とセット使用。右手トラックボール側が下でも上でもスッと入る $Y$ 軸 $180^\circ$ 点対称直方体、奥面貫通穴ゼロのデュアル内部堀＋手前ストッパー段差、クランク段差デュアル TB キーパー、外寸 $142.40 \times 105.20 \times 65.42\,\text{mm}$・体積 $204.96\,\text{cm}^3$） |
-| [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】スライドボックス用 上下リバーシブル・穴なし計算済みスナップキャップフタ**（`carrying-box.step` とセット使用。上下向き区別なし、長スパン $14.0\,\text{mm}$・抜き角 $26^\circ$ 弾性爪により引き抜き力 約 $9.7\,\text{N}$ でスムーズ開閉、外正面貫通穴ゼロ・デュアル内部堀付き、装着時総外寸 $142.40 \times 111.85 \times 65.42\,\text{mm}$、単体造形サイズ $142.40 \times 65.42 \times 24.15\,\text{mm}$・体積 $60.69\,\text{cm}^3$） |
+| [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`v1.1` テンティング $11.80^\circ$ ケース対応更新は別途予定） |
+| [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`carrying-box.step` とセット使用） |
 
-### 2-3. 基板製造・PCBA 実装（JLCPCB）：計 5種（すべて板厚 `1.6mm` 標準 FR-4）
-- **PCBA 実装基板（3種）**: `curcur40-left`, `curcur40-right`（裏面 `B.Cu` に 3D ホールセンサー `rU6: TMAG5273A1QDBVR` LCSC `C3716049` 自動実装済み！）, `curcur40-pmw3360`
-- **FR-4 トッププレート（2種・PCB 単体製造）**: `plate-top-left`, `plate-top-right`（全14箇所のネジ位置は $\varnothing 4.40\,\text{mm}$ ネジ頭逃げ穴とし、Choc V2 キースイッチ嵌合でスマートに保持）
+### 2-3. 基板製造・PCBA 実装（JLCPCB）：推奨 3アイテム（すべて板厚 `1.6mm` 標準 FR-4）
+- **3-in-1 統合 PCBA パネル（1種・推奨）**: [`curcur40-panel-3in1`](../pcbs/panel/jlcpcb/production_files/)（`curcur40-left` ＋ `curcur40-right`［`rU6: TMAG5273A1QDBVR` 自動実装済］＋ `curcur40-pmw3360` の全3枚を捨て基板フレーム $131.15 \times 207.35\,\text{mm}$ にまとめ、1回の Economic PCBA で一括実装！※単体発注用の各データも同梱）
+- **FR-4 トッププレート（2種・PCB 単体製造）**: `plate-top-left`, `plate-top-right`（全14箇所のネジ位置は $\varnothing 4.40\,\text{mm}$ ネジ頭逃げ穴とし、39個の Choc V2 キースイッチ嵌合でスマートに保持）
