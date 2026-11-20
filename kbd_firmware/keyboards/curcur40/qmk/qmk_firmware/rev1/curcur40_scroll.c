@@ -330,8 +330,8 @@ static bool wheel_sensor_configure(void) {
  * Reads the two orthogonal quadrature field components in the (North-South, Up-Down)
  * rotation plane of the East-mounted wheel magnet, mapped so atan2(out_sin, out_cos)
  * increases (+delta_lsb > 0) when rolling the top of the wheel North (away = Scroll UP, +V):
- *   - TMAG5273 (DBV on B.Cu rot=+90 at (25.4000, 2.7625)):  (-Bx, Bz)
- *   - TLV493D  (TSOP-6 on B.Cu rot=+90 at (25.4000, 2.7625)): (-By, Bz) left-aligned to 16-bit signed scale
+ *   - TMAG5273 (DBV on B.Cu rot=+90 at (25.3200, 2.7625)):  (-Bx, Bz)
+ *   - TLV493D  (TSOP-6 on B.Cu rot=+90 at (25.3200, 2.7625)): (-By, Bz) left-aligned to 16-bit signed scale
  */
 static bool wheel_sensor_read_quadrature(int16_t *out_sin, int16_t *out_cos, bool *out_busy) {
     *out_busy = false;

@@ -771,7 +771,14 @@ def _append_subboard_into_panel(
         panel.Add(_dup_board_item(drw))
 
 
-def _add_panel_npth_hole(panel: pcbnew.BOARD, ref: str, x_mm: float, y_mm: float, diam_mm: float):
+def _add_panel_npth_hole(
+    panel: pcbnew.BOARD,
+    ref: str,
+    x_mm: float,
+    y_mm: float,
+    diam_mm: float,
+    zone_keepout_r_mm: float = 0.0,
+):
     fp = pcbnew.FOOTPRINT(panel)
     fp.SetReference(ref)
     fp.SetValue("NPTH")
@@ -800,6 +807,26 @@ def _add_panel_npth_hole(panel: pcbnew.BOARD, ref: str, x_mm: float, y_mm: float
     cy.SetEnd(_v2i_mm(x_mm + diam_mm * 0.5, y_mm))
     fp.Add(cy)
     panel.Add(fp)
+
+    if zone_keepout_r_mm > 0.0:
+        for lid in (pcbnew.F_Cu, pcbnew.B_Cu):
+            kz = pcbnew.ZONE(panel)
+            kz.SetIsRuleArea(True)
+            kz.SetLayer(lid)
+            kz.SetDoNotAllowTracks(False)
+            kz.SetDoNotAllowVias(False)
+            kz.SetDoNotAllowPads(False)
+            kz.SetDoNotAllowZoneFills(True)
+            kz.SetDoNotAllowFootprints(False)
+            kol = kz.Outline()
+            kol.NewOutline()
+            for k in range(24):
+                ang = 2.0 * math.pi * k / 24.0
+                kol.Append(
+                    pcbnew.FromMM(x_mm + zone_keepout_r_mm * math.cos(ang)),
+                    pcbnew.FromMM(y_mm + zone_keepout_r_mm * math.sin(ang)),
+                )
+            panel.Add(kz)
 
 
 def _add_panel_fiducial(panel: pcbnew.BOARD, ref: str, x_mm: float, y_mm: float):
@@ -841,12 +868,18 @@ def _add_panel_fiducial(panel: pcbnew.BOARD, ref: str, x_mm: float, y_mm: float)
 
 
 def _add_chain_to_edge_cuts(panel: pcbnew.BOARD, chain: pcbnew.SHAPE_LINE_CHAIN, width_mm: float = 0.15):
-    n = chain.PointCount()
-    for i in range(n):
-        p1 = chain.CPoint(i)
-        p2 = chain.CPoint((i + 1) % n)
-        if p1.x == p2.x and p1.y == p2.y:
-            continue
+    min_seg_iu = pcbnew.FromMM(0.002)  # Merge sub-2um Clipper rounding artifacts while keeping exact closed loops
+    pts = []
+    for i in range(chain.PointCount()):
+        p = chain.CPoint(i)
+        if not pts or math.hypot(p.x - pts[-1].x, p.y - pts[-1].y) >= min_seg_iu:
+            pts.append(p)
+    while len(pts) > 3 and math.hypot(pts[-1].x - pts[0].x, pts[-1].y - pts[0].y) < min_seg_iu:
+        pts.pop()
+    m = len(pts)
+    for i in range(m):
+        p1 = pts[i]
+        p2 = pts[(i + 1) % m]
         seg = pcbnew.PCB_SHAPE(panel)
         seg.SetShape(pcbnew.SHAPE_T_SEGMENT)
         seg.SetLayer(pcbnew.Edge_Cuts)
@@ -864,9 +897,10 @@ def build_and_export_panel_3in1():
       - Continuous 5.00 mm outer conveyor rails + continuous West-to-East internal H-rib stiffener.
       - 3.70 mm CNC-milled open air slots in front of all 4 mid-mount USB-C receptacles (`J1, J2, rJ1, rJ2`),
         eliminating CAM rail-blocking defects (JLCPCB issue #4).
-      - 22x recessed mouse-bite tabs (4x Ø 0.55 mm NPTH @ 0.85 mm pitch, inset inside nominal board edges;
-        all milled slot corners rounded to R = 1.00 mm = Ø 2.00 mm CNC router endmill), eliminating L-step
-        mouse-bite overhang & outer burrs (JLCPCB issue #1).
+      - 22x recessed mouse-bite tabs (4x Ø 0.55 mm NPTH @ 0.85 mm pitch, inset 0.08–0.10 mm inside nominal board edges
+        with >= 0.35 mm copper zone keepout; all milled slot corners rounded to R = 0.80 mm = Ø 1.60 mm standard JLCPCB
+        CNC router endmill, preserving R = 0.90 mm USB-C inner corner dogbone reliefs), eliminating L-step mouse-bite
+        overhang & outer burrs (JLCPCB issue #1) and USB-C shell corner interference.
     """
     panel_dir = WORKSPACE / "pcbs" / "panel"
     panel_dir.mkdir(parents=True, exist_ok=True)
@@ -925,33 +959,34 @@ def build_and_export_panel_3in1():
     mb_diam = 0.55
 
     tabs = [
-        # Left Main PCB (9 tabs)
-        ("H_EDGE", -95.5 + dx_l, 8.7000, -1, 0.20),
-        ("H_EDGE", -21.5 + dx_l, 8.7000, -1, 0.20),
-        ("H_EDGE", -69.0 + dx_l, 99.1000, +1, 0.20),
-        ("H_EDGE", -21.0 + dx_l, 99.1000, +1, 0.20),
-        ("H_EDGE", -101.5 + dx_l, 74.9625, +1, 0.20),
-        ("V_EDGE", -16.0 + dy_l, 8.0000, -1, 0.20),
-        ("V_EDGE",  22.0 + dy_l, 8.0000, -1, 0.20),
-        ("V_EDGE", -24.0 + dy_l, 122.3000, +1, 0.20),
-        ("V_EDGE",  52.0 + dy_l, 122.3000, +1, 0.20),
+        # Left Main PCB (9 tabs — 0.10 mm inset keeps breakaway inside board profile with generous >= 0.35 mm Cu margin)
+        ("H_EDGE", -95.5 + dx_l, 8.7000, -1, 0.10),
+        ("H_EDGE", -21.5 + dx_l, 8.7000, -1, 0.10),
+        ("H_EDGE", -69.0 + dx_l, 99.1000, +1, 0.10),
+        ("H_EDGE", -21.0 + dx_l, 99.1000, +1, 0.10),
+        ("H_EDGE", -101.5 + dx_l, 74.9625, +1, 0.10),
+        ("V_EDGE", -16.0 + dy_l, 8.0000, -1, 0.10),
+        ("V_EDGE",  22.0 + dy_l, 8.0000, -1, 0.10),
+        ("V_EDGE", -24.0 + dy_l, 122.3000, +1, 0.10),
+        ("V_EDGE",  52.0 + dy_l, 122.3000, +1, 0.10),
         # Right Main PCB (9 tabs)
-        ("H_EDGE", -96.3 + dx_r, 198.5000, +1, 0.20),
-        ("H_EDGE", -22.3 + dx_r, 198.5000, +1, 0.20),
+        ("H_EDGE", -96.3 + dx_r, 198.5000, +1, 0.10),
+        ("H_EDGE", -22.3 + dx_r, 198.5000, +1, 0.10),
         ("H_EDGE", -74.0 + dx_r, 108.1000, -1, 0.08),
-        ("H_EDGE",  -9.3 + dx_r, 108.1000, -1, 0.20),
-        ("H_EDGE", -101.0 + dx_r, 132.2375, -1, 0.12),
-        ("V_EDGE",  13.0 + dy_r, 8.0000, -1, 0.12),
-        ("V_EDGE", -22.0 + dy_r, 8.0000, -1, 0.12),
-        ("V_EDGE",  16.0 + dy_r, 122.3000, +1, 0.20),
-        ("V_EDGE", -16.0 + dy_r, 122.3000, +1, 0.20),
+        ("H_EDGE",  -9.3 + dx_r, 108.1000, -1, 0.10),
+        ("H_EDGE", -101.0 + dx_r, 132.2375, -1, 0.10),
+        ("V_EDGE",  13.0 + dy_r, 8.0000, -1, 0.10),
+        ("V_EDGE", -22.0 + dy_r, 8.0000, -1, 0.10),
+        ("V_EDGE",  16.0 + dy_r, 122.3000, +1, 0.10),
+        ("V_EDGE", -16.0 + dy_r, 122.3000, +1, 0.10),
         # PMW3360 Sensor Sub-PCB (4 tabs)
-        ("H_EDGE", 27.7 + dx_p, 89.0000, -1, 0.20),
-        ("H_EDGE", 17.7 + dx_p, 118.2000, +1, 0.20),
-        ("V_EDGE", 41.5 + dy_p, 8.0000, -1, 0.20),
-        ("V_EDGE", 53.5 + dy_p, 8.0000, -1, 0.20),
+        ("H_EDGE", 27.7 + dx_p, 89.0000, -1, 0.10),
+        ("H_EDGE", 17.7 + dx_p, 118.2000, +1, 0.10),
+        ("V_EDGE", 41.5 + dy_p, 8.0000, -1, 0.10),
+        ("V_EDGE", 53.5 + dy_p, 8.0000, -1, 0.10),
     ]
 
+    mb_keepout_r = 0.5 * mb_diam + 0.36  # >= 0.35 mm NPTH-to-zone clearance (JLCPCB min = 0.25 mm)
     mb_idx = 1
     for kind, c_along, edge_v, sign, inset_mm in tabs:
         if kind == "H_EDGE":
@@ -960,7 +995,7 @@ def build_and_export_panel_3in1():
             air_cavity.BooleanSubtract(_make_rect_poly(c_along - tab_w / 2.0, ya, c_along + tab_w / 2.0, yb))
             mb_y = edge_v - sign * inset_mm
             for off in mb_offsets:
-                _add_panel_npth_hole(panel, f"MB{mb_idx}", c_along + off, mb_y, mb_diam)
+                _add_panel_npth_hole(panel, f"MB{mb_idx}", c_along + off, mb_y, mb_diam, zone_keepout_r_mm=mb_keepout_r)
                 mb_idx += 1
         else:
             xa = min(edge_v - sign * 1.20, edge_v + sign * 4.50)
@@ -968,12 +1003,13 @@ def build_and_export_panel_3in1():
             air_cavity.BooleanSubtract(_make_rect_poly(xa, c_along - tab_w / 2.0, xb, c_along + tab_w / 2.0))
             mb_x = edge_v - sign * inset_mm
             for off in mb_offsets:
-                _add_panel_npth_hole(panel, f"MB{mb_idx}", mb_x, c_along + off, mb_diam)
+                _add_panel_npth_hole(panel, f"MB{mb_idx}", mb_x, c_along + off, mb_diam, zone_keepout_r_mm=mb_keepout_r)
                 mb_idx += 1
 
-    # CNC router endmill morphological opening (R = 1.00 mm => Ø 2.00 mm standard router bit)
-    r_mill = pcbnew.FromMM(1.00)
-    max_err = pcbnew.FromMM(0.01)
+    # CNC router endmill morphological opening (R = 0.80 mm => Ø 1.60 mm standard JLCPCB PCB/panel router bit;
+    # rounds all tab corners smoothly while preserving R = 0.90 mm USB-C inner corner dogbone reliefs intact!)
+    r_mill = pcbnew.FromMM(0.80)
+    max_err = pcbnew.FromMM(0.005)
     air_cavity.Inflate(-r_mill, pcbnew.CORNER_STRATEGY_ROUND_ALL_CORNERS, max_err)
     air_cavity.Inflate(+r_mill, pcbnew.CORNER_STRATEGY_ROUND_ALL_CORNERS, max_err)
 
