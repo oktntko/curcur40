@@ -54,6 +54,23 @@ MAX_RUNTIME_SEC = 240.0
 T0_RUN = time.monotonic()
 
 
+def _safe_export_step(shape: bd.Shape, out_path: Path):
+    """Export STEP via temp dir + atomic move/copy retry to avoid Windows file-watcher locks."""
+    import shutil
+    with tempfile.TemporaryDirectory() as td:
+        tmp_p = Path(td) / out_path.name
+        bd.export_step(shape, str(tmp_p))
+        for attempt in range(8):
+            try:
+                os.replace(str(tmp_p), str(out_path))
+                return
+            except PermissionError:
+                if attempt == 7:
+                    shutil.copyfile(str(tmp_p), str(out_path))
+                    return
+                time.sleep(0.25)
+
+
 def _check_timeout(phase: str):
     el = time.monotonic() - T0_RUN
     if el > MAX_RUNTIME_SEC:
@@ -502,17 +519,15 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
             (119.2625,  38.80000, 1.0),
             ( 82.6625,  38.80000, 1.0),
             ( 82.6625,  62.93750, 1.0),
-            ( 43.2000,  62.93750, 1.0),
-            ( 43.2000,  32.75000, 0.8),
-            ( 13.9500,  32.75000, 0.8),
-            ( 13.9500,  62.93750, 1.0),
             (  4.5625,  62.93750, 1.0),
         ]
         pts_step = [(*to_step_right(x, y), r) for x, y, r in pts_plate]
         sw_step = [to_step_right(x, y) for x, y in RIGHT_SWITCHES]
-        plate_holes_step = [
-            (*to_step_right(x, y), 2.20) for _, x, y, _, _ in RIGHT_PERIMETER_HOLES_PCB
-        ] + [(*to_step_right(x, y), 2.20) for x, y in RIGHT_WHEEL_CRADLE_HOLES_PCB]
+        plate_holes_step = (
+            [(*to_step_right(x, y), 2.20) for _, x, y, _, _ in RIGHT_PERIMETER_HOLES_PCB]
+            + [(*to_step_right(x, y), 2.20) for x, y in RIGHT_WHEEL_CRADLE_HOLES_PCB]
+            + [(*to_step_right(28.5750, 47.6250), 14.3125)]  # Closed Ø 28.625 mm circular trackball cutout
+        )
     else:
         pts_plate = [
             (  -4.5625, -27.86250, 1.0),
@@ -907,7 +922,7 @@ def main(export_only: bool = False):
     asm_full = bd.Compound(children=all_parts)
     asm_full.label = "curcur40_Full_Assembly"
     out_step = ASSEMBLIES_DIR / "assembly-full.step"
-    bd.export_step(asm_full, str(out_step))
+    _safe_export_step(asm_full, out_step)
     total_solids = len(asm_full.solids())
     print(
         f"\nSuccessfully exported {out_step} ({len(all_parts)} top-level groups, "
@@ -942,7 +957,7 @@ def main(export_only: bool = False):
     asm_right = bd.Compound(children=right_group)
     asm_right.label = "curcur40_Right_Wheel_Assembly"
     out_right_step = ASSEMBLIES_DIR / "curcur40-right-wheel-assembly.step"
-    bd.export_step(asm_right, str(out_right_step))
+    _safe_export_step(asm_right, out_right_step)
     print(
         f"Successfully exported {out_right_step} ({len(right_group)} top-level groups, "
         f"{len(asm_right.solids())} solids + 1 optical ref face)"
@@ -958,7 +973,7 @@ def main(export_only: bool = False):
     asm_desk = bd.Compound(children=desk_parts)
     asm_desk.label = "curcur40_Full_Assembly_Desk"
     out_desk_step = ASSEMBLIES_DIR / "assembly-full-desk.step"
-    bd.export_step(asm_desk, str(out_desk_step))
+    _safe_export_step(asm_desk, out_desk_step)
     bb_desk_l = desk_parts[0].bounding_box()
     bb_desk_r = desk_parts[len(left_group)].bounding_box()
     print(
