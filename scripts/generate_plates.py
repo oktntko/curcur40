@@ -93,6 +93,7 @@ RIGHT_WHEEL_HOLES = [
 ]
 
 RIGHT_INERTIA_WHEEL = (14.2875, 2.76250)  # Under-Plate Passive Magnetic Inertia Wheel axle center (aligned with rEXSW2 x=14.2875)
+RIGHT_TRACKBALL_CIRCLE = (28.5750, 47.6250, 14.3125)  # Closed Ø 28.625 mm circular cutout (0.3125 mm uniform gap to Ø 28.00 mm cup, 1.0000 mm solid South FR-4 web)
 
 
 def round_polygon_with_fillets(pts_and_radii):
@@ -156,8 +157,8 @@ def make_inertia_wheel_foam_cutout():
         (10.4375, -8.7375, 0.50),
         (18.1375, -8.7375, 0.50),
         (18.1375, -0.9875, 0.50),
-        (23.7375, -0.9875, 0.50),
-        (23.7375,  6.5125, 0.50),
+        (23.6475, -0.9875, 0.50),
+        (23.6475,  6.5125, 0.50),
         (18.1375,  6.5125, 0.50),
         (18.1375, 14.2625, 0.50),
         (10.4375, 14.2625, 0.50),
@@ -310,15 +311,15 @@ def main():
     p_top_left = os.path.join(out_pcb_dir, "plate-top-left.kicad_pcb")
     write_plate_kicad_pcb(p_top_left, left_outer, left_cutouts, LEFT_MOUNTING_HOLES)
 
-    # 2. Right Top Plate (with Under-Plate Inertia Wheel 7.70 x 22.00 mm slot + 8x Ø 4.40 mm screw-head clearance holes)
-    right_outer_notched = round_polygon_with_fillets(get_right_outer_pts(notched_trackball=True))
+    # 2. Right Top Plate (closed Ø 28.625 mm circular trackball cutout + 7.70 x 22.00 mm wheel slot + 8x Ø 4.40 mm screw-head clearance holes)
+    right_outer = round_polygon_with_fillets(get_right_outer_pts(notched_trackball=False))
     right_switch_cutouts = [make_rect_cutout(cx, cy, 14.0, 14.0, 0.5) for (cx, cy) in RIGHT_SWITCHES]
     right_cutouts = right_switch_cutouts + [
         make_inertia_wheel_top_cutout(RIGHT_INERTIA_WHEEL[0], RIGHT_INERTIA_WHEEL[1])
     ]
-    right_all_holes = RIGHT_MOUNTING_HOLES + RIGHT_WHEEL_HOLES
+    right_all_holes = RIGHT_MOUNTING_HOLES + RIGHT_WHEEL_HOLES + [RIGHT_TRACKBALL_CIRCLE]
     p_top_right = os.path.join(out_pcb_dir, "plate-top-right.kicad_pcb")
-    write_plate_kicad_pcb(p_top_right, right_outer_notched, right_cutouts, right_all_holes)
+    write_plate_kicad_pcb(p_top_right, right_outer, right_cutouts, right_all_holes)
 
     # Verify DRC on top plate PCBs using temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -333,19 +334,19 @@ def main():
             assert len(drc_data.get("violations", [])) == 0, f"{name} DRC violations: {drc_data.get('violations')}"
             print(f"Verified DRC for {name}: 0 violations.")
 
-    # 3. SVGs (Top Plates & Switch Foam — uniform Ø 4.40 mm / r = 2.20 mm screw-head clearance holes)
+    # 3. SVGs (Top Plates & Switch Foam — uniform Ø 4.40 mm / r = 2.20 mm screw-head clearance holes + closed Ø 28.625 mm trackball circle)
     write_laser_svg(
         os.path.join(out_svg_dir, "plate-curcur40.svg"),
         [
             (left_outer, left_cutouts, LEFT_MOUNTING_HOLES, 130.0, 35.0),
-            (right_outer_notched, right_cutouts, right_all_holes, 140.0, 35.0),
+            (right_outer, right_cutouts, right_all_holes, 140.0, 35.0),
         ],
         width_mm=280.0,
         height_mm=120.0,
     )
 
-    left_foam_holes = [(x, y, 2.20) for (x, y, _) in LEFT_MOUNTING_HOLES]
-    right_foam_holes = [(x, y, 2.20) for (x, y, _) in right_all_holes]
+    left_foam_holes = [(x, y, r) for (x, y, r) in LEFT_MOUNTING_HOLES]
+    right_foam_holes = [(x, y, r) for (x, y, r) in right_all_holes]
     right_foam_cutouts = right_switch_cutouts + [
         make_inertia_wheel_foam_cutout()
     ]
@@ -353,7 +354,7 @@ def main():
         os.path.join(out_svg_dir, "foam-curcur40.svg"),
         [
             (left_outer, left_cutouts, left_foam_holes, 130.0, 35.0),
-            (right_outer_notched, right_foam_cutouts, right_foam_holes, 140.0, 35.0),
+            (right_outer, right_foam_cutouts, right_foam_holes, 140.0, 35.0),
         ],
         width_mm=280.0,
         height_mm=120.0,
