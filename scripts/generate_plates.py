@@ -145,10 +145,12 @@ def make_rect_cutout(cx, cy, w, h, r=0.5):
 
 def make_inertia_wheel_top_cutout(cx, cy):
     """
-    Clean rounded-rectangle Top Plate slot (7.70 x 22.00 mm, R = 1.00 mm) centered at `(cx, cy)`
-    for the Ø 22.00 x 6.50 mm 1-piece integral-shaft under-plate wheel (`0.60 mm/side` clearance).
+    Clean rounded-rectangle Top Plate slot (8.05 x 22.00 mm, R = 1.00 mm, West edge -0.35 mm at x_pcb = 10.0875)
+    for the Ø 22.00 x 6.50 mm 1-piece integral-shaft under-plate wheel:
+      - 0.60 mm East / 0.95 mm West rest clearance
+      - >= 0.47 mm West clearance even at worst-case 2.95 deg (0.30 mm pretravel) middle-click tilt!
     """
-    return make_rect_cutout(cx, cy, 7.70, 22.00, 1.00)
+    return make_rect_cutout(cx - 0.1750, cy, 8.05, 22.00, 1.00)
 
 
 def make_inertia_wheel_foam_cutout():
@@ -346,7 +348,11 @@ def main():
     )
 
     left_foam_holes = [(x, y, r) for (x, y, r) in LEFT_MOUNTING_HOLES]
-    right_foam_holes = [(x, y, r) for (x, y, r) in right_all_holes]
+    # Include 2x Ø 2.80 mm (r = 1.40 mm) clearance holes for rEXSW1 THT solder joints at (22.80, -4.75) & (27.80, -4.75):
+    right_foam_holes = [(x, y, r) for (x, y, r) in right_all_holes] + [
+        (22.8000, -4.7500, 1.40),
+        (27.8000, -4.7500, 1.40),
+    ]
     right_foam_cutouts = right_switch_cutouts + [
         make_inertia_wheel_foam_cutout()
     ]

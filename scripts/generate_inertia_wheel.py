@@ -92,7 +92,7 @@ SADDLE_THROAT_W = 2.66                  # 2.66 mm snap entry throat (239 deg wra
 
 U_SW = 25.3000 - X_AXLE_PCB             # +11.0125 mm (rEXSW1 Kailh Square Silent center on B.Cu: x=25.30, y=-4.75)
 V_SW = -(-4.7500 - Y_AXLE_PCB)          # +7.5125 mm
-CLICK_PRESS_DEG = 1.08                  # 1.08 deg click press -> 0.115 mm wheel drop, +0.093 mm switch plunger lift (>= 0.31 mm PCB/Plate clearance!)
+CLICK_PRESS_DEG = 2.95                  # Full worst-case 0.30 mm pretravel on rEXSW1 (2.95 deg -> >= 0.47 mm Top Plate clearance!)
 
 # Cradle Mounting Bosses (WC1 & WC2 on curcur40-right):
 WC1_PCB = (7.3375, -5.0375)             # (u = -6.9500, v = +7.8000)
@@ -745,13 +745,13 @@ def verify_6dof_constraints():
     piv_axis = bd.Axis((U_PIV, 0.0, W_PIV), (0.0, -1.0, 0.0))
     rk_click = rocker.rotate(piv_axis, CLICK_PRESS_DEG).solids()[0]
     assert overlap_volume(rk_click, cradle) == 0.0 and overlap_volume(rk_click, pcb_ceiling) == 0.0
-    assert overlap_volume(rk_click, ru6_pkg) == 0.0, "Middle-click 2.20 deg hit rU6!"
-    assert overlap_volume(rk_click, sw_plunger) > 0.0, "Middle-click 2.20 deg did NOT compress rEXSW1 plunger!"
-    assert overlap_volume(rk_click, sw_housing) == 0.0, "Middle-click 2.20 deg bottomed out against rEXSW1 housing!"
+    assert overlap_volume(rk_click, ru6_pkg) == 0.0, f"Middle-click {CLICK_PRESS_DEG:.2f} deg hit rU6!"
+    assert overlap_volume(rk_click, sw_plunger) > 0.0, f"Middle-click {CLICK_PRESS_DEG:.2f} deg did NOT compress rEXSW1 plunger!"
+    assert overlap_volume(rk_click, sw_housing) == 0.0, f"Middle-click {CLICK_PRESS_DEG:.2f} deg bottomed out against rEXSW1 housing!"
 
     rk_pull_up = rocker.rotate(piv_axis, -1.50).solids()[0]
     assert overlap_volume(rk_pull_up, cradle) > 0.0, "Upward wheel pull (-1.50 deg) did NOT hit cradle under-bridge stop!"
-    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #03 Captive C-Clip Seesaw Hinge: locked to #04 Cradle ALONE in ±u, ±v, +w, -w; +2.20 deg click, -1.50 deg stop", flush=True)
+    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #03 Captive C-Clip Seesaw Hinge: locked to #04 Cradle ALONE in ±u, ±v, +w, -w; +{CLICK_PRESS_DEG:.2f} deg click, -1.50 deg stop", flush=True)
 
     # 5. `#04` Static Cradle Clamping (`±u, ±v, +w` locked by Main PCB & WC1/WC2 screws)
     assert overlap_volume(cradle.moved(bd.Location((0.0, 0.0, 0.05))), pcb_ceiling) > 0.0, "#04 not seated against PCB!"

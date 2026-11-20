@@ -553,10 +553,10 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
     plate = plate - bd.extrude(sk_cuts.sketch, amount=3.0)
 
     if is_right:
-        wx, wy = to_step_right(*RIGHT_WHEEL_AXLE_PCB)
+        wx, wy = to_step_right(RIGHT_WHEEL_AXLE_PCB[0] - 0.1750, RIGHT_WHEEL_AXLE_PCB[1])
         with bd.BuildSketch(bd.Plane.XY.offset(-4.0)) as sk_wslot:
             with bd.Locations([(wx, wy)]):
-                bd.RectangleRounded(7.70, 22.00, 1.00)
+                bd.RectangleRounded(8.05, 22.00, 1.00)
         plate = plate - bd.extrude(sk_wslot.sketch, amount=3.0)
 
     for hx, hy, r_hole in plate_holes_step:
