@@ -73,10 +73,10 @@ SHAFT_R = 0.99                          # Ø1.98 mm slip-fit bearing journal
 SHAFT_U_WEST = -5.72                    # Recessed 0.03 mm inside West bearing outer face (-5.75; 0.00 mm West overhang!)
 SHAFT_U_EAST = +7.98                    # East D-shaft tip at u = +7.98 (meets D4x1mm magnet West face!)
 
-# East-Reversed Magnet Holder (SLS PA12) & D4x1mm Diametric NdFeB Magnet facing rU6 (u = +11.11, v = +1.51):
+# East-Reversed Magnet Holder (SLS PA12) & D4x1mm Diametric NdFeB Magnet facing rU6 (u = +11.0325, v = 0.0000):
 HOLDER_OD_R = 2.86                      # Ø5.72 mm (>= 5.0 mm JLC3DP min; 0.84 mm wall around Ø4.04 mm magnet pocket!)
 HOLDER_U_WEST = +7.00                   # 0.38 mm East of Rocker ear (+6.62)
-HOLDER_U_EAST = +9.05                   # Length = 2.05 mm (>= 2.0 mm JLC3DP min; 0.40 mm clear of PCB East wing +9.45!)
+HOLDER_U_EAST = +9.05                   # Length = 2.05 mm (>= 2.0 mm JLC3DP min; 0.31 mm clear of PCB East wing +9.36!)
 MAG_POCKET_R = 2.02                     # Ø4.04 mm East pocket, depth 1.05 mm (u in [+8.00, +9.05])
 MAG_D4_R = 1.99                         # Ø4.00 x 1.00 mm diametric magnet at u in [+8.04, +9.02] (~2.1 mm West of rU6!)
 
@@ -625,6 +625,9 @@ def verify_6dof_constraints():
       (`overlap_volume > 0` under small virtual perturbations) while moving freely (`overlap_volume == 0`)
       along its intended active DOFs (`360 deg` wheel spin + `0..2.20 deg` seesaw click).
     """
+    if __name__ != "__main__":
+        global T0_RUN
+        T0_RUN = time.monotonic()
     _check_timeout("verify_6dof:start")
     print(f"\n[{time.monotonic()-T0_RUN:5.1f}s] === Verifying 6-DOF Mechanical Retention & Kinematic Freedom ===", flush=True)
     wheel = build_steel_flywheel_local()
@@ -642,7 +645,7 @@ def verify_6dof_constraints():
         - bd.Box(7.70, 23.00, 3.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(
             bd.Location((0.0, 0.0, 0.50))
         )
-        - bd.Box(16.50, 7.50, 3.00, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN)).moved(
+        - bd.Box(16.41, 7.50, 3.00, align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN)).moved(
             bd.Location((-7.05, 0.0, 0.50))
         )
     ).solids()[0]
@@ -652,7 +655,7 @@ def verify_6dof_constraints():
     # Representative rU6 SOT-23-6 (`w in [0.00, +1.09]`) & rEXSW1 plunger/housing/THT leads on B.Cu
     ru6_pkg = (
         bd.Box(1.75, 3.05, 1.09, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX))
-        .moved(bd.Location((25.4000 - X_AXLE_PCB, -(1.2500 - Y_AXLE_PCB), 1.09)))
+        .moved(bd.Location((25.3200 - X_AXLE_PCB, -(2.7625 - Y_AXLE_PCB), 1.09)))
         .solids()[0]
     )
     sw_plunger = (
