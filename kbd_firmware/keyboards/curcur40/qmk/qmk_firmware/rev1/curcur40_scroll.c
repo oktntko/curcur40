@@ -22,7 +22,11 @@ static inline float clamp_f(float x, float lo, float hi) {
 }
 
 static inline int16_t abs_i16(int16_t x) {
-    return (x < 0) ? (int16_t)(-x) : x;
+    return (x == (int16_t)(-32767 - 1)) ? (int16_t)32767 : ((x < 0) ? (int16_t)(-x) : x);
+}
+
+static inline int16_t negate_sat_i16(int16_t x) {
+    return (x == (int16_t)(-32767 - 1)) ? (int16_t)32767 : (int16_t)(-x);
 }
 
 static inline int32_t abs_i32(int32_t x) {
@@ -324,10 +328,10 @@ static bool wheel_sensor_configure(void) {
 
 /*
  * Reads the two orthogonal quadrature field components in the (North-South, Up-Down)
- * rotation plane of the wheel magnet, mapped so atan2(out_sin, out_cos) increases
- * (+delta_lsb > 0) when rolling the top of the wheel North (away = Scroll UP, +V):
- *   - TMAG5273 (DBV on B.Cu rot=-90):  (Bx, Bz)
- *   - TLV493D  (TSOP-6 on B.Cu rot=-90): (By, Bz) left-aligned to 16-bit signed scale
+ * rotation plane of the East-mounted wheel magnet, mapped so atan2(out_sin, out_cos)
+ * increases (+delta_lsb > 0) when rolling the top of the wheel North (away = Scroll UP, +V):
+ *   - TMAG5273 (DBV on B.Cu rot=+90 at (25.4000, 2.7625)):  (-Bx, Bz)
+ *   - TLV493D  (TSOP-6 on B.Cu rot=+90 at (25.4000, 2.7625)): (-By, Bz) left-aligned to 16-bit signed scale
  */
 static bool wheel_sensor_read_quadrature(int16_t *out_sin, int16_t *out_cos, bool *out_busy) {
     *out_busy = false;
@@ -341,8 +345,10 @@ static bool wheel_sensor_read_quadrature(int16_t *out_sin, int16_t *out_cos, boo
             *out_busy = true;
             return true;
         }
-        *out_sin = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);
-        *out_cos = (int16_t)(((uint16_t)buf[4] << 8) | buf[5]);
+        const int16_t raw_x = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);
+        const int16_t raw_z = (int16_t)(((uint16_t)buf[4] << 8) | buf[5]);
+        *out_sin            = negate_sat_i16(raw_x);
+        *out_cos            = raw_z;
         return true;
     }
 
@@ -356,8 +362,10 @@ static bool wheel_sensor_read_quadrature(int16_t *out_sin, int16_t *out_cos, boo
             *out_busy = true;
             return true;
         }
-        *out_sin = (int16_t)(((uint16_t)buf[1] << 8) | ((uint16_t)(buf[4] & 0x0FU) << 4));
-        *out_cos = (int16_t)(((uint16_t)buf[2] << 8) | ((uint16_t)(buf[5] & 0x0FU) << 4));
+        const int16_t raw_y = (int16_t)(((uint16_t)buf[1] << 8) | ((uint16_t)(buf[4] & 0x0FU) << 4));
+        const int16_t raw_z = (int16_t)(((uint16_t)buf[2] << 8) | ((uint16_t)(buf[5] & 0x0FU) << 4));
+        *out_sin            = negate_sat_i16(raw_y);
+        *out_cos            = raw_z;
         return true;
     }
 
