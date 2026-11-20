@@ -108,12 +108,12 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 ## 4. 回路ブロック別詳細仕様 (Detailed Circuit Specifications)
 
 ### 4.1 電源回路と左右間 USB-C 接続 (`J2` / `rJ2`)
-1. **USB 5V 入力・逆流防止 (`ZD1` / `rZD1`: `RB521S30T1G`) と RGB LED 電源電圧降下 (`D1` / `rD1`: `1N4148WT`)**:
-   - PC接続用 USB Type-C コネクタ（`J1` / `rJ1`）の `VBUS` から `ZD1` / `rZD1` を経由して `+5V` / `+5VR` を生成し、さらに `D1` / `rD1` の順方向電圧降下（約 $0.7\,\text{V}$）で RGB LED 電源（約 $4.3\,\text{V}$）を供給して $3.3\,\text{V}$ ロジック信号とのレベル整合を確保します（`keyboard.json` にて `max_brightness: 50` 制限）。
+1. **USB 5V 入力・逆流防止 (`ZD1` / `rZD1`: `B5819WS`) と RGB LED 電源電圧降下 (`D1` / `rD1`: `B5819WS`)**:
+   - 全4箇所の電源・LED用ダイオード（`ZD1`, `rZD1`, `D1`, `rD1`）を **`40V 1A` ショットキーバリアダイオード `B5819WS`（`Diode_SMD:D_SOD-323`、JLCPCB Basic Part `C2128`）** に統一し、十分な定格電流マージンを確保しています。PC接続用 USB Type-C コネクタ（`J1` / `rJ1`）の `VBUS` から `ZD1` / `rZD1` を経由して `+5V` / `+5VR`（主幹線幅 `0.35 mm`）を生成し、さらに `D1` / `rD1` の順方向電圧降下を介して RGB LED 電源を供給することで $3.3\,\text{V}$ ロジック信号とのレベル整合を確保します（`keyboard.json` にて `max_brightness: 50` 制限）。
 2. **VBUS 接続検出 (`/USB_VBUS_PIN`)**:
    - `ZD1`/`rZD1` 上流の PC `VBUS` を `R8` (`5.6kΩ`) / `R9` (`10kΩ`) で分圧して `RP2040` Pin 16 (`GPIO13`) へ入力し、マスター／スレーブを自動判定します。
-3. **左右間 USB-C 接続 (`J2` / `rJ2`: リバーシブル ＆ PC誤挿しフェイルセーフ保護)**:
-   - `A6, B6` (`D+` 同士を直結) を `/SPLIT_DP` とし、ESD保護 `U5` / `rU5` (`TPD4E05U06DQAR`) および直列保護抵抗 `R10` / `rR10` (`27Ω`) を介して `GPIO12` (`/TX`) へ接続します。`CC1`/`CC2` は意図的に `NC`（プルダウン抵抗非実装）としているため、万が一 PC や PD 充電器を内側ポートへ誤挿ししても `VBUS` が出力されないコールドソケット状態を維持します。
+3. **左右間 USB-C 接続 (`J2` / `rJ2`: リバーシブル ＆ PC誤挿しフェイルセーフ保護・直近 ESD クランプ)**:
+   - `A6, B6` (`D+` 同士を直結) を `/SPLIT_DP` とし、コネクタ直近に配置した ESD保護 `U5` / `rU5` (`USBLC6-2SC6`, `SOT-23-6`, `C7519`)・パスコン `C17` / `rC17` (`100nF`) および直列保護抵抗 `R10` / `rR10` (`27Ω`) を介して `GPIO12` (`/TX`) へ接続します。`CC1`/`CC2` は意図的に `NC`（プルダウン抵抗非実装）としているため、万が一 PC や PD 充電器を内側ポートへ誤挿ししても `VBUS` が出力されないコールドソケット状態を維持します。
 
 ### 4.2 左右判定ピン (`RP2040` Pin 32 `GPIO21`) の設計と ERC 警告の扱い
 * 左手 `U1` Pin 32 (`GPIO21`) は `+3V3`（HIGH）、右手 `rU1` Pin 32 (`GPIO21`) は `GNDR`（LOW）に直結しています。
@@ -219,10 +219,9 @@ JLCPCB 標準 2層基板製造プロセス（追加料金なし）に準拠し�
 | **MCU** | `U1` | `rU1` | `RP2040` (`C2040`) | `Package_DFN_QFN:QFN-56-1EP_7x7mm_P0.4mm_EP3.2x3.2mm` | `B.Cu` | 1 | 1 |
 | **QSPI Flash** | `U4` | `rU4` | `W25Q128JVSIQ` (`C113767`) | `Package_SO:SOIC-8_5.3x5.3mm_P1.27mm` | `B.Cu` | 1 | 1 |
 | **3.3V LDO** | `U2` | `rU2` | `NCP1117LPST33T3G` (`C146799`) | `Package_TO_SOT_SMD:SOT-223-3_TabPin2` | `B.Cu` | 1 | 1 |
-| **ESD 保護 IC** | `U3, U5` | `rU3, rU5` | `TPD4E05U06DQAR` (`C138714`) | `Package_SON:USON-10_2.5x1.0mm_P0.5mm` | `B.Cu` | 2 | 2 |
+| **ESD 保護 IC** | `U3, U5` | `rU3, rU5` | `USBLC6-2SC6` (`C7519`) | `Package_TO_SOT_SMD:SOT-23-6` | `B.Cu` | 2 | 2 |
 | **水晶振動子** | `Y1` | `rY1` | `12MHz 18pF` (`C91749`) | `Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm` | `B.Cu` | 1 | 1 |
-| **ショットキーD** | `ZD1` | `rZD1` | `RB521S30T1G` (`C145179`) | `Diode_SMD:D_SOD-523` | `B.Cu` | 1 | 1 |
-| **スイッチングD** | `D1` | `rD1` | `1N4148WT` (`C232841`) | `Diode_SMD:D_SOD-523` | `B.Cu` | 1 | 1 |
+| **ショットキーD (1A)** | `ZD1, D1` | `rZD1, rD1` | `B5819WS` (`C2128` Basic) | `Diode_SMD:D_SOD-323` | `B.Cu` | 2 | 2 |
 | **3Dホール磁気センサ** | ― | `rU6` (右メイン PCBA実装) | `TMAG5273A1QDBVR` (`C3716049`) | `Package_TO_SOT_SMD:SOT-23-6` | `B.Cu` | 0 | 1 |
 | **コンデンサ (0402)** | `C1`〜`C17` | `rC1`〜`rC18` | 左: `100n`(10), `1u`(3), `10u`(2), `27p`(2)<br>右: `100n`(11), `1u`(3), `10u`(2), `27p`(2) | `Capacitor_SMD:C_0402_1005Metric` | `B.Cu` | 17 | 18 |
 | **抵抗 (0402)** | `R1`〜`R10` | `rR1`〜`rR13` | 左: `27`(3), `1k`(2), `5.1k`(2), `5.6k`(1), `10k`(2)<br>右: 上記 ＋ `4.7k`(2: `rR11, rR12`) ＋ `0Ω`(1: `rR13`) | `Resistor_SMD:R_0402_1005Metric` | `B.Cu` | 10 | 13 |

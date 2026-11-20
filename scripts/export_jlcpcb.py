@@ -28,7 +28,7 @@ LCSC_MAP_MAIN = {
     "R6": ("1k", "R_0402_1005Metric", "C11702"),
     "U3": ("USBLC6-2SC6", "SOT-23-6", "C7519"),
     "U5": ("USBLC6-2SC6", "SOT-23-6", "C7519"),
-    "ZD1": ("RB521S30T1G", "D_SOD-523", "C145179"),
+    "ZD1": ("B5819WS", "D_SOD-323", "C2128"),
     "U2": ("NCP1117LPST33T3G", "SOT-223-3_TabPin2", "C146799"),
     "C3": ("100n", "C_0402_1005Metric", "C1525"),
     "C4": ("100n", "C_0402_1005Metric", "C1525"),
@@ -46,7 +46,7 @@ LCSC_MAP_MAIN = {
     "C1": ("27p", "C_0402_1005Metric", "C1557"),
     "C2": ("27p", "C_0402_1005Metric", "C1557"),
     "U1": ("RP2040", "QFN-56-1EP_7x7mm_P0.4mm_EP3.2x3.2mm", "C2040"),
-    "D1": ("1N4148WT", "D_SOD-523", "C232841"),
+    "D1": ("B5819WS", "D_SOD-323", "C2128"),
     "R7": ("10k", "R_0402_1005Metric", "C25744"),
     "R9": ("10k", "R_0402_1005Metric", "C25744"),
     "R1": ("5.1k", "R_0402_1005Metric", "C25905"),
@@ -615,7 +615,7 @@ def export_main_pcb(
             if sh_pads:
                 px_mm = sum(pcbnew.ToMM(p.GetPosition().x) for p in sh_pads) / len(sh_pads)
                 py_mm = sum(pcbnew.ToMM(p.GetPosition().y) for p in sh_pads) / len(sh_pads)
-        elif pkg in ("R_0402_1005Metric", "C_0402_1005Metric", "R_0603_1608Metric", "C_0603_1608Metric", "D_SOD-523"):
+        elif pkg in ("R_0402_1005Metric", "C_0402_1005Metric", "R_0603_1608Metric", "C_0603_1608Metric", "D_SOD-523", "D_SOD-323"):
             p1 = fp.FindPadByNumber("1")
             p2 = fp.FindPadByNumber("2")
             if p1 is not None and p2 is not None:
