@@ -937,7 +937,7 @@ def _add_panel_fiducial(panel: pcbnew.BOARD, ref: str, x_mm: float, y_mm: float)
         panel.Add(fp)
 
 
-def _add_chain_to_edge_cuts(panel: pcbnew.BOARD, chain: pcbnew.SHAPE_LINE_CHAIN, width_mm: float = 0.15):
+def _add_chain_to_edge_cuts(panel: pcbnew.BOARD, chain: pcbnew.SHAPE_LINE_CHAIN, width_mm: float = 0.05):
     min_seg_iu = pcbnew.FromMM(0.002)  # Merge sub-2um Clipper rounding artifacts while keeping exact closed loops
     pts = []
     for i in range(chain.PointCount()):

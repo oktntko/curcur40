@@ -8,7 +8,7 @@ middle-click states, and 6-DOF kinematic constraint verification.
 Outputs:
   Manufacturing Parts (`cases/inertia_wheel/`):
     1. steel-flywheel.step / .stl   (JLCCNC 45# Steel + Electroless Nickel Plating, 1-piece Ø22.00 x 6.50 mm wheel + integral bearing shoulders & East D-shaft)
-    2. magnet-holder.step / .stl    (JLC3DP SLS PA12, Ø5.72 x 2.05 mm glue-free D4x1mm diametric magnet press-fit sleeve facing rU6 East)
+    2. magnet-holder.step / .stl    (JLC3DP SLS PA12, Ø5.65 x 2.05 mm glue-free D4x1mm diametric magnet press-fit sleeve facing rU6 East)
     3. wheel-rocker.step / .stl     (JLC3DP SLS PA12, seesaw carriage with 2x C-clip snap-in DDL-520ZZ seats, Ø3.00 mm trunnions, East Keeper Tab & NE rEXSW1 striker, South glue-free detent boss)
     4. wheel-cradle.step / .stl     (JLC3DP SLS PA12, closed-frame 2-screw under-PCB bracket at WC1/WC2 with captive Ø3.06 mm C-clip snap-in seesaw hinge, 2.66 mm throat / 239 deg wrap)
 
@@ -74,10 +74,10 @@ SHAFT_U_WEST = -5.72                    # Recessed 0.03 mm inside West bearing o
 SHAFT_U_EAST = +7.98                    # East D-shaft tip at u = +7.98 (meets D4x1mm magnet West face!)
 
 # East-Reversed Magnet Holder (SLS PA12) & D4x1mm Diametric NdFeB Magnet facing rU6 (u = +11.0325, v = 0.0000):
-HOLDER_OD_R = 2.86                      # Ø5.72 mm (>= 5.0 mm JLC3DP min; 0.84 mm wall around Ø4.04 mm magnet pocket!)
+HOLDER_OD_R = 2.825                     # Ø5.65 mm (>= 5.0 mm JLC3DP min; 0.81 mm wall around Ø4.03 mm magnet pocket; >= 0.33 mm clear of Top Plate at 2.95 deg click!)
 HOLDER_U_WEST = +7.00                   # 0.38 mm East of Rocker ear (+6.62)
 HOLDER_U_EAST = +9.05                   # Length = 2.05 mm (>= 2.0 mm JLC3DP min; 0.31 mm clear of PCB East wing +9.36!)
-MAG_POCKET_R = 2.02                     # Ø4.04 mm East pocket, depth 1.05 mm (u in [+8.00, +9.05])
+MAG_POCKET_R = 2.015                    # Ø4.03 mm East pocket, depth 1.05 mm (u in [+8.00, +9.05])
 MAG_D4_R = 1.99                         # Ø4.00 x 1.00 mm diametric magnet at u in [+8.04, +9.02] (~2.1 mm West of rU6!)
 
 # Seesaw Pivot (Captive C-Clip Snap-In Hinge) & Longitudinal NE Middle-Click Kinematics:
@@ -236,8 +236,8 @@ def build_steel_flywheel_local() -> bd.Solid:
 def build_magnet_holder_local() -> bd.Solid:
     """
     Build East-Reversed Glue-Free Press-Fit Diametric Magnet Sleeve (`SLS PA12`) in `(u, v, w)` frame:
-      - Outer cylinder Ø5.72 mm (`R = 2.86 mm`), length `2.05 mm` (`u in [+7.00, +9.05]`)
-      - East Ø4.04 mm x 1.05 mm pocket (`u in [+8.00, +9.05]`, radial wall 0.84 mm >= 0.80 mm, facing rU6!)
+      - Outer cylinder Ø5.65 mm (`R = 2.825 mm`), length `2.05 mm` (`u in [+7.00, +9.05]`)
+      - East Ø4.03 mm x 1.05 mm pocket (`u in [+8.00, +9.05]`, radial wall 0.81 mm >= 0.80 mm, facing rU6!)
       - West snug Ø2.00 mm D-bore (`u in [+7.00, +8.00]`, flat at `w = +0.72` for PA12 press-fit on Ø1.98 mm steel D-shaft)
     """
     outer = bd.extrude(

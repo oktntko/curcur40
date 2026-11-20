@@ -509,7 +509,7 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
     """
     Constructs the FR-4 Top Plate solid (Z = -3.60 to -2.00 mm, thickness 1.60 mm)
     matching `plates/pcb/plate-top-{left,right}.kicad_pcb` (`±4.5625` inner edge, `-27.8625` North edge),
-    with switch cutouts, Right 7.70 x 22.00 mm wheel slot (R = 1.00 mm),
+    with switch cutouts, Right 8.05 x 22.00 mm wheel slot (R = 1.00 mm),
     and uniform Ø 4.40 mm screw-head clearance holes (案1A: switch-retained plate).
     """
     if is_right:
