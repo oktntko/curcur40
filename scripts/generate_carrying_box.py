@@ -9,7 +9,7 @@ and Full Packed Verification Assemblies (`cases/assemblies/carrying-box-with-lid
 Design Highlights (Synchronized to finalized v1.1 11.80-deg tenting cases & official JLC3DP/JLCCNC wheel):
 1. 100% Top/Bottom Reversible (`右手トラックボール側を下にしても上にしても、箱もフタも上下逆さま関係なくスッと入る`):
    - Both `Carrying_Box` and `Carrying_Box_Lid` are mathematically exact `Rot_Y(180 deg)` symmetric solids
-     around `(X_MID_DESK, Z_MID_DESK)` (`140.20 x 110.44 x 77.75 mm` closed, synchronized to the `+4.20 mm` tenting-stand-recessed bottom cases).
+     around `(X_MID_DESK, Z_MID_DESK)` (`140.20 x 110.44 x 80.25 mm` closed, synchronized to `+4.20 mm` tenting-stand cases & `3.00 mm` rubber feet with `1.00 mm` floating clearance).
    - Central divider uses a point-symmetric cranked web (`z_asm in [9.80, 12.05]` on West, smooth `20 mm`
      angled center ramp, `z_asm in [4.45, 6.70]` on East) with dual `15.60 mm` Trackball Keeper U-slots, so
      Right's 25mm trackball glides in with `0.58 mm` non-contact keeper clearance whether Right is on the
@@ -93,7 +93,7 @@ CIO_TIP_PROTRUSION = 3.8000
 TB_CX = 42.8625
 TB_CY = -104.7750
 RUBBER_FOOT_RADIUS = 4.0000                      # D 8.00 mm
-RUBBER_FOOT_HEIGHT = 2.0000                      # 2.00 mm height
+RUBBER_FOOT_HEIGHT = 3.0000                      # 3.00 mm height (generous 3.0 mm foot spec!)
 
 # Internal slide clearances (in `asm` frame)
 XY_SLIDE_GAP = 0.3000                            # >= 0.30 mm JLC3DP moving clearance
@@ -118,19 +118,19 @@ Y_LID_OUT = Y_LID_MOAT + BOX_WALL                # -18.5000 mm (6.50 mm cap wall
 COS_TENT = math.cos(THETA_TENT_RAD)
 SIN_TENT = math.sin(THETA_TENT_RAD)
 D_RUNNER_PERP = Z_SLIDE_GAP                      # 0.20 mm perpendicular gap under bare outer case corners
-D_WELL_PERP = 2.7500                             # 2.75 mm recessed floor/ceiling well (0.75 mm clear of 2.0 mm feet!)
-D_OUT_PERP = 4.7500                              # 4.75 mm outer box face (2.00 mm solid horizontal top & bottom walls!)
+D_WELL_PERP = 4.0000                             # 4.00 mm recessed floor/ceiling well (1.00 mm generous margin above 3.00 mm feet!)
+D_OUT_PERP = 6.0000                              # 6.00 mm outer box face (2.00 mm solid horizontal top & bottom walls!)
 
 # Exact Orthogonal Rectangular Cuboid (`直方体`) dimensions in `box_desk` coordinates (`Z in [0, H_BOX]`)
 H_BARE_BRICK = (abs(Z_THUMB_BOTTOM) + H_SEP + abs(Z_PINKY_BOTTOM)) * COS_TENT  # 68.2470 mm
-H_BOX = H_BARE_BRICK + 2.0 * D_OUT_PERP                                        # 77.7470 mm
-Z_MID_DESK = 0.5 * H_BOX                                                       # 38.8735 mm
+H_BOX = H_BARE_BRICK + 2.0 * D_OUT_PERP                                        # 80.2470 mm
+Z_MID_DESK = 0.5 * H_BOX                                                       # 40.1235 mm
 X_MID_DESK = (
     X_PINKY_OUTER
     + (0.5 * DX_LEFT - X_PINKY_OUTER) * COS_TENT
     + (0.5 * H_SEP - Z_PINKY_BOTTOM) * SIN_TENT
 )                                                                              # 82.3004 mm
-DZ_WALL_DESK = (-10.0000 - Z_PINKY_BOTTOM) * COS_TENT                          # +4.1113 mm shift from v1.1 -10.0mm base
+DZ_WALL_DESK = (-10.0000 - Z_PINKY_BOTTOM) * COS_TENT + (D_OUT_PERP - 4.7500)  # +5.3613 mm shift from v1.1 base
 W_BOX = 140.2000                                                               # 140.2000 mm exact cuboid width (~1.95 mm outer side walls)
 X_BOX_WEST = X_MID_DESK - 0.5 * W_BOX                                          # 12.2415 mm
 X_BOX_EAST = X_MID_DESK + 0.5 * W_BOX                                          # 150.6415 mm
@@ -187,14 +187,18 @@ def transform_left_to_packed(shape: bd.Shape) -> bd.Shape:
 
 
 def build_rubber_feet_in_case_pose(is_right: bool) -> list[bd.Solid]:
-    """Builds 5 realistic D 8.0 x 2.0 mm cylindrical rubber feet on the outer tilted bottom plane (`v1.1`)."""
+    """
+    Builds 4 realistic D 8.0 x 3.0 mm cylindrical rubber feet per half:
+      - 2 on Pinky outer PA12 bottom ((128.00, -35.50), (128.00, -90.50), protruding full 3.00 mm)
+      - 2 optional on Thumb folded stand outer faces ((32.00, -39.80), (32.00, -109.575), seated at -0.17 mm -> +2.83 mm)
+    """
     sgn = 1.0 if is_right else -1.0
-    foot_xy_abs = [
-        (24.50, -35.50),
-        (128.00, -35.50),
-        (128.00, -90.50),
-        (91.00, -114.00),
-        (24.50, -114.00),
+    # (abs_x, y, start_offset_outward, height)
+    foot_specs = [
+        (128.00, -35.5000, +0.0100, RUBBER_FOOT_HEIGHT - 0.0100),
+        (128.00, -90.5000, +0.0100, RUBBER_FOOT_HEIGHT - 0.0100),
+        ( 32.00, -39.8000, -0.1700, RUBBER_FOOT_HEIGHT),
+        ( 32.00, -109.5750, -0.1700, RUBBER_FOOT_HEIGHT),
     ]
     p_thumb = (sgn * X_THUMB_OUTER, -80.0, Z_THUMB_BOTTOM)
     p_pinky = (sgn * X_PINKY_OUTER, -80.0, Z_PINKY_BOTTOM)
@@ -204,13 +208,13 @@ def build_rubber_feet_in_case_pose(is_right: bool) -> list[bd.Solid]:
 
     feet = []
     side_tag = "Right" if is_right else "Left"
-    for idx, (ax, fy) in enumerate(foot_xy_abs):
+    for idx, (ax, fy, z_off, h_foot) in enumerate(foot_specs):
         fx = sgn * ax
         fz = z_case_bottom_right(ax)
         n_len = math.hypot(norm_out[0], norm_out[2])
         ux, uz = norm_out[0] / n_len, norm_out[2] / n_len
-        foot_plane = bd.Plane(origin=(fx + 0.01 * ux, fy, fz + 0.01 * uz), z_dir=(ux, 0.0, uz))
-        cyl = bd.extrude(foot_plane * bd.Circle(RUBBER_FOOT_RADIUS), amount=RUBBER_FOOT_HEIGHT - 0.01).solids()[0]
+        foot_plane = bd.Plane(origin=(fx + z_off * ux, fy, fz + z_off * uz), z_dir=(ux, 0.0, uz))
+        cyl = bd.extrude(foot_plane * bd.Circle(RUBBER_FOOT_RADIUS), amount=h_foot).solids()[0]
         cyl.label = f"{side_tag}_Rubber_Foot_{idx + 1}"
         feet.append(cyl)
     return feet
@@ -499,7 +503,7 @@ def build_hidden_lid_snap_sockets_and_prongs_desk() -> tuple[bd.Solid, bd.Solid,
         (x_s_undercut, y_sock_back),
         (x_s_out, y_sock_back),
     ]
-    z_sock_bot = round(H_BOX - 18.5245, 4)
+    z_sock_bot = round(H_BOX - (D_OUT_PERP + 13.7745), 4)
     z_sock_h = 10.0000
     with bd.BuildSketch(bd.Plane.XY.offset(z_sock_bot)) as sk_sock:
         bd.Polygon(sock_xy, align=None)
@@ -888,6 +892,18 @@ def verify_carrying_box_both_orientations(
         assert max_ov_box == 0.0, f"[{pose_name}] Box overlap {max_ov_box:.8f} mm^3!"
         assert max_ov_lid == 0.0, f"[{pose_name}] Lid overlap {max_ov_lid:.8f} mm^3!"
 
+        # Also verify zero overlap between 3.00mm rubber feet (including stand-mounted feet) and keyboard/stand solids!
+        for rf in r_feet:
+            rf_b = rf.bounding_box()
+            for rs in r_sols:
+                if _aabb_intersects(rf_b, rs.bounding_box()):
+                    assert overlap_volume(rf, rs) == 0.0, f"[{pose_name}] Rubber foot {rf.label} overlaps keyboard/stand!"
+        for lf in l_feet:
+            lf_b = lf.bounding_box()
+            for ls in l_sols:
+                if _aabb_intersects(lf_b, ls.bounding_box()):
+                    assert overlap_volume(lf, ls) == 0.0, f"[{pose_name}] Rubber foot {lf.label} overlaps keyboard/stand!"
+
         slide_solids = r_feet + l_feet + r_cio + l_cio + [b_sol, w_sol] + k_sols
         for dy in (10.0, 30.0, 60.0, 90.0):
             loc_y = bd.Location((0.0, dy, 0.0)).wrapped
@@ -910,7 +926,7 @@ def verify_carrying_box_both_orientations(
             f"cio_box={clr_cio_box:.3f}mm, cio_lid={clr_cio_lid:.3f}mm",
             flush=True,
         )
-        assert clr_feet >= 0.50
+        assert clr_feet >= 0.80
         assert 0.50 <= clr_ball <= 0.70
         assert clr_wheel >= 1.50
         assert clr_keycaps >= 0.75
