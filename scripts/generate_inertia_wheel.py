@@ -69,40 +69,40 @@ STEP_U_HALF = 3.45                      # Shoulders at [-3.45, -3.25] and [+3.25
 BRG_ID_R = 1.00                         # Ø2.00 mm
 BRG_OD_R = 2.50                         # Ø5.00 mm
 BRG_W = 2.30                            # West bearing [-5.75, -3.45], East bearing [+3.45, +5.75]
-SHAFT_R = 0.99                          # Ø1.98 mm slip-fit bearing journal
+SHAFT_R = 0.99                          # Ø1.98 mm journal (specify Ø1.990 ±0.010 mm post-plating on JLCCNC for DDL-520ZZ)
 SHAFT_U_WEST = -5.72                    # Recessed 0.03 mm inside West bearing outer face (-5.75; 0.00 mm West overhang!)
-SHAFT_U_EAST = +7.98                    # East D-shaft tip at u = +7.98 (meets D4x1mm magnet West face!)
+SHAFT_U_EAST = +8.03                    # Extended East D-shaft (`u in [+6.75, +8.03]`, 1.28 mm engagement!)
 
 # East-Reversed Magnet Holder (SLS PA12) & D4x1mm Diametric NdFeB Magnet facing rU6 (u = +11.0325, v = 0.0000):
 HOLDER_OD_R = 2.825                     # Ø5.65 mm (>= 5.0 mm JLC3DP min; 0.81 mm wall around Ø4.03 mm magnet pocket; >= 0.33 mm clear of Top Plate at 2.95 deg click!)
-HOLDER_U_WEST = +7.00                   # 0.38 mm East of Rocker ear (+6.62)
-HOLDER_U_EAST = +9.05                   # Length = 2.05 mm (>= 2.0 mm JLC3DP min; 0.31 mm clear of PCB East wing +9.36!)
-MAG_POCKET_R = 2.015                    # Ø4.03 mm East pocket, depth 1.05 mm (u in [+8.00, +9.05])
-MAG_D4_R = 1.99                         # Ø4.00 x 1.00 mm diametric magnet at u in [+8.04, +9.02] (~2.1 mm West of rU6!)
+HOLDER_U_WEST = +6.77                   # Extended West (+1.28 mm D-bore engagement, 0.21 mm clear of Rocker East ear +6.56!)
+HOLDER_U_EAST = +9.05                   # Length = 2.28 mm (>= 2.0 mm JLC3DP min; 0.31 mm clear of PCB East wing +9.36!)
+MAG_POCKET_R = 2.015                    # Ø4.03 mm East pocket, depth 1.00 mm (u in [+8.05, +9.05])
+MAG_D4_R = 1.99                         # Ø4.00 x 1.00 mm diametric magnet at u in [+8.06, +9.04] (~2.1 mm West of rU6!)
 
 # Seesaw Pivot (Captive C-Clip Snap-In Hinge) & Longitudinal NE Middle-Click Kinematics:
-# Pivot sits between Wheel (u = 0) and rEXSW1 (u = +11.0125, v = +7.5125) at W_PIV = -4.20 (below rEXSW1 housing & rU6!):
+# Pivot sits between Wheel (u = 0) and rEXSW1 (u = +11.0125, v = +7.5125) at W_PIV = -4.65 (below rEXSW1 housing & rU6!):
 # Pressing wheel DOWN (-w at u = 0) rotates +CLICK_PRESS_DEG around Axis((U_PIV, 0, W_PIV), (0, -1, 0)),
 # driving the NE Striker Arm (u = +11.0125, v = +7.5125) UP (+w) into rEXSW1's plunger!
 U_PIV = +6.10                           # x_pcb = +20.3875 mm (L_wheel = 6.10 mm, L_sw = 4.91 mm -> ~55 gf crisp tactile click!)
-W_PIV = -4.65                           # Z_piv = -11.55 mm; Ø3.00 mm trunnion top w = -3.15 (0.29 mm below Ø5.72 mm Magnet Holder -2.86!)
+W_PIV = -4.65                           # Z_piv = -11.55 mm; Ø3.00 mm trunnion top w = -3.15
 TRUNNION_R = 1.50                       # Ø3.00 mm integral PA12 trunnions
 SADDLE_R = 1.53                         # Ø3.06 mm captive C-clip snap bore in cradle (0.03 mm radial / 0.06 mm diametral clearance)
-SADDLE_THROAT_W = 2.66                  # 2.66 mm snap entry throat (239 deg wrap; locks #03 to #04 alone in ±u, ±v, +w, -w!)
+SADDLE_THROAT_W = 2.78                  # 2.78 mm elastic snap throat (0.11 mm/side interference -> 2.08% PA12 strain, <0.076 mm lift!)
 
 U_SW = 25.3000 - X_AXLE_PCB             # +11.0125 mm (rEXSW1 Kailh Square Silent center on B.Cu: x=25.30, y=-4.75)
 V_SW = -(-4.7500 - Y_AXLE_PCB)          # +7.5125 mm
-CLICK_PRESS_DEG = 2.95                  # Full worst-case 0.30 mm pretravel on rEXSW1 (2.95 deg -> >= 0.47 mm Top Plate clearance!)
+CLICK_PRESS_DEG = 2.95                  # Nominal full click check (over-travel stop contacts Right_Main_PCB B.Cu at ~3.15 deg!)
 
 # Cradle Mounting Bosses (WC1 & WC2 on curcur40-right):
 WC1_PCB = (7.3375, -5.0375)             # (u = -6.9500, v = +7.8000)
 WC2_PCB = (21.2375, 10.7625)            # (u = +6.9500, v = -8.0000)
 PILOT_BORE_R = 1.425                    # Ø2.85 mm pilot bore for M2 x L=3.0 x OD=3.2 mm brass heat-set insert
 
-# South Glue-Free Detent Adjuster Boss on Rocker:
-W_DET = -4.40                           # Z = -11.30 mm; wheel rim at v = -10.08 mm
-V_DET_MIN = -16.40
-V_DET_MAX = -11.40                      # 5.00 mm straight Ø2.85 mm bore (>= 0.52 mm clear of Ø22.00 mm wheel rim at all Z!)
+# South Glue-Free Captive Detent Adjuster Boss on Rocker (Rear Drop-In Window + Closed Ø2.14mm Tunnel + 0.82mm Lower Keeper Jaw):
+W_DET = -4.15                           # Z = -11.05 mm; #09 top w = -3.15 faces R=11.00 wheel at v = -10.54 mm
+V_DET_MIN = -19.12                      # M2x6.0 screw head hard-stops at v_tip = -13.12 -> #09 North at -11.12 (>= 0.28 mm wheel gap!)
+V_DET_MAX = -11.12                      # Upper boss North face (-11.12); lower keeper jaw (w <= -4.65) extends to -10.30 (0.82 mm thick!)
 
 
 def verify_jlc3dp_pa12_part(solid: bd.Solid, name: str):
@@ -195,8 +195,8 @@ def build_steel_flywheel_local() -> bd.Solid:
     rim = bd.chamfer(rim_edges, length=0.35)
 
     flutes = []
-    r_cutter = 1.00
-    r_center = WHEEL_R + 0.78  # Cuts 0.22 mm smooth rounded flutes (root R = 10.78 mm)
+    r_cutter = 0.90
+    r_center = WHEEL_R + 0.25  # Cuts 0.65 mm deep rounded flutes (root R = 10.35 mm -> ~6x stronger 24-pole detent torque!)
     for i in range(N_FLUTES):
         ang = math.radians(i * (360.0 / N_FLUTES))
         fv = r_center * math.cos(ang)
@@ -219,13 +219,13 @@ def build_steel_flywheel_local() -> bd.Solid:
         bd.Plane.YZ.offset(SHAFT_U_WEST) * bd.Circle(SHAFT_R),
         amount=SHAFT_U_EAST - SHAFT_U_WEST,
     )
-    # D-flat on East shaft tip (`u in [+6.98, +7.98]`, `w >= +0.71` removed; solid shoulder at u = +6.98 stops #02 -u!)
+    # D-flat on East shaft tip (`u in [+6.75, +8.03]`, `w >= +0.70` removed; solid shoulder at u = +6.75 stops #02 -u!)
     d_cut = bd.Box(
-        1.05,
+        (SHAFT_U_EAST - 6.75) + 0.05,
         4.00,
         2.00,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((6.98, 0.0, 0.71)))
+    ).moved(bd.Location((6.75, 0.0, 0.70)))
     shaft = shaft - d_cut
 
     solid = (rim + shoulders + shaft).solids()[0]
@@ -236,23 +236,23 @@ def build_steel_flywheel_local() -> bd.Solid:
 def build_magnet_holder_local() -> bd.Solid:
     """
     Build East-Reversed Glue-Free Press-Fit Diametric Magnet Sleeve (`SLS PA12`) in `(u, v, w)` frame:
-      - Outer cylinder Ø5.65 mm (`R = 2.825 mm`), length `2.05 mm` (`u in [+7.00, +9.05]`)
-      - East Ø4.03 mm x 1.05 mm pocket (`u in [+8.00, +9.05]`, radial wall 0.81 mm >= 0.80 mm, facing rU6!)
-      - West snug Ø2.00 mm D-bore (`u in [+7.00, +8.00]`, flat at `w = +0.72` for PA12 press-fit on Ø1.98 mm steel D-shaft)
+      - Outer cylinder Ø5.65 mm (`R = 2.825 mm`), length `2.28 mm` (`u in [+6.77, +9.05]`)
+      - East Ø4.03 mm x 1.00 mm pocket (`u in [+8.05, +9.05]`, radial wall 0.81 mm >= 0.80 mm, facing rU6!)
+      - Extended West snug Ø1.99 mm D-bore (`u in [+6.77, +8.05]` = 1.28 mm engagement, flat at `w = +0.71`)
     """
     outer = bd.extrude(
         bd.Plane.YZ.offset(HOLDER_U_WEST) * bd.Circle(HOLDER_OD_R),
         amount=HOLDER_U_EAST - HOLDER_U_WEST,
     )
     mag_pocket = bd.extrude(
-        bd.Plane.YZ.offset(8.00) * bd.Circle(MAG_POCKET_R),
-        amount=(HOLDER_U_EAST - 8.00) + 0.10,
+        bd.Plane.YZ.offset(8.05) * bd.Circle(MAG_POCKET_R),
+        amount=(HOLDER_U_EAST - 8.05) + 0.10,
     )
     with bd.BuildSketch(bd.Plane.YZ.offset(HOLDER_U_WEST - 0.10)) as sk_dbore:
-        bd.Circle(1.00)
-        with bd.Locations([(0.0, 1.50 + 0.72)]):
+        bd.Circle(0.995)
+        with bd.Locations([(0.0, 1.50 + 0.71)]):
             bd.Rectangle(3.00, 3.00, mode=bd.Mode.SUBTRACT)
-    d_bore = bd.extrude(sk_dbore.sketch, amount=(8.00 - HOLDER_U_WEST) + 0.10)
+    d_bore = bd.extrude(sk_dbore.sketch, amount=(8.05 - HOLDER_U_WEST) + 0.10)
 
     solid = (outer - mag_pocket - d_bore).solids()[0]
     solid.label = "Magnet_Holder_PA12"
@@ -262,123 +262,167 @@ def build_magnet_holder_local() -> bd.Solid:
 def build_wheel_rocker_local() -> bd.Solid:
     """
     Build East-Reversed Seesaw Wheel Rocker (`SLS PA12`) in `(u, v, w)` frame:
-      - West (`u in [-6.62, -3.55]`, closed outer wall) & East (`u in [+3.55, +6.62]`, Ø2.80 mm shaft U-slot)
-        C-Clip Snap-In DDL-520ZZ seats (`Ø5.04 mm` seat with `4.56 mm` snap throat -> >220 deg wrap!)
+      - West (`u in [-6.62, -3.55]`) & East (`u in [+3.55, +6.56]`) Decoupled-Cantilever C-Clip DDL-520ZZ seats
+        (`Ø5.04 mm` seat with `4.78 mm` snap throat through `w >= -1.10 mm` -> <= 2.1% PA12 strain, solid lower end-walls!)
       - Rigid Under-Wheel U-Stirrup (`w in [-12.80, -11.45]`)
-      - South Monolithic Detent Adjuster Boss (`u in [-3.55, +3.55]`, `v in [-16.40, -11.40]`, straight Ø2.85 mm bore at `w = -4.40`)
-      - 2x Integral Ø3.00 mm Pivot Trunnions at `(U_PIV = +6.10, W_PIV = -4.20)` on East Cheek Block (`u in [+4.60, +7.60]`)
-      - East Rest-Stop Base (`u in [+6.62, +9.55]`, `w in [-8.80, -7.30]`, 0.06 mm above Cradle Under-Bridge!)
-        + Integral East Keeper Tab (`u in [+9.55, +10.55]`, `v in [-1.50, +1.50]`, `w` to `-1.15`)
-        + Longitudinal NE Striker Arm & Plunger Boss (`u in [+9.55, +12.45]`, `v` to `+9.10`, `w` to `-3.30` under `rEXSW1`!)
+      - South Captive Detent Adjuster Boss (`v in [-19.12, -10.90]` + `0.82 mm` Lower Keeper Jaw to `-10.30`):
+        South Ø2.85 mm brass insert bore + Rear Drop-In Window + Closed Ø2.14 mm Guide Tunnel + North Lower Keeper Jaw
+      - 2x Integral Ø3.00 mm Pivot Trunnions at `(U_PIV = +6.10, W_PIV = -4.65)` on East Cheek Block (`u in [+4.60, +7.60]`)
+      - Reinforced 2.15 mm Thick East Cross-Base & Longitudinal NE Striker Arm (`w in [-9.45, -7.30]`)
+        + Tightened East Keeper Tab (`u in [+9.30, +10.30]`, 0.25 mm axial gap!)
+        + Co-located Over-Travel Hard Stop Boss (`u in [+10.85, +12.35]`, `v in [+2.30, +3.90]`, `w_top = +0.76`,
+          contacts bare `Right_Main_PCB` `B.Cu` at `+3.15 deg` right past switch click to protect `rEXSW1`!)
     """
-    # 1. West Bearing Ear (`u in [-6.62, -3.55]`, `v in [-3.40, +3.40]`, `w in [-12.80, +1.90]`, R=0.85mm West outer corners)
-    west_ear_box = bd.Box(
-        3.07, 6.80, 14.70,
+    ear_v_w = 6.96  # v in [-3.48, +3.48] -> 0.96 mm root jaw thickness (>= 0.80 mm), 0.07 mm/side clear of ±3.55 saddles!
+
+    # 1. West Bearing Ear (`u in [-6.62, -3.55]`, `v in [-3.48, +3.48]`, `w in [-12.80, +1.90]`):
+    #    Upper C-clip jaws (`w >= -1.10`) cut all the way through `u` so jaws flex freely without end-wall shear;
+    #    lower solid 0.85 mm West end-wall (`u in [-6.62, -5.77]`, `w in [-12.80, -1.10]`) stops bearing `-u`!
+    west_ear = bd.Box(
+        3.07, ear_v_w, 14.70,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((-6.62, 0.0, -12.80)))
-    west_outer_edges = [
-        e for e in west_ear_box.edges()
-        if abs(e.bounding_box().size.Z - 14.70) < 0.05 and e.bounding_box().max.X < -6.50
-    ]
-    west_ear = bd.fillet(west_outer_edges, radius=0.85)
-    with bd.BuildSketch(bd.Plane.YZ.offset(-5.77)) as sk_wbrg_u:
+    west_seat_lower = bd.extrude(bd.Plane.YZ.offset(-5.77) * bd.Circle(2.52), amount=2.32)
+    with bd.BuildSketch(bd.Plane.YZ.offset(-6.75)) as sk_w_through:
         bd.Circle(2.52)
         with bd.Locations([(0.0, 2.00)]):
-            bd.Rectangle(4.56, 4.00)
-    west_ear = west_ear - bd.extrude(sk_wbrg_u.sketch, amount=2.32)  # Leaves solid 0.85 mm West wall [-6.62, -5.77]!
+            bd.Rectangle(4.78, 4.00)
+        with bd.Locations([(0.0, -3.10)]):
+            bd.Rectangle(8.00, 4.00, mode=bd.Mode.SUBTRACT)  # Only cut w >= -1.10!
+    west_ear = west_ear - west_seat_lower - bd.extrude(sk_w_through.sketch, amount=3.30)
 
-    # 2. East Bearing Ear (`u in [+3.55, +6.62]`, `v in [-3.40, +3.40]`, `w in [-12.80, +1.90]`)
+    # 2. East Bearing Ear (`u in [+3.55, +6.56]`, `v in [-3.48, +3.48]`, `w in [-12.80, +1.90]`):
+    #    Leaves 0.81 mm solid lower East wall `[+5.75, +6.56]` (`w < -1.10`) + Ø2.80 mm shaft bottom clearance!
     east_ear = bd.Box(
-        3.07, 6.80, 14.70,
+        3.01, ear_v_w, 14.70,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((3.55, 0.0, -12.80)))
-    with bd.BuildSketch(bd.Plane.YZ.offset(3.45)) as sk_ebrg_u:
+    east_seat_lower = bd.extrude(bd.Plane.YZ.offset(3.45) * bd.Circle(2.52), amount=2.30)
+    with bd.BuildSketch(bd.Plane.YZ.offset(3.45)) as sk_e_through:
         bd.Circle(2.52)
         with bd.Locations([(0.0, 2.00)]):
-            bd.Rectangle(4.56, 4.00)
-    east_ear = east_ear - bd.extrude(sk_ebrg_u.sketch, amount=2.32)
-    # Cut Ø2.80 mm (`R = 1.40 >= 0.75 mm` JLC3DP min; `2.28 - 1.40 = 0.88 mm >= 0.80 mm` step) shaft U-slot in 0.85 mm East wall
-    with bd.BuildSketch(bd.Plane.YZ.offset(5.75)) as sk_sh_u:
+            bd.Rectangle(4.78, 4.00)
+        with bd.Locations([(0.0, -3.10)]):
+            bd.Rectangle(8.00, 4.00, mode=bd.Mode.SUBTRACT)  # Only cut w >= -1.10!
+    with bd.BuildSketch(bd.Plane.YZ.offset(5.70)) as sk_sh_u:
         bd.Circle(1.40)
-        with bd.Locations([(0.0, 2.00)]):
-            bd.Rectangle(2.80, 4.00)
-    east_ear = east_ear - bd.extrude(sk_sh_u.sketch, amount=0.95)
+    east_ear = east_ear - east_seat_lower - bd.extrude(sk_e_through.sketch, amount=3.25) - bd.extrude(sk_sh_u.sketch, amount=1.00)
 
-    # 3. Bottom Bridge under wheel (`u in [-5.77, +5.77]`, `v in [-3.40, +3.40]`, `w in [-12.80, -11.45]`)
+    # 3. Bottom Bridge under wheel (`u in [-5.77, +5.75]`, `v in [-3.48, +3.48]`, `w in [-12.80, -11.45]`)
     bot_bridge = bd.Box(
-        5.77 - (-5.77), 6.80, 1.35,
+        5.75 - (-5.77), ear_v_w, 1.35,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((-5.77, 0.0, -12.80)))
 
-    # 4. South Detent Adjuster Extension + Boss (`u in [-3.55, +3.55]` = 7.10 mm, 100% coplanar with ear inner faces!):
+    # 4. South Captive Detent Adjuster Boss (`u in [-3.55, +3.55]` = 7.10 mm):
+    #    - Upper boss `v in [V_DET_MIN, V_DET_MAX]` (`[-19.12, -10.90]`), `w in [-12.80, -1.65]`
+    #    - Lower Keeper Jaw `v in [-11.12, -10.30]` (`0.82 mm >= 0.80 mm` thick!), `w in [-12.80, -4.65]`
+    #      tucked under the R=11.00 wheel curvature (`v_wheel(w=-4.65) = -9.97` -> `0.33 mm` wheel gap!)
+    #      to physically block `#09` (`w in [-5.15, -3.15]`) at `v = -11.12` while leaving upper 75% of `#09` open!
     det_web = bd.Box(
-        7.10, (-3.40) - V_DET_MIN, 1.35,
+        7.10, (-3.48) - V_DET_MIN, 1.35,
         align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((0.0, V_DET_MIN, -12.80)))
     det_boss = bd.Box(
-        7.10, V_DET_MAX - V_DET_MIN, (-1.60) - (-12.80),
+        7.10, V_DET_MAX - V_DET_MIN, (-1.65) - (-12.80),
         align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((0.0, V_DET_MIN, -12.80)))
-    det_bore = (
+    ).moved(bd.Location((0.0, V_DET_MIN, -12.80))) + bd.Box(
+        7.10, (-10.30) - (-11.12), (-4.65) - (-12.80),
+        align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((0.0, -11.12, -12.80)))
+
+    # 4a. South Ø2.85 mm brass insert pilot bore (`v in [-19.12, -16.05]`, 3.07 mm deep)
+    #     + 0.80 mm smooth conical lead-in (`v in [-16.05, -15.25]`, Ø2.85 -> Ø2.14 mm, d = 0.875 mm >= 0.80 mm!)
+    det_ins_bore = (
         bd.Cylinder(
             radius=PILOT_BORE_R,
-            height=(V_DET_MAX - V_DET_MIN) + 1.00,
+            height=(-16.05) - (V_DET_MIN - 0.50),
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
         .moved(bd.Location((0.0, V_DET_MIN - 0.50, W_DET)))
     )
+    det_cone = (
+        bd.Cone(
+            bottom_radius=PILOT_BORE_R,
+            top_radius=1.07,
+            height=(-15.25) - (-16.05),
+            align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+        )
+        .rotate(bd.Axis.X, -90)
+        .moved(bd.Location((0.0, -16.05, W_DET)))
+    )
+    # 4b. Closed Ø2.14 mm magnet guide tunnel (`v in [-15.25, -11.12]`, opens above w=-4.65 while stopped below w=-4.65 by 0.82mm jaw!)
+    det_mag_tunnel = (
+        bd.Cylinder(
+            radius=1.07,
+            height=(-11.12) - (-15.25),
+            align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
+        )
+        .rotate(bd.Axis.X, -90)
+        .moved(bd.Location((0.0, -15.25, W_DET)))
+    )
+    # 4c. Rear Top Drop-In Window (`v in [-14.35, -12.20]`, 2.15 mm long x 2.14 mm wide; 0.90 mm from cone & 1.08 mm closed tunnel ahead!)
+    det_drop_window = bd.Box(
+        2.14, (-12.20) - (-14.35), (-1.50) - W_DET,
+        align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((0.0, -14.35, W_DET)))
 
-    # 5. East Trunnion Cheek Base (`u in [+4.60, +7.60]`, `v in [-3.40, +3.40]`, `w in [-8.80, W_PIV]`):
-    # 100% coplanar in `v` (`±3.40`) with `east_ear` & `cross_base`, and top at `W_PIV = -4.65`
-    # lets `east_ear` (`u = +6.62`) share a direct edge (`d = 0`) with the Ø3.00 mm trunnions!
+    det_bore = det_ins_bore + det_cone + det_mag_tunnel + det_drop_window
+
+    # 5. East Trunnion Cheek Base (`u in [+4.60, +7.60]`, `v in [-3.48, +3.48]`, `w in [-8.80, W_PIV]`):
     cheek_block = bd.Box(
-        2.0 * TRUNNION_R, 6.80, W_PIV - (-8.80),
+        2.0 * TRUNNION_R, ear_v_w, W_PIV - (-8.80),
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((U_PIV, 0.0, -8.80)))
 
     trunnion_n = (
         bd.Cylinder(
             radius=TRUNNION_R,
-            height=4.65 - 3.40,
+            height=4.65 - 3.48,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
-        .moved(bd.Location((U_PIV, 3.40, W_PIV)))
+        .moved(bd.Location((U_PIV, 3.48, W_PIV)))
     )
     trunnion_s = (
         bd.Cylinder(
             radius=TRUNNION_R,
-            height=(-3.40) - (-4.65),
+            height=(-3.48) - (-4.65),
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
         .moved(bd.Location((U_PIV, -4.65, W_PIV)))
     )
 
-    # 6. East Cross-Base (`u in [+6.62, +9.55]`, `v in [-3.40, +3.40]`, `w in [-8.80, -7.30]`, 0.06 mm above Cradle Under-Bridge)
-    #    + Longitudinal NE Striker Arm (`u in [+9.55, +12.35]`, `v in [-1.50, +9.10]`, `w in [-8.80, -7.30]`)
-    #    + Plunger Striker Boss (`u in [+9.55, +12.35]`, `v in [+5.90, +9.10]`, `w in [-8.80, -3.30]` centered at rEXSW1!)
-    #    + Integral East Keeper Tab (`u in [+9.55, +10.55]`, `v in [-1.50, +1.50]`, `w in [-8.80, -1.15]`):
+    # 6. Coplanar Reinforced 2.15 mm East Cross-Base & Longitudinal NE Striker Arm (`w in [-8.80, -6.65]`, 0.06 mm above Cradle Under-Bridge!)
+    #    + Plunger Striker Boss (`u in [+9.30, +12.35]`, `v in [+5.90, +9.10]`, `w in [-8.80, -3.22]` centered at rEXSW1!)
+    #    + Tightened East Keeper Tab (`u in [+9.30, +10.30]`, `v in [-1.50, +1.50]`, `w in [-8.80, -1.15]`, 0.25 mm gap!)
+    #    + Over-Travel Hard Stop Boss (`u in [+11.15, +12.35]`, `v in [+2.35, +3.95]`, `w in [-8.80, +0.76]`):
     cross_base = bd.Box(
-        9.55 - 6.62, 6.80, 1.50,
+        9.30 - 6.56, ear_v_w, 2.15,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((6.62, 0.0, -8.80)))
+    ).moved(bd.Location((6.56, 0.0, -8.80)))
 
     striker_arm = bd.Box(
-        12.35 - 9.55, 9.10 - (-1.50), 1.50,
+        12.35 - 9.30, 9.10 - (-1.50), 2.15,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((9.55, -1.50, -8.80)))
+    ).moved(bd.Location((9.30, -1.50, -8.80)))
 
     striker_boss = bd.Box(
-        12.35 - 9.55, 9.10 - 5.90, (-3.22) - (-8.80),
+        12.35 - 9.30, 9.10 - 5.90, (-3.22) - (-8.80),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((9.55, 5.90, -8.80)))
+    ).moved(bd.Location((9.30, 5.90, -8.80)))
 
     keeper_tab = bd.Box(
-        10.55 - 9.55, 3.00, (-1.15) - (-8.80),
+        10.30 - 9.30, 3.00, (-1.15) - (-8.80),
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((9.55, 0.0, -8.80)))
+    ).moved(bd.Location((9.30, 0.0, -8.80)))
+
+    overtravel_stop = bd.Box(
+        12.35 - 11.15, 3.95 - 2.35, 0.76 - (-8.80),
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((11.15, 2.35, -8.80)))
 
     body = (
         west_ear
@@ -393,6 +437,7 @@ def build_wheel_rocker_local() -> bd.Solid:
         + striker_arm
         + striker_boss
         + keeper_tab
+        + overtravel_stop
         - det_bore
     )
     solid = body.solids()[0]
@@ -424,7 +469,7 @@ def build_wheel_cradle_local() -> bd.Solid:
     w_boss_bot = -3.90
     w_arch_bot = -2.55
     w_saddle_top = -3.00   # 0.75 mm below rEXSW1 housing (w = -2.25) & 3.00 mm below rU6 (w = 0.00)!
-    w_saddle_bot = -7.25
+    w_saddle_bot = -7.90   # Gives 0.90 mm base [-7.90, -7.00] that stays 0.82 mm (>= 0.80 mm) below Ø3.06 cclip (-6.18)!
 
     # 1) WC1 North-West Boss (`u in [-9.40, -4.50]`, `v in [+5.35, +10.25]`, `w in [-3.90, +1.10]`)
     #    + Flush NW Spine (`u in [-9.40, -4.50]`, `v in [+5.35, +13.80]`, `w in [-2.55, +1.10]`):
@@ -439,45 +484,53 @@ def build_wheel_cradle_local() -> bd.Solid:
     ).moved(bd.Location((-9.40, 5.35, w_arch_bot)))
 
     # 2) North Arch (`u in [-9.40, +7.50]`, `v in [+11.60, +13.80]`, `w in [-2.55, +1.10]`)
-    #    + NE Saddle Column (`u in [+4.50, +7.50]`, `v in [+5.65, +13.80]`, `w in [-4.35, +1.10]`, 0.41 mm West of rEXSW1!):
+    #    + NE Saddle Column (`u in [+4.50, +7.50]`, `v in [+5.65, +13.80]`, `w in [-7.25, +1.10]`, 0.41 mm West of rEXSW1!):
     north_arch = bd.Box(
         7.50 - (-9.40), 13.80 - 11.60, w_top - w_arch_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((-9.40, 11.60, w_arch_bot)))
     ne_col = bd.Box(
-        7.50 - 4.50, 13.80 - 5.65, w_top - (-4.35),
+        7.50 - 4.50, 13.80 - 5.65, w_top - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((4.50, 5.65, -4.35)))
+    ).moved(bd.Location((4.50, 5.65, w_saddle_bot)))
 
-    # 3) WC2 South-East Boss (`u in [+4.50, +9.25]`, `v in [-13.80, -5.65]`, `w in [-7.25, +1.10]`, coplanar bottom & East with saddle_s!):
+    # 3) WC2 South-East Boss (`u in [+4.50, +9.35]`, `v in [-13.80, -5.65]`, `w in [-7.25, +1.10]`):
     block_wc2 = bd.Box(
-        9.25 - 4.50, (-5.65) - (-13.80), w_top - w_saddle_bot,
+        9.35 - 4.50, (-5.65) - (-13.80), w_top - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((4.50, -13.80, w_saddle_bot)))
 
-    # 4) North & South C-Clip Saddle Blocks (`u in [+3.55, +9.25]`, `w in [-7.25, -3.00]`):
+    # 4) Symmetric Decoupled-Cantilever C-Clip Saddle Blocks (`u in [+3.68, +8.52]` = 6.10 ± 2.42 mm -> 0.89 mm symmetric jaws!):
+    #    0.93 mm (>= 0.80 mm) relief slots `v in [+4.72, +5.65]` & `[-5.65, -4.72]` down to `w = -6.20` decouple jaws from ne_col/block_wc2!
     saddle_n_block = bd.Box(
-        9.25 - 3.55, 7.50 - 3.55, w_saddle_top - w_saddle_bot,
+        8.52 - 3.68, 4.72 - 3.55, w_saddle_top - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((3.55, 3.55, w_saddle_bot)))
-    saddle_s_block = bd.Box(
-        9.25 - 3.55, (-3.55) - (-7.50), w_saddle_top - w_saddle_bot,
+    ).moved(bd.Location((3.68, 3.55, w_saddle_bot))) + bd.Box(
+        8.52 - 3.68, 5.65 - 4.72, (-7.00) - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((3.55, -7.50, w_saddle_bot)))
+    ).moved(bd.Location((3.68, 4.72, w_saddle_bot)))
 
-    # 5) Coplanar East Side Legs + Under-Arm Rest-Stop Bridge (`u in [+7.85, +9.25]` = 1.40 mm wide):
+    saddle_s_block = bd.Box(
+        8.52 - 3.68, (-3.55) - (-4.72), w_saddle_top - w_saddle_bot,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((3.68, -4.72, w_saddle_bot))) + bd.Box(
+        8.52 - 3.68, (-4.72) - (-5.65), (-7.00) - w_saddle_bot,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((3.68, -5.65, w_saddle_bot)))
+
+    # 5) Coplanar East Side Legs + Under-Arm Rest-Stop Bridge (`u in [+7.50, +8.52]` = 1.02 mm wide, flush at +7.50 & +8.52!):
     leg_n = bd.Box(
-        9.25 - 7.85, 5.65 - 3.55, w_saddle_bot - (-10.20),
+        8.52 - 7.50, 5.65 - 3.55, w_saddle_bot - (-10.20),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((7.85, 3.55, -10.20)))
+    ).moved(bd.Location((7.50, 3.55, -10.20)))
     leg_s = bd.Box(
-        9.25 - 7.85, (-3.55) - (-5.65), w_saddle_bot - (-10.20),
+        8.52 - 7.50, (-3.55) - (-5.65), w_saddle_bot - (-10.20),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((7.85, -5.65, -10.20)))
+    ).moved(bd.Location((7.50, -5.65, -10.20)))
     under_bridge = bd.Box(
-        9.25 - 7.85, 5.65 - (-5.65), (-8.86) - (-10.20),
+        8.52 - 7.50, 5.65 - (-5.65), (-8.86) - (-10.20),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((7.85, -5.65, -10.20)))
+    ).moved(bd.Location((7.50, -5.65, -10.20)))
 
     body = (
         block_wc1
@@ -492,33 +545,32 @@ def build_wheel_cradle_local() -> bd.Solid:
         + under_bridge
     )
 
-    # Captive C-Clip Snap-In Hinge Cuts (Ø3.06 mm bore + 2.66 mm snap throat -> 239 deg wrap, >= 0.89 mm jaw walls!)
-    # Ends at v = ±4.73, leaving 5.65 - 4.73 = 0.92 mm solid back wall before ne_col / block_wc2!
+    # Captive C-Clip Snap-In Hinge Cuts (Ø3.06 mm bore + 2.82 mm snap throat through full decoupled jaw v in [±3.50, ±4.80]!)
     cclip_n = (
         bd.Cylinder(
             radius=SADDLE_R,
-            height=4.73 - 3.50,
+            height=4.80 - 3.50,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
         .moved(bd.Location((U_PIV, 3.50, W_PIV)))
         + bd.Box(
-            SADDLE_THROAT_W, 4.73 - 3.50, 1.80,
+            SADDLE_THROAT_W, 4.80 - 3.50, 1.80,
             align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
         ).moved(bd.Location((U_PIV, 3.50, W_PIV)))
     )
     cclip_s = (
         bd.Cylinder(
             radius=SADDLE_R,
-            height=(-3.50) - (-4.73),
+            height=(-3.50) - (-4.80),
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
-        .moved(bd.Location((U_PIV, -4.73, W_PIV)))
+        .moved(bd.Location((U_PIV, -4.80, W_PIV)))
         + bd.Box(
-            SADDLE_THROAT_W, (-3.50) - (-4.73), 1.80,
+            SADDLE_THROAT_W, (-3.50) - (-4.80), 1.80,
             align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
-        ).moved(bd.Location((U_PIV, -4.73, W_PIV)))
+        ).moved(bd.Location((U_PIV, -4.80, W_PIV)))
     )
 
     bore_wc1 = bd.Cylinder(
@@ -542,8 +594,8 @@ def build_hardware_parts_local():
     """
     Build off-the-shelf hardware solids in `(u, v, w)` frame:
       - 2x DDL-520ZZ Bearings (`Ø2.01 x Ø4.99 x 2.26 mm` nominal clearance representation for 0.00000000 mm^3 overlap)
-      - 1x D4x1mm Diametric NdFeB Magnet (`u in [+8.04, +9.02]`)
-      - 1x Ø2.0 x 2.0 mm Axial NdFeB Detent Magnet (`v in [-13.08, -11.08]`, `w = W_DET`)
+      - 1x D4x1mm Diametric NdFeB Magnet (`u in [+8.06, +9.04]`)
+      - 1x Ø2.0 x 2.0 mm Axial NdFeB Detent Magnet (`v in [-13.35, -11.35]`, `w = W_DET` inside closed Ø2.14 mm tunnel)
       - 1x M2 x 6.0 mm Steel Detent Adjuster Screw + 1x M2 x L=3.0 mm Brass Insert in Rocker Detent Boss
       - 2x M2 x L=3.0 mm Brass Inserts in Cradle WC1/WC2 Bosses
     """
@@ -557,7 +609,7 @@ def build_hardware_parts_local():
         parts.append(brg)
 
     mag_d4 = bd.extrude(
-        bd.Plane.YZ.offset(8.04) * bd.Circle(MAG_D4_R),
+        bd.Plane.YZ.offset(8.06) * bd.Circle(MAG_D4_R),
         amount=0.98,
     ).solids()[0]
     mag_d4.label = "Magnet_D4x1mm_Diametric"
@@ -566,7 +618,7 @@ def build_hardware_parts_local():
     mag_det = (
         bd.Cylinder(radius=0.99, height=2.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
         .rotate(bd.Axis.X, -90)
-        .moved(bd.Location((0.0, -13.08, W_DET)))
+        .moved(bd.Location((0.0, -13.35, W_DET)))
         .solids()[0]
     )
     mag_det.label = "Magnet_D2x2mm_Axial_Detent"
@@ -588,12 +640,12 @@ def build_hardware_parts_local():
     scr_shank = (
         bd.Cylinder(radius=0.98, height=6.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX))
         .rotate(bd.Axis.X, -90)
-        .moved(bd.Location((0.0, -13.10, W_DET)))
+        .moved(bd.Location((0.0, -13.37, W_DET)))
     )
     scr_head = (
         bd.Cylinder(radius=1.90, height=1.20, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX))
         .rotate(bd.Axis.X, -90)
-        .moved(bd.Location((0.0, -19.10, W_DET)))
+        .moved(bd.Location((0.0, -19.37, W_DET)))
     )
     scr_det = (scr_shank + scr_head).solids()[0]
     scr_det.label = "Screw_M2x6_Detent_Adjuster"
@@ -710,21 +762,27 @@ def verify_6dof_constraints():
         assert ov_whl > 0.0, f"Steel Flywheel NOT captured along {tag}!"
     print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] Bearing & Wheel C-Clip Retention: locked in ±u, ±v, -w, and +w upward (max lift 0.060 mm)", flush=True)
 
-    # 3. East-Reversed `#02` Magnet Holder & `#08` Magnet Retention (`±u, ±v, ±w` + `Rx` D-flat anti-twist!)
+    # 3. East-Reversed `#02` Magnet Holder, `#08` Magnet & `#09` Detent Magnet Retention
     assert overlap_volume(holder.moved(bd.Location((-0.10, 0.0, 0.0))), wheel) > 0.0, "#02 not stopped -u by shaft shoulder!"
-    assert overlap_volume(holder.moved(bd.Location((0.65, 0.0, 0.0))), rocker) > 0.0, "#02 not stopped +u by East Keeper Tab!"
+    assert overlap_volume(holder.moved(bd.Location((0.30, 0.0, 0.0))), rocker) > 0.0, "#02 not stopped +u by East Keeper Tab!"
     for vec in ((0.0, 0.05, 0.0), (0.0, -0.05, 0.0), (0.0, 0.0, 0.05), (0.0, 0.0, -0.05)):
         assert overlap_volume(holder.moved(bd.Location(vec)), wheel) > 0.0, f"#02 not radially locked at {vec}!"
     for tw_deg in (-3.0, +3.0):
         assert overlap_volume(holder.rotate(spin_axis, tw_deg).solids()[0], wheel) > 0.0, "#02 D-flat did not lock Rx twist!"
 
     assert overlap_volume(mag_d4.moved(bd.Location((-0.10, 0.0, 0.0))), holder) > 0.0, "#08 not stopped -u!"
-    assert overlap_volume(mag_d4.moved(bd.Location((0.65, 0.0, 0.0))), rocker) > 0.0, "#08 not stopped +u by East Keeper Tab!"
+    assert overlap_volume(mag_d4.moved(bd.Location((0.35, 0.0, 0.0))), rocker) > 0.0, "#08 not stopped +u by East Keeper Tab!"
     for vec in ((0.0, 0.05, 0.0), (0.0, -0.05, 0.0), (0.0, 0.0, 0.05), (0.0, 0.0, -0.05)):
         assert overlap_volume(mag_d4.moved(bd.Location(vec)), holder) > 0.0, f"#08 not radially locked at {vec}!"
-    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #02 Magnet Holder & #08 Magnet Retention: locked in ±u (East Keeper Tab), ±v, ±w, and D-flat Rx", flush=True)
 
-    # 4. `#03` Rocker Captive C-Clip Snap-In Hinge (`±u, ±v, +w, -w` locked to `#04` Cradle ALONE, without PCB!)
+    # #09 Detent Magnet MUST be locked radially inside Ø2.14 mm closed tunnel AND physically stopped +v before touching wheel!
+    for vec in ((0.12, 0.0, 0.0), (-0.12, 0.0, 0.0), (0.0, 0.0, 0.12), (0.0, 0.0, -0.12)):
+        assert overlap_volume(_mag_det.moved(bd.Location(vec)), rocker) > 0.0, f"#09 not radially guided in tunnel at {vec}!"
+    assert overlap_volume(_mag_det.moved(bd.Location((0.0, 0.30, 0.0))), rocker) > 0.0, "#09 NOT stopped +v by North Lower Keeper Jaw!"
+    assert overlap_volume(_mag_det.moved(bd.Location((0.0, 0.22, 0.0))), wheel) == 0.0, "#09 touched wheel before hitting North Keeper Jaw!"
+    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #02/#08 & #09 Captive Magnet Retention: tight 0.25mm East Keeper + closed Ø2.14mm tunnel & North Keeper Jaw", flush=True)
+
+    # 4. `#03` Rocker Captive C-Clip Snap-In Hinge + Over-Travel Hard Stop (`+3.30 deg` hits PCB before switch housing!)
     _check_timeout("verify_6dof:hinge")
     for tag, vec in (
         ("+u", (0.08, 0.0, 0.0)),
@@ -745,9 +803,13 @@ def verify_6dof_constraints():
     assert overlap_volume(rk_click, sw_plunger) > 0.0, f"Middle-click {CLICK_PRESS_DEG:.2f} deg did NOT compress rEXSW1 plunger!"
     assert overlap_volume(rk_click, sw_housing) == 0.0, f"Middle-click {CLICK_PRESS_DEG:.2f} deg bottomed out against rEXSW1 housing!"
 
+    rk_overtravel = rocker.rotate(piv_axis, 3.30).solids()[0]
+    assert overlap_volume(rk_overtravel, pcb_ceiling) > 0.0, "Over-travel stop did NOT engage PCB ceiling by +3.30 deg!"
+    assert overlap_volume(rk_overtravel, sw_housing) == 0.0, "Over-travel hit rEXSW1 housing before stop!"
+
     rk_pull_up = rocker.rotate(piv_axis, -1.50).solids()[0]
     assert overlap_volume(rk_pull_up, cradle) > 0.0, "Upward wheel pull (-1.50 deg) did NOT hit cradle under-bridge stop!"
-    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #03 Captive C-Clip Seesaw Hinge: locked to #04 Cradle ALONE in ±u, ±v, +w, -w; +{CLICK_PRESS_DEG:.2f} deg click, -1.50 deg stop", flush=True)
+    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #03 Captive C-Clip Seesaw Hinge & Over-Travel Stop: +{CLICK_PRESS_DEG:.2f} deg click, +3.30 deg PCB hard-stop, -1.50 deg pull stop", flush=True)
 
     # 5. `#04` Static Cradle Clamping (`±u, ±v, +w` locked by Main PCB & WC1/WC2 screws)
     assert overlap_volume(cradle.moved(bd.Location((0.0, 0.0, 0.05))), pcb_ceiling) > 0.0, "#04 not seated against PCB!"
