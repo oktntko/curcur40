@@ -99,7 +99,7 @@ MAG_D4_R = 1.99                         # Ø4.00 x 1.00 mm diametric magnet at u
 
 # Seesaw Pivot (Decoupled >=1.55 mm Cantilever C-Clip Hinge) & Middle-Click Kinematics:
 U_PIV = +6.35                           # x_pcb = +20.6375 mm (gives >= 1.20 mm terrace to east_ear +3.55!)
-W_PIV = -6.35                           # Z_piv = -13.73 mm; places flat-sliced C-clip top w = -5.45 cleanly 1.30 mm below WC2 floor!
+W_PIV = -6.85                           # Z_piv = -14.23 mm; gives 5.32 mm deep WC1/WC2 blind bores (0.92 mm screw tip clearance & >=0.31mm plate clr!)
 TRUNNION_R = 1.60                       # Ø3.20 mm integral PA12 trunnions (>= Ø3.0 mm JLC3DP Section 8 column rule!)
 SADDLE_R = 1.75                         # Ø3.50 mm C-clip bore (+0.30 mm JLC3DP Section 5A assembly clearance!)
 SADDLE_THROAT_W = 3.00                  # 3.00 mm snap throat (0.20 mm interference absorbed by 6.2 mm x 1.55 mm free West jaw at 1.21% strain!)
@@ -255,25 +255,37 @@ def build_steel_flywheel_local() -> bd.Solid:
         )
     rim = rim - bd.Compound(flutes)
 
-    shoulders = bd.extrude(
-        bd.Plane.YZ.offset(STEP_U_WEST) * bd.Circle(STEP_SHOULDER_R),
-        amount=STEP_U_EAST - STEP_U_WEST,
-    )
-    shaft = bd.extrude(
-        bd.Plane.YZ.offset(SHAFT_U_WEST) * bd.Circle(SHAFT_R),
-        amount=SHAFT_U_EAST - SHAFT_U_WEST,
-    )
-
-    # Lathe R=0.50 mm undercut relief grooves at West (`u = -3.70`) and East (`u = +1.70`) bearing shoulders
-    # (`r_center = 0.985 + 0.44 = 1.425`, `u_center = u_sh ∓ 0.22` -> min neck Ø1.85 mm, relieves R=0.20 lathe tool nose!)
-    undercuts = []
-    for u_c in (STEP_U_WEST - 0.22, STEP_U_EAST + 0.22):
-        tor = bd.revolve(
-            bd.Plane.XY.offset(0.0) * bd.Pos(u_c, 1.425) * bd.Circle(0.50),
-            axis=bd.Axis.X,
-            revolution_arc=360,
-        )
-        undercuts.append(tor)
+    # Revolved 1-piece stepped shaft + Ø3.00 mm inner-race shoulders (`u in [-3.70, +1.70]`, exact 5.4000 mm span!)
+    # with true DIN 509 Type E `R = 0.20 mm` radial lathe relief undercuts (`Ø1.60 mm` neck, `r_tan = 1.000 mm <= DDL-520ZZ bore`
+    # leaving `r in [1.000, 1.500]` 100% flat vertical shoulder faces at `u = -3.7000` & `u = +1.7000`!):
+    s45 = math.sqrt(0.5)
+    r_neck = 0.800
+    r_rad = 0.200
+    r_tan = r_neck + r_rad  # 1.000 mm (<= 1.000 mm DDL-520ZZ bore -> even a zero-chamfer ring gauge seats 100% flat!)
+    with bd.BuildSketch(bd.Plane.XY.offset(0.0)) as sk_shaft:
+        with bd.BuildLine():
+            bd.Line((SHAFT_U_WEST, 0.0), (SHAFT_U_WEST, SHAFT_R))
+            bd.Line((SHAFT_U_WEST, SHAFT_R), (STEP_U_WEST - 0.42, SHAFT_R))
+            bd.Line((STEP_U_WEST - 0.42, SHAFT_R), (STEP_U_WEST - r_rad, r_neck))
+            bd.ThreePointArc(
+                (STEP_U_WEST - r_rad, r_neck),
+                (STEP_U_WEST - r_rad + r_rad * s45, r_tan - r_rad * s45),
+                (STEP_U_WEST, r_tan),
+            )
+            bd.Line((STEP_U_WEST, r_tan), (STEP_U_WEST, STEP_SHOULDER_R))
+            bd.Line((STEP_U_WEST, STEP_SHOULDER_R), (STEP_U_EAST, STEP_SHOULDER_R))
+            bd.Line((STEP_U_EAST, STEP_SHOULDER_R), (STEP_U_EAST, r_tan))
+            bd.ThreePointArc(
+                (STEP_U_EAST, r_tan),
+                (STEP_U_EAST + r_rad - r_rad * s45, r_tan - r_rad * s45),
+                (STEP_U_EAST + r_rad, r_neck),
+            )
+            bd.Line((STEP_U_EAST + r_rad, r_neck), (STEP_U_EAST + 0.42, SHAFT_R))
+            bd.Line((STEP_U_EAST + 0.42, SHAFT_R), (SHAFT_U_EAST, SHAFT_R))
+            bd.Line((SHAFT_U_EAST, SHAFT_R), (SHAFT_U_EAST, 0.0))
+            bd.Line((SHAFT_U_EAST, 0.0), (SHAFT_U_WEST, 0.0))
+        bd.make_face()
+    shaft_with_shoulders = bd.revolve(sk_shaft.sketch, axis=bd.Axis.X, revolution_arc=360)
 
     # East D-flat (`u in [+5.15, +6.55]`, `w >= +0.68`) + R=1.50 mm cylindrical tool sweep exit at `u = +5.15`:
     d_box = bd.Box(
@@ -287,7 +299,7 @@ def build_steel_flywheel_local() -> bd.Solid:
         .rotate(bd.Axis.X, 90)
         .moved(bd.Location((5.15, 0.0, 0.68 + 1.50)))
     )
-    body = rim + shoulders + shaft - bd.Compound(undercuts) - d_box - d_ramp_cyl
+    body = rim + shaft_with_shoulders - d_box - d_ramp_cyl
     solid = body.solids()[0]
     solid.label = "Steel_Flywheel_22mm"
     return solid
@@ -342,13 +354,13 @@ def build_wheel_rocker_local() -> bd.Solid:
     """
     ear_v_w = 7.52  # v in [-3.76, +3.76] -> 1.20 mm root jaw, 0.24 mm/side clear of ±4.00 saddles!
 
-    # 1. West Bearing Ear (`u in [-7.60, -3.70]`, `v in [-3.76, +3.76]`, `w in [-13.20, +1.02]`):
+    # 1. West Bearing Ear (`u in [-7.60, -3.70]`, `v in [-3.76, +3.76]`, `w in [-13.70, +1.02]`):
     #    Flat top at `w = +1.02` intersects `R = 2.56` directly (`4.69 mm` C-clip throat, `1.41 mm >= 1.20 mm` top jaw!);
     #    1.55 mm thick solid lower West end-wall (`u in [-7.60, -6.05]`, `w < -1.80`) stops bearing `-u`!
     west_ear = bd.Box(
-        (-3.70) - (-7.60), ear_v_w, 1.02 - (-13.20),
+        (-3.70) - (-7.60), ear_v_w, 1.02 - (-13.70),
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((-7.60, 0.0, -13.20)))
+    ).moved(bd.Location((-7.60, 0.0, -13.70)))
     west_seat_lower = bd.extrude(bd.Plane.YZ.offset(-6.05) * bd.Circle(2.56), amount=2.45)
     with bd.BuildSketch(bd.Plane.YZ.offset(-7.70)) as sk_w_through:
         bd.Circle(2.56)
@@ -356,36 +368,36 @@ def build_wheel_rocker_local() -> bd.Solid:
             bd.Rectangle(9.00, 4.00, mode=bd.Mode.SUBTRACT)  # Only cut w >= -1.80!
     west_ear = west_ear - west_seat_lower - bd.extrude(sk_w_through.sketch, amount=4.10)
 
-    # 2. East Bearing Ear (`u in [+1.70, +3.55]` = 1.85 mm >= 1.50 mm, `v in [-3.76, +3.76]`, `w in [-13.20, +1.02]`):
+    # 2. East Bearing Ear (`u in [+1.70, +3.55]` = 1.85 mm >= 1.50 mm, `v in [-3.76, +3.76]`, `w in [-13.70, +1.02]`):
     east_ear = bd.Box(
-        3.55 - 1.70, ear_v_w, 1.02 - (-13.20),
+        3.55 - 1.70, ear_v_w, 1.02 - (-13.70),
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((1.70, 0.0, -13.20)))
+    ).moved(bd.Location((1.70, 0.0, -13.70)))
     with bd.BuildSketch(bd.Plane.YZ.offset(1.60)) as sk_e_through:
         bd.Circle(2.56)
     east_ear = east_ear - bd.extrude(sk_e_through.sketch, amount=2.05)
 
-    # 3. 1.60 mm Thick Bottom Stirrup Bridge (`u in [-7.60, +3.55]`, `v in [-4.10, +4.10]`, `w in [-13.20, -11.60]`)
+    # 3. 1.60 mm Thick Bottom Stirrup Bridge (`u in [-7.60, +3.55]`, `v in [-4.10, +4.10]`, `w in [-13.70, -12.10]`)
     bot_bridge = bd.Box(
         3.55 - (-7.60), ear_v_w, 1.60,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((-7.60, 0.0, -13.20)))
+    ).moved(bd.Location((-7.60, 0.0, -13.70)))
 
     # 4. South Open-Top Captive Detent Boss (`u in [-3.70, +1.70]` = 5.40 mm wide, 100% flush with inner ear faces!):
-    #    - Main boss `v in [-19.12, -10.80]`, `w in [-13.20, -4.05]` (`>= 1.225 mm` roof over Ø2.85 bore, `0.53 mm` clear of wheel!)
-    #    - 1.50 mm thick North Lower Keeper Wall `v in [-10.80, -8.55]`, `w in [-13.20, -7.50]` (`0.37 mm` clear of wheel!)
+    #    - Main boss `v in [-19.12, -10.80]`, `w in [-13.70, -4.05]` (`>= 1.225 mm` roof over Ø2.85 bore, `0.53 mm` clear of wheel!)
+    #    - 2.25 mm thick North Lower Keeper Wall `v in [-10.80, -8.55]`, `w in [-13.70, -7.50]` (`0.37 mm` clear of wheel!)
     det_w_u = 1.70 - (-3.70)  # 5.40 mm centered at u = -1.00 (U_DET = -0.95 -> side walls >= 1.50 mm!)
     det_web = bd.Box(
         det_w_u, (-3.76) - V_DET_MIN, 1.60,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-3.70, V_DET_MIN, -13.20)))
+    ).moved(bd.Location((-3.70, V_DET_MIN, -13.70)))
     det_boss = bd.Box(
-        det_w_u, (-10.80) - V_DET_MIN, (-4.05) - (-13.20),
+        det_w_u, (-10.80) - V_DET_MIN, (-4.05) - (-13.70),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-3.70, V_DET_MIN, -13.20))) + bd.Box(
-        det_w_u, (-8.55) - (-10.80), (-7.50) - (-13.20),
+    ).moved(bd.Location((-3.70, V_DET_MIN, -13.70))) + bd.Box(
+        det_w_u, (-8.55) - (-10.80), (-7.50) - (-13.70),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-3.70, -10.80, -13.20)))
+    ).moved(bd.Location((-3.70, -10.80, -13.70)))
 
     # 4a. South Ø2.85 mm brass insert bore (`v in [-19.12, -15.92]`, 3.20 mm deep -> h/Φ = 1.12 <= 3.0!)
     #     + 1.30 mm smooth conical lead-in (`v in [-15.92, -14.62]`, >= 1.20 mm!)
@@ -424,14 +436,14 @@ def build_wheel_rocker_local() -> bd.Solid:
     ).moved(bd.Location((U_DET, -14.62, W_DET)))
     det_bore = det_ins_bore + det_cone + det_mag_tunnel + det_open_trough
 
-    # 5. East Trunnion Cheek Base (`u in [+3.55, +6.70]` down to `-13.20`, `+7.95` down to `-11.80`, coplanar with `cross_base`!):
+    # 5. East Trunnion Cheek Base (`u in [+3.55, +6.70]` down to `-13.70`, `+7.95` down to `-12.30`, coplanar with `cross_base`!):
     cheek_block = bd.Box(
-        6.70 - 3.55, ear_v_w, W_PIV - (-13.20),
+        6.70 - 3.55, ear_v_w, W_PIV - (-13.70),
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((3.55, 0.0, -13.20))) + bd.Box(
-        7.95 - 3.55, ear_v_w, W_PIV - (-11.80),
+    ).moved(bd.Location((3.55, 0.0, -13.70))) + bd.Box(
+        7.95 - 3.55, ear_v_w, W_PIV - (-12.30),
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((3.55, 0.0, -11.80)))
+    ).moved(bd.Location((3.55, 0.0, -12.30)))
 
     trunnion_n = (
         bd.Cylinder(
@@ -456,24 +468,24 @@ def build_wheel_rocker_local() -> bd.Solid:
     # Place striker_boss top at -2.78 so 2.95 deg click compresses rEXSW1 plunger (-2.72) by 0.18 mm!
     # Every adjacent step is >= 1.25 mm (7.95 -> 9.30 -> 10.55 -> 12.25), zero <1.20 mm shelves!
     cross_base = bd.Box(
-        10.55 - 7.95, ear_v_w, (-9.20) - (-11.80),
+        10.55 - 7.95, ear_v_w, (-9.70) - (-12.30),
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((7.95, 0.0, -11.80)))
+    ).moved(bd.Location((7.95, 0.0, -12.30)))
 
     striker_arm = bd.Box(
-        12.25 - 10.55, 9.10 - (-2.20), (-9.20) - (-11.80),
+        12.25 - 10.55, 9.10 - (-2.20), (-9.70) - (-12.30),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((10.55, -2.20, -11.80)))
+    ).moved(bd.Location((10.55, -2.20, -12.30)))
 
     striker_boss = bd.Box(
-        12.25 - 10.55, 9.10 - 5.90, (-2.78) - (-11.80),
+        12.25 - 10.55, 9.10 - 5.90, (-2.78) - (-12.30),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((10.55, 5.90, -11.80)))
+    ).moved(bd.Location((10.55, 5.90, -12.30)))
 
     keeper_tab = bd.Box(
-        12.25 - 9.30, 4.40, (-1.00) - (-11.80),
+        12.25 - 9.30, 4.40, (-1.00) - (-12.30),
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((9.30, 0.0, -11.80)))
+    ).moved(bd.Location((9.30, 0.0, -12.30)))
 
     overtravel_nose = bd.Box(
         (-3.70) - (-7.60), 5.02 - 3.76, (-2.40) - (-4.00),
@@ -519,11 +531,12 @@ def build_wheel_cradle_local() -> bd.Solid:
     v_wc2 = -(WC2_PCB[1] - Y_AXLE_PCB)  # -8.0000
 
     w_top = 1.58
-    w_wc1_bot = -6.70      # Coplanar base under WC1 boss & South over-travel stop shelf (`w in [-6.70, -5.00]`)
+    w_wc1_bot = -6.70      # Coplanar base under WC1 boss (`2.96 mm` solid floor below `5.32 mm` bore!) & South stop shelf
     w_arch_bot = -2.60
-    w_upper_floor = -4.15  # 1.23 mm solid floor under 4.50 mm deep WC2 bore (-2.92), 1.30 mm above saddle top (-5.45)!
-    w_saddle_top = -5.30   # Exact flat-sliced 2.80 mm C-clip throat on Ø3.50 mm bore at W_PIV = -6.35 (holds Ø3.20 even at +0.30 mm JLC3DP tol!)
-    w_saddle_bot = -10.95  # Gives >= 1.55 mm thick decoupled C-clip jaws with 1.25 mm below Ø3.50 bore & 1.60 mm lower bridge!
+    w_upper_floor = -4.77  # 1.03 mm solid floor under 5.32 mm deep WC2 bore (-3.74), 1.03 mm above saddle top (-5.80)!
+    w_saddle_top = -5.80   # Exact flat-sliced 2.80 mm C-clip throat on Ø3.50 mm bore at W_PIV = -6.85 (holds Ø3.20 even at +0.30 mm JLC3DP tol!)
+    w_saddle_bot = -11.45  # Gives >= 1.55 mm thick decoupled C-clip jaws with 1.25 mm below Ø3.50 bore & 1.60 mm lower bridge!
+    w_slot_bot = -9.85
 
     # 1) WC1 North-West Spine/Boss (`u in [-9.40, -4.40]`, `v in [+5.35, +13.80]`, `w in [-6.70, +1.58]` -> >=1.025 mm wall around WC1 bore!)
     #    + 1.27 mm South Over-Travel Hard-Stop Shelf (`v in [+4.08, +5.35]`, `w in [-6.70, -5.00]` -> 0.32 mm clear of west_ear +3.76!):
@@ -536,7 +549,7 @@ def build_wheel_cradle_local() -> bd.Solid:
     ).moved(bd.Location((-9.40, 4.08, w_wc1_bot)))
 
     # 2) North Arch (`u in [-9.40, +7.60]`, `v in [+11.50, +13.80]` = 2.30 mm, `w in [-2.60, +1.58]`)
-    #    + NE Column (`u in [+3.05, +7.60]`, `0.31 mm` West of rEXSW1, `v in [+7.20, +13.80]`, `w in [-10.25, +1.58]`):
+    #    + NE Column (`u in [+3.05, +7.60]`, `0.31 mm` West of rEXSW1, `v in [+7.20, +13.80]`, `w in [-12.15, +1.58]`):
     north_arch = bd.Box(
         7.60 - (-9.40), 13.80 - 11.50, w_top - w_arch_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
@@ -547,8 +560,8 @@ def build_wheel_cradle_local() -> bd.Solid:
     ).moved(bd.Location((3.05, 7.20, w_saddle_bot)))
 
     # 3) WC2 South-East Boss:
-    #    - Upper WC2 boss `u in [+3.05, +9.65]`, `v in [-13.80, -5.55]`, `w in [-4.15, +1.58]` (`>= 1.025 mm` wall around bore_wc2, clears ±5.30 trunnion top-down!)
-    #    - Lower SE column `u in [+3.05, +9.65]`, `v in [-13.80, -7.20]`, `w in [-10.95, -4.15]`
+    #    - Upper WC2 boss `u in [+3.05, +9.65]`, `v in [-13.80, -5.55]`, `w in [-5.35, +1.58]` (`>= 1.025 mm` wall around bore_wc2, clears ±5.30 trunnion top-down!)
+    #    - Lower SE column `u in [+3.05, +9.65]`, `v in [-13.80, -7.20]`, `w in [-12.15, -5.35]`
     #      -> Leaves a wide-open `1.65 mm` (`v in [-7.20, -5.55]`) powder-escape slot behind `saddle_s`!
     block_wc2 = bd.Box(
         9.65 - 3.05, (-5.55) - (-13.80), w_top - w_upper_floor,
@@ -559,12 +572,12 @@ def build_wheel_cradle_local() -> bd.Solid:
     ).moved(bd.Location((3.05, -13.80, w_saddle_bot)))
 
     # 4) Symmetric Decoupled C-Clip Saddle Blocks (`u in [+3.05, +9.65]` = 6.35 ± 3.30 mm -> 1.55 mm symmetric jaws!)
-    #    with 1.65 mm wide open relief slots (`v in [±5.55, ±7.20]`) down to `w = -9.35` (1.25 mm below bore, 1.60 mm lower bridge!):
+    #    with 1.65 mm wide open relief slots (`v in [±5.55, ±7.20]`) down to `w = -10.55` (1.25 mm below bore, 1.60 mm lower bridge!):
     saddle_n_block = bd.Box(
         9.65 - 3.05, 5.55 - 4.00, w_saddle_top - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((3.05, 4.00, w_saddle_bot))) + bd.Box(
-        7.60 - 3.05, 7.20 - 5.55, (-9.35) - w_saddle_bot,
+        7.60 - 3.05, 7.20 - 5.55, w_slot_bot - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((3.05, 5.55, w_saddle_bot)))
 
@@ -572,23 +585,23 @@ def build_wheel_cradle_local() -> bd.Solid:
         9.65 - 3.05, (-4.00) - (-5.55), w_saddle_top - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((3.05, -5.55, w_saddle_bot))) + bd.Box(
-        9.65 - 3.05, (-5.55) - (-7.20), (-9.35) - w_saddle_bot,
+        9.65 - 3.05, (-5.55) - (-7.20), w_slot_bot - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((3.05, -7.20, w_saddle_bot)))
 
-    # 5) 2.05 mm Wide East Side Legs (`u in [+7.60, +9.65]`, 100% flush with ne_col & saddle!) + 1.60 mm Thick Under-Bridge (`w in [-13.80, -12.20]`, 1.25 mm window!):
+    # 5) 2.05 mm Wide East Side Legs (`u in [+7.60, +9.65]`, 100% flush with ne_col & saddle!) + 1.60 mm Thick Under-Bridge (`w in [-14.30, -12.70]`):
     leg_n = bd.Box(
-        9.65 - 7.60, 5.55 - 4.00, w_saddle_bot - (-13.80),
+        9.65 - 7.60, 5.55 - 4.00, w_saddle_bot - (-14.30),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((7.60, 4.00, -13.80)))
+    ).moved(bd.Location((7.60, 4.00, -14.30)))
     leg_s = bd.Box(
-        9.65 - 7.60, (-4.00) - (-5.55), w_saddle_bot - (-13.80),
+        9.65 - 7.60, (-4.00) - (-5.55), w_saddle_bot - (-14.30),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((7.60, -5.55, -13.80)))
+    ).moved(bd.Location((7.60, -5.55, -14.30)))
     under_bridge = bd.Box(
-        9.65 - 7.60, 5.55 - (-5.55), (-12.20) - (-13.80),
+        9.65 - 7.60, 5.55 - (-5.55), (-12.70) - (-14.30),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((7.60, -5.55, -13.80)))
+    ).moved(bd.Location((7.60, -5.55, -14.30)))
 
     body = (
         block_wc1
@@ -602,7 +615,7 @@ def build_wheel_cradle_local() -> bd.Solid:
         + under_bridge
     )
 
-    # Captive C-Clip Snap-In Hinge Cuts (Ø3.50 mm bore at W_PIV=-6.35 -> natural 3.00 mm snap throat at w_saddle_top=-5.45!)
+    # Captive C-Clip Snap-In Hinge Cuts (Ø3.50 mm bore at W_PIV=-7.55 -> natural 2.80 mm snap throat at w_saddle_top=-6.50!)
     cclip_n = (
         bd.Cylinder(
             radius=SADDLE_R,
@@ -622,15 +635,15 @@ def build_wheel_cradle_local() -> bd.Solid:
         .moved(bd.Location((U_PIV, -5.65, W_PIV)))
     )
 
-    # Blind M2 insert bores (`Φ2.85 mm x depth 4.50 mm` -> `h/Φ = 1.58 <= 3.0`, plenty for 3.0mm insert + M2x6mm screw tip!)
+    # Blind M2 insert bores (`Φ2.85 mm x depth 5.32 mm` -> `h/Φ = 1.87 <= 3.0`, gives 0.92 mm bottom gap under M2x6mm screw tip!)
     bore_wc1 = bd.Cylinder(
         radius=PILOT_BORE_R,
-        height=4.60,
+        height=5.42,
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX),
     ).moved(bd.Location((u_wc1, v_wc1, w_top + 0.10)))
     bore_wc2 = bd.Cylinder(
         radius=PILOT_BORE_R,
-        height=4.60,
+        height=5.42,
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MAX),
     ).moved(bd.Location((u_wc2, v_wc2, w_top + 0.10)))
 
@@ -763,7 +776,7 @@ def generate_flywheel_2d_drawing_pdf(mass_g: float, j_inertia: float):
         "3. CRITICAL FIT: Both bearing journals & East D-shaft MUST be ⌀1.97 ±0.02 mm",
         "   (1.950 - 1.990 mm AFTER finish) to fit DDL-520ZZ inner bore (⌀2.000 -0.004/+0).",
         "4. 24x outer axial flutes use R1.50 mm profile (standard ⌀2.0 - ⌀3.0 mm end mill).",
-        "5. Deburr outer edges C0.20 max. Bearing shoulders include R0.50 relief undercuts.",
+        "5. Deburr outer edges C0.20 max. Bearing shoulders include DIN 509 R0.20 relief undercuts (⌀1.60 neck).",
     ]
     for idx, line in enumerate(notes):
         fw = "bold" if idx in (0, 3) else "normal"
@@ -825,7 +838,7 @@ def generate_flywheel_2d_drawing_pdf(mass_g: float, j_inertia: float):
         arrowprops=dict(arrowstyle="->", color="#B91C1C", lw=1.0),
     )
     ax.annotate(
-        "⌀3.00 ±0.05 (2x Shoulders\n + R0.50 Relief Undercut)",
+        "⌀3.00 ±0.05 (2x Flat Shoulders\n + DIN 509 R0.20 Undercut)",
         xy=(cx + 1.55 * s, cy - STEP_SHOULDER_R * s),
         xytext=(100, 86),
         fontsize=7.1,
@@ -1035,12 +1048,17 @@ def verify_6dof_constraints():
     assert overlap_volume(rk_pull_up, cradle) > 0.0, "Upward wheel pull (-12.00 deg) did NOT hit cradle under-bridge stop!"
     print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #03 Tolerance-Safe Hinge & Hard Stop: +{CLICK_PRESS_DEG:.2f} deg click, +4.50 deg Cradle stop, -12.00 deg pull stop", flush=True)
 
-    # 5. `#04` Static Cradle Clamping
+    # 5. `#04` Static Cradle Clamping & >=1.20mm WC1/WC2 Screw Bottom-Out Margin
     assert overlap_volume(cradle.moved(bd.Location((0.0, 0.0, 0.05))), pcb_ceiling) > 0.0, "#04 not seated against PCB!"
     for vec in ((0.15, 0.0, 0.0), (-0.15, 0.0, 0.0), (0.0, 0.15, 0.0), (0.0, -0.15, 0.0)):
         ov_scr = sum(overlap_volume(ins.moved(bd.Location(vec)), sc) for ins, sc in zip(static_inserts, wc_screws))
         assert ov_scr > 0.0, f"#04 Cradle inserts not locked laterally at {vec}!"
-    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #04 Static Cradle Retention: locked against Main PCB B.Cu and WC1/WC2 blind inserts", flush=True)
+    cradle_global = cradle.moved(bd.Location((X_AXLE_STEP, Y_AXLE_STEP, Z_AXLE_STEP))).solids()[0]
+    for sc in wc_screws:
+        assert overlap_volume(sc.moved(bd.Location((0.0, 0.0, -0.85))), cradle_global) == 0.0, (
+            f"{sc.label} has < 0.85 mm axial bottom clearance inside #04 Cradle blind bore!"
+        )
+    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #04 Static Cradle Retention & 0.92 mm WC1/WC2 Screw Bottom Clearance", flush=True)
 
     # 6. Top-Down Physical Insertion Trajectory Verification
     _check_timeout("verify_6dof:assembly_path")
@@ -1123,6 +1141,17 @@ def export_manufacturing_parts():
     assert wheel_print.is_valid and is_sound(wheel_print)
     bb_w = wheel_print.bounding_box()
     assert abs(bb_w.min.Z) < 1e-4
+    # Verify exact flat annular bearing shoulder faces exist at Z = 2.2500 mm and Z = 7.6500 mm (exact 5.4000 mm span == PDF!)
+    sh_z_faces = [
+        round(f.bounding_box().center().Z, 4)
+        for f in wheel_print.faces()
+        if abs(f.bounding_box().size.Z) < 1e-4
+        and abs(f.bounding_box().size.X - 2.0 * STEP_SHOULDER_R) < 0.02
+        and f.area > 2.5
+    ]
+    assert len(sh_z_faces) == 2 and abs((max(sh_z_faces) - min(sh_z_faces)) - (STEP_U_EAST - STEP_U_WEST)) < 1e-3, (
+        f"[steel-flywheel] Missing flat bearing shoulders matching PDF 5.40 mm span! Found Z={sh_z_faces}"
+    )
     bd.export_step(wheel_print, str(PARTS_DIR / "steel-flywheel.step"))
     bd.export_stl(wheel_print, str(PARTS_DIR / "steel-flywheel.stl"))
     mass_g = wheel_print.volume * 7.85e-3
