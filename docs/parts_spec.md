@@ -100,7 +100,7 @@
 | [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（支持球 $55^\circ$・内球面 $R=12.75\,\text{mm}$・高さ $2.0\,\text{mm}$ フラット固定耳×4） |
 | [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（西側 $\varnothing 2.00\,\text{mm}$ D穴圧入、$\varnothing 5.65 \times 2.05\,\text{mm}$） |
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・東キーパータブ・南ラチェットボス） |
-| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定クレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |
+| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定用 南開放U字フレームクレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |
 | [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`v1.1` テンティング $11.80^\circ$ ケース対応更新は別途予定） |
 | [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`carrying-box.step` とセット使用） |
 

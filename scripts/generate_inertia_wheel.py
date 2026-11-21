@@ -402,16 +402,18 @@ def build_wheel_rocker_local() -> bd.Solid:
 
 def build_wheel_cradle_local() -> bd.Solid:
     """
-    Build Closed-Frame Static Under-PCB Wheel Cradle (`SLS PA12`) in `(u, v, w)` frame:
+    Build Open-South U-Frame Static Under-PCB Wheel Cradle (`SLS PA12`) in `(u, v, w)` frame:
       - 100% coplanar flat PCB-mating top at `w = +1.10` (`Main PCB B.Cu`, `Z = -5.80 mm`)
       - 2x M2 heat-set insert bosses (`straight Ø2.85 mm` pilot bores, `w in [-3.90, +1.10]`)
         at `WC1 (u = -6.95, v = +7.80)` and `WC2 (u = +6.95, v = -8.00)`
-      - West Spine (`u in [-9.40, -7.15]`, 0.625 mm clear of narrowed Right Case inner wall `-10.025`),
-        North Arch (`v in [+11.60, +13.80]`), and South Arch (`v in [-13.80, -11.60]`, `w in [-1.00, +1.10]` over Detent Boss)
-      - Captive C-Clip Snap-In Seesaw Hinge at `(U_PIV = +6.10, W_PIV = -4.20)` (`w <= -2.55` below rEXSW1 housing!):
-        North Saddle (`v in [+4.25, +5.33]`) & South Saddle (`v in [-5.93, -4.25]`) with
+      - Open-South U-Frame (`WC1 -> NW Corner Spine -> North Arch -> NE Column -> Saddles & Under-Bridge -> WC2`):
+        Omits the redundant South-West L-bar so `#03` Wheel Rocker (with `#01` Flywheel + bearings + `#02` Magnet Holder
+        already installed) drops straight vertically (`du = dv = 0`) from above into the C-clip hinges with zero collision,
+        while forming a rigid closed box with `Right_Main_PCB` once `WC1`/`WC2` M2x6 screws are tightened.
+      - Captive C-Clip Snap-In Seesaw Hinge at `(U_PIV = +6.10, W_PIV = -4.65)` (`w <= -3.00` below rEXSW1 housing!):
+        North Saddle (`v in [+3.55, +7.50]`) & South Saddle (`v in [-7.50, -3.55]`) with
         `Ø3.06 mm` (`R = 1.53 mm`) snap bores + `2.66 mm` top throat (`239 deg` wrap)
-      - East Under-Arm Rest-Stop Bridge (`u in [+7.85, +9.00]`, `w in [-10.20, -8.86]`, 0.06 mm below Rocker Cross-Base!)
+      - East Under-Arm Rest-Stop Bridge (`u in [+7.85, +9.25]`, `w in [-10.20, -8.86]`, 0.06 mm below Rocker Cross-Base!)
     """
     u_wc1 = WC1_PCB[0] - X_AXLE_PCB     # -6.9500
     v_wc1 = -(WC1_PCB[1] - Y_AXLE_PCB)  # +7.8000
@@ -424,19 +426,19 @@ def build_wheel_cradle_local() -> bd.Solid:
     w_saddle_top = -3.00   # 0.75 mm below rEXSW1 housing (w = -2.25) & 3.00 mm below rU6 (w = 0.00)!
     w_saddle_bot = -7.25
 
-    # 1) WC1 North-West Boss (`u in [-9.40, -4.50]`, `v in [+5.35, +10.25]`, `w in [-3.90, +1.10]`):
+    # 1) WC1 North-West Boss (`u in [-9.40, -4.50]`, `v in [+5.35, +10.25]`, `w in [-3.90, +1.10]`)
+    #    + Flush NW Spine (`u in [-9.40, -4.50]`, `v in [+5.35, +13.80]`, `w in [-2.55, +1.10]`):
     block_wc1 = bd.Box(
         (-4.50) - (-9.40), 10.25 - 5.35, w_top - w_boss_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((-9.40, 5.35, w_boss_bot)))
 
-    # 2) West Spine (`u in [-9.40, -7.15]` = 2.25 mm wide, `v in [-13.80, +13.80]`, `w in [-2.55, +1.10]`):
-    west_spine = bd.Box(
-        (-7.15) - (-9.40), 13.80 - (-13.80), w_top - w_arch_bot,
+    nw_spine = bd.Box(
+        (-4.50) - (-9.40), 13.80 - 5.35, w_top - w_arch_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-9.40, -13.80, w_arch_bot)))
+    ).moved(bd.Location((-9.40, 5.35, w_arch_bot)))
 
-    # 3) North Arch (`u in [-9.40, +7.50]`, `v in [+11.60, +13.80]`, `w in [-2.55, +1.10]`)
+    # 2) North Arch (`u in [-9.40, +7.50]`, `v in [+11.60, +13.80]`, `w in [-2.55, +1.10]`)
     #    + NE Saddle Column (`u in [+4.50, +7.50]`, `v in [+5.65, +13.80]`, `w in [-4.35, +1.10]`, 0.41 mm West of rEXSW1!):
     north_arch = bd.Box(
         7.50 - (-9.40), 13.80 - 11.60, w_top - w_arch_bot,
@@ -447,18 +449,13 @@ def build_wheel_cradle_local() -> bd.Solid:
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((4.50, 5.65, -4.35)))
 
-    # 4) South Arch (`u in [-9.40, +9.25]`, `v in [-13.80, -11.60]`, `w in [-1.00, +1.10]` = 2.10 mm thick above Detent Boss -1.60!)
-    #    + WC2 South-East Boss (`u in [+4.50, +9.25]`, `v in [-13.80, -5.65]`, `w in [-7.25, +1.10]`, coplanar bottom & East with saddle_s!):
-    south_arch = bd.Box(
-        9.25 - (-9.40), (-11.60) - (-13.80), w_top - (-1.00),
-        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-9.40, -13.80, -1.00)))
+    # 3) WC2 South-East Boss (`u in [+4.50, +9.25]`, `v in [-13.80, -5.65]`, `w in [-7.25, +1.10]`, coplanar bottom & East with saddle_s!):
     block_wc2 = bd.Box(
         9.25 - 4.50, (-5.65) - (-13.80), w_top - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((4.50, -13.80, w_saddle_bot)))
 
-    # 5) North & South C-Clip Saddle Blocks (`u in [+3.55, +9.25]`, `w in [-7.25, -3.00]`):
+    # 4) North & South C-Clip Saddle Blocks (`u in [+3.55, +9.25]`, `w in [-7.25, -3.00]`):
     saddle_n_block = bd.Box(
         9.25 - 3.55, 7.50 - 3.55, w_saddle_top - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
@@ -468,7 +465,7 @@ def build_wheel_cradle_local() -> bd.Solid:
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((3.55, -7.50, w_saddle_bot)))
 
-    # 6) Coplanar East Side Legs + Under-Arm Rest-Stop Bridge (`u in [+7.85, +9.25]` = 1.40 mm wide):
+    # 5) Coplanar East Side Legs + Under-Arm Rest-Stop Bridge (`u in [+7.85, +9.25]` = 1.40 mm wide):
     leg_n = bd.Box(
         9.25 - 7.85, 5.65 - 3.55, w_saddle_bot - (-10.20),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
@@ -484,10 +481,9 @@ def build_wheel_cradle_local() -> bd.Solid:
 
     body = (
         block_wc1
-        + west_spine
+        + nw_spine
         + north_arch
         + ne_col
-        + south_arch
         + block_wc2
         + saddle_n_block
         + saddle_s_block
@@ -759,6 +755,24 @@ def verify_6dof_constraints():
         ov_scr = sum(overlap_volume(ins.moved(bd.Location(vec)), sc) for ins, sc in zip(static_inserts, wc_screws))
         assert ov_scr > 0.0, f"#04 Cradle inserts not locked laterally at {vec}!"
     print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #04 Static Cradle Retention: locked against Main PCB B.Cu and WC1/WC2 M2x6 screws", flush=True)
+
+    # 6. Top-Down Physical Insertion Trajectory Verification (No "Ship-in-a-Bottle" Assembly Traps!)
+    _check_timeout("verify_6dof:assembly_path")
+    for dw in (15.0, 10.0, 6.0, 4.45, 3.20, 1.50, 0.0):
+        loc_up = bd.Location((0.0, 0.0, dw))
+        # 6a. Rotor non-bearing parts (#01, #02, #08) vs #03 Rocker must have 0 rigid collision at EVERY height
+        for rp in (wheel, holder, mag_d4):
+            assert overlap_volume(rp.moved(loc_up), rocker) == 0.0, f"Rotor {rp.label} collided with Rocker at dw={dw}!"
+        if dw >= 4.45:
+            assert overlap_volume(brg_w.moved(loc_up), rocker) == 0.0 and overlap_volume(brg_e.moved(loc_up), rocker) == 0.0
+        # 6b. Pre-assembled Rotor + #03 Rocker vs #04 Open-South U-Frame Cradle:
+        #     Above trunnion C-clip entry (dw >= 3.20 mm), 100% of Rocker+Rotor must have ZERO collision with Cradle;
+        #     during snap-in (0 < dw < 3.20 mm), Rotor (#01, #02, #08, bearings) must also have ZERO collision with Cradle!
+        for rp in (wheel, holder, mag_d4, brg_w, brg_e):
+            assert overlap_volume(rp.moved(loc_up), cradle) == 0.0, f"Pre-installed {rp.label} hit Cradle at dw={dw}!"
+        if dw >= 3.20 or dw == 0.0:
+            assert overlap_volume(rocker.moved(loc_up), cradle) == 0.0, f"#03 Rocker hit #04 Cradle at dw={dw}!"
+    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] Top-Down Insertion Trajectory: Rotor -> #03 Rocker & (Rotor+#03) -> #04 U-Frame Cradle 100% collision-free", flush=True)
 
 
 def assemble_wheel_parts_global(click_deg: float = 0.0):
