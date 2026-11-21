@@ -247,9 +247,9 @@ def _draw_spec_diagram():
     ax2.add_patch(patches.Rectangle((-21.8, -0.80), 8.80, 4.40, fc="#e9ecef", ec="#495057", lw=1.2, zorder=4))
     ax2.text(-17.4, 1.40, "南隣接キー\nrEXSW2\n(X軸一致!)", ha="center", va="center", fontsize=6.4, fontweight="bold", color="#343a40", zorder=5)
 
-    # Projected #04 Cradle Boss (WC1/WC2, 5.32mm blind bore h/Φ=1.87<=3.0!) + #10 Brass Insert (M2xL3.0) + #11 Sub-Flush Top-Down M2x6.0mm Screw
+    # Projected #04 Cradle Boss (WC1/WC2, 5.30mm blind bore h/Φ=1.86<=3.0!) + #10 Brass Insert (M2xL3.0) + #11 Sub-Flush Top-Down M2x6.0mm Screw
     ax2.add_patch(patches.Rectangle((11.6, -12.15), 4.2, 6.35, fc="#cbd5e1", ec="#334155", lw=1.1, zorder=3))
-    ax2.add_patch(patches.Rectangle((12.8, -11.12), 1.8, 5.32, fc="#ffffff", ec="#475569", lw=0.8, zorder=3))
+    ax2.add_patch(patches.Rectangle((12.8, -11.10), 1.8, 5.30, fc="#ffffff", ec="#475569", lw=0.8, zorder=3))
     ax2.add_patch(patches.Rectangle((12.9, -8.80), 1.6, 3.00, fc="#e9c46a", ec="#7f5539", lw=1.0, hatch="///", zorder=4))
     ax2.add_patch(patches.Rectangle((12.3, -4.20), 2.8, 1.15, fc="#adb5bd", ec="#212529", lw=1.0, zorder=6))
     ax2.add_patch(patches.Rectangle((13.1, -10.20), 1.2, 6.00, fc="#ced4da", ec="#212529", lw=0.9, zorder=5))
@@ -292,7 +292,7 @@ def _draw_spec_diagram():
                  fontsize=6.0, fontweight="bold", color="#9d0208",
                  bbox=dict(boxstyle="round,pad=0.22", fc="#ffe5ec", ec="#d90429", lw=0.9), zorder=10)
 
-    ax2.annotate("#04 南開放U字クレードル WC1/WC2 締結（盲穴5.32mm h/Φ=1.87）\n• プレート WC1 Ø4.05 / WC2 Ø4.40mm 穴へネジ頭(Ø3.5)沈み込み!\n• メイン基板を直接ネジ固定・ネジ底余裕0.92mmで底付きゼロ",
+    ax2.annotate("#04 南開放U字クレードル WC1/WC2 締結（盲穴5.30mm h/Φ=1.86）\n• プレート WC1 Ø4.05 / WC2 Ø4.40mm 穴へネジ頭(Ø3.5)沈み込み!\n• サドル底面接線支持で空振りゼロ・ネジ底余裕0.90mm確保",
                  xy=(13.7, -4.20), xytext=(5.0, 6.20), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#1d3557", lw=1.15),
                  fontsize=6.1, fontweight="bold", color="#1d3557",
@@ -1042,7 +1042,7 @@ def _draw_parts_guide_diagram():
                 "JLC3DP 造形 (MJF/SLS PA12)",
                 "#1d4ed8",
                 "p04",
-                "cases/inertia_wheel/wheel-cradle.step\n南開放U字・WC1/WC2盲穴5.32mm (h/Φ=1.87)\nスリット分離Ø3.50 Cクリップで#03とパチン連結!",
+                "cases/inertia_wheel/wheel-cradle.step\n南開放U字・WC1/WC2盲穴5.30mm (h/Φ=1.86)\nサドル底面接線支持Ø3.50 Cクリップで空振りゼロ!",
             ),
             (
                 "#05 3Dホールセンサー (rU6)",

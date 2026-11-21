@@ -102,7 +102,7 @@
 | [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（支持球 $55^\circ$・内球面 $R=12.75\,\text{mm}$・高さ $2.0\,\text{mm}$ フラット固定耳×4） |
 | [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（公式最小サイズ適合 **$6.64 \times 6.64 \times 5.05\,\text{mm}$**、全肉厚 $\ge 1.20\,\text{mm}$、西側 $\varnothing 2.10\,\text{mm}$ D穴圧入） |
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（全肉厚 $\ge 1.20\,\text{mm}$／爪・突起 $\ge 1.50\,\text{mm}$、一体 $\varnothing 3.20\,\text{mm}$ 支点軸、補強 $2.60\,\text{mm}$ アーム、西過荷重ストップ、下部キーパー壁付き南デテントボス） |
-| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定用 南開放U字フレームクレードル（`WC1`/`WC2` 深さ $5.32\,\text{mm}$ 盲穴×2［$h/\Phi=1.87$、ネジ先端底余裕 $0.92\,\text{mm}$］、過荷重ストップ受け棚、公差対応 $\varnothing 3.50\,\text{mm}$ スリット分離型 Cクリップヒンジ） |
+| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定用 南開放U字フレームクレードル（`WC1`/`WC2` 深さ $5.30\,\text{mm}$ 盲穴×2［$h/\Phi=1.86$、ネジ先端底余裕 $0.90\,\text{mm}$］、過荷重ストップ受け棚、サドル底面接線支持 $\varnothing 3.50\,\text{mm}$ スリット分離型 Cクリップヒンジ） |
 | [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`138.40 × 103.79 × 69.52 mm`、右手TB上下どちら向きでも収納可、ゴム足10個・25mm球・USB-Cマグネット端子4個装着のまま収納） |
 | [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`138.40 × 69.52 × 24.15 mm`、長スパン $14\,\text{mm}$・$26^\circ$ 浅角カム爪、装着外寸 `138.40 × 110.44 × 69.52 mm`） |
 
