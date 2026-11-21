@@ -16,7 +16,7 @@
 - **寸法**: 内径 $d = \varnothing 2.0\,\text{mm}$ × 外径 $D = \varnothing 5.0\,\text{mm}$ × **幅 $B = 2.3\,\text{mm}$（標準シールド厚）**
 - **販売元**: [モノタロウ（注文コード：`09538365`）](https://www.monotaro.com/p/0953/8365/) / Amazon・ラジコン模型店等でも広く流通
 - **備考**:
-  - 1ピース一体軸ホイール（`steel-flywheel.step`）側に $\varnothing 2.90\,\text{mm}$ の内輪段付き肩が一体加工されており、`wheel-rocker.step` 側の **Cクリップスナップ軸受座（上開口 $4.56\,\text{mm}$）** へ上からパチンと押し込むだけで上抜けも完全防止されるため、**別体の内輪シムリングや押さえ蓋は一切不要**です。
+  - 1ピース一体軸ホイール（`steel-flywheel.step`）側に $\varnothing 2.90\,\text{mm}$ の内輪段付き肩が一体加工されており、`wheel-rocker.step` 側の **独立片持ち弾性 Cクリップスナップ軸受座（上開口 $4.78\,\text{mm}$）** へ上からパチンと押し込むだけで上抜けも完全防止されるため、**別体の内輪シムリングや押さえ蓋は一切不要**です。
   - フリースピン性能を最大化するため、組付け前にパーツクリーナー（ブレーキクリーナー）または無水エタノールへ浸漬して内部グリスを脱脂・乾燥させてから使用します（両シールド `ZZ` のまま液に浸けて軽く回すだけで簡単に脱脂でき、ホコリ侵入も防げます）。
 
 ### 1-2. 静音ミドルクリックスイッチ：`Kailh Square Silent Micro Switch`（必要数：1個）
@@ -29,7 +29,7 @@
 - **販売元**: [AliExpress（径方向着磁 D4×1mm）](https://ja.aliexpress.com/item/1005010201889003.html)
 - **備考**:
   - **必ず円盤の直径方向（左右）に N 極 / S 極が分かれた「径方向着磁（Diametric）」品**を選んでください（一般的な厚み方向着磁では回転角を検出できません）。
-  - `magnet-holder.step`（`#02`）の東側ポケット（$\varnothing 4.03 \times 1.05\,\text{mm}$）へ入れるだけで、西側は鋼製Dカット軸端面、東側は `wheel-rocker.step`（`#03`）の一体キーパータブにより機械的に抜け止めされるため、**接着剤は不要**です。
+  - `magnet-holder.step`（`#02`）の東側ポケット（$\varnothing 4.03 \times 1.00\,\text{mm}$）へ入れるだけで、西側は鋼製Dカット軸端面、東側は `wheel-rocker.step`（`#03`）の一体キーパータブ（ギャップ $0.25\,\text{mm}$）により機械的に抜け止めされるため、**接着剤は不要**です。
 
 ### 1-4. 磁気デテント調整用ネオジム磁石：`Ø2.0×2.0mm` 軸方向着磁（必要数：1個）
 - **メーカー / 代表型番**: 二六製作所 **`NE280`**（丸型ネオジム磁石 $\varnothing 2.0 \times 2.0\,\text{mm}$, N52 / Niメッキ）または同寸の標準軸方向着磁ネオジム磁石（N35〜N52）
@@ -37,7 +37,7 @@
 - **着磁方向**: 厚み（軸）方向着磁（ごく一般的な円柱ネオジム磁石）
 - **販売元**: [二六製作所 `NE280`](https://www.26magnet.co.jp/26shop/goods/NE280) / モノタロウ / Amazon / AliExpress
 - **備考**:
-  - 磁性鋼（鉄・ニッケルメッキ等）製の `M2 × 6.0mm` ネジの先端へ**磁力でパチンと自己吸着**させてロッカー南ボスへねじ込むため、**接着剤は一切不要**です。
+  - 磁性鋼（鉄・ニッケルメッキ等）製の `M2 × 6.0mm` ネジの先端へ、`wheel-rocker.step` 南ボスの**後部ドロップイン窓から入れて磁力でパチンと自己吸着**させる（密閉 $\varnothing 2.14\,\text{mm}$ ガイドトンネル＋北端抜け止め顎によりホイールへの飛び移り・脱落を物理防止）ため、**接着剤は一切不要**です。
   - 強磁性 45#鋼ホイールの外周 24溝との距離をネジの回転角で微調整することで、完全フリースピン（無抵抗慣性回転）から明快な 24ノッチラチェット感まで好みに合わせて無段階調整できます。
 
 ### 1-5. 真鍮ヒートセットインサート：`M2 × L=3.0 × OD=3.2mm`（必要数：19個）
@@ -61,7 +61,7 @@
 - **使用箇所内訳（計 19本すべて同一サイズ）**:
   - 左右メイン基板 キー谷間固定（`L1`〜`L6` および `R1`〜`R6`）：12本（トッププレート $\varnothing 4.40\,\text{mm}$ ネジ頭逃げ穴の奥でメイン基板 `F.Cu` を直接クランプ。ネジ頭はプレート下に沈み込むためキー押下時干渉ゼロ、プレートはキースイッチ嵌合で保持）
   - トラックボールカップ＆センサー基板共締め（`TB1`〜`TB4`）：4本
-  - ホイールクレードル固定（`WC1, WC2`）：2本（トッププレート $\varnothing 4.40\,\text{mm}$ 頭逃げ穴の奥でメイン基板 `F.Cu` とクレードルを締結）
+  - ホイールクレードル固定（`WC1, WC2`）：2本（トッププレート頭逃げ穴［`WC1` $\varnothing 4.05\,\text{mm}$ / `WC2` $\varnothing 4.40\,\text{mm}$］の奥でメイン基板 `F.Cu` とクレードルを締結）
   - ホイール磁気デテントギャップ調整（ロッカー南ボス）：1本
 - **販売元**: モノタロウ / Amazon / ホームセンター / 秋月電子・遊舎工房等
 
@@ -85,10 +85,11 @@
 ### 2-1. CNC 金属切削（JLCCNC）：1種
 | ファイルパス | 材質 | 表面処理 | 数量 | 役割・仕様 |
 | :--- | :--- | :--- | :---: | :--- |
-| [`cases/inertia_wheel/steel-flywheel.step`](../cases/inertia_wheel/steel-flywheel.step) | **`45# Steel`**（S45C 炭素鋼・強磁性） | **`Electroless Nickel Plating`**（無電解ニッケルめっき・防錆） | 1 | 外径 $\varnothing 22.00 \times$ **幅 $6.50\,\text{mm}$**・外周24溝・一体段付き肩（$\varnothing 2.90\,\text{mm}$）・一体 $\varnothing 1.98\,\text{mm}$ 軸＆東Dカット軸（質量 **$19.31\,\text{g}$**、$J \approx 1160\,\text{g}\cdot\text{mm}^2$） |
+| [`cases/inertia_wheel/steel-flywheel.step`](../cases/inertia_wheel/steel-flywheel.step) | **`45# Steel`**（S45C 炭素鋼・強磁性） | **`Electroless Nickel Plating`**（無電解ニッケルめっき・防錆） | 1 | 外径 $\varnothing 22.00 \times$ **幅 $6.50\,\text{mm}$**・深さ $0.65\,\text{mm}$ 外周24溝・一体段付き肩（$\varnothing 2.90\,\text{mm}$）・一体軸＆東Dカット軸（質量 **$18.56\,\text{g}$**、$J = 1056\,\text{g}\cdot\text{mm}^2$、**めっき後軸径公差 $\varnothing 1.990 \pm 0.010\,\text{mm}$ 指定**） |
 
 > [!IMPORTANT]
-> ホイールの外周24溝で磁気デテント（ノッチ感）を発生させるため、材質は必ず強磁性の **`45# Steel`（S45C 炭素鋼）** を選択してください（アルミや SUS304 オーステナイトステンレスは非磁性のため磁気デテントが働きません）。また炭素鋼の防錆と滑らかな触感のため、表面処理で **無電解ニッケルめっき（Electroless Nickel Plating）** を指定することを推奨します。
+> - **強磁性材質と防錆めっき**: ホイールの外周24溝で磁気デテント（ノッチ感）を発生させるため、材質は必ず強磁性の **`45# Steel`（S45C 炭素鋼）** を選択してください（アルミや SUS304 オーステナイトステンレスは非磁性のため磁気デテントが働きません）。また炭素鋼の防錆と滑らかな触感のため、表面処理で **無電解ニッケルめっき（Electroless Nickel Plating）** を指定することを推奨します。
+> - **ベアリング嵌合軸径の精密公差指定**: 標準 `ISO 2768-m`（$\pm 0.1\,\text{mm}$）のまま無電解ニッケルめっき厚が乗ると `DDL-520ZZ`（内径 $\varnothing 2.000\,\text{mm}$）に挿入できなくなる恐れがあるため、JLCCNC 注文備考または公差オプションにて **軸部（ジャーナル ＆ 東Dカット軸）のめっき後仕上がり寸法 $\varnothing 1.990 \pm 0.010\,\text{mm}$（`h6`〜`g6` 相当）** を指定してください。
 
 ### 2-2. 3D プリント造形（JLC3DP）：必須 6種（＋持ち運び用オプション 2種）
 すべてのヒートセットインサート圧入部（下穴 $\varnothing 2.85\,\text{mm}$）の耐熱性・靭性・寸法精度およびスナップラッチの弾性を両立するため、**MJF（`PA12-HP Nylon`）または SLS（`PA12` / `PA11` ナイロン）** を推奨します。
@@ -98,12 +99,12 @@
 | [`cases/left-desk.step`](../cases/left-desk.step) | MJF / SLS `PA12` | 1 | 左手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋USB-C内壁受け棚3箇所） |
 | [`cases/right-desk.step`](../cases/right-desk.step) | MJF / SLS `PA12` | 1 | 右手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋カップボス4箇所＋USB-C内壁受け棚3箇所） |
 | [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（支持球 $55^\circ$・内球面 $R=12.75\,\text{mm}$・高さ $2.0\,\text{mm}$ フラット固定耳×4） |
-| [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（西側 $\varnothing 2.00\,\text{mm}$ D穴圧入、$\varnothing 5.65 \times 2.05\,\text{mm}$） |
-| [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・東キーパータブ・南ラチェットボス） |
-| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定用 南開放U字フレームクレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |
+| [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（西側 $1.28\,\text{mm}$ 長 $\varnothing 1.99\,\text{mm}$ D穴圧入、$\varnothing 5.65 \times 2.28\,\text{mm}$） |
+| [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（分離型Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・補強 $2.15\,\text{mm}$ アーム・西過荷重ストップ・抜け止め顎付き南ラチェットボス） |
+| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定用 南開放U字フレームクレードル（`WC1`/`WC2` インサート下穴×2・過荷重ストップ受け棚・スリット分離型 $\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |
 | [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`v1.1` テンティング $11.80^\circ$ ケース対応更新は別途予定） |
 | [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`carrying-box.step` とセット使用） |
 
 ### 2-3. 基板製造・PCBA 実装（JLCPCB）：推奨 3アイテム（すべて板厚 `1.6mm` 標準 FR-4）
 - **3-in-1 統合 PCBA パネル（1種・推奨）**: [`curcur40-panel-3in1`](../pcbs/panel/jlcpcb/production_files/)（`curcur40-left` ＋ `curcur40-right`［`rU6: TMAG5273A1QDBVR` 自動実装済］＋ `curcur40-pmw3360` の全3枚を捨て基板フレーム $131.05 \times 207.25\,\text{mm}$ にまとめ、1回の Economic PCBA で一括実装！※単体発注用の各データも同梱）
-- **FR-4 トッププレート（2種・PCB 単体製造）**: `plate-top-left`, `plate-top-right`（全14箇所のネジ位置は $\varnothing 4.40\,\text{mm}$ ネジ頭逃げ穴とし、39個の Choc V2 キースイッチ嵌合でスマートに保持）
+- **FR-4 トッププレート（2種・PCB 単体製造）**: `plate-top-left`, `plate-top-right`（全14箇所のネジ位置はネジ頭逃げ穴［`WC1` のみ外縁ブリッジ拡幅のため $\varnothing 4.05\,\text{mm}$、他13箇所 $\varnothing 4.40\,\text{mm}$］とし、39個の Choc V2 キースイッチ嵌合でスマートに保持）
