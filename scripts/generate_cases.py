@@ -3,13 +3,14 @@
 Generate curcur40 3D-printed Built-in Tented Tray Bottom Cases
 (cases/left.step, left.stl, right.step, right.stl, left-desk.step, left-desk.stl, right-desk.step, right-desk.stl).
 Strictly adheres to docs/case_spec.md:
-- Built-in 11.80 deg Minimum-Envelope Tenting Architecture with Sealed Flat Bottom, Tilted Interior Floor & Heat-Set Insert Bosses:
-    - Outer Bottom Tenting Plane (theta_tent = 11.80 deg — minimum slope enclosing the -3.00 mm sunken trackball optics & J1 plug):
-        - Pinky outer edge (|X_step| = 135.8580 mm): Z_bottom = -10.0000 mm (total height 10.00 mm)
-        - Thumb inner edge (|X_step| = 17.0500 mm):  Z_bottom = -34.8203 mm (total height 34.82 mm; narrowed -10.0250 mm/side)
-        - 100% sealed, hole-free outer bottom face (zero bottom counterbores or through-holes)
+- Built-in 11.80 deg Minimum-Envelope Tenting Architecture with Recessed Dual Parallel 20x65x5mm Tenting Stand Pockets, Tilted Interior Floor & Heat-Set Insert Bosses:
+    - Outer Bottom Tenting Plane (theta_tent = 11.80 deg, thickened +4.20 mm vertically / +4.11 mm perpendicularly to house 5.20 mm deep stand pockets while preserving >= 1.09 mm solid wall under TB2/TB4 bores & 1.26 mm sealed pocket ceiling):
+        - Pinky outer edge (|X_step| = 135.8580 mm): Z_bottom = -14.2000 mm (total height 14.20 mm)
+        - Thumb inner edge (|X_step| = 17.0500 mm):  Z_bottom = -39.0203 mm (total height 39.02 mm; narrowed -10.0250 mm/side)
+        - 2x Straight Parallel Recessed Foldable Stand Pockets per half (L-R mirror symmetric, 0 deg X-parallel, for 20 x 65 x 5 mm zinc-alloy adhesive stands):
+          65.80 x 20.60 x 5.20 mm blind pockets (R = 1.20 mm corners) at Y = -52.30 mm (North) & Y = -97.20 mm (South), u_from_thumb in [8.00, 73.80] mm, with thumb-tip finger-lift scoops (4.50 x 12.00 x 5.20 mm, R = 2.00 mm) at u_from_thumb in [3.50, 8.00] mm; 100% sealed ceiling (>= 1.09..1.26 mm solid PA12, zero through-holes into PCB cavity)
     - Tilted Interior Floor:
-        - Parallel to outer bottom plane with uniform 2.40 mm vertical (2.35 mm perpendicular) bottom wall thickness (Z_floor = Z_bottom + 2.40 mm)
+        - Parallel to outer bottom plane at Z_floor = Z_bottom + 6.60 mm (preserving exact v1.1 interior floor heights: Pinky -7.6000 mm, Thumb -32.4203 mm)
         - Unbroken smooth 11.80 deg interior plane from pinky to thumb (>= 0.72 mm clearance under pinky Choc V2 sockets, >= 0.71 mm under uncut LM19-LSI lens guide pins, and >= 0.47 mm under Sensor PCB J1 SHR-06V plug with zero thin-wall relief pockets)
 - Fastening & Hidden Support Specifications (Section 2 — Switch-Retained Top Plate Architecture / 案1A + 6-Point Valley Layout):
     - Top-down unified M2 x 6.0 mm screws threading into M2 brass heat-set inserts (M2 x L=3.0 mm x OD=3.2 mm):
@@ -55,12 +56,23 @@ def _check_timeout(phase: str):
 THETA_TENT_DEG = 11.80
 X_THUMB_OUTER = 17.0500
 X_PINKY_OUTER = 135.8580
-Z_PINKY_BOTTOM = -10.0000
+Z_PINKY_BOTTOM = -14.2000      # v1.1 -10.0000 mm shifted -4.2000 mm (-4.11 mm perp) for 5.20 mm stand pockets + >=1.09 mm sealed wall
 Z_THUMB_BOTTOM = round(
     Z_PINKY_BOTTOM - (X_PINKY_OUTER - X_THUMB_OUTER) * math.tan(math.radians(THETA_TENT_DEG)),
     4,
-)  # -34.8203 mm
-FLOOR_THICKNESS = 2.4000
+)  # -39.0203 mm
+FLOOR_THICKNESS = 6.6000       # Preserves exact v1.1 interior floor Z (-7.6000 mm at Pinky, -32.4203 mm at Thumb; 6.46 mm perp slab)
+
+# Recessed 20 x 65 x 5 mm Foldable Tenting Stand Pocket Parameters (2x straight parallel 0-deg pockets per half, L-R symmetric)
+STAND_POCKET_LEN = 65.8000     # 65.00 mm stand + 0.40 mm clearance/end
+STAND_POCKET_WID = 20.6000     # 20.00 mm stand + 0.30 mm clearance/side
+STAND_POCKET_DEPTH = 5.2000    # 5.00 mm stand + 0.20 mm adhesive/tolerance flush recess (leaves 1.26 mm ceiling / 1.09 mm at TB2/TB4)
+STAND_POCKET_FILLET = 1.2000   # Ø 2.40 mm >= Ø 1.50 mm JLC3DP concave limit
+STAND_U_MIN = 8.0000           # Distance along sloped bottom from Thumb outer bottom edge (u = 0) to main pocket start
+STAND_SCOOP_U_MIN = 3.5000     # 4.50 mm thumb-tip finger-lift scoop (keeps 2.36 mm solid outer thumb wall, unbroken exterior!)
+STAND_SCOOP_WID = 12.0000      # 12.00 mm finger-lift scoop width
+STAND_SCOOP_FILLET = 2.0000    # Ø 4.00 mm >= Ø 1.50 mm JLC3DP concave limit
+STAND_POCKET_Y_CENTERS = (-52.3000, -97.2000)  # North & South parallel pockets (2.50 mm clear of all 5 Ø8mm corner rubber feet!)
 
 BOSS_OUTER_RADIUS = 3.0000     # Ø 6.00 mm boss pillar for Trackball bosses (TB1..TB4; 1.575 mm radial wall)
 PERIM_BOSS_RADIUS = 2.6000     # Ø 5.20 mm compact flat-topped boss for all 12 key-valley PCB holes (L1..L6, R1..R6; 1.175 mm radial wall)
@@ -123,7 +135,7 @@ def get_inner_pts(is_right=True):
 def make_filleted_sketch(pts_and_radii):
     with bd.BuildSketch() as sk:
         pts = [(p[0], p[1]) for p in pts_and_radii]
-        bd.Polygon(pts)
+        bd.Polygon(pts, align=None)
         for x, y, r in pts_and_radii:
             if r > 0.05:
                 v_target = sk.vertices().filter_by(
@@ -135,6 +147,82 @@ def make_filleted_sketch(pts_and_radii):
                     except Exception as e:
                         print(f"Warning: fillet failed at ({x}, {y}) r={r}: {e}")
     return sk.sketch
+
+
+def _right_bottom_pocket_plane(offset_into_case: float = 0.0) -> bd.Plane:
+    """
+    Orthonormal coordinate frame on the Right case's 11.80-deg outer bottom plane:
+      - origin at Thumb outer bottom edge (X_THUMB_OUTER, 0.0, Z_THUMB_BOTTOM) + offset_into_case * n_in
+      - +X (u) runs from Thumb edge (u = 0) up the slope toward Pinky edge (u = 121.3728 mm)
+      - +Y (v) equals global +Y_step
+      - +Z points perpendicularly INTO the case solid
+    """
+    theta_rad = math.radians(THETA_TENT_DEG)
+    u_dir = (math.cos(theta_rad), 0.0, math.sin(theta_rad))
+    n_in = (-math.sin(theta_rad), 0.0, math.cos(theta_rad))
+    ox = X_THUMB_OUTER + offset_into_case * n_in[0]
+    oz = Z_THUMB_BOTTOM + offset_into_case * n_in[2]
+    return bd.Plane(origin=(ox, 0.0, oz), x_dir=u_dir, z_dir=n_in)
+
+
+def build_tenting_stand_pocket_cutters(is_right: bool = True) -> list[bd.Solid]:
+    """
+    Builds 2 straight parallel X-aligned blind exterior pocket cutters (North & South) for
+    20 x 65 x 5 mm foldable zinc-alloy tenting stands, complete with thumb-tip finger-lift scoops.
+    """
+    p_cut = _right_bottom_pocket_plane(offset_into_case=-1.5000)
+    u0 = STAND_SCOOP_U_MIN
+    u1 = STAND_U_MIN
+    u2 = STAND_U_MIN + STAND_POCKET_LEN
+    hw_p = 0.5 * STAND_POCKET_WID
+    hw_s = 0.5 * STAND_SCOOP_WID
+
+    cutters = []
+    for yc in STAND_POCKET_Y_CENTERS:
+        pts_r = [
+            (u0, yc - hw_s, STAND_SCOOP_FILLET),
+            (u1, yc - hw_s, 0.85),
+            (u1, yc - hw_p, STAND_POCKET_FILLET),
+            (u2, yc - hw_p, STAND_POCKET_FILLET),
+            (u2, yc + hw_p, STAND_POCKET_FILLET),
+            (u1, yc + hw_p, STAND_POCKET_FILLET),
+            (u1, yc + hw_s, 0.85),
+            (u0, yc + hw_s, STAND_SCOOP_FILLET),
+        ]
+        sk_2d = make_filleted_sketch(pts_r)
+        c_solid = bd.extrude(p_cut * sk_2d, amount=STAND_POCKET_DEPTH + 1.5000).solids()[0]
+        if not is_right:
+            c_solid = bd.mirror(c_solid, about=bd.Plane.YZ).solids()[0]
+        cutters.append(c_solid)
+    return cutters
+
+
+def build_tenting_stand_solids(is_right: bool = True) -> list[bd.Solid]:
+    """
+    Builds 2 realistic 65.00 x 20.00 x 5.00 mm (R = 1.00 mm) folded zinc-alloy tenting stand solids
+    seated inside the North & South recessed bottom pockets (0.02 mm numerical B-rep gap from ceiling,
+    sitting 0.18 mm recessed inside the outer bottom plane for 100% flush desk & carrying-box clearance).
+    """
+    stand_len = 65.0000
+    stand_wid = 20.0000
+    stand_thick = 5.0000
+    z_seat = STAND_POCKET_DEPTH - 0.0200 - stand_thick  # 0.1800 mm recessed inside outer bottom plane
+    p_stand = _right_bottom_pocket_plane(offset_into_case=z_seat)
+    u_center = STAND_U_MIN + 0.5 * STAND_POCKET_LEN
+    side_lbl = "Right" if is_right else "Left"
+    pos_tags = ("North", "South")
+
+    stands = []
+    for pos_tag, yc in zip(pos_tags, STAND_POCKET_Y_CENTERS):
+        with bd.BuildSketch() as sk_s:
+            with bd.Locations([(u_center, yc)]):
+                bd.RectangleRounded(stand_len, stand_wid, 1.00)
+        s_solid = bd.extrude(p_stand * sk_s.sketch, amount=stand_thick).solids()[0]
+        if not is_right:
+            s_solid = bd.mirror(s_solid, about=bd.Plane.YZ).solids()[0]
+        s_solid.label = f"{side_lbl}_Tenting_Stand_{pos_tag}"
+        stands.append(s_solid)
+    return stands
 
 
 def get_case_hole_specs(is_right=True):
@@ -415,6 +503,11 @@ def build_case(is_right=True) -> bd.Solid:
     tent_plane = bd.Plane(origin=p_thumb, z_dir=norm_down)
     bottom_cutter = bd.extrude(tent_plane * bd.Rectangle(400.0, 400.0), amount=80.0)
     body = body - bottom_cutter
+
+    # 5b. Cut 2 straight parallel recessed pockets (65.80 x 20.60 x 5.20 mm + thumb-tip finger-lift scoops)
+    #     for 20 x 65 x 5 mm foldable tenting stands (100% blind exterior pockets, >= 1.09 mm sealed ceiling):
+    for pocket_cutter in build_tenting_stand_pocket_cutters(is_right):
+        body = body - pocket_cutter
 
     # 6. Cut top-down blind pilot bores (Ø 2.85 mm, R = 1.425 mm) for M2 brass heat-set inserts:
     #    Zero bottom holes — every bore terminates >= 1.50 mm above the outer bottom surface!

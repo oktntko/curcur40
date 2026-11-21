@@ -77,15 +77,14 @@ def _check_timeout(phase: str):
         raise TimeoutError(f"[{phase}] Exceeded hard timeout {MAX_RUNTIME_SEC:.0f}s (elapsed={el:.1f}s)!")
 
 
-Z_PINKY_BOTTOM = -10.0000
-X_THUMB_OUTER = 17.0500
-X_PINKY_OUTER = 135.8580
-Z_THUMB_BOTTOM = round(
-    Z_PINKY_BOTTOM - (X_PINKY_OUTER - X_THUMB_OUTER) * math.tan(math.radians(11.80)),
-    4,
-)
-THETA_TENT_DEG = math.degrees(
-    math.atan2(Z_PINKY_BOTTOM - Z_THUMB_BOTTOM, X_PINKY_OUTER - X_THUMB_OUTER)
+from generate_cases import (
+    X_PINKY_OUTER,
+    X_THUMB_OUTER,
+    Z_PINKY_BOTTOM,
+    Z_THUMB_BOTTOM,
+    THETA_TENT_DEG,
+    build_tenting_stand_solids,
+    verify_case_wall_thickness_and_gaps,
 )
 
 LEFT_SWITCHES = [
@@ -684,7 +683,6 @@ def transform_to_desk(shape, is_right: bool):
 
 def main(export_only: bool = False):
     from generate_inertia_wheel import assemble_wheel_parts_global, verify_6dof_constraints, CLICK_PRESS_DEG
-    from generate_cases import verify_case_wall_thickness_and_gaps
     from generate_trackball_cup import verify_cup_wall_thickness_and_gaps
 
     print("=== Building & Verifying curcur40 Full Assembly (Direct KiCad 3D STEP Sync + Switch-Retained Plate) ===")
@@ -875,6 +873,10 @@ def main(export_only: bool = False):
     ]
     keycaps = left_keycaps + right_keycaps
 
+    left_stands = build_tenting_stand_solids(is_right=False)
+    right_stands = build_tenting_stand_solids(is_right=True)
+    all_stands = left_stands + right_stands
+
     all_right_kicad_comps = right_kicad_comps + pmw_kicad_comps
     all_fasteners = inserts + top_screws + wheel_cradle_screws
 
@@ -916,6 +918,7 @@ def main(export_only: bool = False):
         + inserts
         + top_screws
         + keycaps
+        + all_stands
     )
 
     ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
@@ -929,7 +932,7 @@ def main(export_only: bool = False):
         f"{total_solids} solids + 1 optical ref face, valid={asm_full.is_valid})"
     )
 
-    left_group = [left_case, left_pcb, left_kicad_grp, left_plate, left_sw_grp] + left_fasteners + left_keycaps
+    left_group = [left_case, left_pcb, left_kicad_grp, left_plate, left_sw_grp] + left_fasteners + left_keycaps + left_stands
     right_group = (
         [
             right_case,
@@ -951,6 +954,7 @@ def main(export_only: bool = False):
         + wheel_cradle_screws
         + right_fasteners
         + right_keycaps
+        + right_stands
     )
 
     # Also export Right Half + Inertia Wheel standalone verification assembly
@@ -969,6 +973,14 @@ def main(export_only: bool = False):
     desk_ball = [p for p in desk_parts if getattr(p, "label", "") == "Trackball_25mm"][0]
     desk_ref = [p for p in desk_parts if getattr(p, "label", "") == "Lens_Optical_Ref_Point"][0]
     assert abs(closest_points(desk_ball, desk_ref).distance - 2.40) < 1e-5
+
+    desk_stands = [p for p in desk_parts if "Tenting_Stand" in getattr(p, "label", "")]
+    assert len(desk_stands) == 4, f"Expected 4 desk tenting stands, got {len(desk_stands)}"
+    for ds in desk_stands:
+        z_min_s = ds.bounding_box().min.Z
+        assert 0.10 <= z_min_s <= 0.25, (
+            f"[{ds.label}] Folded stand protrudes or mis-seated relative to desk Z=0.0000: min_Z={z_min_s:.4f} mm!"
+        )
 
     asm_desk = bd.Compound(children=desk_parts)
     asm_desk.label = "curcur40_Full_Assembly_Desk"
@@ -1084,6 +1096,20 @@ def main(export_only: bool = False):
         + right_fasteners
         + wheel_check_group,
     )
+    ov_stands_case = max(
+        max_group_overlap(left_stands, [left_case]),
+        max_group_overlap(right_stands, [right_case]),
+    )
+    ov_stands_internal = max(
+        max_group_overlap(left_stands, [left_pcb] + left_kicad_comps + left_fasteners),
+        max_group_overlap(
+            right_stands,
+            [right_pcb, sensor_pcb_global, cup_global, sensor_global, lens_global]
+            + all_right_kicad_comps
+            + right_fasteners
+            + wheel_check_group,
+        ),
+    )
 
     print(f"Cup vs Right Case:         {ov_cup_case:.8f} mm^3")
     print(f"Cup vs Right Plate:        {ov_cup_plate:.8f} mm^3")
@@ -1118,6 +1144,8 @@ def main(export_only: bool = False):
     print(f"Max Top Screw Overlap:     {max_tscr_ov:.8f} mm^3")
     print(f"Max Insert-Screw Overlap:  {max_ins_scr_ov:.8f} mm^3")
     print(f"Max Screw vs Keycaps:      {max_cap_screw_ov:.8f} mm^3")
+    print(f"Tenting Stands vs Cases:   {ov_stands_case:.8f} mm^3")
+    print(f"Tenting Stands vs Internals:{ov_stands_internal:.8f} mm^3")
     print(f"Optical Distance (Ball Bottom Z=-13.20 to Ref Point Z=-15.60): {dist_opt:.6f} mm")
 
     verification_failures: list[str] = []
@@ -1158,6 +1186,8 @@ def main(export_only: bool = False):
         ("max_tscr_ov", max_tscr_ov),
         ("max_ins_scr_ov", max_ins_scr_ov),
         ("max_cap_screw_ov", max_cap_screw_ov),
+        ("ov_stands_case", ov_stands_case),
+        ("ov_stands_internal", ov_stands_internal),
     ]:
         if val != 0.0:
             verification_failures.append(f"{name} non-zero overlap: {val:.8f} mm^3")
