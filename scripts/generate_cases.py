@@ -190,7 +190,7 @@ def build_usbc_support_pilasters(is_right: bool, z_ext_bottom: float) -> list[bd
       3. W_SplitUSB_Shelf: Inner vertical wall (`|X| in [17.8000, 20.5500]`, `Y in [-81.8000, -74.6000]`),
          North of Split USB-C (`J2`/`rJ2` at `Y = -95.9000`) and clear of `Wheel_Cradle` & `rEXSW2` socket.
     Each pilaster protrudes 2.00 mm inward from the adjacent inner wall (1.50 mm solid overlap beneath Main PCB),
-    maintains >= 0.95 mm step to the 12.00 mm USB-C apertures, and runs continuously down into the tilted floor
+    maintains >= 1.85 mm step to the 10.20 mm USB-C apertures, and runs continuously down into the tilted floor
     (zero overhangs, zero undercuts, R=0.85 mm inner corners >= Ø1.50 mm JLC3DP limit).
     """
     z_shelf_top = -5.8000
@@ -234,13 +234,12 @@ def build_usbc_support_pilasters(is_right: bool, z_ext_bottom: float) -> list[bd
 def verify_case_wall_thickness_and_gaps(solid: bd.Solid, is_right: bool):
     """
     Automated JLC3DP (SLA / MJF / SLS) pre-order DFM & B-rep check on the case solid
-    (in Top-Plate-horizontal coordinates, Z in [-26.90, 0.00] mm):
+    (in Top-Plate-horizontal coordinates, Z in [-34.82, 0.00] mm):
       1) Watertight manifold single solid (`is_valid`, `is_sound`, `len(solids) == 1`, `volume > 0`)
       2) JLC3DP build envelope (<= 380 x 284 x 380 mm) & min part size (>= 5 x 5 x 2 mm)
       3) Minimum concave hole/bore diameter >= Ø 1.50 mm (JLC3DP MJF/SLS powder/resin escape rule)
       4) Minimum wall thickness >= 0.80 mm & zero micro-gaps outside documented intentional exclusions:
          - Case top rim (Z ~ 0.00 mm): 1.50 mm wall minus R=0.95 mm outer fillet = 0.550..0.743 mm
-         - Pinky skim floor boundary (|X| > 132.0 mm, Z ~ -8.00 mm): 0.459..0.549 mm
     """
     side_str = "right" if is_right else "left"
 

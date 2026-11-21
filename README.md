@@ -23,7 +23,7 @@
   - PMW3360 回路を独立サブ基板 [`curcur40-pmw3360`](./pcbs/pmw3360/curcur40-pmw3360.kicad_pcb)（$Z = -20.60 \sim -19.00\,\text{mm}$）へ $-14.80\,\text{mm}$ 沈み込ませて分離し、トラックボールカップ円形リム（$Z = -5.00\,\text{mm}$）を右トッププレートの **$\varnothing 28.625\,\text{mm}$ 閉円形開口** の奥へスマートに収めつつ、右メイン基板 `rJ3` とセンサー基板 `J1` を JST SH 6ピン両端同方向フラットケーブル1本で接続。
   - 底面極から $55.0^\circ$（方位角 $90^\circ, 210^\circ, 330^\circ$）の高位置 $\varnothing 2.0\,\text{mm}$ セラミック球 3点支持・片側 $+0.25\,\text{mm}$ 球面クリアランス・T字スリム3爪（スロート径 $\varnothing 24.59\,\text{mm}$、バネ長 $7.67\,\text{mm}$）により、高速フリック時の乗り上げ防止と滑らかな回転・逆さ落下防止・裏押出穴なしでの素手着脱性を両立。
 - **3-in-1 統合 PCBA パネル対応 ＆ RP2040 オンボード・デュアル USB-C QMK / Vial 完全対応**:
-  - 左メイン基板・右メイン基板・PMW3360 センサーサブ基板の全3枚を 1枚の捨て基板フレーム（[`curcur40-panel-3in1`](./pcbs/panel/curcur40-panel-3in1.kicad_pcb), $131.15 \times 207.35\,\text{mm}$）へ統合し、**JLCPCB Economic PCBA 1アイテムで一括実装発注**が可能。
+  - 左メイン基板・右メイン基板・PMW3360 センサーサブ基板の全3枚を 1枚の捨て基板フレーム（[`curcur40-panel-3in1`](./pcbs/panel/curcur40-panel-3in1.kicad_pcb), $131.05 \times 207.25\,\text{mm}$）へ統合し、**JLCPCB Economic PCBA 1アイテムで一括実装発注**が可能。
   - 左右とも `RP2040` + `16MB` QSPI Flash + ST製新世代低ドロップアウト 3.3V LDO（`LDL1117S33R`）をオンボード実装し、PC接続（北側 `J1`/`rJ1`）および左右間接続（親指内側 `J2`/`rJ2`、`USBLC6-2SC6` ESD保護・コールドソケット誤挿し保護搭載）ともに USB Type-C を採用。
   - ファームウェアには **`TMAG5273` 3Dホール慣性ホイール駆動**（`XZX` 擬似同時サンプリングで高速スピン位相遅れを解消、物理24溝と同期した `24 notches/rev`、`TLV493D-A1B6` 自動フォールバック、`WHL_HRZ` 水平スクロール切替対応［`Shift` 併用時は標準の OS 側 `Shift + 縦スクロール` 挙動に委譲］）と **`PMW3360` トラックボールの 2D 慣性高速ドラッグスクロール** を統合し、Vial GUI からリアルタイムに設定変更可能。
 
@@ -166,11 +166,11 @@ curcur40/
 │   │   ├── wheel-rocker.step/.stl    # #03 一体トラニオン軸シーソーロッカー (JLC3DP PA12)
 │   │   └── wheel-cradle.step/.stl    # #04 Cクリップスナップインヒンジ付アンダーPCBクレードル (JLC3DP PA12)
 │   └── assemblies/               # 光学距離・干渉・クリアランス検証用アセンブリモデル 9種 (STEP / STL)
-│       ├── assembly-full.step                    # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（トッププレート水平基準）
-│       ├── assembly-full-desk.step               # KiCad実3D部品535個同期・全674ソリッド統合フルアセンブリ（ケース底面＝デスク面 Z=0 基準）
+│       ├── assembly-full.step                    # KiCad実3D部品526個同期・全663ソリッド統合フルアセンブリ（トッププレート水平基準）
+│       ├── assembly-full-desk.step               # KiCad実3D部品526個同期・全663ソリッド統合フルアセンブリ（ケース底面＝デスク面 Z=0 基準）
 │       ├── carrying-box-assembly.step            # スライドボックス収納検証アセンブリ・フタ取り外し内部確認用（全689ソリッド）
 │       ├── carrying-box-with-lid-assembly.step   # スライドボックス収納フルアセンブリ・フタ装着標準姿勢（全690ソリッド）
-│       ├── curcur40-right-wheel-assembly.step    # 右手＋KiCad実3D部品＋アンダープレート慣性ホイール検証アセンブリ（349ソリッド）
+│       ├── curcur40-right-wheel-assembly.step    # 右手＋KiCad実3D部品＋アンダープレート慣性ホイール検証アセンブリ（338ソリッド）
 │       ├── inertia-wheel-assembly.step           # アンダープレート慣性ホイール機構単体アセンブリ（14パーツ）
 │       ├── trackball-cup-with-ball.step/.stl     # カップ＋25mm球＋光学基準点アセンブリ
 │       ├── pmw3360-lens-pcb-assembly.step        # PMW3360＋LM19レンズ＋サブ基板光学モジュール

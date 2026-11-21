@@ -68,7 +68,7 @@
    - `kicad-cli pcb drc --schematic-parity`: 全3基板（`left`, `right`, `pmw3360`）すべて **違反 0件・未接続 0件・回路図不一致 0件**、3-in-1 統合 PCBA パネル（[`pcbs/panel/curcur40-panel-3in1.kicad_pcb`](pcbs/panel/curcur40-panel-3in1.kicad_pcb)）および左右トッププレートも **DRC 違反 0件**。
    - `kicad-cli sch erc`: 左右メイン基板は **エラー 0件、警告 1件**（`RP2040` Pin 32 `GPIO21` と `+3V3` / `GNDR` の左右判定ピン直結による正当な `pin_to_pin` 警告 1件のみを意図的に保持）、`curcur40-pmw3360` は **エラー 0件、警告 0件**。
    - **JLCPCB 2層 FR-4 標準製造ルール (`verify_jlcpcb_preflight`)**:
-     - 基板外形（`Edge.Cuts`）サイズ：単体基板は $20.0 \times 20.0\text{ mm}$ 以上・最大 $400 \times 500\text{ mm}$ 以内、3-in-1 Economic PCBA パネルは $70 \times 70 \sim 250 \times 250\text{ mm}$ 以内（実測 $131.15 \times 207.35\text{ mm}$、全88箇所のマウスバイト穴端から全銅箔パターン・ビア・パッドまで $\ge 0.48\text{ mm}$ 確保）。
+     - 基板外形（`Edge.Cuts`）サイズ：単体基板は $20.0 \times 20.0\text{ mm}$ 以上・最大 $400 \times 500\text{ mm}$ 以内、3-in-1 Economic PCBA パネルは $70 \times 70 \sim 250 \times 250\text{ mm}$ 以内（実測 $131.05 \times 207.25\text{ mm}$、全88箇所のマウスバイト穴端から全銅箔パターン・ビア・パッド・ベタまで $\ge 0.48\text{ mm}$ 確保）。
      - 最小配線幅 $\ge 0.127\text{ mm}$（$5\text{ mil}$、1oz 銅箔標準。実基板は $\ge 0.200\text{ mm}$）。
      - 最小ビア外径 $\ge 0.450\text{ mm}$、ビアドリル径 $\ge 0.300\text{ mm}$（2層標準追加料金なし下限。実基板は $0.50/0.30\text{ mm}$ または $0.60/0.30\text{ mm}$）、ビアアニュラリング $\ge 0.075\text{ mm}$。
      - PTH ドリル径 $0.20 \sim 6.30\text{ mm}$、NPTH ドリル径 $\ge 0.50\text{ mm}$。

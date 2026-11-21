@@ -29,7 +29,7 @@
 - **販売元**: [AliExpress（径方向着磁 D4×1mm）](https://ja.aliexpress.com/item/1005010201889003.html)
 - **備考**:
   - **必ず円盤の直径方向（左右）に N 極 / S 極が分かれた「径方向着磁（Diametric）」品**を選んでください（一般的な厚み方向着磁では回転角を検出できません）。
-  - `magnet-holder.step`（`#02`）の東側ポケット（$\varnothing 4.04 \times 1.05\,\text{mm}$）へ入れるだけで、西側は鋼製Dカット軸端面、東側は `wheel-rocker.step`（`#03`）の一体キーパータブにより機械的に抜け止めされるため、**接着剤は不要**です。
+  - `magnet-holder.step`（`#02`）の東側ポケット（$\varnothing 4.03 \times 1.05\,\text{mm}$）へ入れるだけで、西側は鋼製Dカット軸端面、東側は `wheel-rocker.step`（`#03`）の一体キーパータブにより機械的に抜け止めされるため、**接着剤は不要**です。
 
 ### 1-4. 磁気デテント調整用ネオジム磁石：`Ø2.0×2.0mm` 軸方向着磁（必要数：1個）
 - **メーカー / 代表型番**: 二六製作所 **`NE280`**（丸型ネオジム磁石 $\varnothing 2.0 \times 2.0\,\text{mm}$, N52 / Niメッキ）または同寸の標準軸方向着磁ネオジム磁石（N35〜N52）
@@ -98,12 +98,12 @@
 | [`cases/left-desk.step`](../cases/left-desk.step) | MJF / SLS `PA12` | 1 | 左手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋USB-C内壁受け棚3箇所） |
 | [`cases/right-desk.step`](../cases/right-desk.step) | MJF / SLS `PA12` | 1 | 右手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋カップボス4箇所＋USB-C内壁受け棚3箇所） |
 | [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（支持球 $55^\circ$・内球面 $R=12.75\,\text{mm}$・高さ $2.0\,\text{mm}$ フラット固定耳×4） |
-| [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（西側 $\varnothing 2.00\,\text{mm}$ D穴圧入、$\varnothing 5.72 \times 2.05\,\text{mm}$） |
+| [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（西側 $\varnothing 2.00\,\text{mm}$ D穴圧入、$\varnothing 5.65 \times 2.05\,\text{mm}$） |
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（Cクリップ軸受座・一体 $\varnothing 3.0\,\text{mm}$ 支点軸・東キーパータブ・南ラチェットボス） |
 | [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定クレードル（`WC1`/`WC2` インサート下穴×2・$\varnothing 3.06\,\text{mm}$ Cクリップ軸受連結） |
 | [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`v1.1` テンティング $11.80^\circ$ ケース対応更新は別途予定） |
 | [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`carrying-box.step` とセット使用） |
 
 ### 2-3. 基板製造・PCBA 実装（JLCPCB）：推奨 3アイテム（すべて板厚 `1.6mm` 標準 FR-4）
-- **3-in-1 統合 PCBA パネル（1種・推奨）**: [`curcur40-panel-3in1`](../pcbs/panel/jlcpcb/production_files/)（`curcur40-left` ＋ `curcur40-right`［`rU6: TMAG5273A1QDBVR` 自動実装済］＋ `curcur40-pmw3360` の全3枚を捨て基板フレーム $131.15 \times 207.35\,\text{mm}$ にまとめ、1回の Economic PCBA で一括実装！※単体発注用の各データも同梱）
+- **3-in-1 統合 PCBA パネル（1種・推奨）**: [`curcur40-panel-3in1`](../pcbs/panel/jlcpcb/production_files/)（`curcur40-left` ＋ `curcur40-right`［`rU6: TMAG5273A1QDBVR` 自動実装済］＋ `curcur40-pmw3360` の全3枚を捨て基板フレーム $131.05 \times 207.25\,\text{mm}$ にまとめ、1回の Economic PCBA で一括実装！※単体発注用の各データも同梱）
 - **FR-4 トッププレート（2種・PCB 単体製造）**: `plate-top-left`, `plate-top-right`（全14箇所のネジ位置は $\varnothing 4.40\,\text{mm}$ ネジ頭逃げ穴とし、39個の Choc V2 キースイッチ嵌合でスマートに保持）

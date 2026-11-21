@@ -12,7 +12,7 @@ and verify zero B-rep interference + minimum clearances across all components pe
     - `curcur40-right.kicad_pcb`   (Z = -5.80 to -4.20 mm + all real 3D component solids + mated `rJ3` JST `SHR-06V-S-B` plug)
     - `curcur40-pmw3360.kicad_pcb` (Z = -20.60 to -19.00 mm + all 9 real SMD/JST-SH solids + mated `J1` JST `SHR-06V-S-B` plug)
 - Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, retained via 39x Kailh Choc V2 switch snap-fit,
-  with 14x Ø 4.40 mm screw-head clearance holes & Right 7.70 x 22.00 mm wheel slot)
+  with 14x Ø 4.40 mm screw-head clearance holes & Right 8.05 x 22.00 mm wheel slot)
 - 39x Kailh Choc V2 Low-Profile Keyswitches (21 Left + 18 Right) + 39x Keycaps
 - 3.00 mm Sunken Trackball Cup placed on Sensor PCB F.Cu at (42.8625, -104.7750, -19.00 mm), Rim at Z = -5.00 mm, 2.00 mm flat ears
 - 25mm Trackball Sphere at (42.8625, -104.7750, -0.70 mm) + `Lens_Optical_Ref_Point` at Z = -15.60 mm (exact 2.40 mm optical gap)
