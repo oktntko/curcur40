@@ -8,9 +8,9 @@ following the real build guide assembly flow:
   Stage 2: Under-Plate Passive Magnetic Inertia Wheel Sub-Assembly
            (#01 45# Steel Flywheel + #07 Bearings + #02 Magnet Holder & #08 Magnet
             + #03 Rocker + #04 Cradle C-clip snap + South Detent Adjuster & Spin Demo)
-  Stage 3: Sealed White Bottom Cases + 16x Brass Heat-Set Inserts + Trackball Unit Mounting (TB1-TB4)
+  Stage 3: Sealed SLS White Bottom Cases + 16x Brass Heat-Set Inserts + Trackball Unit Mounting (TB1-TB4)
   Stage 4: Inertia Wheel Unit + Left/Right Black Main PCBs (WC1-WC2 & 12x Key-Valley M2x6 Screws)
-  Stage 5: Black FR-4 Top Plates + 40x Kailh Choc V2 Switches + 40x White Keycaps + 25mm Ball
+  Stage 5: Black FR-4 Top Plates + 39x Kailh Choc V2 Switches + 39x White Keycaps + 25mm Ball
   Stage 6: Completed Showcase (Wheel Free-Spin + Smooth Turntable Camera Orbit)
 
 Run with:
@@ -343,7 +343,7 @@ MAT_PCB_BLACK = MaterialSpec(color="#0E1015", metallic=0.06, roughness=0.38)
 MAT_PLATE_BLACK = MaterialSpec(color="#161920", metallic=0.12, roughness=0.34)
 MAT_SWITCH_BODY = MaterialSpec(color="#3B424F", metallic=0.05, roughness=0.38)
 MAT_SWITCH_STEM = MaterialSpec(color="#687385", metallic=0.05, roughness=0.34)
-MAT_STEEL_WHEEL = MaterialSpec(color="#E0E7F0", metallic=0.93, roughness=0.19)
+MAT_STEEL_WHEEL = MaterialSpec(color="#2B303A", metallic=0.82, roughness=0.26)
 MAT_BEARING_STEEL = MaterialSpec(color="#D0D8E2", metallic=0.88, roughness=0.24)
 MAT_SCREW_STEEL = MaterialSpec(color="#CCD5E0", metallic=0.86, roughness=0.25)
 MAT_MAGNET_NI = MaterialSpec(color="#F0F5FA", metallic=0.96, roughness=0.12)
@@ -501,10 +501,10 @@ def build_scene(plotter: pv.Plotter) -> dict:
         "pcbs/right/curcur40-right.kicad_pcb", (14.2875, -57.1500, -5.8000), "Right_Main_PCB", "Right_PCB"
     )
     sensor_pcb_s, pmw_comps = export_kicad_pcb_solids(
-        "pcbs/pmw3360/curcur40-pmw3360.kicad_pcb", (14.2875, -57.1500, -17.6000), "PMW3360_Sensor_PCB", "Sensor_PCB"
+        "pcbs/pmw3360/curcur40-pmw3360.kicad_pcb", (14.2875, -57.1500, -20.6000), "PMW3360_Sensor_PCB", "Sensor_PCB"
     )
 
-    sw_click_x, sw_click_y = to_step_right(-2.0125, -2.0000)
+    sw_click_x, sw_click_y = to_step_right(25.3000, -4.7500)
     rexsw1_plungers = [
         c
         for c in right_comps
@@ -529,7 +529,7 @@ def build_scene(plotter: pv.Plotter) -> dict:
         c
         for c in pmw_comps
         if math.hypot(c.bounding_box().center().X - j1_x, c.bounding_box().center().Y - j1_y) < 5.0
-        and c.bounding_box().min.Z < -18.50
+        and c.bounding_box().min.Z < -21.50
     ]
     j1_shroud = [max(j1_solids, key=lambda s: s.volume)]
     j1_plug_s = make_jst_shr06v_plug_from_header(j1_solids, sensor_pcb_s, "Sensor_PCB_J1_SHR06V_Plug")
@@ -559,8 +559,8 @@ def build_scene(plotter: pv.Plotter) -> dict:
     ]
     j1_plug = AnimPart(plotter, solid_to_polydata(j1_plug_s, tol=0.06), MAT_JST_PLUG, "Sensor_J1_Plug")
 
-    # 3. Trackball Sub-Assembly Parts (in Global STEP frame)
-    tb_cx, tb_cy, tb_cz = 23.8125, -109.5375, -16.0000
+    # 3. Trackball Sub-Assembly Parts (in Global STEP frame: -3.00 mm sunken optical stack)
+    tb_cx, tb_cy, tb_cz = 42.8625, -104.7750, -19.0000
     cup_s = bd.import_step(str(CASES_DIR / "trackball-cup.step")).moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
     ball_s = bd.Sphere(radius=12.50).moved(bd.Location((tb_cx, tb_cy, tb_cz + 18.30))).solids()[0]
 
@@ -568,10 +568,11 @@ def build_scene(plotter: pv.Plotter) -> dict:
     sensor_local, lens_local = None, None
     for s in asm_opt.solids():
         bb = s.bounding_box()
-        if bb.min.Z < -3.5:
-            sensor_local = s
-        elif bb.max.Z > 3.0:
+        if bb.max.Z > 3.0:
             lens_local = s
+        elif bb.min.Z < -3.5:
+            sensor_local = s
+    assert sensor_local is not None and lens_local is not None, "Failed to locate PMW3360 & LM19 solids!"
     sensor_s = sensor_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
     lens_s = lens_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
 
@@ -638,7 +639,7 @@ def build_scene(plotter: pv.Plotter) -> dict:
     tb_screws_r = []
     for tag, px, py, z_ins in RIGHT_TB_HOLES_PCB:
         sx, sy = to_step_right(px, py)
-        ins_s, scr_s = make_insert_and_screw(sx, sy, z_ins, -13.99, tag)
+        ins_s, scr_s = make_insert_and_screw(sx, sy, z_ins, -16.99, tag)
         tb_inserts_r.append(AnimPart(plotter, solid_to_polydata(ins_s, tol=0.05), MAT_BRASS, f"Ins_{tag}"))
         tb_screws_r.append(AnimPart(plotter, solid_to_polydata(scr_s, tol=0.05), MAT_SCREW_STEEL, f"Scr_{tag}"))
 
@@ -648,7 +649,7 @@ def build_scene(plotter: pv.Plotter) -> dict:
     left_plate = AnimPart(plotter, solid_to_polydata(left_plate_s, tol=0.06), MAT_PLATE_BLACK, "Left_Plate")
     right_plate = AnimPart(plotter, solid_to_polydata(right_plate_s, tol=0.06), MAT_PLATE_BLACK, "Right_Plate")
 
-    # 7. 40x Switches & 40x White Keycaps (instancing canonical meshes via 4x4 matrices!)
+    # 7. 39x Switches & 39x White Keycaps (instancing canonical meshes via 4x4 matrices!)
     sw_body_mesh, sw_stem_mesh = build_visual_choc_v2_meshes()
     cap_mesh = build_visual_keycap_mesh()
 
@@ -716,12 +717,12 @@ def build_scene(plotter: pv.Plotter) -> dict:
 TOTAL_DURATION = 26.5
 
 STAGE_CAPTIONS = [
-    (0.0, 4.3, "STEP 1 / 6", "トラックボールユニットの組み立て", "TBセンサー基板 + PMW3360 + LM19レンズ + カップ + セラミック支持球"),
-    (4.3, 9.7, "STEP 2 / 6", "パッシブ磁気慣性ホイールの組み立て", "45#鋼一体軸ホイール + ベアリング + 磁石ホルダー + Cクリップ連結ロッカー/クレードル"),
-    (9.7, 13.8, "STEP 3 / 6", "ボトムケース準備 ＆ トラックボール組み込み", "100%密閉ボトムケース（白） + 真鍮インサート圧入 + TB1〜TB4 ネジ固定"),
+    (0.0, 4.3, "STEP 1 / 6", "トラックボールユニットの組み立て", "TBセンサー基板 + PMW3360 + LM19レンズ(ピン無切断) + カップ + 支持球"),
+    (4.3, 9.7, "STEP 2 / 6", "パッシブ磁気慣性ホイールの組み立て", "黒染め45#鋼一体軸ホイール + ベアリング + 東側磁石ホルダー + Cクリップ連結ロッカー/クレードル"),
+    (9.7, 13.8, "STEP 3 / 6", "ボトムケース準備 ＆ トラックボール組み込み", "11.80°傾斜PA12白ナイロンケース + 真鍮インサート圧入 + 3mm沈み込みTB固定"),
     (13.8, 18.2, "STEP 4 / 6", "慣性ホイール ＆ メインPCB（黒）の締結", "右メインPCB裏へホイール固定（WC1/WC2） → ケース着地 ＆ キー谷間12箇所ネジ固定"),
-    (18.2, 23.6, "STEP 5 / 6", "トッププレート・スイッチ・キーキャップ・25mm球装着", "FR-4トッププレート（黒） + Choc V2 スイッチ40個 + 白キーキャップ40個 + 25mmボール"),
-    (23.6, 26.6, "COMPLETE", "curcur40 完成（prototype/passive-inertia-wheel）", "25mmトラックボール + アンダープレート一体軸パッシブ磁気慣性ホイール"),
+    (18.2, 23.6, "STEP 5 / 6", "トッププレート・スイッチ・キーキャップ・25mm球装着", "FR-4トッププレート（黒） + Choc V2 スイッチ39個 + 白キーキャップ39個 + 25mmボール"),
+    (23.6, 26.6, "COMPLETE", "curcur40 v1.1 完成", "11.80°テンティング + 閉円形開口25mmトラックボール + 黒染め45#鋼一体軸慣性ホイール"),
 ]
 
 
@@ -732,10 +733,10 @@ def get_desk_point_r(x_step: float, y_step: float, z_step: float) -> np.ndarray:
 
 def evaluate_camera(t: float) -> tuple[tuple[float, float, float], tuple[float, float, float]]:
     """Smooth keyframed camera `(position, focal_point)` across all 6 stages."""
-    tb_focus_sub = get_desk_point_r(23.8125, -109.5375, -5.0 + 26.0)
-    whl_focus_sub = get_desk_point_r(X_AXLE_STEP - 2.5, Y_AXLE_STEP - 3.5, Z_AXLE_STEP - 3.0 + 26.0)
-    full_focus = np.array([0.0, -76.0, 12.0], dtype=np.float64)
-    right_focus = np.array([22.0, -80.0, 13.0], dtype=np.float64)
+    tb_focus_sub = get_desk_point_r(42.8625, -104.7750, -8.0 + 26.0)
+    whl_focus_sub = get_desk_point_r(X_AXLE_STEP + 2.0, Y_AXLE_STEP - 2.0, Z_AXLE_STEP - 2.0 + 26.0)
+    full_focus = np.array([0.0, -76.0, 14.0], dtype=np.float64)
+    right_focus = np.array([34.0, -82.0, 14.0], dtype=np.float64)
 
     # Keyframes: (t_start, pos, focal)
     if t < 4.0:
@@ -803,7 +804,7 @@ def evaluate_camera(t: float) -> tuple[tuple[float, float, float], tuple[float, 
     rad0 = math.hypot(36.0, 342.0)
     ang = ang0 - math.radians(34.0) * math.sin(u * math.pi * 0.85)
     rad = rad0 - 14.0 * math.sin(u * math.pi * 0.5)
-    dz = 236.0 - 22.0 * u
+    dz = 234.0 - 22.0 * u
     pos = full_focus + np.array([rad * math.sin(ang), -rad * math.cos(ang), dz])
     return tuple(pos), tuple(full_focus)
 
@@ -881,13 +882,13 @@ def update_scene_at_time(scene: dict, t: float):
         spin_deg = 1080.0 * ease_out_cubic(progress(t, 23.60, TOTAL_DURATION))
     m_spin = mat_rot_x(spin_deg)
 
-    # Subtle middle-click demo tap right at 8.15..8.55s
+    # Subtle middle-click demo tap right at 8.15..8.55s (wheel at u=0 < U_PIV=+6.35 -> -click_deg lowers wheel & lifts East striker!)
     click_deg = 0.0
     if 8.15 <= t <= 8.55:
-        click_deg = 2.20 * math.sin(progress(t, 8.15, 8.55) * math.pi)
+        click_deg = 2.95 * math.sin(progress(t, 8.15, 8.55) * math.pi)
     m_seesaw = (
         mat_translate(U_PIV, 0.0, W_PIV)
-        @ mat_rot_y(click_deg)
+        @ mat_rot_y(-click_deg)
         @ mat_translate(-U_PIV, 0.0, -W_PIV)
     )
 
@@ -899,24 +900,24 @@ def update_scene_at_time(scene: dict, t: float):
         m_w_base = M_DESK_R @ mat_translate(0.0, 0.0, 26.0) @ M_WHEEL_TO_STEP
 
         # Rotor assembly first rises slightly during rocker insertion or drops cleanly into rocker
-        # 4.30s: #01 Steel Flywheel appears
+        # 4.30s: #01 Blackened 45# Steel Flywheel appears
         m_fw, a_fw = drop_state(t, 4.30, 0.55, (0.0, 0.0, 8.0))
         # 4.85s: 2x DDL-520ZZ Bearings slide onto journals along ±u (X)
         m_bw, a_bw = drop_state(t, 4.85, 0.65, (-12.0, 0.0, 0.0), snap=True)
         m_be, a_be = drop_state(t, 4.85, 0.65, (12.0, 0.0, 0.0), snap=True)
-        # 5.45s: #02 Magnet Holder + #08 D4x1mm Magnet slide onto West D-shaft
-        m_hd, a_hd = drop_state(t, 5.45, 0.60, (-14.0, 0.0, 0.0), snap=True)
-        m_md4, a_md4 = drop_state(t, 5.80, 0.55, (-16.0, 0.0, 0.0), snap=True)
+        # 5.45s: #02 Magnet Holder + #08 D4x1mm Magnet slide onto East (+u) D-shaft
+        m_hd, a_hd = drop_state(t, 5.45, 0.60, (14.0, 0.0, 0.0), snap=True)
+        m_md4, a_md4 = drop_state(t, 5.80, 0.55, (16.0, 0.0, 0.0), snap=True)
         # 6.30s: #03 Seesaw Rocker rises up so bearings snap into C-clip seats
         m_rk, a_rk = drop_state(t, 6.30, 0.75, (0.0, 0.0, -18.0), snap=True)
-        # 7.05s: #04 Cradle + WC1/WC2 Brass Inserts snap down onto Rocker trunnions
+        # 7.05s: #04 Open-South U-Cradle + WC1/WC2 Brass Inserts snap down onto Rocker trunnions
         m_cr, a_cr = drop_state(t, 7.05, 0.70, (0.0, 0.0, 16.0), snap=True)
         m_iwc1, a_iwc1 = drop_state(t, 6.95, 0.65, (0.0, 0.0, 22.0))
         m_iwc2, a_iwc2 = drop_state(t, 7.05, 0.65, (0.0, 0.0, 22.0))
-        # 7.65s: South Detent Brass Insert + M2x6 Adjuster Screw + Ø2x2mm Magnet from South (-v)
+        # 7.65s: South Detent Brass Insert + M2x6 Adjuster Screw from South (-v), Ø2x2mm Magnet drops into open-top trough (+Z)!
         m_idet, a_idet = drop_state(t, 7.60, 0.50, (0.0, -12.0, 0.0))
         m_sdet, a_sdet = drop_state(t, 7.75, 0.55, (0.0, -16.0, 0.0))
-        m_mdet, a_mdet = drop_state(t, 7.85, 0.55, (0.0, 8.0, 0.0), snap=True)
+        m_mdet, a_mdet = drop_state(t, 7.85, 0.55, (0.0, 0.0, 8.0), snap=True)
 
         wp["flywheel"].update(m_w_base @ m_seesaw @ m_fw @ m_spin, a_fw * fade_out_w)
         wp["brg_w"].update(m_w_base @ m_seesaw @ m_bw, a_bw * fade_out_w)
@@ -1142,7 +1143,7 @@ class HudOverlayRenderer:
         )
 
         # Subtle top-right watermark pill
-        brand_txt = "curcur40  •  passive-inertia-wheel"
+        brand_txt = "curcur40  •  v1.1"
         br_box = d.textbbox((0, 0), brand_txt, font=self.f_brand)
         bw = (br_box[2] - br_box[0]) + int(round(28 * scale))
         bh = int(round(36 * scale))
@@ -1282,8 +1283,11 @@ def render_full_video(out_mp4: Path, width: int, height: int, fps: int):
     writer.send(None)
 
     t_render_start = time.perf_counter()
+    max_runtime_sec = 600.0
     try:
         for frame_idx in range(n_frames):
+            if time.perf_counter() - t_render_start > max_runtime_sec:
+                raise TimeoutError(f"Exceeded hard timeout {max_runtime_sec:.0f}s at frame {frame_idx}/{n_frames}!")
             t_sec = frame_idx / float(fps)
             update_scene_at_time(scene, t_sec)
             cpos, cfoc = evaluate_camera(t_sec)
@@ -1303,7 +1307,8 @@ def render_full_video(out_mp4: Path, width: int, height: int, fps: int):
                 eta = (n_frames - (frame_idx + 1)) / max(rate, 1e-6)
                 print(
                     f"  Frame {frame_idx + 1:4d}/{n_frames} ({100.0 * (frame_idx + 1) / n_frames:5.1f}%) "
-                    f"| {rate:.1f} fps | ETA {eta:.1f}s"
+                    f"| {rate:.1f} fps | ETA {eta:.1f}s",
+                    flush=True,
                 )
     finally:
         writer.close()
