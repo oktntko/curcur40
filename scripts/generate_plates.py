@@ -86,9 +86,9 @@ RIGHT_SWITCHES = [
     (  71.4375,  42.86250),  # rSW9  (7,3)
 ]
 
-# Right Under-Plate Inertia Wheel 2-point cradle screw-head clearance holes (WC1, WC2: Ø 4.40 mm -> radius 2.20 mm)
+# Right Under-Plate Inertia Wheel 2-point cradle screw-head clearance holes (WC1: Ø 4.05 mm -> r=2.025 mm for 0.75 mm West FR-4 web; WC2: Ø 4.40 mm -> r=2.20 mm)
 RIGHT_WHEEL_HOLES = [
-    ( 7.3375, -5.0375, 2.20),
+    ( 7.3375, -5.0375, 2.025),
     (21.2375, 10.7625, 2.20),
 ]
 

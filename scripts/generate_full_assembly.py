@@ -525,7 +525,7 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
         sw_step = [to_step_right(x, y) for x, y in RIGHT_SWITCHES]
         plate_holes_step = (
             [(*to_step_right(x, y), 2.20) for _, x, y, _, _ in RIGHT_PERIMETER_HOLES_PCB]
-            + [(*to_step_right(x, y), 2.20) for x, y in RIGHT_WHEEL_CRADLE_HOLES_PCB]
+            + [(*to_step_right(x, y), (2.025 if idx == 0 else 2.20)) for idx, (x, y) in enumerate(RIGHT_WHEEL_CRADLE_HOLES_PCB)]
             + [(*to_step_right(28.5750, 47.6250), 14.3125)]  # Closed Ø 28.625 mm circular trackball cutout
         )
     else:
@@ -1024,6 +1024,7 @@ def main(export_only: bool = False):
     ov_click_plunger = max_group_overlap(wheel_mov_click, [rexsw1_plunger])
     ov_click_env = max(
         max_group_overlap(wheel_mov_click, [right_case, right_plate, right_pcb]),
+        max_group_overlap(wheel_mov_click, wheel_stat),
         max_group_overlap(wheel_mov_click, right_switches + right_keycaps),
         max_group_overlap(wheel_mov_click, non_plunger_right_comps),
     )

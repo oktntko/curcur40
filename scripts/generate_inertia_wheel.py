@@ -92,7 +92,7 @@ SADDLE_THROAT_W = 2.78                  # 2.78 mm elastic snap throat (0.11 mm/s
 
 U_SW = 25.3000 - X_AXLE_PCB             # +11.0125 mm (rEXSW1 Kailh Square Silent center on B.Cu: x=25.30, y=-4.75)
 V_SW = -(-4.7500 - Y_AXLE_PCB)          # +7.5125 mm
-CLICK_PRESS_DEG = 2.95                  # Nominal full click check (over-travel stop contacts Right_Main_PCB B.Cu at ~3.15 deg!)
+CLICK_PRESS_DEG = 2.95                  # Nominal full click check (West nose over-travel stop contacts Cradle WC1 shelf at ~3.15 deg!)
 
 # Cradle Mounting Bosses (WC1 & WC2 on curcur40-right):
 WC1_PCB = (7.3375, -5.0375)             # (u = -6.9500, v = +7.8000)
@@ -268,18 +268,18 @@ def build_wheel_rocker_local() -> bd.Solid:
       - South Captive Detent Adjuster Boss (`v in [-19.12, -10.90]` + `0.82 mm` Lower Keeper Jaw to `-10.30`):
         South Ø2.85 mm brass insert bore + Rear Drop-In Window + Closed Ø2.14 mm Guide Tunnel + North Lower Keeper Jaw
       - 2x Integral Ø3.00 mm Pivot Trunnions at `(U_PIV = +6.10, W_PIV = -4.65)` on East Cheek Block (`u in [+4.60, +7.60]`)
-      - Reinforced 2.15 mm Thick East Cross-Base & Longitudinal NE Striker Arm (`w in [-9.45, -7.30]`)
+      - Reinforced 2.15 mm Thick East Cross-Base & Longitudinal NE Striker Arm (`w in [-8.80, -6.65]`)
         + Tightened East Keeper Tab (`u in [+9.30, +10.30]`, 0.25 mm axial gap!)
-        + Co-located Over-Travel Hard Stop Boss (`u in [+10.85, +12.35]`, `v in [+2.30, +3.90]`, `w_top = +0.76`,
-          contacts bare `Right_Main_PCB` `B.Cu` at `+3.15 deg` right past switch click to protect `rEXSW1`!)
+      - West Over-Travel Hard-Stop Nose (`u in [-6.62, -4.50]`, `v in [+3.48, +5.15]`, `w in [-3.20, -1.95]`,
+        contacts `#04` Cradle `WC1` stop shelf `w = -3.90` at `+3.15 deg` right past switch click to protect `rEXSW1`!)
     """
-    ear_v_w = 6.96  # v in [-3.48, +3.48] -> 0.96 mm root jaw thickness (>= 0.80 mm), 0.07 mm/side clear of ±3.55 saddles!
+    ear_v_w = 6.76  # v in [-3.38, +3.38] -> 0.86 mm root jaw (>= 0.80 mm), >= 0.37 mm clear of PCB ±3.75 wing, 0.07 mm clear of ±3.45 saddles!
 
-    # 1. West Bearing Ear (`u in [-6.62, -3.55]`, `v in [-3.48, +3.48]`, `w in [-12.80, +1.90]`):
+    # 1. West Bearing Ear (`u in [-6.62, -3.55]`, `v in [-3.38, +3.38]`, `w in [-12.80, +1.65]`):
     #    Upper C-clip jaws (`w >= -1.10`) cut all the way through `u` so jaws flex freely without end-wall shear;
     #    lower solid 0.85 mm West end-wall (`u in [-6.62, -5.77]`, `w in [-12.80, -1.10]`) stops bearing `-u`!
     west_ear = bd.Box(
-        3.07, ear_v_w, 14.70,
+        3.07, ear_v_w, 14.45,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((-6.62, 0.0, -12.80)))
     west_seat_lower = bd.extrude(bd.Plane.YZ.offset(-5.77) * bd.Circle(2.52), amount=2.32)
@@ -291,10 +291,10 @@ def build_wheel_rocker_local() -> bd.Solid:
             bd.Rectangle(8.00, 4.00, mode=bd.Mode.SUBTRACT)  # Only cut w >= -1.10!
     west_ear = west_ear - west_seat_lower - bd.extrude(sk_w_through.sketch, amount=3.30)
 
-    # 2. East Bearing Ear (`u in [+3.55, +6.56]`, `v in [-3.48, +3.48]`, `w in [-12.80, +1.90]`):
+    # 2. East Bearing Ear (`u in [+3.55, +6.56]`, `v in [-3.38, +3.38]`, `w in [-12.80, +1.65]`):
     #    Leaves 0.81 mm solid lower East wall `[+5.75, +6.56]` (`w < -1.10`) + Ø2.80 mm shaft bottom clearance!
     east_ear = bd.Box(
-        3.01, ear_v_w, 14.70,
+        3.01, ear_v_w, 14.45,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((3.55, 0.0, -12.80)))
     east_seat_lower = bd.extrude(bd.Plane.YZ.offset(3.45) * bd.Circle(2.52), amount=2.30)
@@ -320,7 +320,7 @@ def build_wheel_rocker_local() -> bd.Solid:
     #      tucked under the R=11.00 wheel curvature (`v_wheel(w=-4.65) = -9.97` -> `0.33 mm` wheel gap!)
     #      to physically block `#09` (`w in [-5.15, -3.15]`) at `v = -11.12` while leaving upper 75% of `#09` open!
     det_web = bd.Box(
-        7.10, (-3.48) - V_DET_MIN, 1.35,
+        7.10, (-3.38) - V_DET_MIN, 1.35,
         align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((0.0, V_DET_MIN, -12.80)))
     det_boss = bd.Box(
@@ -379,16 +379,16 @@ def build_wheel_rocker_local() -> bd.Solid:
     trunnion_n = (
         bd.Cylinder(
             radius=TRUNNION_R,
-            height=4.65 - 3.48,
+            height=4.65 - 3.38,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
-        .moved(bd.Location((U_PIV, 3.48, W_PIV)))
+        .moved(bd.Location((U_PIV, 3.38, W_PIV)))
     )
     trunnion_s = (
         bd.Cylinder(
             radius=TRUNNION_R,
-            height=(-3.48) - (-4.65),
+            height=(-3.38) - (-4.65),
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
@@ -398,7 +398,8 @@ def build_wheel_rocker_local() -> bd.Solid:
     # 6. Coplanar Reinforced 2.15 mm East Cross-Base & Longitudinal NE Striker Arm (`w in [-8.80, -6.65]`, 0.06 mm above Cradle Under-Bridge!)
     #    + Plunger Striker Boss (`u in [+9.30, +12.35]`, `v in [+5.90, +9.10]`, `w in [-8.80, -3.22]` centered at rEXSW1!)
     #    + Tightened East Keeper Tab (`u in [+9.30, +10.30]`, `v in [-1.50, +1.50]`, `w in [-8.80, -1.15]`, 0.25 mm gap!)
-    #    + Over-Travel Hard Stop Boss (`u in [+11.15, +12.35]`, `v in [+2.35, +3.95]`, `w in [-8.80, +0.76]`):
+    #    + West Over-Travel Hard-Stop Nose (`u in [-6.62, -4.50]`, `v in [+3.48, +5.15]`, `w in [-3.20, -1.95]`,
+    #      0.70 mm above Cradle WC1 Stop Shelf `w = -3.90` -> 0.044 mm clear at 2.95 deg, solid stop at ~3.15 deg!):
     cross_base = bd.Box(
         9.30 - 6.56, ear_v_w, 2.15,
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
@@ -419,10 +420,10 @@ def build_wheel_rocker_local() -> bd.Solid:
         align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((9.30, 0.0, -8.80)))
 
-    overtravel_stop = bd.Box(
-        12.35 - 11.15, 3.95 - 2.35, 0.76 - (-8.80),
+    overtravel_nose = bd.Box(
+        (-4.50) - (-6.62), 5.15 - 3.38, (-1.95) - (-3.20),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((11.15, 2.35, -8.80)))
+    ).moved(bd.Location((-6.62, 3.38, -3.20)))
 
     body = (
         west_ear
@@ -437,7 +438,7 @@ def build_wheel_rocker_local() -> bd.Solid:
         + striker_arm
         + striker_boss
         + keeper_tab
-        + overtravel_stop
+        + overtravel_nose
         - det_bore
     )
     solid = body.solids()[0]
@@ -466,17 +467,22 @@ def build_wheel_cradle_local() -> bd.Solid:
     v_wc2 = -(WC2_PCB[1] - Y_AXLE_PCB)  # -8.0000
 
     w_top = 1.10
-    w_boss_bot = -3.90
+    w_boss_bot = -5.60     # Coplanar lower base with South over-travel stop shelf (`w in [-5.60, -3.90]`)
     w_arch_bot = -2.55
     w_saddle_top = -3.00   # 0.75 mm below rEXSW1 housing (w = -2.25) & 3.00 mm below rU6 (w = 0.00)!
     w_saddle_bot = -7.90   # Gives 0.90 mm base [-7.90, -7.00] that stays 0.82 mm (>= 0.80 mm) below Ø3.06 cclip (-6.18)!
 
-    # 1) WC1 North-West Boss (`u in [-9.40, -4.50]`, `v in [+5.35, +10.25]`, `w in [-3.90, +1.10]`)
+    # 1) WC1 North-West Boss (`u in [-9.40, -4.50]`, `v in [+5.35, +10.25]`, `w in [-5.60, +1.10]`)
+    #    + South Over-Travel Hard-Stop Shelf (`u in [-9.40, -4.50]`, `v in [+3.60, +5.35]`, `w in [-5.60, -3.90]`,
+    #      catches `#03` Rocker West stop nose at `+3.15 deg` to protect `rEXSW1` from over-force!)
     #    + Flush NW Spine (`u in [-9.40, -4.50]`, `v in [+5.35, +13.80]`, `w in [-2.55, +1.10]`):
     block_wc1 = bd.Box(
         (-4.50) - (-9.40), 10.25 - 5.35, w_top - w_boss_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((-9.40, 5.35, w_boss_bot)))
+    ).moved(bd.Location((-9.40, 5.35, w_boss_bot))) + bd.Box(
+        (-4.50) - (-9.40), 5.35 - 3.60, (-3.90) - w_boss_bot,
+        align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
+    ).moved(bd.Location((-9.40, 3.60, w_boss_bot)))
 
     nw_spine = bd.Box(
         (-4.50) - (-9.40), 13.80 - 5.35, w_top - w_arch_bot,
@@ -503,15 +509,15 @@ def build_wheel_cradle_local() -> bd.Solid:
     # 4) Symmetric Decoupled-Cantilever C-Clip Saddle Blocks (`u in [+3.68, +8.52]` = 6.10 ± 2.42 mm -> 0.89 mm symmetric jaws!):
     #    0.93 mm (>= 0.80 mm) relief slots `v in [+4.72, +5.65]` & `[-5.65, -4.72]` down to `w = -6.20` decouple jaws from ne_col/block_wc2!
     saddle_n_block = bd.Box(
-        8.52 - 3.68, 4.72 - 3.55, w_saddle_top - w_saddle_bot,
+        8.52 - 3.68, 4.72 - 3.45, w_saddle_top - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((3.68, 3.55, w_saddle_bot))) + bd.Box(
+    ).moved(bd.Location((3.68, 3.45, w_saddle_bot))) + bd.Box(
         8.52 - 3.68, 5.65 - 4.72, (-7.00) - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((3.68, 4.72, w_saddle_bot)))
 
     saddle_s_block = bd.Box(
-        8.52 - 3.68, (-3.55) - (-4.72), w_saddle_top - w_saddle_bot,
+        8.52 - 3.68, (-3.45) - (-4.72), w_saddle_top - w_saddle_bot,
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((3.68, -4.72, w_saddle_bot))) + bd.Box(
         8.52 - 3.68, (-4.72) - (-5.65), (-7.00) - w_saddle_bot,
@@ -520,11 +526,11 @@ def build_wheel_cradle_local() -> bd.Solid:
 
     # 5) Coplanar East Side Legs + Under-Arm Rest-Stop Bridge (`u in [+7.50, +8.52]` = 1.02 mm wide, flush at +7.50 & +8.52!):
     leg_n = bd.Box(
-        8.52 - 7.50, 5.65 - 3.55, w_saddle_bot - (-10.20),
+        8.52 - 7.50, 5.65 - 3.45, w_saddle_bot - (-10.20),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
-    ).moved(bd.Location((7.50, 3.55, -10.20)))
+    ).moved(bd.Location((7.50, 3.45, -10.20)))
     leg_s = bd.Box(
-        8.52 - 7.50, (-3.55) - (-5.65), w_saddle_bot - (-10.20),
+        8.52 - 7.50, (-3.45) - (-5.65), w_saddle_bot - (-10.20),
         align=(bd.Align.MIN, bd.Align.MIN, bd.Align.MIN),
     ).moved(bd.Location((7.50, -5.65, -10.20)))
     under_bridge = bd.Box(
@@ -545,37 +551,37 @@ def build_wheel_cradle_local() -> bd.Solid:
         + under_bridge
     )
 
-    # Captive C-Clip Snap-In Hinge Cuts (Ø3.06 mm bore + 2.82 mm snap throat through full decoupled jaw v in [±3.50, ±4.80]!)
+    # Captive C-Clip Snap-In Hinge Cuts (Ø3.06 mm bore + 2.78 mm snap throat through full decoupled jaw v in [±3.40, ±4.80]!)
     cclip_n = (
         bd.Cylinder(
             radius=SADDLE_R,
-            height=4.80 - 3.50,
+            height=4.80 - 3.40,
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
-        .moved(bd.Location((U_PIV, 3.50, W_PIV)))
+        .moved(bd.Location((U_PIV, 3.40, W_PIV)))
         + bd.Box(
-            SADDLE_THROAT_W, 4.80 - 3.50, 1.80,
+            SADDLE_THROAT_W, 4.80 - 3.40, 1.80,
             align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
-        ).moved(bd.Location((U_PIV, 3.50, W_PIV)))
+        ).moved(bd.Location((U_PIV, 3.40, W_PIV)))
     )
     cclip_s = (
         bd.Cylinder(
             radius=SADDLE_R,
-            height=(-3.50) - (-4.80),
+            height=(-3.40) - (-4.80),
             align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
         )
         .rotate(bd.Axis.X, -90)
         .moved(bd.Location((U_PIV, -4.80, W_PIV)))
         + bd.Box(
-            SADDLE_THROAT_W, (-3.50) - (-4.80), 1.80,
+            SADDLE_THROAT_W, (-3.40) - (-4.80), 1.80,
             align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.MIN),
         ).moved(bd.Location((U_PIV, -4.80, W_PIV)))
     )
 
     bore_wc1 = bd.Cylinder(
         radius=PILOT_BORE_R,
-        height=7.00,
+        height=8.50,
         align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN),
     ).moved(bd.Location((u_wc1, v_wc1, w_boss_bot - 1.00)))
     bore_wc2 = bd.Cylinder(
@@ -803,13 +809,13 @@ def verify_6dof_constraints():
     assert overlap_volume(rk_click, sw_plunger) > 0.0, f"Middle-click {CLICK_PRESS_DEG:.2f} deg did NOT compress rEXSW1 plunger!"
     assert overlap_volume(rk_click, sw_housing) == 0.0, f"Middle-click {CLICK_PRESS_DEG:.2f} deg bottomed out against rEXSW1 housing!"
 
-    rk_overtravel = rocker.rotate(piv_axis, 3.30).solids()[0]
-    assert overlap_volume(rk_overtravel, pcb_ceiling) > 0.0, "Over-travel stop did NOT engage PCB ceiling by +3.30 deg!"
+    rk_overtravel = rocker.rotate(piv_axis, 3.25).solids()[0]
+    assert overlap_volume(rk_overtravel, cradle) > 0.0, "Over-travel stop did NOT engage #04 Cradle WC1 stop shelf by +3.25 deg!"
     assert overlap_volume(rk_overtravel, sw_housing) == 0.0, "Over-travel hit rEXSW1 housing before stop!"
 
     rk_pull_up = rocker.rotate(piv_axis, -1.50).solids()[0]
     assert overlap_volume(rk_pull_up, cradle) > 0.0, "Upward wheel pull (-1.50 deg) did NOT hit cradle under-bridge stop!"
-    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #03 Captive C-Clip Seesaw Hinge & Over-Travel Stop: +{CLICK_PRESS_DEG:.2f} deg click, +3.30 deg PCB hard-stop, -1.50 deg pull stop", flush=True)
+    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] #03 Captive C-Clip Seesaw Hinge & Over-Travel Stop: +{CLICK_PRESS_DEG:.2f} deg click, +3.25 deg Cradle hard-stop, -1.50 deg pull stop", flush=True)
 
     # 5. `#04` Static Cradle Clamping (`±u, ±v, +w` locked by Main PCB & WC1/WC2 screws)
     assert overlap_volume(cradle.moved(bd.Location((0.0, 0.0, 0.05))), pcb_ceiling) > 0.0, "#04 not seated against PCB!"
