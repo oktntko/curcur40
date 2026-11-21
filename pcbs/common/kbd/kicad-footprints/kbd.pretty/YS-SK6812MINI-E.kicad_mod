@@ -55,12 +55,33 @@
 	(sheetfile "../../common/left.kicad_sch")
 	(attr smd)
 	(duplicate_pad_numbers_are_jumpers no)
+	(fp_text user "GND"
+		(at -2.8 1.85 180)
+		(layer "F.SilkS")
+		(uuid "3c41d118-94c8-4c51-9a14-8a26a0c4e101")
+		(effects
+			(font
+				(size 0.55 0.55)
+				(thickness 0.11)
+			)
+		)
+	)
+	(fp_line
+		(start -3.85 1.35)
+		(end -2.0 1.35)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "2c41d118-94c8-4c51-9a14-8a26a0c4e102")
+	)
 	(fp_poly
 		(pts
-			(xy -4.05 0.35) (xy -4.05 1.5) (xy -3.8 1.5)
+			(xy -4.4 0.3) (xy -4.4 1.1) (xy -3.85 0.7)
 		)
 		(stroke
-			(width 0.05)
+			(width 0.08)
 			(type solid)
 		)
 		(fill yes)

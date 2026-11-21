@@ -6,21 +6,21 @@ Generate curcur40 Full Assembly STEP models:
   3. cases/assemblies/curcur40-right-wheel-assembly.step (Right half with Under-Plate Inertia Wheel)
 and verify zero B-rep interference + minimum clearances across all components per docs/case_spec.md:
 - Left & Right 3D-printed Sealed-Bottom Built-in Tented Tray Bottom Cases
-  (with Tilted Floor, 12x Compact Flat-Topped Ø 5.20 mm M2 Heat-Set Insert Valley Bosses + 6x Hidden Inner-Wall USB-C Support Shelves at Z = -5.80 mm)
+  (with Tilted Floor, 12x Compact Flat-Topped Ø 5.20 mm M2 Heat-Set Insert Valley Bosses + 6x Hidden Inner-Wall USB-C Support Shelves at Z = -5.80 mm: 2 North Host USB-C + 1 Inner-Wall Split USB-C per case)
 - Direct KiCad 10.0 3D STEP Synchronization (`kicad-cli pcb export step --subst-models`):
-    - `curcur40-left.kicad_pcb`    (Z = -5.80 to -4.20 mm + all 268 real 3D component solids)
-    - `curcur40-right.kicad_pcb`   (Z = -5.80 to -4.20 mm + all 258 real 3D component solids + mated `rJ3` JST `SHR-06V-S-B` plug)
-    - `curcur40-pmw3360.kicad_pcb` (Z = -17.60 to -16.00 mm + all 9 real SMD/JST-SH solids + mated `J1` JST `SHR-06V-S-B` plug)
-- Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, retained via 40x Kailh Choc V2 switch snap-fit,
-  with 14x Ø 4.40 mm screw-head clearance holes & Right 7.70 x 22.00 mm wheel slot)
-- 40x Kailh Choc V2 Low-Profile Keyswitches (21 Left + 19 Right) + 40x Keycaps
-- Sunk Trackball Cup placed on Sensor PCB F.Cu at (23.8125, -109.5375, -16.00 mm), Rim at Z = -2.00 mm, 2.00 mm flat ears
-- 25mm Trackball Sphere at (23.8125, -109.5375, +2.30 mm) + `Lens_Optical_Ref_Point` (exact 2.40 mm optical gap)
-- PMW3360 Sensor IC & LM19-LSI Optical Lens
+    - `curcur40-left.kicad_pcb`    (Z = -5.80 to -4.20 mm + all real 3D component solids)
+    - `curcur40-right.kicad_pcb`   (Z = -5.80 to -4.20 mm + all real 3D component solids + mated `rJ3` JST `SHR-06V-S-B` plug)
+    - `curcur40-pmw3360.kicad_pcb` (Z = -20.60 to -19.00 mm + all 9 real SMD/JST-SH solids + mated `J1` JST `SHR-06V-S-B` plug)
+- Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, retained via 39x Kailh Choc V2 switch snap-fit,
+  with 14x Ø 4.40 mm screw-head clearance holes & Right 8.05 x 22.00 mm wheel slot)
+- 39x Kailh Choc V2 Low-Profile Keyswitches (21 Left + 18 Right) + 39x Keycaps
+- 3.00 mm Sunken Trackball Cup placed on Sensor PCB F.Cu at (42.8625, -104.7750, -19.00 mm), Rim at Z = -5.00 mm, 2.00 mm flat ears
+- 25mm Trackball Sphere at (42.8625, -104.7750, -0.70 mm) + `Lens_Optical_Ref_Point` at Z = -15.60 mm (exact 2.40 mm optical gap)
+- PMW3360 Sensor IC & LM19-LSI Optical Lens (with uncut Z_rel = -6.50 mm round positioning guide pins)
 - 19x Unified M2 Brass Heat-Set Inserts (M2 x L=3.0 x OD=3.2 mm) + 19x Unified M2 x 6.0 mm Screws:
-    - 12x Key-Valley (6 Left L1-L6 + 6 Right R1-R6, 100% L-R symmetric, clamping Main PCB F.Cu Z = -4.20 mm
+    - 12x Key-Valley (6 Left L1-L6 + 6 Right R1-R6, clamping Main PCB F.Cu Z = -4.20 mm
       into Ø 5.20 mm Case Bosses at Z = -5.80 mm; screw heads submerged inside Top Plate Ø 4.40 mm clearance holes)
-    - 4x Trackball Cup (TB1-TB4, clamping 2.00 mm Cup Ears + 1.60 mm Sensor PCB into Case Bosses at Z = -17.60 mm)
+    - 4x Trackball Cup (TB1-TB4, clamping 2.00 mm Cup Ears + 1.60 mm Sensor PCB into Case Bosses at Z = -20.60 mm)
     - 2x Wheel Cradle (WC1-WC2, clamping Main PCB F.Cu Z = -4.20 mm into Wheel Cradle Bosses at Z = -5.80 mm)
     - 1x Glue-Free Detent Adjuster (in Wheel Rocker South Boss, adjusting Ø 2.0x2.0 mm axial NdFeB magnet gap)
 - Under-Plate 1-Piece Integral-Shaft Passive Inertia Scroll Wheel (`steel-flywheel`, `magnet-holder`, `wheel-rocker`, `wheel-cradle`)
@@ -32,12 +32,16 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import overlap_volume, closest_points, is_sound
 from OCP.BRep import BRep_Builder
 from OCP.BRepExtrema import BRepExtrema_DistShapeShape
 from OCP.TopoDS import TopoDS_Compound
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 if str(WORKSPACE / "scripts") not in sys.path:
@@ -46,91 +50,120 @@ CASES_DIR = WORKSPACE / "cases"
 ASSEMBLIES_DIR = WORKSPACE / "cases" / "assemblies"
 KICAD_CLI = Path(os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad\10.0\bin\kicad-cli.exe"))
 
-Z_THUMB_BOTTOM = -26.9000
+MAX_RUNTIME_SEC = 240.0
+T0_RUN = time.monotonic()
+
+
+def _safe_export_step(shape: bd.Shape, out_path: Path):
+    """Export STEP via temp dir + atomic move/copy retry to avoid Windows file-watcher locks."""
+    import shutil
+    with tempfile.TemporaryDirectory() as td:
+        tmp_p = Path(td) / out_path.name
+        bd.export_step(shape, str(tmp_p))
+        for attempt in range(8):
+            try:
+                os.replace(str(tmp_p), str(out_path))
+                return
+            except PermissionError:
+                if attempt == 7:
+                    shutil.copyfile(str(tmp_p), str(out_path))
+                    return
+                time.sleep(0.25)
+
+
+def _check_timeout(phase: str):
+    el = time.monotonic() - T0_RUN
+    if el > MAX_RUNTIME_SEC:
+        raise TimeoutError(f"[{phase}] Exceeded hard timeout {MAX_RUNTIME_SEC:.0f}s (elapsed={el:.1f}s)!")
+
+
 Z_PINKY_BOTTOM = -10.0000
-X_THUMB_OUTER = 7.0250
+X_THUMB_OUTER = 17.0500
 X_PINKY_OUTER = 135.8580
+Z_THUMB_BOTTOM = round(
+    Z_PINKY_BOTTOM - (X_PINKY_OUTER - X_THUMB_OUTER) * math.tan(math.radians(11.80)),
+    4,
+)
 THETA_TENT_DEG = math.degrees(
     math.atan2(Z_PINKY_BOTTOM - Z_THUMB_BOTTOM, X_PINKY_OUTER - X_THUMB_OUTER)
 )
 
 LEFT_SWITCHES = [
-    (-109.5375, -7.14375),
-    (-109.5375, 11.90625),
-    (-109.5375, 30.95625),
-    (-90.4875, -11.90625),
-    (-90.4875, 7.14375),
-    (-90.4875, 26.19375),
-    (-71.4375, -14.28750),
-    (-71.4375, 4.76250),
-    (-71.4375, 23.81250),
-    (-52.3875, -11.90625),
-    (-52.3875, 7.14375),
-    (-52.3875, 26.19375),
-    (-33.3375, -9.52500),
-    (-33.3375, 9.52500),
-    (-33.3375, 28.57500),
-    (-14.2875, 0.00000),
-    (-14.2875, 19.05000),
-    (-71.4375, 52.38750),
-    (-52.3875, 52.38750),
-    (-33.3375, 52.38750),
-    (-14.2875, 52.38750),
+    (-109.5375,  -9.52500),
+    (-109.5375,   9.52500),
+    (-109.5375,  28.57500),
+    ( -90.4875, -11.90625),
+    ( -90.4875,   7.14375),
+    ( -90.4875,  26.19375),
+    ( -71.4375, -14.28750),
+    ( -71.4375,   4.76250),
+    ( -71.4375,  23.81250),
+    ( -52.3875, -14.28750),
+    ( -52.3875,   4.76250),
+    ( -52.3875,  23.81250),
+    ( -33.3375, -14.28750),
+    ( -33.3375,   4.76250),
+    ( -33.3375,  23.81250),
+    ( -14.2875,   4.76250),
+    ( -14.2875,  23.81250),
+    ( -71.4375,  42.86250),
+    ( -52.3875,  47.62500),
+    ( -33.3375,  47.62500),
+    ( -14.2875,  52.42500),
 ]
 
 RIGHT_SWITCHES = [
-    (109.5375, -7.14375),
-    (109.5375, 11.90625),
-    (109.5375, 30.95625),
-    (90.4875, -11.90625),
-    (90.4875, 7.14375),
-    (90.4875, 26.19375),
-    (71.4375, -14.28750),
-    (71.4375, 4.76250),
-    (71.4375, 23.81250),
-    (52.3875, -11.90625),
-    (52.3875, 7.14375),
-    (52.3875, 26.19375),
-    (33.3375, -9.52500),
-    (33.3375, 9.52500),
-    (33.3375, 28.57500),
-    (14.2875, 19.05000),
-    (33.3375, 52.38750),
-    (52.3875, 52.38750),
-    (71.4375, 52.38750),
+    ( 109.5375,  -9.52500),
+    ( 109.5375,   9.52500),
+    ( 109.5375,  28.57500),
+    (  90.4875, -11.90625),
+    (  90.4875,   7.14375),
+    (  90.4875,  26.19375),
+    (  71.4375, -14.28750),
+    (  71.4375,   4.76250),
+    (  71.4375,  23.81250),
+    (  52.3875, -14.28750),
+    (  52.3875,   4.76250),
+    (  52.3875,  23.81250),
+    (  33.3375, -14.28750),
+    (  33.3375,   4.76250),
+    (  33.3375,  23.81250),
+    (  14.2875,  23.81250),
+    (  52.3875,  47.62500),
+    (  71.4375,  42.86250),
 ]
 
-RIGHT_WHEEL_AXLE_PCB = (14.2875, -2.0000)
+RIGHT_WHEEL_AXLE_PCB = (14.2875, 2.7625)
 
 RIGHT_WHEEL_CRADLE_HOLES_PCB = [
-    ( 6.6375, -9.8000),   # WC1
-    (21.2375,  6.0000),   # WC2
+    ( 7.3375, -5.0375),   # WC1
+    (21.2375, 10.7625),   # WC2
 ]
 
-# (tag, px, py, z_ins_top, z_screw_seat) — 案1A + 6-point symmetric valley layout: all 12 PCB bosses flat Ø 5.20 mm at Z = -5.80 mm
+# (tag, px, py, z_ins_top, z_screw_seat) — 案1A + 6-point valley layout: all 12 PCB bosses flat Ø 5.20 mm at Z = -5.80 mm
 LEFT_PERIMETER_HOLES_PCB = [
-    ("L1",  -42.2500,   0.0000, -5.81, -4.19),
-    ("L2", -100.5000,   2.5000, -5.81, -4.19),
-    ("L3", -100.5000,  21.5000, -5.81, -4.19),
-    ("L4",  -21.5000,  29.2500, -5.81, -4.19),
-    ("L5",  -34.5000,  42.0000, -5.81, -4.19),
-    ("L6",  -60.5000,  42.5000, -5.81, -4.19),
+    ("L1",  -42.2500,  -4.5000, -5.81, -4.19),
+    ("L2", -100.5000,   0.5000, -5.81, -4.19),
+    ("L3", -100.5000,  19.5000, -5.81, -4.19),
+    ("L4",  -42.2500,  14.5000, -5.81, -4.19),
+    ("L5",  -27.0000,  58.8000, -5.81, -4.19),
+    ("L6",  -60.5000,  35.0000, -5.81, -4.19),
 ]
 
 RIGHT_PERIMETER_HOLES_PCB = [
-    ("R1",   42.2500,   0.0000, -5.81, -4.19),
-    ("R2",  100.5000,   2.5000, -5.81, -4.19),
-    ("R3",  100.5000,  21.5000, -5.81, -4.19),
-    ("R4",   21.5000,  29.2500, -5.81, -4.19),
-    ("R5",   34.5000,  42.0000, -5.81, -4.19),
-    ("R6",   60.5000,  42.5000, -5.81, -4.19),
+    ("R1",   42.2500,  -4.5000, -5.81, -4.19),
+    ("R2",  100.5000,   0.5000, -5.81, -4.19),
+    ("R3",  100.5000,  19.5000, -5.81, -4.19),
+    ("R4",   42.2500,  14.5000, -5.81, -4.19),
+    ("R5",    9.4500,  58.5000, -5.81, -4.19),
+    ("R6",   60.5000,  35.0000, -5.81, -4.19),
 ]
 
 RIGHT_TB_HOLES_PCB = [
-    ("TB1", -2.4750, 41.0875, -17.61),
-    ("TB2", 21.5250, 41.0875, -17.61),
-    ("TB3", -2.4750, 63.6875, -17.61),
-    ("TB4", 21.5250, 63.6875, -17.61),
+    ("TB1", 16.5750, 36.3250, -20.61),
+    ("TB2", 40.5750, 36.3250, -20.61),
+    ("TB3", 16.5750, 58.9250, -20.61),
+    ("TB4", 40.5750, 58.9250, -20.61),
 ]
 
 
@@ -475,33 +508,34 @@ def make_jst_shr06v_plug_from_header(
 def build_top_plate_solid(is_right=True) -> bd.Solid:
     """
     Constructs the FR-4 Top Plate solid (Z = -3.60 to -2.00 mm, thickness 1.60 mm)
-    with switch cutouts, Right 7.70 x 22.00 mm wheel slot (R = 1.00 mm),
+    matching `plates/pcb/plate-top-{left,right}.kicad_pcb` (`±4.5625` inner edge, `-27.8625` North edge),
+    with switch cutouts, Right 8.05 x 22.00 mm wheel slot (R = 1.00 mm),
     and uniform Ø 4.40 mm screw-head clearance holes (案1A: switch-retained plate).
     """
     if is_right:
         pts_plate = [
-            ( -5.4625, -24.51250, 1.0),
-            (119.2625, -24.51250, 1.0),
-            (119.2625,  41.18125, 1.0),
-            ( 82.6625,  41.18125, 1.0),
-            ( 82.6625,  67.70000, 1.0),
-            ( 24.2000,  67.70000, 1.0),
-            ( 24.2000,  37.40000, 1.0),
-            ( -5.4625,  37.40000, 1.0),
+            (  4.5625, -27.86250, 1.0),
+            (119.2625, -27.86250, 1.0),
+            (119.2625,  38.80000, 1.0),
+            ( 82.6625,  38.80000, 1.0),
+            ( 82.6625,  62.93750, 1.0),
+            (  4.5625,  62.93750, 1.0),
         ]
         pts_step = [(*to_step_right(x, y), r) for x, y, r in pts_plate]
         sw_step = [to_step_right(x, y) for x, y in RIGHT_SWITCHES]
-        plate_holes_step = [
-            (*to_step_right(x, y), 2.20) for _, x, y, _, _ in RIGHT_PERIMETER_HOLES_PCB
-        ] + [(*to_step_right(x, y), 2.20) for x, y in RIGHT_WHEEL_CRADLE_HOLES_PCB]
+        plate_holes_step = (
+            [(*to_step_right(x, y), 2.20) for _, x, y, _, _ in RIGHT_PERIMETER_HOLES_PCB]
+            + [(*to_step_right(x, y), (2.025 if idx == 0 else 2.20)) for idx, (x, y) in enumerate(RIGHT_WHEEL_CRADLE_HOLES_PCB)]
+            + [(*to_step_right(28.5750, 47.6250), 14.3125)]  # Closed Ø 28.625 mm circular trackball cutout
+        )
     else:
         pts_plate = [
-            (   5.4625, -24.51250, 1.0),
-            (-119.2625, -24.51250, 1.0),
-            (-119.2625,  41.18125, 1.0),
-            ( -82.6625,  41.18125, 1.0),
-            ( -82.6625,  67.70000, 1.0),
-            (   5.4625,  67.70000, 1.0),
+            (  -4.5625, -27.86250, 1.0),
+            (-119.2625, -27.86250, 1.0),
+            (-119.2625,  38.80000, 1.0),
+            ( -82.6625,  38.80000, 1.0),
+            ( -82.6625,  62.93750, 1.0),
+            (  -4.5625,  62.93750, 1.0),
         ]
         pts_step = [(*to_step_left(x, y), r) for x, y, r in pts_plate]
         sw_step = [to_step_left(x, y) for x, y in LEFT_SWITCHES]
@@ -519,10 +553,10 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
     plate = plate - bd.extrude(sk_cuts.sketch, amount=3.0)
 
     if is_right:
-        wx, wy = to_step_right(*RIGHT_WHEEL_AXLE_PCB)
+        wx, wy = to_step_right(RIGHT_WHEEL_AXLE_PCB[0] - 0.1750, RIGHT_WHEEL_AXLE_PCB[1])
         with bd.BuildSketch(bd.Plane.XY.offset(-4.0)) as sk_wslot:
             with bd.Locations([(wx, wy)]):
-                bd.RectangleRounded(7.70, 22.00, 1.00)
+                bd.RectangleRounded(8.05, 22.00, 1.00)
         plate = plate - bd.extrude(sk_wslot.sketch, amount=3.0)
 
     for hx, hy, r_hole in plate_holes_step:
@@ -648,7 +682,7 @@ def transform_to_desk(shape, is_right: bool):
     return res
 
 
-def main():
+def main(export_only: bool = False):
     from generate_inertia_wheel import assemble_wheel_parts_global, verify_6dof_constraints, CLICK_PRESS_DEG
     from generate_cases import verify_case_wall_thickness_and_gaps
     from generate_trackball_cup import verify_cup_wall_thickness_and_gaps
@@ -675,19 +709,22 @@ def main():
     )
     sensor_pcb_global, pmw_kicad_comps = export_kicad_pcb_solids(
         "pcbs/pmw3360/curcur40-pmw3360.kicad_pcb",
-        (14.2875, -57.1500, -17.6000),
+        (14.2875, -57.1500, -20.6000),
         "PMW3360_Sensor_PCB",
         "Sensor_PCB",
     )
     print(
-        f"  Loaded KiCad STEP solids: Left={1 + len(left_kicad_comps)} "
+        f"[{time.monotonic()-T0_RUN:5.1f}s] Loaded KiCad STEP solids: Left={1 + len(left_kicad_comps)} "
         f"(1 PCB + {len(left_kicad_comps)} comps), "
         f"Right={1 + len(right_kicad_comps)} (1 PCB + {len(right_kicad_comps)} comps), "
-        f"PMW3360={1 + len(pmw_kicad_comps)} (1 PCB + {len(pmw_kicad_comps)} comps)"
+        f"PMW3360={1 + len(pmw_kicad_comps)} (1 PCB + {len(pmw_kicad_comps)} comps)",
+        flush=True,
     )
+    _check_timeout("kicad_step_export")
 
     # Identify key semantic KiCad component solids by global AABB position for named clearance & click checks
-    sw_click_x, sw_click_y = to_step_right(-2.0125, -2.0000)
+    sw_click_px, sw_click_py = _find_footprint_xy("pcbs/right/curcur40-right.kicad_pcb", "rEXSW1")
+    sw_click_x, sw_click_y = to_step_right(sw_click_px, sw_click_py)
     rexsw1_plungers = [
         c
         for c in right_kicad_comps
@@ -719,7 +756,7 @@ def main():
         c
         for c in pmw_kicad_comps
         if math.hypot(c.bounding_box().center().X - j1_x, c.bounding_box().center().Y - j1_y) < 5.0
-        and c.bounding_box().min.Z < -18.50
+        and c.bounding_box().min.Z < -21.80
     ]
     assert len(j1_solids) >= 1, "Failed to locate J1 JST-SH in PMW3360 KiCad STEP"
     for idx, c in enumerate(j1_solids):
@@ -730,14 +767,22 @@ def main():
     jst_shr_plugs = [j1_shr_plug, rj3_shr_plug]
 
     def find_usbc_solids(comps, is_right: bool):
-        sgn = 1.0 if is_right else -1.0
-        targets = [(sgn * 26.5750, -38.5925), (sgn * 14.7800, -86.6500)]
+        if is_right:
+            targets = [
+                to_step_right(*_find_footprint_xy("pcbs/right/curcur40-right.kicad_pcb", ref))
+                for ref in ("rJ1", "rJ2")
+            ]
+        else:
+            targets = [
+                to_step_left(*_find_footprint_xy("pcbs/left/curcur40-left.kicad_pcb", ref))
+                for ref in ("J1", "J2")
+            ]
         found = []
         for c in comps:
             bb = c.bounding_box()
             if max(bb.size.X, bb.size.Y) > 5.0:
                 cx, cy = bb.center().X, bb.center().Y
-                if any(math.hypot(cx - tx, cy - ty) < 4.0 for tx, ty in targets):
+                if any(math.hypot(cx - tx, cy - ty) < 4.5 for tx, ty in targets):
                     found.append(c)
         return found
 
@@ -750,7 +795,7 @@ def main():
     left_plate = build_top_plate_solid(is_right=False)
     right_plate = build_top_plate_solid(is_right=True)
 
-    tb_cx, tb_cy, tb_cz = 23.8125, -109.5375, -16.0000
+    tb_cx, tb_cy, tb_cz = 42.8625, -104.7750, -19.0000
     cup_local = bd.import_step(str(CASES_DIR / "trackball-cup.step"))
     cup_global = cup_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
     cup_global.label = "Trackball_Cup"
@@ -766,10 +811,10 @@ def main():
     sensor_local, lens_local = None, None
     for s in asm_parts.solids():
         bb = s.bounding_box()
-        if bb.min.Z < -3.5:
-            sensor_local = s
-        elif bb.max.Z > 3.0:
+        if bb.max.Z > 3.0:
             lens_local = s
+        elif bb.min.Z < -3.5:
+            sensor_local = s
     sensor_global = sensor_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
     sensor_global.label = "PMW3360_Sensor"
     lens_global = lens_local.moved(bd.Location((tb_cx, tb_cy, tb_cz))).solids()[0]
@@ -805,7 +850,7 @@ def main():
 
     for tag, px, py, z_ins_top in RIGHT_TB_HOLES_PCB:
         sx, sy = to_step_right(px, py)
-        ins, scr = make_insert_and_screw(sx, sy, z_ins_top, -13.99, tag)
+        ins, scr = make_insert_and_screw(sx, sy, z_ins_top, -16.99, tag)
         inserts.append(ins)
         top_screws.append(scr)
         right_fasteners.extend([ins, scr])
@@ -833,7 +878,117 @@ def main():
     all_right_kicad_comps = right_kicad_comps + pmw_kicad_comps
     all_fasteners = inserts + top_screws + wheel_cradle_screws
 
-    print("\n--- Interference Verification (All KiCad 3D Solids + Cases + Plates + Switches + Wheel) ---")
+    left_kicad_grp = bd.Compound(children=left_kicad_comps)
+    left_kicad_grp.label = "Left_PCB_KiCad_3D_Components"
+    right_kicad_grp = bd.Compound(children=right_kicad_comps)
+    right_kicad_grp.label = "Right_PCB_KiCad_3D_Components"
+    pmw_kicad_grp = bd.Compound(children=pmw_kicad_comps)
+    pmw_kicad_grp.label = "Sensor_PCB_KiCad_3D_Components"
+    left_sw_grp = bd.Compound(children=left_switches)
+    left_sw_grp.label = "Left_Choc_V2_Switches"
+    right_sw_grp = bd.Compound(children=right_switches)
+    right_sw_grp.label = "Right_Choc_V2_Switches"
+
+    all_parts = (
+        [
+            left_case,
+            right_case,
+            left_pcb,
+            right_pcb,
+            sensor_pcb_global,
+            left_kicad_grp,
+            right_kicad_grp,
+            pmw_kicad_grp,
+            j1_shr_plug,
+            rj3_shr_plug,
+            left_plate,
+            right_plate,
+            left_sw_grp,
+            right_sw_grp,
+            cup_global,
+            ball_global,
+            lens_global,
+            sensor_global,
+            ref_point_global,
+        ]
+        + wheel_solids
+        + wheel_cradle_screws
+        + inserts
+        + top_screws
+        + keycaps
+    )
+
+    ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
+    asm_full = bd.Compound(children=all_parts)
+    asm_full.label = "curcur40_Full_Assembly"
+    out_step = ASSEMBLIES_DIR / "assembly-full.step"
+    _safe_export_step(asm_full, out_step)
+    total_solids = len(asm_full.solids())
+    print(
+        f"\nSuccessfully exported {out_step} ({len(all_parts)} top-level groups, "
+        f"{total_solids} solids + 1 optical ref face, valid={asm_full.is_valid})"
+    )
+
+    left_group = [left_case, left_pcb, left_kicad_grp, left_plate, left_sw_grp] + left_fasteners + left_keycaps
+    right_group = (
+        [
+            right_case,
+            right_pcb,
+            sensor_pcb_global,
+            right_kicad_grp,
+            pmw_kicad_grp,
+            j1_shr_plug,
+            rj3_shr_plug,
+            right_plate,
+            right_sw_grp,
+            cup_global,
+            ball_global,
+            lens_global,
+            sensor_global,
+            ref_point_global,
+        ]
+        + wheel_solids
+        + wheel_cradle_screws
+        + right_fasteners
+        + right_keycaps
+    )
+
+    # Also export Right Half + Inertia Wheel standalone verification assembly
+    asm_right = bd.Compound(children=right_group)
+    asm_right.label = "curcur40_Right_Wheel_Assembly"
+    out_right_step = ASSEMBLIES_DIR / "curcur40-right-wheel-assembly.step"
+    _safe_export_step(asm_right, out_right_step)
+    print(
+        f"Successfully exported {out_right_step} ({len(right_group)} top-level groups, "
+        f"{len(asm_right.solids())} solids + 1 optical ref face)"
+    )
+
+    desk_parts = [transform_to_desk(p, False) for p in left_group] + [
+        transform_to_desk(p, True) for p in right_group
+    ]
+    desk_ball = [p for p in desk_parts if getattr(p, "label", "") == "Trackball_25mm"][0]
+    desk_ref = [p for p in desk_parts if getattr(p, "label", "") == "Lens_Optical_Ref_Point"][0]
+    assert abs(closest_points(desk_ball, desk_ref).distance - 2.40) < 1e-5
+
+    asm_desk = bd.Compound(children=desk_parts)
+    asm_desk.label = "curcur40_Full_Assembly_Desk"
+    out_desk_step = ASSEMBLIES_DIR / "assembly-full-desk.step"
+    _safe_export_step(asm_desk, out_desk_step)
+    bb_desk_l = desk_parts[0].bounding_box()
+    bb_desk_r = desk_parts[len(left_group)].bounding_box()
+    print(
+        f"Successfully exported {out_desk_step} ({len(desk_parts)} top-level groups, "
+        f"{len(asm_desk.solids())} solids + 1 optical ref face, valid={asm_desk.is_valid}, "
+        f"Left Case Z=[{bb_desk_l.min.Z:.4f}, {bb_desk_l.max.Z:.4f}], "
+        f"Right Case Z=[{bb_desk_r.min.Z:.4f}, {bb_desk_r.max.Z:.4f}])"
+    )
+
+    if export_only:
+        print(f"[{time.monotonic()-T0_RUN:5.1f}s] --export-only complete (skipping step4 verification).", flush=True)
+        return
+
+    _check_timeout("before_interference")
+    print(f"\n[{time.monotonic()-T0_RUN:5.1f}s] --- Interference Verification (All KiCad 3D Solids + Cases + Plates + Switches + Wheel) ---", flush=True)
     ov_cup_case = overlap_volume(cup_global, right_case)
     ov_cup_plate = overlap_volume(cup_global, right_plate)
     ov_cup_rpcb = overlap_volume(cup_global, right_pcb)
@@ -869,6 +1024,7 @@ def main():
     ov_click_plunger = max_group_overlap(wheel_mov_click, [rexsw1_plunger])
     ov_click_env = max(
         max_group_overlap(wheel_mov_click, [right_case, right_plate, right_pcb]),
+        max_group_overlap(wheel_mov_click, wheel_stat),
         max_group_overlap(wheel_mov_click, right_switches + right_keycaps),
         max_group_overlap(wheel_mov_click, non_plunger_right_comps),
     )
@@ -962,7 +1118,7 @@ def main():
     print(f"Max Top Screw Overlap:     {max_tscr_ov:.8f} mm^3")
     print(f"Max Insert-Screw Overlap:  {max_ins_scr_ov:.8f} mm^3")
     print(f"Max Screw vs Keycaps:      {max_cap_screw_ov:.8f} mm^3")
-    print(f"Optical Distance (Ball Bottom Z=-10.20 to Ref Point Z=-12.60): {dist_opt:.6f} mm")
+    print(f"Optical Distance (Ball Bottom Z=-13.20 to Ref Point Z=-15.60): {dist_opt:.6f} mm")
 
     verification_failures: list[str] = []
     for name, val in [
@@ -1012,10 +1168,12 @@ def main():
     if abs(dist_opt - 2.40) >= 1e-6:
         verification_failures.append(f"Optical distance mismatch: {dist_opt:.6f} mm != 2.400000 mm")
 
-    print("\n--- Micro-Gap & Wall-Thickness (<0.80mm) Verification ---")
+    _check_timeout("before_microgap")
+    print(f"\n[{time.monotonic()-T0_RUN:5.1f}s] --- Micro-Gap & Wall-Thickness (<0.80mm) Verification ---", flush=True)
     verify_case_wall_thickness_and_gaps(left_case, is_right=False)
     verify_case_wall_thickness_and_gaps(right_case, is_right=True)
     verify_cup_wall_thickness_and_gaps(cup_local.solids()[0])
+    _check_timeout("before_clearances")
 
     clr_j1_case = min(closest_points(s, right_case).distance for s in j1_solids)
     clr_rj3_case = min(closest_points(s, right_case).distance for s in rj3_solids)
@@ -1116,7 +1274,7 @@ def main():
     verify_6dof_constraints()
     for part, anchors, d_xy, d_z, lock_desc in (
         (left_plate, left_switches, 0.15, 0.05, "21x Kailh Choc V2 switch snap-fit"),
-        (right_plate, right_switches, 0.15, 0.05, "19x Kailh Choc V2 switch snap-fit"),
+        (right_plate, right_switches, 0.15, 0.05, "18x Kailh Choc V2 switch snap-fit"),
         (left_pcb, [left_case] + left_fasteners, 0.25, 0.12, "6x Ø 5.20 mm valley bosses + 3x USB-C shelves & M2x6 screws"),
         (right_pcb, [right_case] + right_fasteners + wheel_cradle_screws + wheel_stat, 0.25, 0.12, "6x Ø 5.20 mm valley bosses + 2x cradle bosses + 3x USB-C shelves & M2x6 screws"),
         (sensor_pcb_global, [right_case, cup_global] + right_fasteners, 0.28, 0.12, "4x TB bosses + Trackball Cup & M2x6 screws"),
@@ -1138,111 +1296,6 @@ def main():
                 )
         print(f"  [PASS] {part.label}: mechanically locked in ±X, ±Y, ±Z by {lock_desc}")
 
-    left_kicad_grp = bd.Compound(children=left_kicad_comps)
-    left_kicad_grp.label = "Left_PCB_KiCad_3D_Components"
-    right_kicad_grp = bd.Compound(children=right_kicad_comps)
-    right_kicad_grp.label = "Right_PCB_KiCad_3D_Components"
-    pmw_kicad_grp = bd.Compound(children=pmw_kicad_comps)
-    pmw_kicad_grp.label = "Sensor_PCB_KiCad_3D_Components"
-    left_sw_grp = bd.Compound(children=left_switches)
-    left_sw_grp.label = "Left_Choc_V2_Switches"
-    right_sw_grp = bd.Compound(children=right_switches)
-    right_sw_grp.label = "Right_Choc_V2_Switches"
-
-    all_parts = (
-        [
-            left_case,
-            right_case,
-            left_pcb,
-            right_pcb,
-            sensor_pcb_global,
-            left_kicad_grp,
-            right_kicad_grp,
-            pmw_kicad_grp,
-            j1_shr_plug,
-            rj3_shr_plug,
-            left_plate,
-            right_plate,
-            left_sw_grp,
-            right_sw_grp,
-            cup_global,
-            ball_global,
-            lens_global,
-            sensor_global,
-            ref_point_global,
-        ]
-        + wheel_solids
-        + wheel_cradle_screws
-        + inserts
-        + top_screws
-        + keycaps
-    )
-
-    ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
-    asm_full = bd.Compound(children=all_parts)
-    asm_full.label = "curcur40_Full_Assembly"
-    out_step = ASSEMBLIES_DIR / "assembly-full.step"
-    bd.export_step(asm_full, str(out_step))
-    total_solids = len(asm_full.solids())
-    print(
-        f"\nSuccessfully exported {out_step} ({len(all_parts)} top-level groups, "
-        f"{total_solids} solids + 1 optical ref face, valid={asm_full.is_valid})"
-    )
-
-    left_group = [left_case, left_pcb, left_kicad_grp, left_plate, left_sw_grp] + left_fasteners + left_keycaps
-    right_group = (
-        [
-            right_case,
-            right_pcb,
-            sensor_pcb_global,
-            right_kicad_grp,
-            pmw_kicad_grp,
-            j1_shr_plug,
-            rj3_shr_plug,
-            right_plate,
-            right_sw_grp,
-            cup_global,
-            ball_global,
-            lens_global,
-            sensor_global,
-            ref_point_global,
-        ]
-        + wheel_solids
-        + wheel_cradle_screws
-        + right_fasteners
-        + right_keycaps
-    )
-
-    # Also export Right Half + Inertia Wheel standalone verification assembly
-    asm_right = bd.Compound(children=right_group)
-    asm_right.label = "curcur40_Right_Wheel_Assembly"
-    out_right_step = ASSEMBLIES_DIR / "curcur40-right-wheel-assembly.step"
-    bd.export_step(asm_right, str(out_right_step))
-    print(
-        f"Successfully exported {out_right_step} ({len(right_group)} top-level groups, "
-        f"{len(asm_right.solids())} solids + 1 optical ref face)"
-    )
-
-    desk_parts = [transform_to_desk(p, False) for p in left_group] + [
-        transform_to_desk(p, True) for p in right_group
-    ]
-    desk_ball = [p for p in desk_parts if getattr(p, "label", "") == "Trackball_25mm"][0]
-    desk_ref = [p for p in desk_parts if getattr(p, "label", "") == "Lens_Optical_Ref_Point"][0]
-    assert abs(closest_points(desk_ball, desk_ref).distance - 2.40) < 1e-5
-
-    asm_desk = bd.Compound(children=desk_parts)
-    asm_desk.label = "curcur40_Full_Assembly_Desk"
-    out_desk_step = ASSEMBLIES_DIR / "assembly-full-desk.step"
-    bd.export_step(asm_desk, str(out_desk_step))
-    bb_desk_l = desk_parts[0].bounding_box()
-    bb_desk_r = desk_parts[len(left_group)].bounding_box()
-    print(
-        f"Successfully exported {out_desk_step} ({len(desk_parts)} top-level groups, "
-        f"{len(asm_desk.solids())} solids + 1 optical ref face, valid={asm_desk.is_valid}, "
-        f"Left Case Z=[{bb_desk_l.min.Z:.4f}, {bb_desk_l.max.Z:.4f}], "
-        f"Right Case Z=[{bb_desk_r.min.Z:.4f}, {bb_desk_r.max.Z:.4f}])"
-    )
-
     assert not verification_failures, (
         f"\n[ASSEMBLY VERIFICATION NG] {len(verification_failures)} check(s) failed "
         "(all 3 assembly STEP files have been exported to cases/assemblies/ for 3D inspection):\n  - "
@@ -1251,4 +1304,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(export_only="--export-only" in sys.argv)

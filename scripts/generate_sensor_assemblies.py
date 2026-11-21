@@ -8,15 +8,25 @@ Includes the GUI-selectable lens-side optical distance reference point
 (`Lens_Optical_Ref_Point`) at (0.00, 0.00, +3.40 mm), exactly 2.40 mm below
 the 25mm trackball navigation surface (Z = +5.80 mm).
 """
+import sys
+import time
 from pathlib import Path
 from cadgen import build123d as bd
 from cadgen.geometry import overlap_volume, closest_points
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 WORKSPACE = Path(__file__).resolve().parent.parent
+if str(WORKSPACE / "scripts") not in sys.path:
+    sys.path.insert(0, str(WORKSPACE / "scripts"))
 CASES_DIR = WORKSPACE / "cases"
 ASSEMBLIES_DIR = CASES_DIR / "assemblies"
 OUT_SENSOR_PCB_STEP = ASSEMBLIES_DIR / "pmw3360-lens-pcb-assembly.step"
 OUT_TRACKBALL_SENSOR_STEP = ASSEMBLIES_DIR / "trackball-sensor-assembly.step"
+
+MAX_RUNTIME_SEC = 120.0
+T0_RUN = time.monotonic()
 
 OPTICAL_REF_Z = 3.40
 OPTICAL_REF_RADIUS = 0.35  # Ø 0.70 mm reference disk (both face & edge measure 2.40 mm to ball)
@@ -41,8 +51,8 @@ def build_sensor_pcb_parts():
       Z = +5.80 mm: 25mm Trackball Bottom Surface (Navigation Surface)
     """
     # 1. Customer Supplied PCB (curcur40-pmw3360, 1.60 mm FR-4, Z in [-1.60, 0.00] mm)
-    # Exact board dimensions relative to sensor center (9.5250, 52.3875) in KiCad -> rotated +90 deg around Z:
-    # Before +90 deg Z rotation: X = -(y_pcb - 52.3875) in [-15.1125, +14.0875], Y = (x_pcb - 9.5250) in [-14.7875, +14.7875]
+    # Exact board dimensions relative to sensor center (28.5750, 47.6250) in KiCad -> rotated +90 deg around Z:
+    # Before +90 deg Z rotation: X = -(y_pcb - 47.6250) in [-15.1125, +14.0875], Y = (x_pcb - 28.5750) in [-14.7875, +14.7875]
     pcb_th = 1.60
     # Staggered 16-pin coordinates matching PMW3360DM-T2QU_16Pin.kicad_mod
     top_pin_xs = [-6.168 + i * 1.78 for i in range(8)]     # Pads 1..8 at Y = +5.35
@@ -95,11 +105,11 @@ def build_sensor_pcb_parts():
             bd.Circle(radius=1.50)
         bd.extrude(amount=1.05, mode=bd.Mode.SUBTRACT)
 
-        # 2 Guide sockets for lens round guide posts (matching (-7.10, 3.30) and (6.70, -3.40) in footprint)
-        with bd.BuildSketch(bd.Plane.XY.offset(-1.60 - 1.80)):
+        # 2 Through-hole guide sockets for uncut lens round guide posts (matching (-7.10, 3.30) and (6.70, -3.40) in footprint)
+        with bd.BuildSketch(bd.Plane.XY.offset(-1.60 - pkg_h - 0.10)):
             with bd.Locations([(-7.10, 3.30), (6.70, -3.40)]):
                 bd.Circle(radius=0.50)
-        bd.extrude(amount=1.85, mode=bd.Mode.SUBTRACT)
+        bd.extrude(amount=pkg_h + 0.20, mode=bd.Mode.SUBTRACT)
 
         # 2 Rectangular alignment pockets for lens rectangular legs
         with bd.BuildSketch(bd.Plane.XY.offset(-1.60 - 0.80)):
@@ -140,11 +150,12 @@ def build_sensor_pcb_parts():
             bd.RectangleRounded(6.0, 4.0, 1.5)
         bd.extrude(amount=0.50, mode=bd.Mode.ADD)
 
-        # 2 Round Guide Posts extending down to Z = -3.35 mm (at (-7.10, 3.30) and (6.70, -3.40))
-        with bd.BuildSketch(bd.Plane.XY.offset(-3.35)):
+        # 2 Uncut Round Guide Posts extending down to Z = -6.50 mm through PMW3360 guide ears
+        # (at (-7.10, 3.30) and (6.70, -3.40); 17.0 deg tenting provides > 6.3 mm interior floor clearance with zero pin cutting!)
+        with bd.BuildSketch(bd.Plane.XY.offset(-6.50)):
             with bd.Locations([(-7.10, 3.30), (6.70, -3.40)]):
                 bd.Circle(radius=0.45)
-        bd.extrude(amount=3.35, mode=bd.Mode.ADD)
+        bd.extrude(amount=6.50, mode=bd.Mode.ADD)
 
         # 2 Rectangular Alignment Legs extending down to Z = -2.35 mm
         with bd.BuildSketch(bd.Plane.XY.offset(-2.35)):

@@ -20,10 +20,10 @@ enum curcur40_keycodes {
  * 1. Under-Plate 3D Hall Passive Magnetic Inertia Wheel
  *    (Right Half Main PCB B.Cu: rU6 on I2C0 GP24 SDA / GP25 SCL + rEXSW1 on GP7)
  *    - Primary sensor: TI TMAG5273 (A1/A2 0x35, B1/B2 0x22, D1/D2 0x44, C1/C2 0x78)
- *      in XZX pseudo-simultaneous continuous mode, sensing off-axis D4x1mm
- *      diametric shaft magnet via (Bx, Bz) quadrature vector.
+ *      in XZX pseudo-simultaneous continuous mode on B.Cu rot=+90, sensing off-axis
+ *      East D4x1mm diametric shaft magnet via (-Bx, Bz) quadrature vector.
  *    - Fallback sensor: Infineon TLV493D-A1B6 (0x5E / 0x1F, pin-compatible SOT-23-6)
- *      in Master Controlled continuous mode with /INT disabled, via (By, Bz).
+ *      in Master Controlled continuous mode with /INT disabled, via (-By, -Bz).
  *    - 1-piece CNC 45# steel integral-shaft flywheel (24 outer flutes) + magnetic
  *      detent screw provides real physical free-spin momentum, 24 tactile notches/rev,
  *      and instant finger-touch braking.
@@ -48,6 +48,9 @@ enum curcur40_keycodes {
 #endif
 #ifndef CURCUR40_WHEEL_DEADBAND_LSB
 #    define CURCUR40_WHEEL_DEADBAND_LSB 12
+#endif
+#ifndef CURCUR40_WHEEL_IDLE_NOISE_LSB
+#    define CURCUR40_WHEEL_IDLE_NOISE_LSB 5
 #endif
 #ifndef CURCUR40_WHEEL_INVERT_DIR
 #    define CURCUR40_WHEEL_INVERT_DIR 0

@@ -58,7 +58,7 @@ def generate_vertical_stackup_diagram():
         closed=True, linewidth=1.6, edgecolor='#212529', facecolor='#495057', alpha=0.88, zorder=3
     )
     ax.add_patch(case_poly)
-    ax.text(74, -12.4, "100% Sealed Hole-Free Case Bottom Wall (Uniform 2.40 mm, 7.47° Tenting)",
+    ax.text(74, -12.4, "100% Sealed Hole-Free Case Bottom Wall (Uniform 2.40 mm, 11.80° Tenting)",
             ha='center', va='center', fontsize=9.5, fontweight='bold', color='#ffffff', zorder=4)
 
     # Brass Heat-Set Insert (M2 x L=3.0 x OD=3.2 mm at Z = -8.80 to -5.80 mm) inside Ø2.85mm pilot bore
@@ -97,12 +97,12 @@ def generate_vertical_stackup_diagram():
     draw_dim(17, -2.0, -3.6, "1.60 mm")
     draw_dim(17, -3.6, -4.2, "0.60 mm")
     draw_dim(17, -4.2, -5.8, "1.60 mm")
-    draw_dim(17, -5.8, -11.2, "2.20..18.7 mm")
+    draw_dim(17, -5.8, -11.2, "1.80..26.6 mm")
     draw_dim(17, -11.2, -13.6, "2.40 mm")
 
-    draw_dim(7.5, 0.0, -11.2, "Pinky: 10.0 mm\n(Thumb: 26.9 mm)", offset_text=1.0)
+    draw_dim(7.5, 0.0, -11.2, "Pinky: 10.0 mm\n(Thumb: 34.8 mm)", offset_text=1.0)
 
-    ax.annotate('Compact Valley Boss (All 12x: L1..L6, R1..R6)\n• Ø5.20mm cylinder (1.175mm thick wall!)\n• Clamps Main PCB (-4.20) via Ø2.40mm hole\n• Screw head submerged in Plate Ø4.40mm hole!',
+    ax.annotate('Compact Valley Boss (All 12x: L1..L6, R1..R6)\n• Ø5.20mm cylinder (1.175mm thick wall!)\n• Clamps Main PCB (-4.20) via Ø2.40mm hole\n• Screw head submerged in Plate Ø4.40/4.05mm hole!',
                 xy=(115.8, -3.60), xytext=(126.5, -2.6),
                 arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=5),
                 fontsize=7.3, fontweight='bold', color='#1d3557',
@@ -114,13 +114,13 @@ def generate_vertical_stackup_diagram():
                 fontsize=7.5, fontweight='bold', color='#7f5539',
                 bbox=dict(boxstyle="round,pad=0.25", fc="#fefae0", ec="#7f5539", lw=0.9))
 
-    ax.annotate('Pinky Skim Floor Z=-8.00 (>=0.35mm clear)\nThumb Tilted Floor drops to Z=-24.50mm',
+    ax.annotate('Smooth 11.80° Tilted Floor (Zero Skim Step!)\nPinky Z=-7.60 (>=0.72mm clr) .. Thumb Z=-32.42mm',
                 xy=(52.5, -7.60), xytext=(55.0, -9.9),
                 arrowprops=dict(facecolor='#d90429', shrink=0.05, width=1.0, headwidth=5),
-                fontsize=7.8, fontweight='bold', color='#d90429',
+                fontsize=7.6, fontweight='bold', color='#d90429',
                 bbox=dict(boxstyle="round,pad=0.25", fc="#ffe3e0", ec="#d90429", lw=0.9))
 
-    ax.set_title("curcur40 Vertical Z-Stackup Architecture (Compact Ø5.20mm PCB Boss, Switch-Retained Plate & Unified M2×6mm)", fontsize=12.8, fontweight='bold', pad=15)
+    ax.set_title("curcur40 v1.1 Vertical Z-Stackup Architecture (11.80° Tenting, Ø5.20mm Boss, Switch-Retained Plate & Unified M2×6mm)", fontsize=12.2, fontweight='bold', pad=15)
     ax.set_xticks([])
     ax.set_yticks([0, -2.0, -3.6, -4.2, -5.8, -8.8, -11.2, -13.6])
     ax.set_yticklabels([
@@ -130,8 +130,8 @@ def generate_vertical_stackup_diagram():
         'Z=-4.2 (PCB Top)',
         'Z=-5.8 (PCB Bot)',
         'Z=-8.8 (Cavity)',
-        'Z_floor (-8.0..-24.5)',
-        'Z_bot (-10.0..-26.9)',
+        'Z_floor (-7.6..-32.4)',
+        'Z_bot (-10.0..-34.8)',
     ])
     ax.grid(axis='y', linestyle=':', alpha=0.6, color='#888888')
 
@@ -166,19 +166,19 @@ def generate_ports_and_screws_diagram():
     ax1.add_patch(pcb_rect)
 
     center_y = -5.85
-    hole_straight = patches.Rectangle((5.5, -8.95), 3.0, 6.20, linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
+    hole_straight = patches.Rectangle((5.5, -8.05), 3.0, 4.40, linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
     ax1.add_patch(hole_straight)
 
     usbc_barrel = patches.Rectangle((1.4, -7.45), 4.6, 3.16, linewidth=1.2, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.9)
     ax1.add_patch(usbc_barrel)
     ax1.text(3.7, -5.87, "USB-C\n(J1/J2)", ha='center', va='center', fontsize=6.5, color='#1d3557', fontweight='bold')
 
-    ax1.text(2.8, -1.55, "Top Edge Z = -2.75mm", ha='center', va='bottom', fontsize=6.5, fontweight='bold', color='#2d6a4f',
+    ax1.text(2.8, -1.55, "Top Rim Z = -3.65..0.00 (Hides Plate!)", ha='center', va='bottom', fontsize=6.2, fontweight='bold', color='#2d6a4f',
              bbox=dict(boxstyle="round,pad=0.2", fc="#d8f3dc", ec="#2d6a4f", lw=0.8))
 
-    ax1.annotate('', xy=(9.4, -8.95), xytext=(9.4, -2.75),
+    ax1.annotate('', xy=(9.4, -8.05), xytext=(9.4, -3.65),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax1.text(9.9, center_y, "Host (N) & Split (Inner)\nHeight: 6.20 mm (R=1.50)\nCenter Z = -5.85 mm\n+ Hidden Z=-5.80mm\n  PCB Support Shelves", ha='left', va='center', fontsize=7.5, fontweight='bold', color='#d90429')
+    ax1.text(9.9, center_y, "Host (N) & Split (Inner)\nHeight: 4.40 mm (R=1.20)\nCenter Z = -5.85 mm\n+ Hidden Z=-5.80mm\n  PCB Support Shelves", ha='left', va='center', fontsize=7.5, fontweight='bold', color='#d90429')
 
     ax1.plot([0.2, 9.4], [center_y, center_y], linestyle='-.', color='#888888', lw=1)
     ax1.axis('off')
@@ -194,16 +194,16 @@ def generate_ports_and_screws_diagram():
     ax2.add_patch(wall2)
 
     cx2 = 8.0
-    w2 = 12.00
-    h2 = 6.20
+    w2 = 10.20
+    h2 = 4.40
     ax2.plot([0, 16], [-2.00, -2.00], linestyle='--', color='#1d3557', lw=1.2)
-    ax2.text(0.4, -1.85, "Top Plate Top (Z = -2.00mm)", ha='left', va='bottom', fontsize=7.5, fontweight='bold', color='#1d3557')
+    ax2.text(0.4, -1.85, "Top Plate Top (Z = -2.00mm, Hidden!)", ha='left', va='bottom', fontsize=7.3, fontweight='bold', color='#1d3557')
 
     cy2 = -5.85
     cutout_bot_y = cy2 - h2 / 2
     cutout_top_y = cy2 + h2 / 2
     cutout = patches.FancyBboxPatch((cx2 - w2/2, cutout_bot_y), w2, h2,
-                                    boxstyle="round,pad=0,rounding_size=1.5",
+                                    boxstyle="round,pad=0,rounding_size=1.2",
                                     linewidth=1.5, edgecolor='#d90429', facecolor='#ffffff')
     ax2.add_patch(cutout)
 
@@ -211,17 +211,17 @@ def generate_ports_and_screws_diagram():
                                  boxstyle="round,pad=0,rounding_size=1.0",
                                  linewidth=1.2, edgecolor='#1d3557', facecolor='#a8dadc', alpha=0.85)
     ax2.add_patch(rec)
-    ax2.text(cx2, -5.87, "TYPE-C-31-M-13C\n(8.94 x 3.16 mm, Z = -5.87)", ha='center', va='center', fontsize=6.8, fontweight='bold', color='#1d3557')
+    ax2.text(cx2, -5.87, "TYPE-C-31-M-13C\n(8.94 x 3.16 mm, Z = -5.87)", ha='center', va='center', fontsize=6.5, fontweight='bold', color='#1d3557')
 
     ax2.annotate('', xy=(cx2 - w2/2, 0.4), xytext=(cx2 + w2/2, 0.4),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax2.text(cx2, 0.65, "Width: 12.00 mm (R=1.50)", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax2.text(cx2, 0.65, "Width: 10.20 mm (R=1.20)", ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#d90429')
 
     ax2.annotate('', xy=(cx2 + w2/2 + 0.5, cutout_bot_y), xytext=(cx2 + w2/2 + 0.5, cutout_top_y),
                  arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.2))
-    ax2.text(cx2 + w2/2 + 0.75, cy2, "Height:\n6.20 mm\n(Z = -5.85)", ha='left', va='center', fontsize=7.8, fontweight='bold', color='#d90429')
+    ax2.text(cx2 + w2/2 + 0.75, cy2, "Height:\n4.40 mm\n(Z = -5.85)", ha='left', va='center', fontsize=7.8, fontweight='bold', color='#d90429')
 
-    ax2.text(cx2, -9.8, "Cutout Z = -8.95 to -2.75 mm (>=1.47mm Plug Clearance)", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#2d6a4f')
+    ax2.text(cx2, -9.8, "Cutout Z = -8.05 to -3.65 mm (Short-Body Metal-Shell Fit)", ha='center', va='center', fontsize=6.9, fontweight='bold', color='#2d6a4f')
     ax2.axis('off')
 
     # AX3: Compact Ø5.20mm PCB Boss + Brass Heat-Set Insert + M2 x 6.0mm Screw (Section View)
@@ -266,8 +266,8 @@ def generate_ports_and_screws_diagram():
     ax3.add_patch(patches.Rectangle((-1.90, -4.20), 3.80, 1.20, lw=1.2, ec='#343a40', fc='#adb5bd', zorder=6))
     ax3.add_patch(patches.Rectangle((-1.00, -10.20), 2.00, 6.00, lw=1.2, ec='#343a40', fc='#ced4da', zorder=5))
 
-    ax3.text(0.0, -0.35, "12x Flat Ø5.2mm Valley Boss (Main PCB Ø2.4mm Clamped)\n[Screw Head Submerged in Plate Ø4.4mm Hole]",
-             ha='center', va='bottom', fontsize=6.5, fontweight='bold', color='#16425b')
+    ax3.text(0.0, -0.35, "12x Flat Ø5.2mm Valley Boss (Main PCB Ø2.4mm Clamped)\n[Screw Head Submerged in Plate Ø4.4 / WC1 Ø4.05mm Hole]",
+             ha='center', va='bottom', fontsize=6.4, fontweight='bold', color='#16425b')
 
     ax3.annotate('Ø5.20 Flat Boss (-5.80)\n1.175mm Uniform Wall!\n+ Flush M2×L3.0 Insert', xy=(2.60, -7.00), xytext=(3.60, -9.20),
                  arrowprops=dict(arrowstyle='->', color='#7f5539', lw=1.1),
@@ -284,53 +284,56 @@ def generate_ports_and_screws_diagram():
 
 
 def generate_trackball_optical_diagram():
-    fig, ax = plt.subplots(figsize=(12, 7.5), dpi=200)
+    fig, ax = plt.subplots(figsize=(12, 7.8), dpi=200)
     ax.set_xlim(-26, 26)
-    ax.set_ylim(-10, 32)
+    ax.set_ylim(-12.5, 32)
     ax.set_facecolor('#f8f9fa')
     fig.patch.set_facecolor('#ffffff')
 
     ball_center = (0, 18.30)
     ball = patches.Circle(ball_center, 12.50, linewidth=1.5, edgecolor='#0077b6', facecolor='#90e0ef', alpha=0.35)
     ax.add_patch(ball)
-    ax.text(0, 18.30, "Ø 25 mm Trackball Sphere\n(Center Z_rel = +18.30 mm, Bottom Z_rel = +5.80 mm)", ha='center', va='center', fontsize=10, fontweight='bold', color='#03045e')
+    ax.text(0, 18.30, "Ø 25 mm Trackball Sphere\n(Center Z_rel = +18.30 / Global Z = -0.70 mm)", ha='center', va='center', fontsize=10, fontweight='bold', color='#03045e')
 
     cup_outline = patches.Arc(ball_center, 27.0, 27.0, theta1=200, theta2=340, linewidth=3, color='#023e8a')
     ax.add_patch(cup_outline)
-    ax.text(-18.2, 11.8, "Trackball Cup Body\n(Rim Z_rel=+14.0, Claws: N/E/W)", ha='center', va='center', fontsize=9.2, fontweight='bold', color='#023e8a')
+    ax.text(-18.2, 11.8, "Trackball Cup Body\n(Rim Z_rel=+14.0 / Global -5.0\nEnclosed by Ø28.625 Plate Hole!)", ha='center', va='center', fontsize=8.6, fontweight='bold', color='#023e8a')
 
     lens_body = patches.Rectangle((-8.25, 0.0), 16.5, 3.4, linewidth=1.2, edgecolor='#f77f00', facecolor='#ffd166', alpha=0.75)
     lens_flange = patches.Rectangle((-10.5, 3.40), 21.0, 1.4, linewidth=1.5, edgecolor='#f77f00', facecolor='#fcbf49', alpha=0.85)
     ax.add_patch(lens_body)
     ax.add_patch(lens_flange)
-    ax.text(0, 4.1, "LM19 Lens Flange (Z_rel = +3.40 to +4.80 mm)", ha='center', va='center', fontsize=8.5, fontweight='bold', color='#7f4f24')
-    ax.annotate('2.40 mm Optical Tracking Distance\n(Flange Bottom Z_rel=+3.40 to Ball Bottom Z_rel=+5.80)',
+    ax.text(0, 4.1, "LM19 Lens Flange (Z_rel = +3.40..+4.80 / Global Z = -15.60..-14.20 mm)", ha='center', va='center', fontsize=8.2, fontweight='bold', color='#7f4f24')
+    ax.annotate('2.40 mm Optical Tracking Distance\n(Flange Z=-15.60 to Ball Bottom Z=-13.20)',
                 xy=(0, 5.80), xytext=(8.5, 8.2),
                 arrowprops=dict(facecolor='#0077b6', shrink=0.05, width=1, headwidth=4),
                 fontsize=8, fontweight='bold', color='#0077b6',
                 bbox=dict(boxstyle="round,pad=0.2", fc="#e0f2fe", ec="#0077b6", lw=0.8))
 
+    # Uncut transparent round positioning guide pins (Z_rel = -6.50 .. 0.00 mm) passing through PMW3360 ear holes!
+    pin_guide = patches.Rectangle((-0.95, -6.50), 1.90, 6.50, linewidth=1.3, edgecolor='#d97706', facecolor='#fde68a', alpha=0.92, zorder=6)
+    ax.add_patch(pin_guide)
     leg_left = patches.Rectangle((-7.1, -3.35), 1.0, 3.35, linewidth=1.2, edgecolor='#d48b00', facecolor='#ffb703')
     leg_right = patches.Rectangle((6.2, -3.35), 1.0, 3.35, linewidth=1.2, edgecolor='#d48b00', facecolor='#ffb703')
     ax.add_patch(leg_left)
     ax.add_patch(leg_right)
-    ax.annotate('4 Lens Legs extend DOWN\nthrough 16.9x8.7mm PCB cutout',
-                xy=(7.2, -2.5), xytext=(10.5, 1.2),
-                arrowprops=dict(facecolor='#d48b00', shrink=0.05, width=1, headwidth=4),
-                fontsize=8, fontweight='bold', color='#d48b00',
-                bbox=dict(boxstyle="round,pad=0.2", fc="#fff3cd", ec="#d48b00", lw=0.8))
+    ax.annotate('Uncut LM19 Guide Pins (Z_rel = -6.50)\npass through PMW3360 ear holes\n(NO pin cutting required!)',
+                xy=(0.95, -5.6), xytext=(-24.2, -5.6),
+                arrowprops=dict(facecolor='#d97706', shrink=0.05, width=1, headwidth=4),
+                fontsize=7.8, fontweight='bold', color='#92400e',
+                bbox=dict(boxstyle="round,pad=0.2", fc="#fef3c7", ec="#d97706", lw=0.9))
 
     pcb_left = patches.Rectangle((-24, -1.6), 15.55, 1.6, linewidth=1.5, edgecolor='#2d6a4f', facecolor='#52b788', alpha=0.85)
     pcb_right = patches.Rectangle((8.45, -1.6), 15.55, 1.6, linewidth=1.5, edgecolor='#2d6a4f', facecolor='#52b788', alpha=0.85)
     ax.add_patch(pcb_left)
     ax.add_patch(pcb_right)
-    ax.text(-16, -0.8, "Sensor PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
-    ax.text(16, -0.8, "Sensor PCB (1.6mm)", ha='center', va='center', fontsize=9, fontweight='bold', color='#ffffff')
+    ax.text(-16, -0.8, "Sensor PCB (-20.6..-19.0)", ha='center', va='center', fontsize=8.3, fontweight='bold', color='#ffffff')
+    ax.text(16, -0.8, "Sensor PCB (-20.6..-19.0)", ha='center', va='center', fontsize=8.3, fontweight='bold', color='#ffffff')
     ax.text(0, -0.8, "PCB Cutout (16.9 x 8.7 mm)", ha='center', va='center', fontsize=7.5, fontweight='bold', color='#1b4332')
 
-    pmw_body = patches.Rectangle((-8.1, -4.01), 16.2, 2.41, linewidth=1.5, edgecolor='#14213d', facecolor='#2b2d42', alpha=0.95)
+    pmw_body = patches.Rectangle((-8.1, -4.01), 16.2, 2.41, linewidth=1.5, edgecolor='#14213d', facecolor='#2b2d42', alpha=0.95, zorder=4)
     ax.add_patch(pmw_body)
-    ax.text(0, -3.0, "PMW3360 IC Solid Body (2.41mm)\n[NO THROUGH-HOLE IN SENSOR]", ha='center', va='center', fontsize=8.5, fontweight='bold', color='#ffffff')
+    ax.text(0, -2.8, "PMW3360 IC (2.41mm, Guide Ear Holes)", ha='center', va='center', fontsize=8.0, fontweight='bold', color='#ffffff', zorder=7)
 
     ax.plot([-8.1, -9.2, -9.2], [-2.3, -2.3, 0.8], color='#ffd166', lw=2.5)
     ax.plot([8.1, 9.2, 9.2], [-2.3, -2.3, 0.8], color='#ffd166', lw=2.5)
@@ -340,15 +343,15 @@ def generate_trackball_optical_diagram():
                 fontsize=8, fontweight='bold', color='#cca000',
                 bbox=dict(boxstyle="round,pad=0.2", fc="#fff9db", ec="#cca000", lw=0.8))
 
-    floor = patches.Rectangle((-24, -8.7), 48, 2.4, linewidth=2, edgecolor='#495057', facecolor='#ced4da', alpha=0.7)
+    floor = patches.Rectangle((-24, -11.6), 48, 2.4, linewidth=2, edgecolor='#495057', facecolor='#ced4da', alpha=0.7)
     ax.add_patch(floor)
-    ax.text(0, -7.5, "Sealed Tilted Case Floor (Z_rel = -6.29..-8.16 mm / Global Z = -22.29..-24.16 mm)\n(Zero Through-Hole or Sensor Pocket Needed!)", ha='center', va='center', fontsize=9.0, fontweight='bold', color='#212529')
+    ax.text(0, -10.4, "11.80° Continuous Tilted Sealed Case Floor (Uniform 2.40 mm Wall)\n(Zero Relief Pocket or Lens Pin Cutting Needed!)", ha='center', va='center', fontsize=8.8, fontweight='bold', color='#212529')
 
-    ax.annotate('', xy=(11.5, -4.01), xytext=(11.5, -6.29),
+    ax.annotate('', xy=(2.5, -6.50), xytext=(2.5, -9.20),
                 arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.8))
-    ax.text(12.5, -5.15, "Clearance: >= 2.28 mm\n(Completely safe)", ha='left', va='center', fontsize=8.5, fontweight='bold', color='#d90429')
+    ax.text(3.5, -7.85, "Clearance: >= 0.71 mm below Uncut Pins & >= 0.47 mm below J1!\n(11.80° Tenting gives continuous step-free floor)", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#d90429')
 
-    ax.set_title("Trackball & Optical Sensor Stackup (pmw3360-lens-pcb-assembly)", fontsize=13, fontweight='bold', pad=15)
+    ax.set_title("Trackball & Optical Sensor Stackup (-3.00mm Sunken Cup & Uncut LM19-LSI Guide Pins)", fontsize=12.6, fontweight='bold', pad=15)
     ax.axis('off')
 
     plt.tight_layout()
@@ -448,13 +451,13 @@ def generate_trackball_cup_fastening_diagram():
                 fontsize=8.3, fontweight='bold', color='#1d3557',
                 bbox=dict(boxstyle="round,pad=0.25", fc="#e0f2fe", ec="#1d3557", lw=0.8))
 
-    ax.annotate('Sensor PCB Sandwich (Thickness: 1.60 mm, Hole: Ø2.40 mm)\n• Sandwiched directly between Boss (-17.6) & Cup (-16.0)',
+    ax.annotate('Sensor PCB Sandwich (Thickness: 1.60 mm, Hole: Ø2.40 mm)\n• Sandwiched directly between Boss (-20.6) & Cup (-19.0)',
                 xy=(3.5, -0.8), xytext=(8.5, -1.7),
                 arrowprops=dict(facecolor='#1b4332', shrink=0.05, width=1.1, headwidth=5),
                 fontsize=8.3, fontweight='bold', color='#1b4332',
                 bbox=dict(boxstyle="round,pad=0.25", fc="#d8f3dc", ec="#1b4332", lw=0.8))
 
-    ax.annotate('Case Heat-Set Boss (Top Z = -17.60 mm, OD Ø6.00 mm)\n• Blind Ø2.85mm pilot bore (depth 3.80mm to Z = -21.40)\n• M2 × L3.0 × OD3.2mm Brass Heat-Set Insert\n• 100% sealed outer bottom (zero counterbores)',
+    ax.annotate('Case Heat-Set Boss (Top Z = -20.60 mm, OD Ø6.00 mm)\n• Blind Ø2.85mm pilot bore (depth 3.80mm to Z = -24.40)\n• M2 × L3.0 × OD3.2mm Brass Heat-Set Insert\n• 100% sealed outer bottom (zero counterbores)',
                 xy=(3.00, -3.20), xytext=(8.5, -4.2),
                 arrowprops=dict(facecolor='#7f5539', shrink=0.05, width=1.1, headwidth=5),
                 fontsize=8.3, fontweight='bold', color='#7f5539',
@@ -645,7 +648,7 @@ def generate_trackball_cup_detail_drawing():
     ax2.add_patch(claw_w_top)
     ax2.text(-14.6, 0, "West Claw\n(180°)", ha='right', va='center', fontsize=8, fontweight='bold', color='#03045e')
 
-    ax2.annotate('South (270°): Claw-Free (爪なし)\n• Uniform rim at Z_rel = +14.00 mm (Global -2.00)\n• Flush with Top Plate (親指開放＆指先で着脱可能)',
+    ax2.annotate('South (270°): Claw-Free (爪なし)\n• Uniform rim at Z_rel = +14.00 mm (Global -5.00)\n• Enclosed under Ø28.625mm Top Plate (親指開放＆着脱可能)',
                  xy=(0, -14.0), xytext=(0, -21.5),
                  arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=4),
                  fontsize=7.8, fontweight='bold', color='#1d3557', ha='center',
@@ -720,7 +723,7 @@ def generate_trackball_cup_detail_drawing():
     ax3.add_patch(patches.Circle((11.06, 10.56), 1.0, lw=1.2, ec='#6a040f', fc='#d90429', zorder=6))
     ax3.add_patch(patches.Circle((-5.53, 10.56), 1.0, lw=1.1, ls='--', ec='#6a040f', fc='#fca5a5', zorder=6))
 
-    ax3.annotate('South Side (270°): No Claw (爪なし)\n• Uniform rim: Z = +14.00 mm (Global -2.00)\n• Flush with Top Plate\n• Preserves 7.67mm claw flex & finger grip',
+    ax3.annotate('South Side (270°): No Claw (爪なし)\n• Uniform rim: Z = +14.00 mm (Global -5.00)\n• Enclosed under Ø28.625mm Top Plate\n• Preserves 7.67mm claw flex & finger grip',
                  xy=(-13.0, 14.0), xytext=(-25.2, 21.8),
                  arrowprops=dict(facecolor='#1d3557', shrink=0.05, width=1.0, headwidth=4),
                  fontsize=7.3, fontweight='bold', color='#1d3557',
@@ -764,76 +767,76 @@ def generate_assembly_tool_clearance_diagram():
     )
 
     # =========================================================================
-    # PANEL 1: TB1 / TB3 Heat-Set Insert — Soldering Iron Tip/Collar Clearance
-    # True 1:1 scale in mm around TB1/TB3 bore center (X = 0)
+    # PANEL 1: TB1..TB4 Heat-Set Insert — Soldering Iron Tip/Collar Clearance
+    # True 1:1 scale in mm around TB3/TB4 bore center (X = 0, Z = -20.60 mm; South inner wall at -4.25 mm)
     # =========================================================================
     ax1.set_facecolor('#f8fafc')
-    ax1.set_xlim(-10.5, 16.5)
-    ax1.set_ylim(-23.5, 10.5)
+    ax1.set_xlim(-11.5, 16.5)
+    ax1.set_ylim(-27.0, 10.5)
     ax1.set_aspect('equal')
 
-    # Case West Wall (inner face at X = -3.2875, outer face at X = -4.7875, top rim Z = 0.00) + Boss (OD Ø6.0, top Z = -17.60)
+    # Case South Inner Wall (inner face at X = -4.25, outer face at X = -5.75, top rim Z = 0.00) + Boss (OD Ø6.0, top Z = -20.60)
     case_p1 = patches.Polygon(
         [
-            (-4.79, -23.0), (14.5, -23.0), (14.5, -20.6),
-            (3.00, -20.6), (3.00, -17.60),
-            (1.425, -17.60), (1.425, -21.40), (-1.425, -21.40), (-1.425, -17.60),
-            (-3.29, -17.60), (-3.29, 0.00), (-4.79, 0.00),
+            (-5.75, -26.4), (14.5, -26.4), (14.5, -24.0),
+            (3.00, -24.0), (3.00, -20.60),
+            (1.425, -20.60), (1.425, -24.40), (-1.425, -24.40), (-1.425, -20.60),
+            (-4.25, -20.60), (-4.25, 0.00), (-5.75, 0.00),
         ],
         closed=True, lw=1.5, ec='#334155', fc='#cbd5e1', zorder=2
     )
     ax1.add_patch(case_p1)
-    ax1.text(5.2, -21.8, "右手ケース下段 (PA12・底面密閉)", ha='center', va='center', fontsize=8.0, fontweight='bold', color='#1e293b', zorder=3)
-    ax1.text(-4.04, -9.0, "ケース西壁", rotation=90, ha='center', va='center', fontsize=8.0, fontweight='bold', color='#334155', zorder=3)
+    ax1.text(5.0, -25.2, "右手ケース下段 (PA12・底面密閉)", ha='center', va='center', fontsize=8.0, fontweight='bold', color='#1e293b', zorder=3)
+    ax1.text(-5.00, -10.0, "ケース南内壁", rotation=90, ha='center', va='center', fontsize=8.0, fontweight='bold', color='#334155', zorder=3)
 
-    # Brass insert at Z = -20.60..-17.60
-    ax1.add_patch(patches.Rectangle((-1.60, -20.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
-    ax1.add_patch(patches.Rectangle((1.05, -20.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
+    # Brass insert at Z = -23.60..-20.60
+    ax1.add_patch(patches.Rectangle((-1.60, -23.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
+    ax1.add_patch(patches.Rectangle((1.05, -23.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
 
-    # NG Ghost: Wide soldering-iron sleeve (Ø 8.2 mm -> X = ±4.10 starting 11 mm above tip -> Z = -6.60) hitting West Wall X = -3.29!
-    ng_sleeve = patches.Rectangle((-4.10, -6.60), 8.20, 12.0, lw=1.8, ls='--', ec='#dc2626', fc='#fecaca', alpha=0.55, zorder=3)
+    # NG Ghost: Wide soldering-iron sleeve (Ø 9.6 mm -> X = ±4.80 starting 12 mm above tip -> Z = -8.60) hitting South Wall X = -4.25!
+    ng_sleeve = patches.Rectangle((-4.80, -8.60), 9.60, 14.0, lw=1.8, ls='--', ec='#dc2626', fc='#fecaca', alpha=0.55, zorder=3)
     ax1.add_patch(ng_sleeve)
-    ax1.plot([-3.29], [0.00], marker='X', markersize=11, color='#dc2626', mec='#ffffff', mew=1.2, zorder=8)
+    ax1.plot([-4.25], [0.00], marker='X', markersize=11, color='#dc2626', mec='#ffffff', mew=1.2, zorder=8)
     ax1.annotate(
-        "× NG例: 太い保護管 (Ø7〜10mm)\n西壁上フチ (Z=0) に当たって\n斜めになる・フチを溶かす!",
-        xy=(-3.29, 0.00), xytext=(3.8, 3.2),
+        "× NG例: 太い保護管 (Ø9〜12mm)\nケース南内壁フチ (Z=0) に当たって\n斜めになる・フチを溶かす!",
+        xy=(-4.25, 0.00), xytext=(3.8, 3.2),
         arrowprops=dict(arrowstyle='->', color='#dc2626', lw=1.5),
         fontsize=7.8, fontweight='bold', color='#991b1b',
         bbox=dict(boxstyle="round,pad=0.28", fc="#fef2f2", ec="#dc2626", lw=1.1), zorder=9
     )
 
-    # OK Slim Iron Tip + Shaft (Tip enters insert at Z = -18.2, conical to Ø 5.2 mm at Z = -11.0, slim Ø 5.2 mm shaft past Z = +5.0)
+    # OK Slim Iron Tip + Shaft (Tip enters insert at Z = -21.3, conical to Ø 5.5 mm at Z = -13.0, slim Ø 5.5 mm shaft past Z = +4.8)
     ok_iron = patches.Polygon(
         [
-            (-0.75, -18.3), (0.75, -18.3),
-            (2.60, -11.0), (2.60, 4.8),
-            (-2.60, 4.8), (-2.60, -11.0),
+            (-0.75, -21.3), (0.75, -21.3),
+            (2.75, -13.0), (2.75, 4.8),
+            (-2.75, 4.8), (-2.75, -13.0),
         ],
         closed=True, lw=1.6, ec='#15803d', fc='#bbf7d0', alpha=0.92, zorder=5
     )
     ax1.add_patch(ok_iron)
     ax1.axvline(0.0, ls='-.', color='#64748b', lw=0.9, zorder=6)
-    ax1.text(0.0, -5.5, "OK 細軸こて先\n(例: Ø5.0〜5.5mm)", rotation=90, ha='center', va='center', fontsize=8.0, fontweight='bold', color='#14532d', zorder=7)
+    ax1.text(0.0, -6.5, "OK 細軸こて先\n(例: Ø5.0〜6.0mm)", rotation=90, ha='center', va='center', fontsize=8.0, fontweight='bold', color='#14532d', zorder=7)
 
-    # Dimension: Depth 17.6 mm (Z = 0.0 to -17.6)
-    ax1.plot([-3.29, -9.2], [0.00, 0.00], ls=':', color='#0f172a', lw=1.0)
-    ax1.plot([-1.60, -9.2], [-17.60, -17.60], ls=':', color='#0f172a', lw=1.0)
-    ax1.annotate('', xy=(-8.2, 0.00), xytext=(-8.2, -17.60), arrowprops=dict(arrowstyle='<->', color='#0f172a', lw=1.4))
-    ax1.text(-8.5, -8.80, "深さ\n17.6 mm", ha='right', va='center', fontsize=8.5, fontweight='bold', color='#0f172a')
+    # Dimension: Depth 20.6 mm (Z = 0.0 to -20.6)
+    ax1.plot([-4.25, -9.8], [0.00, 0.00], ls=':', color='#0f172a', lw=1.0)
+    ax1.plot([-1.60, -9.8], [-20.60, -20.60], ls=':', color='#0f172a', lw=1.0)
+    ax1.annotate('', xy=(-8.8, 0.00), xytext=(-8.8, -20.60), arrowprops=dict(arrowstyle='<->', color='#0f172a', lw=1.4))
+    ax1.text(-9.1, -10.30, "深さ\n20.6 mm", ha='right', va='center', fontsize=8.5, fontweight='bold', color='#0f172a')
 
-    # Dimension: Radial clearance 3.29 mm -> Max Ø 6.57 mm
-    ax1.annotate('', xy=(-3.29, 1.3), xytext=(0.0, 1.3), arrowprops=dict(arrowstyle='<->', color='#0369a1', lw=1.4), zorder=9)
-    ax1.text(-1.65, 2.1, "半径 3.29mm", ha='center', va='bottom', fontsize=7.6, fontweight='bold', color='#0369a1',
+    # Dimension: Radial clearance 4.25 mm -> Max Ø 8.5 mm
+    ax1.annotate('', xy=(-4.25, 1.3), xytext=(0.0, 1.3), arrowprops=dict(arrowstyle='<->', color='#0369a1', lw=1.4), zorder=9)
+    ax1.text(-2.12, 2.1, "半径 4.25mm", ha='center', va='bottom', fontsize=7.6, fontweight='bold', color='#0369a1',
              bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#0369a1", lw=0.7, alpha=0.95), zorder=9)
 
     # Green Specification Callout
     ax1.text(
-        9.4, -10.8,
+        9.4, -12.6,
         "◎ ここはこのサイズ以下!\n"
         "━━━━━━━━━━━━\n"
-        "先端から 18 mm まで\n"
+        "先端から 21 mm まで\n"
         "太さ Ø 6.0 mm 以下\n"
-        "(物理限界: Ø 6.5 mm)\n\n"
+        "(物理限界: Ø 8.5 mm)\n\n"
         "・TS100 / Pinecil 等の\n"
         "  ペン型細軸こて (Ø5.5)\n"
         "・長めの円錐 B型/I型こて先",
@@ -841,7 +844,7 @@ def generate_assembly_tool_clearance_diagram():
         bbox=dict(boxstyle="round,pad=0.4", fc="#dcfce7", ec="#16a34a", lw=1.6), zorder=9
     )
 
-    ax1.set_title("① TB1 / TB3 インサート熱圧入\n【はんだごて先端の太さ制限】", fontsize=11.8, fontweight='bold', color='#0f172a', pad=10)
+    ax1.set_title("① TB1〜TB4 インサート熱圧入\n【はんだごて先端の太さ制限】", fontsize=11.8, fontweight='bold', color='#0f172a', pad=10)
     ax1.axis('off')
 
     # =========================================================================
@@ -850,87 +853,88 @@ def generate_assembly_tool_clearance_diagram():
     # =========================================================================
     ax2.set_facecolor('#f8fafc')
     ax2.set_xlim(-11.5, 15.5)
-    ax2.set_ylim(-23.5, 12.8)
+    ax2.set_ylim(-26.5, 12.8)
     ax2.set_aspect('equal')
 
-    # Case TB Boss + Sensor PCB (1.6mm, Z=-17.6..-16.0) + Trackball Cup Wall (X <= -2.48, Z=-16.0..-2.0) & Flat Ear (Z=-16.0..-14.0)
+    # Case TB Boss + Sensor PCB (1.6mm, Z=-20.6..-19.0) + Trackball Cup Wall (X <= -2.48, Z=-19.0..+3.8 claw) & Flat Ear (Z=-19.0..-17.0)
     boss_p2 = patches.Polygon(
         [
-            (-10.5, -23.0), (13.5, -23.0), (13.5, -20.6),
-            (3.00, -20.6), (3.00, -17.60),
-            (1.425, -17.60), (1.425, -21.40), (-1.425, -21.40), (-1.425, -17.60),
-            (-3.00, -17.60), (-3.00, -20.6), (-10.5, -20.6),
+            (-10.5, -26.0), (13.5, -26.0), (13.5, -23.6),
+            (3.00, -23.6), (3.00, -20.60),
+            (1.425, -20.60), (1.425, -24.40), (-1.425, -24.40), (-1.425, -20.60),
+            (-3.00, -20.60), (-3.00, -23.6), (-10.5, -23.6),
         ],
         closed=True, lw=1.4, ec='#334155', fc='#cbd5e1', zorder=2
     )
     ax2.add_patch(boss_p2)
-    ax2.add_patch(patches.Rectangle((-1.60, -20.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
-    ax2.add_patch(patches.Rectangle((1.05, -20.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
+    ax2.add_patch(patches.Rectangle((-1.60, -23.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
+    ax2.add_patch(patches.Rectangle((1.05, -23.60), 0.55, 3.00, lw=1.0, ec='#7f5539', fc='#eab308', zorder=4))
 
     # Sensor PCB
-    ax2.add_patch(patches.Rectangle((-10.5, -17.60), 9.30, 1.60, lw=1.2, ec='#14532d', fc='#4ade80', alpha=0.85, zorder=3))
-    ax2.add_patch(patches.Rectangle((1.20, -17.60), 4.80, 1.60, lw=1.2, ec='#14532d', fc='#4ade80', alpha=0.85, zorder=3))
-    ax2.text(-6.2, -16.80, "TBセンサー基板", ha='center', va='center', fontsize=7.2, fontweight='bold', color='#052e16', zorder=4)
+    ax2.add_patch(patches.Rectangle((-10.5, -20.60), 9.30, 1.60, lw=1.2, ec='#14532d', fc='#4ade80', alpha=0.85, zorder=3))
+    ax2.add_patch(patches.Rectangle((1.20, -20.60), 4.80, 1.60, lw=1.2, ec='#14532d', fc='#4ade80', alpha=0.85, zorder=3))
+    ax2.text(-6.2, -19.80, "TBセンサー基板", ha='center', va='center', fontsize=7.2, fontweight='bold', color='#052e16', zorder=4)
 
-    # Trackball Cup Body Wall (X in [-10.5, -2.48], Z in [-16.00, -2.00]) + 2.00 mm Flat Ear (X in [-2.48, +3.00], Z in [-16.00, -14.00])
+    # Trackball Cup Body Wall (X in [-10.5, -2.48], Z in [-19.00, -5.00] + Claw up to +3.80) + 2.00 mm Flat Ear (Z in [-19.00, -17.00])
     cup_p2 = patches.Polygon(
         [
-            (-10.5, -16.00), (-1.20, -16.00), (-1.20, -14.00),
-            (-2.48, -14.00), (-2.48, -2.00), (-10.5, -2.00),
+            (-10.5, -19.00), (-1.20, -19.00), (-1.20, -17.00),
+            (-2.48, -17.00), (-2.48, 3.80), (-5.20, 3.80), (-5.20, -5.00), (-10.5, -5.00),
         ],
         closed=True, lw=1.5, ec='#1e3a8a', fc='#93c5fd', alpha=0.88, zorder=4
     )
-    ear_r_p2 = patches.Rectangle((1.20, -16.00), 1.80, 2.00, lw=1.5, ec='#1e3a8a', fc='#93c5fd', alpha=0.88, zorder=4)
+    ear_r_p2 = patches.Rectangle((1.20, -19.00), 1.80, 2.00, lw=1.5, ec='#1e3a8a', fc='#93c5fd', alpha=0.88, zorder=4)
     ax2.add_patch(cup_p2)
     ax2.add_patch(ear_r_p2)
-    ax2.text(-6.5, -8.5, "トラックボール\nカップ外壁\n(Ø28.0 mm)", ha='center', va='center', fontsize=8.2, fontweight='bold', color='#1e3a8a', zorder=5)
+    ax2.text(-6.5, -11.5, "トラックボール\nカップ外壁\n(Ø28.0 mm)", ha='center', va='center', fontsize=8.2, fontweight='bold', color='#1e3a8a', zorder=5)
 
     # M2 x 6.0mm Screw
-    ax2.add_patch(patches.Rectangle((-1.90, -14.00), 3.80, 1.20, lw=1.3, ec='#1e293b', fc='#64748b', zorder=6))
-    ax2.add_patch(patches.Rectangle((-0.98, -20.00), 1.96, 6.00, lw=1.3, ec='#1e293b', fc='#94a3b8', zorder=5))
+    ax2.add_patch(patches.Rectangle((-1.90, -17.00), 3.80, 1.20, lw=1.3, ec='#1e293b', fc='#64748b', zorder=6))
+    ax2.add_patch(patches.Rectangle((-0.98, -23.00), 1.96, 6.00, lw=1.3, ec='#1e293b', fc='#94a3b8', zorder=5))
 
-    # NG Ghost: Thick 4mm/6.35mm bit-holder chuck (Ø 8.0 mm -> X = ±4.00 above Z = -5.5) hitting Cup Outer Wall at (-2.48, -2.00)
-    ng_chuck = patches.Rectangle((-4.00, -5.50), 8.00, 10.50, lw=1.8, ls='--', ec='#dc2626', fc='#fecaca', alpha=0.55, zorder=3)
+    # NG Ghost: Thick 4mm/6.35mm bit-holder chuck (Ø 8.0 mm -> X = ±4.00 above Z = -2.0) hitting Cup Outer Wall / Claw at (-2.48, +3.80)
+    ng_chuck = patches.Rectangle((-4.00, -2.00), 8.00, 9.00, lw=1.8, ls='--', ec='#dc2626', fc='#fecaca', alpha=0.55, zorder=3)
     ax2.add_patch(ng_chuck)
-    ax2.plot([-2.48], [-2.00], marker='X', markersize=11, color='#dc2626', mec='#ffffff', mew=1.2, zorder=8)
+    ax2.plot([-2.48], [3.80], marker='X', markersize=11, color='#dc2626', mec='#ffffff', mew=1.2, zorder=8)
     ax2.annotate(
-        "× NG例: 差替ビットホルダー\n太いチャック (Ø6.5〜10mm) が\nカップ外壁に当たって届かない!",
-        xy=(-2.48, -2.00), xytext=(4.0, 3.2),
+        "× NG例: 差替ビットホルダー\n太いチャック (Ø6.5〜10mm) が\nカップ外壁・爪に当たって届かない!",
+        xy=(-2.48, 3.80), xytext=(3.6, 5.0),
         arrowprops=dict(arrowstyle='->', color='#dc2626', lw=1.5),
-        fontsize=7.6, fontweight='bold', color='#991b1b',
+        fontsize=7.4, fontweight='bold', color='#991b1b',
         bbox=dict(boxstyle="round,pad=0.26", fc="#fef2f2", ec="#dc2626", lw=1.1), zorder=9
     )
 
-    # OK Slim #0 Precision Screwdriver Shaft (Ø 3.0 mm -> X = ±1.50 from Z = -12.80 up to +6.20, handle above Z = +6.20)
-    ok_shaft = patches.Rectangle((-1.50, -12.80), 3.00, 19.00, lw=1.6, ec='#15803d', fc='#bbf7d0', alpha=0.95, zorder=7)
-    ok_handle = patches.FancyBboxPatch((-3.40, 6.20), 6.80, 4.40, boxstyle="round,pad=0,rounding_size=1.0", lw=1.5, ec='#15803d', fc='#86efac', zorder=7)
+    # OK Slim #0 Precision Screwdriver Shaft (Ø 3.0 mm -> X = ±1.50 from Z = -15.80 up to +7.20, handle above Z = +7.20)
+    ok_shaft = patches.Rectangle((-1.50, -15.80), 3.00, 23.00, lw=1.6, ec='#15803d', fc='#bbf7d0', alpha=0.95, zorder=7)
+    ok_handle = patches.FancyBboxPatch((-3.40, 7.20), 6.80, 4.20, boxstyle="round,pad=0,rounding_size=1.0", lw=1.5, ec='#15803d', fc='#86efac', zorder=7)
     ax2.add_patch(ok_shaft)
     ax2.add_patch(ok_handle)
     ax2.axvline(0.0, ls='-.', color='#64748b', lw=0.9, zorder=8)
-    ax2.text(0.0, 8.40, "精密 #0 グリップ", ha='center', va='center', fontsize=7.4, fontweight='bold', color='#14532d', zorder=8)
+    ax2.text(0.0, 9.30, "精密 #0 グリップ", ha='center', va='center', fontsize=7.4, fontweight='bold', color='#14532d', zorder=8)
     ax2.text(0.0, -7.2, "細軸 Ø3.0mm", rotation=90, ha='center', va='center', fontsize=7.6, fontweight='bold', color='#14532d', zorder=8)
 
-    # Dimensions: 12.0 mm height & 2.48 mm radial gap (Ø 4.97 mm physical max)
-    ax2.annotate('', xy=(-2.48, -0.8), xytext=(0.0, -0.8), arrowprops=dict(arrowstyle='<->', color='#0369a1', lw=1.4), zorder=9)
-    ax2.text(-1.24, 0.0, "半径 2.48mm", ha='center', va='bottom', fontsize=7.4, fontweight='bold', color='#0369a1',
+    # Dimensions: 20.8 mm height & 2.48 mm radial gap (Ø 4.97 mm physical max)
+    ax2.annotate('', xy=(-2.48, 4.7), xytext=(0.0, 4.7), arrowprops=dict(arrowstyle='<->', color='#0369a1', lw=1.4), zorder=9)
+    ax2.text(-1.24, 5.5, "半径 2.48mm", ha='center', va='bottom', fontsize=7.4, fontweight='bold', color='#0369a1',
              bbox=dict(boxstyle="round,pad=0.15", fc="#ffffff", ec="#0369a1", lw=0.7, alpha=0.95), zorder=9)
 
-    ax2.plot([1.90, 4.8], [-14.00, -14.00], ls=':', color='#0f172a', lw=1.0)
-    ax2.plot([-2.48, 4.8], [-2.00, -2.00], ls=':', color='#0f172a', lw=1.0)
-    ax2.annotate('', xy=(3.8, -2.00), xytext=(3.8, -14.00), arrowprops=dict(arrowstyle='<->', color='#0f172a', lw=1.3))
-    ax2.text(4.1, -8.00, "12.0 mm", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#0f172a')
+    ax2.plot([1.90, 4.8], [-17.00, -17.00], ls=':', color='#0f172a', lw=1.0)
+    ax2.plot([-2.48, 4.8], [3.80, 3.80], ls=':', color='#0f172a', lw=1.0)
+    ax2.annotate('', xy=(3.8, 3.80), xytext=(3.8, -17.00), arrowprops=dict(arrowstyle='<->', color='#0f172a', lw=1.3))
+    ax2.text(4.1, -6.60, "20.8 mm", ha='left', va='center', fontsize=8.0, fontweight='bold', color='#0f172a')
 
     ax2.text(
-        9.4, -13.2,
+        9.4, -15.4,
         "◎ ここはこのサイズ以下!\n"
         "━━━━━━━━━━━━\n"
-        "先端から 15 mm まで\n"
+        "先端から 22 mm まで\n"
         "軸径 Ø 4.5 mm 以下\n"
-        "(推奨: Ø 3.0〜3.5 mm)\n\n"
+        "(物理限界: Ø 4.9 mm\n"
+        " 推奨: Ø 3.0〜3.5 mm)\n\n"
         "・単体の精密プラス\n"
         "  ドライバー (#0 / #00)\n"
         "  (差替チャック式は不可)",
-        ha='center', va='center', fontsize=8.2, fontweight='bold', color='#14532d',
+        ha='center', va='center', fontsize=8.0, fontweight='bold', color='#14532d',
         bbox=dict(boxstyle="round,pad=0.4", fc="#dcfce7", ec="#16a34a", lw=1.6), zorder=9
     )
 
@@ -959,11 +963,11 @@ def generate_assembly_tool_clearance_diagram():
     # DET screw + magnet
     ax3.add_patch(patches.Rectangle((31.2, 64.5), 2.5, 2.5, lw=1.0, ec='#b91c1c', fc='#ef4444', zorder=4))
     ax3.add_patch(patches.Rectangle((33.7, 64.8), 16.5, 1.9, lw=1.1, ec='#1e293b', fc='#64748b', zorder=4))
-    ax3.text(52, 65.7, "← DET 調整ネジ (基板の下 Z=-11.3mm)", ha='left', va='center', fontsize=7.5, fontweight='bold', color='#b91c1c', zorder=4)
+    ax3.text(52, 65.7, "← DET 調整ネジ (基板の下 Z=-14.1mm)", ha='left', va='center', fontsize=7.5, fontweight='bold', color='#b91c1c', zorder=4)
 
     ax3.text(
         50, 56.8,
-        "◎ Phase 4〜5（R1〜R6 ネジ6本でケースへ本締めする前）に好みのノッチ強弱へ調整!\n"
+        "◎ Phase 4〜5（WC1/WC2・R1〜R6 でケースへ本締めする前）に好みのノッチ強弱へ調整!\n"
         "   ※組んだ後に再調整したい時は、R1〜R6 を外して右基板を持ち上げれば回せます。",
         ha='center', va='center', fontsize=7.7, fontweight='bold', color='#14532d',
         bbox=dict(boxstyle="round,pad=0.28", fc="#dcfce7", ec="#16a34a", lw=1.2), zorder=5

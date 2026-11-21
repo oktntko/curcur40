@@ -22,7 +22,11 @@ static inline float clamp_f(float x, float lo, float hi) {
 }
 
 static inline int16_t abs_i16(int16_t x) {
-    return (x < 0) ? (int16_t)(-x) : x;
+    return (x == (int16_t)(-32767 - 1)) ? (int16_t)32767 : ((x < 0) ? (int16_t)(-x) : x);
+}
+
+static inline int16_t negate_sat_i16(int16_t x) {
+    return (x == (int16_t)(-32767 - 1)) ? (int16_t)32767 : (int16_t)(-x);
 }
 
 static inline int32_t abs_i32(int32_t x) {
@@ -46,6 +50,7 @@ static inline int16_t clamp_i16(int16_t x, int16_t lo, int16_t hi) {
 #define WHEEL_POLL_INTERVAL_MS 1
 #define WHEEL_IDLE_RESET_MS    60
 #define WHEEL_BUSY_STREAK_MAX  20
+#define WHEEL_TLV_FRM_MAX      64
 #define WHEEL_CAL_DECAY_MS     2000
 #define WHEEL_CAL_BIPOLAR_MIN  1200
 
@@ -75,8 +80,11 @@ static bool                s_wheel_click_held   = false;
 static bool                s_wheel_click_seen   = false;
 static uint8_t             s_wheel_err_streak   = 0;
 static uint8_t             s_wheel_busy_streak  = 0;
+static uint8_t             s_tlv_prev_frm       = 0xFFU;
+static uint8_t             s_tlv_frm_streak     = 0;
 static uint16_t            s_wheel_prev_angle   = 0;
 static uint16_t            s_wheel_rest_anchor  = 0;
+static uint16_t            s_wheel_idle_anchor  = 0;
 static uint16_t            s_wheel_poll_ms      = 0;
 static uint16_t            s_wheel_retry_ms     = 0;
 static uint16_t            s_wheel_motion_ms    = 0;
@@ -101,8 +109,8 @@ static uint16_t cordic_atan2_12bit(int32_t y, int32_t x) {
 
     int32_t mag = abs_i32(x) + abs_i32(y);
     if (mag < 4096) {
-        x <<= 6;
-        y <<= 6;
+        x *= 64;
+        y *= 64;
     }
 
     uint16_t angle = 0;
@@ -145,6 +153,9 @@ static uint16_t wheel_eval_angle_12bit(int16_t raw_s, int16_t raw_c, const wheel
             ns         = (ds * (span_c >> 2)) >> 8;
             nc         = (dc * (span_s >> 2)) >> 8;
         }
+    } else {
+        /* Pre-apply nominal ~1.40:1 off-axis |Bx|:|Bz| amplitude aspect (Z_axle=-7.38mm) before first full turn */
+        nc = (nc * 358) >> 8;
     }
 
     return cordic_atan2_12bit(ns, nc);
@@ -190,11 +201,18 @@ static void wheel_cal_update(wheel_cal_t *cal, int16_t raw_s, int16_t raw_c, uin
     if (raw_c > cal->max_c) cal->max_c = raw_c;
 
     if (!cal->locked) {
-        int32_t span_s = (int32_t)cal->max_s - (int32_t)cal->min_s;
-        int32_t span_c = (int32_t)cal->max_c - (int32_t)cal->min_c;
-        if (cal->min_s < -WHEEL_CAL_BIPOLAR_MIN && cal->max_s > WHEEL_CAL_BIPOLAR_MIN &&
-            cal->min_c < -WHEEL_CAL_BIPOLAR_MIN && cal->max_c > WHEEL_CAL_BIPOLAR_MIN &&
-            span_s * 5 >= span_c * 2 && span_c * 5 >= span_s * 2) {
+        int32_t pos_s  = (int32_t)cal->max_s;
+        int32_t neg_s  = -(int32_t)cal->min_s;
+        int32_t pos_c  = (int32_t)cal->max_c;
+        int32_t neg_c  = -(int32_t)cal->min_c;
+        int32_t span_s = pos_s + neg_s;
+        int32_t span_c = pos_c + neg_c;
+        /* Lock only after all 4 quadrants have reached symmetric bipolar peaks (prevents half-turn mid_s offset) */
+        if (pos_s > WHEEL_CAL_BIPOLAR_MIN && neg_s > WHEEL_CAL_BIPOLAR_MIN &&
+            pos_c > WHEEL_CAL_BIPOLAR_MIN && neg_c > WHEEL_CAL_BIPOLAR_MIN &&
+            pos_s * 4 >= neg_s * 3 && neg_s * 4 >= pos_s * 3 &&
+            pos_c * 4 >= neg_c * 3 && neg_c * 4 >= pos_c * 3 &&
+            span_s * 5 >= span_c * 3 && span_c * 5 >= span_s * 3) {
             cal->locked = true;
         }
     }
@@ -293,8 +311,10 @@ static bool tlv493d_try_configure(uint8_t addr7) {
         return false;
     }
 
-    s_wheel_sensor = WHEEL_SENSOR_TLV493D;
-    s_wheel_addr8  = addr8;
+    s_wheel_sensor   = WHEEL_SENSOR_TLV493D;
+    s_wheel_addr8    = addr8;
+    s_tlv_prev_frm   = 0xFFU;
+    s_tlv_frm_streak = 0;
     return true;
 }
 
@@ -324,10 +344,11 @@ static bool wheel_sensor_configure(void) {
 
 /*
  * Reads the two orthogonal quadrature field components in the (North-South, Up-Down)
- * rotation plane of the wheel magnet, mapped so atan2(out_sin, out_cos) increases
- * (+delta_lsb > 0) when rolling the top of the wheel North (away = Scroll UP, +V):
- *   - TMAG5273 (DBV on B.Cu rot=-90):  (Bx, Bz)
- *   - TLV493D  (TSOP-6 on B.Cu rot=-90): (By, Bz) left-aligned to 16-bit signed scale
+ * rotation plane of the East-mounted wheel magnet, mapped so atan2(out_sin, out_cos)
+ * increases (+delta_lsb > 0) when rolling the top of the wheel North (away = Scroll UP, +V):
+ *   - TMAG5273 (DBV on B.Cu rot=+90 at (25.3200, 2.7625)):  (-Bx, Bz)
+ *   - TLV493D  (TSOP-6 on B.Cu rot=+90 at (25.3200, 2.7625)): (-By, -Bz) left-aligned to 16-bit signed scale
+ *     (right-handed X/Y swap between TMAG5273 and TLV493D inverts package +Z normal polarity)
  */
 static bool wheel_sensor_read_quadrature(int16_t *out_sin, int16_t *out_cos, bool *out_busy) {
     *out_busy = false;
@@ -341,8 +362,10 @@ static bool wheel_sensor_read_quadrature(int16_t *out_sin, int16_t *out_cos, boo
             *out_busy = true;
             return true;
         }
-        *out_sin = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);
-        *out_cos = (int16_t)(((uint16_t)buf[4] << 8) | buf[5]);
+        const int16_t raw_x = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);
+        const int16_t raw_z = (int16_t)(((uint16_t)buf[4] << 8) | buf[5]);
+        *out_sin            = negate_sat_i16(raw_x);
+        *out_cos            = raw_z;
         return true;
     }
 
@@ -351,13 +374,24 @@ static bool wheel_sensor_read_quadrature(int16_t *out_sin, int16_t *out_cos, boo
         if (i2c_receive(s_wheel_addr8, buf, sizeof(buf), WHEEL_I2C_TIMEOUT_MS) != I2C_STATUS_SUCCESS) {
             return false;
         }
-        /* R_CHANNEL (buf[3] bits 1:0) != 0 indicates ADC was mid-conversion during readout */
-        if ((buf[3] & 0x03U) != 0U) {
-            *out_busy = true;
-            return true;
+        /*
+         * Monitor 2-bit FRM counter (buf[3] bits 3:2) to detect ADC freeze / power-down reset
+         * without discarding valid 3.3 kHz continuous samples when R_CHANNEL != 0.
+         */
+        const uint8_t frm = (uint8_t)((buf[3] >> 2) & 0x03U);
+        if (s_tlv_prev_frm != 0xFFU && frm == s_tlv_prev_frm) {
+            if (++s_tlv_frm_streak >= WHEEL_TLV_FRM_MAX) {
+                s_tlv_frm_streak = 0;
+                return false;
+            }
+        } else {
+            s_tlv_prev_frm   = frm;
+            s_tlv_frm_streak = 0;
         }
-        *out_sin = (int16_t)(((uint16_t)buf[1] << 8) | ((uint16_t)(buf[4] & 0x0FU) << 4));
-        *out_cos = (int16_t)(((uint16_t)buf[2] << 8) | ((uint16_t)(buf[5] & 0x0FU) << 4));
+        const int16_t raw_y = (int16_t)(((uint16_t)buf[1] << 8) | ((uint16_t)(buf[4] & 0x0FU) << 4));
+        const int16_t raw_z = (int16_t)(((uint16_t)buf[2] << 8) | ((uint16_t)(buf[5] & 0x0FU) << 4));
+        *out_sin            = negate_sat_i16(raw_y);
+        *out_cos            = negate_sat_i16(raw_z);
         return true;
     }
 
@@ -497,6 +531,7 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
     if (!s_wheel_angle_locked || click_blanked) {
         s_wheel_prev_angle   = angle_new_cal;
         s_wheel_rest_anchor  = angle_new_cal;
+        s_wheel_idle_anchor  = angle_new_cal;
         s_wheel_motion_ms    = now;
         s_wheel_resting      = true;
         s_wheel_angle_locked = true;
@@ -507,31 +542,40 @@ static report_mouse_t curcur40_wheel_poll(report_mouse_t mouse_report) {
         return curcur40_wheel_emit_pending(mouse_report);
     }
 
-    if (!s_wheel_resting && timer_elapsed(s_wheel_motion_ms) >= WHEEL_IDLE_RESET_MS) {
-        s_wheel_resting     = true;
-        s_wheel_rest_anchor = angle_new_cal;
-        s_wheel_prev_angle  = angle_new_cal;
-        s_wheel_subtick_num = 0;
+    const int16_t cal_shift = wrap_delta_12bit(angle_new_cal, angle_prev_cal);
+
+    if (!s_wheel_resting) {
+        s_wheel_idle_anchor      = (uint16_t)((s_wheel_idle_anchor + (uint16_t)cal_shift) & 0x0FFFU);
+        const int16_t idle_drift = wrap_delta_12bit(angle_new_cal, s_wheel_idle_anchor);
+        if (idle_drift <= -CURCUR40_WHEEL_IDLE_NOISE_LSB || idle_drift >= CURCUR40_WHEEL_IDLE_NOISE_LSB) {
+            s_wheel_idle_anchor = angle_new_cal;
+            s_wheel_motion_ms   = now;
+        } else if (timer_elapsed(s_wheel_motion_ms) >= WHEEL_IDLE_RESET_MS) {
+            s_wheel_resting     = true;
+            s_wheel_rest_anchor = angle_new_cal;
+            s_wheel_idle_anchor = angle_new_cal;
+            s_wheel_prev_angle  = angle_new_cal;
+            s_wheel_subtick_num = 0;
+        }
     }
 
     if (s_wheel_resting) {
         const int16_t wake_delta = wrap_delta_12bit(angle_prev_cal, s_wheel_rest_anchor);
-        const int16_t cal_shift  = wrap_delta_12bit(angle_new_cal, angle_prev_cal);
         s_wheel_rest_anchor      = (uint16_t)((s_wheel_rest_anchor + (uint16_t)cal_shift) & 0x0FFFU);
         if (wake_delta > -CURCUR40_WHEEL_DEADBAND_LSB && wake_delta < CURCUR40_WHEEL_DEADBAND_LSB) {
             s_wheel_prev_angle = angle_new_cal;
             return curcur40_wheel_emit_pending(mouse_report);
         }
-        s_wheel_resting    = false;
-        s_wheel_prev_angle = (uint16_t)((s_wheel_rest_anchor - (uint16_t)cal_shift) & 0x0FFFU);
+        s_wheel_resting     = false;
+        s_wheel_idle_anchor = angle_new_cal;
+        s_wheel_motion_ms   = now;
+        s_wheel_prev_angle  = (uint16_t)((s_wheel_rest_anchor - (uint16_t)cal_shift) & 0x0FFFU);
     }
 
     int16_t delta_lsb  = wrap_delta_12bit(angle_prev_cal, s_wheel_prev_angle);
     s_wheel_prev_angle = angle_new_cal;
 
     if (delta_lsb != 0) {
-        s_wheel_motion_ms = now;
-
 #if CURCUR40_WHEEL_INVERT_DIR
         delta_lsb = -delta_lsb;
 #endif
