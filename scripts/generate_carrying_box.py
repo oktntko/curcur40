@@ -9,7 +9,7 @@ and Full Packed Verification Assemblies (`cases/assemblies/carrying-box-with-lid
 Design Highlights (Synchronized to finalized v1.1 11.80-deg tenting cases & official JLC3DP/JLCCNC wheel):
 1. 100% Top/Bottom Reversible (`右手トラックボール側を下にしても上にしても、箱もフタも上下逆さま関係なくスッと入る`):
    - Both `Carrying_Box` and `Carrying_Box_Lid` are mathematically exact `Rot_Y(180 deg)` symmetric solids
-     around `(X_MID_DESK, Z_MID_DESK)` (`138.40 x 110.44 x 69.52 mm` closed).
+     around `(X_MID_DESK, Z_MID_DESK)` (`140.20 x 110.44 x 77.75 mm` closed, synchronized to the `+4.20 mm` tenting-stand-recessed bottom cases).
    - Central divider uses a point-symmetric cranked web (`z_asm in [9.80, 12.05]` on West, smooth `20 mm`
      angled center ramp, `z_asm in [4.45, 6.70]` on East) with dual `15.60 mm` Trackball Keeper U-slots, so
      Right's 25mm trackball glides in with `0.58 mm` non-contact keeper clearance whether Right is on the
@@ -46,8 +46,17 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 WORKSPACE = Path(__file__).resolve().parent.parent
+if str(WORKSPACE / "scripts") not in sys.path:
+    sys.path.insert(0, str(WORKSPACE / "scripts"))
 CASES_DIR = WORKSPACE / "cases"
 ASSEMBLIES_DIR = WORKSPACE / "cases" / "assemblies"
+
+from generate_cases import (
+    X_PINKY_OUTER,
+    X_THUMB_OUTER,
+    Z_PINKY_BOTTOM,
+    Z_THUMB_BOTTOM,
+)
 
 MAX_RUNTIME_SEC = 240.0
 T0_RUN = time.monotonic()
@@ -60,12 +69,8 @@ def _check_timeout(phase: str) -> None:
 
 
 # Canonical v1.1 keyboard outer geometry constants (`docs/case_spec.md` & `scripts/generate_cases.py`)
-X_THUMB_OUTER = 17.0500
-X_PINKY_OUTER = 135.8580
 Y_NORTH_OUTER = -27.4875
 Y_SOUTH_OUTER = -121.8875
-Z_THUMB_BOTTOM = -34.8203
-Z_PINKY_BOTTOM = -10.0000
 TAN_TENT = (Z_PINKY_BOTTOM - Z_THUMB_BOTTOM) / (X_PINKY_OUTER - X_THUMB_OUTER)
 THETA_TENT_RAD = math.atan(TAN_TENT)
 THETA_TENT_DEG = math.degrees(THETA_TENT_RAD)   # 11.8000 deg
@@ -117,15 +122,16 @@ D_WELL_PERP = 2.7500                             # 2.75 mm recessed floor/ceilin
 D_OUT_PERP = 4.7500                              # 4.75 mm outer box face (2.00 mm solid horizontal top & bottom walls!)
 
 # Exact Orthogonal Rectangular Cuboid (`直方体`) dimensions in `box_desk` coordinates (`Z in [0, H_BOX]`)
-H_BARE_BRICK = (abs(Z_THUMB_BOTTOM) + H_SEP + abs(Z_PINKY_BOTTOM)) * COS_TENT  # 60.0245 mm
-H_BOX = H_BARE_BRICK + 2.0 * D_OUT_PERP                                        # 69.5245 mm
-Z_MID_DESK = 0.5 * H_BOX                                                       # 34.7622 mm
+H_BARE_BRICK = (abs(Z_THUMB_BOTTOM) + H_SEP + abs(Z_PINKY_BOTTOM)) * COS_TENT  # 68.2470 mm
+H_BOX = H_BARE_BRICK + 2.0 * D_OUT_PERP                                        # 77.7470 mm
+Z_MID_DESK = 0.5 * H_BOX                                                       # 38.8735 mm
 X_MID_DESK = (
     X_PINKY_OUTER
     + (0.5 * DX_LEFT - X_PINKY_OUTER) * COS_TENT
     + (0.5 * H_SEP - Z_PINKY_BOTTOM) * SIN_TENT
-)                                                                              # 81.4415 mm
-W_BOX = 138.4000                                                               # 138.4000 mm exact cuboid width
+)                                                                              # 82.3004 mm
+DZ_WALL_DESK = (-10.0000 - Z_PINKY_BOTTOM) * COS_TENT                          # +4.1113 mm shift from v1.1 -10.0mm base
+W_BOX = 140.2000                                                               # 140.2000 mm exact cuboid width (~1.95 mm outer side walls)
 X_BOX_WEST = X_MID_DESK - 0.5 * W_BOX                                          # 12.2415 mm
 X_BOX_EAST = X_MID_DESK + 0.5 * W_BOX                                          # 150.6415 mm
 
@@ -421,10 +427,10 @@ def verify_lid_snap_mechanics() -> dict[str, float]:
 
 def build_entrance_detents_desk() -> tuple[bd.Solid, bd.Solid, bd.Solid, bd.Solid]:
     """Symmetric West & East entrance click-detents (holds keyboards gently even while Lid is open)."""
-    z_bot_slot = 7.4000
-    z_arm_bot = 9.4000
-    z_arm_top = 16.9000
-    z_top_slot = 18.9000
+    z_bot_slot = round(7.4000 + DZ_WALL_DESK, 4)
+    z_arm_bot = round(9.4000 + DZ_WALL_DESK, 4)
+    z_arm_top = round(16.9000 + DZ_WALL_DESK, 4)
+    z_top_slot = round(18.9000 + DZ_WALL_DESK, 4)
     y_slot_root_straight = Y_MOUTH - 22.0000           # -47.1500 mm
     y_arm_root = Y_MOUTH - 23.3000                     # -48.4500 mm
 
@@ -493,7 +499,7 @@ def build_hidden_lid_snap_sockets_and_prongs_desk() -> tuple[bd.Solid, bd.Solid,
         (x_s_undercut, y_sock_back),
         (x_s_out, y_sock_back),
     ]
-    z_sock_bot = 51.0000
+    z_sock_bot = round(H_BOX - 18.5245, 4)
     z_sock_h = 10.0000
     with bd.BuildSketch(bd.Plane.XY.offset(z_sock_bot)) as sk_sock:
         bd.Polygon(sock_xy, align=None)
