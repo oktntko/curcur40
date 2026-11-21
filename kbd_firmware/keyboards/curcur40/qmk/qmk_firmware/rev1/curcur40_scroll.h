@@ -23,7 +23,7 @@ enum curcur40_keycodes {
  *      in XZX pseudo-simultaneous continuous mode on B.Cu rot=+90, sensing off-axis
  *      East D4x1mm diametric shaft magnet via (-Bx, Bz) quadrature vector.
  *    - Fallback sensor: Infineon TLV493D-A1B6 (0x5E / 0x1F, pin-compatible SOT-23-6)
- *      in Master Controlled continuous mode with /INT disabled, via (-By, Bz).
+ *      in Master Controlled continuous mode with /INT disabled, via (-By, -Bz).
  *    - 1-piece CNC 45# steel integral-shaft flywheel (24 outer flutes) + magnetic
  *      detent screw provides real physical free-spin momentum, 24 tactile notches/rev,
  *      and instant finger-touch braking.
@@ -48,6 +48,9 @@ enum curcur40_keycodes {
 #endif
 #ifndef CURCUR40_WHEEL_DEADBAND_LSB
 #    define CURCUR40_WHEEL_DEADBAND_LSB 12
+#endif
+#ifndef CURCUR40_WHEEL_IDLE_NOISE_LSB
+#    define CURCUR40_WHEEL_IDLE_NOISE_LSB 5
 #endif
 #ifndef CURCUR40_WHEEL_INVERT_DIR
 #    define CURCUR40_WHEEL_INVERT_DIR 0
