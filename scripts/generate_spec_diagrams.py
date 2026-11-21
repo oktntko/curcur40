@@ -45,11 +45,12 @@ def generate_vertical_stackup_diagram():
     ax.add_patch(patches.Rectangle((20, -11.2), 86.8, 5.4, linewidth=1.3, edgecolor='#e07a5f', facecolor='#f4f1de', alpha=0.42))
     ax.text(32, -8.5, "Component\nCavity\n(Tilted Floor)", ha='center', va='center', fontsize=9.5, fontweight='bold', color='#333333')
 
-    # Sealed Case Floor (2.40mm uniform wall, 100% hole-free outer bottom!) + Compact Flat-Topped Ø5.20mm Boss at Z = -5.80mm:
-    # Single-stage Ø5.20mm cylinder (1.175mm thick wall around Ø2.85mm bore — zero thin neck bottleneck during heat-set!)
+    # Sealed Case Floor (6.60mm vertical / 6.46mm perp slab with 5.20mm recessed stand pockets & >=1.09..1.26mm sealed ceiling!)
+    ax.set_ylim(-17.2, 2.2)
     case_poly = patches.Polygon(
         [
-            (20.0, -13.6), (126.0, -13.6), (126.0, -11.2),
+            (20.0, -16.4), (35.0, -16.4), (35.0, -12.6), (86.0, -12.6), (86.0, -16.4),
+            (126.0, -16.4), (126.0, -11.2),
             (117.2, -11.2), (117.2, -5.8), (114.8, -5.8),
             (114.8, -10.8), (109.2, -10.8), (109.2, -5.8),
             (106.8, -5.8), (106.8, -11.2),
@@ -58,8 +59,12 @@ def generate_vertical_stackup_diagram():
         closed=True, linewidth=1.6, edgecolor='#212529', facecolor='#495057', alpha=0.88, zorder=3
     )
     ax.add_patch(case_poly)
-    ax.text(74, -12.4, "100% Sealed Hole-Free Case Bottom Wall (Uniform 2.40 mm, 11.80° Tenting)",
-            ha='center', va='center', fontsize=9.5, fontweight='bold', color='#ffffff', zorder=4)
+    stand_rect = patches.Rectangle((36.2, -16.2), 48.6, 3.4, lw=1.3, ec='#b45309', fc='#fde68a', zorder=4)
+    ax.add_patch(stand_rect)
+    ax.text(60.5, -14.5, "Recessed 20×65×5mm Foldable Stand ×2/half (5.20mm Blind Pocket, >=1.26mm Sealed Ceiling)",
+            ha='center', va='center', fontsize=8.0, fontweight='bold', color='#78350f', zorder=5)
+    ax.text(106, -14.2, "6.60mm Sealed\nBottom Slab\n(11.80° Tent)",
+            ha='center', va='center', fontsize=8.0, fontweight='bold', color='#ffffff', zorder=4)
 
     # Brass Heat-Set Insert (M2 x L=3.0 x OD=3.2 mm at Z = -8.80 to -5.80 mm) inside Ø2.85mm pilot bore
     ins_l = patches.Rectangle((109.0, -8.80), 1.4, 3.00, linewidth=1.2, edgecolor='#7f5539', facecolor='#e9c46a', hatch='///', zorder=4)
@@ -98,9 +103,9 @@ def generate_vertical_stackup_diagram():
     draw_dim(17, -3.6, -4.2, "0.60 mm")
     draw_dim(17, -4.2, -5.8, "1.60 mm")
     draw_dim(17, -5.8, -11.2, "1.80..26.6 mm")
-    draw_dim(17, -11.2, -13.6, "2.40 mm")
+    draw_dim(17, -11.2, -16.4, "6.60 mm\n(5.20 Pocket)")
 
-    draw_dim(7.5, 0.0, -11.2, "Pinky: 10.0 mm\n(Thumb: 34.8 mm)", offset_text=1.0)
+    draw_dim(7.5, 0.0, -16.4, "Pinky: 14.2 mm\n(Thumb: 39.0 mm)", offset_text=1.0)
 
     ax.annotate('Compact Valley Boss (All 12x: L1..L6, R1..R6)\n• Ø5.20mm cylinder (1.175mm thick wall!)\n• Clamps Main PCB (-4.20) via Ø2.40mm hole\n• Screw head submerged in Plate Ø4.40/4.05mm hole!',
                 xy=(115.8, -3.60), xytext=(126.5, -2.6),
@@ -120,9 +125,9 @@ def generate_vertical_stackup_diagram():
                 fontsize=7.6, fontweight='bold', color='#d90429',
                 bbox=dict(boxstyle="round,pad=0.25", fc="#ffe3e0", ec="#d90429", lw=0.9))
 
-    ax.set_title("curcur40 v1.1 Vertical Z-Stackup Architecture (11.80° Tenting, Ø5.20mm Boss, Switch-Retained Plate & Unified M2×6mm)", fontsize=12.2, fontweight='bold', pad=15)
+    ax.set_title("curcur40 v1.1 Vertical Z-Stackup Architecture (11.80° + Recessed 20×65×5mm Tenting Stands, Ø5.2mm Boss & M2×6mm)", fontsize=11.6, fontweight='bold', pad=15)
     ax.set_xticks([])
-    ax.set_yticks([0, -2.0, -3.6, -4.2, -5.8, -8.8, -11.2, -13.6])
+    ax.set_yticks([0, -2.0, -3.6, -4.2, -5.8, -8.8, -11.2, -16.4])
     ax.set_yticklabels([
         'Z=0.0 (Case Rim)',
         'Z=-2.0 (Plate Top)',
@@ -131,7 +136,7 @@ def generate_vertical_stackup_diagram():
         'Z=-5.8 (PCB Bot)',
         'Z=-8.8 (Cavity)',
         'Z_floor (-7.6..-32.4)',
-        'Z_bot (-10.0..-34.8)',
+        'Z_bot (-14.2..-39.0)',
     ])
     ax.grid(axis='y', linestyle=':', alpha=0.6, color='#888888')
 
@@ -256,7 +261,7 @@ def generate_ports_and_screws_diagram():
         closed=True, lw=1.4, ec='#212529', fc='#dee2e6', zorder=2
     )
     ax3.add_patch(boss_floor)
-    ax3.text(0.0, -12.25, "Sealed Solid Bottom Wall (2.40 mm — Zero Holes)", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#212529', zorder=3)
+    ax3.text(0.0, -12.25, "Sealed Bottom Slab (6.60 mm / >=1.26 mm Ceiling)", ha='center', va='center', fontsize=6.7, fontweight='bold', color='#212529', zorder=3)
 
     # Brass Heat-Set Insert (M2 x L=3.0 x OD=3.2mm: X in [1.00, 1.60], Z in [-8.80, -5.80])
     ax3.add_patch(patches.Rectangle((-1.60, -8.80), 0.60, 3.00, lw=1.0, ec='#7f5539', fc='#e9c46a', hatch='///', zorder=4))
@@ -345,7 +350,7 @@ def generate_trackball_optical_diagram():
 
     floor = patches.Rectangle((-24, -11.6), 48, 2.4, linewidth=2, edgecolor='#495057', facecolor='#ced4da', alpha=0.7)
     ax.add_patch(floor)
-    ax.text(0, -10.4, "11.80° Continuous Tilted Sealed Case Floor (Uniform 2.40 mm Wall)\n(Zero Relief Pocket or Lens Pin Cutting Needed!)", ha='center', va='center', fontsize=8.8, fontweight='bold', color='#212529')
+    ax.text(0, -10.4, "11.80° Continuous Tilted Sealed Case Floor (6.60 mm Slab / >=1.09..1.26 mm Pocket Ceiling)\n(Zero Interior Relief Pocket or Lens Pin Cutting Needed!)", ha='center', va='center', fontsize=8.4, fontweight='bold', color='#212529')
 
     ax.annotate('', xy=(2.5, -6.50), xytext=(2.5, -9.20),
                 arrowprops=dict(arrowstyle='<->', color='#d90429', lw=1.8))
@@ -387,8 +392,8 @@ def generate_trackball_cup_fastening_diagram():
         closed=True, linewidth=1.5, edgecolor='#343a40', facecolor='#adb5bd', alpha=0.92, zorder=2
     )
     ax.add_patch(case_boss)
-    ax.text(0, -6.65, "100% Sealed Case Bottom Wall (2.40 mm Solid — Zero Bottom Holes)",
-            ha='center', va='center', fontsize=9.0, fontweight='bold', color='#212529', zorder=3)
+    ax.text(0, -6.65, "100% Sealed Case Bottom Wall (>=1.09 mm Solid above 5.20 mm Stand Pocket)",
+            ha='center', va='center', fontsize=8.7, fontweight='bold', color='#212529', zorder=3)
 
     # Brass Heat-Set Insert (M2 x L=3.0 x OD=3.2 mm: Z_rel = -4.60 to -1.60 mm)
     ins_l = patches.Rectangle((-1.60, -4.60), 0.60, 3.00, linewidth=1.2, edgecolor='#7f5539', facecolor='#e9c46a', hatch='///', zorder=4)

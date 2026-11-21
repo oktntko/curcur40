@@ -79,6 +79,14 @@
 - **キーキャップ：Choc V2 対応（MX 十字ステム）ロープロファイル 1u キーキャップ（外寸 $18.5 \times 18.5\,\text{mm}$ 以下）**（必要数：**39個**）
   - ※一般的な背の高い Cherry / OEM プロファイル等の通常 MX キーキャップは底打ち時にスカートがプレート・スイッチハウジングに干渉するため、必ずロープロファイル用 MX 十字ステム 1u キーキャップを使用してください。
 
+### 1-9. 底面埋め込み式折りたたみテンティングスタンド：`20 × 65 × 5 mm`（必要数：4個＝2個入り×2パック、任意）
+- **仕様**: ノートPC・キーボード用 ミニ折りたたみ亜鉛合金スタンド（バネヒンジ・2段階角度ロック爪・両面テープ付属）
+  - 外形寸法：幅 **$20\,\text{mm}$** × 長さ **$65\,\text{mm}$** × 収納時厚み **$5.0\,\text{mm}$**（`2cm × 6.5cm × 0.5cm`、2個入りパック）
+- **販売元**: Amazon / AliExpress 等（「`ノートパソコン スタンド 折りたたみ ミニ 6.5cm 2cm 0.5cm`」等で 2個入りパックが広く流通）
+- **実装方法（左右各2本・X軸平行配置・底面ツライチ収納）**:
+  - 左右ボトムケース（`left-desk`, `right-desk`）の底面に設けた前後2箇所の平行ブラインドポケット（$65.80 \times 20.60 \times 5.20\,\text{mm}$、北 $Y=-52.30\,\text{mm}$・南 $Y=-97.20\,\text{mm}$、内部空間とは隔壁 $\ge 1.09 \sim 1.26\,\text{mm}$ で完全密閉）へ、**開くシリコン足先を親指内側（爪掛け凹み側）に、バネヒンジを中央（小指寄り）に向けて**付属の両面テープで貼り付けます。
+  - 収納時はポケット内に約 $0.18\,\text{mm}$ 沈み込んでツライチになり、四隅＋南東のゴム足（$\varnothing 8 \times 2\,\text{mm}$、計10個）だけで安定接地（ベース角 $11.80^\circ$、そのまま `carrying-box` にもスライド収納可能）します。親指側の爪掛け凹みから脚を引き出すと、前後平行2本で歪みなく **約 $24^\circ$（1段目）／ 約 $34^\circ$（2段目）** のハイテンティングへ切り替えられます（スタンド未装着のまま通常の $11.80^\circ$ ケースとしても使用可能です）。
+
 ---
 
 ## 2. オンデマンド製造委託パーツ（JLCCNC / JLC3DP / JLCPCB）
@@ -97,14 +105,14 @@
 
 | ファイルパス | 推奨方式・材質 | 数量 | 役割・仕様 |
 | :--- | :--- | :---: | :--- |
-| [`cases/left-desk.step`](../cases/left-desk.step) | MJF / SLS `PA12` | 1 | 左手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋USB-C内壁受け棚3箇所） |
-| [`cases/right-desk.step`](../cases/right-desk.step) | MJF / SLS `PA12` | 1 | 右手 100% 密閉・底面穴なしテンティングボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋カップボス4箇所＋USB-C内壁受け棚3箇所） |
+| [`cases/left-desk.step`](../cases/left-desk.step) | MJF / SLS `PA12` | 1 | 左手 100% 密閉・`20×65×5mm` テンティングスタンド平行2本埋め込みポケット付きボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋USB-C内壁受け棚3箇所） |
+| [`cases/right-desk.step`](../cases/right-desk.step) | MJF / SLS `PA12` | 1 | 右手 100% 密閉・`20×65×5mm` テンティングスタンド平行2本埋め込みポケット付きボトムケース（キー谷間6箇所 $\varnothing 5.20\,\text{mm}$ フラット円筒ボス＋カップボス4箇所＋USB-C内壁受け棚3箇所） |
 | [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（支持球 $55^\circ$・内球面 $R=12.75\,\text{mm}$・高さ $2.0\,\text{mm}$ フラット固定耳×4） |
 | [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（公式最小サイズ適合 **$6.64 \times 6.64 \times 5.05\,\text{mm}$**、全肉厚 $\ge 1.20\,\text{mm}$、西側 $\varnothing 2.10\,\text{mm}$ D穴圧入） |
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（全肉厚 $\ge 1.20\,\text{mm}$／爪・突起 $\ge 1.50\,\text{mm}$、一体 $\varnothing 3.20\,\text{mm}$ 支点軸、補強 $2.60\,\text{mm}$ アーム、西過荷重ストップ、下部キーパー壁付き南デテントボス） |
 | [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定用 南開放U字フレームクレードル（`WC1`/`WC2` 深さ $5.30\,\text{mm}$ 盲穴×2［$h/\Phi=1.86$、ネジ先端底余裕 $0.90\,\text{mm}$］、過荷重ストップ受け棚、サドル底面接線支持 $\varnothing 3.50\,\text{mm}$ スリット分離型 Cクリップヒンジ） |
-| [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`138.40 × 103.79 × 69.52 mm`、右手TB上下どちら向きでも収納可、ゴム足10個・25mm球・USB-Cマグネット端子4個装着のまま収納） |
-| [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`138.40 × 69.52 × 24.15 mm`、長スパン $14\,\text{mm}$・$26^\circ$ 浅角カム爪、装着外寸 `138.40 × 110.44 × 69.52 mm`） |
+| [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`140.20 × 103.79 × 77.75 mm`、右手TB上下どちら向きでも収納可、埋め込みスタンド4本・ゴム足10個・25mm球・USB-Cマグネット端子4個装着のまま収納） |
+| [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`140.20 × 77.75 × 24.15 mm`、長スパン $14\,\text{mm}$・$26^\circ$ 浅角カム爪、装着外寸 `140.20 × 110.44 × 77.75 mm`） |
 
 ### 2-3. 基板製造・PCBA 実装（JLCPCB）：推奨 3アイテム（すべて板厚 `1.6mm` 標準 FR-4）
 - **3-in-1 統合 PCBA パネル（1種・推奨）**: [`curcur40-panel-3in1`](../pcbs/panel/jlcpcb/production_files/)（`curcur40-left` ＋ `curcur40-right`［`rU6: TMAG5273A1QDBVR` 自動実装済］＋ `curcur40-pmw3360` の全3枚を捨て基板フレーム $131.05 \times 207.25\,\text{mm}$ にまとめ、1回の Economic PCBA で一括実装！※単体発注用の各データも同梱）
