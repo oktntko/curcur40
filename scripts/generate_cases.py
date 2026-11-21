@@ -7,8 +7,8 @@ Strictly adheres to docs/case_spec.md:
     - Outer Bottom Tenting Plane (theta_tent = 11.80 deg, thickened +4.20 mm vertically / +4.11 mm perpendicularly to house 5.20 mm deep stand pockets while preserving >= 1.09 mm solid wall under TB2/TB4 bores & 1.26 mm sealed pocket ceiling):
         - Pinky outer edge (|X_step| = 135.8580 mm): Z_bottom = -14.2000 mm (total height 14.20 mm)
         - Thumb inner edge (|X_step| = 17.0500 mm):  Z_bottom = -39.0203 mm (total height 39.02 mm; narrowed -10.0250 mm/side)
-        - 2x Straight Parallel Recessed Foldable Stand Pockets per half (L-R mirror symmetric, 0 deg X-parallel, for 20 x 65 x 5 mm zinc-alloy adhesive stands):
-          65.80 x 20.60 x 5.20 mm blind pockets (R = 1.20 mm corners) at Y = -52.30 mm (North) & Y = -97.20 mm (South), u_from_thumb in [8.00, 73.80] mm, with thumb-tip finger-lift scoops (4.50 x 12.00 x 5.20 mm, R = 2.00 mm) at u_from_thumb in [3.50, 8.00] mm; 100% sealed ceiling (>= 1.09..1.26 mm solid PA12, zero through-holes into PCB cavity)
+        - 2x Straight Parallel Recessed Foldable Stand Pockets per half (L-R mirror symmetric, 0 deg X-parallel, pushed to North/South outer edges for maximum anti-tipping span, for 20 x 65 x 5 mm zinc-alloy adhesive stands):
+          65.80 x 20.60 x 5.20 mm blind pockets (R = 1.20 mm corners) at Y = -39.8000 mm (North, 2.01 mm from North wall) & Y = -109.5750 mm (South, 2.01 mm from South wall), u_from_thumb in [8.00, 73.80] mm, with thumb-tip finger-lift scoops (4.50 x 12.00 x 5.20 mm, R = 2.00 mm) at u_from_thumb in [3.50, 8.00] mm; 100% sealed ceiling (>= 1.09..1.26 mm solid PA12, zero through-holes into PCB cavity)
     - Tilted Interior Floor:
         - Parallel to outer bottom plane at Z_floor = Z_bottom + 6.60 mm (preserving exact v1.1 interior floor heights: Pinky -7.6000 mm, Thumb -32.4203 mm)
         - Unbroken smooth 11.80 deg interior plane from pinky to thumb (>= 0.72 mm clearance under pinky Choc V2 sockets, >= 0.71 mm under uncut LM19-LSI lens guide pins, and >= 0.47 mm under Sensor PCB J1 SHR-06V plug with zero thin-wall relief pockets)
@@ -72,7 +72,7 @@ STAND_U_MIN = 8.0000           # Distance along sloped bottom from Thumb outer b
 STAND_SCOOP_U_MIN = 3.5000     # 4.50 mm thumb-tip finger-lift scoop (keeps 2.36 mm solid outer thumb wall, unbroken exterior!)
 STAND_SCOOP_WID = 12.0000      # 12.00 mm finger-lift scoop width
 STAND_SCOOP_FILLET = 2.0000    # Ø 4.00 mm >= Ø 1.50 mm JLC3DP concave limit
-STAND_POCKET_Y_CENTERS = (-52.3000, -97.2000)  # North & South parallel pockets (2.50 mm clear of all 5 Ø8mm corner rubber feet!)
+STAND_POCKET_Y_CENTERS = (-39.8000, -109.5750) # Maximized N-S span (2.0125 mm solid outer rim at North -27.4875 & South -121.8875!)
 
 BOSS_OUTER_RADIUS = 3.0000     # Ø 6.00 mm boss pillar for Trackball bosses (TB1..TB4; 1.575 mm radial wall)
 PERIM_BOSS_RADIUS = 2.6000     # Ø 5.20 mm compact flat-topped boss for all 12 key-valley PCB holes (L1..L6, R1..R6; 1.175 mm radial wall)
