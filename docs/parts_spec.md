@@ -102,8 +102,8 @@
 | [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（公式最小サイズ適合 **$6.64 \times 6.64 \times 5.05\,\text{mm}$**、全肉厚 $\ge 1.20\,\text{mm}$、西側 $\varnothing 2.10\,\text{mm}$ D穴圧入） |
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（全肉厚 $\ge 1.20\,\text{mm}$／爪・突起 $\ge 1.50\,\text{mm}$、一体 $\varnothing 3.20\,\text{mm}$ 支点軸、補強 $2.60\,\text{mm}$ アーム、西過荷重ストップ、下部キーパー壁付き南デテントボス） |
 | [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定用 南開放U字フレームクレードル（`WC1`/`WC2` 深さ $4.50\,\text{mm}$ 盲穴×2［$h/\Phi=1.58$］、過荷重ストップ受け棚、公差対応 $\varnothing 3.50\,\text{mm}$ スリット分離型 Cクリップヒンジ） |
-| [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`v1.1` テンティング $11.80^\circ$ ケース対応更新は別途予定） |
-| [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション ※現在 v1.0 寸法向け】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`carrying-box.step` とセット使用） |
+| [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`138.40 × 103.79 × 69.52 mm`、右手TB上下どちら向きでも収納可、ゴム足10個・25mm球・USB-Cマグネット端子4個装着のまま収納） |
+| [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`138.40 × 69.52 × 24.15 mm`、長スパン $14\,\text{mm}$・$26^\circ$ 浅角カム爪、装着外寸 `138.40 × 110.44 × 69.52 mm`） |
 
 ### 2-3. 基板製造・PCBA 実装（JLCPCB）：推奨 3アイテム（すべて板厚 `1.6mm` 標準 FR-4）
 - **3-in-1 統合 PCBA パネル（1種・推奨）**: [`curcur40-panel-3in1`](../pcbs/panel/jlcpcb/production_files/)（`curcur40-left` ＋ `curcur40-right`［`rU6: TMAG5273A1QDBVR` 自動実装済］＋ `curcur40-pmw3360` の全3枚を捨て基板フレーム $131.05 \times 207.25\,\text{mm}$ にまとめ、1回の Economic PCBA で一括実装！※単体発注用の各データも同梱）

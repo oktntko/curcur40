@@ -109,8 +109,8 @@ JLC3DP（[https://jlc3dp.com/](https://jlc3dp.com/)）にて、以下の **6フ�
 | **④ `#02` ホイール用マグネットホルダー** | **1個** | [magnet-holder.step](../cases/inertia_wheel/magnet-holder.step) | [magnet-holder.stl](../cases/inertia_wheel/magnet-holder.stl) | **MJF (PA12)** / **SLS (PA12)** |
 | **⑤ `#03` ホイール用シーソーロッカー** | **1個** | [wheel-rocker.step](../cases/inertia_wheel/wheel-rocker.step) | [wheel-rocker.stl](../cases/inertia_wheel/wheel-rocker.stl) | **MJF (PA12)** / **SLS (PA12)** |
 | **⑥ `#04` ホイール用アンダーPCBクレードル** | **1個** | [wheel-cradle.step](../cases/inertia_wheel/wheel-cradle.step) | [wheel-cradle.stl](../cases/inertia_wheel/wheel-cradle.stl) | **MJF (PA12)** / **SLS (PA12)** |
-| **（任意 ※`v1.0`用）持ち運び用スライドボックス本体** | **1個** | [carrying-box.step](../cases/carrying-box.step) | [carrying-box.stl](../cases/carrying-box.stl) | **MJF (PA12)** / **SLS (PA12)**（※`v1.1` 対応更新予定） |
-| **（任意 ※`v1.0`用）持ち運び用スライドボックスフタ** | **1個** | [carrying-box-lid.step](../cases/carrying-box-lid.step) | [carrying-box-lid.stl](../cases/carrying-box-lid.stl) | **MJF (PA12)** / **SLS (PA12)**（※`v1.1` 対応更新予定） |
+| **（任意）持ち運び用スライドボックス本体** | **1個** | [carrying-box.step](../cases/carrying-box.step) | [carrying-box.stl](../cases/carrying-box.stl) | **MJF (PA12)** / **SLS (PA12)** |
+| **（任意）持ち運び用スライドボックスフタ** | **1個** | [carrying-box-lid.step](../cases/carrying-box-lid.step) | [carrying-box-lid.stl](../cases/carrying-box-lid.stl) | **MJF (PA12)** / **SLS (PA12)** |
 
 ### ② JLCCNC（1ピース一体軸フライホイール CNC 切削：1個 — 同名2D公差図面 PDF 同時添付）
 JLCCNC（[https://jlccnc.com/](https://jlccnc.com/) — JLCPCB / JLC3DP と共通アカウント）で、1ピース一体軸ホイールを金属切削で発注します（JLCCNC 公式発注ガイドライン第3節に従い、3D ファイルと同名の 2D 公差図面 PDF を一緒にアップロードします）。
@@ -350,10 +350,7 @@ SKIP_FLASHING_SUPPORT=1 util/docker_build.sh curcur40/rev1:via
 
 ## 2-9. 【オプション】持ち運び用スライドキャリングボックス（フタ付き）の使い方
 
-> [!NOTE]
-> **【`v1.1` 筐体に関する注記】** 現在の [`carrying-box.step`](../cases/carrying-box.step) ＆ [`carrying-box-lid.step`](../cases/carrying-box-lid.step) は `v1.0` 筐体（テンティング角 $7.47^\circ$）向け寸法です。`v1.1` 筐体（テンティング角 $11.80^\circ$・スリム外形）への適合アップデートは次フェーズで実施予定です。
-
-外出先やオフィスへ持ち運ぶ場合は、ネジ・マグネット・ゴムバンド等の別部品を一切使わない **`PA12` ナイロン製 上下リバーシブル直方体スライドボックス＋スナップフタ（[`carrying-box.step`](../cases/carrying-box.step) ＋ [`carrying-box-lid.step`](../cases/carrying-box-lid.step)）** を使うことで、**全4箇所の USB-C マグネット端子（CIO `CIO-SLMG-T-C` 等）・25mm トラックボール球・底面ゴム足をすべて付けたまま** 6面フルカバーの直方体ブロック（フタ装着外寸 **$142.4 \times 111.9 \times 65.4\text{ mm}$**）として安全にパッキングできます。
+外出先やオフィスへ持ち運ぶ場合は、ネジ・マグネット・ゴムバンド等の別部品を一切使わない **`PA12` ナイロン製 上下リバーシブル直方体スライドボックス＋スナップフタ（[`carrying-box.step`](../cases/carrying-box.step) ＋ [`carrying-box-lid.step`](../cases/carrying-box-lid.step)）** を使うことで、**全4箇所の USB-C マグネット端子（CIO `CIO-SLMG-T-C` 等）・25mm トラックボール球・底面ゴム足をすべて付けたまま** 6面フルカバーの直方体ブロック（フタ装着外寸 **$138.4 \times 110.4 \times 69.5\text{ mm}$**）として安全にパッキングできます。
 
 | フタ装着フルカバー収納 (`carrying-box-with-lid-assembly.step`) | フタ取り外し・スライド挿入時 (`carrying-box-assembly.step`) |
 | :---: | :---: |
@@ -363,7 +360,7 @@ SKIP_FLASHING_SUPPORT=1 util/docker_build.sh curcur40/rev1:via
    - ボックス奥面およびフタ内面には外へ貫通しない **デュアル内部「堀」**、左右側面にはスライドスロットを備えているため、**全4箇所の CIO `CIO-SLMG-T-C` 等の USB-C マグネット交換端子を挿しっぱなしのまま**収納できます（ケーブル本体のみ外します）。
    - **25mm トラックボールも付けたまま**収納でき、中央隔壁の U字キーパーが落下衝撃時のボール脱落を防止します。またケース底面のゴム足は上下の掘り込みレール内で常時 $0.75\text{ mm}$ 空中に浮くため、引っ掛かりゼロでスムーズにスライドします。
 2. **収納手順（箱もフタも上下逆さま区別なし！スッと差し込んでカチッと閉めるだけ）**:
-   - 左右のキーボードをキー面同士が内側で向かい合うように互い違いに重ねます（右手の親指側に左手の小指側が重なる向き＝$7.47^\circ$ の傾斜が相殺されて上下平行になる向き）。
+   - 左右のキーボードをキー面同士が内側で向かい合うように互い違いに重ねます（右手の親指側に左手の小指側が重なる向き＝$11.80^\circ$ の傾斜が相殺されて上下平行になる向き）。
    - ボックス本体・フタともに **$Y$ 軸まわり $180^\circ$ 完全回転対称** のため、**右手トラックボール側を下にしても上にしても（箱・フタの上下向きを一切気にせず）** そのまま中央隔壁に沿って奥のストッパー段差に当たるまでスッと差し込み、フタを押し込んで「カチッ」とロックすれば完了です。
 3. **取り出し手順**:
    - 長さ $14.0\text{ mm}$ の弾性梁と抜き角 $26^\circ$ の浅角カムにより、フタ左右の指掛け溝をつまんで **手前へ真っ直ぐ引くだけ（引き抜き力 約 $9.7\text{ N} \approx 1.0\text{ kgf}$）** でスムーズにフタが外れ、中央の指掛け切り欠きからキーボードを引き出せます（しくみの体験型図解：[**`docs/carrying_box_lid_guide.html`**](./carrying_box_lid_guide.html)）。
