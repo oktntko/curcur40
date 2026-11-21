@@ -216,8 +216,9 @@ def verify_cup_wall_thickness_and_gaps(cup: bd.Solid):
 
     bb = cup.bounding_box()
     sx, sy, sz = bb.max.X - bb.min.X, bb.max.Y - bb.min.Y, bb.max.Z - bb.min.Z
-    assert 5.0 <= sx <= 380.0 and 5.0 <= sy <= 284.0 and 2.0 <= sz <= 380.0, (
-        f"[trackball-cup] Bounding box {sx:.2f}x{sy:.2f}x{sz:.2f} mm outside JLC3DP limits!"
+    dims = sorted([sx, sy, sz])
+    assert dims[0] >= 5.0 and dims[0] <= 276.0 and dims[1] <= 350.0 and dims[2] <= 360.0, (
+        f"[trackball-cup] Bounding box {sx:.2f}x{sy:.2f}x{sz:.2f} mm outside official JLC3DP [5x5x5, 350x276x360] mm limits!"
     )
     assert abs(bb.min.Z - 0.0) < 1e-4, f"[trackball-cup] Bottom Z={bb.min.Z:.4f} mm is not flat on Z=0.0000 mm!"
 
@@ -229,6 +230,12 @@ def verify_cup_wall_thickness_and_gaps(cup: bd.Solid):
             diam = round(2.0 * surf.Cylinder().Radius(), 4)
             if diam < min_concave_diam:
                 min_concave_diam = diam
+            u_span = abs(surf.LastUParameter() - surf.FirstUParameter())
+            v_span = abs(surf.LastVParameter() - surf.FirstVParameter())
+            if u_span > math.radians(250.0):
+                assert v_span / diam <= 3.0 + 1e-3, (
+                    f"[trackball-cup] Hole Φ={diam:.2f}mm depth={v_span:.2f}mm exceeds JLC3DP h/Φ <= 3.0 limit!"
+                )
     assert min_concave_diam >= 1.50, (
         f"[trackball-cup] Concave hole/bore diameter {min_concave_diam:.3f} mm < JLC3DP 1.50 mm limit!"
     )

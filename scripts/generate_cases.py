@@ -247,14 +247,15 @@ def verify_case_wall_thickness_and_gaps(solid: bd.Solid, is_right: bool):
     assert solid.is_valid and is_sound(solid), f"[{side_str}] Solid is not watertight/manifold!"
     assert len(solid.solids()) == 1 and solid.volume > 0, f"[{side_str}] Must be a single positive-volume solid!"
 
-    # 2. JLC3DP build volume & min size check
+    # 2. Official JLC3DP MJF/SLS build volume (<= 350 x 276 x 360 mm) & min size (>= 5 x 5 x 5 mm) check
     bb = solid.bounding_box()
     sx, sy, sz = bb.max.X - bb.min.X, bb.max.Y - bb.min.Y, bb.max.Z - bb.min.Z
-    assert 5.0 <= sx <= 380.0 and 5.0 <= sy <= 284.0 and 2.0 <= sz <= 380.0, (
-        f"[{side_str}] Bounding box {sx:.2f}x{sy:.2f}x{sz:.2f} mm outside JLC3DP limits!"
+    dims = sorted([sx, sy, sz])
+    assert dims[0] >= 5.0 and dims[0] <= 276.0 and dims[1] <= 350.0 and dims[2] <= 360.0, (
+        f"[{side_str}] Bounding box {sx:.2f}x{sy:.2f}x{sz:.2f} mm outside official JLC3DP [5x5x5, 350x276x360] mm limits!"
     )
 
-    # 3. Minimum concave cylindrical hole/bore diameter >= Ø 1.50 mm
+    # 3. Minimum concave cylindrical hole/bore diameter >= Ø 1.50 mm & depth ratio h/Φ <= 3.0
     faces = solid.faces()
     min_concave_diam = float("inf")
     for f in faces:
@@ -263,6 +264,12 @@ def verify_case_wall_thickness_and_gaps(solid: bd.Solid, is_right: bool):
             diam = round(2.0 * surf.Cylinder().Radius(), 4)
             if diam < min_concave_diam:
                 min_concave_diam = diam
+            u_span = abs(surf.LastUParameter() - surf.FirstUParameter())
+            v_span = abs(surf.LastVParameter() - surf.FirstVParameter())
+            if u_span > math.radians(250.0):
+                assert v_span / diam <= 3.0 + 1e-3, (
+                    f"[{side_str}] Hole Φ={diam:.2f}mm depth={v_span:.2f}mm exceeds JLC3DP h/Φ <= 3.0 limit!"
+                )
     assert min_concave_diam >= 1.50, (
         f"[{side_str}] Concave hole/bore diameter {min_concave_diam:.3f} mm < JLC3DP 1.50 mm limit!"
     )

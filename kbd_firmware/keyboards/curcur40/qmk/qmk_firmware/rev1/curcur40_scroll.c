@@ -109,8 +109,8 @@ static uint16_t cordic_atan2_12bit(int32_t y, int32_t x) {
 
     int32_t mag = abs_i32(x) + abs_i32(y);
     if (mag < 4096) {
-        x <<= 6;
-        y <<= 6;
+        x *= 64;
+        y *= 64;
     }
 
     uint16_t angle = 0;
@@ -154,8 +154,8 @@ static uint16_t wheel_eval_angle_12bit(int16_t raw_s, int16_t raw_c, const wheel
             nc         = (dc * (span_s >> 2)) >> 8;
         }
     } else {
-        /* Pre-apply nominal ~1.08:1 off-axis |Bx|:|Bz| amplitude aspect before first full turn */
-        nc = (nc * 277) >> 8;
+        /* Pre-apply nominal ~1.40:1 off-axis |Bx|:|Bz| amplitude aspect (Z_axle=-7.38mm) before first full turn */
+        nc = (nc * 358) >> 8;
     }
 
     return cordic_atan2_12bit(ns, nc);
