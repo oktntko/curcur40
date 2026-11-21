@@ -145,12 +145,12 @@ def make_rect_cutout(cx, cy, w, h, r=0.5):
 
 def make_inertia_wheel_top_cutout(cx, cy):
     """
-    Clean rounded-rectangle Top Plate slot (8.05 x 22.00 mm, R = 1.00 mm, West edge -0.35 mm at x_pcb = 10.0875)
-    for the Ø 22.00 x 6.50 mm 1-piece integral-shaft under-plate wheel:
-      - 0.60 mm East / 0.95 mm West rest clearance
-      - >= 0.47 mm West clearance even at worst-case 2.95 deg (0.30 mm pretravel) middle-click tilt!
+    Clean rounded-rectangle Top Plate slot (6.55 x 22.00 mm, R = 1.00 mm, centered on wheel rim cx - 0.9250 = 13.3625 mm,
+    x_pcb in [10.0875, 16.6375] / u in [-4.2000, +2.3500]) for the Ø 22.00 x 4.65 mm (`u in [-3.25, +1.40]`) wheel:
+      - Symmetric 0.95 mm West / 0.95 mm East rest clearance (hiding East shaft & bearing shoulder)
+      - >= 0.30 mm West clearance even at full 2.95 deg middle-click tilt!
     """
-    return make_rect_cutout(cx - 0.1750, cy, 8.05, 22.00, 1.00)
+    return make_rect_cutout(cx - 0.9250, cy, 6.55, 22.00, 1.00)
 
 
 def make_inertia_wheel_foam_cutout():

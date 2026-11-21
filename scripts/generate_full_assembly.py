@@ -12,7 +12,7 @@ and verify zero B-rep interference + minimum clearances across all components pe
     - `curcur40-right.kicad_pcb`   (Z = -5.80 to -4.20 mm + all real 3D component solids + mated `rJ3` JST `SHR-06V-S-B` plug)
     - `curcur40-pmw3360.kicad_pcb` (Z = -20.60 to -19.00 mm + all 9 real SMD/JST-SH solids + mated `J1` JST `SHR-06V-S-B` plug)
 - Left & Right FR-4 Top Plates (Z = -3.60 to -2.00 mm, retained via 39x Kailh Choc V2 switch snap-fit,
-  with 14x Ø 4.40 mm screw-head clearance holes & Right 8.05 x 22.00 mm wheel slot)
+  with 14x Ø 4.40 / Ø 4.05 mm screw-head clearance holes & Right 6.55 x 22.00 mm wheel-centered slot)
 - 39x Kailh Choc V2 Low-Profile Keyswitches (21 Left + 18 Right) + 39x Keycaps
 - 3.00 mm Sunken Trackball Cup placed on Sensor PCB F.Cu at (42.8625, -104.7750, -19.00 mm), Rim at Z = -5.00 mm, 2.00 mm flat ears
 - 25mm Trackball Sphere at (42.8625, -104.7750, -0.70 mm) + `Lens_Optical_Ref_Point` at Z = -15.60 mm (exact 2.40 mm optical gap)
@@ -508,8 +508,8 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
     """
     Constructs the FR-4 Top Plate solid (Z = -3.60 to -2.00 mm, thickness 1.60 mm)
     matching `plates/pcb/plate-top-{left,right}.kicad_pcb` (`±4.5625` inner edge, `-27.8625` North edge),
-    with switch cutouts, Right 8.05 x 22.00 mm wheel slot (R = 1.00 mm),
-    and uniform Ø 4.40 mm screw-head clearance holes (案1A: switch-retained plate).
+    with switch cutouts, Right 6.55 x 22.00 mm wheel-centered slot (R = 1.00 mm, cx - 0.9250 = 13.3625 mm),
+    and Ø 4.40 / Ø 4.05 mm screw-head clearance holes (案1A: switch-retained plate).
     """
     if is_right:
         pts_plate = [
@@ -552,10 +552,10 @@ def build_top_plate_solid(is_right=True) -> bd.Solid:
     plate = plate - bd.extrude(sk_cuts.sketch, amount=3.0)
 
     if is_right:
-        wx, wy = to_step_right(RIGHT_WHEEL_AXLE_PCB[0] - 0.1750, RIGHT_WHEEL_AXLE_PCB[1])
+        wx, wy = to_step_right(RIGHT_WHEEL_AXLE_PCB[0] - 0.9250, RIGHT_WHEEL_AXLE_PCB[1])
         with bd.BuildSketch(bd.Plane.XY.offset(-4.0)) as sk_wslot:
             with bd.Locations([(wx, wy)]):
-                bd.RectangleRounded(8.05, 22.00, 1.00)
+                bd.RectangleRounded(6.55, 22.00, 1.00)
         plate = plate - bd.extrude(sk_wslot.sketch, amount=3.0)
 
     for hx, hy, r_hole in plate_holes_step:
