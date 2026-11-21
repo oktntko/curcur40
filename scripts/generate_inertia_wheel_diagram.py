@@ -161,7 +161,7 @@ def _draw_spec_diagram():
     ax1.add_patch(patches.Rectangle((-5.95, z_axle - 0.985), 12.45, 1.97, fc="#94a3b8", ec="#1e293b", lw=1.1, zorder=6))
     ax1.add_patch(patches.Rectangle((-3.70, z_axle - 1.50), 5.40, 3.00, fc="#64748b", ec="#0f172a", lw=1.0, zorder=6))
     ax1.add_patch(patches.Rectangle((-3.25, z_axle - 11.00), 4.65, 22.00, fc="#334155", ec="#0f172a", lw=1.5, zorder=7))
-    ax1.text(-0.92, -1.2, "#01 一体軸\n45#鋼+黒染め\nØ22×4.65\n(13.50g)", ha="center", va="center", fontsize=6.2, fontweight="bold", color="#f8fafc", zorder=8)
+    ax1.text(-0.92, -1.2, "#01 一体軸\n45#鋼+黒染め\nØ22×4.65\n(13.51g)", ha="center", va="center", fontsize=6.2, fontweight="bold", color="#f8fafc", zorder=8)
 
     # #07 2x NMB DDL-520ZZ Bearings (Ø2 x Ø5 x 2.30 mm at [-6.00, -3.70] & [+1.70, +4.00])
     for bu in (-6.00, 1.70):
@@ -181,7 +181,7 @@ def _draw_spec_diagram():
     ax1.add_patch(patches.Rectangle((11.00, -10.10), 2.60, 0.95, fc="#e63946", ec="#6a040f", lw=1.0, zorder=6))
 
     # Callouts on Panel 1 — Explicitly labeling #01, #02, #03, #04, #05, #06, #07, #08, #12!
-    ax1.annotate("#01 1ピースCNC一体軸ホイール (幅4.65mm)\n45#鋼+黒染め・13.50g・頂点Z=+3.62mm\n軸公差 Ø1.97±0.02mm（steel-flywheel.pdf）",
+    ax1.annotate("#01 1ピースCNC一体軸ホイール (幅4.65mm)\n45#鋼+黒染め・13.51g・頂点Z=+3.62mm\nフラット肩5.40mm＋軸公差 Ø1.97±0.02mm",
                  xy=(-0.92, 3.62), xytext=(-5.3, 6.45), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#1e293b", lw=1.15),
                  fontsize=6.0, fontweight="bold", color="#0f172a",
@@ -247,8 +247,9 @@ def _draw_spec_diagram():
     ax2.add_patch(patches.Rectangle((-21.8, -0.80), 8.80, 4.40, fc="#e9ecef", ec="#495057", lw=1.2, zorder=4))
     ax2.text(-17.4, 1.40, "南隣接キー\nrEXSW2\n(X軸一致!)", ha="center", va="center", fontsize=6.4, fontweight="bold", color="#343a40", zorder=5)
 
-    # Projected #04 Cradle Boss (WC1/WC2, 4.50mm blind bore h/Φ=1.58<=3.0!) + #10 Brass Insert (M2xL3.0) + #11 Sub-Flush Top-Down M2x6.0mm Screw
-    ax2.add_patch(patches.Rectangle((11.6, -11.50), 4.2, 5.70, fc="#cbd5e1", ec="#334155", lw=1.1, zorder=3))
+    # Projected #04 Cradle Boss (WC1/WC2, 5.32mm blind bore h/Φ=1.87<=3.0!) + #10 Brass Insert (M2xL3.0) + #11 Sub-Flush Top-Down M2x6.0mm Screw
+    ax2.add_patch(patches.Rectangle((11.6, -12.15), 4.2, 6.35, fc="#cbd5e1", ec="#334155", lw=1.1, zorder=3))
+    ax2.add_patch(patches.Rectangle((12.8, -11.12), 1.8, 5.32, fc="#ffffff", ec="#475569", lw=0.8, zorder=3))
     ax2.add_patch(patches.Rectangle((12.9, -8.80), 1.6, 3.00, fc="#e9c46a", ec="#7f5539", lw=1.0, hatch="///", zorder=4))
     ax2.add_patch(patches.Rectangle((12.3, -4.20), 2.8, 1.15, fc="#adb5bd", ec="#212529", lw=1.0, zorder=6))
     ax2.add_patch(patches.Rectangle((13.1, -10.20), 1.2, 6.00, fc="#ced4da", ec="#212529", lw=0.9, zorder=5))
@@ -262,7 +263,7 @@ def _draw_spec_diagram():
                  color="#cbd5e1", lw=1.0, zorder=6)
     ax2.add_patch(patches.Circle((0.0, z_axle), 1.50, fc="#64748b", ec="#0f172a", lw=1.0, zorder=6))
     ax2.add_patch(patches.Circle((0.0, z_axle), 0.985, fc="#f8fafc", ec="#0f172a", lw=1.2, zorder=7))
-    ax2.text(0.0, -5.2, "#01 Ø22.0×幅4.65mm 45#鋼+黒染め\nR1.50mm×24フルート溝 (15°ピッチ)\n質量 13.50g・J = 774 g·mm²!",
+    ax2.text(0.0, -5.2, "#01 Ø22.0×幅4.65mm 45#鋼+黒染め\nR1.50mm×24フルート溝 (15°ピッチ)\n質量 13.51g・J = 774 g·mm²!",
              ha="center", va="center", fontsize=6.5, fontweight="bold", color="#0f172a",
              bbox=dict(boxstyle="round,pad=0.20", fc="#f8fafc", ec="#475569", lw=0.8, alpha=0.94), zorder=8)
 
@@ -291,7 +292,7 @@ def _draw_spec_diagram():
                  fontsize=6.0, fontweight="bold", color="#9d0208",
                  bbox=dict(boxstyle="round,pad=0.22", fc="#ffe5ec", ec="#d90429", lw=0.9), zorder=10)
 
-    ax2.annotate("#04 南開放U字クレードル WC1/WC2 締結（盲穴4.5mm h/Φ=1.58）\n• プレート WC1 Ø4.05 / WC2 Ø4.40mm 穴へネジ頭沈み込み!\n• メイン基板を直接ネジ固定・プレートはスイッチ嵌合保持",
+    ax2.annotate("#04 南開放U字クレードル WC1/WC2 締結（盲穴5.32mm h/Φ=1.87）\n• プレート WC1 Ø4.05 / WC2 Ø4.40mm 穴へネジ頭(Ø3.5)沈み込み!\n• メイン基板を直接ネジ固定・ネジ底余裕0.92mmで底付きゼロ",
                  xy=(13.7, -4.20), xytext=(5.0, 6.20), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#1d3557", lw=1.15),
                  fontsize=6.1, fontweight="bold", color="#1d3557",
@@ -1020,7 +1021,7 @@ def _draw_parts_guide_diagram():
                 "JLCCNC 切削 (45#鋼+黒染め+PDF)",
                 "#0f766e",
                 "p01",
-                "steel-flywheel.step ＋ 同名2D図面 .pdf\nØ22.0×幅4.65mm・R1.50×24溝・13.50g\n黒染め後軸公差 Ø1.97±0.02mm・シム不要!",
+                "steel-flywheel.step ＋ 同名2D図面 .pdf\nØ22.0×幅4.65mm・R1.50×24溝・13.51g\n黒染め後軸公差 Ø1.97±0.02mm・シム不要!",
             ),
             (
                 "#02 マグネットホルダー ×1",
@@ -1041,7 +1042,7 @@ def _draw_parts_guide_diagram():
                 "JLC3DP 造形 (MJF/SLS PA12)",
                 "#1d4ed8",
                 "p04",
-                "cases/inertia_wheel/wheel-cradle.step\n南開放U字・WC1/WC2盲穴4.5mm (h/Φ=1.58)\nスリット分離Ø3.50 Cクリップで#03とパチン連結!",
+                "cases/inertia_wheel/wheel-cradle.step\n南開放U字・WC1/WC2盲穴5.32mm (h/Φ=1.87)\nスリット分離Ø3.50 Cクリップで#03とパチン連結!",
             ),
             (
                 "#05 3Dホールセンサー (rU6)",

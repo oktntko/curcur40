@@ -55,7 +55,8 @@
 - **圧入方法**: 温度調整機能付きの普通のはんだごて（設定目安 **$220 \sim 250\,^\circ\text{C}$**、専用チップ不要・標準の円錐こて先で OK）をインサート穴に軽く当て、3Dプリント部品の下穴へ垂直にツライチまで押し込んで 10秒冷ますだけで強固に固定されます。
 
 ### 1-6. 統一精密小ネジ：`M2 × 6.0mm`（必要数：19本）
-- **仕様**: M2 × 首下長さ **$6.0\,\text{mm}$** なべ小ネジ または 低頭精密小ネジ（頭径 $\varnothing 3.5 \sim 4.0\,\text{mm}$、頭厚 $\le 1.3\,\text{mm}$）
+- **仕様**: M2 × 首下長さ **$6.0\,\text{mm}$** **標準 JIS M2 なべ小ネジ推奨（標準頭径 $\varnothing 3.5\,\text{mm}$、頭厚 $1.3\,\text{mm}$。低頭を選ぶ場合も頭径 $\le \varnothing 3.8\,\text{mm}$ 以下とすること）**
+  - ⚠️ **頭径の注意**: 右トッププレートの `WC1` 頭逃げ穴は外縁ブリッジ確保のため **$\varnothing 4.05\,\text{mm}$** となっています。市販の「幅広超低頭・スリムヘッドネジ（頭径 $\varnothing 4.0\,\text{mm}$）」は公差によって `WC1` 穴縁に擦れるため避け、一番一般的な **JIS M2 なべ小ネジ（頭径 $\varnothing 3.5\,\text{mm}$）** または 0番3種なべ小ネジ（頭径 $\varnothing 3.5\,\text{mm}$）を購入してください（高さ方向は $2.20\,\text{mm}$ の余裕があるため普通のなべ頭で完全に沈み込みます）。
 - **材質**: **鉄（三価クロメート / ニッケルメッキ / 黒染め等の強磁性鋼）推奨**
   - ※ホイールロッカー南ボスの磁気デテント調整ネジ 1本は、先端に $\varnothing 2.0 \times 2.0\,\text{mm}$ ネオジム磁石を磁力で自己吸着させるため、**必ず磁石がくっつく鉄・鋼製ネジ**を使用してください（非磁性の SUS304 ステンレスネジには磁石が吸着しません。19本すべて鉄・ニッケルメッキ精密ネジに揃えると管理が最も簡単です）。
 - **使用箇所内訳（計 19本すべて同一サイズ）**:
@@ -85,7 +86,7 @@
 ### 2-1. CNC 金属切削（JLCCNC）：1種（3D STEP ＋ 同名 2D 公差図面 PDF セット）
 | ファイルパス | 材質 | 表面処理 | 数量 | 役割・仕様 |
 | :--- | :--- | :--- | :---: | :--- |
-| [`cases/inertia_wheel/steel-flywheel.step`](../cases/inertia_wheel/steel-flywheel.step)<br>＋ **[`cases/inertia_wheel/steel-flywheel.pdf`](../cases/inertia_wheel/steel-flywheel.pdf)** | **`45# Steel`**（S45C 炭素鋼・強磁性） | **`Blackening`**（黒染め / Black Oxide・膜厚 $\le 2\,\mu\text{m}$） | 1 | 外径 $\varnothing 22.00 \times$ **幅 $4.65\,\text{mm}$**・$R=1.50\,\text{mm}$ 外周24溝・一体段付き肩（$\varnothing 3.00\,\text{mm}$ + $R0.50$ 旋削逃げ溝）・一体軸＆東Dカット軸（質量 **$13.50\,\text{g}$**、$J = 774\,\text{g}\cdot\text{mm}^2$、**同名PDF図面で軸径公差 `⌀1.97 ±0.02 mm` 指定**） |
+| [`cases/inertia_wheel/steel-flywheel.step`](../cases/inertia_wheel/steel-flywheel.step)<br>＋ **[`cases/inertia_wheel/steel-flywheel.pdf`](../cases/inertia_wheel/steel-flywheel.pdf)** | **`45# Steel`**（S45C 炭素鋼・強磁性） | **`Blackening`**（黒染め / Black Oxide・膜厚 $\le 2\,\mu\text{m}$） | 1 | 外径 $\varnothing 22.00 \times$ **幅 $4.65\,\text{mm}$**・$R=1.50\,\text{mm}$ 外周24溝・一体フラット段付き肩（$\varnothing 3.00\,\text{mm}$ スパン $5.40\,\text{mm}$ + DIN 509 $R0.20$ 逃げ溝）・一体軸＆東Dカット軸（質量 **$13.51\,\text{g}$**、$J = 774\,\text{g}\cdot\text{mm}^2$、**同名PDF図面で軸径公差 `⌀1.97 ±0.02 mm` 指定**） |
 
 > [!IMPORTANT]
 > - **強磁性材質と公式 `Blackening`（黒染め）処理**: ホイールの外周24溝で磁気デテント（ノッチ感）を発生させるため、材質は必ず強磁性の **`45# Steel`（S45C 炭素鋼）** を選択してください（アルミや SUS304 オーステナイトステンレスは非磁性のため不可）。表面処理には JLCCNC 公式オプションの **`Blackening`（黒染め / 四三酸化鉄皮膜）** を指定します。黒染めは化成皮膜厚が $\le 2\,\mu\text{m}$ と極薄のため、めっき厚による軸太りトラブルを起こさずに防錆と精悍なマットブラック外観を両立できます。
@@ -101,7 +102,7 @@
 | [`cases/trackball-cup.step`](../cases/trackball-cup.step) | MJF / SLS `PA12` | 1 | 25mm トラックボールカップ（支持球 $55^\circ$・内球面 $R=12.75\,\text{mm}$・高さ $2.0\,\text{mm}$ フラット固定耳×4） |
 | [`cases/inertia_wheel/magnet-holder.step`](../cases/inertia_wheel/magnet-holder.step) | MJF / SLS `PA12` | 1 | `D4×1mm` 磁石接着レス保持キャップ（公式最小サイズ適合 **$6.64 \times 6.64 \times 5.05\,\text{mm}$**、全肉厚 $\ge 1.20\,\text{mm}$、西側 $\varnothing 2.10\,\text{mm}$ D穴圧入） |
 | [`cases/inertia_wheel/wheel-rocker.step`](../cases/inertia_wheel/wheel-rocker.step) | MJF / SLS `PA12` | 1 | ホイール軸受シーソーロッカー（全肉厚 $\ge 1.20\,\text{mm}$／爪・突起 $\ge 1.50\,\text{mm}$、一体 $\varnothing 3.20\,\text{mm}$ 支点軸、補強 $2.60\,\text{mm}$ アーム、西過荷重ストップ、下部キーパー壁付き南デテントボス） |
-| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定用 南開放U字フレームクレードル（`WC1`/`WC2` 深さ $4.50\,\text{mm}$ 盲穴×2［$h/\Phi=1.58$］、過荷重ストップ受け棚、公差対応 $\varnothing 3.50\,\text{mm}$ スリット分離型 Cクリップヒンジ） |
+| [`cases/inertia_wheel/wheel-cradle.step`](../cases/inertia_wheel/wheel-cradle.step) | MJF / SLS `PA12` | 1 | 右メイン基板裏面固定用 南開放U字フレームクレードル（`WC1`/`WC2` 深さ $5.32\,\text{mm}$ 盲穴×2［$h/\Phi=1.87$、ネジ先端底余裕 $0.92\,\text{mm}$］、過荷重ストップ受け棚、公差対応 $\varnothing 3.50\,\text{mm}$ スリット分離型 Cクリップヒンジ） |
 | [`cases/carrying-box.step`](../cases/carrying-box.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】持ち運び用 上下リバーシブル直方体スライドボックス本体**（`138.40 × 103.79 × 69.52 mm`、右手TB上下どちら向きでも収納可、ゴム足10個・25mm球・USB-Cマグネット端子4個装着のまま収納） |
 | [`cases/carrying-box-lid.step`](../cases/carrying-box-lid.step) | MJF / SLS `PA12` | 1（任意） | **【オプション】スライドボックス用 上下リバーシブル・スナップキャップフタ**（`138.40 × 69.52 × 24.15 mm`、長スパン $14\,\text{mm}$・$26^\circ$ 浅角カム爪、装着外寸 `138.40 × 110.44 × 69.52 mm`） |
 
