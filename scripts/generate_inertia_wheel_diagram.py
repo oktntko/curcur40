@@ -118,10 +118,10 @@ def _draw_spec_diagram():
     ax1.axhline(3.60, color="#0077b6", linestyle=":", linewidth=1.1, zorder=2)
     ax1.text(-10.6, 3.85, "隣接 Choc V2 キーキャップ天面 Z = +3.60 mm", fontsize=6.7, fontweight="bold", color="#0077b6")
 
-    # #12 Top Plate (-3.60..-2.00) with 8.05 mm slot (u in [-4.20, +3.85])
+    # #12 Top Plate (-3.60..-2.00) with 6.55 mm wheel-centered slot (u in [-4.20, +2.35], symmetric 0.95mm rest gap!)
     ax1.add_patch(patches.Rectangle((-10.5, -3.60), 6.30, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.2, zorder=3))
-    ax1.add_patch(patches.Rectangle((3.85, -3.60), 13.45, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.2, zorder=3))
-    ax1.text(10.6, -2.80, "#12 右プレート (8.05×22.0mm窓)", ha="center", va="center", fontsize=6.1, color="white", fontweight="bold", zorder=4)
+    ax1.add_patch(patches.Rectangle((2.35, -3.60), 14.95, 1.60, fc="#3a7ca5", ec="#16425b", lw=1.2, zorder=3))
+    ax1.text(9.85, -2.80, "#12 右プレート (6.55×22.0mm窓・左右0.95mm等幅)", ha="center", va="center", fontsize=5.9, color="white", fontweight="bold", zorder=4)
 
     # Right Main PCB (-5.80..-4.20) with cross cutout (u in [-7.35, +9.36] open at v = 0)
     ax1.add_patch(patches.Rectangle((-10.5, -5.80), 3.15, 1.60, fc="#2a9d8f", ec="#1b4332", lw=1.2, zorder=3))
@@ -374,8 +374,8 @@ def _draw_easy_guide_diagram():
     # Right Main PCB ceiling & Top Plate
     ax1_l.add_patch(patches.Rectangle((-8.7, 4.3), 23.0, 0.9, fc="#dbeafe", ec="#3b82f6", lw=1.0, alpha=0.6))
     ax1_l.add_patch(patches.Rectangle((-8.7, 4.3), 4.5, 0.9, fc="#3a7ca5", ec="#16425b", lw=1.2))
-    ax1_l.add_patch(patches.Rectangle((4.0, 4.3), 10.3, 0.9, fc="#3a7ca5", ec="#16425b", lw=1.2))
-    ax1_l.text(9.2, 4.75, "#12 トッププレート (8.05×22mm窓)", ha="center", va="center", fontsize=7.3, color="white", fontweight="bold")
+    ax1_l.add_patch(patches.Rectangle((2.5, 4.3), 11.8, 0.9, fc="#3a7ca5", ec="#16425b", lw=1.2))
+    ax1_l.text(8.4, 4.75, "#12 トッププレート (6.55×22mm窓)", ha="center", va="center", fontsize=7.3, color="white", fontweight="bold")
 
     ax1_l.add_patch(patches.Rectangle((-8.7, 2.3), 2.5, 1.1, fc="#2a9d8f", ec="#1b4332", lw=1.2))
     ax1_l.add_patch(patches.Rectangle((8.8, 2.3), 5.5, 1.1, fc="#2a9d8f", ec="#1b4332", lw=1.2))
@@ -843,9 +843,9 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
             screws_3.append(sc)
         bd.export_step(bd.Compound(children=screws_3), str(out / "p11_screws.step"))
 
-        # 8. Right Top Plate (8.05 x 22.00 mm slot, WC1 Ø4.05 / WC2 Ø4.40) + Right Main PCB Cross Slot Close-Up
+        # 8. Right Top Plate (6.55 x 22.00 mm wheel-centered slot, WC1 Ø4.05 / WC2 Ø4.40) + Right Main PCB Cross Slot Close-Up
         tp = bd.Box(26.0, 30.0, 1.60, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((1.0, 0.0, 2.20)))
-        tp = (tp - bd.Box(8.05, 22.00, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-0.175, 0.0, 2.00)))
+        tp = (tp - bd.Box(6.55, 22.00, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-0.925, 0.0, 2.00)))
                  - bd.Cylinder(2.025, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((-6.95, 7.8, 2.00)))
                  - bd.Cylinder(2.20, 2.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((6.95, -8.0, 2.00)))).solids()[0]
         tp.label = "Right_Top_Plate_Window"
@@ -1098,7 +1098,7 @@ def _draw_parts_guide_diagram():
                 "JLCPCB 基板・プレート (カバー不要)",
                 "#334155",
                 "p12",
-                "プレート: 8.05×22.0mm 窓 (クリック時も余裕)\nWC1 Ø4.05 / 他13箇所 Ø4.4mm ネジ頭沈み込み穴\nトッププレートはChoc V2スイッチ39個で保持!",
+                "プレート: 6.55×22.0mm 窓 (左右0.95mm対称隙間)\nWC1 Ø4.05 / 他13箇所 Ø4.4mm ネジ頭沈み込み穴\nトッププレートはChoc V2スイッチ39個で保持!",
             ),
         ]
 
