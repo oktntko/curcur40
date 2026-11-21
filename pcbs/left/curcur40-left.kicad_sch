@@ -20193,7 +20193,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "1u"
 			(at 292.1 34.29 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20237,7 +20237,7 @@
 				)
 			)
 		)
-		(property "JLCPCB Part #" "C1525"
+		(property "JLCPCB Part #" "C52923"
 			(at 289.56 33.02 0)
 			(hide yes)
 			(show_name no)
