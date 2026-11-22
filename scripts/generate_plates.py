@@ -228,7 +228,7 @@ def add_prim(board, prim):
     board.Add(sh)
 
 
-def write_plate_kicad_pcb(filepath, outer_prims, cutout_prims_list, circles):
+def write_plate_kicad_pcb(filepath, outer_prims, cutout_prims_list, circles, cu_markers=None, silk_label=None):
     b = pcbnew.BOARD()
     for prim in outer_prims:
         add_prim(b, prim)
@@ -243,6 +243,26 @@ def write_plate_kicad_pcb(filepath, outer_prims, cutout_prims_list, circles):
         c.SetEnd(pcbnew.VECTOR2I(pcbnew.FromMM(cx + r), pcbnew.FromMM(cy)))
         c.SetWidth(pcbnew.FromMM(0.15))
         b.Add(c)
+    # Add tiny solder-mask-covered B.Cu fiducial/presence ticks near opposite corners so JLCPCB's
+    # CAM parser unambiguously detects the full outer Edge_Cuts profile instead of an inner 14x14mm cutout.
+    for (mx, my) in (cu_markers or []):
+        seg = pcbnew.PCB_SHAPE(b)
+        seg.SetShape(pcbnew.SHAPE_T_SEGMENT)
+        seg.SetLayer(pcbnew.B_Cu)
+        seg.SetStart(pcbnew.VECTOR2I(pcbnew.FromMM(mx - 0.30), pcbnew.FromMM(my)))
+        seg.SetEnd(pcbnew.VECTOR2I(pcbnew.FromMM(mx + 0.30), pcbnew.FromMM(my)))
+        seg.SetWidth(pcbnew.FromMM(0.40))
+        b.Add(seg)
+    if silk_label is not None:
+        lx, ly, text = silk_label
+        txt = pcbnew.PCB_TEXT(b)
+        txt.SetText(text)
+        txt.SetLayer(pcbnew.B_SilkS)
+        txt.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(lx), pcbnew.FromMM(ly)))
+        txt.SetTextSize(pcbnew.VECTOR2I(pcbnew.FromMM(1.2), pcbnew.FromMM(1.2)))
+        txt.SetTextThickness(pcbnew.FromMM(0.20))
+        txt.SetMirrored(True)
+        b.Add(txt)
     b.Save(filepath)
 
 
@@ -311,9 +331,16 @@ def main():
     left_outer = round_polygon_with_fillets(get_left_outer_pts())
     left_cutouts = [make_rect_cutout(cx, cy, 14.0, 14.0, 0.5) for (cx, cy) in LEFT_SWITCHES]
     p_top_left = os.path.join(out_pcb_dir, "plate-top-left.kicad_pcb")
-    write_plate_kicad_pcb(p_top_left, left_outer, left_cutouts, LEFT_MOUNTING_HOLES)
+    write_plate_kicad_pcb(
+        p_top_left,
+        left_outer,
+        left_cutouts,
+        LEFT_MOUNTING_HOLES,
+        cu_markers=[(-117.50, -25.00), (-6.00, 60.50)],
+        silk_label=(-42.25, -24.50, "curcur40-plate-top-left v1.1"),
+    )
 
-    # 2. Right Top Plate (closed Ø 28.625 mm circular trackball cutout + 7.70 x 22.00 mm wheel slot + 8x Ø 4.40 mm screw-head clearance holes)
+    # 2. Right Top Plate (closed Ø 28.625 mm circular trackball cutout + 6.55 x 22.00 mm wheel slot + 8x screw-head clearance holes)
     right_outer = round_polygon_with_fillets(get_right_outer_pts(notched_trackball=False))
     right_switch_cutouts = [make_rect_cutout(cx, cy, 14.0, 14.0, 0.5) for (cx, cy) in RIGHT_SWITCHES]
     right_cutouts = right_switch_cutouts + [
@@ -321,7 +348,14 @@ def main():
     ]
     right_all_holes = RIGHT_MOUNTING_HOLES + RIGHT_WHEEL_HOLES + [RIGHT_TRACKBALL_CIRCLE]
     p_top_right = os.path.join(out_pcb_dir, "plate-top-right.kicad_pcb")
-    write_plate_kicad_pcb(p_top_right, right_outer, right_cutouts, right_all_holes)
+    write_plate_kicad_pcb(
+        p_top_right,
+        right_outer,
+        right_cutouts,
+        right_all_holes,
+        cu_markers=[(117.50, -25.00), (6.00, 60.50)],
+        silk_label=(42.25, -24.50, "curcur40-plate-top-right v1.1"),
+    )
 
     # Verify DRC on top plate PCBs using temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
