@@ -21,7 +21,7 @@
 
 ## 2. 光学系アライメントと寸法根拠（PMW3360DM-T2QU + LM19-LSI）
 
-PixArt 公式データシート（PMW3360DM-T2QU / LM19-LSI Figure 4 SECTION B-B & DETAIL C）および基準アセンブリ [`pmw3360-lens-pcb-assembly.step`](../cases/assemblies/pmw3360-lens-pcb-assembly.step) に基づく光学距離の設計値です。
+PixArt 公式データシート（PMW3360DM-T2QU / LM19-LSI Figure 4 SECTION B-B & DETAIL C：[公式ダウンロード URL](https://www.pixart.com/_getfs.php?tb=product&id=10&fs=ck2_fs_en) ／ [製品ページ](https://www.pixart.com/products-detail/10/PMW3360DM-T2QU) ※データシート PDF は転載禁止のためリポジトリへ同梱せず公式 URL を参照）および基準アセンブリ [`pmw3360-lens-pcb-assembly.step`](../cases/assemblies/pmw3360-lens-pcb-assembly.step) に基づく光学距離の設計値です。
 
 ![Trackball Optical Stackup](assets/trackball_optical_stackup.png)
 
@@ -39,7 +39,7 @@ PixArt 公式データシート（PMW3360DM-T2QU / LM19-LSI Figure 4 SECTION B-B
 ### 2.2 センサー・レンズ・基板の機械的インターフェース（設計根拠）
 1. **LM19-LSI 光学レンズ（`F.Cu` 側配置）**:
    - センサーサブ基板の表面（`Z = -19.00 mm`）に載り、下面から伸びる 4本の脚（`⌀0.90 mm` 丸ガイドポスト 2本 ＋ 角アライメントリブ 2本）が基板中央の角穴（`16.90 × 8.70 mm`）を通って裏面のセンサーIC へ嵌合します。
-   - **非対称丸ガイドポストの設計根拠**: 実部品および実フットプリント [`PMW3360DM-T2QU_16Pin.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/PMW3360DM-T2QU_16Pin.kicad_mod) における丸ガイドポスト穴（`⌀1.70 mm`）は、センサー中心基準で **`(-7.10, +3.30) mm`** および **`(+6.70, -3.40) mm`** の非対称配置であり、基板角穴（`±8.45 × ±4.35 mm`）の内側に余裕をもって収まります。また `11.80°` 傾斜内底面により未カットの丸ガイドポスト先端下にも `0.71 mm` 以上のクリアランスが確保されます。
+   - **非対称丸ガイドポストの設計根拠**: 実部品および実フットプリント [`PMW3360DM-T2QU_16Pin.kicad_mod`](../pcbs/common/kbd/kicad-footprints/kbd.pretty/PMW3360DM-T2QU_16Pin.kicad_mod)（[`monkeypad/pmw3360-breakout`](https://github.com/monkeypad/pmw3360-breakout) / [`siderakb/pmw3360-pcb`](https://github.com/siderakb/pmw3360-pcb) 準拠）における丸ガイドポスト穴（`⌀1.70 mm`）は、センサー中心基準で **`(-7.10, +3.30) mm`** および **`(+6.70, -3.40) mm`** の非対称配置であり、基板角穴（`±8.45 × ±4.35 mm`）の内側に余裕をもって収まります。また `11.80°` 傾斜内底面により未カットの丸ガイドポスト先端下にも `0.71 mm` 以上のクリアランスが確保されます。
 2. **PMW3360DM-T2QU センサーIC（`B.Cu` 側配置）**:
    - 基板裏面（`Z = -20.60 mm`）から差し込み、表面（`F.Cu`）で 16ピンをはんだ付けします。ピン先端はカップ底面の広口レンズ室（`19.60 × 22.20 mm`、天井 `Z_rel = +4.85 mm`）内で干渉しないよう短く切り揃えます。
 

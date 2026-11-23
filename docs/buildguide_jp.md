@@ -29,7 +29,7 @@
   - [2-1. 必要な工具とサイズ条件](#2-1-必要な工具とサイズ条件)
   - [2-2. Phase 1: ファームウェアのビルドと書き込み](#2-2-phase-1-ファームウェアのビルドと書き込み)
   - [2-3. Phase 2: 真鍮ヒートセットインサートの熱圧入（計19箇所）](#2-3-phase-2-真鍮ヒートセットインサートの熱圧入計19箇所)
-  - [2-4. Phase 3: 手ハンダ作業（2箇所）＆ トラックボールカップ準備](#2-4-phase-3-手ハンダ作業2箇所--トラックボールカップ準備)
+  - [2-4. Phase 3: 手ハンダ作業（2箇所）＆ トラックボールカップ準備](#2-4-phase-3-手ハンダ作業2箇所-トラックボールカップ準備)
   - [2-5. Phase 4: アンダープレート慣性ホイールの組み立て](#2-5-phase-4-アンダープレート慣性ホイールの組み立て)
   - [2-6. Phase 5: ケースへの統合締結（M2×6.0mm ネジ統一）](#2-6-phase-5-ケースへの統合締結m260mm-ネジ統一)
   - [2-7. Phase 6: 動作確認・キーマップ設定（Vial / VIA）](#2-7-phase-6-動作確認キーマップ設定vial--via)
@@ -56,7 +56,7 @@
 
 ## 1-2. JLCPCB 発注ガイド（基板・PCBA・トッププレート）
 
-JLCPCB（https://jlcpcb.com/）にて、以下の **★①〜③ の計 3アイテム** をカートに入れて発注します（単体基板ごとに分割発注したい場合のみ ④〜⑥ を使用）。
+JLCPCB（[https://jlcpcb.com/](https://jlcpcb.com/)）にて、以下の **★①〜③ の計 3アイテム** をカートに入れて発注します（単体基板ごとに分割発注したい場合のみ ④〜⑥ を使用）。
 
 ### 発注ファイル一覧
 
@@ -99,7 +99,7 @@ JLCPCB（https://jlcpcb.com/）にて、以下の **★①〜③ の計 3アイ�
 
 ## 1-3. JLC3DP 発注ガイド（3Dプリント造形：必須 6種 ＋ 任意 2種）
 
-JLC3DP（https://jlc3dp.com/）にて、以下の STEP ファイルをアップロードして発注します。
+JLC3DP（[https://jlc3dp.com/](https://jlc3dp.com/)）にて、以下の STEP ファイルをアップロードして発注します。
 
 | 区分 | 対象パーツ | 数量 | アップロードファイル | 推奨 3D Technology / Material / 設定 |
 | :---: | :--- | :---: | :--- | :--- |
@@ -121,7 +121,7 @@ JLC3DP（https://jlc3dp.com/）にて、以下の STEP ファイルをアップ�
 
 ## 1-4. JLCCNC 発注ガイド（一体軸スチールホイール切削：1個）
 
-JLCCNC（https://jlccnc.com/）にて、以下の **STEP ファイルと同名 2D 公差図面 PDF の 2点** をアップロードします。
+JLCCNC（[https://jlccnc.com/](https://jlccnc.com/)）にて、以下の **STEP ファイルと同名 2D 公差図面 PDF の 2点** をアップロードします。
 
 - **3D モデル**: [`cases/inertia_wheel/steel-flywheel.step`](../cases/inertia_wheel/steel-flywheel.step)（数量: **1個**）
 - **2D 公差図面**: [`cases/inertia_wheel/steel-flywheel.pdf`](../cases/inertia_wheel/steel-flywheel.pdf)（`Tightest Tolerance` 下の `+ Upload Drawing` に添付）

@@ -2,7 +2,7 @@
 
 **curcur40** は、[Corne Keyboard (crkbd v4)](https://github.com/foostan/crkbd) をベースに、**39キー（論理 40入力）左右分割ロープロファイル配列**、右手親指の **25 mm 光学式トラックボール**、右手人差し指内側の **アンダープレート パッシブ磁気慣性ホイール**、および **ビルトイン 11.8° テンティング（折りたたみスタンド併用で 24° / 34° 切替対応）密閉ケース** を統合したカスタムエルゴノミクスキーボードです。
 
-> 製作・部品調達・発注手順は **[ビルドガイド (`docs/buildguide_jp.md`)](./docs/buildguide_jp.md)**、各部の設計仕様書は **[3. ドキュメントインデックス](#3-ドキュメントインデックス)** を参照してください。
+> 製作・部品調達・発注手順は **[ビルドガイド (`docs/buildguide_jp.md`)](./docs/buildguide_jp.md)**、各部の設計仕様書は **[3. ドキュメントインデックス](#3-ドキュメントインデックス-documentation-index)** を参照してください。
 
 ![Full Assembly Isometric](./docs/assets/render_full_assembly_iso.png)
 
@@ -130,12 +130,12 @@ Eucalyn 系をベースにした 40入力レイアウトに、右手内側のマ
 
 本プロジェクトは以下のオープンソースプロジェクトをベースに派生・設計されています。各オリジナル作者の皆様に深く感謝いたします。
 
-| 対象領域 | 派生元・原著作者 | 適用ライセンス | 主な改変・統合内容 |
+| 対象領域 | 派生元・原著作者 | 適用ライセンス | 改変時期・主な改変内容（CC BY 4.0 Sec. 3(a) / CERN-OHL-P v2 Sec. 3.3 準拠） |
 | :--- | :--- | :--- | :--- |
-| **基板・プレート・ケース・ホイール・ドキュメント・スクリプト**<br>(`pcbs/`, `plates/`, `cases/`, `docs/`, `scripts/`) | **[foostan/crkbd](https://github.com/foostan/crkbd)**<br>(`foostan` / Kosuke Adachi) | **[MIT License](./LICENSE_MIT)** ＆<br>**[CC BY 4.0](./LICENSE_CC)** | Corne v4 をベースに 39キー＋中クリック配列化、右手 25mm トラックボール＆アンダープレート一体軸パッシブ磁気慣性ホイール統合、密閉テンティングケース・キャリングボックス新規設計 |
-| **KiCad カスタムライブラリ**<br>(`pcbs/common/kbd/` 内 `kbd.*`) | **[foostan/kbd](https://github.com/foostan/kbd)**<br>(`foostan`) | **[MIT License](./pcbs/common/kbd/LICENSE)** | KiCad 10.0 整合、`Kailh_Square_Silent_6.2x6.2mm` 追加、相対 3Dモデルパス化 |
-| **PMW3360 シンボル・フットプリント**<br>(`pmw3360_pcb.kicad_sym`, `PMW3360DM-T2QU_16Pin.kicad_mod`) | **[siderakb/pmw3360-pcb](https://github.com/siderakb/pmw3360-pcb)**<br>(`siderakb` / `ziteh`) | **[CERN-OHL-P v2](./LICENSE_CERN_OHL_P_V2)** | `VDDPIX` ピン属性修正、KiCad 10.0 パッド層補完、専用サブ基板 `curcur40-pmw3360` へ統合 |
-| **ファームウェア (`kbd_firmware/`)** | **[foostan/kbd_firmware](https://github.com/foostan/kbd_firmware)**<br>**[QMK](https://github.com/qmk/qmk_firmware)** / **[Vial-QMK](https://github.com/vial-kb/vial-qmk)** | **GPL-2.0-or-later** | 40入力マトリクス、`TMAG5273`/`TLV493D` 3Dホール慣性ホイール駆動 ＆ `PMW3360` 2D慣性ドラッグスクロール統合 |
+| **基板・プレート・ケース・ホイール・ドキュメント・スクリプト**<br>(`pcbs/`, `plates/`, `cases/`, `docs/`, `scripts/`) | **[foostan/crkbd](https://github.com/foostan/crkbd)**<br>(`foostan` / Kosuke Adachi) | **[MIT License](./LICENSE_MIT)** ＆<br>**[CC BY 4.0](./LICENSE_CC)** | `2026-10`〜`2026-11`: Corne v4 をベースに 39キー＋中クリック配列化、右手 25mm トラックボール（低プロファイル分離サブ基板）＆アンダープレート一体軸パッシブ磁気慣性ホイール（`45# Steel` ローター＋オンボード `TMAG5273`）統合、KiCad 10.0 対応、ヒートセット密閉テンティングケース・キャリングボックス新規設計 |
+| **KiCad カスタムライブラリ**<br>(`pcbs/common/kbd/` 内 `kbd.*`) | **[foostan/kbd](https://github.com/foostan/kbd)**<br>(`foostan`) | **[MIT License](./pcbs/common/kbd/LICENSE)** | `2026-10`: 未使用定義の整理、KiCad 10.0 標準シンボル整合、`YS-SK6812MINI-E` Pin 2 (`DOUT`) 電気属性修正、`Kailh_Square_Silent_6.2x6.2mm` 追加、相対 3Dモデルパス化 |
+| **PMW3360 シンボル・フットプリント**<br>(`pmw3360_pcb.kicad_sym`, `PMW3360DM-T2QU_16Pin.kicad_mod`) | **[siderakb/pmw3360-pcb](https://github.com/siderakb/pmw3360-pcb)**<br>(`siderakb` / `ziteh`) | **[CERN-OHL-P v2](./LICENSE_CERN_OHL_P_V2)** | `2026-10`: 未使用の `TXS0108E-QPWRQ1` シンボル削除、`PMW3360DM-T2QU` Pin 3 (`VDDPIX`) を `power_out` へ修正、KiCad 10.0 スルーホールパッド層補完、専用サブ基板 `curcur40-pmw3360` へ統合 |
+| **ファームウェア (`kbd_firmware/`)**<br>(`kbd_firmware/keyboards/curcur40/`) | **[foostan/kbd_firmware](https://github.com/foostan/kbd_firmware)**<br>**[QMK](https://github.com/qmk/qmk_firmware)** / **[Vial-QMK](https://github.com/vial-kb/vial-qmk)** | **GPL-2.0-or-later** | `2026-10`〜`2026-11`: 40入力マトリクス、`I2C0` `TMAG5273`/`TLV493D-A1B6` 3Dホール慣性ホイール駆動 ＆ `SPI1` `PMW3360` 2D慣性ドラッグスクロール複合ポインティングドライバへ改変 |
 
 ---
 
