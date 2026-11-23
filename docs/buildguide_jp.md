@@ -1,16 +1,16 @@
-# curcur40 ビルドガイド
+# curcur40 ビルドガイド・部品調達・発注ガイド (`buildguide_jp.md`)
 
-**curcur40** は、Corne Chocolate v4 をベースに全キー 1u 化（計39キースイッチ：左21キー＋右18キー、＋ホイール中クリック1入力＝計40入力）、右手人差し指内側に **アンダープレート一体軸パッシブ磁気慣性ホイール（`45# Steel` 1ピース削り出しホイール ＋ 基板直実装 `TMAG5273` 3Dホールセンサ ＋ 接着剤＆シム＆配線ゼロ構造）**、右手親指部に **低プロファイル沈み込み 25mm トラックボール（`PMW3360DM-T2QU` 分離センサーサブ基板・閉円形プレート開口）** を搭載し、筐体全体を **真鍮ヒートセットインサート × 統一 `M2 × 6.0mm` ネジ（100% 密閉・底面穴なしケース）** でまとめた左右分割型ロープロファイルキーボードです。
+本書は **curcur40** を 1台製作するための **購入部材リスト（BOM・購入先 URL）**、**JLCPCB / JLC3DP / JLCCNC への発注手順と実戦ノウハウ**、および **組み立て・ファームウェア書き込み手順** をまとめた総合ガイドです。
 
 ![curcur40 全体プレビュー（斜視）](./assets/render_full_assembly_iso.png)
 
-### 🎬 3D 組み立てアニメーション（全体フロー）
+### 3D 組み立てアニメーション（全体フロー）
 
 [![curcur40 3D 組み立てアニメーション](./assets/assembly_animation.webp)](./assets/assembly_animation.mp4)
 
-> トラックボール・慣性ホイールのサブ組立からケース・PCB・トッププレート・スイッチ・キーキャップの積み上げまでを通しで確認できます（クリックでフル画質 1080p 60fps 動画 [`docs/assets/assembly_animation.mp4`](./assets/assembly_animation.mp4) を開きます）。
+> トラックボール・慣性ホイールのサブ組立から、ケース・基板・トッププレート・スイッチ・キーキャップの積み上げまでを通しで確認できます（クリックで 1080p 60fps 動画 [`docs/assets/assembly_animation.mp4`](./assets/assembly_animation.mp4) を再生します）。
 
-| 上面ビュー（トッププレート・キー配列・カバー不要ホイール） | 底面ビュー（100% 密閉・`20×65×5 mm` スタンド平行2本埋め込みポケット付き底面） |
+| 上面ビュー（トッププレート・キー配列・ホイールスロット） | 底面ビュー（100% 密閉・折りたたみスタンドポケット付き底面） |
 | :---: | :---: |
 | ![curcur40 上面プレビュー](./assets/render_full_assembly_top.png) | ![curcur40 底面プレビュー](./assets/render_full_assembly_bottom.png) |
 
@@ -18,230 +18,221 @@
 
 ## 目次
 
-- **[Step 1: 資材一覧と入手経路・発注ガイド](#step-1-資材一覧と入手経路発注ガイド)**
-  - [1-1. 全体構成の概要](#1-1-全体構成の概要)
-  - [1-2. JLCPCB に発注するもの（PCB / PCBA / トッププレート：3-in-1パネル採用で計3アイテム・すべて1.6mm）](#1-2-jlcpcb-に発注するものpcb--pcba--トッププレート3-in-1パネル採用で計3アイテムすべて16mm)
-  - [1-3. JLC3DP / JLCCNC に発注するもの（PA12 3Dプリント6種 ＆ 45#鋼ホイール切削1個）](#1-3-jlc3dp--jlccnc-に発注するものpa12-3dプリント6種--45鋼ホイール切削1個)
-  - [1-4. 別で入手・購入するパーツ一覧](#1-4-別で入手購入するパーツ一覧)
-  - [1-5. 発注前チェックリスト](#1-5-発注前チェックリスト)
-- **[Step 2: 組み立て・ハンダ付け・ファームウェア書き込み手順](#step-2-組み立てハンダ付けファームウェア書き込み手順)**
-  - [2-1. 必要な工具](#2-1-必要な工具)
-  - [2-2. Phase 1: ファームウェアのビルドと書き込み（事前動作確認）](#2-2-phase-1-ファームウェアのビルドと書き込み事前動作確認)
+- **[Step 1: 資材一覧・発注手順・実発注ノウハウ](#step-1-資材一覧発注手順実発注ノウハウ)**
+  - [1-1. 調達の全体像（4ルート）](#1-1-調達の全体像4ルート)
+  - [1-2. JLCPCB 発注ガイド（基板・PCBA・トッププレート）](#1-2-jlcpcb-発注ガイド基板pcbaトッププレート)
+  - [1-3. JLC3DP 発注ガイド（3Dプリント造形：必須 6種 ＋ 任意 2種）](#1-3-jlc3dp-発注ガイド3dプリント造形必須-6種--任意-2種)
+  - [1-4. JLCCNC 発注ガイド（一体軸スチールホイール切削：1個）](#1-4-jlccnc-発注ガイド一体軸スチールホイール切削1個)
+  - [1-5. 市販購入パーツ一覧（BOM・型番・購入先リンク）](#1-5-市販購入パーツ一覧bom型番購入先リンク)
+  - [1-6. 発注前チェックリスト](#1-6-発注前チェックリスト)
+- **[Step 2: 組み立て・はんだ付け・ファームウェア書き込み手順](#step-2-組み立てはんだ付けファームウェア書き込み手順)**
+  - [2-1. 必要な工具とサイズ条件](#2-1-必要な工具とサイズ条件)
+  - [2-2. Phase 1: ファームウェアのビルドと書き込み](#2-2-phase-1-ファームウェアのビルドと書き込み)
   - [2-3. Phase 2: 真鍮ヒートセットインサートの熱圧入（計19箇所）](#2-3-phase-2-真鍮ヒートセットインサートの熱圧入計19箇所)
-  - [2-4. Phase 3: 手ハンダ作業（わずか2箇所！）＆ トラックボールカップ準備](#2-4-phase-3-手ハンダ作業わずか2箇所-トラックボールカップ準備)
-  - [2-5. Phase 4: アンダープレート慣性ホイールの組み立て（接着剤・シム・配線ゼロ）](#2-5-phase-4-アンダープレート慣性ホイールの組み立て接着剤シム配線ゼロ)
-  - [2-6. Phase 5: ケースへの統合締結（全箇所共通 M2×6.0mm ネジ）](#2-6-phase-5-ケースへの統合締結全箇所共通-m260mm-ネジ)
-  - [2-7. Phase 6: 動作確認・キーマップ設定（VIA / Vial）](#2-7-phase-6-動作確認キーマップ設定via--vial)
-  - [2-8. トラブルシューティング・注意事項](#2-8-トラブルシューティング注意事項)
-  - [2-9. 【オプション】持ち運び用スライドキャリングボックス（フタ付き）の使い方](#2-9-オプション持ち運び用スライドキャリングボックスフタ付きの使い方)
+  - [2-4. Phase 3: 手ハンダ作業（2箇所）＆ トラックボールカップ準備](#2-4-phase-3-手ハンダ作業2箇所--トラックボールカップ準備)
+  - [2-5. Phase 4: アンダープレート慣性ホイールの組み立て](#2-5-phase-4-アンダープレート慣性ホイールの組み立て)
+  - [2-6. Phase 5: ケースへの統合締結（M2×6.0mm ネジ統一）](#2-6-phase-5-ケースへの統合締結m260mm-ネジ統一)
+  - [2-7. Phase 6: 動作確認・キーマップ設定（Vial / VIA）](#2-7-phase-6-動作確認キーマップ設定vial--via)
+  - [2-8. トラブルシューティング](#2-8-トラブルシューティング)
+  - [2-9. 【オプション】持ち運び用キャリングボックスの使い方](#2-9-オプション持ち運び用キャリングボックスの使い方)
 
 ---
 
-# Step 1: 資材一覧と入手経路・発注ガイド
+# Step 1: 資材一覧・発注手順・実発注ノウハウ
 
-## 1-1. 全体構成の概要
+## 1-1. 調達の全体像（4ルート）
 
-curcur40 を1台組み立てるために必要な資材は、以下の **4つのルート** でシンプルに揃います（選定型番・購入先リンクの完全なリファレンスは **[`docs/parts_spec.md`](./parts_spec.md)** もあわせて参照してください）。
-
-1. **JLCPCB への発注（★推奨：3-in-1 統合 PCBA パネル × 1種 ＋ FR-4 トッププレート × 2種 ＝ 計3アイテム、すべて標準 `1.6 mm` 厚）**
-   - 左右メイン基板（`curcur40-left`, `curcur40-right`）およびトラックボールセンサーサブ基板（`curcur40-pmw3360`）の3枚を **1枚の Economic PCBA 捨て基板パネル（`curcur40-panel-3in1`: `131.05 × 207.25 mm`）** に統合済みのため、**PCBA セットアップ費・ステンシル費 1回分だけ** で RP2040、Flash、Kailh Choc ソケット、RGB LED、デュアル USB-C、JST SH コネクタ（`rJ3`, `J1`）、**慣性ホイール用 3Dホール磁気センサ `rU6`（`TMAG5273A1QDBVR`）**、および PMW3360 周辺 SMD 部品まで **すべて裏面（`Bottom Side`）に一括 PCBA 自動実装** されて届きます（単体3分割データも同梱。ホイール用の別基板や `0.8 mm` 薄板発注は不要です）。
-2. **JLC3DP への発注（MJF / SLS `PA12` ナイロン 3Dプリント部品 × 6種・各1個 — 公式造形基準100%適合）**
-   - 左右の 100% 密閉底面ボトムケース（`left-desk`, `right-desk`）、25mm トラックボールカップ（`trackball-cup`）、および慣性ホイールの樹脂3部品（`magnet-holder`: $6.64\times 6.64\times 5.05\,\text{mm}$、 `wheel-rocker`、 `wheel-cradle`）をすべて JLC3DP 公式最小サイズ（$\ge 5\times 5\times 5\,\text{mm}$）・肉厚・穴深さ比（$h/\Phi \le 3.0$）準拠の `PA12` ナイロン単一モデルとして一括造形できます。
-3. **JLCCNC への発注（1ピース一体軸 `45# Steel` フライホイール × 1個 ＋ 同名2D公差図面 PDF 添付）**
-   - 外径 $\varnothing 22.00 \times \text{幅 } 4.65\,\text{mm}$ リム（$R=1.50\,\text{mm}$ 24溝）・内輪フラット段付き肩（$\varnothing 3.00\,\text{mm}$ スパン $5.40\,\text{mm}$ + DIN 509 $R0.20$ 逃げ溝）・Dカット回転軸を1ピース一体削り出しにした強磁性鋼ホイール（[`steel-flywheel.step`](../cases/inertia_wheel/steel-flywheel.step)、質量 $13.51\,\text{g}$、慣性モーメント $J = 774\,\text{g}\cdot\text{mm}^2$、**`Blackening`［黒染め］仕上げ**）を、同梱の同名2D公差図面 **[`steel-flywheel.pdf`](../cases/inertia_wheel/steel-flywheel.pdf)**（軸部 `⌀1.97 ±0.02 mm` 指定）とセットで発注します。
-4. **別途購入するパーツ（スイッチ、キーキャップ、PMW3360＋レンズ、25mm球、JST SH ケーブル1本、ホイール用ベアリング2個・磁石2個・静音SW1個、真鍮インサート19個、統一 `M2×6.0mm` ネジ19本）**
-   - スペーサー、シムリング、平行ピン、ラチェット鋼球、瞬間接着剤、ホイール手配線ハーネスは **すべて廃止（不要）** となりました。手ハンダも「右メイン基板の静音スイッチ `rEXSW1`（2ピン）」と「TBセンサー基板の `PMW3360`（16ピン）」の2部品のみです。
+1. **JLCPCB（基板製造 ＋ PCBA 実装）**:
+   - 左メイン基板・右メイン基板・TBセンサーサブ基板の 3枚を 1枠にまとめた **3-in-1 統合 PCBA パネル（1種）** と **FR-4 トッププレート（左右 2種）** の計 3アイテムを発注します（すべて標準板厚 `1.6 mm`）。
+   - RP2040、Flash、Choc ソケット、RGB LED、USB-C、JST SH コネクタ、および慣性ホイール用 3Dホールセンサー `rU6`（`TMAG5273`）まで裏面（`Bottom Side`）に一括自動実装されて届きます。
+2. **JLC3DP（3Dプリント造形：必須 6種 ＋ 任意 2種）**:
+   - 左右ボトムケース、トラックボールカップ、慣性ホイール樹脂パーツ 3種を造形します（JLC3DP と JLCCNC は JLCPCB と共通アカウントで利用可能）。
+3. **JLCCNC（CNC 金属切削：1個）**:
+   - 1ピース一体軸 `45# Steel` フライホイール（`Blackening` 黒染め仕上げ）を、同梱の同名 2D 公差図面 PDF とセットで発注します。
+4. **市販購入パーツ（通販）**:
+   - キースイッチ・キーキャップ、25 mm 球、セラミック支持球、PMW3360＋レンズ、JST SH ケーブル、ベアリング 2個、磁石 2個、静音スイッチ 1個、真鍮インサート 19個、統一 `M2 × 6.0 mm` ネジ 19本を揃えます（スペーサー、シムリング、平行ピン、接着剤は一切不要です）。手ハンダ作業も `rEXSW1`（2ピン）と `PMW3360`（16ピン）の 2部品のみです。
 
 ---
 
-## 1-2. JLCPCB に発注するもの（PCB / PCBA / トッププレート：3-in-1パネル採用で計3アイテム・すべて1.6mm）
+## 1-2. JLCPCB 発注ガイド（基板・PCBA・トッププレート）
 
-JLCPCB（[https://jlcpcb.com/](https://jlcpcb.com/)）には、コストとDFM手戻りを最小化できる **3-in-1 統合 PCBA パネル 1種** と **PCB のみ（FR-4 トッププレート）2種** の **計3アイテム** を発注するのが最もお得で確実です（すべて標準板厚 **`1.6 mm`**。個別に発注したい場合の単体ファイルも下表④〜⑥に収録しています）。
+JLCPCB（https://jlcpcb.com/）にて、以下の **★①〜③ の計 3アイテム** をカートに入れて発注します（単体基板ごとに分割発注したい場合のみ ④〜⑥ を使用）。
 
 ### 発注ファイル一覧
 
-| 対象 | 発注種別 | 最小発注数 | ガーバーファイル (ZIP) | BOM (部品表 CSV) | CPL (座標データ CSV) |
+| 対象 | 発注種別 | 最小発注数 | ガーバー (ZIP) | BOM (部品表 CSV) | CPL (座標 CSV) |
 | :--- | :---: | :---: | :--- | :--- | :--- |
-| **★① 3-in-1 統合 PCBA パネル（推奨）**<br>(`curcur40-panel-3in1`: Left + Right + PMW3360) | **PCB + PCBA**<br>（裏面 `Bottom Side` / **1.6mm**） | 5枚<br>（PCBAは2枚〜可） | [GERBER-curcur40-panel-3in1.zip](../pcbs/panel/jlcpcb/production_files/GERBER-curcur40-panel-3in1.zip) | [BOM-curcur40-panel-3in1.csv](../pcbs/panel/jlcpcb/production_files/BOM-curcur40-panel-3in1.csv) | [CPL-curcur40-panel-3in1.csv](../pcbs/panel/jlcpcb/production_files/CPL-curcur40-panel-3in1.csv) |
-| **★② 左トッププレート**<br>(`plate-top-left`) | **PCB のみ**<br>（FR-4 **1.6mm**） | 5枚 | [GERBER-plate-top-left.zip](../plates/pcb/jlcpcb/production_files/GERBER-plate-top-left.zip) | 不要（PCBAなし） | 不要（PCBAなし） |
-| **★③ 右トッププレート**<br>(`plate-top-right`) | **PCB のみ**<br>（FR-4 **1.6mm**） | 5枚 | [GERBER-plate-top-right.zip](../plates/pcb/jlcpcb/production_files/GERBER-plate-top-right.zip) | 不要（PCBAなし） | 不要（PCBAなし） |
-| *(個別参考)* 左メイン基板 (`curcur40-left`) | PCB + PCBA (`1.6mm`) | 5枚 | [GERBER-curcur40-left.zip](../pcbs/left/jlcpcb/production_files/GERBER-curcur40-left.zip) | [BOM-curcur40-left.csv](../pcbs/left/jlcpcb/production_files/BOM-curcur40-left.csv) | [CPL-curcur40-left.csv](../pcbs/left/jlcpcb/production_files/CPL-curcur40-left.csv) |
-| *(個別参考)* 右メイン基板 (`curcur40-right`) | PCB + PCBA (`1.6mm`) | 5枚 | [GERBER-curcur40-right.zip](../pcbs/right/jlcpcb/production_files/GERBER-curcur40-right.zip) | [BOM-curcur40-right.csv](../pcbs/right/jlcpcb/production_files/BOM-curcur40-right.csv) | [CPL-curcur40-right.csv](../pcbs/right/jlcpcb/production_files/CPL-curcur40-right.csv) |
-| *(個別参考)* TBセンサー基板 (`curcur40-pmw3360`) | PCB + PCBA (`1.6mm`) | 5枚 | [GERBER-curcur40-pmw3360.zip](../pcbs/pmw3360/jlcpcb/production_files/GERBER-curcur40-pmw3360.zip) | [BOM-curcur40-pmw3360.csv](../pcbs/pmw3360/jlcpcb/production_files/BOM-curcur40-pmw3360.csv) | [CPL-curcur40-pmw3360.csv](../pcbs/pmw3360/jlcpcb/production_files/CPL-curcur40-pmw3360.csv) |
+| **★① 3-in-1 統合パネル（推奨）**<br>(`curcur40-panel-3in1`) | **PCB + PCBA**<br>(`Bottom Side` / `1.6 mm`) | 5枚<br>(PCBAは2枚〜) | [GERBER-curcur40-panel-3in1.zip](../pcbs/panel/jlcpcb/production_files/GERBER-curcur40-panel-3in1.zip) | [BOM-curcur40-panel-3in1.csv](../pcbs/panel/jlcpcb/production_files/BOM-curcur40-panel-3in1.csv) | [CPL-curcur40-panel-3in1.csv](../pcbs/panel/jlcpcb/production_files/CPL-curcur40-panel-3in1.csv) |
+| **★② 左トッププレート**<br>(`plate-top-left`) | **PCB のみ**<br>(`1.6 mm`) | 5枚 | [GERBER-plate-top-left.zip](../plates/pcb/jlcpcb/production_files/GERBER-plate-top-left.zip) | 不要 | 不要 |
+| **★③ 右トッププレート**<br>(`plate-top-right`) | **PCB のみ**<br>(`1.6 mm`) | 5枚 | [GERBER-plate-top-right.zip](../plates/pcb/jlcpcb/production_files/GERBER-plate-top-right.zip) | 不要 | 不要 |
+| *(単体参考)* ④ 左メイン基板 | PCB + PCBA | 5枚 | [GERBER-curcur40-left.zip](../pcbs/left/jlcpcb/production_files/GERBER-curcur40-left.zip) | [BOM-curcur40-left.csv](../pcbs/left/jlcpcb/production_files/BOM-curcur40-left.csv) | [CPL-curcur40-left.csv](../pcbs/left/jlcpcb/production_files/CPL-curcur40-left.csv) |
+| *(単体参考)* ⑤ 右メイン基板 | PCB + PCBA | 5枚 | [GERBER-curcur40-right.zip](../pcbs/right/jlcpcb/production_files/GERBER-curcur40-right.zip) | [BOM-curcur40-right.csv](../pcbs/right/jlcpcb/production_files/BOM-curcur40-right.csv) | [CPL-curcur40-right.csv](../pcbs/right/jlcpcb/production_files/CPL-curcur40-right.csv) |
+| *(単体参考)* ⑥ TBセンサー基板 | PCB + PCBA | 5枚 | [GERBER-curcur40-pmw3360.zip](../pcbs/pmw3360/jlcpcb/production_files/GERBER-curcur40-pmw3360.zip) | [BOM-curcur40-pmw3360.csv](../pcbs/pmw3360/jlcpcb/production_files/BOM-curcur40-pmw3360.csv) | [CPL-curcur40-pmw3360.csv](../pcbs/pmw3360/jlcpcb/production_files/CPL-curcur40-pmw3360.csv) |
 
-> **補足（スイッチ嵌合保持トッププレート・ネジ頭沈み込み設計およびレーザーカット用 SVG について）**:
-> - 板厚 $1.60\text{ mm}$ の FR-4 基板として製造します。キー谷間12箇所（`L1`〜`L6`, `R1`〜`R6`）およびホイールクレードル2箇所（`WC1`, `WC2`）の **全14箇所すべてでトッププレートをネジ頭逃げ穴（`WC1` のみ外縁ブリッジ幅確保のため $\varnothing 4.05\text{ mm}$、他13箇所 $\varnothing 4.40\text{ mm}$）** としており、統一 `M2 × 6.0mm` ネジ頭がメイン基板 `F.Cu`（$Z = -4.20\text{ mm}$）に着座してプレート表面（$Z = -2.00\text{ mm}$）より下に完全沈み込みます。そのためキーを押下してもキーキャップ裾と干渉せず、外周余白の目立つネジ穴を全廃してすべてのネジをキーキャップ間の死角へ収めています。
-> - トッププレート自体は全39個の Kailh Choc V2 キースイッチ（左21個・右18個）のラッチ嵌合によってメイン基板と一体に保持されます（案1A）。また右トッププレートのホイール窓はホイールと同心（左右均等 $0.95\text{ mm}$ 隙間）で東ベアリングを隠すシンプルな $6.55 \times 22.00\text{ mm}$ 角丸長穴、トラックボール部は沈み込みカップを囲む閉じた $\varnothing 28.625\text{ mm}$ 円形穴です。
-> - アクリル等のレーザーカット用データとして [plate-curcur40.svg](../plates/svg/plate-curcur40.svg) および [foam-curcur40.svg](../plates/svg/foam-curcur40.svg) も同梱しています。
+> アクリルやスイッチフォームを自作レーザーカットする場合は [`plate-curcur40.svg`](../plates/svg/plate-curcur40.svg) / [`foam-curcur40.svg`](../plates/svg/foam-curcur40.svg) を利用できます。
 
-### JLCPCB 推奨発注オプション
+### 実発注画面でのオプション指定と注意点（実戦ノウハウ）
 
-- **Base Material / Layers / PCB Thickness**: `FR-4` / `2 Layers` / 全アイテムとも **`1.6 mm`**
-- **Different Design / Delivery Format（3-in-1 パネル発注時）**: **`Different Design: 3`** / `Delivery Format: Single PCB` を選択してアップロードします（パネル内に Left・Right・PMW3360 の3種類の基板が含まれるため、`1` を選ぶと CAM レビュー時に異種面付け差額の追加支払い待ちで一時停止します。トッププレートや単体基板は `Different Design: 1` です）
-- **PCB Color / Surface Finish**: お好みの色（`Black` / `Matte Black` / `White` など）、表面処理は手ハンダ箇所（`rEXSW1`, `PMW3360`）にはんだが乗りやすい **`LeadFree HASL`** または **`HASL(with lead)`** 推奨
-- **Remove Order Number / Remark（トッププレート発注時）**: トッププレートは表面に製造番号が入らないよう **`Remove Order Number: Yes`**（または `Specify a location`）を推奨します。また、必要に応じて `PCB Remark` 欄に **`Switch plate only — bare FR-4 plate as intended.`** と添えておくとスムーズに通過します。
-- **PCBA Type / Assembly Side / Edge Rails（`Standard` / 裏面 `Bottom Side` / `Added by Customer`）**:
-  - **3-in-1 統合パネル (`curcur40-panel-3in1`)**：`SK6812MINI-E`（`C5149201`, MSL ベーキング対象）および `TYPE-C-31-M-13C`（`C2848620`）が `Standard Only` 指定のため **`PCBA Type: Standard`**、Assembly Side は **`Bottom Side`** を選択します。また、パネル外周にはすでに `5.00 mm` 幅の捨て基板レール・フィデューシャル（`FID1`〜`FID3`）・ツール穴（`TH1`〜`TH4`）が組み込まれているため、`Edge Rails/Fiducials` は **`Added by Customer`** を選択してください（計171点実装 / 30 BOMグループ：左81点 ＋ 右81点 ＋ TBセンサー `p*` 9点。`C5333465` Chocソケット39個・`C3716049` `TMAG5273` 1個等の在庫が注文枚数分あるかも部品表画面で自動チェックされます）。
-  - *(単体発注時)* 左メイン `81点 / 20 BOM`、右メイン `81点 / 24 BOM`（オンボード3Dホール `rU6: TMAG5273A1QDBVR` `C3716049`・`rR13: 0Ω`・JST SH `rJ3: C160405` 含む）、TBセンサー `9点 / 7 BOM`
-- **意図的に PCBA から除外されている部品（プレビューで Unplaced となって正常なもの）**:
-  - **手ハンダ THT 部品（計2個）**: 右メイン基板の静音中クリックスイッチ **`rEXSW1`（`Kailh Square Silent`）**、および TBセンサー基板の光学センサー **`U1` / パネル上 `pU1`（`PMW3360DM-T2QU`）**
-  - **銅箔パターン直結済みジャンパ**: TBセンサー基板の **`JP1` / `pJP1`（Pad 1–2 直結済）**
-  - **DNP（未実装）部品**: TBセンサー基板の **`R4` / `C5`（`pR4` / `pC5`）**、左右メイン基板の予備端子 **`J4` / `rJ4`**
-- **JLCPCB Component Placement（DFM プレビュー）画面での確認ポイント**:
-  1. **ミッドマウント USB-C コネクタ（`J1`/`J2`, `rJ1`/`rJ2`: `TYPE-C-31-M-13C`）**: 基板外周切り欠き（3-in-1パネル上では `3.70mm` ルーター逃げスロット手前）に落とし込む部品のため、プレビュー画面で部品位置・向き（12本のSMDピン＋4箇所のシールド長穴に重なり、差込口が外向きスロット側を向く状態）を必ず確認してください。
-  2. **1番ピン・コネクタ差込口向きの重点確認**:
-     - **`rU6`（`TMAG5273A1QDBVR`, 右メイン基板 `B.Cu`）**: 6ピン `SOT-23-6` パッケージの1番ピン丸印がシルク印字のドット位置と一致していること。
-     - **`rJ3`（JST SH 6P, 右メイン基板 `B.Cu`）**: ケーブル差込口が基板内側のトラックボール切り欠き側を向いていること。
-     - **`J1` / `pJ1`（JST SH 6P, TBセンサーサブ基板 `B.Cu`）**: ケーブル差込口が右メイン基板側（単体右端）を向いていること。
-     - その他の IC（`RP2040`, `W25Q128JVSIQ`, `LDL1117S33R`, `USBLC6-2SC6`, `TLV74318`）・ダイオード（`ZD1`/`rZD1: 1N5819WS`, `D1`/`rD1: 1N4148WS`）・逆付け RGB LED（`YS-SK6812MINI-E`）も1番ピン丸印・カソードマークがシルク印字と一致していること（特に `USBLC6-2SC6` `U3/U5/rU3/rU5` は `180°` 反転すると VBUS–GND 間が順方向導通するため要確認）を目視チェックし、JLCPCB の **`Confirm Parts Placement`（配置確認オプション）** を有効にして発注することを推奨します。
+1. **★① 3-in-1 統合パネル (`GERBER-curcur40-panel-3in1.zip`) の設定**:
+   - **Base Material / Layers / PCB Thickness**: `FR-4` / `2` / **`1.6mm`**
+   - **Different Design / Delivery Format**: **`Different Design: 3`** / **`Single PCB`**
+     - *ノウハウ*: パネル内にマウスバイトで区切られた 3種類の基板（Left・Right・PMW3360）が入っているため、`Different Design: 1` のまま決済すると CAM 審査時に異種面付け差額（約 25 USD）の追加支払い待ちで一時停止します。最初から `3` を選んでおくとスムーズに製造へ進みます。
+   - **PCB Color / Surface Finish**: お好みの色（`Black` 等）、表面処理は手ハンダ箇所にはんだが乗りやすい **`LeadFree HASL`** または **`HASL(with lead)`** 推奨（`OSP` は酸化しやすいため避けてください）。
+   - **PCBA Type / Assembly Side**: **`Standard`** / **`Bottom Side`**（PCBA Qty は `2`〜選択可）
+     - *ノウハウ*: `SK6812MINI-E`（`C5149201`）と `TYPE-C-31-M-13C`（`C2848620`）が JLCPCB 側で `[Standard Only]` 指定となっているため、`Economic` ではなく **`Standard`** を選択してください（`Economic` のまま進むと BOM 画面で多くの行が未選択になります）。
+   - **Edge Rails/Fiducials**: **`Added by Customer`**
+     - *ノウハウ*: パネルのガーバー自体に `5.00 mm` 外周捨て基板レール・フィデューシャル（`FID1`〜`FID3`）・ツール穴（`TH1`〜`TH4`）が組み込み済みです。`Added by JLCPCB` にすると外側に二重レールが追加されてしまうため `Added by Customer` を選びます。
+   - **Confirm Parts Placement**: **`Yes` 推奨**（工場エンジニアが最終補正した配置図を製造前に確認できます）。
+2. **BOM 画面・DFM プレビュー・カート投入時のポイント**:
+   - **Choc ソケット（`C5333465`）が在庫不足（shortfall）になった場合**: 人気部品のため一時的に在庫切れになることがあります。虫眼鏡アイコンで互換在庫がなければ、その行だけチェックを外して発注し、別途購入した Choc ソケットを手ハンダ（大きな 2ピンパッドなので簡単です）するか、Parts Manager で事前取り寄せ（Pre-order）してください。
+   - **意図的に未実装（空パッド）で正常な箇所**: 手ハンダ対象の `rEXSW1`（2ピン）と `pU1`（`PMW3360` 16ピン）、銅箔直結済みの `pJP1`、および DNP の `J4` / `rJ4` / `pR4` / `pC5` は空のままで正常です。
+   - **プレビュー上の部品向き・USB-C 位置**:
+     - `rU6`（`TMAG5273`）、`U3`/`U5`/`rU3`/`rU5`（`USBLC6-2SC6`）、`rJ3`・`pJ1`（JST SH 6P、白いスリット差込口が切り欠き側を向くこと）、RGB LED の 1番ピン向きを確認します。
+     - ミッドマウント USB-C（`J1`, `J2`, `rJ1`, `rJ2`）は CPL 座標をシールドピン中心へ正規化済みです。JLCPCB ビューアの 3Dモデル原点差でわずかにズレて見えることがありますが、4本のシールド足と 12本の SMD ピン列が合っていれば正常です。
+   - **`Baking Required` ダイアログ**: カート追加時に `SK6812MINI-E`（吸湿レベル MSL 5 以上）の乾燥工程（約 7.94 USD）の確認ダイアログが出ます。リフロー時の LED 破損を防ぐ必須工程なので、そのまま **`Confirm`** を押して進めます。
+3. **★②・③ 左右トッププレート (`GERBER-plate-top-left.zip` / `right.zip`) の設定**:
+   - **Layers / Thickness / Color**: `2` / **`1.6mm`** / お好みの色（`Black` 等）、`PCB Assembly` は **OFF**。
+   - **Mark on PCB**: 表面に製造番号が入らないよう **`Remove Mark`（注文番号削除）** 推奨。
+   - *ノウハウ*: 裏面にレジスト被覆された極小 `B.Cu` マーカーと `B.SilkS` ラベルを入れてあるため、アップロード時に外形サイズ `114.85 × 90.95 mm` が自動認識されます。必要に応じて `PCB Remark` に `Switch plate only — bare FR-4 plate as intended.` と添えるとより確実です。
 
 ---
 
-## 1-3. JLC3DP / JLCCNC に発注するもの（PA12 3Dプリント6種 ＆ 45#鋼ホイール切削1個）
+## 1-3. JLC3DP 発注ガイド（3Dプリント造形：必須 6種 ＋ 任意 2種）
 
-### ① JLC3DP（MJF / SLS `PA12` 3Dプリント造形：計6種・各1個）
-JLC3DP（[https://jlc3dp.com/](https://jlc3dp.com/)）にて、以下の **6ファイル（各1個・計6個）** を発注します。真鍮ヒートセットインサートを綺麗にはんだごて熱圧入でき、かつ靱性・摺動性に優れる **MJF（PA12 ナイロン）** または **SLS（PA12 ナイロン）** を推奨します。
+JLC3DP（https://jlc3dp.com/）にて、以下の STEP ファイルをアップロードして発注します。
 
-| 対象パーツ | 数量 | アップロード用ファイル (STEP 推奨) | STL ファイル | 推奨素材・方式 |
-| :--- | :---: | :--- | :--- | :--- |
-| **① 左手用ボトムケース** | **1個** | [left-desk.step](../cases/left-desk.step) | [left-desk.stl](../cases/left-desk.stl) | **MJF (PA12)** / **SLS (PA12)** |
-| **② 右手用ボトムケース** | **1個** | [right-desk.step](../cases/right-desk.step) | [right-desk.stl](../cases/right-desk.stl) | **MJF (PA12)** / **SLS (PA12)** |
-| **③ 25mm トラックボールカップ** | **1個** | [trackball-cup.step](../cases/trackball-cup.step) | [trackball-cup.stl](../cases/trackball-cup.stl) | **MJF (PA12)** / **SLS (PA12)** / **SLA** |
-| **④ `#02` ホイール用マグネットホルダー** | **1個** | [magnet-holder.step](../cases/inertia_wheel/magnet-holder.step) | [magnet-holder.stl](../cases/inertia_wheel/magnet-holder.stl) | **MJF (PA12)** / **SLS (PA12)** |
-| **⑤ `#03` ホイール用シーソーロッカー** | **1個** | [wheel-rocker.step](../cases/inertia_wheel/wheel-rocker.step) | [wheel-rocker.stl](../cases/inertia_wheel/wheel-rocker.stl) | **MJF (PA12)** / **SLS (PA12)** |
-| **⑥ `#04` ホイール用アンダーPCBクレードル** | **1個** | [wheel-cradle.step](../cases/inertia_wheel/wheel-cradle.step) | [wheel-cradle.stl](../cases/inertia_wheel/wheel-cradle.stl) | **MJF (PA12)** / **SLS (PA12)** |
-| **（任意）持ち運び用スライドボックス本体** | **1個** | [carrying-box.step](../cases/carrying-box.step) | [carrying-box.stl](../cases/carrying-box.stl) | **MJF (PA12)** / **SLS (PA12)** |
-| **（任意）持ち運び用スライドボックスフタ** | **1個** | [carrying-box-lid.step](../cases/carrying-box-lid.step) | [carrying-box-lid.stl](../cases/carrying-box-lid.stl) | **MJF (PA12)** / **SLS (PA12)** |
+| 区分 | 対象パーツ | 数量 | アップロードファイル | 推奨 3D Technology / Material / 設定 |
+| :---: | :--- | :---: | :--- | :--- |
+| 必須① | **左手ボトムケース** | **1個** | [left-desk.step](../cases/left-desk.step) | **白無塗装**: `SLS(Nylon)` → **`3301PA Nylon`** (`White` / `Thread: No`)※1<br>**黒・グレー系**: `MJF(Nylon)` → **`PA12-HP Nylon`** (`Black` or `Natural Gray`) |
+| 必須② | **右手ボトムケース** | **1個** | [right-desk.step](../cases/right-desk.step) | 同上（インサート熱圧入のため熱可塑性ナイロン必須・**SLAレジン不可**） |
+| 必須③ | **25mm トラックボールカップ** | **1個** | [trackball-cup.step](../cases/trackball-cup.step) | **靭性重視**: `MJF(Nylon)` (`PA12-HP`) または `SLS(Nylon)` (`3301PA`)<br>**滑らかさ・低価格**: `SLA(Resin)` → `Imagine Black` (**`Surface Finish: No`** 必須※2) |
+| 必須④ | **`#02` ホイール用マグネットホルダー** | **1個** | [magnet-holder.step](../cases/inertia_wheel/magnet-holder.step) | `MJF(Nylon)` → **`PA12-HP Nylon`** (`Natural Gray` or `Black`)<br>または `SLS(Nylon)` → **`3301PA Nylon`**（`Surface Finish: No` / `Thread: No`） |
+| 必須⑤ | **`#03` ホイール用シーソーロッカー** | **1個** | [wheel-rocker.step](../cases/inertia_wheel/wheel-rocker.step) | 同上（熱圧入＋Cクリップ弾性のため **PA12 必須・SLA不可**） |
+| 必須⑥ | **`#04` ホイール用クレードル** | **1個** | [wheel-cradle.step](../cases/inertia_wheel/wheel-cradle.step) | 同上（熱圧入＋Cクリップヒンジ弾性のため **PA12 必須・SLA不可**） |
+| 任意⑦ | **キャリングボックス本体** | 1個 | [carrying-box.step](../cases/carrying-box.step) | `SLS(Nylon)` (`3301PA`) または `MJF(Nylon)` (`PA12-HP`) |
+| 任意⑧ | **キャリングボックス用フタ** | 1個 | [carrying-box-lid.step](../cases/carrying-box-lid.step) | 同上（スナップ爪の弾性のため **PA12 必須**） |
 
-### ② JLCCNC（1ピース一体軸フライホイール CNC 切削：1個 — 同名2D公差図面 PDF 同時添付）
-JLCCNC（[https://jlccnc.com/](https://jlccnc.com/) — JLCPCB / JLC3DP と共通アカウント）で、1ピース一体軸ホイールを金属切削で発注します（JLCCNC 公式発注ガイドライン第3節に従い、3D ファイルと同名の 2D 公差図面 PDF を一緒にアップロードします）。
+### JLC3DP 実発注ノウハウ・注意点
+- **※1 白ケースの素材選び**: 現行 JLC3DP では `3201PA-F` は `GrayishBlack` のみとなっています。塗装剥がれのない「白い無塗装ナイロン」で、かつ真鍮インサートの熱圧入をしっかり行いたい場合は **`SLS(Nylon)` → `3301PA Nylon`（Color: White）** が靭性・圧入性ともに最も扱いやすくおすすめです（より硬質な剛性を求める場合は `1172Pro Nylon` も可。ガラスビーズ入りの `3401GB` や熱硬化性の `SLA(Resin)` は熱圧入できないためケース・ホイール部品には使わないでください）。
+- **※2 カップを SLA（`Imagine Black`）で頼む場合**: カップにはインサート熱圧入がないため安価な SLA レジンでも造形できますが、**`Surface Finish` は必ず `No`（研磨なし）** にしてください（`General Sanding` を選ぶと内側の `⌀2.0 mm` 支持球ポケットが削れて緩くなったり研磨粉が残る恐れがあります。またレジンは PA12 より粘りが低いため、ボール着脱時に斜めへ無理にこじらないよう扱ってください）。
+- **`< 0.8mm wall thickness detected` 警告が出た場合**: `trackball-cup.step`（爪先端の面取りエッジ・支持球リップ）および `wheel-rocker.step`（Cクリップ開口や穴フチの鋭角交差エッジ）で自動メッシュチェッカーの `< 0.8mm` 警告が表示されますが、構造壁厚はすべて基準以上（`≥ 1.20 mm`）確保されています。そのままリスク承諾（`Accept` / `Proceed`）で進めて問題ありません。
 
-| 対象パーツ | 数量 | アップロード用ファイル（2点同時添付） | 推奨材質・表面処理・公差指定 |
-| :--- | :---: | :--- | :--- |
-| **⑦ `#01` 一体軸スチールホイール** | **1個** | 3D: [steel-flywheel.step](../cases/inertia_wheel/steel-flywheel.step)<br>2D: **[steel-flywheel.pdf](../cases/inertia_wheel/steel-flywheel.pdf)** | 材質: **`45# Steel`（S45C 強磁性機械構造用炭素鋼 ※必須）**<br>表面処理: **`Blackening`（黒染め / Black Oxide：膜厚 $\le 2\,\mu\text{m}$ で軸太りゼロ＆防錆マットブラック）**<br>公差: **`±0.02 mm` オプション選択 ＋ 同名2D図面 `steel-flywheel.pdf` を添付**（一般部 `ISO 2768-m`、**左右ベアリング嵌合軸＆東Dカット軸のみ黒染め後 `⌀1.97 ±0.02 mm`［`1.950〜1.990 mm`］指定**：`DDL-520ZZ` 内径 `⌀2.000 -0.004/+0` へ確実に挿入するため）<br>⚠️ **注意**: 24溝で磁気ラチェットを働かせるため、非磁性の `SUS304` やアルミではなく必ず強磁性の **`45# Steel`** を選択してください。 |
+---
+
+## 1-4. JLCCNC 発注ガイド（一体軸スチールホイール切削：1個）
+
+JLCCNC（https://jlccnc.com/）にて、以下の **STEP ファイルと同名 2D 公差図面 PDF の 2点** をアップロードします。
+
+- **3D モデル**: [`cases/inertia_wheel/steel-flywheel.step`](../cases/inertia_wheel/steel-flywheel.step)（数量: **1個**）
+- **2D 公差図面**: [`cases/inertia_wheel/steel-flywheel.pdf`](../cases/inertia_wheel/steel-flywheel.pdf)（`Tightest Tolerance` 下の `+ Upload Drawing` に添付）
+
+### JLCCNC 実発注画面での指定項目（重要）
+- **Material / Type of Steel Alloy**: `Steel Alloy` → **`45# Steel`**（外周 24溝で磁気デテントを発生させるため強磁性炭素鋼が必須です。非磁性のアルミや `SUS304` は不可）
+- **Surface Finish**: `Yes` → **`Blackening`**（黒染め：膜厚 `≤ 2 µm` のためめっき太りせず防錆できます）
+- **Tightest Tolerance ＆ CNC Remark（★最重要）**:
+  - 画面上の選択肢は上限の **`±0.05mm`** を選択し、`+ Upload Drawing` に **`steel-flywheel.pdf`** をアップロードします。
+  - そのままだと軸径が `+0.05 mm` 振れた際にベアリング（内径 `2.00 mm`）へ入らなくなる恐れがあるため、**`CNC Remark` 欄に以下を必ずコピー＆ペースト**してください：
+    > `Please follow the shaft tolerance Ø1.97 ±0.02 mm specified in steel-flywheel.pdf (needs to fit into a 2.00 mm ID bearing).`
+- **Appearance / Threads / Sub-assembly**: `Standard` / `No` / `No`
+- **Product Desc（通関用分類）**: `Shaft Category` → **`Carbon steel Rotating Solid Shaft - HS Code 732690`**
 
 ![アンダープレート一体軸慣性ホイール 部品構成・組立ビジュアルガイド](./assets/inertia_wheel_parts_guide.png)
 
 ---
 
-## 1-4. 別で入手・購入するパーツ一覧
+## 1-5. 市販購入パーツ一覧（BOM・型番・購入先リンク）
 
-すべての購入部材・型番・URL の詳細は **[`docs/parts_spec.md`](./parts_spec.md)** に収録しています。
+### ① 共通ファスナ・ケーブル・外装部材
 
-### ① キースイッチ・キーキャップ（Kailh Choc V2 専用）
-| 品名 | 必要数 | 仕様・備考 | 主な入手先 |
+| 品名・推奨規格 | 必要数 | 仕様・選定の注意点 | 主な購入先リンク |
 | :--- | :---: | :--- | :--- |
-| **Kailh Choc V2 キースイッチ (`CPG1353`)** | **39個** | 左手21個 ＋ 右手18個（予備込みで40個パック購入推奨）。MX 十字ステム採用ロープロファイルスイッチ。 | 遊舎工房 / Talp Keyboard / AliExpress 等 |
-| **Choc V2 対応 ロープロファイル 1u キーキャップ** | **39個** | **MX 十字ステム対応・ロープロファイル用 1u キーキャップ（外寸 $18.5 \times 18.5\text{ mm}$ 以下）**。※背の高い通常 Cherry/OEM MX キャップは底打ち時に干渉するため不可。 | 遊舎工房 / Booth / AliExpress 等 |
+| **真鍮ヒートセットインサート**<br>(`M2 × L3.0 × OD3.0mm` 推奨 / `OD3.2mm` 可) | **19個** | ネジ径 `M2`・長さ `3.0 mm`・**外径 `OD 3.0 mm`（流通が多く入手容易、下穴 `⌀2.85 mm` に対して安全に圧入可能）** または `OD 3.2 mm`。<br>※内訳：左ケース 6 ＋ 右ケース 10 ＋ クレードル 2 ＋ ロッカー南 1。<br>⚠️ **`OD 3.5 mm` は不可**: 下穴 `⌀2.85 mm` に対して食い込み過多となり、肉厚 `1.03 〜 1.18 mm` のボスが割れる恐れがあります。 | Amazon / AliExpress / モノタロウ（「`インサートナット M2 3mm 3.0mm`」等で検索） |
+| **統一 `M2 × 6.0 mm` 精密なべ小ねじ**<br>（★鉄・鋼製 / 頭径 `⌀3.5 mm` 推奨） | **19本** | 全 19箇所すべて同一サイズ。<br>⚠️ **頭径注意**: 右プレート `WC1` 逃げ穴（`⌀4.05 mm`）に擦れないよう、標準の **JIS M2 なべ小ねじ（頭径 `⌀3.5 mm`、最大 `≤ ⌀3.8 mm`）** を選んでください（頭径 `⌀4.0 mm` の幅広超低頭ネジは非推奨）。<br>⚠️ **材質注意**: ホイール南ボスのデテント磁石を先端へ磁力吸着させるため、磁石がつく **鉄製（ニッケルメッキ・三価クロメート・黒染め等）** を選んでください（非磁性の SUS304 ステンレスは磁石がつきません）。 | モノタロウ / Amazon / 秋月電子 / 遊舎工房 |
+| **Kailh Choc V2 キースイッチ (`CPG1353`)** | **39個** | 左 21個 ＋ 右 18個（予備込み 40個パック推奨）。 | 遊舎工房 / Talp Keyboard / AliExpress |
+| **Choc V2 対応 ロープロファイル 1u キーキャップ** | **39個** | MX 十字ステム対応のロープロファイル 1u キャップ（外寸 `18.5 × 18.5 mm` 以下 ※背の高い通常 Cherry/OEM プロファイルは干渉するため不可）。 | 遊舎工房 / Booth / AliExpress |
+| **貼り付け式ゴム足** | **4〜8個** | 直径 `6〜8 mm`、高さ **`1.5〜3.0 mm`**（`carrying-box` のレール掘り込みは `4.0 mm` あるため、高さ `3.0 mm` ゴム足でも干渉せず収納可能）。 | Amazon / ホームセンター |
+| **左右間 USB 2.0 Type-C to C ケーブル** | **1本** | `D+` データ線結線あり・E-Marker 非搭載の柔らかいパッシブケーブル（15〜30 cm L字推奨）。 | Amazon / 遊舎工房 |
+| **PC接続用 USB Type-C ケーブル** | **1本** | データ通信対応ケーブル。 | Amazon / 家電量販店 |
+| **（任意）折りたたみテンティングスタンド**<br>(`20 × 65 × 5 mm`) | **4個**<br>(2個組×2) | ミニ亜鉛合金折りたたみスタンド（幅 `20 × 長さ 65 × 厚さ 5.0 mm`、両面テープ付）。ケース底面ポケットへツライチ収納し、展開時 約 `24° / 34°` に切替可能。 | Amazon / AliExpress（「`ノートパソコン スタンド 折りたたみ ミニ 6.5cm 2cm 0.5cm`」等） |
 
-### ② 右手アンダープレート慣性ホイール関連（わずか4品目！接着剤・シム・配線・鋼球すべて不要）
-| 呼称・品名 | 必要数 | 型番・仕様・注意点 | 主な入手先 |
-| :--- | :---: | :--- | :--- |
-| **`#06` 静音ミドルクリックスイッチ (`rEXSW1`)** | **1個** | **`Kailh Square Silent 6.2×6.2×4.3mm`**（2ピン静音角形マウススイッチ `Red Dot`）。右メイン基板 `B.Cu` へ直接ハンダ付けします。 | Amazon (`B0FF9Y9DB8`) / 遊舎工房 / AliExpress |
-| **`#07` ミニチュアベアリング（★要脱脂）** | **2個** | NMB ミネベアミツミ **`DDL-520ZZ`**（標準両シールド形：内径 $\varnothing 2.0 \times$ 外径 $\varnothing 5.0 \times$ **幅 $2.30\text{ mm}$**）。一体段付き軸のため**シムリングは不要**です。組み立て前にパーツクリーナーで脱脂洗浄します。 | モノタロウ (`09538365`) |
-| **`#08` 角度検出用ネオジム磁石（★径方向2極着磁）** | **1個** | 直径 **$\varnothing 4.0 \times \text{厚さ } 1.0\text{ mm}$ (`D4x1mm`) 円盤型・径方向2極着磁（Diametric）**。`magnet-holder` ポケットへ入れるだけで接着剤ゼロで固定されます。<br>⚠️ **重要**: 必ず円盤の左右で N/S が分かれた **径方向着磁（Diametric）** 品を選んでください。 | AliExpress (`1005010201889003`: `D4x1mm`) |
-| **`#09` ラチェット用ネオジム磁石（軸方向着磁）** | **1個** | **二六製作所 `NE280`** 等、直径 **$\varnothing 2.0 \times \text{長さ } 2.0\text{ mm}$ 円柱型・通常の軸方向着磁**。鉄製 `M2×6.0mm` ネジ先端に磁力で自己吸着するため接着剤不要です。 | 二六製作所 (`NE280`) |
+### ② 右手 アンダープレート慣性ホイール市販部材（4品目）
 
-### ③ 右手トラックボール・PMW3360 センサー関連
-| 品名 | 必要数 | 仕様・備考 | 主な入手先 |
+| 呼称・品名 | 必要数 | 型番・仕様・注意点 | 購入先リンク |
 | :--- | :---: | :--- | :--- |
-| **25mm トラックボール球** | **1個** | **エレコム `M-B25SV`**（[製品ページ](https://www.elecom.co.jp/products/M-B25SV.html)：シルバー）または **Perixx `PERIPRO-303` 25mm** 等、直径 25mm 交換球。 | 家電量販店 / Amazon / 遊舎工房 |
-| **$\varnothing 2.0\text{ mm}$ セラミック支持球** | **3個** | `trackball-cup` 内部の3箇所にスナップイン圧入する $\varnothing 2.0\text{ mm}$ $\text{ZrO}_2$ / $\text{Si}_3\text{N}_4$ ベアリング球。 | Amazon / モノタロウ / AliExpress |
-| **PMW3360DM-T2QU IC ＋ LM19-LSI レンズ** | **1セット** | TBセンサーサブ基板（`curcur40-pmw3360`）の `U1` に実装。 | AliExpress / Tindie / Booth |
-| **JST SH 1.0mm 6ピン両端コネクタ付ケーブル** | **1本** | 長さ **`100mm`**、**`SHR-06V-S-B` ハウジング・両端同方向フラット（`1-6, 2-5, 3-4, 4-3, 5-2, 6-1` 結線）**。右メイン `rJ3` ⇔ TBセンサー基板 `J1` 接続用（[スイッチサイエンス `#9142` Pimoroni 100mm](https://www.switch-science.com/products/9142?variant=42749692149958) 等）。<br>⚠️ **注意**: `1-1` リバース（逆向き）ケーブルを使うと `+3V3R`/`GNDR` が逆転するため、必ず **両端でツメが同じ面にある同方向（Same-Side / `1-6`）ケーブル** を使用してください。 | スイッチサイエンス / 秋月電子 / Amazon |
+| **`#06` 静音ミドルクリックスイッチ (`rEXSW1`)** | **1個** | **`Kailh Square Silent Micro Switch`**（`6.2 × 6.2 × 4.3 mm`、2ピン角形静音スイッチ Red Dot）。右メイン基板 `B.Cu` へ手ハンダ実装。 | [Amazon (`B0FF9Y9DB8`)](https://www.amazon.co.jp/dp/B0FF9Y9DB8) / 遊舎工房 / AliExpress |
+| **`#07` ミニチュアベアリング（★要脱脂）** | **2個** | NMB（ミネベアミツミ）**`DDL-520ZZ`**（内径 `⌀2.0 × 外径 ⌀5.0 × 幅 2.3 mm`、両側鋼板シールド・ステンレス）。組込前にパーツクリーナーで内部グリスを脱脂洗浄します。 | [モノタロウ（注文コード `09538365`）](https://www.monotaro.com/p/0953/8365/) |
+| **`#08` 角度検出用ネオジム磁石**<br>（★径方向2極着磁 必須） | **1個** | 直径 **`⌀4.0 × 厚さ 1.0 mm` (`D4×1mm`) 円盤型・径方向2極着磁（Diametric）**。<br>⚠️ **重要**: 一般的な厚み方向着磁では回転角を検出できません。購入ページが在庫切れ・変更されることがあるため、注文時に必ず **「`4x1mm`」かつ「`Diametric / Radial`（円盤の左右に N/S が分かれた径方向着磁）」** であることを確認してください。 | [AliExpress 参考リンク](https://ja.aliexpress.com/item/1005010201889003.html)（リンク切れ時は `4x1mm diametric magnet` で検索） |
+| **`#09` デテント調整用ネオジム磁石**<br>（通常の軸方向着磁） | **1個** | 二六製作所 **`NE280`**（丸型ネオジム **`⌀2.0 × 2.0 mm`**, N52, Niメッキ, 厚み方向着磁）または同寸円柱ネオジム磁石。鉄製ネジ先端へ磁力で自己吸着します。 | [二六製作所 `NE280`](https://www.26magnet.co.jp/26shop/goods/NE280) / Amazon / AliExpress |
 
-### ④ 真鍮ヒートセットインサート・統一 M2×6.0mm ネジ・ゴム足・USBケーブル類
-| 品名 | 必要数 | 仕様・備考 | 主な入手先 |
+### ③ 右手 25mm トラックボール関連部材（4品目）
+
+| 品名 | 必要数 | 型番・仕様・注意点 | 購入先リンク |
 | :--- | :---: | :--- | :--- |
-| **真鍮ヒートセットインサート (`M2 × L3.0 × OD3.2mm`)** | **19個** | **左ケース 6個（キー谷間6） ＋ 右ケース 10個（キー谷間6＋TB4）＋ ホイールクレードル 2個 ＋ ホイールロッカー南 1個 ＝ 計 19個（全箇所完全共通）**。ローレット外径 $\varnothing 3.2\text{ mm}$・長さ $3.0\text{ mm}$。 | Amazon / AliExpress / モノタロウ |
-| **統一 `M2 × 6.0mm` 精密なべ小ねじ（★鉄／鋼製・頭径 Ø3.5mm 推奨）** | **19本** | **キーボード全体の全 19箇所すべて同一サイズの `M2 × 6.0mm` ネジ！**<br>⚠️ **頭径の選び方**: 右トッププレート `WC1` 穴（$\varnothing 4.05\text{ mm}$）へ余裕をもって沈み込ませるため、一番一般的な **JIS M2 なべ小ねじ（標準頭径 $\varnothing 3.5\text{ mm}$、最大でも $\le \varnothing 3.8\text{ mm}$ ※頭径 $\varnothing 4.0\text{ mm}$ の幅広超低頭ネジは `WC1` 穴縁に擦れるため避けてください）** を選んでください。<br>💡 **材質ポイント**: 磁石がくっつく一般的な **鉄／ニッケルめっき鋼（または黒染め鋼）** に揃えると、ホイール南のラチェット調整ネジ（1本）としても `#09` 磁石がそのまま自己吸着して一石二鳥です！ | モノタロウ / Amazon / 秋月電子 |
-| **貼り付け式ゴム足** | **4〜8個** | 直径 6〜8mm、厚み **`1.5〜3.0 mm`** 対応（小指側のケース底面＋必要に応じ折りたたみスタンド表面に貼付可能。`carrying-box` 側のウェル深さは `4.00 mm` あるため、高さ `3.0 mm` ゴム足でも `1.00 mm` 以上の余裕で非接触スライド収納できます）。 | Amazon / ホームセンター |
-| **（任意）折りたたみミニテンティングスタンド (`20 × 65 × 5 mm`)** | **4個（2個入り×2パック）** | ノートPC用ミニ亜鉛合金折りたたみスタンド（幅 $20 \times \text{長さ } 65 \times \text{厚さ } 5\text{ mm}$、両面テープ付）。左右底面の平行2本ポケットへツライチ収納し、収納時 $11.80^\circ$ → 展開時 約 $24^\circ / 34^\circ$ に切替可能（未装着のままでも使用可）。 | Amazon / AliExpress |
-| **左右間接続用 USB 2.0 Type-C to C ケーブル** | **1本** | `D+` データ線結線あり・E-Marker 非搭載の柔らかいパッシブケーブル（15〜30cm L字推奨）。 | Amazon / 遊舎工房 |
-| **PC 接続用 USB Type-C ケーブル** | **1本** | データ通信対応 USB-C ケーブル。 | Amazon / 家電量販店 |
+| **25mm 交換用トラックボール球** | **1個** | エレコム **`M-B25SV`**（シルバー艶あり、実機検証済）または Perixx **`PERIPRO-303`**（25 mm 各色）。 | [エレコム公式 `M-B25SV`](https://www.elecom.co.jp/products/M-B25SV.html) / Amazon |
+| **`⌀2.0 mm` セラミック支持球** | **3個** | `ZrO2`（酸化ジルコニウム）または `Si3N4`（窒化ケイ素）G5 等級 `⌀2.00 mm` 精密球。カップ内壁 3箇所へスナップ圧入。 | Amazon / モノタロウ / AliExpress |
+| **光学センサー ＋ 純正レンズセット** | **1組** | PixArt **`PMW3360DM-T2QU`** ＋ **`LM19-LSI`** レンズ（公式データシート: [PixArt 製品ページ](https://www.pixart.com/products-detail/10/PMW3360DM-T2QU)）。 | AliExpress / 遊舎工房 / Booth |
+| **JST SH 1.0mm 6ピン両端ハーネス** | **1本** | 長さ **`100 mm`**、`SHR-06V-S-B` ハウジング・**両端同方向フラット結線（`1-6` 結線）**。<br>⚠️ **結線向き注意**: 両端でコネクタのツメが同じ面を向いている **同方向（Same-Side / `1-6`）品** を選んでください（`1-1` リバース品は電源と GND が逆転するため使用不可）。 | [スイッチサイエンス `#9142`（Pimoroni 100mm）](https://www.switch-science.com/products/9142?variant=42749692149958) |
 
 ---
 
-## 1-5. 発注前チェックリスト
+## 1-6. 発注前チェックリスト
 
-- [ ] **JLCPCB（3-in-1パネル採用で計3アイテム・すべて `1.6mm`）**:
-  - [ ] ★推奨: `curcur40-panel-3in1`（PCB + PCBA / Bottom実装 / 1.6mm — 左＋右＋TBセンサー3枚一括実装）
-  - [ ] `plate-top-left` ＆ `plate-top-right`（PCBのみ / 1.6mm / 注文番号削除推奨）
-- [ ] **JLC3DP（PA12 ナイロン 6種・各1個） ＆ JLCCNC（1個）**:
-  - [ ] `left-desk.step`, `right-desk.step`, `trackball-cup.step`（各1個）
-  - [ ] `magnet-holder.step`, `wheel-rocker.step`, `wheel-cradle.step`（各1個）
-  - [ ] JLCCNC: `steel-flywheel.step` ＋ 同名2D図面 **`steel-flywheel.pdf`**（**`45# Steel` ＋ `Blackening`［黒染め］＋ 軸径公差 `⌀1.97 ±0.02 mm` 指定**）× 1個
-- [ ] **別調達パーツ**:
-  - [ ] Kailh Choc V2 (`CPG1353`) スイッチ × **39個** ＆ Choc V2 対応（MX 十字軸）ロープロファイル 1u キーキャップ × **39個**
-  - [ ] 慣性ホイール市販品：`Kailh Square Silent` × 1、NMB `DDL-520ZZ` × 2（＋パーツクリーナー）、`D4×1mm` **径方向着磁**磁石 × 1、`NE280` ($\varnothing 2\times 2\text{ mm}$) 軸方向磁石 × 1
-  - [ ] トラックボール市販品：25mm球 × 1、$\varnothing 2.0\text{ mm}$ セラミック球 × 3、`PMW3360DM-T2QU`＋`LM19-LSI` × 1、JST SH 6P **同方向（`1-6`）ケーブル** (`100mm`: スイッチサイエンス `#9142` 等) × 1
-  - [ ] 共通ファスナ：`M2 × L=3.0 × OD=3.2mm` 真鍮ヒートセットインサート × **19個**、強磁性鋼 `M2 × 6.0mm` ネジ × **19本**、ゴム足、USB-C ケーブル × 2本
+- [ ] **JLCPCB**: `curcur40-panel-3in1`（`Different Design: 3` / `1.6mm` / `LeadFree HASL` / `Standard PCBA` / `Bottom Side` / `Added by Customer` / ベーキング Confirm）＋ 左右トッププレート 2種（`1.6mm` / `Remove Mark`）
+- [ ] **JLC3DP**: ケース 2種（白なら `SLS 3301PA`、黒系なら `MJF PA12-HP`）＋ カップ 1個（SLA なら `Surface Finish: No`）＋ ホイール樹脂 3種（`PA12` 必須・`Surface Finish: No`）
+- [ ] **JLCCNC**: `steel-flywheel.step` ＋ `steel-flywheel.pdf`（`45# Steel` / `Blackening` / `±0.05mm` ＋ `CNC Remark` で `Ø1.97 ±0.02 mm` 指定）
+- [ ] **市販パーツ**: Choc V2 スイッチ 39個・ロープロ 1u キャップ 39個、`Kailh Square Silent` 1個、`DDL-520ZZ` 2個（＋パーツクリーナー）、`D4×1mm` **径方向着磁**磁石 1個、`NE280`（`⌀2×2mm`）磁石 1個、25mm球 1個、`⌀2.0mm` セラミック球 3個、`PMW3360＋LM19` 1組、JST SH 6P **同方向 100mm** ケーブル 1本、真鍮インサート（`M2×L3.0×OD3.0` or `3.2`）19個、**鉄製** JIS `M2×6.0mm` なべ小ねじ（頭径 `⌀3.5mm`）19本、ゴム足、USB-C ケーブル 2本
 
 ---
----
 
-# Step 2: 組み立て・ハンダ付け・ファームウェア書き込み手順
+# Step 2: 組み立て・はんだ付け・ファームウェア書き込み手順
 
-## 2-1. 必要な工具とサイズ条件（★重要：組み立て干渉の防止）
+## 2-1. 必要な工具とサイズ条件
 
 ![組み立て時の干渉ポイントと工具サイズ・配線ガイド](./assets/assembly_tool_clearance_guide.png)
 
-| 工具名 | 用途・**「ここはこのサイズ以下を使ってね」条件** |
+| 工具名 | 用途・サイズ条件 |
 | :--- | :--- |
-| **普通のはんだごて（温度調節付き・細軸推奨）** | ① 真鍮ヒートセットインサートの熱圧入（**220〜250℃** に下げて使用）<br>② `rEXSW1`（2ピン）と `PMW3360`（16ピン）のはんだ付け（**320〜350℃** で使用）<br>📏 **サイズ条件（上図①）**: 右手ケース下段の `TB1`〜`TB4` ボス天面は深さ $20.6\text{ mm}$ のため、**「こて先先端から $21\text{ mm}$ までの太さが $\varnothing 6.0\text{ mm}$ 以下（3D実測物理限界 $\varnothing 8.5\text{ mm}$）」** の細軸こて（`TS100` / `Pinecil` 等 $\varnothing 5.5\text{ mm}$、または長めの円錐 B型・I型こて先）を使用してください（太い保護スリーブがすぐ始まるこては壁フチに当たります）。 |
-| **単体の精密プラスドライバー（`#0` / `#00`）** | 全19箇所すべて同一の `M2 × 6.0mm` ネジ1種類を回すだけで組み立て・ラチェット調整まで完結します。<br>📏 **サイズ条件（上図②）**: トラックボールカップ横の `TB1`〜`TB4` はカップ外壁（爪上端まで高さ差 約 $20.8\text{ mm}$）まで半径 $2.48\text{ mm}$ のため、**「先端から $22\text{ mm}$ までの軸径が $\varnothing 4.5\text{ mm}$ 以下（3D実測物理限界 $\varnothing 4.9\text{ mm}$、推奨 $\varnothing 3.0 \sim 3.5\text{ mm}$）」の単体精密ドライバー** を使用してください（ビット差し替え式の太いチャック $\varnothing 6.5 \sim 10\text{ mm}$ はカップ壁に当たって届きません）。 |
-| **ヤニ入りハンダ・ニッパー・ピンセット・カプトンテープ少々** | はんだ付け、飛び出しピン先端の平切り、2mm支持球・小磁石の保持、および右手 `100mm` JST-SH ケーブル余長ループの仮留めに使用します。 |
-| **パーツクリーナー（ブレーキクリーナー）** | `DDL-520ZZ` ベアリング2個の内部グリス脱脂洗浄に使用します（※瞬間接着剤は一切不要です！）。 |
+| **温度調節付きはんだごて（細軸推奨）** | ・真鍮インサートの熱圧入（**`220 〜 250 °C`**）<br>・`rEXSW1`（2ピン）と `PMW3360`（16ピン）のはんだ付け（**`320 〜 350 °C`**）<br>・**サイズ条件（上図①）**: 右ケース下段 `TB1`〜`TB4` ボスは深さ `20.6 mm` にあるため、**こて先先端から `21 mm` までの太さが `⌀6.0 mm` 以下**（`TS100` / `Pinecil` 等、または長めの B型・I型こて先）を使用してください。 |
+| **単体の精密プラスドライバー (`#0` / `#00`)** | ・全 19箇所すべて同一の `M2 × 6.0 mm` ネジに使用します。<br>・**サイズ条件（上図②）**: トラックボールカップ横の `TB1`〜`TB4` はカップ外壁と近いため、**先端から `22 mm` までの軸径が `⌀4.5 mm` 以下（推奨 `⌀3.0 〜 3.5 mm`）の単体ドライバー** を使用してください（ビット差し替え式の太いチャックはカップ壁に当たります）。 |
+| **はんだ・フラッシュニッパー・ピンセット・カプトンテープ** | スルーホールはんだ付け、基板表面に出たピン先端の平切り、小磁石・支持球の保持、JST SH ケーブル余長の仮留めに使用します。 |
+| **パーツクリーナー（ブレーキクリーナー）** | `DDL-520ZZ` ベアリング 2個の内部グリス脱脂洗浄に使用します。 |
 
 ---
 
-## 2-2. Phase 1: ファームウェアのビルドと書き込み（事前動作確認）
+## 2-2. Phase 1: ファームウェアのビルドと書き込み
 
-ハンダ付けや組み込みの前に、JLCPCB から届いた左右メイン基板（`curcur40-left`, `curcur40-right`）単体で PC に接続し、ファームウェア（`.uf2`）を書き込みます。
+組み立て前に、届いた左右メイン基板単体で PC に接続してファームウェア（`.uf2`）を書き込み、認識を確認します。
 
-### ① ファームウェア（`.uf2`）のビルド
+### ① ファームウェア（`.uf2`）のビルド手順
 
-#### A. Vial 対応ファームウェアをビルドする場合（推奨）
+[`kbd_firmware/`](../kbd_firmware/) ディレクトリの `Makefile` を使ってビルドできます（QMK ビルド環境がセットアップ済みの場合）：
+
 ```sh
-FIRMWARE=./curcur40/kbd_firmware
-VIAL_QMK=./vial-qmk
+cd kbd_firmware
+make git-submodule
 
-mkdir -p "$VIAL_QMK/keyboards/curcur40/rev1/keymaps/vial"
-cp -a "$FIRMWARE/keyboards/curcur40/qmk/qmk_firmware/rev1/." \
-  "$VIAL_QMK/keyboards/curcur40/rev1/"
-cp -a "$FIRMWARE/keyboards/curcur40/vial-kb/vial-qmk/keymaps/vial/." \
-  "$VIAL_QMK/keyboards/curcur40/rev1/keymaps/vial/"
+# Vial 対応ファームウェアをビルドする場合（推奨）
+kb=curcur40 make vial-qmk-init
+kb=curcur40 kr=rev1 km=vial make vial-qmk-compile
+# -> keyboards/curcur40/vial-kb/vial-qmk/.build/curcur40_rev1_vial.uf2 が出力されます
 
-cd "$VIAL_QMK"
-util/docker_build.sh curcur40/rev1:vial
-```
-ビルドが完了すると `$VIAL_QMK/.build/curcur40_rev1_vial.uf2` が出力されます。
-
-#### B. VIA（標準 QMK）対応ファームウェアをビルドする場合
-```sh
-FIRMWARE=./curcur40/kbd_firmware
-QMK_FIRMWARE=./qmk_firmware
-
-mkdir -p "$QMK_FIRMWARE/keyboards/curcur40/rev1/keymaps/via"
-cp -a "$FIRMWARE/keyboards/curcur40/qmk/qmk_firmware/rev1/." \
-  "$QMK_FIRMWARE/keyboards/curcur40/rev1/"
-cp -a "$FIRMWARE/keyboards/curcur40/qmk/qmk_firmware/keymaps/via/." \
-  "$QMK_FIRMWARE/keyboards/curcur40/rev1/keymaps/via/"
-
-cd "$QMK_FIRMWARE"
-SKIP_FLASHING_SUPPORT=1 util/docker_build.sh curcur40/rev1:via
+# 標準 VIA 対応ファームウェアをビルドする場合
+kb=curcur40 make qmk-init
+kb=curcur40 kr=rev1 km=via make qmk-compile
+# -> keyboards/curcur40/qmk/qmk_firmware/.build/curcur40_rev1_via.uf2 が出力されます
 ```
 
-### ② 左右メイン基板への書き込み手順（初回 ＆ 組み立て後の再書き込み）
-1. **初回書き込み（基板単体時）**: 基板裏面（`B.Cu`）の **`BOOT`（`SMDSW1` / `rSMDSW1`）を押したまま**、基板北側の PC 接続用 USB-C ポート（`J1` / `rJ1`）を PC に接続します。
-2. 認識された **`RPI-RP2`** ドライブへ `.uf2` ファイルをドラッグ＆ドロップします（左右両方の基板に同じ `.uf2` を書き込みます）。
+> Docker コンテナ（`util/docker_build.sh`）でビルドする場合は、`kbd_firmware/keyboards/curcur40/qmk/qmk_firmware/rev1/` と `vial-kb/vial-qmk/keymaps/vial/` を `vial-qmk/keyboards/curcur40/rev1/` 配下へコピーして `util/docker_build.sh curcur40/rev1:vial` を実行してください。
+
+### ② 左右メイン基板への書き込み手順
+1. **初回書き込み（基板単体時）**: 基板裏面（`B.Cu`）の **`BOOT` ボタン（`SMDSW1` / `rSMDSW1`）を押したまま**、北側の PC 接続用 USB-C ポート（`J1` / `rJ1`）を PC に繋ぎます。
+2. マウントされた **`RPI-RP2`** ドライブへ `.uf2` ファイルをコピーします（左右両方の基板に同じ `.uf2` を書き込みます）。
 
 > [!TIP]
-> **ケース組み立て後のファームウェア再書き込みは「解体不要」です！（Bootmagic / `QK_BOOT`）**
-> 本ケースは底面 100% 密閉構造のため、組み立て後は基板裏面の `BOOT`（`SMDSW1`）ボタンに外から触れませんが、**ファームウェアを更新するたびにケースを解体する必要はありません**。以下のどちらでもワンタッチで DFU（`RPI-RP2` ドライブ）に入れます：
-> 1. **Bootmagic（最も確実・推奨）**: USB ケーブルを抜いた状態で、**左手は左上端の小指キー（`SW18`, マトリクス `[0, 1]`）、右手は右上端の小指キー（`rSW18`, マトリクス `[4, 1]`）を押しっぱなしにしたまま USB ケーブルを PC に挿す**だけで `RPI-RP2` ドライブとしてマウントされます。
-> 2. **`QK_BOOT` キーコード**: Vial / VIA 上でレイヤーに配置した `Reset`（`QK_BOOT`）キーを押すだけでも即座に DFU に入れます（キーマップ編集時も予備レイヤー等に `QK_BOOT` を残しておくと便利です）。
-> ※ネジを外して基板裏の `SMDSW1` を直接押す必要があるのは、ファームウェア自作改造等で起動直後にフリーズしキー入力自体が効かなくなった緊急復旧時のみです。
+> **ケース組み立て後のファームウェア更新は「解体不要」です（Bootmagic / `QK_BOOT`）**
+> 底面密閉ケースのため組み立て後は裏面の `SMDSW1` に触れませんが、以下の方法でいつでも DFU（`RPI-RP2`）に入れます：
+> 1. **Bootmagic（確実・推奨）**: USB ケーブルを抜いた状態で、**左手は左上端キー `SW18`（`[0, 1]`）、右手は右上端キー `rSW18`（`[4, 1]`）を押しっぱなしにしたまま USB を PC に挿す**。
+> 2. **`QK_BOOT` キー**: Vial / VIA 上でレイヤーに配置した `Reset`（`QK_BOOT`）キーを押す。
 
 ---
 
@@ -249,121 +240,107 @@ SKIP_FLASHING_SUPPORT=1 util/docker_build.sh curcur40/rev1:via
 
 ![ヒートセットインサート・ポート配置図](./assets/ports_and_fasteners_diagram.png)
 
-はんだごての温度を **220〜250℃**（PA12 ナイロンの軟化適温）に設定し、3Dプリント部品の **$\varnothing 2.85\text{ mm}$ 下穴（計19箇所）** へ `M2 × L=3.0 × OD=3.2mm` 真鍮インサートを押し込みます。
+はんだごてを **`220 〜 250 °C`**（`1172Pro Nylon` の場合は `240 〜 260 °C`）に設定し、3Dプリント部品の `⌀2.85 mm` 下穴（計 19箇所）へ真鍮インサートをツライチに熱圧入します。
 
-1. **圧入する場所（合計 19個 — すべて段差のないフラットなボス天面へそのままツライチ圧入！）**:
-   - **左手ケース (`left-desk`)**: キー谷間ボス **6箇所（`L1`〜`L6`）**（全6箇所ともメイン基板裏面を受ける均一な $\varnothing 5.20\text{ mm}$ フラット円筒ボス天面［片側肉厚 $1.175\text{ mm}$］へ、狭い首部を通過することなく上からそのままツライチ圧入できます）
-   - **右手ケース (`right-desk`)**: キー谷間ボス **6箇所（`R1`〜`R6`：左と完全左右対称・均一な $\varnothing 5.20\text{ mm}$ フラット円筒ボス天面）** ＋ トラックボール下段ボス **4箇所（`TB1`〜`TB4`, $\varnothing 6.00\text{ mm}$）** ＝ **計10箇所**
+1. **圧入箇所の内訳（計 19個）**:
+   - **左手ケース (`left-desk`)**: キー谷間フラットボス **6箇所（`L1`〜`L6`）**
+   - **右手ケース (`right-desk`)**: キー谷間フラットボス **6箇所（`R1`〜`R6`）** ＋ トラックボール下段ボス **4箇所（`TB1`〜`TB4`）** ＝ **計 10箇所**
    - **ホイールクレードル (`wheel-cradle`)**: 対角ボス上面 **2箇所（`WC1`, `WC2`）**
    - **ホイールロッカー (`wheel-rocker`)**: 南側ボスの水平穴の **南側入口 1箇所**
-2. **普通のはんだごてで綺麗に圧入するコツ**:
-   - 下穴の入口にインサートを指またはピンセットで真っ直ぐ載せ、温めたコテ先をインサート穴の上から軽く当てて自重＋わずかな力でじわっと垂直に押し込みます。
-   - インサート天面がボス上面とほぼツライチになる手前（残り $0.2\text{ mm}$ ほど）でコテ先を抜き、すぐに平らな金属面（精密ドライバーの軸腹や定規の平らな面）で上から2〜3秒軽く押さえると、ボス天面と完全に水平・ツライチに美しく仕上がります。
+2. **綺麗に圧入するコツ**:
+   - 下穴の入口にインサートを真っ直ぐ載せ、温めたコテ先を当てて自重＋軽い力で垂直に押し込みます。
+   - ボス上面まで残り `0.2 mm` ほどでコテ先を抜き、すぐに平らな金属面（定規やドライバーの腹）で上から 2〜3秒軽く押さえると、ボス天面と完全に水平・ツライチに仕上がります（※万が一公差で緩い穴があった場合のみ、冷めてから外周にごく少量の瞬間接着剤を併用してください）。
 
 ---
 
-## 2-4. Phase 3: 手ハンダ作業（わずか2箇所！）＆ トラックボールカップ準備
+## 2-4. Phase 3: 手ハンダ作業（2箇所）＆ トラックボールカップ準備
 
-はんだごてを通常のハンダ付け温度（320〜350℃）に戻し、残る2つのスルーホール部品をハンダ付けします。
+はんだごてを **`320 〜 350 °C`** に戻し、2つのスルーホール部品を実装します。
 
-### ① 右メイン基板（`curcur40-right`）への静音スイッチ `rEXSW1` 実装
-1. 右メイン基板の**裏面（`B.Cu`：部品実装面）**にあるホイール窓東側の **`rEXSW1`** ランド（`(25.3000, -4.7500)`）へ、`Kailh Square Silent`（$6.2 \times 6.2 \times 4.3\text{ mm}$）の2本のピンを差し込み、スイッチ底面を基板裏面にぴったり密着させます。
-2. **表面（`F.Cu`：スイッチソケット差し込み面）**に出た2本のピンをはんだ付けします。
-3. 💡 **飛び出しピン先端の平切り（重要：残り高さ $\le 0.4\text{ mm}$）**: 表面 `F.Cu` とトッププレート裏面の間隔（Switch Gap）は $0.60\text{ mm}$ です（スイッチフォームにも逃げ穴を設けていますが、プレート自体はソリッド面です）。プレート裏面にピン先が当たらないよう、フラッシュニッパーを使ってピン先端を基板面から **$0.4\text{ mm}$ 以下** に平切りしてください。
+### ① 右メイン基板への静音スイッチ `rEXSW1` 実装
+1. 右メイン基板の**裏面（`B.Cu`）**にあるホイール窓東側の `rEXSW1` ランドへ、`Kailh Square Silent` の 2ピンを差し込んで底面を密着させます。
+2. **表面（`F.Cu`）**に出た 2ピンをはんだ付けします。
+3. **ピン先端の平切り（重要）**: 表面 `F.Cu` とトッププレート裏面の間隔（Switch Gap）は `0.60 mm` です。プレート裏面に触れないよう、フラッシュニッパーで飛び出しピンを **`0.4 mm` 以下** に平切りしてください。
 
-### ② TBセンサーサブ基板（`curcur40-pmw3360`）への `PMW3360` ＆ `LM19-LSI` 実装
+### ② TBセンサーサブ基板への `PMW3360` ＆ `LM19-LSI` 実装
 
 ![センサーサブ基板のPMW3360実装手順](./assets/pmw3360_board_assembly.svg)
 
-1. `JP1` は基板内銅箔パターンで Pad 1–2 直結済み、`R4`/`C5` は DNP のため触る必要はありません。
-2. センサーサブ基板の**裏面（`B.Cu`）**から `PMW3360DM-T2QU`（`U1`）の16ピンを差し込み（1番ピン＝四角ランド）、**表面（`F.Cu`）**で16ピンすべてをはんだ付けした後、レンズフランジと干渉しないようピン先端をニッパーで短く切り揃えます。
-3. 光学窓のカプトン保護テープを剥がし、**表面（`F.Cu`）**から専用レンズ `LM19-LSI` の4本の脚を角穴へ通してセンサーICへ奥まで差し込みます。
+1. `JP1` は基板内銅箔で直結済み、`R4` / `C5` は未実装（DNP）のため作業不要です。
+2. センサーサブ基板の**裏面（`B.Cu`）**から `PMW3360DM-T2QU`（`U1`）を差し込み（1番ピン＝四角ランド）、**表面（`F.Cu`）**で 16ピンをはんだ付けした後、レンズと干渉しないようピン先端を短く切り揃えます。
+3. センサー窓の保護テープを剥がし、**表面（`F.Cu`）**から `LM19-LSI` レンズの 4本の脚を角穴へ通して奥まで差し込みます。
 
-### ③ トラックボールカップへの $\varnothing 2.0\text{ mm}$ セラミック支持球（×3個）圧入
-- `trackball-cup` 内壁の3箇所の球面座ディンプル（入口径 $\varnothing 1.95\text{ mm}$）へ、$\varnothing 2.0\text{ mm}$ セラミック支持球を1個ずつ「パチン」と奥まで押し込みます。
+### ③ トラックボールカップへの `⌀2.0 mm` セラミック支持球（3個）圧入
+- `trackball-cup` 内壁 3箇所のディンプル（入口 `⌀1.95 mm`）へ、`⌀2.0 mm` セラミック球を 1個ずつ「パチン」と奥まで押し込みます。
 
 ---
 
-## 2-5. Phase 4: アンダープレート慣性ホイールの組み立て（接着剤・シム・配線ゼロ）
+## 2-5. Phase 4: アンダープレート慣性ホイールの組み立て
 
-> 💡 **ホイールの「高速スクロール・ノッチ調整・背面スイッチ中クリック」の3つのしくみと `#02` マグネットホルダーの役割** については、ブラウザで実際にホイールを弾いたりノッチネジや中クリックを動かして体験できる **[さわって動かせる！インタラクティブ図解 (`docs/wheel_mechanism_guide.html`)](./wheel_mechanism_guide.html)**、および **[`docs/passive_inertia_wheel_spec.md` 第0節](./passive_inertia_wheel_spec.md#0-やさしい図解小学生でもわかる3つのしくみと-02-の場所)** をあわせてご覧ください。
+> 機構の動作イメージは、ブラウザで動かせる **[体験型インタラクティブ図解 (`docs/wheel_mechanism_guide.html`)](./wheel_mechanism_guide.html)** もあわせてご覧ください。
 
-![小学生でもわかる！高速スクロールホイールの3つのしくみ図解](./assets/inertia_wheel_easy_guide.png)
+![慣性ホイール機構の3要素図解](./assets/inertia_wheel_easy_guide.png)
 
 ![右キーボード アンダープレート実装外観](./assets/render_curcur40_right_wheel.png)
 
-1. **`DDL-520ZZ` ベアリング（×2個）の脱脂洗浄（★フリースピン性能の要）**
-   - 小瓶やトレイに `DDL-520ZZ`（両シールド形・幅 $2.30\text{ mm}$）を2個入れ、パーツクリーナーを吹きかけて振り洗いし、内部の防錆グリスを溶かし出します（両シールドの隙間から洗浄液が十分浸透します）。乾燥後、指で弾いてシャーッと軽く空転することを確認します。
-2. **ローターの組み立て（工具・接着剤・シム不要、約30秒！）**
-   - `#01` 一体軸スチールホイール（`steel-flywheel`：外径 $\varnothing 22.00 \times \text{幅 } 4.65\text{ mm}$・質量 $13.51\text{ g}$）の左右軸に、脱脂した `DDL-520ZZ` ベアリングを1個ずつ奥の一体段付き肩（$\varnothing 3.00\text{ mm}$）に当たるまで差し込みます。
-   - **東側（キーマトリクス側）の Dカット軸先端** に `#02` `magnet-holder`（$\varnothing 6.64 \times 5.05\text{ mm}$）の西側 D穴を東ベアリング内輪端に当たるまで押し込み、ホルダー東側の丸ポケットに **`#08` `D4×1mm` 径方向2極着磁磁石** を入れます（中央隔壁と `#03` 東側の一体キーパー壁［ギャップ $0.25\text{ mm}$］で確実に抜け止めされるため、接着剤は一切不要です）。
-3. **ロッカーとクレードルの Cクリップスナップイン一体連結 ＆ 磁気デテント調整ネジの装着（★基板固定前にノッチ調整！）**
-   - `#03` `wheel-rocker` の左右 **独立片持ち Cクリップ軸受座（開口幅 $4.69\text{ mm}$）** へ、ベアリング付きホイールを上から「パチン」と押し込みます（Cクリップ形状によりベアリングの上抜けが機械的にロックされます）。
-   - 続けて、南開放 U字フレーム `#04` `wheel-cradle` の左右 **スリット分離型 Cクリップヒンジ座（内径 $\varnothing 3.50\text{ mm}$・入口幅 $2.80\text{ mm}$・肉厚 $1.55\text{ mm}$）** へ `#03` ロッカー東側の左右 $\varnothing 3.20\text{ mm}$ トラニオン支点軸を真上から真っ直ぐ降ろし、「パチン！」とスナップイン連結させます。これで基板に取り付ける前の単体状態でもロッカーとクレードルが外れず一体になり、滑らかなシーソー揺動（＋過荷重ハードストップ保護）だけを行うようになります。
-   - 強磁性（鉄製）の **`M2 × 6.0mm` ネジ 1本** をロッカー南ボスの真鍮インサートへ南からねじ込み、南ボス上面の **上面開放ドロップイントラフ** から **`#09` $\varnothing 2.0 \times 2.0\text{ mm}$ 円柱磁石（`NE280`）** を落としてネジ先端へパチンと自己吸着させます（接着剤不要。$\varnothing 2.30\text{ mm}$ ガイドリングと肉厚 $2.25\text{ mm}$ の北端下部キーパー壁があるため、最奥まで締めても磁石がホイール側へ飛び移って張り付くことはありません）。
-   - **【重要】この Phase 4 の単体状態で** ホイールを指で弾きながら南のネジを回し、好みの感触（浅く戻せば数秒間回り続ける軽快フリースピン、深く締めれば深溝24極の明快なラチェットノッチ感）にチューニングしておきます（※次の Phase 5 で右メイン基板へ `WC1`/`WC2` ネジ固定すると南ボスは基板の下へ隠れるため、基板に取り付ける前のここでノッチ強弱を合わせておくとスムーズです）。
+1. **`DDL-520ZZ` ベアリング（2個）の脱脂洗浄**:
+   - 小瓶等にベアリング 2個を入れ、パーツクリーナーを吹きかけて振り洗いし、内部の防錆グリスを洗い流します。乾燥後、指で弾いて軽く空転することを確認します。
+2. **ローターの組み立て（工具・接着剤・シム不要）**:
+   - `#01` `steel-flywheel` の左右軸に、脱脂した `DDL-520ZZ` を 1個ずつ段付き肩（`⌀3.00 mm`）に当たるまで差し込みます。
+   - 東側の Dカット軸先端に `#02` `magnet-holder` の西側 D穴を押し込み、東側の丸ポケットに **`#08` `D4×1mm` 径方向2極着磁磁石** を入れます。
+3. **ロッカーとクレードルのスナップ連結 ＆ ノッチ強弱の事前調整**:
+   - `#03` `wheel-rocker` の左右 Cクリップ軸受座へ、ベアリング付きホイールを上から「パチン」と押し込みます。
+   - 南開放 U字の `#04` `wheel-cradle` の左右 Cクリップヒンジ座へ、`#03` ロッカー東側の支点軸を真上から降ろして「パチン」と連結します。
+   - **鉄製の `M2 × 6.0 mm` ネジ 1本** をロッカー南ボスのインサートへねじ込み、上面の開放トラフから **`#09` `⌀2.0×2.0 mm` 磁石（`NE280`）** を落としてネジ先端へ自己吸着させます。
+   - **基板固定前のこの状態で** ホイールを弾きながら南のネジを回し、好みの感触（浅く戻せば長時間フリースピン、深く締めれば明快な 24ノッチ感）に調整しておきます。
 
 ---
 
-## 2-6. Phase 5: ケースへの統合締結（全箇所共通 M2×6.0mm ネジ）
+## 2-6. Phase 5: ケースへの統合締結（M2×6.0mm ネジ統一）
 
 ![スタックアップ断面図](./assets/stackup_cross_section.png)
 
-1. **右メイン基板裏面へのホイールユニット組み付け（`WC1`, `WC2`）**
-   - 右メイン基板を裏返し（`B.Cu` 上向き）、十字形ホイール窓へ一体連結済みのホイールユニット（`#03` ロッカー ＋ `#04` クレードル）を差し込み、クレードルの対角2箇所のボスを `WC1`, `WC2` 穴に合わせます。
-   - 基板表側（`F.Cu`）から **`M2 × 6.0mm` ネジ × 2本** で `WC1`, `WC2` を締め込みます。ホイールを指で回して空転すること、上から押して Cクリップ支点を中心にシーソー揺動し `rEXSW1` が「コトッ」と静音クリックすること、およびノッチ強弱が好み通りであることをここで最終確認します。
-2. **トッププレートとキースイッチの装着**
-   - 左右のトッププレート（`plate-top-left`, `plate-top-right`）とメイン基板を合わせ、全39個の Kailh Choc V2 キースイッチ（左21個・右18個）を差し込みます。右手ではホイールと同心に揃った $6.55 \times 22.00\text{ mm}$ 長穴（左右とも均等 $0.95\text{ mm}$ 隙間）からスチールホイールの頂部（キーキャップ天面 $+3.60\text{ mm}$ とほぼ同じ高さ $+3.62\text{ mm}$）だけがスマートに顔を出します（カバー部品の装着は不要です）。
-3. **右手トラックボール部の固定（`TB1`〜`TB4`）**
-   - 先に TBセンサーサブ基板裏面の `J1` コネクタへ **`100mm` JST SH 6ピン両端同方向（`1-6`）フラットケーブル** の片端を奥まで挿しておきます。
-   - TBセンサーサブ基板と `trackball-cup`（高さ $2.00\text{ mm}$ フラット耳）を右手ケース下段の4箇所のインサートボス（`TB1`〜`TB4`）に載せ、単体の細軸精密ドライバー（`#0`、先端 $22\text{ mm}$ 軸径 $\le \varnothing 4.5\text{ mm}$）を使って上から **`M2 × 6.0mm` ネジ × 4本** で固定します。
-4. **左右メイン基板＋トッププレートの着地とキー谷間 12箇所の固定（`L1`〜`L6`, `R1`〜`R6`）**
-   - 右手では TBセンサー基板から伸びる `100mm` JST SH ケーブルの反対側を右メイン基板裏面の **`rJ3`** へ真っ直ぐ差し込みます。**ケーブルの余長ループは、北側の回転ホイール（`#01`）に触れないよう南東側（`rSW8` / `rSW9` 直下の広い空間）へ丸めて寄せ、カプトンテープ等で軽く留めておきます**（`2-1` 図③-B 参照）。
-   - 左右のプレート＋メイン基板ユニットをケースへ降ろします（北側・内側の2つのミッドマウント USB-C コネクタ先端がケース開口フチの内側へ $0.25\text{ mm}$ 入る設計のため、**北・内側の角［USB-C 2箇所側］をほんの少し斜めに先へ潜り込ませてから全体を水平に降ろす**と、壁を押し広げることなく引っ掛かりゼロでスッと着地します。右手ではプレートの閉じた $\varnothing 28.625\text{ mm}$ 円形開口が沈み込みトラックボールカップを綺麗に囲み、USB-C ポート近傍の裏面もケース内壁の3箇所の基板受け棚にぴったり着地します）。キー谷間12箇所すべて（左 `L1`〜`L6`・右 `R1`〜`R6`）でトッププレートの $\varnothing 4.40\text{ mm}$ ネジ頭逃げ穴から統一 **`M2 × 6.0mm` ネジ × 12本** を差し込み、メイン基板表面をケースの $\varnothing 5.20\text{ mm}$ フラットインサートボスへ直接締め込みます（ネジ頭はすべてトッププレート天面下に綺麗に沈み込み、キーキャップ装着後は谷間の死角へ隠れます）。
-5. **仕上げ（キーキャップ・トラックボール・折りたたみスタンド・ゴム足）**
-   - 全39キーに Choc V2 対応ロープロファイル 1u キーキャップを取り付け、25mm トラックボール球をカップへ押し込みます。
-   - ケース底面の南北外縁近くにある2箇所のスタンドポケットへ `20 × 65 × 5 mm` 折りたたみスタンドを貼る場合は、**開くシリコン足先を親指内側（爪掛け凹みがある側）へ、バネヒンジを中央（小指寄り）へ向けて**貼り付けます（収納時はポケット内に約 $0.18\text{ mm}$ 沈んでツライチになります）。最後に小指側のケース底面（必要に応じ折りたたみスタンド上）へゴム足を貼って完成です！
+1. **右メイン基板裏面へのホイールユニット固定（`WC1`, `WC2`）**:
+   - 右メイン基板裏面の十字窓へホイールユニットを合わせ、基板表側（`F.Cu`）から **`M2 × 6.0 mm` ネジ 2本** で `WC1`, `WC2` を締結します。空転・静音中クリック（`rEXSW1`）・ノッチ感触をここで確認します。
+2. **トッププレートとキースイッチの装着**:
+   - 左右トッププレートとメイン基板を合わせ、39個の Kailh Choc V2 スイッチ（左21・右18）を差し込みます。
+3. **右手トラックボール部の固定（`TB1`〜`TB4`）**:
+   - 先に TBセンサー基板の `J1` へ **`100 mm` JST SH 6P 同方向ケーブル** の片端を挿してから、センサー基板と `trackball-cup` を右ケース下段ボスに載せ、細軸ドライバーで上から **`M2 × 6.0 mm` ネジ 4本** で共締めします。
+4. **メイン基板＋プレートの着地とキー谷間 12箇所の固定（`L1`〜`L6`, `R1`〜`R6`）**:
+   - 右手では JST SH ケーブルの反対端を右メイン基板裏面の `rJ3` へ挿し、**余長ループが回転ホイールに触れないよう南東側（`rSW8` / `rSW9` 下の空間）へ寄せてカプトンテープ等で軽く留めます**。
+   - 北側・内側の USB-C 2箇所の角を少し斜めに先へ潜り込ませてから全体を水平にケースへ降ろし、プレートの頭逃げ穴から **`M2 × 6.0 mm` ネジ 12本**（左右各 6本）で締結します。
+5. **仕上げ（キーキャップ・ボール・スタンド・ゴム足）**:
+   - 39個のロープロファイル 1u キーキャップと 25 mm ボールを装着します。
+   - 底面ポケットへ `20 × 65 × 5 mm` 折りたたみスタンドを貼る場合は、**開く足先を親指内側（爪掛け凹み側）へ、ヒンジを中央（小指寄り）へ向けて**貼り付け、最後にゴム足を貼って完成です。
 
 ---
 
-## 2-7. Phase 6: 動作確認・キーマップ設定（VIA / Vial）
+## 2-7. Phase 6: 動作確認・キーマップ設定（Vial / VIA）
 
-1. **接続順序**: 先に親指内側の左右間ポート（`J2` ⇔ `rJ2`）をパッシブ USB 2.0 C-to-C ケーブルで繋いでから、北側の PC 接続ポート（`J1` または `rJ1`）を PC に接続します。
-2. **全39キー ＋ ホイール静音中クリック確認（計40入力）**: [Vial Web (https://vial.rocks/)](https://vial.rocks/) または VIA の Matrix Tester で全39キーおよびホイール押し込み（`[4, 6]`, デフォルト `BTN3`）を確認します。
-3. **アンダープレート一体軸慣性ホイールの高速スクロール確認**:
-   - $13.51\text{ g}$ の `45# Steel` フライホイール（$J = 774\,\text{g}\cdot\text{mm}^2$、黒染め仕上げ）とオンボード `TMAG5273` の `XZX` 擬似同時サンプリングにより、普段は 24溝と 1:1 同期した心地よいノッチスクロール（1回転 24ノッチ）、指で弾けば数秒間なめらかに回り続けるフリースピン、指を添えれば瞬時にピタッと物理停止する直感操作が楽しめます。
-   - **`WHL_HRZ`** キー（`USER03`、Vial / VIA の `Custom` タブからホイール直下キー `rEXSW2` 等の任意キーへ割り当て可能）を押しながら回すと、ファームウェア側で水平スクロール（`H-Wheel`）出力に切り替わります（なお `Shift` キー押下時はファームウェア側で軸変換を行わず OS・アプリ標準の `Shift + 縦スクロール` 挙動に任せています）。
-4. **25mm トラックボール ＆ 2D慣性ドラッグスクロール確認**:
-   - 通常時はカーソル移動、`SCRL_MO` / `SCRL_TG` 操作時は親指フリックで惰性スクロール＆親指タッチ即停止する 2D 慣性ドラッグスクロール（`SCRL_SL` で低速精密スクロール）が利用できます。
+1. **接続順序**: 先に内側の左右間ポート（`J2` ⇔ `rJ2`）をパッシブ USB-C ケーブルで繋いでから、北側の PC 接続ポート（`J1` または `rJ1`）を PC に接続します。
+2. **入力・ポインティング確認**: [Vial Web (https://vial.rocks/)](https://vial.rocks/) 等で全 39キー＋ホイール中クリック（`[4, 6]`）、慣性ホイールの縦スクロール（`WHL_HRZ` 押下時は横スクロール）、および 25 mm トラックボールのカーソル移動／2D 慣性スクロール（Layer 3 または `SCRL_MO` / `SCRL_TG` / `SCRL_SL`）を確認します。
 
 ---
 
-## 2-8. トラブルシューティング・注意事項
+## 2-8. トラブルシューティング
 
-| 症状 | 主な原因と確認・対処方法 |
+| 症状 | 主な原因と対処方法 |
 | :--- | :--- |
-| **片側のキーボードが反応しない** | 両基板に `.uf2` を書き込んだか、PCケーブルが北側 `J1`/`rJ1` に、左右間ケーブル（データ通信対応パッシブ USB 2.0 C-to-C）が内側 `J2`⇔`rJ2` に刺さっているか確認してください。 |
-| **慣性ホイールのスクロールが反応しない** | `#02` `magnet-holder` に入れた `#08` `D4×1mm` 磁石が **径方向2極着磁（Diametric）** 品であるか確認してください（一般的な上下厚み方向着磁の円盤磁石では回転磁界が変化せず角度を検出できません）。 |
-| **慣性ホイールのクリックが固い／戻らない** | `rEXSW1` の表面 `F.Cu` 側にはんだ付けした2本のピン先端が長く残ってトッププレート裏面に当たっていないか（$\le 0.4\text{ mm}$ に平切りされているか）、および `WC1`/`WC2` の2本のネジでクレードルが基板裏面に密着固定されているか確認してください。 |
-| **ホイールの空転時間が短い／ノッチが強すぎる** | ① `DDL-520ZZ` ベアリングをパーツクリーナーで十分脱脂洗浄したか確認してください。<br>② 右メイン基板をケースから持ち上げ、`wheel-rocker` 南ボスの `M2×6.0mm` ラチェット調整ネジを反時計回りに少し緩めて磁石と24溝の距離を広げてください。 |
-| **組み立て後にファームウェアを更新・再書き込みしたい** | **ケースの解体は不要です**。USB ケーブルを抜いた状態で、**左手は左上端キー `SW18`（`[0, 1]`）、右手は右上端キー `rSW18`（`[4, 1]`）を押したまま USB を PC に挿す（Bootmagic）** か、キーマップ上の `QK_BOOT` キーを押すと `RPI-RP2` ドライブが開きます。 |
-| **トラックボールのカーソルが動かない** | TBセンサー基板の `PMW3360` 光学窓の保護テープ剥がし忘れ、`LM19-LSI` レンズの差し込み深さ、表面16ピンの足切り、および `rJ3`⇔`J1` 間の **JST SH 6P 同方向ケーブル（`1-6` 結線 ※`1-1` リバース不可）** の差し込みを確認してください。 |
+| **片側が反応しない** | 両基板に `.uf2` を書き込んだか、PCケーブルが北側 `J1`/`rJ1` に、左右間ケーブル（パッシブ USB 2.0 C-to-C）が内側 `J2`⇔`rJ2` に挿さっているか確認してください。 |
+| **ホイールのスクロールが反応しない** | `#02` に入れた `#08` `D4×1mm` 磁石が **径方向2極着磁（Diametric）** 品か確認してください（厚み方向着磁では角度変化を検出できません）。 |
+| **ホイールのクリックが固い／戻らない** | `rEXSW1` の表面 `F.Cu` 側に出た 2ピン先端がプレート裏面に当たっていないか（`≤ 0.4 mm` に平切りされているか）、`WC1`/`WC2` ネジが密着締結されているか確認してください。 |
+| **ホイールの空転が短い／ノッチが強すぎる** | ① `DDL-520ZZ` のグリス脱脂が十分か確認してください。<br>② 右メイン基板を一旦外し、ロッカー南ボスの `M2×6.0mm` 調整ネジを少し緩めて磁石ギャップを広げてください。 |
+| **トラックボールが動かない** | `PMW3360` 光学窓の保護テープ剥がし忘れ、`LM19-LSI` レンズの浮き、表面 16ピンの足切り、および JST SH ケーブルが **両端同方向（`1-6` 結線）** であるか確認してください。 |
 
 ---
 
-## 2-9. 【オプション】持ち運び用スライドキャリングボックス（フタ付き）の使い方
+## 2-9. 【オプション】持ち運び用キャリングボックスの使い方
 
-外出先やオフィスへ持ち運ぶ場合は、ネジ・マグネット・ゴムバンド等の別部品を一切使わない **`PA12` ナイロン製 上下リバーシブル直方体スライドボックス＋スナップフタ（[`carrying-box.step`](../cases/carrying-box.step) ＋ [`carrying-box-lid.step`](../cases/carrying-box-lid.step)）** を使うことで、**全4箇所の USB-C マグネット端子（CIO `CIO-SLMG-T-C` 等）・底面埋め込み折りたたみスタンド4本・25mm トラックボール球・高さ $\le 3.0\text{ mm}$ の底面ゴム足をすべて付けたまま** 6面フルカバーの直方体ブロック（フタ装着外寸 **$140.2 \times 110.4 \times 80.2\text{ mm}$**）として安全にパッキングできます。
+`PA12` 製の上下リバーシブル直方体スライドボックス（[`carrying-box.step`](../cases/carrying-box.step) ＋ [`carrying-box-lid.step`](../cases/carrying-box-lid.step)）を使うと、**USB-C マグネット端子 4個・折りたたみスタンド 4本・25 mm 球・高さ `≤ 3.0 mm` ゴム足をすべて付けたまま** 6面フルカバー（外寸 `140.2 × 110.4 × 80.2 mm`）で持ち運べます（開閉機構の体験型図解: **[`docs/carrying_box_lid_guide.html`](./carrying_box_lid_guide.html)**）。
 
-| フタ装着フルカバー収納 (`carrying-box-with-lid-assembly.step`) | フタ取り外し・スライド挿入時 (`carrying-box-assembly.step`) |
+| フタ装着フルカバー収納 | フタ取り外し・スライド挿入時 |
 | :---: | :---: |
 | ![キャリングボックス（フタ装着時）](./assets/render_carrying_box_with_lid_iso.png) | ![キャリングボックス（スライド挿入時）](./assets/render_carrying_box_lidless_iso.png) |
 
-1. **準備（マグネット端子・スタンド・トラックボール・ゴム足はすべて付けたままでOK）**:
-   - ボックス奥面およびフタ内面には外へ貫通しない **デュアル内部「堀」**、左右側面にはスライドスロットを備えているため、**全4箇所の CIO `CIO-SLMG-T-C` 等の USB-C マグネット交換端子を挿しっぱなしのまま**収納できます（ケーブル本体のみ外します）。
-   - **25mm トラックボールも付けたまま**収納でき、中央隔壁の U字キーパーが落下衝撃時のボール脱落を防止します。また上下の掘り込みレール（深さ $4.00\text{ mm}$）により、高さ $3.0\text{ mm}$ のゴム足でも常時 **$1.00\text{ mm}$ 以上**空中に浮くため、引っ掛かりゼロでスムーズにスライドします。
-2. **収納手順（箱もフタも上下逆さま区別なし！スッと差し込んでカチッと閉めるだけ）**:
-   - 左右のキーボードをキー面同士が内側で向かい合うように互い違いに重ねます（右手の親指側に左手の小指側が重なる向き＝$11.80^\circ$ の傾斜が相殺されて上下平行になる向き）。
-   - ボックス本体・フタともに **$Y$ 軸まわり $180^\circ$ 完全回転対称** のため、**右手トラックボール側を下にしても上にしても（箱・フタの上下向きを一切気にせず）** そのまま中央隔壁に沿って奥のストッパー段差に当たるまでスッと差し込み、フタを押し込んで「カチッ」とロックすれば完了です。
-3. **取り出し手順**:
-   - 長さ $14.0\text{ mm}$ の弾性梁と抜き角 $26^\circ$ の浅角カムにより、フタ左右の指掛け溝をつまんで **手前へ真っ直ぐ引くだけ（引き抜き力 約 $9.7\text{ N} \approx 1.0\text{ kgf}$）** でスムーズにフタが外れ、中央の指掛け切り欠きからキーボードを引き出せます（しくみの体験型図解：[**`docs/carrying_box_lid_guide.html`**](./carrying_box_lid_guide.html)）。
+1. **収納**: 左右のキーボードをキー面が内側で向かい合うように互い違いに重ね（`11.80°` 傾斜が相殺されて平行になる向き）、箱・フタの上下向きを気にせず中央隔壁に沿って奥のストッパーまで差し込み、フタを「カチッ」と押し込みます。
+2. **取り出し**: フタ左右の指掛け溝をつまんで手前へ真っ直ぐ引くだけ（約 `1.0 kgf`）でロックが外れ、中央の指掛け切り欠きから本体を引き出せます。
