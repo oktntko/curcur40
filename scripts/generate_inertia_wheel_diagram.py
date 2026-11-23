@@ -92,7 +92,7 @@ def _draw_spec_diagram():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18.4, 8.8), dpi=200)
     fig.patch.set_facecolor("#ffffff")
     fig.suptitle(
-        "アンダープレート一体軸パッシブ磁気慣性ホイール 内部断面・機構図（東側反転・JLC3DP/JLCCNC公式準拠・#01〜#12全番号明記・6自由度ロック構造）",
+        "アンダープレート パッシブ磁気慣性ホイール 内部断面・機構図（JLC3DP/JLCCNC公式準拠・2×12mm平行ピン＋シム支持・6自由度ロック構造）",
         fontsize=12.2,
         fontweight="bold",
         y=0.975,
@@ -105,7 +105,7 @@ def _draw_spec_diagram():
     # Panel 1: X–Z Front Cross-Section along Axle (Y_pcb = +2.7625 mm)
     # Local u = x_pcb - 14.2875 mm (+u = East, -u = West; wheel aligned with south key rEXSW2!)
     # =========================================================================
-    ax1.set_title("① 正面断面図 (X–Z 断面：黒染め45#鋼一体軸ホイール × 東側 #02ホルダー × スリット分離型Cクリップヒンジ)", fontsize=9.7, fontweight="bold", pad=10)
+    ax1.set_title("① 正面断面図 (X–Z 断面：黒染め45#鋼ホイール × B種h7 2×12mmピン＆シム × 東側 #02ホルダー)", fontsize=9.7, fontweight="bold", pad=10)
     ax1.set_xlim(-11.0, 17.8)
     ax1.set_ylim(-26.8, 8.6)
     ax1.set_aspect("equal")
@@ -156,12 +156,14 @@ def _draw_spec_diagram():
     ax1.add_patch(patches.Circle((6.35, -13.73), 1.60, fc="#f8fafc", ec="#0f172a", lw=1.4, zorder=7))
     ax1.plot([6.35], [-13.73], marker="+", color="#0f172a", markersize=6, zorder=8)
 
-    # #01 1-Piece Integral-Shaft 45# Steel + Blackening Flywheel:
-    # Rim u in [-3.25, +1.40] (4.65 mm wide), Z in [-18.38, +3.62]; Ø3.00mm shoulders [-3.70, +1.70]; ⌀1.97±0.02mm shaft [-5.95, +6.50]
-    ax1.add_patch(patches.Rectangle((-5.95, z_axle - 0.985), 12.45, 1.97, fc="#94a3b8", ec="#1e293b", lw=1.1, zorder=6))
-    ax1.add_patch(patches.Rectangle((-3.70, z_axle - 1.50), 5.40, 3.00, fc="#64748b", ec="#0f172a", lw=1.0, zorder=6))
+    # #01 Center-Bore 45# Steel + Blackening Flywheel + SUS 2.0x12mm Parallel Pin + SUS ⌀2x⌀3 Shims:
+    # Rim u in [-3.25, +1.40] (4.65 mm wide), Z in [-18.38, +3.62]; Shims [-3.70, -3.30] & [+1.40, +1.70]; 2x12mm pin [-5.90, +6.10]
+    ax1.add_patch(patches.Rectangle((-5.90, z_axle - 0.995), 12.00, 1.99, fc="#cbd5e1", ec="#1e293b", lw=1.1, zorder=6))
+    ax1.add_patch(patches.Rectangle((-3.70, z_axle - 1.50), 0.40, 3.00, fc="#94a3b8", ec="#0f172a", lw=0.9, zorder=6))
+    ax1.add_patch(patches.Rectangle((1.40, z_axle - 1.50), 0.30, 3.00, fc="#94a3b8", ec="#0f172a", lw=0.9, zorder=6))
     ax1.add_patch(patches.Rectangle((-3.25, z_axle - 11.00), 4.65, 22.00, fc="#334155", ec="#0f172a", lw=1.5, zorder=7))
-    ax1.text(-0.92, -1.2, "#01 一体軸\n45#鋼+黒染め\nØ22×4.65\n(13.51g)", ha="center", va="center", fontsize=6.2, fontweight="bold", color="#f8fafc", zorder=8)
+    ax1.add_patch(patches.Rectangle((-3.25, z_axle - 1.00), 4.65, 2.00, fc="#cbd5e1", ec="#0f172a", lw=0.9, zorder=8))
+    ax1.text(-0.92, -1.2, "#01 中心穴H7\n45#鋼+黒染め\nØ22×4.65\n(13.20g)", ha="center", va="center", fontsize=6.2, fontweight="bold", color="#f8fafc", zorder=9)
 
     # #07 2x NMB DDL-520ZZ Bearings (Ø2 x Ø5 x 2.30 mm at [-6.00, -3.70] & [+1.70, +4.00])
     for bu in (-6.00, 1.70):
@@ -181,13 +183,13 @@ def _draw_spec_diagram():
     ax1.add_patch(patches.Rectangle((11.00, -10.10), 2.60, 0.95, fc="#e63946", ec="#6a040f", lw=1.0, zorder=6))
 
     # Callouts on Panel 1 — Explicitly labeling #01, #02, #03, #04, #05, #06, #07, #08, #12!
-    ax1.annotate("#01 1ピースCNC一体軸ホイール (幅4.65mm)\n45#鋼+黒染め・13.51g・頂点Z=+3.62mm\nフラット肩5.40mm＋軸公差 Ø1.97±0.02mm",
-                 xy=(-0.92, 3.62), xytext=(-5.3, 6.45), ha="center", va="center",
+    ax1.annotate("#01 45#鋼+黒染めホイール (13.20g)\n中心穴 Ø2.00 H7 (4mm未満突起ゼロ)\n＋ B種h7 2×12mmピン ＆ Ø2×Ø3シム",
+                 xy=(-0.92, 3.62), xytext=(-5.9, 6.45), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#1e293b", lw=1.15),
                  fontsize=6.0, fontweight="bold", color="#0f172a",
                  bbox=dict(boxstyle="round,pad=0.20", fc="#f1f5f9", ec="#475569", lw=0.9), zorder=10)
 
-    ax1.annotate("★ #02 マグネットホルダー (Ø6.64×5.05mm)\n＋ #08 D4×1mm径方向磁石\n• 公式最小サイズ 5×5×5mm＆肉厚≥1.20mm適合!\n• 東Dカット軸圧入＋#03東キーパー壁で抜けゼロ",
+    ax1.annotate("★ #02 マグネットホルダー (Ø6.64×5.05mm)\n＋ #08 D4×1mm径方向磁石\n• 公式最小サイズ 5×5×5mm＆肉厚≥1.20mm適合!\n• 東2×12mmピン圧入＋#03東キーパー壁で抜けゼロ",
                  xy=(6.55, -4.06), xytext=(4.8, 6.45), ha="center", va="center",
                  arrowprops=dict(arrowstyle="->", color="#0f766e", lw=1.3),
                  fontsize=5.9, fontweight="bold", color="#0f766e",
@@ -263,7 +265,7 @@ def _draw_spec_diagram():
                  color="#cbd5e1", lw=1.0, zorder=6)
     ax2.add_patch(patches.Circle((0.0, z_axle), 1.50, fc="#64748b", ec="#0f172a", lw=1.0, zorder=6))
     ax2.add_patch(patches.Circle((0.0, z_axle), 0.985, fc="#f8fafc", ec="#0f172a", lw=1.2, zorder=7))
-    ax2.text(0.0, -5.2, "#01 Ø22.0×幅4.65mm 45#鋼+黒染め\nR1.50mm×24フルート溝 (15°ピッチ)\n質量 13.51g・J = 774 g·mm²!",
+    ax2.text(0.0, -5.2, "#01 Ø22.0×幅4.65mm 45#鋼+黒染め\nR1.50mm×24フルート溝 (15°ピッチ)\n質量 13.20g・J = 773 g·mm²!",
              ha="center", va="center", fontsize=6.5, fontweight="bold", color="#0f172a",
              bbox=dict(boxstyle="round,pad=0.20", fc="#f8fafc", ec="#475569", lw=0.8, alpha=0.94), zorder=8)
 
@@ -325,7 +327,7 @@ def _draw_easy_guide_diagram():
     fig.text(
         0.5,
         0.957,
-        "バネも・ボンドも・細い電線もゼロ！「鉄の重さ」「磁石の力」「公園のシーソー」の3つだけで動くシンプルなしくみ図鑑",
+        "バネも・細い電線もゼロ！「鉄の重さ」「磁石の力」「公園のシーソー」の3つだけで動くシンプルなしくみ図鑑",
         ha="center",
         va="center",
         fontsize=10.2,
@@ -413,10 +415,10 @@ def _draw_easy_guide_diagram():
                    fontsize=6.9, fontweight="bold", color="#0369a1",
                    bbox=dict(boxstyle="round,pad=0.20", fc="#e0f2fe", ec="#0284c7", lw=1.0), zorder=9)
 
-    # #01 Heavy Blackened Steel Wheel + Integral Axle
-    ax1_l.add_patch(patches.Rectangle((-5.5, -0.9), 12.0, 1.8, fc="#94a3b8", ec="#334155", lw=1.4, zorder=6))
+    # #01 Heavy Blackened Steel Wheel + 2x12mm Parallel Pin
+    ax1_l.add_patch(patches.Rectangle((-5.5, -0.9), 12.0, 1.8, fc="#cbd5e1", ec="#334155", lw=1.4, zorder=6))
     ax1_l.add_patch(patches.FancyBboxPatch((-3.2, -5.8), 4.7, 11.8, boxstyle="round,pad=0.12", fc="#334155", ec="#0f172a", lw=2.0, zorder=7))
-    ax1_l.text(-0.85, 0.2, "#01 黒染め\n鉄のコマ\n\n幅 4.65 mm!\n重さ 13.5 g!\n(10円玉3枚分)", ha="center", va="center", fontsize=7.9, fontweight="bold", color="#f8fafc",
+    ax1_l.text(-0.85, 0.2, "#01 黒染め\n鉄のコマ\n\n幅 4.65 mm!\n重さ 13.2 g!\n(10円玉3枚分)", ha="center", va="center", fontsize=7.9, fontweight="bold", color="#f8fafc",
                bbox=dict(boxstyle="round,pad=0.22", fc="#1e293b", ec="#64748b", lw=1.1), zorder=8)
 
     # #02 Magnet Holder Cap (Bright Teal, Ø6.64 x 5.05 mm on East!) + #08 Red/Blue Magnet!
@@ -426,7 +428,7 @@ def _draw_easy_guide_diagram():
     ax1_l.text(7.68, 0.92, "N", ha="center", va="center", fontsize=7.5, fontweight="bold", color="white", zorder=9)
     ax1_l.text(7.68, -0.92, "S", ha="center", va="center", fontsize=7.5, fontweight="bold", color="white", zorder=9)
 
-    ax1_l.annotate("★ここが #02 マグネットホルダー！\n鉄の軸の右はし(東Dカット)に刺さって\n#08 赤青磁石を持つ緑のキャップ！",
+    ax1_l.annotate("★ここが #02 マグネットホルダー！\n2×12mm 平行ピンの右はしに刺さって\n#08 赤青磁石を持つ緑のキャップ！",
                    xy=(6.1, 2.75), xytext=(4.2, 5.85), ha="center", va="center",
                    arrowprops=dict(arrowstyle="->", color="#0f766e", lw=1.8),
                    fontsize=7.6, fontweight="bold", color="#134e4a",
@@ -448,13 +450,13 @@ def _draw_easy_guide_diagram():
         0.04,
         0.79,
         "① なぜ一度はじくと「シューーッ！」と長く回るの？\n"
-        "   軽いプラスチックではなく、幅 4.65mm・重さ 13.5g（10円玉3枚分！）の\n"
-        "   黒染め「#01 鉄のコマ」を、2個のミニベアリング(#07)で支えているから！\n"
+        "   軽いプラスチックではなく、幅 4.65mm・重さ 13.2g（10円玉3枚分！）の\n"
+        "   黒染め「#01 鉄のコマ」を、精密平行ピンと2個のミニベアリング(#07)で支えているから！\n"
         "   自転車の車輪と同じで、はじくと何秒も回り続け、指で触れればピタッと止まります。\n\n"
         "② 「#02 マグネットホルダー」はどこで何をしているの？\n"
-        "   #01 鉄のコマの軸の右はし（東側のかまぼこ型Dカット軸）にスポッと刺さっている\n"
+        "   中心に通した 2×12mm ステンレスピンの右はし（東側）にギュッと刺さっている\n"
         "   丈夫なキャップ（Ø6.64×5.05mm）が #02 です！中に「#08 赤青2極磁石」を抱えて回します。\n"
-        "   左はベアリング内輪、右は #03 の「東キーパー壁」に挟まれるのでボンド不要で絶対抜けません！\n\n"
+        "   左はベアリング内輪、右は #03 の「東キーパー壁」に挟まれるので抜け落ちません！\n\n"
         "③ どうやって回転を読み取っているの？（こすれゼロ！）\n"
         "   基板の裏についた「#05 空中コンパス (rU6)」が、空中でさわらずに #08 磁石の\n"
         "   N極・S極の向きを毎秒約1,000回キャッチ！部品どうしが一切こすれないから超高速！",
@@ -731,14 +733,18 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
 
         out = Path({repr(str(tmp_dir))})
 
-        # 0. Exploded 3D Assembly of the East-Reversed Under-Plate Inertia Wheel
+        # 0. Exploded 3D Assembly of the Under-Plate Inertia Wheel
         mov, stat, screws = giw.assemble_wheel_parts_global(click_deg=0.0)
         exp_offsets = {{
-            "Bearing_DDL520ZZ_West": (-9.5, 0.0, 9.5),
+            "Bearing_DDL520ZZ_West": (-12.0, 0.0, 9.5),
+            "Shim_BRS002003020_West1": (-7.5, 0.0, 9.5),
+            "Shim_BRS002003020_West2": (-6.0, 0.0, 9.5),
+            "Pin_Parallel_2x12mm_SUS": (-1.5, 0.0, 15.5),
             "Steel_Flywheel_22mm": (-1.5, 0.0, 9.5),
-            "Bearing_DDL520ZZ_East": (6.5, 0.0, 9.5),
-            "Magnet_Holder_PA12": (11.5, 0.0, 9.5),
-            "Magnet_D4x1mm_Diametric": (16.5, 0.0, 9.5),
+            "Shim_BRS002003030_East": (4.0, 0.0, 9.5),
+            "Bearing_DDL520ZZ_East": (7.5, 0.0, 9.5),
+            "Magnet_Holder_PA12": (12.5, 0.0, 9.5),
+            "Magnet_D4x1mm_Diametric": (17.5, 0.0, 9.5),
             "Wheel_Rocker_PA12": (0.0, 0.0, -2.5),
             "Magnet_D2x2mm_Axial_Detent": (0.0, -5.5, 2.5),
             "HeatSet_Insert_M2_Detent": (0.0, -9.5, -2.5),
@@ -799,25 +805,35 @@ def _build_temp_part_renders(tmp_dir: Path) -> dict[str, Path]:
         pin_b.label = "SW_Pin2"
         bd.export_step(bd.Compound(children=[sw_base, sw_top, sw_btn, pin_a, pin_b]), str(out / "p06_silent_sw.step"))
 
-        # 5. 2x NMB DDL-520ZZ Shielded Miniature Bearings (Ø2 x Ø5 x 2.30 mm — zero shims!)
+        # 5. 2x NMB DDL-520ZZ Bearings + SUS 2.0x12mm Parallel Pin + 3x SUS ⌀2x⌀3mm Shims
         brg_parts = []
         for bi, bx in enumerate([-3.4, 3.4]):
             outer_r = (
                 bd.Cylinder(2.50, 2.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
                 - bd.Cylinder(2.05, 2.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
-            ).moved(bd.Location((bx, 0, 0))).solids()[0]
+            ).moved(bd.Location((bx, 1.8, 0))).solids()[0]
             outer_r.label = f"OuterRace_{{bi}}"
             shield = (
                 bd.Cylinder(2.05, 2.06, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
                 - bd.Cylinder(1.42, 2.16, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
-            ).moved(bd.Location((bx, 0, 0.12))).solids()[0]
+            ).moved(bd.Location((bx, 1.8, 0.12))).solids()[0]
             shield.label = f"MetalShieldZZ_{{bi}}"
             inner_r = (
                 bd.Cylinder(1.42, 2.30, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
                 - bd.Cylinder(1.00, 2.40, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
-            ).moved(bd.Location((bx, 0, 0))).solids()[0]
+            ).moved(bd.Location((bx, 1.8, 0))).solids()[0]
             inner_r.label = f"InnerRace_{{bi}}"
             brg_parts.extend([outer_r, shield, inner_r])
+        pin_thumb = bd.Cylinder(1.00, 12.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER)).rotate(bd.Axis.Y, 90).moved(bd.Location((0.0, -2.8, 1.0))).solids()[0]
+        pin_thumb.label = "ParallelPin_2x12"
+        brg_parts.append(pin_thumb)
+        for si, (sx, sthk) in enumerate([(-3.8, 0.20), (0.0, 0.20), (3.8, 0.30)]):
+            sh_s = (
+                bd.Cylinder(1.50, sthk, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+                - bd.Cylinder(1.005, sthk + 0.10, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN)).moved(bd.Location((0, 0, -0.05)))
+            ).moved(bd.Location((sx, -6.2, 0.0))).solids()[0]
+            sh_s.label = f"Shim_{{si}}"
+            brg_parts.append(sh_s)
         bd.export_step(bd.Compound(children=brg_parts), str(out / "p07_bearings_zz.step"))
 
         # 6. M2 x L=3.0 x OD=3.2 mm Knurled Brass Heat-Set Inserts (3x shown)
@@ -966,8 +982,8 @@ def _draw_parts_guide_diagram():
         fig = plt.figure(figsize=(18.5, 19.5), dpi=180)
         fig.patch.set_facecolor("#ffffff")
         fig.suptitle(
-            "curcur40 アンダープレート一体軸慣性ホイール 部品構成・組立ビジュアルガイド（JLC3DP/JLCCNC公式準拠・全12要素・6自由度ロック構造）",
-            fontsize=13.5,
+            "curcur40 アンダープレート慣性ホイール 部品構成・組立ビジュアルガイド（JLC3DP/JLCCNC公式準拠・2×12mm平行ピン＋シム支持・6自由度ロック構造）",
+            fontsize=13.2,
             fontweight="bold",
             y=0.985,
             color="#0f172a",
@@ -994,7 +1010,7 @@ def _draw_parts_guide_diagram():
         ax_top_l.set_xticks([])
         ax_top_l.set_yticks([])
         ax_top_l.set_title(
-            "A. 右キーボード 実装外観（黒染め45#鋼ホイール・東側反転配置・Ø5.2mmボス基板直締結＋スイッチ嵌合プレート）",
+            "A. 右キーボード 実装外観（黒染め45#鋼ホイール・東側ホルダー配置・Ø5.2mmボス基板直締結＋スイッチ嵌合プレート）",
             fontsize=9.8,
             fontweight="bold",
             color="#0f172a",
@@ -1006,9 +1022,10 @@ def _draw_parts_guide_diagram():
         ax_top_r.set_facecolor(bg_e)
         ax_top_r.imshow(img_e, aspect="auto")
         ax_top_r.set_xticks([])
+        ax_top_l.set_yticks([])
         ax_top_r.set_yticks([])
         ax_top_r.set_title(
-            "B. アンダープレート一体軸ホイール 3D分解斜視図（公式基準準拠4造形部品＋市販ベアリング・磁石・M2×6mmネジ）",
+            "B. アンダープレート慣性ホイール 3D分解斜視図（公式基準準拠4造形部品＋2×12mm平行ピン・シム・ベアリング・磁石）",
             fontsize=9.8,
             fontweight="bold",
             color="#0f172a",
@@ -1017,18 +1034,18 @@ def _draw_parts_guide_diagram():
 
         cards = [
             (
-                "#01 一体軸スチールホイール ×1",
+                "#01 スチールホイール ×1",
                 "JLCCNC 切削 (45#鋼+黒染め+PDF)",
                 "#0f766e",
                 "p01",
-                "steel-flywheel.step ＋ 同名2D図面 .pdf\nØ22.0×幅4.65mm・R1.50×24溝・13.51g\n黒染め後軸公差 Ø1.97±0.02mm・シム不要!",
+                "steel-flywheel.step ＋ 同名2D図面 .pdf\nØ22.0×幅4.65mm・R1.50×24溝・13.20g\n中心貫通穴 Ø2.00 H7（4mm未満突起ゼロ!）",
             ),
             (
                 "#02 マグネットホルダー ×1",
                 "JLC3DP 造形 (MJF/SLS PA12)",
                 "#1d4ed8",
                 "p02",
-                "cases/inertia_wheel/magnet-holder.step\nØ6.64×5.05mm（公式5×5×5mm・肉厚≥1.2適合）\n東側Dカット軸圧入＆#08磁石を接着ゼロ保持",
+                "cases/inertia_wheel/magnet-holder.step\nØ6.64×5.05mm（公式5×5×5mm・肉厚≥1.2適合）\n東側 2×12mm ピンへ圧入＆#08磁石を保持",
             ),
             (
                 "#03 シーソーロッカー ×1",
@@ -1059,11 +1076,11 @@ def _draw_parts_guide_diagram():
                 "Kailh Square Silent 6.2×6.2×4.3mm (赤軸)\n右メイン基板 B.Cu 東側へ挿し2ピンはんだ\n(F.Cu側飛び出しピン先端のみ≤0.4mm平切り)",
             ),
             (
-                "#07 ミニチュアベアリング ×2",
-                "市販購入品 ×2 (脱脂して使用)",
+                "#07 ベアリング×2 ＋ 平行ピン・シム",
+                "市販購入品 (モノタロウ一括調達)",
                 "#b45309",
                 "p07",
-                "NMB ミネベアミツミ DDL-520ZZ\n内径Ø2×外径Ø5×幅2.3mm 標準両シールド\n#03 独立Cクリップ座(4.69mm)へスナップイン",
+                "DDL-520ZZ×2(脱脂) ＋ B種h7 2.0×12mmピン\n＋ 岩田 SUSシム Ø2×Ø3（西0.2×2 / 東0.3×1）\n内輪のみ支持で外輪接触ゼロ・滑らかに空転!",
             ),
             (
                 "#08 角度検出磁石 (D4×1mm) ×1",

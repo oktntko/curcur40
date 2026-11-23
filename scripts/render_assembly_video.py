@@ -593,11 +593,15 @@ def build_scene(plotter: pv.Plotter) -> dict:
     rck_s = build_wheel_rocker_local()
     crd_s = build_wheel_cradle_local()
     mov_hw, stat_ins = build_hardware_parts_local()
-    brg_w_s, brg_e_s, mag_d4_s, mag_det_s, ins_det_s, scr_det_s = mov_hw
+    brg_w_s, brg_e_s, mag_d4_s, mag_det_s, ins_det_s, scr_det_s, pin_s, shim_w1_s, shim_w2_s, shim_e1_s = mov_hw
     ins_wc1_s, ins_wc2_s = stat_ins
 
     wheel_parts = {
         "flywheel": AnimPart(plotter, solid_to_polydata(whl_s, tol=0.035, ang_tol=0.12), MAT_STEEL_WHEEL, "Steel_Flywheel"),
+        "pin_shaft": AnimPart(plotter, solid_to_polydata(pin_s, tol=0.035), MAT_SCREW_STEEL, "Pin_2x12"),
+        "shim_w1": AnimPart(plotter, solid_to_polydata(shim_w1_s, tol=0.03), MAT_BEARING_STEEL, "Shim_W1"),
+        "shim_w2": AnimPart(plotter, solid_to_polydata(shim_w2_s, tol=0.03), MAT_BEARING_STEEL, "Shim_W2"),
+        "shim_e1": AnimPart(plotter, solid_to_polydata(shim_e1_s, tol=0.03), MAT_BEARING_STEEL, "Shim_E1"),
         "brg_w": AnimPart(plotter, solid_to_polydata(brg_w_s, tol=0.04), MAT_BEARING_STEEL, "Brg_W"),
         "brg_e": AnimPart(plotter, solid_to_polydata(brg_e_s, tol=0.04), MAT_BEARING_STEEL, "Brg_E"),
         "holder": AnimPart(plotter, solid_to_polydata(hld_s, tol=0.04), MAT_WHEEL_RESIN_BLACK, "Magnet_Holder"),
@@ -718,11 +722,11 @@ TOTAL_DURATION = 26.5
 
 STAGE_CAPTIONS = [
     (0.0, 4.3, "STEP 1 / 6", "トラックボールユニットの組み立て", "TBセンサー基板 + PMW3360 + LM19レンズ(ピン無切断) + カップ + 支持球"),
-    (4.3, 9.7, "STEP 2 / 6", "パッシブ磁気慣性ホイールの組み立て", "黒染め45#鋼一体軸ホイール + ベアリング + 東側磁石ホルダー + Cクリップ連結ロッカー/クレードル"),
+    (4.3, 9.7, "STEP 2 / 6", "パッシブ磁気慣性ホイールの組み立て", "黒染め45#鋼ホイール + 2×12mm平行ピン・シム + ベアリング + 磁石ホルダー + ロッカー/クレードル"),
     (9.7, 13.8, "STEP 3 / 6", "ボトムケース準備 ＆ トラックボール組み込み", "11.80°傾斜PA12白ナイロンケース + 真鍮インサート圧入 + 3mm沈み込みTB固定"),
     (13.8, 18.2, "STEP 4 / 6", "慣性ホイール ＆ メインPCB（黒）の締結", "右メインPCB裏へホイール固定（WC1/WC2） → ケース着地 ＆ キー谷間12箇所ネジ固定"),
     (18.2, 23.6, "STEP 5 / 6", "トッププレート・スイッチ・キーキャップ・25mm球装着", "FR-4トッププレート（黒） + Choc V2 スイッチ39個 + 白キーキャップ39個 + 25mmボール"),
-    (23.6, 26.6, "COMPLETE", "curcur40 v1.1 完成", "11.80°テンティング + 閉円形開口25mmトラックボール + 黒染め45#鋼一体軸慣性ホイール"),
+    (23.6, 26.6, "COMPLETE", "curcur40 v1.1 完成", "11.80°テンティング + 閉円形開口25mmトラックボール + 黒染め45#鋼パッシブ磁気慣性ホイール"),
 ]
 
 
@@ -899,15 +903,19 @@ def update_scene_at_time(scene: dict, t: float):
         fade_out_w = 1.0 - ease_in_out_cubic(progress(t, 9.45, 9.90))
         m_w_base = M_DESK_R @ mat_translate(0.0, 0.0, 26.0) @ M_WHEEL_TO_STEP
 
-        # Rotor assembly first rises slightly during rocker insertion or drops cleanly into rocker
-        # 4.30s: #01 Blackened 45# Steel Flywheel appears
-        m_fw, a_fw = drop_state(t, 4.30, 0.55, (0.0, 0.0, 8.0))
-        # 4.85s: 2x DDL-520ZZ Bearings slide onto journals along ±u (X)
-        m_bw, a_bw = drop_state(t, 4.85, 0.65, (-12.0, 0.0, 0.0), snap=True)
-        m_be, a_be = drop_state(t, 4.85, 0.65, (12.0, 0.0, 0.0), snap=True)
-        # 5.45s: #02 Magnet Holder + #08 D4x1mm Magnet slide onto East (+u) D-shaft
-        m_hd, a_hd = drop_state(t, 5.45, 0.60, (14.0, 0.0, 0.0), snap=True)
-        m_md4, a_md4 = drop_state(t, 5.80, 0.55, (16.0, 0.0, 0.0), snap=True)
+        # Rotor assembly:
+        # 4.30s: #01 Blackened 45# Steel Flywheel appears, followed by 2x12mm Parallel Pin (4.55s) & Shims (4.80s)
+        m_fw, a_fw = drop_state(t, 4.30, 0.45, (0.0, 0.0, 8.0))
+        m_pin, a_pin = drop_state(t, 4.55, 0.45, (14.0, 0.0, 0.0), snap=True)
+        m_sw2, a_sw2 = drop_state(t, 4.78, 0.40, (-9.0, 0.0, 0.0), snap=True)
+        m_sw1, a_sw1 = drop_state(t, 4.84, 0.40, (-10.5, 0.0, 0.0), snap=True)
+        m_se1, a_se1 = drop_state(t, 4.80, 0.40, (9.5, 0.0, 0.0), snap=True)
+        # 5.05s: 2x DDL-520ZZ Bearings slide onto 2x12mm pin along ±u (X)
+        m_bw, a_bw = drop_state(t, 5.05, 0.55, (-12.0, 0.0, 0.0), snap=True)
+        m_be, a_be = drop_state(t, 5.05, 0.55, (12.0, 0.0, 0.0), snap=True)
+        # 5.50s: #02 Magnet Holder + #08 D4x1mm Magnet press onto East (+u) pin end
+        m_hd, a_hd = drop_state(t, 5.50, 0.55, (14.0, 0.0, 0.0), snap=True)
+        m_md4, a_md4 = drop_state(t, 5.82, 0.52, (16.0, 0.0, 0.0), snap=True)
         # 6.30s: #03 Seesaw Rocker rises up so bearings snap into C-clip seats
         m_rk, a_rk = drop_state(t, 6.30, 0.75, (0.0, 0.0, -18.0), snap=True)
         # 6.95s: #04 Open-South U-Cradle rises from below (-18 mm) to snap onto Rocker trunnions,
@@ -921,6 +929,10 @@ def update_scene_at_time(scene: dict, t: float):
         m_mdet, a_mdet = drop_state(t, 7.85, 0.55, (0.0, 0.0, 8.0), snap=True)
 
         wp["flywheel"].update(m_w_base @ m_seesaw @ m_fw @ m_spin, a_fw * fade_out_w)
+        wp["pin_shaft"].update(m_w_base @ m_seesaw @ m_pin @ m_spin, a_pin * fade_out_w)
+        wp["shim_w1"].update(m_w_base @ m_seesaw @ m_sw1 @ m_spin, a_sw1 * fade_out_w)
+        wp["shim_w2"].update(m_w_base @ m_seesaw @ m_sw2 @ m_spin, a_sw2 * fade_out_w)
+        wp["shim_e1"].update(m_w_base @ m_seesaw @ m_se1 @ m_spin, a_se1 * fade_out_w)
         wp["brg_w"].update(m_w_base @ m_seesaw @ m_bw, a_bw * fade_out_w)
         wp["brg_e"].update(m_w_base @ m_seesaw @ m_be, a_be * fade_out_w)
         wp["holder"].update(m_w_base @ m_seesaw @ m_hd @ m_spin, a_hd * fade_out_w)
@@ -948,7 +960,7 @@ def update_scene_at_time(scene: dict, t: float):
 
         m_w_world = M_DESK_R @ mat_translate(0.0, 0.0, z_whl) @ M_WHEEL_TO_STEP
         for key, part in wp.items():
-            if key in ("flywheel", "holder", "mag_d4"):
+            if key in ("flywheel", "pin_shaft", "shim_w1", "shim_w2", "shim_e1", "holder", "mag_d4"):
                 part.update(m_w_world @ m_spin, a_whl)
             else:
                 part.update(m_w_world, a_whl)
