@@ -1,58 +1,86 @@
-# `scripts/` — curcur40 公式ジェネレータ・出力スクリプト集
+# `scripts/` — curcur40 公式生成・自動検証スクリプト集
 
-本ディレクトリには、**curcur40** の 3D CAD モデル（STEP / STL）、FR-4 トッププレート基板（`.kicad_pcb` / `.svg`）、JLCPCB 発注用製造データ（`GERBER` / `BOM` / `CPL`）、およびドキュメント用図版・3Dプレビュー画像を再現可能に生成・更新する公式スクリプトのみを格納します。
-
----
-
-## 1. ディレクトリ格納・運用ルール
-
-1. **恒久スクリプトのみを `scripts/` に格納する**:
-   - 設計仕様書（[`docs/case_spec.md`](../docs/case_spec.md), [`docs/pcb_spec.md`](../docs/pcb_spec.md), [`docs/passive_inertia_wheel_spec.md`](../docs/passive_inertia_wheel_spec.md), [`docs/parts_spec.md`](../docs/parts_spec.md)）のパラメータ変更時に再実行するジェネレータ・エクスポータのみを本ディレクトリで管理します。
-2. **一時ファイル・使い捨てスクリプトを残さない**:
-   - 1回限りの調査スクリプトや DRC/ERC の一時レポートファイル（`.rpt`, `.net`, `.bak`, `.kicad_prl`）、および作業用の `scratch/`・`tmp/` ディレクトリは、作業完了時に削除しリポジトリ内に残しません（スクリプト内で DRC 検証や一時レンダリングを行う場合は Python 標準の `tempfile.TemporaryDirectory` を使用します）。
-3. **環境非依存の相対パス記述（フルパス直書きの禁止）**:
-   - スクリプト内のワークスペースパスや入出力先パスには `c:\Users\...` 等の環境依存フルパスをハードコードせず、必ずスクリプト自身の位置からの相対解決（`WORKSPACE = Path(__file__).resolve().parent.parent`）を起点として記述します（カレントディレクトリに依存せずどこからでも実行可能）。
-4. **出力先ディレクトリ**:
-   - **ケース・カップ単体部品 (STEP / STL)**: [`cases/`](../cases/) 直下
-   - **アンダープレート一体軸パッシブ磁気慣性ホイール単体部品 (STEP / STL)**: [`cases/inertia_wheel/`](../cases/inertia_wheel/)
-   - **検証・確認用アセンブリモデル (STEP / STL)**: [`cases/assemblies/`](../cases/assemblies/)
-   - **トッププレート PCB / SVG**: [`plates/pcb/`](../plates/pcb/), [`plates/svg/`](../plates/svg/)
-   - **JLCPCB 発注用データ**:
-     - **3-in-1 統合 PCBA パネル（推奨）**: [`pcbs/panel/jlcpcb/production_files/`](../pcbs/panel/jlcpcb/production_files/)
-     - 左メイン基板: [`pcbs/left/jlcpcb/production_files/`](../pcbs/left/jlcpcb/production_files/)
-     - 右メイン基板: [`pcbs/right/jlcpcb/production_files/`](../pcbs/right/jlcpcb/production_files/)
-     - TBセンサーサブ基板: [`pcbs/pmw3360/jlcpcb/production_files/`](../pcbs/pmw3360/jlcpcb/production_files/)
-     - トッププレート: [`plates/pcb/jlcpcb/production_files/`](../plates/pcb/jlcpcb/production_files/)
-   - **ドキュメント・プレビュー画像**: [`docs/`](../docs/), [`docs/assets/`](../docs/assets/)
+本ディレクトリには、**curcur40** の 3D CAD モデル（STEP / 2D PDF）、FR-4 トッププレート基板（`.kicad_pcb` / `.svg`）、JLCPCB 発注用製造データ（`GERBER` / `BOM` / `CPL`）、およびドキュメント用図版・プレビュー画像・3D 組み立て動画を再現可能に生成・検証する公式スクリプト（全 12本）を格納します。
 
 ---
 
-## 2. スクリプト一覧と実行方法（全12本）
+## 1. 運用ルールと出力先ディレクトリ
 
-### ① 3D CAD 生成スクリプト（`cadgen` / `build123d` 環境で実行）
+1. **恒久スクリプトのみを管理**: 1回限りの調査スクリプトや一時レポート（`.rpt`, `.net`, `.bak`, `.kicad_prl`）は残さず、DRC 検証や一時プロットには `tempfile.TemporaryDirectory` を使用します。
+2. **環境非依存の相対パス**: フルパスをハードコードせず、`WORKSPACE = Path(__file__).resolve().parent.parent` を起点に解決します。
+3. **STEP 一本化（STL 非出力）**: 3Dプリント・CNC 発注および CAD 検証はすべて高精度な `.step`（および CNC 2D 図面 `.pdf`）に統一しており、重複する `.stl` は出力しません。
+4. **主な出力先**:
+   - ケース・カップ・ボックス単体モデル: [`cases/`](../cases/)（`left.step`, `left-desk.step`, `right.step`, `right-desk.step`, `trackball-cup.step`, `carrying-box.step`, `carrying-box-lid.step`）
+   - 慣性ホイール単体モデル・2D公差図面: [`cases/inertia_wheel/`](../cases/inertia_wheel/)（`steel-flywheel.step`, `steel-flywheel.pdf`, `magnet-holder.step`, `wheel-rocker.step`, `wheel-cradle.step`）
+   - 検証・レンダリング用アセンブリ（8種）: [`cases/assemblies/`](../cases/assemblies/)（`assembly-full.step`, `assembly-full-desk.step`, `carrying-box-assembly.step`, `carrying-box-with-lid-assembly.step`, `curcur40-right-wheel-assembly.step`, `inertia-wheel-assembly.step`, `pmw3360-lens-pcb-assembly.step`, `trackball-cup-with-ball.step`）
+   - トッププレート・SVG: [`plates/pcb/`](../plates/pcb/), [`plates/svg/`](../plates/svg/)
+   - JLCPCB 発注データ: [`pcbs/panel/jlcpcb/production_files/`](../pcbs/panel/jlcpcb/production_files/)（単体基板用は `pcbs/{left,right,pmw3360}/jlcpcb/production_files/`、プレート用は `plates/pcb/jlcpcb/production_files/`）
+   - 図版・プレビュー画像・動画: [`docs/assets/`](../docs/assets/)
+
+---
+
+## 2. スクリプト一覧と担当仕様書の対応（全 12本）
+
+### ① 3D CAD 生成・検証スクリプト（`cadgen==0.7.26` / Python 3.13 環境）
+
+実行コマンドプレフィックス（PowerShell）:
 ```powershell
-$CADGEN_PY = "$env:USERPROFILE\.local\bin\uvx.exe"
+& "$env:USERPROFILE\.local\bin\uvx.exe" --no-config --managed-python --python 3.13 --from "cadgen==0.7.26" python <script.py>
 ```
 
-| スクリプト | 役割・出力ファイル |
-| :--- | :--- |
-| **[`generate_cases.py`](./generate_cases.py)** | 左右の3Dプリント用 100% 密閉底面・`20×65×5 mm` 折りたたみテンティングスタンド平行2本埋め込みブラインドポケット（$65.80\times 20.60\times 5.20\text{ mm}$ ＋ 親指側爪掛け凹み、隔壁 $\ge 1.09\sim 1.26\text{ mm}$）・$11.80^\circ$ 段差ゼロ連続傾斜内底面・真鍮ヒートセットインサート単段フラット円筒ボス（キー谷間12箇所 `L1`〜`L6`/`R1`〜`R6` 均一 $\varnothing 5.20\text{ mm}$［天面 $Z = -5.80\text{ mm}$・片側肉厚 $1.175\text{ mm}$］＋ 右 `TB1`〜`TB4` $\varnothing 6.00\text{ mm}$［天面 $Z = -20.60\text{ mm}$］＋ USB-C ポート近傍の内壁一体基板受け棚 片側3箇所［天面 $Z = -5.80\text{ mm}$］）付きトレイ型ボトムケース（トッププレート水平基準 `cases/left.step`, `left.stl`, `right.step`, `right.stl` およびデスク水平基準 `left-desk.step`, `left-desk.stl`, `right-desk.step`, `right-desk.stl`）を生成し、JLC3DP 基本造形ルール・極小隙間・0.80mm未満薄肉検証（確定除外箇所を除く違反0件）を実行します。 |
-| **[`generate_trackball_cup.py`](./generate_trackball_cup.py)** | 25mm トラックボールカップ（`cases/trackball-cup.step`, `trackball-cup.stl`、高さ $2.00\text{ mm}$ フラット固定耳・ストレート $\varnothing 2.40\text{ mm}$ 穴）および 25mm 球＋光学距離基準点（`Lens_Optical_Ref_Point`, $Z_{\text{rel}} = +3.40\text{ mm}$）付き検証アセンブリ（`cases/assemblies/trackball-cup-with-ball.step`, `trackball-cup-with-ball.stl`）を生成し、極小隙間・0.80mm未満薄肉検証を実行します。 |
-| **[`generate_sensor_assemblies.py`](./generate_sensor_assemblies.py)** | PMW3360DM-T2QU + LM19-LSI レンズ + PCB の光学アセンブリ（`cases/assemblies/pmw3360-lens-pcb-assembly.step`）およびカップ＋ボール統合検証モデル（`cases/assemblies/trackball-sensor-assembly.step`）を生成します（両モデルとも `Lens_Optical_Ref_Point` を収録）。 |
-| **[`generate_inertia_wheel.py`](./generate_inertia_wheel.py)** | 東側反転配置アンダープレート 1ピース一体軸パッシブ磁気慣性ホイール実部品 4種（[`cases/inertia_wheel/`](../cases/inertia_wheel/) 配下の JLCCNC `45# Steel + Blackening` 削り出し $\varnothing 22.0 \times 4.65\text{ mm}$ `steel-flywheel.step/.stl` ＋ 同名2D公差図面 **`steel-flywheel.pdf`**［フラット肩スパン $5.40\text{ mm}$ 完全一致・`⌀1.97 ±0.02 mm` 指定］、および JLC3DP 公式造形ガイドライン完全準拠の MJF/SLS PA12 造形 `magnet-holder`［$6.64\times 6.64\times 5.05\text{ mm} \ge 5\times 5\times 5\text{ mm}$、`<1.20mm` 違反0件］, `wheel-rocker`［`<1.20mm` 違反0件］, `wheel-cradle`［`<1.00mm` 違反0件・盲穴 $5.30\text{ mm}$ $h/\Phi=1.86\le 3.0$・ネジ底余裕 $0.90\text{ mm}$］の STEP/STL）ならびに検証アセンブリ（`cases/assemblies/inertia-wheel-assembly.step`）を生成し、JLC3DP/JLCCNC 公式デザインルール・静止姿勢（$0^\circ$）〜フルクリック押下姿勢（$2.95^\circ$）の全パーツ間干渉ゼロ（`0.00000000 mm³`）・**6自由度（6-DOF）固定＆稼働拘束＋垂直挿入軌道検証（`verify_6dof_constraints()`）** を一括検証します。 |
-| **[`generate_full_assembly.py`](./generate_full_assembly.py)** | `kicad-cli pcb export step --subst-models --no-dnp` により全3基板（`left`, `right`, `pmw3360`）と **全526個のKiCad実3D部品モデル** を直接出力・同期したうえで、嵌合する **JST `SHR-06V-S-B` ハウジング 2個**・左右ケース・**埋め込み折りたたみスタンド 4本**・左右トッププレート・Kailh Choc V2 スイッチ 39個・キーキャップ 39個・トラックボールカップ・25mm球・PMW3360・LM19レンズ・`Lens_Optical_Ref_Point`・アンダープレート一体軸慣性ホイール一式・`M2×L3.0×OD3.2mm` 真鍮ヒートセットインサート 19個・統一 `M2×6.0mm` ネジ 19本を統合したフルアセンブリ（`cases/assemblies/assembly-full.step`, `assembly-full-desk.step`、全667ソリッド）および右手ホイール検証モデル（`cases/assemblies/curcur40-right-wheel-assembly.step`、全340ソリッド）を生成し、①全パーツ間の干渉体積ゼロ（`0.00000000 mm³`）＆スタンド底面沈み込み検証、②非接触パーツ間の最小クリアランス、③3Dプリント部品全6種の0.80mm未満肉厚チェック（確定除外箇所を除く違反0件）、④**スイッチ嵌合トッププレート・フラットボス＆内壁受け棚締結基板・カップ＆ホイール全体の 6-DOF 機械的拘束検証** を一括検証します。 |
-| **[`generate_carrying_box.py`](./generate_carrying_box.py)** | 持ち運び用 上下リバーシブル完全90°直方体・スナップフタ付き6面フルカバー・スライド差し込みボックス本体（`cases/carrying-box.step`, `carrying-box.stl`：右手トラックボール側が下でも上でも入る $Y$ 軸 $180^\circ$ 完全点対称直方体・高さ $3.00\text{ mm}$ ゴム足に対して $1.00\text{ mm}$ の余裕を確保した深さ $4.00\text{ mm}$ 掘り込みレール・奥面貫通穴ゼロのデュアル内部堀＋手前突き当たりストッパー段差・クランク段差デュアル TB キーパー、$140.20 \times 103.79 \times 80.25\text{ mm}$）＋ 力学計算済み穴なしスナップキャップフタ（`cases/carrying-box-lid.step`, `carrying-box-lid.stl`：長スパン $14.0\text{ mm}$・抜き角 $26^\circ$ 弾性カム爪［引き抜き力 $9.73\text{ N}$・根元最大ひずみ $0.71\%$］・上下リバーシブル、$140.20 \times 80.25 \times 24.15\text{ mm}$）および収納アセンブリ2種（フタ装着標準 `carrying-box-with-lid-assembly.step` 681ソリッド・包絡外寸 $140.20 \times 110.44 \times 80.25\text{ mm}$ ／ フタ取り外し内部確認用 `carrying-box-assembly.step` 680ソリッド）を生成し、スナップ力学検証・自己対称体積検証（誤差 `0.000000 mm³`）・JLC3DP ルール・0.80mm未満薄肉完全ゼロ・正位置＆上下反転位置の両方での全681ソリッド干渉ゼロ（`0.00000000 mm³`）＆ 6-DOF 拘束を一括検証します。 |
+| スクリプト | 対応仕様書 | 役割・出力ファイル |
+| :--- | :--- | :--- |
+| **[`generate_cases.py`](./generate_cases.py)** | [`case_spec.md`](../docs/case_spec.md) | 左右の密閉ボトムケース（内部基準 `left.step`, `right.step` および JLC3DP 用の底面水平接地 `left-desk.step`, `right-desk.step`）を生成し、JLC3DP 造形基準・極小隙間・薄肉チェックを実行します。 |
+| **[`generate_trackball_cup.py`](./generate_trackball_cup.py)** | [`trackball_spec.md`](../docs/trackball_spec.md) | 25 mm トラックボールカップ（`trackball-cup.step`）および 25 mm 球＋光学基準面付きアセンブリ（`trackball-cup-with-ball.step`）を生成し、干渉・薄肉チェックを実行します。 |
+| **[`generate_sensor_assemblies.py`](./generate_sensor_assemblies.py)** | [`trackball_spec.md`](../docs/trackball_spec.md) | PMW3360 + LM19-LSI + サブ基板の光学基準アセンブリ（`pmw3360-lens-pcb-assembly.step`, `Lens_Optical_Ref_Point` 収録）を生成し、規定光学距離 `2.4000 mm` と非接触を検証します。 |
+| **[`generate_inertia_wheel.py`](./generate_inertia_wheel.py)** | [`wheel_spec.md`](../docs/wheel_spec.md) | 慣性ホイール実部品 4種（`steel-flywheel.step` ＋ 2D公差図面 `steel-flywheel.pdf`, `magnet-holder.step`, `wheel-rocker.step`, `wheel-cradle.step`）と単体アセンブリ（`inertia-wheel-assembly.step`）を生成し、DFM・干渉・単体 6-DOF 拘束・垂直挿入軌道を検証します。 |
+| **[`generate_full_assembly.py`](./generate_full_assembly.py)** | [`case_spec.md`](../docs/case_spec.md) | KiCad 10.0 から全3基板＋実 3D 部品モデルを直接 STEP 出力・同期し、全パーツを統合したフルアセンブリ（`assembly-full.step`, `assembly-full-desk.step`）および右手ホイール検証モデル（`curcur40-right-wheel-assembly.step`）を生成して、干渉ゼロ・最小クリアランス・全体 6-DOF 拘束を一括検証します。 |
+| **[`generate_carrying_box.py`](./generate_carrying_box.py)** | [`carrying_box_spec.md`](../docs/carrying_box_spec.md) | 上下リバーシブル収納ボックス（`carrying-box.step`）・浅角カムスナップフタ（`carrying-box-lid.step`）および収納検証アセンブリ 2種（`carrying-box-with-lid-assembly.step`, `carrying-box-assembly.step`）を生成し、スナップ力学・点対称性・正逆両向きの干渉ゼロ＆ 6-DOF 拘束を検証します。 |
 
-### ② KiCad 基板・プレート・JLCPCB 発注データ・図版スクリプト
+### ② KiCad 基板・プレート・JLCPCB 出力スクリプト（KiCad 10.0 Python 環境）
+
+実行コマンドプレフィックス（PowerShell）:
 ```powershell
-$KICAD_PY = "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\python.exe"
+& "$env:LOCALAPPDATA\Programs\KiCad\10.0\bin\python.exe" <script.py>
 ```
 
-| スクリプト | 役割・出力ファイル |
+| スクリプト | 対応仕様書 | 役割・出力ファイル |
+| :--- | :--- | :--- |
+| **[`generate_plates.py`](./generate_plates.py)** | [`case_spec.md`](../docs/case_spec.md) | 左右 FR-4 トッププレート（`plate-top-left.kicad_pcb`, `plate-top-right.kicad_pcb`：裏面ガーバー認識用マーカー付）およびレーザーカット用 SVG（`plate-curcur40.svg`, `foam-curcur40.svg`）を生成し、DRC 違反 0件を検証します。 |
+| **[`export_jlcpcb.py`](./export_jlcpcb.py)** | [`pcb_spec.md`](../docs/pcb_spec.md) | 3-in-1 統合パネル（`curcur40-panel-3in1`）の自動合成、全基板・パネルの Gerber ZIP / BOM CSV / CPL CSV、およびトッププレート Gerber ZIP を出力し、JLCPCB プリフライト検証を一括実行します（※基板・プレート変更時は続けて必ず `generate_full_assembly.py` も実行）。 |
+
+### ③ 図版・プレビュー画像・動画レンダリングスクリプト
+
+| スクリプト | 役割・出力アセット |
 | :--- | :--- |
-| **[`generate_plates.py`](./generate_plates.py)** | 左右 FR-4 トッププレート（`plate-top-left.kicad_pcb`, `plate-top-right.kicad_pcb`：全14箇所キー谷間のネジ頭沈み込み用逃げ穴［`WC1` $\varnothing 4.05\text{ mm}$、他13箇所 $\varnothing 4.40\text{ mm}$・スイッチ嵌合保持・外周余白穴ゼロ］、右手カバー不要 $6.55 \times 22.00\text{ mm}$ ホイール同心長穴［静止時左右 $0.95\text{ mm}$ 等幅］ ＆ $\varnothing 28.625\text{ mm}$ 閉円形トラックボール開口）ならびにレーザーカット用 SVG（`plate-curcur40.svg`, `foam-curcur40.svg`）を生成し、DRC（違反0件）を検証します。 |
-| **[`export_jlcpcb.py`](./export_jlcpcb.py)** | 全3基板（`curcur40-left`, `curcur40-right`, `curcur40-pmw3360`：すべて `1.6mm` FR-4 Bottom PCBA）および **3-in-1 統合 Economic PCBA パネル（`curcur40-panel-3in1`、全88箇所マウスバイト銅箔クリアランス $\ge 0.48\text{ mm}$ 自動検証付）** の Gerber ZIP・BOM CSV・CPL CSV、ならびに左右トッププレートの Gerber ZIP を一括出力し、JLCPCB 公式製造ルール（DRC/ERC、基板・パネルサイズ、最小配線幅 $\ge 0.127\text{ mm}$、最小ビア $\ge 0.45/0.30\text{ mm}$、PTH/NPTH穴径、ネジ穴・インサート座面周囲の銅箔キープアウト、Via-in-Pad ゼロ、BOM/CPL/LCSC整合性、DNP/THT除外、および全非`DNP`部品の `.step` 3Dモデル解決チェック）を発注前自動チェックします（※PCB変更時は続けて必ず `generate_full_assembly.py` を実行して3DP干渉を検証すること）。 |
-| **[`generate_spec_diagrams.py`](./generate_spec_diagrams.py)** | `docs/assets/` 配下のスタックアップ断面図・コンパクト $\varnothing 5.20\text{ mm}$ フラットインサートボス＆統一 `M2×6mm` 締結図・トラックボールカップ詳細図面・**組み立て時の工具サイズ制限＆配線ガイド（`assembly_tool_clearance_guide.png`）** 等の解説図版 PNG を生成します（`uvx --from "cadgen==0.7.26" --with matplotlib --with pillow python` で実行）。 |
-| **[`generate_inertia_wheel_diagram.py`](./generate_inertia_wheel_diagram.py)** | アンダープレート一体軸パッシブ磁気慣性ホイールの3Dプレビュー画像（`render_inertia_wheel_flywheel.png`, `render_inertia_wheel_module.png`, `render_curcur40_right_wheel.png`）、部品構成・組立ビジュアルガイド（`inertia_wheel_parts_guide.png`）、`#01`〜`#12` 全番号入り断面・機構解説図版（`passive_inertia_wheel_spec.png`）、および **小学生でもわかる3つのしくみ図解（`inertia_wheel_easy_guide.png`）** を生成します（`uvx --from "cadgen==0.7.26" --with matplotlib --with pillow python` で実行）。 |
-| **[`render_previews.py`](./render_previews.py)** | `docs/assets/render_*.png` および `trackball_cup*.png`（フルアセンブリ表裏斜視・キャリングボックス＆収納アセンブリ・全3基板・左右トッププレート・トラックボールカップの3Dレンダリング画像）を一括更新します。 |
-| **[`render_assembly_video.py`](./render_assembly_video.py)** | トラックボールユニット組立 → アンダープレート慣性ホイール組立（東側反転・黒染め45#鋼ホイール） → 密閉ボトムケース（白・$11.80^\circ$）・PCB（黒）・トッププレート（黒）・Choc V2 スイッチ39個・キーキャップ（白）39個・25mmボールの積み上げ工程を再現した **1080p 60fps PBR 3D組み立てアニメーション動画（`docs/assets/assembly_animation.mp4`）** および **インライン埋め込み用アニメーション WebP（`docs/assets/assembly_animation.webp`）** を生成します（`uvx --from "cadgen==0.7.26" --with pyvista --with imageio-ffmpeg --with pillow python` で実行、WebP のみ再生成する場合は `--webp-only` を付与）。 |
+| **[`generate_spec_diagrams.py`](./generate_spec_diagrams.py)** | スタックアップ断面図、ファスナ配置図、トラックボールカップ詳細図面、工具クリアランスガイド等の解説図版 PNG を生成（`--with matplotlib --with pillow` を付与して実行）。 |
+| **[`generate_inertia_wheel_diagram.py`](./generate_inertia_wheel_diagram.py)** | 慣性ホイールの 3D レンダリング画像、部品構成ガイド、断面解説図、3要素しくみ図解 PNG を生成（`--with matplotlib --with pillow`）。 |
+| **[`render_previews.py`](./render_previews.py)** | フルアセンブリ、キャリングボックス、全3基板、左右トッププレート、トラックボールカップの 3D プレビュー画像を `docs/assets/` へ一括レンダリング。 |
+| **[`render_assembly_video.py`](./render_assembly_video.py)** | 1080p 60fps PBR 3D 組み立てアニメーション動画（`assembly_animation.mp4`）および WebP（`assembly_animation.webp`）を生成（`--with pyvista --with imageio-ffmpeg --with pillow`）。 |
+
+---
+
+## 3. 自動検証・合格基準の定義（Validation Criteria）
+
+### 3.1 PCB DRC / ERC ＆ JLCPCB プリフライト基準 (`export_jlcpcb.py`)
+- **DRC (`kicad-cli pcb drc --schematic-parity`)**: 全3基板・3-in-1 パネル・左右トッププレートすべて **違反 0件・未配線 0件・回路図不一致 0件**。
+- **ERC (`kicad-cli sch erc`)**: `curcur40-pmw3360` は **エラー 0件・警告 0件**。左右メイン基板は **エラー 0件・警告 1件**（左右判定ピン `GPIO21` と `+3V3` / `GNDR` 直結による意図的な `pin_to_pin` 警告のみ）。
+- **製造制約チェック**:
+  - 外形サイズ: 単体基板 `≥ 20 × 20 mm`、パネル `70 × 70 〜 250 × 250 mm` 以内（実測 `131.05 × 207.25 mm`、全 88箇所のマウスバイト穴端から銅箔まで `≥ 0.48 mm`）。
+  - 最小配線幅 `≥ 0.127 mm`（実基板 `≥ 0.200 mm`）、最小ビア `≥ 0.45 / 0.30 mm`（実基板 `0.50 / 0.30 mm` または `0.60 / 0.30 mm`）、アニュラリング `≥ 0.075 mm`、Via-in-Pad ゼロ。
+  - PTH ドリル `0.20 〜 6.30 mm`、NPTH ドリル `≥ 0.50 mm`、固定穴周囲の銅箔キープアウト確保。
+  - Gerber 全 9レイヤー＋ドリル同梱、BOM / CPL Designator 完全一致、有効 LCSC 番号、THT / DNP 除外、および **全非 DNP 部品の有効な `.step` 3D モデル存在確認**（固定除外は銅箔ブリッジ `JP1` と光学側配置 `PMW3360 U1` の 2点のみ）。
+
+### 3.2 JLC3DP / JLCCNC 造形ガイドライン＆薄肉検証基準
+- **基本造形要件**: 1ファイル 1モデル（水密多様体単一ソリッド）、造形サイズ `5 × 5 × 5 〜 350 × 276 × 360 mm` 以内、最下面 `Z = 0.0000 mm` 水平接地、全凹円筒穴径 `≥ ⌀1.50 mm` かつ穴深さ比 `h/Φ ≤ 3.0`。
+- **非隣接面ペア肉厚検証と確定除外箇所**:
+  - `magnet-holder`, `wheel-rocker`: `< 1.20 mm` 面ペア **0件**（爪・突起 `≥ 1.50 mm`）。
+  - `wheel-cradle`: `< 1.00 mm` 面ペア **0件**（爪・脚 `≥ 1.55 mm`）。
+  - `carrying-box`, `carrying-box-lid`: `< 0.80 mm` 面ペア **0件**。
+  - `left-desk`, `right-desk`: 壁厚 `1.50 mm` に対する上端外周 `R = 0.95 mm` フィレット残りの水平リム幅（`0.550 mm`）およびコーナー斜め距離のみを確定除外とし、その他 `< 0.80 mm` 違反 **0件**。
+  - `trackball-cup`: セラミック支持球 3箇所の抜け止めリップ（約 `0.455 mm`）とボール保持爪 3箇所の上端面取りエッジ（`0.700 mm`）のみを確定除外とし、その他 `< 0.80 mm` 違反 **0件**。
+
+### 3.3 3D 干渉ゼロ・最小クリアランス・6-DOF 機械拘束検証 (`generate_full_assembly.py` 等)
+- **干渉体積ゼロ**: KiCad 実 3D 部品モデル・嵌合 JST `SHR-06V-S-B` ハウジング・折りたたみスタンド・ネジ・インサートを含む全ソリッド間で `overlap_volume == 0.00000000 mm³`（静止姿勢・`2.95°` クリック押下姿勢・キャリングボックス正逆両収納姿勢）。
+- **最小クリアランス・光学距離**: 全 SMD 部品 vs ケース `≥ 0.30 mm`、ホイール可動部 vs ケース床 `≥ 0.40 mm`・vs プレート/基板 `≥ 0.30 mm`、25 mm 球 vs カップ `0.25 mm`、ボール最下面 vs `Lens_Optical_Ref_Point` 距離 **`2.4000 mm`**。
+- **6-DOF 拘束＆挿入軌道**: 基板・カップ・クレードルがボス＆ネジで、トッププレートが 39個の Choc V2 スイッチ嵌合で `±X, ±Y, ±Z` すべて機械ロックされ、ホイール機構は回転（`Rx 360°`）とクリック揺動（`0° 〜 2.95°` ＋ ハードストップ）のみが許容され、上からの垂直組み込み軌道で干渉ゼロであること。
