@@ -1,29 +1,28 @@
 # -*- coding: utf-8 -*-
 """
-Generate 3D CAD models (STEP & STL) + 2D CNC Tolerance Drawing (PDF) for the
-East-Reversed Under-Plate 1-Piece Integral-Shaft Passive Magnetic Inertia Scroll Wheel
-(`curcur40-inertia-wheel`) and run automated JLC3DP / JLCCNC official-guideline DFM checks,
-zero-interference verification across rest and middle-click states, and 6-DOF + assembly
-trajectory verification.
+Generate 3D CAD models (STEP) + 2D CNC Tolerance Drawing (PDF) for the
+Under-Plate Center-Bore Passive Magnetic Inertia Scroll Wheel (`curcur40-inertia-wheel`)
+with commercial JIS B 1354 Type B (h7) 2.0x12 mm parallel pin + SUS304 ⌀2x⌀3 mm shims,
+and run automated JLC3DP / JLCCNC official-guideline DFM checks, zero-interference
+verification across rest and middle-click states, and 6-DOF + assembly trajectory verification.
 
 Strictly adheres to Official JLC3DP & JLCCNC Guidelines:
-  - JLC3DP MJF PA12 / SLS 3201PA-F:
+  - JLC3DP MJF PA12 / SLS 3301PA:
       * Single model per file; Build size within [5x5x5 or 10x2x2 mm, 350x276x360 mm]
       * Wall thickness >= 1.20 mm across main body (>= 1.00 mm absolute min), all snaps/protrusions >= 1.50 mm
       * Concave cylindrical holes Φ >= 1.50 mm AND depth-to-diameter ratio h / Φ <= 3.0
-      * Designed for ±0.30 mm model/hole tolerance (0.20..0.40 mm assembly clearance, >= 0.40..0.60 mm stop/moving clearance)
   - JLCCNC 45# Steel + Blackening (Black Oxide):
+      * Zero protruding pins/shafts/bosses < 4.0 mm (JLCCNC metal pin diameter >= 4.0 mm rule)
       * 24 outer flutes cut with R = 1.50 mm (>= Table Row 1 Minimum R = 1.5 mm)
-      * Zero R=0 sharp internal corners (R = 0.50 mm lathe shoulder relief grooves + R = 1.50 mm D-cut tool exit)
-      * Bearing journals & D-shaft specified at ⌀1.97 ±0.02 mm (within JLCCNC ±0.02 mm tightest limit)
-        on accompanying same-name 2D drawing `cases/inertia_wheel/steel-flywheel.pdf`
+      * Center ⌀2.00 H7 (+0.010 / 0 mm) reamed through-hole (h/Φ = 2.33 <= 10) specified on
+        accompanying same-name 2D drawing `cases/inertia_wheel/steel-flywheel.pdf`
 
 Outputs:
   Manufacturing Parts (`cases/inertia_wheel/`):
-    1. steel-flywheel.step / .stl / .pdf  (JLCCNC 45# Steel + Blackening, 1-piece Ø22.00 mm wheel + integral shoulders & D-shaft)
-    2. magnet-holder.step / .stl          (JLC3DP MJF/SLS PA12, Ø6.64 x 5.05 mm >= 5x5x5 mm glue-free D4x1mm magnet sleeve)
-    3. wheel-rocker.step / .stl           (JLC3DP MJF/SLS PA12, >= 1.50 mm C-clip jaws, Ø3.20 mm trunnions, open-top captive detent boss)
-    4. wheel-cradle.step / .stl           (JLC3DP MJF/SLS PA12, open-South U-frame, >= 1.55 mm decoupled C-clip hinge, blind h/Φ<=3.0 bores)
+    1. steel-flywheel.step / .pdf  (JLCCNC 45# Steel + Blackening, Ø22.00 x 4.65 mm fluted wheel + ⌀2.00 H7 center bore)
+    2. magnet-holder.step          (JLC3DP MJF/SLS PA12, Ø6.64 x 5.05 mm >= 5x5x5 mm press-fit D4x1mm magnet sleeve)
+    3. wheel-rocker.step           (JLC3DP MJF/SLS PA12, >= 1.50 mm C-clip jaws, Ø3.20 mm trunnions, open-top captive detent boss)
+    4. wheel-cradle.step           (JLC3DP MJF/SLS PA12, open-South U-frame, >= 1.55 mm decoupled C-clip hinge, blind h/Φ<=3.0 bores)
 
   Verification Assemblies (`cases/assemblies/`):
     1. inertia-wheel-assembly.step
@@ -79,16 +78,19 @@ WHEEL_RIM_W = WHEEL_U_EAST - WHEEL_U_WEST
 N_FLUTES = 24                           # 24 smooth R=1.50 mm flutes (15 deg pitch = 1:1 with 24 scroll notches/rev)
 FLUTE_CUTTER_R = 1.50                   # Exact match to JLCCNC Design Guideline Table Row 1 (Minimum R = 1.5 mm)
 
-# East-Reversed Integral Shaft & DDL-520ZZ (Ø2 x Ø5 x 2.30 mm) Bearing Stack along u:
-STEP_SHOULDER_R = 1.50                  # Ø3.00 mm integral inner-race step (zero loose shims)
-STEP_U_WEST = -3.70                     # West bearing inner-race stop [-3.70, -3.30]
-STEP_U_EAST = +1.70                     # East bearing inner-race stop [+1.40, +1.70]
+# Commercial JIS B 1354 Type B (h7) 2.0x12 mm Parallel Pin + SUS304 ⌀2x⌀3 mm Shims + DDL-520ZZ Stack along u:
+WHEEL_BORE_R = 1.000                    # Exact ⌀2.000 mm nominal center bore (⌀2.00 H7: 2.000..2.010 mm on steel-flywheel.pdf)
+SHIM_OD_R = 1.50                        # Commercial Iwata BRS002003xxx SUS304 shim OD ⌀3.00 mm (contacts DDL-520ZZ Li=2.90 mm inner ring only)
+SHIM_ID_R = 1.005                       # Commercial Iwata BRS002003xxx SUS304 shim ID ⌀2.01 mm
+STEP_U_WEST = -3.70                     # West bearing inner-race face (`0.45 mm` gap to wheel -3.25 -> 2x 0.20 mm shims = 0.40 mm + 0.05 mm play)
+STEP_U_EAST = +1.70                     # East bearing inner-race face (`0.30 mm` gap to wheel +1.40 -> 1x 0.30 mm shim = 0.30 mm)
 BRG_ID_R = 1.00                         # Ø2.00 mm
 BRG_OD_R = 2.50                         # Ø5.00 mm
 BRG_W = 2.30                            # West bearing [-6.00, -3.70], East bearing [+1.70, +4.00]
-SHAFT_R = 0.985                         # Ø1.970 mm nominal journal (⌀1.97 ±0.02 mm on steel-flywheel.pdf -> 1.95..1.99 mm for DDL-520ZZ!)
-SHAFT_U_WEST = -5.95                    # Recessed 0.05 mm inside West bearing outer face (-6.00)
-SHAFT_U_EAST = +6.50                    # Integral East D-shaft (`u in [+4.00, +6.50]`, R=1.50 mm milled exit ramp!)
+PIN_R = 0.995                           # Commercial JIS B 1354 Type B (h7: 1.990..2.000 mm) SUS parallel pin radius
+PIN_U_WEST = -5.90                      # 12.00 mm pin `u in [-5.90, +6.10]`: 0.15 mm clear of -6.05 West stop wall, 2.20 mm in West brg
+PIN_U_EAST = +6.10                      # 2.10 mm engagement inside `#02` magnet-holder (`[+4.00, +6.65]`, 0.55 mm bottom clearance)
+HOLDER_BORE_R = 1.010                   # ⌀2.02 mm CAD press-fit bore in PA12 magnet-holder (`h/Φ = 2.65/2.02 = 1.31 <= 3.0`)
 
 # JLC3DP-Official-Size Magnet Holder (MJF/SLS PA12: 6.64 x 6.64 x 5.05 mm >= 5x5x5 mm, >= 1.20 mm wall everywhere!):
 HOLDER_OD_R = 3.32                      # Ø6.64 mm (1.22 mm wall around Ø4.20 mm magnet pocket; >= 0.30 mm clear of Top Plate at click!)
@@ -225,13 +227,10 @@ def verify_jlc3dp_pa12_part(solid: bd.Solid, name: str, min_wall_mm: float = 1.0
 
 def build_steel_flywheel_local() -> bd.Solid:
     """
-    Build East-Reversed 1-Piece Integral-Shaft Flywheel (`45# Steel + Blackening`) in `(u, v, w)` frame:
-      - Ø22.00 x 4.70 mm solid rim (`u in [-3.30, +1.40]`) with 24 rounded outer flutes (`R = 1.50 mm` >= JLCCNC Min R 1.5 mm)
-      - Integral Ø3.00 mm inner-race shoulders (`u in [-3.70, -3.30]` and `[+1.40, +1.70]`)
-        with `R = 0.50 mm` lathe undercut relief grooves so DDL-520ZZ seats 100% flush without sharp R=0 corners
-      - Integral Ø1.970 mm (`⌀1.97 ±0.02 mm`) bearing journals (`u in [-5.95, -3.70]` and `[+1.70, +4.00]`)
-      - Integral East D-shaft (`u in [+4.00, +6.60]`, D-flat `w >= +0.68` removed over `[+4.85, +6.60]` with
-        smooth `R = 1.50 mm` horizontal end-mill exit ramp at `u = +4.85` -> zero R=0 milled corners!)
+    Build Center-Bore Fluted Flywheel (`45# Steel + Blackening`) in `(u, v, w)` frame:
+      - Ø22.00 x 4.65 mm solid rim (`u in [-3.25, +1.40]`) with 24 rounded outer flutes (`R = 1.50 mm` >= JLCCNC Min R 1.5 mm)
+      - Exact ⌀2.000 mm (`R = 1.000 mm`, specified as `⌀2.00 H7` = `2.000..2.010 mm` on `steel-flywheel.pdf`) center through-hole
+      - ZERO protruding shafts, pins, or shoulders < 4.00 mm (100% compliant with JLCCNC >= 4.0 mm pin diameter rule!)
     """
     rim = bd.extrude(
         bd.Plane.YZ.offset(WHEEL_U_WEST) * bd.Circle(WHEEL_R),
@@ -257,53 +256,11 @@ def build_steel_flywheel_local() -> bd.Solid:
                 amount=WHEEL_RIM_W + 1.0,
             )
         )
-    rim = rim - bd.Compound(flutes)
-
-    # Revolved 1-piece stepped shaft + Ø3.00 mm inner-race shoulders (`u in [-3.70, +1.70]`, exact 5.4000 mm span!)
-    # with true DIN 509 Type E `R = 0.20 mm` radial lathe relief undercuts (`Ø1.60 mm` neck, `r_tan = 1.000 mm <= DDL-520ZZ bore`
-    # leaving `r in [1.000, 1.500]` 100% flat vertical shoulder faces at `u = -3.7000` & `u = +1.7000`!):
-    s45 = math.sqrt(0.5)
-    r_neck = 0.800
-    r_rad = 0.200
-    r_tan = r_neck + r_rad  # 1.000 mm (<= 1.000 mm DDL-520ZZ bore -> even a zero-chamfer ring gauge seats 100% flat!)
-    with bd.BuildSketch(bd.Plane.XY.offset(0.0)) as sk_shaft:
-        with bd.BuildLine():
-            bd.Line((SHAFT_U_WEST, 0.0), (SHAFT_U_WEST, SHAFT_R))
-            bd.Line((SHAFT_U_WEST, SHAFT_R), (STEP_U_WEST - 0.42, SHAFT_R))
-            bd.Line((STEP_U_WEST - 0.42, SHAFT_R), (STEP_U_WEST - r_rad, r_neck))
-            bd.ThreePointArc(
-                (STEP_U_WEST - r_rad, r_neck),
-                (STEP_U_WEST - r_rad + r_rad * s45, r_tan - r_rad * s45),
-                (STEP_U_WEST, r_tan),
-            )
-            bd.Line((STEP_U_WEST, r_tan), (STEP_U_WEST, STEP_SHOULDER_R))
-            bd.Line((STEP_U_WEST, STEP_SHOULDER_R), (STEP_U_EAST, STEP_SHOULDER_R))
-            bd.Line((STEP_U_EAST, STEP_SHOULDER_R), (STEP_U_EAST, r_tan))
-            bd.ThreePointArc(
-                (STEP_U_EAST, r_tan),
-                (STEP_U_EAST + r_rad - r_rad * s45, r_tan - r_rad * s45),
-                (STEP_U_EAST + r_rad, r_neck),
-            )
-            bd.Line((STEP_U_EAST + r_rad, r_neck), (STEP_U_EAST + 0.42, SHAFT_R))
-            bd.Line((STEP_U_EAST + 0.42, SHAFT_R), (SHAFT_U_EAST, SHAFT_R))
-            bd.Line((SHAFT_U_EAST, SHAFT_R), (SHAFT_U_EAST, 0.0))
-            bd.Line((SHAFT_U_EAST, 0.0), (SHAFT_U_WEST, 0.0))
-        bd.make_face()
-    shaft_with_shoulders = bd.revolve(sk_shaft.sketch, axis=bd.Axis.X, revolution_arc=360)
-
-    # East D-flat (`u in [+5.15, +6.55]`, `w >= +0.68`) + R=1.50 mm cylindrical tool sweep exit at `u = +5.15`:
-    d_box = bd.Box(
-        (SHAFT_U_EAST - 5.15) + 0.10,
-        4.00,
-        2.00,
-        align=(bd.Align.MIN, bd.Align.CENTER, bd.Align.MIN),
-    ).moved(bd.Location((5.15, 0.0, 0.68)))
-    d_ramp_cyl = (
-        bd.Cylinder(radius=1.50, height=4.00, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.CENTER))
-        .rotate(bd.Axis.X, 90)
-        .moved(bd.Location((5.15, 0.0, 0.68 + 1.50)))
+    center_bore = bd.extrude(
+        bd.Plane.YZ.offset(WHEEL_U_WEST - 0.5) * bd.Circle(WHEEL_BORE_R),
+        amount=WHEEL_RIM_W + 1.0,
     )
-    body = rim + shaft_with_shoulders - d_box - d_ramp_cyl
+    body = rim - bd.Compound(flutes) - center_bore
     solid = body.solids()[0]
     solid.label = "Steel_Flywheel_22mm"
     return solid
@@ -311,13 +268,13 @@ def build_steel_flywheel_local() -> bd.Solid:
 
 def build_magnet_holder_local() -> bd.Solid:
     """
-    Build Official-JLC3DP-Sized Glue-Free Diametric Magnet Sleeve (`MJF/SLS PA12`) in `(u, v, w)` frame:
+    Build Official-JLC3DP-Sized Press-Fit Diametric Magnet Sleeve (`MJF/SLS PA12`) in `(u, v, w)` frame:
       - Outer cylinder Ø6.64 mm (`R = 3.32 mm`), length `5.05 mm` (`u in [+4.00, +9.05]`)
         -> Bounding box `6.64 x 6.64 x 5.05 mm` (>= `5.0 x 5.0 x 5.0 mm` official JLC3DP min size!)
       - East Ø4.20 mm x 1.20 mm magnet pocket (`u in [+7.85, +9.05]`, radial wall `1.22 mm >= 1.20 mm`, `h/Φ = 0.29 <= 3.0`)
       - Solid `1.20 mm` central PA12 septum (`u in [+6.65, +7.85]`, `>= 1.20 mm`!)
-      - West Ø2.10 mm D-bore (`u in [+4.00, +6.65]`, depth `2.65 mm`, `h/Φ = 1.26 <= 3.0`, D-flat at `w = +0.73` over `[+5.25, +6.65]`
-        with `1.25 mm` round lead-in over `[+4.00, +5.25]` clearing `#01`'s `R = 1.50 mm` D-cut ramp!)
+      - West Ø2.02 mm press-fit shaft bore (`u in [+4.00, +6.65]`, depth `2.65 mm`, `h/Φ = 1.31 <= 3.0`,
+        radial wall `2.31 mm >= 1.20 mm`) for commercial JIS B 1354 Type B (h7) `2.0 x 12 mm` parallel pin!
     """
     outer = bd.extrude(
         bd.Plane.YZ.offset(HOLDER_U_WEST) * bd.Circle(HOLDER_OD_R),
@@ -327,18 +284,12 @@ def build_magnet_holder_local() -> bd.Solid:
         bd.Plane.YZ.offset(7.85) * bd.Circle(MAG_POCKET_R),
         amount=(HOLDER_U_EAST - 7.85) + 0.10,
     )
-    # 1.25 mm round lead-in (`u in [+4.00, +5.25]`, Ø2.10 mm) + 1.40 mm D-bore (`u in [+5.25, +6.65]`, flat at w = +0.73)
-    round_lead = bd.extrude(
-        bd.Plane.YZ.offset(HOLDER_U_WEST - 0.10) * bd.Circle(1.05),
-        amount=(5.25 - HOLDER_U_WEST) + 0.12,
+    shaft_bore = bd.extrude(
+        bd.Plane.YZ.offset(HOLDER_U_WEST - 0.10) * bd.Circle(HOLDER_BORE_R),
+        amount=(6.65 - HOLDER_U_WEST) + 0.10,
     )
-    with bd.BuildSketch(bd.Plane.YZ.offset(5.25)) as sk_dbore:
-        bd.Circle(1.05)
-        with bd.Locations([(0.0, 1.50 + 0.73)]):
-            bd.Rectangle(3.00, 3.00, mode=bd.Mode.SUBTRACT)
-    d_bore = bd.extrude(sk_dbore.sketch, amount=6.65 - 5.25)
 
-    solid = (outer - mag_pocket - round_lead - d_bore).solids()[0]
+    solid = (outer - mag_pocket - shaft_bore).solids()[0]
     solid.label = "Magnet_Holder_PA12"
     return solid
 
@@ -662,9 +613,12 @@ def build_hardware_parts_local():
     """
     Build off-the-shelf hardware solids in `(u, v, w)` frame:
       - 2x DDL-520ZZ Bearings (`u in [-5.98, -3.72]` and `[+1.72, +3.98]`)
-      - 1x D4x1mm Diametric NdFeB Magnet (`u in [+7.98, +8.96]`)
-      - 1x Ø2.0 x 2.0 mm Axial NdFeB Detent Magnet (`u = U_DET`, `v in [-12.30, -10.30]`, `w = W_DET`)
+      - 1x D4x1mm Diametric NdFeB Magnet (`u in [+7.95, +8.93]`)
+      - 1x Ø2.0 x 2.0 mm Axial NdFeB Detent Magnet (`u = U_DET`, `v in [-13.12, -11.12]`, `w = W_DET`)
       - 1x M2 x 6.0 mm Steel Detent Adjuster Screw + 1x M2 x L=3.0 mm Brass Insert in Rocker Detent Boss
+      - 1x JIS B 1354 Type B (h7) SUS `2.0 x 12.0 mm` Parallel Pin (`u in [-5.90, +6.10]`, `⌀1.990 mm` B-rep)
+      - 2x Iwata `BRS002003020` SUS304 Shims (`⌀2x⌀3x0.2 mm`, West side: total `0.40 mm` in `0.45 mm` gap)
+      - 1x Iwata `BRS002003030` SUS304 Shim  (`⌀2x⌀3x0.3 mm`, East side: `0.30 mm` in `0.30 mm` gap)
       - 2x M2 x L=3.0 mm Brass Inserts in Cradle WC1/WC2 Bosses
     """
     parts = []
@@ -718,6 +672,25 @@ def build_hardware_parts_local():
     scr_det.label = "Screw_M2x6_Detent_Adjuster"
     parts.append(scr_det)
 
+    pin_shaft = bd.extrude(
+        bd.Plane.YZ.offset(PIN_U_WEST) * bd.Circle(PIN_R),
+        amount=PIN_U_EAST - PIN_U_WEST,
+    ).solids()[0]
+    pin_shaft.label = "Pin_Parallel_2x12mm_SUS"
+    parts.append(pin_shaft)
+
+    for shim_lbl, u_s, thk in (
+        ("Shim_BRS002003020_West1", -3.70, 0.19),
+        ("Shim_BRS002003020_West2", -3.49, 0.19),
+        ("Shim_BRS002003030_East", +1.41, 0.29),
+    ):
+        shim = (
+            bd.extrude(bd.Plane.YZ.offset(u_s) * bd.Circle(SHIM_OD_R), amount=thk)
+            - bd.extrude(bd.Plane.YZ.offset(u_s - 0.05) * bd.Circle(SHIM_ID_R), amount=thk + 0.10)
+        ).solids()[0]
+        shim.label = shim_lbl
+        parts.append(shim)
+
     static_inserts = []
     for idx, (px, py) in enumerate((WC1_PCB, WC2_PCB), 1):
         u_c = px - X_AXLE_PCB
@@ -736,15 +709,15 @@ def generate_flywheel_2d_drawing_pdf(mass_g: float, j_inertia: float):
     """
     Generate same-name 2D CNC Tolerance Engineering Drawing `cases/inertia_wheel/steel-flywheel.pdf`
     per JLCCNC Ordering Guideline Section 3 ("3Dファイルと2Dファイルには同じ名前を付けてください"):
-      - Orthographic Front Elevation (with Half-Section), Right D-Shaft View, and Shoulder Undercut Detail
-      - Explicit shaft tolerance `⌀1.97 ±0.02` (within JLCCNC ±0.02 mm tightest tolerance capability)
+      - Orthographic Axial Section View A-A & Front Fluted View (zero < 4 mm bosses/pins)
+      - Explicit reamed center-bore tolerance `⌀2.00 H7 (+0.010 / 0.000 mm)` for ⌀2.0 h7 parallel pin
       - Explicit `24x R1.50` flute cutter callout (JLCCNC Design Guideline Table Row 1 Minimum R = 1.5 mm)
       - Material `45# Steel (S45C)` & Surface Finish `Blackening (黒染め / Black Oxide)`
     """
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from matplotlib.patches import Circle, FancyBboxPatch, Polygon, Rectangle, Wedge
+    from matplotlib.patches import Circle, FancyBboxPatch, Polygon, Rectangle
 
     fig = plt.figure(figsize=(11.69, 8.27), dpi=300)  # ISO A4 Landscape
     ax = fig.add_axes([0.03, 0.04, 0.94, 0.92])
@@ -762,114 +735,110 @@ def generate_flywheel_2d_drawing_pdf(mass_g: float, j_inertia: float):
     ax.add_patch(Rectangle((tb_x, tb_y), tb_w, tb_h, facecolor="#F8FAFC", edgecolor="#111111", linewidth=1.0))
     for dy in (10, 20, 31):
         ax.plot([tb_x, tb_x + tb_w], [tb_y + dy, tb_y + dy], color="#111111", lw=0.6)
-    ax.plot([tb_x + 76, tb_x + 76], [tb_y, tb_y + 31], color="#111111", lw=0.6)
+    ax.plot([tb_x + 74, tb_x + 74], [tb_y, tb_y + 31], color="#111111", lw=0.6)
 
-    ax.text(tb_x + 3, tb_y + 35, "PART NAME:  steel-flywheel  (1-Piece Integral-Shaft Wheel)", fontsize=8.0, fontweight="bold", color="#0F172A")
+    ax.text(tb_x + 3, tb_y + 35, "PART NAME:  steel-flywheel  (Center-Bore Fluted Wheel)", fontsize=8.0, fontweight="bold", color="#0F172A")
     ax.text(tb_x + 3, tb_y + 24, "MATERIAL: 45# Steel (S45C)", fontsize=7.4, fontweight="bold", color="#0F172A")
-    ax.text(tb_x + 78, tb_y + 24, "FINISH: Blackening (Black Oxide)", fontsize=7.2, fontweight="bold", color="#B91C1C")
+    ax.text(tb_x + 76, tb_y + 24, "FINISH: Blackening (Black Oxide)", fontsize=7.2, fontweight="bold", color="#B91C1C")
     ax.text(tb_x + 3, tb_y + 13.5, "GEN. TOL: ISO 2768-m", fontsize=7.4, color="#1E293B")
-    ax.text(tb_x + 78, tb_y + 13.5, "JOURNALS: ⌀1.97 ±0.02 mm", fontsize=7.4, fontweight="bold", color="#B91C1C")
-    ax.text(tb_x + 3, tb_y + 3.5, f"UNITS: mm | 4.2:1 | {mass_g:.2f} g (J={j_inertia:.0f} g·mm²)", fontsize=6.9, color="#334155")
-    ax.text(tb_x + 78, tb_y + 3.5, "FILE: steel-flywheel.step/.pdf", fontsize=6.9, fontweight="bold", color="#0F172A")
+    ax.text(tb_x + 76, tb_y + 13.5, "CENTER BORE: ⌀2.00 H7 (+0.010/0)", fontsize=7.1, fontweight="bold", color="#B91C1C")
+    ax.text(tb_x + 3, tb_y + 3.5, f"UNITS: mm | 4.5:1 | {mass_g:.2f} g (J={j_inertia:.0f} g·mm²)", fontsize=6.9, color="#334155")
+    ax.text(tb_x + 76, tb_y + 3.5, "FILE: steel-flywheel.step/.pdf", fontsize=6.9, fontweight="bold", color="#0F172A")
 
     # Notes block (bottom left)
     ax.add_patch(FancyBboxPatch((10, 9), 139, 40, boxstyle="round,pad=1.2", facecolor="#FFFBEB", edgecolor="#B45309", linewidth=0.8))
     notes = [
         "MANUFACTURING & INSPECTION NOTES (JLCCNC):",
         "1. Material: Ferromagnetic 45# Steel (JIS S45C). Do NOT substitute SUS304 or Aluminum.",
-        "2. Finish: Blackening (Black Oxide, <= 2 µm). Keep bearing journals smooth (Ra <= 1.6).",
-        "3. CRITICAL FIT: Both bearing journals & East D-shaft MUST be ⌀1.97 ±0.02 mm",
-        "   (1.950 - 1.990 mm AFTER finish) to fit DDL-520ZZ inner bore (⌀2.000 -0.004/+0).",
+        "2. Finish: Blackening (Black Oxide, <= 2 µm).",
+        "3. CRITICAL FIT: Center through-hole MUST be reamed ⌀2.00 H7 (+0.010 / 0.000 mm,",
+        "   i.e., 2.000 - 2.010 mm AFTER finish) to accept a ⌀2.0 h7 ground parallel pin.",
         "4. 24x outer axial flutes use R1.50 mm profile (standard ⌀2.0 - ⌀3.0 mm end mill).",
-        "5. Deburr outer edges C0.20 max. Bearing shoulders include DIN 509 R0.20 relief undercuts (⌀1.60 neck).",
+        "5. Flat parallel faces (4.65 ±0.05 mm); zero protruding bosses. Deburr edges C0.1 - C0.25 max.",
     ]
     for idx, line in enumerate(notes):
         fw = "bold" if idx in (0, 3) else "normal"
         col = "#92400E" if idx == 0 else ("#B91C1C" if idx == 3 else "#1E293B")
-        ax.text(12.5, 44.5 - idx * 5.4, line, fontsize=6.5, fontweight=fw, color=col)
+        ax.text(12.5, 44.5 - idx * 5.4, line, fontsize=6.4, fontweight=fw, color=col)
 
     # =========================================================================
-    # VIEW 1: Front Longitudinal View (Scale s = 4.2x, centered at cx=84, cy=122)
+    # VIEW 1: Axial Section View A-A (Scale s = 4.5x, centered at cx=82, cy=124)
     # =========================================================================
-    s = 4.2
-    cx, cy = 84.0, 122.0
-    ax.text(cx, 196, "FRONT LONGITUDINAL VIEW (SCALE 4.2:1)", ha="center", fontsize=8.8, fontweight="bold", color="#0F172A")
+    s = 4.5
+    cx, cy = 82.0, 124.0
+    ax.text(cx, 196, "SECTION VIEW A-A (SCALE 4.5:1)", ha="center", fontsize=8.8, fontweight="bold", color="#0F172A")
 
     # Centerline
-    ax.plot([cx + (-7.8) * s, cx + 8.4 * s], [cy, cy], color="#DC2626", lw=0.7, ls="-.")
+    ax.plot([cx - 6.0 * s, cx + 6.0 * s], [cy, cy], color="#DC2626", lw=0.7, ls="-.")
 
-    # Shaft [-5.95, +6.50], R=0.985
-    u_w, u_e = SHAFT_U_WEST, SHAFT_U_EAST
-    ax.add_patch(Rectangle((cx + u_w * s, cy - SHAFT_R * s), (u_e - u_w) * s, 2 * SHAFT_R * s, facecolor="#E2E8F0", edgecolor="#0F172A", lw=1.2))
-    # D-cut step line on upper shaft (`u in [+5.15, +6.50]`, `w = +0.68`)
-    ax.add_patch(Polygon([
-        (cx + 4.24 * s, cy + SHAFT_R * s + 0.2),
-        (cx + u_e * s + 0.2, cy + SHAFT_R * s + 0.2),
-        (cx + u_e * s + 0.2, cy + 0.68 * s),
-        (cx + 5.15 * s, cy + 0.68 * s),
-    ], closed=True, facecolor="white", edgecolor="none", zorder=3))
-    ax.plot([cx + 4.24 * s, cx + 5.15 * s, cx + u_e * s], [cy + SHAFT_R * s, cy + 0.68 * s, cy + 0.68 * s], color="#0F172A", lw=1.1, zorder=4)
-    ax.plot([cx + u_e * s, cx + u_e * s], [cy - SHAFT_R * s, cy + 0.68 * s], color="#0F172A", lw=1.1, zorder=4)
+    x0 = cx - 0.5 * WHEEL_RIM_W * s
+    w_px = WHEEL_RIM_W * s
+    r_crest = 10.95  # actual crest radius after 24x R1.50 flutes
+    r_bore = WHEEL_BORE_R
 
-    # Shoulders [-3.70, +1.70], R=1.50
-    ax.add_patch(Rectangle((cx + STEP_U_WEST * s, cy - STEP_SHOULDER_R * s), (STEP_U_EAST - STEP_U_WEST) * s, 2 * STEP_SHOULDER_R * s, facecolor="#CBD5E1", edgecolor="#0F172A", lw=1.2, zorder=5))
-    # Rim [-3.25, +1.40], R=11.00
-    ax.add_patch(Rectangle((cx + WHEEL_U_WEST * s, cy - WHEEL_R * s), WHEEL_RIM_W * s, 2 * WHEEL_R * s, facecolor="#94A3B8", edgecolor="#0F172A", lw=1.4, zorder=6))
-    # Flute root lines at R = 10.55
+    # Upper & lower sectioned steel blocks with 45-deg cross-hatching
+    for sgn in (+1, -1):
+        y_bot = cy + r_bore * s if sgn > 0 else cy - r_crest * s
+        h_blk = (r_crest - r_bore) * s
+        ax.add_patch(
+            Rectangle(
+                (x0, y_bot),
+                w_px,
+                h_blk,
+                facecolor="#CBD5E1",
+                edgecolor="#0F172A",
+                hatch="///",
+                lw=1.3,
+                zorder=4,
+            )
+        )
+    # Bore vertical boundary lines connecting upper & lower halves
+    ax.plot([x0, x0], [cy - r_bore * s, cy + r_bore * s], color="#0F172A", lw=1.1, zorder=5)
+    ax.plot([x0 + w_px, x0 + w_px], [cy - r_bore * s, cy + r_bore * s], color="#0F172A", lw=1.1, zorder=5)
+    # Flute root dashed lines at R = 10.55
     for sgn in (-1, +1):
-        ax.plot([cx + WHEEL_U_WEST * s, cx + WHEEL_U_EAST * s], [cy + sgn * 10.55 * s, cy + sgn * 10.55 * s], color="#1E293B", lw=0.8, ls="--", zorder=7)
+        ax.plot([x0, x0 + w_px], [cy + sgn * 10.55 * s, cy + sgn * 10.55 * s], color="#1E293B", lw=0.8, ls="--", zorder=6)
 
-    # Dimension callouts on Front View
-    def dim_h(u1, u2, y_lvl, label, col="#0F172A", bold=False):
-        x1, x2 = cx + u1 * s, cx + u2 * s
-        y_anchor = cy + WHEEL_R * s if y_lvl > cy else cy - WHEEL_R * s
-        ax.plot([x1, x1], [cy if abs(u1) > 3.5 else y_anchor, y_lvl], color=col, lw=0.5, ls=":")
-        ax.plot([x2, x2], [cy if abs(u2) > 3.5 else y_anchor, y_lvl], color=col, lw=0.5, ls=":")
-        ax.annotate("", xy=(x1, y_lvl), xytext=(x2, y_lvl), arrowprops=dict(arrowstyle="<->", color=col, lw=0.9))
-        ax.text(0.5 * (x1 + x2), y_lvl + (1.5 if y_lvl > cy else -4.2), label, ha="center", va="bottom", fontsize=7.3, fontweight=("bold" if bold else "normal"), color=col)
+    # Width callout (4.65 ±0.05)
+    y_dim_w = 182.0
+    ax.plot([x0, x0], [cy + r_crest * s + 1.0, y_dim_w + 2.0], color="#0F172A", lw=0.6, ls=":")
+    ax.plot([x0 + w_px, x0 + w_px], [cy + r_crest * s + 1.0, y_dim_w + 2.0], color="#0F172A", lw=0.6, ls=":")
+    ax.annotate("", xy=(x0 - 8, y_dim_w), xytext=(x0, y_dim_w), arrowprops=dict(arrowstyle="<-", color="#0F172A", lw=0.9))
+    ax.annotate("", xy=(x0 + w_px + 8, y_dim_w), xytext=(x0 + w_px, y_dim_w), arrowprops=dict(arrowstyle="<-", color="#0F172A", lw=0.9))
+    ax.plot([x0, x0 + w_px], [y_dim_w, y_dim_w], color="#0F172A", lw=0.8)
+    ax.text(cx, y_dim_w + 2.2, f"{WHEEL_RIM_W:.2f} ±0.05 (Flat Rim Width)", ha="center", va="bottom", fontsize=7.6, fontweight="bold", color="#0F172A")
 
-    dim_h(SHAFT_U_WEST, SHAFT_U_EAST, 186, f"{SHAFT_U_EAST - SHAFT_U_WEST:.2f} (Total Shaft Length)")
-    dim_h(WHEEL_U_WEST, WHEEL_U_EAST, 174, f"{WHEEL_RIM_W:.2f} (Rim)")
-    dim_h(STEP_U_WEST, STEP_U_EAST, 66, f"{STEP_U_EAST - STEP_U_WEST:.2f} (Bearing Shoulder Span)", col="#1D4ED8", bold=True)
-
-    # Critical shaft diameter callouts
+    # Bore callout on Section View
     ax.annotate(
-        "CRITICAL JOURNAL & D-SHAFT\n⌀1.97 ±0.02 mm (After Finish)",
-        xy=(cx - 4.9 * s, cy + SHAFT_R * s),
-        xytext=(12, 146),
+        "CRITICAL CENTER BORE\n⌀2.00 H7 (+0.010 / 0.000) THRU\n(2.000 - 2.010 mm After Finish)",
+        xy=(x0 + w_px, cy + r_bore * s),
+        xytext=(104, 134),
         fontsize=7.4,
         fontweight="bold",
         color="#B91C1C",
-        arrowprops=dict(arrowstyle="->", color="#B91C1C", lw=1.0),
+        arrowprops=dict(arrowstyle="->", color="#B91C1C", lw=1.1),
     )
     ax.annotate(
-        "⌀3.00 ±0.05 (2x Flat Shoulders\n + DIN 509 R0.20 Undercut)",
-        xy=(cx + 1.55 * s, cy - STEP_SHOULDER_R * s),
-        xytext=(100, 86),
+        "2× Outer Edge Chamfer\n0.25 × 45°",
+        xy=(x0 + w_px, cy - r_crest * s),
+        xytext=(104, 76),
         fontsize=7.1,
-        color="#0F172A",
-        arrowprops=dict(arrowstyle="->", color="#0F172A", lw=0.9),
-    )
-    ax.annotate(
-        "D-Flat: 0.68 ±0.03 from Center\n(1.35 mm + R1.50 Tool Exit)",
-        xy=(cx + 5.7 * s, cy + 0.68 * s),
-        xytext=(100, 146),
-        fontsize=7.1,
-        fontweight="bold",
         color="#0F172A",
         arrowprops=dict(arrowstyle="->", color="#0F172A", lw=0.9),
     )
 
     # =========================================================================
-    # VIEW 2: Axial End View (24x R1.50 Flutes + East D-Shaft, Scale 4.2x at cx2=222, cy2=124)
+    # VIEW 2: Front Axial View (24x R1.50 Flutes + ⌀2.00 H7 Bore, Scale 4.5x at cx2=222, cy2=124)
     # =========================================================================
-    s2 = 4.2
+    s2 = 4.5
     cx2, cy2 = 222.0, 124.0
-    ax.text(cx2, 196, "EAST AXIAL VIEW (SCALE 4.2:1)", ha="center", fontsize=8.8, fontweight="bold", color="#0F172A")
+    ax.text(cx2, 196, "FRONT AXIAL VIEW (SCALE 4.5:1)", ha="center", fontsize=8.8, fontweight="bold", color="#0F172A")
     ax.plot([cx2 - 13 * s2, cx2 + 13 * s2], [cy2, cy2], color="#DC2626", lw=0.6, ls="-.")
-    ax.plot([cx2, cx2], [cy2 - 13 * s2, cy2 + 13 * s2], color="#DC2626", lw=0.6, ls="-.")
+    ax.plot([cx2, cx2], [cy2 - 13 * s2, cy2 + 13 * s2], color="#1D4ED8", lw=0.8, ls="--")
+    ax.text(cx2 + 2.0, cy2 + 12.6 * s2, "A", fontsize=8.0, fontweight="bold", color="#1D4ED8")
+    ax.text(cx2 + 2.0, cy2 - 13.4 * s2, "A", fontsize=8.0, fontweight="bold", color="#1D4ED8")
 
-    # Draw exact 24-flute outer profile polygon (`b_dot > 0` selects only the same-side cutter!)
+    # Draw exact 24-flute outer profile polygon
     pts = []
     r_c = WHEEL_R + 1.05
     for k in range(720):
@@ -888,17 +857,25 @@ def generate_flywheel_2d_drawing_pdf(mass_g: float, j_inertia: float):
                         r_val = r_cand
         pts.append((cx2 + r_val * vy * s2, cy2 + r_val * vz * s2))
     ax.add_patch(Polygon(pts, closed=True, facecolor="#CBD5E1", edgecolor="#0F172A", lw=1.2))
-    ax.add_patch(Circle((cx2, cy2), STEP_SHOULDER_R * s2, facecolor="#E2E8F0", edgecolor="#0F172A", lw=0.9))
-    ax.add_patch(Wedge((cx2, cy2), SHAFT_R * s2, 136, 44, facecolor="#F8FAFC", edgecolor="#0F172A", lw=1.0))
+    ax.add_patch(Circle((cx2, cy2), WHEEL_BORE_R * s2, facecolor="#FFFFFF", edgecolor="#B91C1C", lw=1.2))
 
     ax.annotate(
-        "⌀22.00 (Outer Crest)\n24× R1.50 Flutes @ 15°\n(Root ⌀21.10)",
-        xy=(cx2 + 10.8 * math.cos(0.75) * s2, cy2 + 10.8 * math.sin(0.75) * s2),
-        xytext=(240, 174),
-        fontsize=7.3,
+        "⌀22.00 Nominal Blank\n(Crest ⌀21.90 / Root ⌀21.10)\n24× R1.50 Flutes @ 15°",
+        xy=(cx2 + 10.8 * math.cos(0.72) * s2, cy2 + 10.8 * math.sin(0.72) * s2),
+        xytext=(236, 172),
+        fontsize=7.2,
         fontweight="bold",
         color="#0F172A",
         arrowprops=dict(arrowstyle="->", color="#0F172A", lw=0.9),
+    )
+    ax.annotate(
+        "⌀2.00 H7 THRU",
+        xy=(cx2 + WHEEL_BORE_R * 0.7 * s2, cy2 - WHEEL_BORE_R * 0.7 * s2),
+        xytext=(244, 78),
+        fontsize=7.4,
+        fontweight="bold",
+        color="#B91C1C",
+        arrowprops=dict(arrowstyle="->", color="#B91C1C", lw=1.0),
     )
 
     out_pdf = PARTS_DIR / "steel-flywheel.pdf"
@@ -911,7 +888,7 @@ def verify_6dof_constraints():
     """
     Automated 6-DOF kinematic constraint, tolerance clearance & insertion trajectory check:
       Verifies that EVERY component is mechanically captured in all intended fixed DOFs
-      while moving freely along active DOFs (`360 deg` wheel spin + `0..2.95 deg` click + `4.45 deg` hard stop).
+      while moving freely along active DOFs (`360 deg` wheel spin + `0..2.95 deg` click + `3.88 deg` hard stop).
     """
     if __name__ != "__main__":
         global T0_RUN
@@ -923,7 +900,7 @@ def verify_6dof_constraints():
     rocker = build_wheel_rocker_local()
     cradle = build_wheel_cradle_local()
     mov_hw, static_inserts = build_hardware_parts_local()
-    brg_w, brg_e, mag_d4, _mag_det, _ins_det, _scr_det = mov_hw
+    brg_w, brg_e, mag_d4, _mag_det, _ins_det, _scr_det, pin_shaft, shim_w1, shim_w2, shim_e1 = mov_hw
 
     # Representative Main PCB B.Cu ceiling patch (`w in [+1.58, +3.18]`) matching curcur40-right wheel cross-slot
     pcb_ceiling = (
@@ -969,8 +946,8 @@ def verify_6dof_constraints():
             .solids()[0]
         )
 
-    # 1. Active Spin DOF (`Rx` around u-axis): `#01 + #02 + #08` MUST spin 360 deg with ZERO interference
-    rotor_group = [wheel, holder, mag_d4]
+    # 1. Active Spin DOF (`Rx` around u-axis): `#01 + pin + shims + #02 + #08` MUST spin 360 deg with ZERO interference
+    rotor_group = [wheel, pin_shaft, shim_w1, shim_w2, shim_e1, holder, mag_d4]
     spin_axis = bd.Axis((0.0, 0.0, 0.0), (1.0, 0.0, 0.0))
     for deg in (7.5, 15.0, 37.0, 90.0, 180.0, 270.0):
         for s in rotor_group:
@@ -980,7 +957,7 @@ def verify_6dof_constraints():
             assert overlap_volume(rs, brg_w) == 0.0 and overlap_volume(rs, brg_e) == 0.0, f"Spin {deg} deg hit bearing!"
     print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] Active Spin DOF (`Rx` 0..360 deg): 0.00000000 mm^3 interference across all angles", flush=True)
 
-    # 2. Bearing & Wheel C-Clip Retention (`±u, ±v, ±w` across full rotor stack)
+    # 2. Bearing, Parallel Pin, Shim Stack & Wheel C-Clip Retention (`±u, ±v, ±w` across full rotor stack)
     for tag, vec in (
         ("+u (East chain)", (0.40, 0.0, 0.0)),
         ("-u (West end-wall)", (-0.15, 0.0, 0.0)),
@@ -995,23 +972,25 @@ def verify_6dof_constraints():
             + overlap_volume(holder.moved(bd.Location(vec)), rocker)
         )
         assert ov_stack > 0.0, f"Rotor/Bearing stack NOT captured along {tag}!"
-        ov_whl = (
-            overlap_volume(wheel.moved(bd.Location(vec)), brg_w)
-            + overlap_volume(wheel.moved(bd.Location(vec)), brg_e)
+        ov_pin_shims = sum(
+            overlap_volume(rp.moved(bd.Location(vec)), brg_w)
+            + overlap_volume(rp.moved(bd.Location(vec)), brg_e)
+            for rp in (pin_shaft, shim_w1, shim_w2, shim_e1, wheel)
         )
-        assert ov_whl > 0.0, f"Steel Flywheel NOT captured along {tag}!"
-    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] Bearing & Wheel C-Clip Retention: >=1.54 mm jaws lock ±u, ±v, ±w", flush=True)
+        assert ov_pin_shims > 0.0, f"Pin/Shim/Wheel rotor assembly NOT captured by bearings along {tag}!"
+
+    # Concentric radial lock of wheel & shims on parallel pin (`±0.03 mm` radial) + axial shim stop (`±0.08 mm` axial):
+    for rvec in ((0.0, 0.03, 0.0), (0.0, -0.03, 0.0), (0.0, 0.0, 0.03), (0.0, 0.0, -0.03)):
+        assert overlap_volume(wheel.moved(bd.Location(rvec)), pin_shaft) > 0.0, f"Wheel bore not concentric-locked on pin at {rvec}!"
+    assert overlap_volume(wheel.moved(bd.Location((0.05, 0.0, 0.0))), shim_e1) > 0.0, "Wheel not stopped +u by East 0.3mm shim!"
+    assert overlap_volume(wheel.moved(bd.Location((-0.08, 0.0, 0.0))), shim_w2) > 0.0, "Wheel not stopped -u by West 0.2mm shims!"
+    print(f"  [{time.monotonic()-T0_RUN:5.1f}s] [PASS] Bearing, 2x12mm Pin & Shim Stack Retention: >=1.54 mm jaws lock ±u, ±v, ±w", flush=True)
 
     # 3. `#02` Magnet Holder (`6.64x6.64x5.05mm`), `#08` Magnet & `#09` Detent Magnet Retention
-    assert (
-        overlap_volume(holder.moved(bd.Location((-0.20, 0.0, 0.0))), wheel)
-        + overlap_volume(holder.moved(bd.Location((-0.20, 0.0, 0.0))), brg_e)
-    ) > 0.0, "#02 not stopped -u!"
+    assert overlap_volume(holder.moved(bd.Location((-0.20, 0.0, 0.0))), brg_e) > 0.0, "#02 not stopped -u by East bearing!"
     assert overlap_volume(holder.moved(bd.Location((0.95, 0.0, 0.0))), rocker) > 0.0, "#02 not stopped +u by 1.55mm East Keeper!"
-    for vec in ((0.0, 0.12, 0.0), (0.0, -0.12, 0.0), (0.0, 0.0, 0.12), (0.0, 0.0, -0.12)):
-        assert overlap_volume(holder.moved(bd.Location(vec)), wheel) > 0.0, f"#02 not radially locked at {vec}!"
-    for tw_deg in (-8.0, +8.0):
-        assert overlap_volume(holder.rotate(spin_axis, tw_deg).solids()[0], wheel) > 0.0, "#02 D-flat did not lock Rx twist!"
+    for vec in ((0.0, 0.05, 0.0), (0.0, -0.05, 0.0), (0.0, 0.0, 0.05), (0.0, 0.0, -0.05)):
+        assert overlap_volume(holder.moved(bd.Location(vec)), pin_shaft) > 0.0, f"#02 not radially locked on 2x12mm pin at {vec}!"
 
     assert overlap_volume(mag_d4.moved(bd.Location((-0.15, 0.0, 0.0))), holder) > 0.0, "#08 not stopped -u!"
     assert overlap_volume(mag_d4.moved(bd.Location((1.05, 0.0, 0.0))), rocker) > 0.0, "#08 not stopped +u by East Keeper!"
@@ -1056,7 +1035,7 @@ def verify_6dof_constraints():
     comp_330 = (rk_act30 & sw_plunger).bounding_box().max.Z - sw_plunger.bounding_box().min.Z
     assert comp_330 >= 0.30, f"3.30 deg did not reach 0.30 mm upper switch actuation (got {comp_330:.3f} mm)!"
 
-    # Verify WC1 hard stop engages by +4.10 deg (BEFORE steel wheel touches Right_Top_Plate at ~4.28 deg or sw_housing!)
+    # Verify WC1 hard stop engages by +4.10 deg (BEFORE steel wheel touches Right_Top_Plate at ~4.18 deg or sw_housing!)
     rk_overtravel = rocker.rotate(piv_axis, 4.10).solids()[0]
     assert overlap_volume(rk_overtravel, cradle) > 0.0, "Over-travel stop did NOT engage #04 Cradle WC1 stop shelf by +4.10 deg!"
     assert overlap_volume(rk_overtravel, sw_housing) == 0.0, "Over-travel hit rEXSW1 housing before stop!"
@@ -1085,11 +1064,11 @@ def verify_6dof_constraints():
     _check_timeout("verify_6dof:assembly_path")
     for dw in (15.0, 10.0, 6.0, 4.60, 3.60, 1.50, 0.0):
         loc_up = bd.Location((0.0, 0.0, dw))
-        for rp in (wheel, holder, mag_d4):
+        for rp in (wheel, pin_shaft, shim_w1, shim_w2, shim_e1, holder, mag_d4):
             assert overlap_volume(rp.moved(loc_up), rocker) == 0.0, f"Rotor {rp.label} collided with Rocker at dw={dw}!"
         if dw >= 4.60:
             assert overlap_volume(brg_w.moved(loc_up), rocker) == 0.0 and overlap_volume(brg_e.moved(loc_up), rocker) == 0.0
-        for rp in (wheel, holder, mag_d4, brg_w, brg_e):
+        for rp in (wheel, pin_shaft, shim_w1, shim_w2, shim_e1, holder, mag_d4, brg_w, brg_e):
             assert overlap_volume(rp.moved(loc_up), cradle) == 0.0, f"Pre-installed {rp.label} hit Cradle at dw={dw}!"
         if dw >= 3.60 or dw == 0.0:
             assert overlap_volume(rocker.moved(loc_up), cradle) == 0.0, f"#03 Rocker hit #04 Cradle at dw={dw}!"
@@ -1154,24 +1133,45 @@ def assemble_wheel_parts_global(click_deg: float = 0.0):
 
 def export_manufacturing_parts():
     print(f"[{time.monotonic()-T0_RUN:5.1f}s] === Building & Exporting 4 Inertia Wheel Manufacturing Parts + 2D CNC Drawing ===", flush=True)
-    # 1. Steel Flywheel + 2D CNC Tolerance Drawing (`steel-flywheel.step`, `.stl`, `.pdf`)
+    # 1. Steel Flywheel + 2D CNC Tolerance Drawing (`steel-flywheel.step`, `.pdf`)
     wheel_local = build_steel_flywheel_local()
     wheel_rot = wheel_local.rotate(bd.Axis.Y, -90)
     wheel_print = wheel_rot.moved(bd.Location((0.0, 0.0, -wheel_rot.bounding_box().min.Z))).solids()[0]
     wheel_print.label = "Steel_Flywheel_22mm"
     assert wheel_print.is_valid and is_sound(wheel_print)
     bb_w = wheel_print.bounding_box()
-    assert abs(bb_w.min.Z) < 1e-4
-    # Verify exact flat annular bearing shoulder faces exist at Z = 2.2500 mm and Z = 7.6500 mm (exact 5.4000 mm span == PDF!)
-    sh_z_faces = [
-        round(f.bounding_box().center().Z, 4)
-        for f in wheel_print.faces()
-        if abs(f.bounding_box().size.Z) < 1e-4
-        and abs(f.bounding_box().size.X - 2.0 * STEP_SHOULDER_R) < 0.02
-        and f.area > 2.5
-    ]
-    assert len(sh_z_faces) == 2 and abs((max(sh_z_faces) - min(sh_z_faces)) - (STEP_U_EAST - STEP_U_WEST)) < 1e-3, (
-        f"[steel-flywheel] Missing flat bearing shoulders matching PDF 5.40 mm span! Found Z={sh_z_faces}"
+    assert abs(bb_w.min.Z) < 1e-4 and abs(bb_w.size.Z - WHEEL_RIM_W) < 1e-4, (
+        f"[steel-flywheel] Unexpected Z height {bb_w.size.Z:.4f} mm != {WHEEL_RIM_W:.4f} mm!"
+    )
+    # Official JLCCNC DFM Check:
+    #   - Zero outward convex cylindrical pins/bosses < 4.00 mm diameter!
+    #   - Exact ⌀2.000 mm concave center through-hole (`h/Φ = 2.33 <= 10.0`)
+    convex_cyl_diams = []
+    concave_hole_diams = []
+    for f in wheel_print.faces():
+        surf = BRepAdaptor_Surface(f.wrapped)
+        if surf.GetType() == GeomAbs_Cylinder:
+            cyl = surf.Cylinder()
+            u_mid = 0.5 * (surf.FirstUParameter() + surf.LastUParameter())
+            v_mid = 0.5 * (surf.FirstVParameter() + surf.LastVParameter())
+            pt = surf.Value(u_mid, v_mid)
+            ax_loc = cyl.Axis().Location()
+            ax_dir = cyl.Axis().Direction()
+            vx, vy, vz = pt.X() - ax_loc.X(), pt.Y() - ax_loc.Y(), pt.Z() - ax_loc.Z()
+            dot_ax = vx * ax_dir.X() + vy * ax_dir.Y() + vz * ax_dir.Z()
+            rx, ry, rz = vx - dot_ax * ax_dir.X(), vy - dot_ax * ax_dir.Y(), vz - dot_ax * ax_dir.Z()
+            n_vec = f.normal_at(bd.Vector(pt.X(), pt.Y(), pt.Z()))
+            diam = round(2.0 * cyl.Radius(), 4)
+            u_span = abs(surf.LastUParameter() - surf.FirstUParameter())
+            if (n_vec.X * rx + n_vec.Y * ry + n_vec.Z * rz) > 0.0:
+                convex_cyl_diams.append(diam)
+                assert diam >= 4.00, (
+                    f"[steel-flywheel JLCCNC DFM NG] Protruding cylinder diameter {diam:.3f} mm < 4.00 mm limit!"
+                )
+            elif u_span > math.radians(250.0):
+                concave_hole_diams.append(diam)
+    assert any(abs(d - 2.0 * WHEEL_BORE_R) < 1e-3 for d in concave_hole_diams), (
+        f"[steel-flywheel] Missing ⌀{2.0 * WHEEL_BORE_R:.2f} mm center through-hole! Found {concave_hole_diams}"
     )
     bd.export_step(wheel_print, str(PARTS_DIR / "steel-flywheel.step"))
     mass_g = wheel_print.volume * 7.85e-3
@@ -1180,6 +1180,7 @@ def export_manufacturing_parts():
     j_inertia = mat_props[0][0] * 7.85e-3
     print(
         f"[{time.monotonic()-T0_RUN:5.1f}s] [steel-flywheel] JLCCNC 45# Steel OK: bbox={bb_w.size.X:.2f}x{bb_w.size.Y:.2f}x{bb_w.size.Z:.2f}mm, "
+        f"min_convex_Φ={min(convex_cyl_diams):.2f}mm (>=4.00mm), center_bore_Φ={2.0*WHEEL_BORE_R:.2f}mm, "
         f"volume={wheel_print.volume:.1f}mm^3, mass={mass_g:.2f}g, J={j_inertia:.1f}g*mm^2",
         flush=True,
     )
