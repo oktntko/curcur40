@@ -80,4 +80,4 @@
 以下の設計は実部品データシート・公差計算・実機検証に基づく確定仕様である。変更やレビューを行う際は誤認による改変を行わず、必ず各仕様書の設計根拠を確認すること：
 - 短胴 USB-C `TYPE-C-31-M-13C` におけるプラグ金属シェル露出と最小ケース開口（`10.20 × 4.40 mm`）、スイッチ嵌合プレート保持、キー谷間 `⌀5.20 mm` フラットボス＋USB-C 内壁受け棚: [`docs/case_spec.md`](docs/case_spec.md)
 - `PMW3360` / `LM19-LSI` の非対称丸ガイドポスト座標と `55.0°` セラミック支持球配置: [`docs/trackball_spec.md`](docs/trackball_spec.md)
-- 1ピース一体軸 `45# Steel + Blackening` ホイール（軸公差 `⌀1.97 ±0.02 mm` 同名 PDF 図面指定）、接着剤ゼロ保持、スリット分離型 Cクリップヒンジ、オンボード `TMAG5273` `XZX` 復調: [`docs/wheel_spec.md`](docs/wheel_spec.md)
+- `⌀2.00 H7` 中心貫通穴 `45# Steel + Blackening` ホイール（同名 PDF 図面指定）＋ JIS B 1354 B種 `h7` `2.0 × 12.0 mm` 平行ピン＆ `⌀2 × ⌀3 mm` SUS シム（西 `0.2 mm × 2` / 東 `0.3 mm × 1`）、スリット分離型 Cクリップヒンジ、オンボード `TMAG5273` `XZX` 復調: [`docs/wheel_spec.md`](docs/wheel_spec.md)

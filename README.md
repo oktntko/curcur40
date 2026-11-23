@@ -70,7 +70,7 @@
 | **本体外形寸法（片側）** | 幅 **`118.81 mm`** × 奥行 **`94.40 mm`** × ケース高 **`14.20 mm`（小指外端）〜 `39.02 mm`（親指内端）** |
 | **テンティング角度** | ・標準（ケース単体 / スタンド収納時）: **`11.80°`** ビルトインテンティング<br>・底面埋め込み折りたたみスタンド展開時（任意）: **約 `24°`（1段目）／ 約 `34°`（2段目）** |
 | **トラックボール（右手親指）** | **直径 `⌀25.0 mm` 光学式**（`800 CPI` / `1000 Hz` ポーリング、3点セラミック球支持、素手着脱可能な 3本爪スナップ保持） |
-| **スクロールホイール（右手内側）** | **外径 `⌀22.0 mm × 幅 4.65 mm` 炭素鋼フライホイール**（質量 `13.51 g`、1周 **24ノッチ** 非接触磁気ラチェット［無段階強弱調整可］、長時間慣性フリースピン・指触れ即停止、静音ミドルクリック対応） |
+| **スクロールホイール（右手内側）** | **外径 `⌀22.0 mm × 幅 4.65 mm` 炭素鋼フライホイール**（質量 `13.20 g`、1周 **24ノッチ** 非接触磁気ラチェット［無段階強弱調整可］、長時間慣性フリースピン・指触れ即停止、静音ミドルクリック対応） |
 | **接続インターフェース** | ・**PC接続**: 左右どちらでも接続可能な北面 USB Type-C（マスター自動認識）<br>・**左右間接続**: 内側側面 USB Type-C（パッシブ USB 2.0 C-to-C ケーブル使用、PC/充電器誤挿し保護付） |
 | **LED ライティング** | 各キー独立 RGB バックライト（計 39灯、QMK RGB Matrix 対応） |
 | **キャリングボックス（任意）** | 外寸 **`140.20 × 110.44 × 80.25 mm`**（上下リバーシブル 6面フルカバー直方体、トラックボール・折りたたみスタンド・高さ `≤ 3.0 mm` ゴム足・USB-C マグネット端子を装着したまま収納可能） |
@@ -132,7 +132,7 @@ Eucalyn 系をベースにした 40入力レイアウトに、右手内側のマ
 
 | 対象領域 | 派生元・原著作者 | 適用ライセンス | 改変時期・主な改変内容（CC BY 4.0 Sec. 3(a) / CERN-OHL-P v2 Sec. 3.3 準拠） |
 | :--- | :--- | :--- | :--- |
-| **基板・プレート・ケース・ホイール・ドキュメント・スクリプト**<br>(`pcbs/`, `plates/`, `cases/`, `docs/`, `scripts/`) | **[foostan/crkbd](https://github.com/foostan/crkbd)**<br>(`foostan` / Kosuke Adachi) | **[MIT License](./LICENSE_MIT)** ＆<br>**[CC BY 4.0](./LICENSE_CC)** | `2026-10`〜`2026-11`: Corne v4 をベースに 39キー＋中クリック配列化、右手 25mm トラックボール（低プロファイル分離サブ基板）＆アンダープレート一体軸パッシブ磁気慣性ホイール（`45# Steel` ローター＋オンボード `TMAG5273`）統合、KiCad 10.0 対応、ヒートセット密閉テンティングケース・キャリングボックス新規設計 |
+| **基板・プレート・ケース・ホイール・ドキュメント・スクリプト**<br>(`pcbs/`, `plates/`, `cases/`, `docs/`, `scripts/`) | **[foostan/crkbd](https://github.com/foostan/crkbd)**<br>(`foostan` / Kosuke Adachi) | **[MIT License](./LICENSE_MIT)** ＆<br>**[CC BY 4.0](./LICENSE_CC)** | `2026-10`〜`2026-11`: Corne v4 をベースに 39キー＋中クリック配列化、右手 25mm トラックボール（低プロファイル分離サブ基板）＆アンダープレート パッシブ磁気慣性ホイール（`45# Steel` ローター＋オンボード `TMAG5273`）統合、KiCad 10.0 対応、ヒートセット密閉テンティングケース・キャリングボックス新規設計 |
 | **KiCad カスタムライブラリ**<br>(`pcbs/common/kbd/` 内 `kbd.*`) | **[foostan/kbd](https://github.com/foostan/kbd)**<br>(`foostan`) | **[MIT License](./pcbs/common/kbd/LICENSE)** | `2026-10`: 未使用定義の整理、KiCad 10.0 標準シンボル整合、`YS-SK6812MINI-E` Pin 2 (`DOUT`) 電気属性修正、`Kailh_Square_Silent_6.2x6.2mm` 追加、相対 3Dモデルパス化 |
 | **PMW3360 シンボル・フットプリント**<br>(`pmw3360_pcb.kicad_sym`, `PMW3360DM-T2QU_16Pin.kicad_mod`) | **[siderakb/pmw3360-pcb](https://github.com/siderakb/pmw3360-pcb)**<br>(`siderakb` / `ziteh`) | **[CERN-OHL-P v2](./LICENSE_CERN_OHL_P_V2)** | `2026-10`: 未使用の `TXS0108E-QPWRQ1` シンボル削除、`PMW3360DM-T2QU` Pin 3 (`VDDPIX`) を `power_out` へ修正、KiCad 10.0 スルーホールパッド層補完、専用サブ基板 `curcur40-pmw3360` へ統合 |
 | **ファームウェア (`kbd_firmware/`)**<br>(`kbd_firmware/keyboards/curcur40/`) | **[foostan/kbd_firmware](https://github.com/foostan/kbd_firmware)**<br>**[QMK](https://github.com/qmk/qmk_firmware)** / **[Vial-QMK](https://github.com/vial-kb/vial-qmk)** | **GPL-2.0-or-later** | `2026-10`〜`2026-11`: 40入力マトリクス、`I2C0` `TMAG5273`/`TLV493D-A1B6` 3Dホール慣性ホイール駆動 ＆ `SPI1` `PMW3360` 2D慣性ドラッグスクロール複合ポインティングドライバへ改変 |
@@ -147,7 +147,7 @@ Eucalyn 系をベースにした 40入力レイアウトに、右手内側のマ
 | **[ケース・プレート設計仕様書 (`docs/case_spec.md`)](./docs/case_spec.md)** | **内部設計**: 垂直 Z軸スタックアップ、全 19箇所インサート座標、トッププレート、ボトムケース・スタンドポケット・USB-C 受け棚の設計根拠 |
 | **[PCB・回路設計仕様書 (`docs/pcb_spec.md`)](./docs/pcb_spec.md)** | **内部設計**: 全3基板＋3-in-1 パネル仕様、電源/ESD/左右判定/センサー回路の設計根拠、RP2040 ピンアサイン、SMD 部品（LCSC）一覧 |
 | **[トラックボール設計仕様書 (`docs/trackball_spec.md`)](./docs/trackball_spec.md)** | **内部設計**: PMW3360 + LM19 光学距離（`2.40 mm`）設計、55° セラミック支持球の乗り上げ防止力学、2D慣性ドラッグスクロール FW 処理 |
-| **[慣性ホイール設計仕様書 (`docs/wheel_spec.md`)](./docs/wheel_spec.md)** | **内部設計**: 一体軸 `45# Steel` フライホイール、Cクリップシーソー機構、無段階磁気デテント、オンボード 3Dホール角度復調 FW 処理 |
+| **[慣性ホイール設計仕様書 (`docs/wheel_spec.md`)](./docs/wheel_spec.md)** | **内部設計**: `⌀2.00 H7` 中心貫通穴 `45# Steel` フライホイール、平行ピン＆シム内輪支持、Cクリップシーソー機構、無段階磁気デテント、オンボード 3Dホール角度復調 FW 処理 |
 | **[キャリングボックス設計仕様書 (`docs/carrying_box_spec.md`)](./docs/carrying_box_spec.md)** | **内部設計**: 互い違いウェッジ相殺配置、ゴム足フローティングレール、長スパン浅角カム式スナップフタの力学設計 |
 | **[体験型 HTML 図解: 慣性ホイール (`docs/wheel_mechanism_guide.html`)](./docs/wheel_mechanism_guide.html)** | ブラウザで動かせる慣性スピン・磁気ノッチ調整・シーソークリックのインタラクティブ解説 |
 | **[体験型 HTML 図解: スナップフタ (`docs/carrying_box_lid_guide.html`)](./docs/carrying_box_lid_guide.html)** | ブラウザで動かせるキャリングボックス浅角カムスナップフタの開閉力学解説 |
