@@ -1174,7 +1174,6 @@ def export_manufacturing_parts():
         f"[steel-flywheel] Missing flat bearing shoulders matching PDF 5.40 mm span! Found Z={sh_z_faces}"
     )
     bd.export_step(wheel_print, str(PARTS_DIR / "steel-flywheel.step"))
-    bd.export_stl(wheel_print, str(PARTS_DIR / "steel-flywheel.stl"))
     mass_g = wheel_print.volume * 7.85e-3
     # Compute exact rotational inertia J around X-axis (`Ixx` in local frame, density = 7.85e-3 g/mm^3)
     mat_props = wheel_local.matrix_of_inertia
@@ -1193,7 +1192,6 @@ def export_manufacturing_parts():
     holder_print.label = "Magnet_Holder_PA12"
     verify_jlc3dp_pa12_part(holder_print, "magnet-holder", min_wall_mm=1.20)
     bd.export_step(holder_print, str(PARTS_DIR / "magnet-holder.step"))
-    bd.export_stl(holder_print, str(PARTS_DIR / "magnet-holder.stl"))
 
     # 3. Wheel Rocker (strict >= 1.20 mm wall everywhere, >= 1.50 mm snaps/protrusions!)
     rocker_local = build_wheel_rocker_local()
@@ -1201,7 +1199,6 @@ def export_manufacturing_parts():
     rocker_print.label = "Wheel_Rocker_PA12"
     verify_jlc3dp_pa12_part(rocker_print, "wheel-rocker", min_wall_mm=1.20)
     bd.export_step(rocker_print, str(PARTS_DIR / "wheel-rocker.step"))
-    bd.export_stl(rocker_print, str(PARTS_DIR / "wheel-rocker.stl"))
 
     # 4. Wheel Cradle (flip upside down so flat PCB-mating face `w = +1.58` sits on `Z = 0.0000 mm`, >= 1.00 mm wall everywhere!)
     cradle_local = build_wheel_cradle_local()
@@ -1210,7 +1207,6 @@ def export_manufacturing_parts():
     cradle_print.label = "Wheel_Cradle_PA12"
     verify_jlc3dp_pa12_part(cradle_print, "wheel-cradle", min_wall_mm=1.00)
     bd.export_step(cradle_print, str(PARTS_DIR / "wheel-cradle.step"))
-    bd.export_stl(cradle_print, str(PARTS_DIR / "wheel-cradle.stl"))
 
 
 def main():

@@ -324,21 +324,15 @@ if __name__ == "__main__":
         print(f"Overlap volume with LM19 lens: {ov_lens:.8f} mm^3 (ZERO COLLISION = {ov_lens == 0.0})")
 
     out_step = CASES_DIR / "trackball-cup.step"
-    out_stl = CASES_DIR / "trackball-cup.stl"
     bd.export_step(cup, str(out_step))
-    bd.export_stl(cup, str(out_stl))
     print(f"Successfully generated:")
     print(f" - {out_step}")
-    print(f" - {out_stl}")
 
     # Build and export Trackball Cup + 25mm Ball Assembly
     print("\nBuilding Trackball Cup with 25mm Ball Assembly...")
     ASSEMBLIES_DIR.mkdir(parents=True, exist_ok=True)
     assembly = build_trackball_assembly()
     out_assembly_step = ASSEMBLIES_DIR / "trackball-cup-with-ball.step"
-    out_assembly_stl = ASSEMBLIES_DIR / "trackball-cup-with-ball.stl"
     bd.export_step(assembly, str(out_assembly_step))
-    bd.export_stl(assembly, str(out_assembly_stl))
     print(f"Successfully generated Assembly:")
     print(f" - {out_assembly_step}")
-    print(f" - {out_assembly_stl}")

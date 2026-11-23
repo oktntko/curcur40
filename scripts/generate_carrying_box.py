@@ -1001,10 +1001,8 @@ def main() -> None:
     verify_jlc3dp_part(lid_print, "carrying-box-lid")
 
     bd.export_step(box_print, str(CASES_DIR / "carrying-box.step"))
-    bd.export_stl(box_print, str(CASES_DIR / "carrying-box.stl"))
     bd.export_step(lid_print, str(CASES_DIR / "carrying-box-lid.step"))
-    bd.export_stl(lid_print, str(CASES_DIR / "carrying-box-lid.stl"))
-    print(f"[{time.monotonic()-T0_RUN:5.1f}s] Exported reversible carrying-box.step/.stl & carrying-box-lid.step/.stl", flush=True)
+    print(f"[{time.monotonic()-T0_RUN:5.1f}s] Exported reversible carrying-box.step & carrying-box-lid.step", flush=True)
 
     full_asm_path = ASSEMBLIES_DIR / "assembly-full.step"
     print(f"[{time.monotonic()-T0_RUN:5.1f}s] Loading synchronized full keyboard solids from {full_asm_path.name}...", flush=True)

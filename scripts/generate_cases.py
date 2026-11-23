@@ -557,17 +557,15 @@ def build_case(is_right=True) -> bd.Solid:
     verify_case_wall_thickness_and_gaps(solid, is_right)
 
     step_path = OUT_DIR / f"{side_str}.step"
-    stl_path = OUT_DIR / f"{side_str}.stl"
     bd.export_step(solid, str(step_path))
-    bd.export_stl(solid, str(stl_path))
     bb = solid.bounding_box()
     print(
-        f"[{time.monotonic()-T0_RUN:5.1f}s] Exported {step_path.name} & {stl_path.name}: "
+        f"[{time.monotonic()-T0_RUN:5.1f}s] Exported {step_path.name}: "
         f"bbox Z=[{bb.min.Z:.4f}, {bb.max.Z:.4f}], volume={solid.volume:.2f} mm^3",
         flush=True,
     )
 
-    # 8. Export desk-horizontal (outer bottom flat on Z = 0.00 mm) STEP & STL
+    # 8. Export desk-horizontal (outer bottom flat on Z = 0.00 mm) STEP
     theta_deg = math.degrees(
         math.atan2(Z_PINKY_BOTTOM - Z_THUMB_BOTTOM, X_PINKY_OUTER - X_THUMB_OUTER)
     )
@@ -585,13 +583,11 @@ def build_case(is_right=True) -> bd.Solid:
     )
     desk_solid.label = f"curcur40_case_{side_str}_desk"
     desk_step_path = OUT_DIR / f"{side_str}-desk.step"
-    desk_stl_path = OUT_DIR / f"{side_str}-desk.stl"
     bd.export_step(desk_solid, str(desk_step_path))
-    bd.export_stl(desk_solid, str(desk_stl_path))
     bb_desk = desk_solid.bounding_box()
     assert abs(bb_desk.min.Z - 0.0) < 1e-4, f"[{side_str}-desk] Bottom Z={bb_desk.min.Z:.4f} mm is not flat on Z=0.0000 mm!"
     print(
-        f"[{time.monotonic()-T0_RUN:5.1f}s] Exported {desk_step_path.name} & {desk_stl_path.name}: "
+        f"[{time.monotonic()-T0_RUN:5.1f}s] Exported {desk_step_path.name}: "
         f"bbox Z=[{bb_desk.min.Z:.4f}, {bb_desk.max.Z:.4f}], volume={desk_solid.volume:.2f} mm^3",
         flush=True,
     )

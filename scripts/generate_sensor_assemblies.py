@@ -23,7 +23,6 @@ if str(WORKSPACE / "scripts") not in sys.path:
 CASES_DIR = WORKSPACE / "cases"
 ASSEMBLIES_DIR = CASES_DIR / "assemblies"
 OUT_SENSOR_PCB_STEP = ASSEMBLIES_DIR / "pmw3360-lens-pcb-assembly.step"
-OUT_TRACKBALL_SENSOR_STEP = ASSEMBLIES_DIR / "trackball-sensor-assembly.step"
 
 MAX_RUNTIME_SEC = 120.0
 T0_RUN = time.monotonic()
@@ -198,18 +197,11 @@ def main():
     print(f"  Overlap Lens vs Sensor: {ov_lens_sensor:.6f} mm^3")
     assert ov_pcb_sensor == 0.0 and ov_pcb_lens == 0.0 and ov_lens_sensor == 0.0
 
-    # 2. Export trackball-sensor-assembly.step (Cup + 25mm Ball + PCB + Sensor + Lens + Ref Point)
+    # 2. Verify optical distance & zero collision against Cup + 25mm Ball
     cup_solid = build_trackball_cup()
     ball_solid = bd.Sphere(radius=12.50).moved(bd.Location((0, 0, 18.30))).solids()[0]
     ball_solid.label = "Trackball_25mm"
     ref_point_tb = make_optical_ref_point(0.0, 0.0, OPTICAL_REF_Z)
-
-    tb_sensor_assy = bd.Compound(
-        children=[cup_solid, ball_solid, pcb_solid, sensor_solid, lens_solid, ref_point_tb]
-    )
-    tb_sensor_assy.label = "Trackball_Sensor_Assembly"
-    bd.export_step(tb_sensor_assy, str(OUT_TRACKBALL_SENSOR_STEP))
-    print(f"Exported: {OUT_TRACKBALL_SENSOR_STEP}")
 
     ov_cup_ball = overlap_volume(cup_solid, ball_solid)
     ov_cup_lens = overlap_volume(cup_solid, lens_solid)
