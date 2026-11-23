@@ -76,11 +76,12 @@ JLCPCB（[https://jlcpcb.com/](https://jlcpcb.com/)）には、コストとDFM�
 
 ### JLCPCB 推奨発注オプション
 
-- **Base Material / Layers / PCB Thickness**: `FR-4` / `2 Layers` / 全アイテムとも **`1.6 mm`**（3-in-1 パネルは `Panel by Customer` ではなく単一ガーバー `Single PCB` としてそのままアップロードします）
-- **PCB Color**: お好みの色（`Black` / `Matte Black` / `White` など）
-- **Remove Order Number / Remark（トッププレート発注時）**: トッププレートは表面に製造番号が入らないよう **`Remove Order Number: Yes`**（または `Specify a location`）を推奨します。また、トッププレートは銅箔パターンを持たない生 FR-4 プレートのため、JLCPCB の自動審査で「銅箔レイヤーが空ですが問題ありませんか？」という確認で止まるのを防ぐため、`PCB Remark` 欄に **`Switch plate only — bare FR-4 with no copper on top/bottom layers as intended.`** と一言添えておくとスムーズに通過します。
-- **PCBA Assembly Side ＆ Tooling Holes（裏面 `Bottom Side` / `Added by JLCPCB`）**:
-  - **3-in-1 統合パネル (`curcur40-panel-3in1`)**：Assembly Side は **`Bottom Side`**、`Tooling holes` はデフォルトの **`Added by JLCPCB`** を選択してください（計171点実装 / 30 BOMグループ：左81点 ＋ 右81点 ＋ TBセンサー `p*` 9点。`C5333465` Chocソケット39個・`C3716049` `TMAG5273` 1個等の在庫が注文枚数分あるかも部品表画面で自動チェックされます）。
+- **Base Material / Layers / PCB Thickness**: `FR-4` / `2 Layers` / 全アイテムとも **`1.6 mm`**
+- **Different Design / Delivery Format（3-in-1 パネル発注時）**: **`Different Design: 3`** / `Delivery Format: Single PCB` を選択してアップロードします（パネル内に Left・Right・PMW3360 の3種類の基板が含まれるため、`1` を選ぶと CAM レビュー時に異種面付け差額の追加支払い待ちで一時停止します。トッププレートや単体基板は `Different Design: 1` です）
+- **PCB Color / Surface Finish**: お好みの色（`Black` / `Matte Black` / `White` など）、表面処理は手ハンダ箇所（`rEXSW1`, `PMW3360`）にはんだが乗りやすい **`LeadFree HASL`** または **`HASL(with lead)`** 推奨
+- **Remove Order Number / Remark（トッププレート発注時）**: トッププレートは表面に製造番号が入らないよう **`Remove Order Number: Yes`**（または `Specify a location`）を推奨します。また、必要に応じて `PCB Remark` 欄に **`Switch plate only — bare FR-4 plate as intended.`** と添えておくとスムーズに通過します。
+- **PCBA Type / Assembly Side / Edge Rails（`Standard` / 裏面 `Bottom Side` / `Added by Customer`）**:
+  - **3-in-1 統合パネル (`curcur40-panel-3in1`)**：`SK6812MINI-E`（`C5149201`, MSL ベーキング対象）および `TYPE-C-31-M-13C`（`C2848620`）が `Standard Only` 指定のため **`PCBA Type: Standard`**、Assembly Side は **`Bottom Side`** を選択します。また、パネル外周にはすでに `5.00 mm` 幅の捨て基板レール・フィデューシャル（`FID1`〜`FID3`）・ツール穴（`TH1`〜`TH4`）が組み込まれているため、`Edge Rails/Fiducials` は **`Added by Customer`** を選択してください（計171点実装 / 30 BOMグループ：左81点 ＋ 右81点 ＋ TBセンサー `p*` 9点。`C5333465` Chocソケット39個・`C3716049` `TMAG5273` 1個等の在庫が注文枚数分あるかも部品表画面で自動チェックされます）。
   - *(単体発注時)* 左メイン `81点 / 20 BOM`、右メイン `81点 / 24 BOM`（オンボード3Dホール `rU6: TMAG5273A1QDBVR` `C3716049`・`rR13: 0Ω`・JST SH `rJ3: C160405` 含む）、TBセンサー `9点 / 7 BOM`
 - **意図的に PCBA から除外されている部品（プレビューで Unplaced となって正常なもの）**:
   - **手ハンダ THT 部品（計2個）**: 右メイン基板の静音中クリックスイッチ **`rEXSW1`（`Kailh Square Silent`）**、および TBセンサー基板の光学センサー **`U1` / パネル上 `pU1`（`PMW3360DM-T2QU`）**
