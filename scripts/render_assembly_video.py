@@ -910,10 +910,11 @@ def update_scene_at_time(scene: dict, t: float):
         m_md4, a_md4 = drop_state(t, 5.80, 0.55, (16.0, 0.0, 0.0), snap=True)
         # 6.30s: #03 Seesaw Rocker rises up so bearings snap into C-clip seats
         m_rk, a_rk = drop_state(t, 6.30, 0.75, (0.0, 0.0, -18.0), snap=True)
-        # 7.05s: #04 Open-South U-Cradle + WC1/WC2 Brass Inserts snap down onto Rocker trunnions
-        m_cr, a_cr = drop_state(t, 7.05, 0.70, (0.0, 0.0, 16.0), snap=True)
-        m_iwc1, a_iwc1 = drop_state(t, 6.95, 0.65, (0.0, 0.0, 22.0))
-        m_iwc2, a_iwc2 = drop_state(t, 7.05, 0.65, (0.0, 0.0, 22.0))
+        # 6.95s: #04 Open-South U-Cradle rises from below (-18 mm) to snap onto Rocker trunnions,
+        # followed by WC1/WC2 Brass Inserts pressing into the seated Cradle bosses from above (+14 mm)
+        m_cr, a_cr = drop_state(t, 6.95, 0.50, (0.0, 0.0, -18.0), snap=True)
+        m_iwc1, a_iwc1 = drop_state(t, 7.35, 0.40, (0.0, 0.0, 14.0))
+        m_iwc2, a_iwc2 = drop_state(t, 7.42, 0.40, (0.0, 0.0, 14.0))
         # 7.65s: South Detent Brass Insert + M2x6 Adjuster Screw from South (-v), Ø2x2mm Magnet drops into open-top trough (+Z)!
         m_idet, a_idet = drop_state(t, 7.60, 0.50, (0.0, -12.0, 0.0))
         m_sdet, a_sdet = drop_state(t, 7.75, 0.55, (0.0, -16.0, 0.0))
