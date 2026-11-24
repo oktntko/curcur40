@@ -131,8 +131,8 @@ JLCCNC（[https://jlccnc.com/](https://jlccnc.com/)）にて、以下の **STEP 
 - **Surface Finish**: `Yes` → **`Blackening`**（黒染め：膜厚 `≤ 2 µm` のためめっき太りせず防錆できます）
 - **Tightest Tolerance ＆ CNC Remark（★最重要）**:
   - 画面上の選択肢は上限の **`±0.05mm`** を選択し、`+ Upload Drawing` に **`steel-flywheel.pdf`** をアップロードします。
-  - 標準ドリル穴のままだと平行ピン（`1.990 〜 2.000 mm`）がきつくなる恐れがあるため、**`CNC Remark` 欄に以下を必ずコピー＆ペースト**して `⌀2.00 H7` リーマ仕上げを指定してください：
-    > `Please ream the center through-hole to Ø2.00 H7 (+0.010 / 0.000 mm after Blackening finish) as specified in steel-flywheel.pdf, to fit a 2.00 mm h7 ground parallel pin.`
+  - 標準ドリル穴のままだと平行ピン（`1.990 〜 2.000 mm`）がきつくなる恐れがあるため、**`CNC Remark` 欄に以下を必ずコピー＆ペースト**して `⌀2.00 H7` リーマ仕上げを指定してください（※組立用のピン等に関する記述を入れると加工対象か確認が入るため、純粋な穴加工指示のみ記載します）：
+    > `Please ream the center through-hole to Ø2.00 H7 (+0.010 / 0.000 mm after Blackening finish) as specified in steel-flywheel.pdf.`
 - **Appearance / Threads / Sub-assembly**: `Standard` / `No` / `No`
 - **Product Desc（通関用分類）**: `Gear / Wheel` または `Shaft Category`（**`HS Code 732690`**）
 

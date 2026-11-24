@@ -751,10 +751,10 @@ def generate_flywheel_2d_drawing_pdf(mass_g: float, j_inertia: float):
         "MANUFACTURING & INSPECTION NOTES (JLCCNC):",
         "1. Material: Ferromagnetic 45# Steel (JIS S45C). Do NOT substitute SUS304 or Aluminum.",
         "2. Finish: Blackening (Black Oxide, <= 2 µm).",
-        "3. CRITICAL FIT: Center through-hole MUST be reamed ⌀2.00 H7 (+0.010 / 0.000 mm,",
-        "   i.e., 2.000 - 2.010 mm AFTER finish) to accept a ⌀2.0 h7 ground parallel pin.",
+        "3. CRITICAL TOLERANCE: Center through-hole MUST be reamed ⌀2.00 H7",
+        "   (+0.010 / 0.000 mm, i.e., 2.000 - 2.010 mm AFTER Blackening finish).",
         "4. 24x outer axial flutes use R1.50 mm profile (standard ⌀2.0 - ⌀3.0 mm end mill).",
-        "5. Flat parallel faces (4.65 ±0.05 mm); zero protruding bosses. Deburr edges C0.1 - C0.25 max.",
+        "5. Flat parallel faces (4.65 ±0.05 mm); wheel disc ONLY (no shaft). Deburr C0.1 - C0.25 max.",
     ]
     for idx, line in enumerate(notes):
         fw = "bold" if idx in (0, 3) else "normal"
@@ -768,8 +768,8 @@ def generate_flywheel_2d_drawing_pdf(mass_g: float, j_inertia: float):
     cx, cy = 82.0, 124.0
     ax.text(cx, 196, "SECTION VIEW A-A (SCALE 4.5:1)", ha="center", fontsize=8.8, fontweight="bold", color="#0F172A")
 
-    # Centerline
-    ax.plot([cx - 6.0 * s, cx + 6.0 * s], [cy, cy], color="#DC2626", lw=0.7, ls="-.")
+    # Short ISO axis centerline (minimal overhang so it cannot be mistaken for a shaft)
+    ax.plot([cx - 3.2 * s, cx + 3.2 * s], [cy, cy], color="#DC2626", lw=0.7, ls="-.")
 
     x0 = cx - 0.5 * WHEEL_RIM_W * s
     w_px = WHEEL_RIM_W * s
